@@ -170,7 +170,7 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
             controller: _meaningController,
             focusNode: _meaningFocus,
             header: "Meaning",
-            hint: "Muebles",
+            hint: "Furniture",
             action: TextInputAction.done,
             onEditingComplete: () => _meaningFocus.unfocus(),
           ),

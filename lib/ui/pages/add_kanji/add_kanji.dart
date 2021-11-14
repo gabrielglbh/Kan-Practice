@@ -99,6 +99,11 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
       GeneralUtils.getSnackBar(context, "Fill up the form correctly");
   }
 
+  int _parseWinRate(double? score) {
+    if (score != -1) return ((score ?? 0) * 100).toInt();
+    else return 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,14 +112,11 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
         title: Text(widget.args.kanji != null ? "Update Kanji" : "Add Kanji", overflow: TextOverflow.ellipsis)
       ),
       body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height - appBarHeight,
-          child: Padding(
-            padding: EdgeInsets.all(8),
-            child: _body()
-          ),
+        child: Padding(
+          padding: EdgeInsets.all(8),
+          child: _body()
         ),
-      )
+      ),
     );
   }
 
@@ -124,9 +126,22 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
         Visibility(
           visible: widget.args.kanji != null,
           child: Padding(
-            padding: EdgeInsets.all(8),
+            padding: EdgeInsets.only(bottom: 8, left: 9, right: 8),
             child: Text("Created ${GeneralUtils.parseDateMilliseconds((widget.args.kanji?.dateAdded ?? 0))}"),
           )
+        ),
+        Visibility(
+          visible: widget.args.kanji != null,
+          child: Padding(
+            padding: EdgeInsets.all(8),
+            child: Text("Writing: ${_parseWinRate(widget.args.kanji?.winRateWriting)}% • "
+                "Reading: ${_parseWinRate(widget.args.kanji?.winRateReading)}% • "
+                "Recog: ${_parseWinRate(widget.args.kanji?.winRateRecognition)}%"),
+          )
+        ),
+        Visibility(
+          visible: widget.args.kanji != null,
+          child: Divider(),
         ),
         CustomTextForm(
           controller: _kanjiController,

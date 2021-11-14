@@ -49,7 +49,7 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
         kanji: _kanjiController.text,
         pronunciation: _pronunciationController.text,
         meaning: _meaningController.text,
-        listName: widget.args.list.name,
+        listName: widget.args.listName,
         dateAdded: GeneralUtils.getCurrentMilliseconds()
     ));
     if (code == 0) {
@@ -71,13 +71,13 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
     Kanji? k = widget.args.kanji;
     if (k != null) {
       final code = await KanjiQueries.instance.updateKanji(
-          widget.args.list.name,
+          widget.args.listName,
           k.kanji,
           Kanji(
             kanji: _kanjiController.text,
             pronunciation: _pronunciationController.text,
             meaning: _meaningController.text,
-            listName: widget.args.list.name,
+            listName: widget.args.listName,
             winRateWriting: k.winRateWriting,
             winRateReading: k.winRateReading,
             winRateRecognition: k.winRateRecognition,

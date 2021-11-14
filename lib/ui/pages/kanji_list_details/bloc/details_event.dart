@@ -15,3 +15,13 @@ class KanjiEventLoading extends KanjiListDetailEvent {
   @override
   List<Object> get props => [list];
 }
+
+class UpdateKanList extends KanjiListDetailEvent {
+  final String name;
+  final String og;
+
+  const UpdateKanList(this.name, this.og);
+
+  @override
+  List<Object> get props => [name, og];
+}

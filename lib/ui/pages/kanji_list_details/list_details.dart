@@ -13,7 +13,9 @@ import 'package:kanpractice/ui/theme/theme_consts.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/widgets/BlitzBottomSheet.dart';
+import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
 import 'package:kanpractice/ui/widgets/CustomButton.dart';
+import 'package:kanpractice/ui/widgets/CustomTextForm.dart';
 import 'package:kanpractice/ui/widgets/EmptyList.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
 
@@ -43,6 +45,14 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
   StudyModes _selectedMode = StudyModes.writing;
   LearningMode _learningMode = LearningMode.spatial;
 
+  String _listName = "";
+
+  @override
+  void initState() {
+    _listName = widget.list.name;
+    super.initState();
+  }
+
   @override
   void dispose() {
     _controller.dispose();
@@ -55,7 +65,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
       List<Kanji> list = [];
       switch (_learningMode) {
         case LearningMode.spatial:
-          list = await KanjiQueries.instance.getAllKanjiForPractice(widget.list.name, _selectedMode);
+          list = await KanjiQueries.instance.getAllKanjiForPractice(_listName, _selectedMode);
           break;
         case LearningMode.random:
           state.list.shuffle();
@@ -67,17 +77,17 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
         case StudyModes.writing:
           await Navigator.of(context).pushNamed(writingStudyPage,
               arguments: ModeArguments(studyList: list, isTest: false, mode: StudyModes.writing))
-              .then((value) => _bloc..add(KanjiEventLoading(widget.list.name)));
+              .then((value) => _bloc..add(KanjiEventLoading(_listName)));
           break;
         case StudyModes.reading:
           await Navigator.of(context).pushNamed(readingStudyPage,
               arguments: ModeArguments(studyList: list, isTest: false, mode: StudyModes.reading))
-              .then((value) => _bloc..add(KanjiEventLoading(widget.list.name)));
+              .then((value) => _bloc..add(KanjiEventLoading(_listName)));
           break;
         case StudyModes.recognition:
           await Navigator.of(context).pushNamed(recognitionStudyPage,
               arguments: ModeArguments(studyList: list, isTest: false, mode: StudyModes.recognition))
-              .then((value) => _bloc..add(KanjiEventLoading(widget.list.name)));
+              .then((value) => _bloc..add(KanjiEventLoading(_listName)));
           break;
       }
     }
@@ -124,12 +134,42 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
     }
   }
 
+  _updateName(String name) {
+    if (name.isNotEmpty) _bloc..add(UpdateKanList(name, _listName));
+  }
+
+  _updateKanListName() {
+    TextEditingController _nameController = TextEditingController();
+    FocusNode _nameControllerFn = FocusNode();
+    showDialog(context: context, builder: (context) {
+      return CustomDialog(
+        title: Text("Change KanList Name"),
+        content: Container(
+          height: 140,
+          child: CustomTextForm(
+            hint: _listName,
+            header: 'Name',
+            controller: _nameController,
+            focusNode: _nameControllerFn,
+            autofocus: true,
+            onEditingComplete: () {
+              Navigator.of(context).pop();
+              _updateName(_nameController.text);
+            },
+          ),
+        ),
+        positiveButtonText: "Update",
+        onPositive: () => _updateName(_nameController.text)
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
         if ((_bloc.state as KanjiListDetailStateLoaded).list.length == 0) {
-          await ListQueries.instance.updateList(widget.list.name, {
+          await ListQueries.instance.updateList(_listName, {
             totalWinRateWritingField: -1,
             totalWinRateReadingField: -1,
             totalWinRateRecognitionField: -1
@@ -140,9 +180,23 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: appBarHeight,
-          title: FittedBox(
-            fit: BoxFit.fitWidth,
-            child: Text(widget.list.name, overflow: TextOverflow.ellipsis),
+          title: BlocProvider(
+            create: (_) => _bloc..add(KanjiEventLoading(_listName)),
+            child: BlocBuilder<KanjiListDetailBloc, KanjiListDetailState>(
+              builder: (context, state) {
+                if (state is KanjiListDetailStateLoaded) {
+                  _listName = state.name;
+                  return FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: GestureDetector(
+                      onTap: () async => await _updateKanListName(),
+                      child: Text(state.name, overflow: TextOverflow.ellipsis),
+                    )
+                  );
+                }
+                else return Container();
+              },
+            ),
           ),
           actions: [
             IconButton(
@@ -156,16 +210,16 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
             ),
             IconButton(
               onPressed: () async => await BlitzBottomSheet.callBlitzModeBottomSheet(
-                context, practiceList: widget.list.name
+                context, practiceList: _listName
               ),
               icon: Icon(Icons.flash_on_rounded),
             ),
             IconButton(
               onPressed: () async {
                 await Navigator.of(context).pushNamed(addKanjiPage,
-                    arguments: AddKanjiArgs(list: widget.list))
+                    arguments: AddKanjiArgs(listName: _listName, list: widget.list))
                     .then((code) {
-                  _bloc..add(KanjiEventLoading(widget.list.name));
+                  _bloc..add(KanjiEventLoading(_listName));
                 });
               },
               icon: Icon(Icons.add),
@@ -173,10 +227,11 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
           ],
         ),
         body: BlocProvider(
-          create: (_) => _bloc..add(KanjiEventLoading(widget.list.name)),
+          create: (_) => _bloc..add(KanjiEventLoading(_listName)),
           child: BlocBuilder<KanjiListDetailBloc, KanjiListDetailState>(
             builder: (context, state) {
               if (state is KanjiListDetailStateLoaded) {
+                _listName = state.name;
                 return Column(
                   children: [
                     Expanded(
@@ -264,16 +319,16 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
         Kanji? kanji = state.list[k];
         return KanjiItem(
           kanji: kanji,
-          listName: widget.list.name,
+          listName: _listName,
           selectedMode: _selectedMode,
           onTap: () async {
             await Navigator.of(context).pushNamed(addKanjiPage,
-                arguments: AddKanjiArgs(list: widget.list, kanji: kanji))
+                arguments: AddKanjiArgs(listName: _listName, list: widget.list, kanji: kanji))
                 .then((code) {
-              if (code == 0) _bloc..add(KanjiEventLoading(widget.list.name));
+              if (code == 0) _bloc..add(KanjiEventLoading(_listName));
             });
           },
-          onRemoval: () => _bloc..add(KanjiEventLoading(widget.list.name)),
+          onRemoval: () => _bloc..add(KanjiEventLoading(_listName)),
         );
       },
     );

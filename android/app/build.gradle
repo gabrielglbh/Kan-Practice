@@ -70,4 +70,5 @@ flutter {
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:28.4.1')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "io.grpc:grpc-okhttp:1.32.2"
 }

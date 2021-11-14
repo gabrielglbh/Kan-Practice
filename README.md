@@ -4,6 +4,12 @@ A simple app for studying the japanese vocabulary you will learn in your japanes
 
 Build your own word or sentences lists and study them whenever you want.
 
+## Don't Forget It
+
+Feel free to contribute with PRs maintaining and respecting the code structure :)
+
+If you wish to distribute a new app based on this one, remember to change the Bundle ID on iOS and Package on Android and make sure to acknowledge this work on your newly created app!
+
 ## Code Structure for Contributing
 
 Code is based on 2 main folders: `ui` and `core`, with self explanatory meanings. On `main.dart` you will find the main `Widget` that runs the app with all of its configuration.
@@ -33,8 +39,4 @@ Subdivided in:
 If you want to replicate this app on your device with a custom back-end, fork the repo and include your own Google Services files for iOS or Android. 
 
 Make sure your back-end matches the models described in code, although you can also change them to match yours!
-
-## Don't Forget It
-
-Feel free to contribute with PRs maintaining and respecting the code structure :)
 

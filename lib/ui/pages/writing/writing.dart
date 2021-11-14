@@ -175,6 +175,7 @@ class _WritingStudyState extends State<WritingStudy> {
     double finalHeight = MediaQuery.of(context).size.height < 700 ? listStudyHeight / 2 : listStudyHeight;
     return Container(
       height: MediaQuery.of(context).size.height < 700 ? studyGuideHeight / 2 : studyGuideHeight,
+      padding: EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         children: [
           Visibility(
@@ -182,7 +183,6 @@ class _WritingStudyState extends State<WritingStudy> {
             child: Text(_studyList[_macro].pronunciation, overflow: TextOverflow.ellipsis),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 8),
             height: finalHeight,
             child: FittedBox(
               fit: BoxFit.contain,
@@ -197,7 +197,7 @@ class _WritingStudyState extends State<WritingStudy> {
                     String? kanji = _studyList[_macro].kanji;
                     return Text(_currentKanji[_macro][index] == _none ? _none : kanji[index],
                       style: TextStyle(fontSize:
-                          MediaQuery.of(context).size.height < 700 ? 26 : 64,
+                          MediaQuery.of(context).size.height < 700 ? 32 : 64,
                           color: index == _inner ? secondaryColor : null)
                     );
                   },

@@ -90,13 +90,13 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
         ),
         body: Container(
           margin: EdgeInsets.only(top: 32),
+          padding: EdgeInsets.symmetric(horizontal: 8),
           alignment: Alignment.center,
           child: Column(
             children: [
               ListPercentageIndicator(value: _macro / _studyList.length),
               Text(_getProperPronunciation()),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 8),
                 height: listStudyHeight,
                 child: FittedBox(
                   fit: BoxFit.contain,

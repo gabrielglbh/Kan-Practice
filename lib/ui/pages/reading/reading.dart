@@ -102,13 +102,13 @@ class _ReadingStudyState extends State<ReadingStudy> {
         body: Container(
           margin: EdgeInsets.only(top: 32),
           alignment: Alignment.center,
+          padding: EdgeInsets.symmetric(horizontal: 8),
           child: Column(
             children: [
               ListPercentageIndicator(value: _macro / _studyList.length),
               Text(_getProperAlphabet(), style: TextStyle(fontSize: 24, color: secondaryColor)),
               Text(_getProperPronunciation(), style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 8),
                 height: listStudyHeight,
                 child: FittedBox(
                   fit: BoxFit.contain,

@@ -162,25 +162,27 @@ class _LoginPageState extends State<LoginPage> {
         title: Text(_mode == SignMode.login ? "Log In" : "Sign Up"),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height - appBarHeight,
-          child: BlocProvider(
-            create: (_) => _bloc..add(LoginIdle()),
-            child: BlocBuilder<LoginBloc, LoginState>(
-              builder: (context, state) {
-                if (state is LoginStateLoading)
-                  return CustomProgressIndicator();
-                else if (state is LoginStateSuccessful)
-                  return _successfulState(state);
-                else if (state is LoginStateIdle)
-                  return _idleState(state);
-                else if (state is LoginStateLoggedOut)
-                  return _loggedOut(state);
-                else
-                  return Container();
-              },
-            )
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            BlocProvider(
+              create: (_) => _bloc..add(LoginIdle()),
+              child: BlocBuilder<LoginBloc, LoginState>(
+                builder: (context, state) {
+                  if (state is LoginStateLoading)
+                    return CustomProgressIndicator();
+                  else if (state is LoginStateSuccessful)
+                    return _successfulState(state);
+                  else if (state is LoginStateIdle)
+                    return _idleState(state);
+                  else if (state is LoginStateLoggedOut)
+                    return _loggedOut(state);
+                  else
+                    return Container();
+                },
+              )
+            ),
+          ],
         ),
       )
     );
@@ -302,6 +304,7 @@ class _LoginPageState extends State<LoginPage> {
         ListTile(
           leading: Icon(Icons.logout),
           title: Text("Close Session"),
+          contentPadding: EdgeInsets.only(bottom: 48),
           onTap: () => _bloc..add(CloseSession()),
         )
       ],

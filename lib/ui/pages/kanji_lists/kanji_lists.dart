@@ -1,0 +1,316 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/core/database/database_consts.dart';
+import 'package:kanpractice/core/firebase/queries/back_ups.dart';
+import 'package:kanpractice/core/preferences/store_manager.dart';
+import 'package:kanpractice/core/routing/pages.dart';
+import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
+import 'package:kanpractice/ui/pages/kanji_lists/filters.dart';
+import 'package:kanpractice/ui/widgets/BlitzBottomSheet.dart';
+import 'package:kanpractice/ui/widgets/CustomSearchBar.dart';
+import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListTile.dart';
+import 'package:kanpractice/ui/widgets/EmptyList.dart';
+import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
+import 'package:kanpractice/ui/pages/kanji_lists/widgets/StudyBottomSheet.dart';
+import 'package:kanpractice/ui/widgets/CustomTextForm.dart';
+import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
+import 'package:package_info/package_info.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class KanjiLists extends StatefulWidget {
+  const KanjiLists();
+
+  @override
+  _KanjiListsState createState() => _KanjiListsState();
+}
+
+class _KanjiListsState extends State<KanjiLists> {
+  KanjiListBloc _bloc = KanjiListBloc();
+  FocusNode? _searchBarFn;
+
+  /// This variable keeps track of the actual filter applied. The value is
+  /// saved into the shared preferences when a filter is applied.
+  /// This value is then restored upon new session.
+  String _currentAppliedFilter = lastUpdatedField;
+  /// State map for the filters, independent of the bloc.
+  Map<String, bool> _filterValues = {
+    lastUpdatedField: true,
+    totalWinRateWritingField: false,
+    totalWinRateReadingField: false,
+    totalWinRateRecognitionField: false
+  };
+
+  /// This variable keeps track of the order applied on the current filter only:
+  /// true --> DESC or false --> ASC. The value is saved into the shared preferences when a filter
+  /// is applied. This value is then restored upon new session.
+  bool _currentAppliedOrder = true;
+  bool _searchHasFocus = false;
+
+  String _newVersion = "";
+
+  @override
+  void initState() {
+    _searchBarFn = FocusNode();
+    _searchBarFn?.addListener(_focusListener);
+    _currentAppliedFilter = StorageManager.readData(StorageManager.filtersOnList) ?? lastUpdatedField;
+    _currentAppliedOrder = StorageManager.readData(StorageManager.orderOnList) ?? true;
+    _getVersionNotice();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _searchBarFn?.removeListener(_focusListener);
+    _searchBarFn?.dispose();
+    super.dispose();
+  }
+
+  Future<void> _getVersionNotice() async {
+    String v = await BackUpRecords.instance.getVersion();
+    PackageInfo pi = await PackageInfo.fromPlatform();
+    if (v != pi.version && v != "") setState(() => _newVersion = v);
+  }
+
+  _focusListener() => setState(() => _searchHasFocus = (_searchBarFn?.hasFocus ?? false));
+
+  _createDialogForAddingKanList() {
+    TextEditingController controller = TextEditingController();
+    FocusNode focusNode = FocusNode();
+    showDialog(
+      context: context,
+      builder: (context) => CustomDialog(
+        title: Text("New KanList"),
+        content: Container(
+          height: alertDialogHeight,
+          child: CustomTextForm(
+            header: "KanList Name",
+            controller: controller,
+            action: TextInputAction.done,
+            hint: "Name",
+            autofocus: true,
+            onSubmitted: (name) {
+              _addCreateEvent(name);
+              Navigator.of(context).pop();
+            },
+            focusNode: focusNode,
+            onEditingComplete: () => focusNode.unfocus(),
+          ),
+        ),
+        positiveButtonText: "Create",
+        onPositive: () => _addCreateEvent(controller.text),
+      )
+    );
+  }
+
+  _versionDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return CustomDialog(
+          title: Text("New version available"),
+          content: Text("$_newVersion"),
+          positiveButtonText: 'Go to store',
+          onPositive: () async {
+            if (await canLaunch("https://play.google.com/store/apps/details?id=com.gabr.garc.kanpractice"))
+              await launch("https://play.google.com/store/apps/details?id=com.gabr.garc.kanpractice");
+          },
+        );
+      },
+    );
+  }
+
+  _addLoadingEvent() => _bloc..add(KanjiListEventLoading(
+      filter: _currentAppliedFilter, order: _currentAppliedOrder));
+
+  _addCreateEvent(String name) => _bloc..add(KanjiListEventCreate(name,
+      filter: _currentAppliedFilter, order: _currentAppliedOrder));
+
+  _getCurrentIndexOfFilter() => _filterValues.keys.toList().indexOf(_currentAppliedFilter);
+
+  _onFilterSelected(int index) {
+    /// If the user taps on the same filter twice, just change back and forth the
+    /// order value
+    if (_getCurrentIndexOfFilter() == index)
+      setState(() => _currentAppliedOrder = !_currentAppliedOrder);
+    /// Else, means the user has changed the filter, therefore default the order to DESC
+    else
+      setState(() => _currentAppliedOrder = true);
+
+    /// Change the current applied filter based on the index selected on the ChoiceChip
+    /// and change the value on _filterValues map to reflect the change on the UI
+    _currentAppliedFilter = KanListFilters.values[index].filter;
+    setState(() {
+      _filterValues.updateAll((key, value) => false);
+      _filterValues.update(_currentAppliedFilter, (value) => true);
+    });
+    /// Adds the loading event to the bloc builder to load the new specified list
+    _addLoadingEvent();
+    /// Stores the new filter and order applied to shared preferences
+    StorageManager.saveData(StorageManager.filtersOnList, _currentAppliedFilter);
+    StorageManager.saveData(StorageManager.orderOnList, _currentAppliedOrder);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        if (_searchHasFocus) {
+          _addLoadingEvent();
+          _searchBarFn?.unfocus();
+          return false;
+        } else return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: appBarHeight,
+          title: FittedBox(
+            fit: BoxFit.fitWidth,
+            child: Text("KanPractice"),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () async {
+                await StudyBottomSheet.callStudyModeBottomSheet(context);
+              },
+              icon: Icon(Icons.track_changes_rounded),
+            ),
+            IconButton(
+              onPressed: () async {
+                await BlitzBottomSheet.callBlitzModeBottomSheet(context);
+              },
+              icon: Icon(Icons.flash_on_rounded),
+            ),
+            IconButton(
+              onPressed: () async {
+                await Navigator.of(context).pushNamed(settingsPage).then((code) {
+                  _addLoadingEvent();
+                });
+              },
+              icon: Icon(Icons.settings),
+            )
+          ],
+        ),
+        body: BlocProvider<KanjiListBloc>(
+          create: (_) => _addLoadingEvent(),
+          child: Column(
+            children: [
+              Visibility(
+                visible: _newVersion.isNotEmpty,
+                child: _updateContainer()
+              ),
+              CustomSearchBar(
+                hint: "Search by list name, kanji, meaning, pronunciation",
+                focus: _searchBarFn,
+                onQuery: (String query) => _bloc..add(KanjiListEventSearching(query)),
+                onExitSearch: () => _addLoadingEvent(),
+              ),
+              _filterChips(),
+              _lists()
+            ],
+          )
+        ),
+        floatingActionButton: _searchHasFocus ? null : FloatingActionButton(
+          onPressed: () => _createDialogForAddingKanList(),
+          child: Icon(Icons.add, color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black),
+        ),
+      ),
+    );
+  }
+
+  Container _filterChips() {
+    Icon icon = Icon(_currentAppliedOrder
+        ? Icons.arrow_downward_rounded
+        : Icons.arrow_upward_rounded,
+        color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black);
+
+    return Container(
+      height: 60,
+      padding: EdgeInsets.all(8),
+      child: ListView.builder(
+        itemCount: KanListFilters.values.length,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 2),
+            child: ChoiceChip(
+              label: Text(KanListFilters.values[index].label),
+              avatar: _getCurrentIndexOfFilter() != index ? null : icon,
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              onSelected: (bool selected) => _onFilterSelected(index),
+              selected: _getCurrentIndexOfFilter() == index,
+            ),
+          );
+        }
+      )
+    );
+  }
+
+  BlocBuilder _lists() {
+    return BlocBuilder<KanjiListBloc, KanjiListState>(
+      builder: (context, state) {
+        if (state is KanjiListStateFailure)
+          return EmptyList(message: "Failed to retrieve lists.");
+        else if (state is KanjiListStateLoading || state is KanjiListStateSearching)
+          return Expanded(child: CustomProgressIndicator());
+        else if (state is KanjiListStateLoaded)
+          return state.lists.isEmpty
+              ? Expanded(child: EmptyList(message: "No available lists."))
+              : Expanded(
+            child: ListView.builder(
+              key: PageStorageKey<String>('kanListListsController'),
+              itemCount: state.lists.length,
+              padding: EdgeInsets.only(bottom: 82),
+              itemBuilder: (context, k) {
+                return Card(
+                  margin: EdgeInsets.all(8),
+                  child: KanListTile(
+                    item: state.lists[k],
+                    onTap: () => _searchBarFn?.unfocus(),
+                    onRemoval: () => _bloc..add(KanjiListEventDelete(
+                      state.lists[k],
+                      filter: _currentAppliedFilter,
+                      order: _currentAppliedOrder
+                    )),
+                    onPopWhenTapped: () => _addLoadingEvent()
+                  ),
+                );
+              }
+            ),
+          );
+        else return Container();
+      },
+    );
+  }
+
+  Widget _updateContainer() {
+    return GestureDetector(
+      onTap: _versionDialog,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(18),
+          color: secondaryColor
+        ),
+        padding: EdgeInsets.symmetric(vertical: 8),
+        margin: EdgeInsets.only(bottom: 8, right: 32, left: 32),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Text("New Update!!", style: Theme.of(context)
+                .textTheme.headline5?.copyWith(
+                  fontWeight: FontWeight.bold, color: Colors.white
+              )),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Icon(Icons.system_update, color: Colors.white)
+            )
+          ],
+        ),
+      )
+    );
+  }
+}

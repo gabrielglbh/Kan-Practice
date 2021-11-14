@@ -1,0 +1,11 @@
+const String kanjiListPage = "/KanjiListPage";
+const String settingsPage = "/settingsPage";
+const String kanjiListDetailsPage = "/KanjiListDetailsPage";
+const String addKanjiPage = "/addKanjiPage";
+const String writingStudyPage = "/writingStudyPage";
+const String readingStudyPage = "/readingStudyPage";
+const String recognitionStudyPage = "/recognitionStudyPage";
+const String loginPage = "/loginPage";
+const String backUpPage = "/backUpPage";
+const String testResultPage = "/testResultPage";
+const String testHistoryPage = "/testHistoryPage";

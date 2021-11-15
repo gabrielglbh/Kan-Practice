@@ -47,48 +47,48 @@ class _StudyBottomSheetState extends State<StudyBottomSheet> {
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        return Container(
-          height: bottomSheetHeight,
-          margin: EdgeInsets.all(0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _dragContainer(),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
-                child: Text("Make a test with the KanLists of your choice",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-              ),
-              Visibility(
-                visible: _selectionMode,
-                child: TestStudyMode(list: _kanji, listsNames: _selectedFormattedLists),
-              ),
-              Visibility(
-                visible: !_selectionMode,
-                child: BlocProvider(
-                  create: (_) => KanjiListBloc()..add(KanjiListEventLoading(
-                    filter: lastUpdatedField, order: false
-                  )),
-                  child: BlocBuilder<KanjiListBloc, KanjiListState>(
-                    builder: (context, state) {
-                      if (state is KanjiListStateFailure)
-                        return EmptyList(message: "Failed to retrieve lists.");
-                      else if (state is KanjiListStateLoading)
-                        return CustomProgressIndicator();
-                      else if (state is KanjiListStateLoaded) {
-                        return Container(
-                          height: bottomSheetHeight - 100,
-                          margin: EdgeInsets.all(8),
-                          child: _listSelection(state)
-                        );
-                      } else return Container();
-                    },
-                  ),
+        return Wrap(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _dragContainer(),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
+                  child: Text("Make a test with the KanLists of your choice",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                 ),
-              )
-            ],
-          ),
+                Visibility(
+                  visible: _selectionMode,
+                  child: TestStudyMode(list: _kanji, listsNames: _selectedFormattedLists),
+                ),
+                Visibility(
+                  visible: !_selectionMode,
+                  child: BlocProvider(
+                    create: (_) => KanjiListBloc()..add(KanjiListEventLoading(
+                        filter: lastUpdatedField, order: false
+                    )),
+                    child: BlocBuilder<KanjiListBloc, KanjiListState>(
+                      builder: (context, state) {
+                        if (state is KanjiListStateFailure)
+                          return EmptyList(message: "Failed to retrieve lists.");
+                        else if (state is KanjiListStateLoading)
+                          return CustomProgressIndicator();
+                        else if (state is KanjiListStateLoaded) {
+                          return Container(
+                            constraints: BoxConstraints(maxHeight: maxHeightForListsTest),
+                            margin: EdgeInsets.all(8),
+                            child: _listSelection(state)
+                          );
+                        } else return Container();
+                      },
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ]
         );
       },
     );

@@ -16,7 +16,6 @@ class TestStudyMode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: studyModeWidgetHeight,
       alignment: Alignment.center,
       child: Column(
         children: [
@@ -32,13 +31,10 @@ class TestStudyMode extends StatelessWidget {
               ],
             ),
           ),
+
           Padding(
-            padding: EdgeInsets.only(top: 8),
-            child: Text("頑張って!!", style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 16),
-            child: Text("Good Luck!", style: TextStyle(fontWeight: FontWeight.bold)),
+            padding: EdgeInsets.only(top: 16, bottom: 16),
+            child: Text("Good Luck!", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           )
         ],
       )

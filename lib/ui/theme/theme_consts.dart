@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 const double defaultSizeSearchBarIcons = 50;
 const double appBarHeight = 80;
-const double customButtonHeight = 90;
-const double studyModeWidgetHeight = 180;
-const double alertDialogHeight = 100;
 const double listStudyHeight = 85;
-const double studyGuideHeight = listStudyHeight + 44;
+const double customButtonHeight = 90;
+const double alertDialogHeight = 100;
 const double customButtonWidth = 110;
-const double bottomSheetHeight = 360;
+const double studyGuideHeight = listStudyHeight + 44;
+const double actionButtonsKanjiDetail = 130;
+const double maxHeightForListsTest = 240;
 
 const int numberOfKanjiInTest = 30;
 

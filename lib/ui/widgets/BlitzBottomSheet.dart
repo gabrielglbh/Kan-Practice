@@ -45,26 +45,24 @@ class BlitzBottomSheet extends StatelessWidget {
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        return Container(
-          height: bottomSheetHeight,
-          margin: EdgeInsets.all(0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _dragContainer(),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
-                child: Text("Make a blitz test", textAlign: TextAlign.center,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
-                child: Text("30 random kanji will be selected. Let's take the blitz test!",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              ),
-              Expanded(
-                child: FutureBuilder<List<Kanji>>(
+        return Wrap(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _dragContainer(),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
+                  child: Text("Make a blitz test", textAlign: TextAlign.center,
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
+                  child: Text("30 random kanji will be selected. Let's take the blitz test!",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                ),
+                FutureBuilder<List<Kanji>>(
                   future: _loadBlitzTest(),
                   builder: (context, snapshot) {
                     return TestStudyMode(
@@ -73,9 +71,9 @@ class BlitzBottomSheet extends StatelessWidget {
                     );
                   },
                 )
-              )
-            ],
-          ),
+              ],
+            ),
+          ]
         );
       },
     );

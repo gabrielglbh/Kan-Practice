@@ -37,6 +37,31 @@ extension StudyModesExt on StudyModes {
         return Colors.orange[300]!;
     }
   }
+
+  int get map {
+    switch(this) {
+      case StudyModes.writing:
+        return 0;
+      case StudyModes.reading:
+        return 1;
+      case StudyModes.recognition:
+        return 2;
+    }
+  }
+}
+
+class StudyModesUtil {
+  /// Maps the integer received from the source to a StudyModes. Based on [map]
+  static mapStudyMode(int map) {
+    switch(map) {
+      case 0:
+        return StudyModes.writing;
+      case 1:
+        return StudyModes.reading;
+      case 2:
+        return StudyModes.recognition;
+    }
+  }
 }
 
 class ModeArguments {

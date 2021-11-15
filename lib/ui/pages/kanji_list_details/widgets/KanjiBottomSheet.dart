@@ -79,23 +79,23 @@ class KanjiBottomSheet extends StatelessWidget {
                     child: FittedBox(
                       fit: BoxFit.contain,
                       child: Text(kanji?.pronunciation ?? "wildcard".tr(), textAlign: TextAlign.center,
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                          style: TextStyle(fontSize: 16)),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     child: FittedBox(
                       fit: BoxFit.contain,
                       child: Text(kanji?.kanji ?? "wildcard".tr(), textAlign: TextAlign.center,
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32)),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     child: FittedBox(
                       fit: BoxFit.contain,
                       child: Text((kanji?.meaning ?? "wildcard".tr()), textAlign: TextAlign.center,
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))
+                          style: TextStyle(fontSize: 16))
                     ),
                   ),
                   Card(

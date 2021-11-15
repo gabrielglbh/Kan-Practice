@@ -49,7 +49,7 @@ class StudyModeUpdateHandler {
               Navigator.of(context).pop(); /// Dialog pop for proper functioning of next navigator call
               Navigator.of(context).pushReplacementNamed(testResultPage, arguments:
                 TestResultArguments(score: testScore, kanji: args.studyList.length,
-                    studyMode: args.mode.mode, listsName: args.listsNames)
+                    studyMode: args.mode.map, listsName: args.listsNames)
               );
             }
             /// If the user went back in mid list, update the list accordingly

@@ -14,13 +14,13 @@ class Test {
   @JsonKey(name: kanjiListsField)
   final String kanjiLists;
   @JsonKey(name: studyModeField)
-  final String studyMode;
+  final int studyMode;
 
   Test({required this.takenDate, required this.testScore, required this.kanjiLists,
     required this.kanjiInTest, required this.studyMode});
 
   /// Empty [Test]
-  static final Test empty = Test(testScore: 0, kanjiInTest: 0, kanjiLists: "", takenDate: 0, studyMode: "");
+  static final Test empty = Test(testScore: 0, kanjiInTest: 0, kanjiLists: "", takenDate: 0, studyMode: 0);
 
   factory Test.fromJson(Map<String, dynamic> json) => _$TestFromJson(json);
   Map<String, dynamic> toJson() => _$TestToJson(this);

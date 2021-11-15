@@ -74,22 +74,23 @@ class _TestHistoryState extends State<TestHistory> {
       itemBuilder: (context, k) {
         Test t = state.list[k];
         Color chartColor = secondaryColor;
+        StudyModes mode = StudyModesUtil.mapStudyMode(t.studyMode);
 
-        if (t.studyMode == StudyModes.writing.mode) chartColor = StudyModes.writing.color;
-        else if (t.studyMode == StudyModes.reading.mode) chartColor = StudyModes.reading.color;
-        else if (t.studyMode == StudyModes.recognition.mode) chartColor = StudyModes.recognition.color;
+        if (mode == StudyModes.writing) chartColor = StudyModes.writing.color;
+        else if (mode == StudyModes.reading) chartColor = StudyModes.reading.color;
+        else if (mode == StudyModes.recognition) chartColor = StudyModes.recognition.color;
 
         return Card(
           margin: EdgeInsets.all(8),
           elevation: 8,
           child: ListTile(
-            contentPadding: EdgeInsets.all(8),
+            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             onTap: () {},
             title: Text(t.kanjiLists, textAlign: TextAlign.end, overflow: TextOverflow.ellipsis),
             subtitle: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("${t.studyMode} • "),
+                Text("${mode.mode} • "),
                 Expanded(
                   child: Text("${"test_history_testTaken".tr()} "
                       "${GeneralUtils.parseDateMilliseconds(context, t.takenDate)}",

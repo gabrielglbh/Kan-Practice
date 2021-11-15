@@ -217,7 +217,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
             IconButton(
               onPressed: () async {
                 await Navigator.of(context).pushNamed(addKanjiPage,
-                    arguments: AddKanjiArgs(listName: _listName, list: widget.list))
+                    arguments: AddKanjiArgs(listName: _listName))
                     .then((code) {
                   _bloc..add(KanjiEventLoading(_listName));
                 });
@@ -232,42 +232,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
             builder: (context, state) {
               if (state is KanjiListDetailStateLoaded) {
                 _listName = state.name;
-                return Column(
-                  children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onHorizontalDragEnd: (details) {
-                          double? pv = details.primaryVelocity;
-                          if (pv != null) _updateSelectedModePageView(pv);
-                        },
-                        child: _kanjiList(state),
-                      )
-                    ),
-                    Divider(),
-                    Container(
-                      height: 50,
-                      child: PageView(
-                        controller: _controller,
-                        children: [
-                          _pageViewHeader(StudyModes.writing.mode),
-                          _pageViewHeader(StudyModes.reading.mode),
-                          _pageViewHeader(StudyModes.recognition.mode),
-                        ],
-                        onPageChanged: (newPage) => _onChangePage(newPage),
-                      ),
-                    ),
-                    Divider(),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 32),
-                      child: CustomButton(
-                        title1: "練習",
-                        title2: "Practice",
-                        width: MediaQuery.of(context).size.width / 2,
-                        onTap: () async => await _loadUpPractice(state)
-                      ),
-                    )
-                  ],
-                );
+                return _body(state);
               }
               else if (state is KanjiListDetailStateLoading)
                 return CustomProgressIndicator();
@@ -279,6 +244,45 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
           ),
         ),
       ),
+    );
+  }
+
+  Column _body(KanjiListDetailStateLoaded state) {
+    return Column(
+      children: [
+        Expanded(
+          child: GestureDetector(
+            onHorizontalDragEnd: (details) {
+              double? pv = details.primaryVelocity;
+              if (pv != null) _updateSelectedModePageView(pv);
+            },
+            child: _kanjiList(state),
+          )
+        ),
+        Divider(),
+        Container(
+          height: 50,
+          child: PageView(
+            controller: _controller,
+            children: [
+              _pageViewHeader(StudyModes.writing.mode),
+              _pageViewHeader(StudyModes.reading.mode),
+              _pageViewHeader(StudyModes.recognition.mode),
+            ],
+            onPageChanged: (newPage) => _onChangePage(newPage),
+          ),
+        ),
+        Divider(),
+        Padding(
+          padding: EdgeInsets.only(bottom: 8),
+          child: CustomButton(
+            title1: "練習",
+            title2: "Practice",
+            width: MediaQuery.of(context).size.width / 2,
+            onTap: () async => await _loadUpPractice(state)
+          ),
+        )
+      ],
     );
   }
 
@@ -319,11 +323,12 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
         Kanji? kanji = state.list[k];
         return KanjiItem(
           kanji: kanji,
+          list: widget.list,
           listName: _listName,
           selectedMode: _selectedMode,
           onTap: () async {
             await Navigator.of(context).pushNamed(addKanjiPage,
-                arguments: AddKanjiArgs(listName: _listName, list: widget.list, kanji: kanji))
+                arguments: AddKanjiArgs(listName: _listName, kanji: kanji))
                 .then((code) {
               if (code == 0) _bloc..add(KanjiEventLoading(_listName));
             });

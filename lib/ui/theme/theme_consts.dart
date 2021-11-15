@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 const double defaultSizeSearchBarIcons = 50;
 const double appBarHeight = 80;
 const double customButtonHeight = 90;
+const double actionButtonsKanjiDetail = 130;
 const double studyModeWidgetHeight = 180;
 const double alertDialogHeight = 100;
 const double listStudyHeight = 85;

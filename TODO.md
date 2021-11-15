@@ -5,9 +5,8 @@
     - Hard: somehow got away with some of the kanji meaning, pronunciation or writing. Should count as 33%.
     - Good enough: got almost all the kanji meaning, pronunciation or writing perfectly learned. Should count as 66%.
     - Perfect: got it on the spot. Should count as 100%.
-- Put graph on kanji detail showing metrics on individual
 - Info of new version in the update available dialog from Firebase
-- Refractor all labels and import easy_localization:
+- Refactor all labels and import easy_localization:
     - ES, EN, DE, FR
 - Get a text to speech integration to hear the proper pronunciation on every learning mode
 - Subject to popularity as it is a breaking change --> Make kan lists available (users decide which lists to upload) for everyone to download in an in-app market

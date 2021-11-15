@@ -118,13 +118,6 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
   _body() {
     return Column(
       children: [
-        Visibility(
-          visible: widget.args.kanji != null,
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 8, left: 9, right: 8),
-            child: Text("Created ${GeneralUtils.parseDateMilliseconds((widget.args.kanji?.dateAdded ?? 0))}"),
-          )
-        ),
         CustomTextForm(
           controller: _kanjiController,
           focusNode: _kanjiFocus,

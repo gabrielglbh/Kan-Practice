@@ -72,7 +72,7 @@ class KanjiBottomSheet extends StatelessWidget {
                 children: [
                   _dragContainer(),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     child: FittedBox(
                       fit: BoxFit.contain,
                       child: Text(kanji?.pronunciation ?? "?", textAlign: TextAlign.center,
@@ -80,7 +80,7 @@ class KanjiBottomSheet extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
                     child: FittedBox(
                       fit: BoxFit.contain,
                       child: Text(kanji?.kanji ?? "?", textAlign: TextAlign.center,
@@ -97,13 +97,21 @@ class KanjiBottomSheet extends StatelessWidget {
                   ),
                   Card(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                    margin: EdgeInsets.only(bottom: 8, top: 8),
+                    margin: EdgeInsets.only(bottom: 16, top: 8),
                     child: ListTile(
                       title: WinRateBarChart(dataSource: [
                         BarData(x: StudyModes.writing.mode, y: (kanji?.winRateWriting ?? -1), color: StudyModes.writing.color),
                         BarData(x: StudyModes.reading.mode, y: (kanji?.winRateReading ?? -1), color: StudyModes.reading.color),
                         BarData(x: StudyModes.recognition.mode, y: (kanji?.winRateRecognition ?? -1), color: StudyModes.recognition.color),
                       ])
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: Text("Created ${GeneralUtils.parseDateMilliseconds((kanji?.dateAdded ?? 0))}",
+                          textAlign: TextAlign.center, style: TextStyle(fontSize: 14))
                     ),
                   ),
                   Divider(),

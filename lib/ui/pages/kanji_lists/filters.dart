@@ -20,14 +20,14 @@ extension KanListFiltersExtensions on KanListFilters {
   String get filter {
     switch (this) {
       case KanListFilters.writing:
-        return totalWinRateWritingField;
+        return KanListTableFields.totalWinRateWritingField;
       case KanListFilters.reading:
-        return totalWinRateReadingField;
+        return KanListTableFields.totalWinRateReadingField;
       case KanListFilters.recognition:
-        return totalWinRateRecognitionField;
+        return KanListTableFields.totalWinRateRecognitionField;
       case KanListFilters.all:
       default:
-        return lastUpdatedField;
+        return KanListTableFields.lastUpdatedField;
     }
   }
 }

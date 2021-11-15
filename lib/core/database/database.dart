@@ -34,31 +34,34 @@ class CustomDatabase {
         await _onUpgrade(db, oldVersion, newVersion);
       },
       onCreate: (Database db, int version) async {
-        await db.execute("CREATE TABLE $kanjiTable("
-            "$kanjiField TEXT PRIMARY KEY NOT NULL, "
-            "$listNameField TEXT NOT NULL, "
-            "$meaningField TEXT NOT NULL, "
-            "$pronunciationField TEXT NOT NULL, "
-            "$winRateWritingField INTEGER NOT NULL DEFAULT -1, "
-            "$winRateReadingField INTEGER NOT NULL DEFAULT -1, "
-            "$winRateRecognitionField INTEGER NOT NULL DEFAULT -1, "
-            "$dateAddedField INTEGER NOT NULL DEFAULT 0, "
-            "FOREIGN KEY ($listNameField) REFERENCES $listsTable($nameField) ON DELETE CASCADE ON UPDATE CASCADE)");
+        await db.execute("CREATE TABLE ${KanjiTableFields.kanjiTable}("
+            "${KanjiTableFields.kanjiField} TEXT NOT NULL, "
+            "${KanjiTableFields.listNameField} TEXT NOT NULL, "
+            "${KanjiTableFields.meaningField} TEXT NOT NULL, "
+            "${KanjiTableFields.pronunciationField} TEXT NOT NULL, "
+            "${KanjiTableFields.winRateWritingField} INTEGER NOT NULL DEFAULT -1, "
+            "${KanjiTableFields.winRateReadingField} INTEGER NOT NULL DEFAULT -1, "
+            "${KanjiTableFields.winRateRecognitionField} INTEGER NOT NULL DEFAULT -1, "
+            "${KanjiTableFields.dateAddedField} INTEGER NOT NULL DEFAULT 0, "
+            "PRIMARY KEY (${KanjiTableFields.kanjiField}, ${KanjiTableFields.meaningField}, ${KanjiTableFields.pronunciationField}), "
+            "FOREIGN KEY (${KanjiTableFields.listNameField}) "
+            "REFERENCES ${KanListTableFields.listsTable}(${KanListTableFields.nameField}) "
+            "ON DELETE CASCADE ON UPDATE CASCADE)");
 
-        await db.execute("CREATE TABLE $listsTable("
-            "$nameField TEXT PRIMARY KEY NOT NULL, "
-            "$totalWinRateWritingField INTEGER NOT NULL DEFAULT -1, "
-            "$totalWinRateReadingField INTEGER NOT NULL DEFAULT -1, "
-            "$totalWinRateRecognitionField INTEGER NOT NULL DEFAULT -1, "
-            "$lastUpdatedField INTEGER NOT NULL DEFAULT 0)");
+        await db.execute("CREATE TABLE ${KanListTableFields.listsTable}("
+            "${KanListTableFields.nameField} TEXT PRIMARY KEY NOT NULL, "
+            "${KanListTableFields.totalWinRateWritingField} INTEGER NOT NULL DEFAULT -1, "
+            "${KanListTableFields.totalWinRateReadingField} INTEGER NOT NULL DEFAULT -1, "
+            "${KanListTableFields.totalWinRateRecognitionField} INTEGER NOT NULL DEFAULT -1, "
+            "${KanListTableFields.lastUpdatedField} INTEGER NOT NULL DEFAULT 0)");
 
-        await db.execute("CREATE TABLE $testTable("
-            "$testIdField INTEGER PRIMARY KEY AUTOINCREMENT, "
-            "$takenDateField INTEGER NOT NULL DEFAULT 0, "
-            "$testScoreField INTEGER NOT NULL DEFAULT 0, "
-            "$kanjiInTestField INTEGER NOT NULL DEFAULT 0, "
-            "$kanjiListsField TEXT NOT NULL, "
-            "$studyModeField INTEGER NOT NULL DEFAULT 0)");
+        await db.execute("CREATE TABLE ${TestTableFields.testTable}("
+            "${TestTableFields.testIdField} INTEGER PRIMARY KEY AUTOINCREMENT, "
+            "${TestTableFields.takenDateField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestTableFields.testScoreField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestTableFields.kanjiInTestField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestTableFields.kanjiListsField} TEXT NOT NULL, "
+            "${TestTableFields.studyModeField} INTEGER NOT NULL DEFAULT 0)");
       });
   }
 

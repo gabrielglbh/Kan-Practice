@@ -131,7 +131,7 @@ class KanjiBottomSheet extends StatelessWidget {
 
   Container _actionButtons(BuildContext context) {
     return Container(
-      height: actionButtonsKanjiDetail,
+      height: CustomSizes.actionButtonsKanjiDetail,
       child: Column(
         children: [
           ListTile(

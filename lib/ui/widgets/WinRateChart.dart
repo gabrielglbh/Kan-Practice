@@ -14,7 +14,7 @@ class WinRateChart extends StatelessWidget {
   /// Value of the [winRate] text size
   final double? rateSize;
   const WinRateChart({required this.title, required this.winRate, this.size = 80, this.rateSize,
-    this.chartColor = secondaryColor
+    this.chartColor = CustomColors.secondaryColor
   });
 
   @override

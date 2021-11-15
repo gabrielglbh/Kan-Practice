@@ -84,17 +84,17 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
 
       switch (_selectedMode) {
         case StudyModes.writing:
-          await Navigator.of(context).pushNamed(writingStudyPage,
+          await Navigator.of(context).pushNamed(KanPracticePages.writingStudyPage,
               arguments: ModeArguments(studyList: list, isTest: false, mode: StudyModes.writing))
               .then((value) => _bloc..add(KanjiEventLoading(_listName)));
           break;
         case StudyModes.reading:
-          await Navigator.of(context).pushNamed(readingStudyPage,
+          await Navigator.of(context).pushNamed(KanPracticePages.readingStudyPage,
               arguments: ModeArguments(studyList: list, isTest: false, mode: StudyModes.reading))
               .then((value) => _bloc..add(KanjiEventLoading(_listName)));
           break;
         case StudyModes.recognition:
-          await Navigator.of(context).pushNamed(recognitionStudyPage,
+          await Navigator.of(context).pushNamed(KanPracticePages.recognitionStudyPage,
               arguments: ModeArguments(studyList: list, isTest: false, mode: StudyModes.recognition))
               .then((value) => _bloc..add(KanjiEventLoading(_listName)));
           break;
@@ -179,16 +179,16 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
       onWillPop: () async {
         if ((_bloc.state as KanjiListDetailStateLoaded).list.length == 0) {
           await ListQueries.instance.updateList(_listName, {
-            totalWinRateWritingField: -1,
-            totalWinRateReadingField: -1,
-            totalWinRateRecognitionField: -1
+            KanListTableFields.totalWinRateWritingField: -1,
+            KanListTableFields.totalWinRateReadingField: -1,
+            KanListTableFields.totalWinRateRecognitionField: -1
           });
         }
         return true;
       },
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: appBarHeight,
+          toolbarHeight: CustomSizes.appBarHeight,
           title: BlocProvider(
             create: (_) => _bloc..add(KanjiEventLoading(_listName)),
             child: BlocBuilder<KanjiListDetailBloc, KanjiListDetailState>(
@@ -225,7 +225,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
             ),
             IconButton(
               onPressed: () async {
-                await Navigator.of(context).pushNamed(addKanjiPage,
+                await Navigator.of(context).pushNamed(KanPracticePages.addKanjiPage,
                     arguments: AddKanjiArgs(listName: _listName))
                     .then((code) {
                   _bloc..add(KanjiEventLoading(_listName));
@@ -337,7 +337,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
           listName: _listName,
           selectedMode: _selectedMode,
           onTap: () async {
-            await Navigator.of(context).pushNamed(addKanjiPage,
+            await Navigator.of(context).pushNamed(KanPracticePages.addKanjiPage,
                 arguments: AddKanjiArgs(listName: _listName, kanji: kanji))
                 .then((code) {
               if (code == 0) _bloc..add(KanjiEventLoading(_listName));

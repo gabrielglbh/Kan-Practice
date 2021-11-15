@@ -31,7 +31,7 @@ class KanjiListDetailBloc extends Bloc<KanjiListDetailEvent, KanjiListDetailStat
   Stream<KanjiListDetailState> _mapUpdateNameToState(UpdateKanList event) async* {
     yield KanjiListDetailStateLoading();
     final error = await ListQueries.instance.updateList(event.og, {
-      nameField: event.name
+      KanListTableFields.nameField: event.name
     });
     if (error == 0) {
       final lists = await KanjiQueries.instance.getAllKanjiFromList(event.name);

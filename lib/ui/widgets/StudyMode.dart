@@ -21,7 +21,7 @@ class TestStudyMode extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            height: customButtonHeight,
+            height: CustomSizes.customButtonHeight,
             child: ListView(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
@@ -55,20 +55,20 @@ class TestStudyMode extends StatelessWidget {
         }
         else {
           list.shuffle();
-          List<Kanji> sortedList = list.sublist(0, list.length < numberOfKanjiInTest
-              ? list.length : numberOfKanjiInTest);
+          List<Kanji> sortedList = list.sublist(0, list.length < CustomSizes.numberOfKanjiInTest
+              ? list.length : CustomSizes.numberOfKanjiInTest);
           Navigator.of(context).pop(); // Dismiss bottom sheet
           switch (mode) {
             case StudyModes.writing:
-              await Navigator.of(context).pushNamed(writingStudyPage,
+              await Navigator.of(context).pushNamed(KanPracticePages.writingStudyPage,
                   arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
               break;
             case StudyModes.reading:
-              await Navigator.of(context).pushNamed(readingStudyPage,
+              await Navigator.of(context).pushNamed(KanPracticePages.readingStudyPage,
                   arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
               break;
             case StudyModes.recognition:
-              await Navigator.of(context).pushNamed(recognitionStudyPage,
+              await Navigator.of(context).pushNamed(KanPracticePages.recognitionStudyPage,
                   arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
               break;
           }

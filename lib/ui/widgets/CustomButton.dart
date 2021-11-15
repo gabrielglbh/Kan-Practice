@@ -12,7 +12,8 @@ class CustomButton extends StatelessWidget {
   final String title2;
   /// Action to perform when tapping the button
   final Function onTap;
-  const CustomButton({this.width = customButtonWidth, this.color = secondaryColor,
+  const CustomButton({this.width = CustomSizes.customButtonWidth,
+    this.color = CustomColors.secondaryColor,
     required this.title1, required this.title2, required this.onTap
   });
 
@@ -20,7 +21,7 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width,
-      height: customButtonHeight,
+      height: CustomSizes.customButtonHeight,
       alignment: Alignment.center,
       margin: EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -34,7 +35,7 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(18),
           child: Container(
             width: width,
-            height: customButtonHeight,
+            height: CustomSizes.customButtonHeight,
             alignment: Alignment.center,
             margin: EdgeInsets.all(8),
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(18)),

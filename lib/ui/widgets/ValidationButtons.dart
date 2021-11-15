@@ -16,7 +16,7 @@ class ValidationButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: listStudyHeight,
+      height: CustomSizes.listStudyHeight,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [

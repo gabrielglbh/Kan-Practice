@@ -33,13 +33,13 @@ class _KanjiListsState extends State<KanjiLists> {
   /// This variable keeps track of the actual filter applied. The value is
   /// saved into the shared preferences when a filter is applied.
   /// This value is then restored upon new session.
-  String _currentAppliedFilter = lastUpdatedField;
+  String _currentAppliedFilter = KanListTableFields.lastUpdatedField;
   /// State map for the filters, independent of the bloc.
   Map<String, bool> _filterValues = {
-    lastUpdatedField: true,
-    totalWinRateWritingField: false,
-    totalWinRateReadingField: false,
-    totalWinRateRecognitionField: false
+    KanListTableFields.lastUpdatedField: true,
+    KanListTableFields.totalWinRateWritingField: false,
+    KanListTableFields.totalWinRateReadingField: false,
+    KanListTableFields.totalWinRateRecognitionField: false
   };
 
   /// This variable keeps track of the order applied on the current filter only:
@@ -54,7 +54,7 @@ class _KanjiListsState extends State<KanjiLists> {
   void initState() {
     _searchBarFn = FocusNode();
     _searchBarFn?.addListener(_focusListener);
-    _currentAppliedFilter = StorageManager.readData(StorageManager.filtersOnList) ?? lastUpdatedField;
+    _currentAppliedFilter = StorageManager.readData(StorageManager.filtersOnList) ?? KanListTableFields.lastUpdatedField;
     _currentAppliedOrder = StorageManager.readData(StorageManager.orderOnList) ?? true;
     _getVersionNotice();
     super.initState();
@@ -83,7 +83,7 @@ class _KanjiListsState extends State<KanjiLists> {
       builder: (context) => CustomDialog(
         title: Text("kanji_lists_createDialogForAddingKanList_title".tr()),
         content: Container(
-          height: alertDialogHeight,
+          height: CustomSizes.alertDialogHeight,
           child: CustomTextForm(
             header: "kanji_lists_createDialogForAddingKanList_header".tr(),
             controller: controller,
@@ -165,7 +165,7 @@ class _KanjiListsState extends State<KanjiLists> {
       },
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: appBarHeight,
+          toolbarHeight: CustomSizes.appBarHeight,
           title: FittedBox(fit: BoxFit.fitWidth, child: Text("KanPractice")),
           actions: [
             IconButton(
@@ -182,7 +182,7 @@ class _KanjiListsState extends State<KanjiLists> {
             ),
             IconButton(
               onPressed: () async {
-                await Navigator.of(context).pushNamed(settingsPage).then((code) {
+                await Navigator.of(context).pushNamed(KanPracticePages.settingsPage).then((code) {
                   _addLoadingEvent();
                 });
               },
@@ -288,7 +288,7 @@ class _KanjiListsState extends State<KanjiLists> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(18),
-          color: secondaryColor
+          color: CustomColors.secondaryColor
         ),
         padding: EdgeInsets.symmetric(vertical: 8),
         margin: EdgeInsets.only(bottom: 8, right: 32, left: 32),

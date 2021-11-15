@@ -5,15 +5,15 @@ part 'list.g.dart';
 
 @JsonSerializable()
 class KanjiList {
-  @JsonKey(name: nameField)
+  @JsonKey(name: KanListTableFields.nameField)
   final String name;
-  @JsonKey(name: totalWinRateWritingField)
+  @JsonKey(name: KanListTableFields.totalWinRateWritingField)
   double totalWinRateWriting;
-  @JsonKey(name: totalWinRateReadingField)
+  @JsonKey(name: KanListTableFields.totalWinRateReadingField)
   double totalWinRateReading;
-  @JsonKey(name: totalWinRateRecognitionField)
+  @JsonKey(name: KanListTableFields.totalWinRateRecognitionField)
   double totalWinRateRecognition;
-  @JsonKey(name: lastUpdatedField)
+  @JsonKey(name: KanListTableFields.lastUpdatedField)
   final int lastUpdated;
 
   KanjiList({required this.name, this.totalWinRateWriting = -1, this.totalWinRateReading = -1,

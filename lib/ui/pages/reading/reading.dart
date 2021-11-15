@@ -6,6 +6,8 @@ import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
 import 'package:kanpractice/ui/widgets/ActionButton.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/ui/widgets/ValidationButtons.dart';
 
 class ReadingStudy extends StatefulWidget {
   final ModeArguments args;
@@ -28,7 +30,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
   /// For translating the hiragana
   KanaKit? _kanaKit;
 
-  final String _none = "?";
+  final String _none = "wildcard".tr();
 
   @override
   void initState() {
@@ -37,7 +39,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
     super.initState();
   }
 
-  Future<void> _updateUIOnSubmit({required double score}) async {
+  Future<void> _updateUIOnSubmit(double score) async {
     /// Calculate the current score
     final code = await _calculateKanjiScore(score);
 
@@ -96,7 +98,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: appBarHeight,
-          title: Text(widget.args.mode.mode),
+          title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.mode.mode)),
           centerTitle: true
         ),
         body: Container(
@@ -105,7 +107,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
           padding: EdgeInsets.symmetric(horizontal: 8),
           child: Column(
             children: [
-              ListPercentageIndicator(value: _macro / _studyList.length),
+              ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
               Text(_getProperAlphabet(), style: TextStyle(fontSize: 24, color: secondaryColor)),
               Text(_getProperPronunciation(), style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
               Container(
@@ -131,23 +133,12 @@ class _ReadingStudyState extends State<ReadingStudy> {
   Visibility _validateButtons() {
     return Visibility(
       visible: _showPronunciation,
-      child: Container(
-        height: listStudyHeight,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            ActionButton(
-              label: "[X] My Bad...",
-              onTap: () async => await _updateUIOnSubmit(score: 0),
-              color: Colors.grey,
-            ),
-            ActionButton(
-              label: "[O] Got it!",
-              onTap: () async => await _updateUIOnSubmit(score: 1)
-            )
-          ],
-        )
-      ),
+      child: ValidationButtons(
+        wrongAction: _updateUIOnSubmit,
+        midWrongAction: _updateUIOnSubmit,
+        midPerfectAction: _updateUIOnSubmit,
+        perfectAction: _updateUIOnSubmit,
+      )
     );
   }
 
@@ -155,7 +146,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
     return Visibility(
       visible: !_showPronunciation,
       child: ActionButton(
-        label: "Done!",
+        label: "done_button_label".tr(),
         onTap: () async => setState(() => _showPronunciation = true)
       ),
     );

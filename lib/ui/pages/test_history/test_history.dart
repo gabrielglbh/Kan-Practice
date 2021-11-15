@@ -9,6 +9,7 @@ import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
 import 'package:kanpractice/ui/widgets/EmptyList.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
 import 'package:kanpractice/ui/widgets/WinRateChart.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class TestHistory extends StatefulWidget {
   const TestHistory({Key? key}) : super(key: key);
@@ -24,10 +25,9 @@ class _TestHistoryState extends State<TestHistory> {
     showDialog(
       context: context,
       builder: (context) => CustomDialog(
-        title: Text("Removing All Tests"),
-        content: Text("All tests saved on this device will be removed. "
-            "This action cannot be undone. Do you want to proceed?"),
-        positiveButtonText: "Remove",
+        title: Text("test_history_showRemoveTestsDialog_title".tr()),
+        content: Text("test_history_showRemoveTestsDialog_content".tr()),
+        positiveButtonText: "test_history_showRemoveTestsDialog_positive".tr(),
         onPositive: () => _bloc..add(TestListEventRemoving()),
       )
     );
@@ -38,7 +38,7 @@ class _TestHistoryState extends State<TestHistory> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: appBarHeight,
-        title: Text("Test History"),
+        title: FittedBox(fit: BoxFit.fitWidth, child: Text("test_history_title".tr())),
         actions: [
           IconButton(
             icon: Icon(Icons.clear_all_rounded),
@@ -57,11 +57,11 @@ class _TestHistoryState extends State<TestHistory> {
 
   _body(TestListState state) {
     if (state is TestListStateFailure)
-      return EmptyList(message: "Failed to retrieve tests");
+      return EmptyList(message: "test_history_load_failed".tr());
     else if (state is TestListStateLoading)
       return CustomProgressIndicator();
     else if (state is TestListStateLoaded) {
-      if (state.list.isEmpty) return EmptyList(message: "No available tests.");
+      if (state.list.isEmpty) return EmptyList(message: "test_history_empty".tr());
       return _testList(state);
     }
     else return Container();
@@ -74,27 +74,32 @@ class _TestHistoryState extends State<TestHistory> {
       itemBuilder: (context, k) {
         Test t = state.list[k];
         Color chartColor = secondaryColor;
+        StudyModes mode = StudyModesUtil.mapStudyMode(t.studyMode);
 
-        if (t.studyMode == StudyModes.writing.mode) chartColor = StudyModes.writing.color;
-        else if (t.studyMode == StudyModes.reading.mode) chartColor = StudyModes.reading.color;
-        else if (t.studyMode == StudyModes.recognition.mode) chartColor = StudyModes.recognition.color;
+        if (mode == StudyModes.writing) chartColor = StudyModes.writing.color;
+        else if (mode == StudyModes.reading) chartColor = StudyModes.reading.color;
+        else if (mode == StudyModes.recognition) chartColor = StudyModes.recognition.color;
 
         return Card(
           margin: EdgeInsets.all(8),
           elevation: 8,
           child: ListTile(
-            contentPadding: EdgeInsets.all(8),
+            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             onTap: () {},
-            title: Text(t.kanjiLists, overflow: TextOverflow.ellipsis),
+            title: Text(t.kanjiLists, textAlign: TextAlign.end, overflow: TextOverflow.ellipsis),
             subtitle: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("${t.studyMode} • "),
-                Text("Test taken ${GeneralUtils.parseDateMilliseconds(t.takenDate)}",
-                  style: TextStyle(fontStyle: FontStyle.italic))
+                Text("${mode.mode} • "),
+                Expanded(
+                  child: Text("${"test_history_testTaken".tr()} "
+                      "${GeneralUtils.parseDateMilliseconds(context, t.takenDate)}",
+                      textAlign: TextAlign.end,
+                      style: TextStyle(fontStyle: FontStyle.italic))
+                )
               ],
             ),
-            trailing: WinRateChart(title: "", winRate: t.testScore,
+            leading: WinRateChart(title: "", winRate: t.testScore,
                 rateSize: 10, chartColor: chartColor),
           ),
         );

@@ -58,7 +58,7 @@ class CustomDatabase {
             "$testScoreField INTEGER NOT NULL DEFAULT 0, "
             "$kanjiInTestField INTEGER NOT NULL DEFAULT 0, "
             "$kanjiListsField TEXT NOT NULL, "
-            "$studyModeField TEXT NOT NULL)");
+            "$studyModeField INTEGER NOT NULL DEFAULT 0)");
       });
   }
 

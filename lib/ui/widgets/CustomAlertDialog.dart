@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CustomDialog extends StatelessWidget {
   /// Title of the dialog
@@ -29,7 +30,7 @@ class CustomDialog extends StatelessWidget {
           Visibility(
             visible: negativeButton,
             child: ElevatedButton(
-              child: Text("Back"),
+              child: Text("back_button_label".tr()),
               style: wrongButton,
               onPressed: () => Navigator.of(context).pop()
             ),

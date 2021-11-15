@@ -18,9 +18,18 @@ import 'package:kanpractice/ui/widgets/CustomButton.dart';
 import 'package:kanpractice/ui/widgets/CustomTextForm.dart';
 import 'package:kanpractice/ui/widgets/EmptyList.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 enum LearningMode { random, spatial }
 extension on LearningMode {
+  String get name {
+    switch (this) {
+      case LearningMode.random:
+        return "list_details_learningMode_random".tr();
+      case LearningMode.spatial:
+        return "list_details_learningMode_spatial".tr();
+    }
+  }
   IconData get icon {
     switch (this) {
       case LearningMode.random:
@@ -91,7 +100,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
           break;
       }
     }
-    else GeneralUtils.getSnackBar(context, "Add new Kanji to study first!");
+    else GeneralUtils.getSnackBar(context, "list_details_loadUpPractice_failed".tr());
   }
 
   _onChangePage(int newPage) {
@@ -143,12 +152,12 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
     FocusNode _nameControllerFn = FocusNode();
     showDialog(context: context, builder: (context) {
       return CustomDialog(
-        title: Text("Change KanList Name"),
+        title: Text("list_details_updateKanListName_title".tr()),
         content: Container(
           height: 140,
           child: CustomTextForm(
             hint: _listName,
-            header: 'Name',
+            header: 'list_details_updateKanListName_header'.tr(),
             controller: _nameController,
             focusNode: _nameControllerFn,
             autofocus: true,
@@ -158,7 +167,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
             },
           ),
         ),
-        positiveButtonText: "Update",
+        positiveButtonText: "list_details_updateKanListName_positive".tr(),
         onPositive: () => _updateName(_nameController.text)
       );
     });
@@ -237,7 +246,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
               else if (state is KanjiListDetailStateLoading)
                 return CustomProgressIndicator();
               else if (state is KanjiListDetailStateFailure)
-                return EmptyList(message: "Failed to retrieve kanjis");
+                return EmptyList(message: "list_details_load_failed".tr());
               else
                 return Container();
             },
@@ -276,8 +285,8 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
         Padding(
           padding: EdgeInsets.only(bottom: 8),
           child: CustomButton(
-            title1: "練習",
-            title2: "Practice",
+            title1: "list_details_practice_button_label_ext".tr(),
+            title2: "list_details_practice_button_label".tr(),
             width: MediaQuery.of(context).size.width / 2,
             onTap: () async => await _loadUpPractice(state)
           ),
@@ -298,7 +307,8 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
           children: [
             Text("$mode %", textAlign: TextAlign.center, style: TextStyle(fontSize: 24)),
             Text(_learningMode == LearningMode.spatial
-                ? "Spatial Learning" : "Random Learning",
+                ? LearningMode.spatial.name
+                : LearningMode.random.name,
                 textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
           ],
         ),
@@ -311,7 +321,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
   }
 
   Widget _kanjiList(KanjiListDetailStateLoaded state) {
-    if (state.list.isEmpty) return EmptyList(message: "No available kanji.");
+    if (state.list.isEmpty) return EmptyList(message: "list_details_empty".tr());
     return GridView.builder(
       key: PageStorageKey<String>('kanjiListController'),
       itemCount: state.list.length,

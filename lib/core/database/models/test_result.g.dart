@@ -12,7 +12,7 @@ Test _$TestFromJson(Map<String, dynamic> json) {
     testScore: (json['score'] as num).toDouble(),
     kanjiLists: json['kanjiLists'] as String,
     kanjiInTest: json['totalKanji'] as int,
-    studyMode: json['studyMode'] as String,
+    studyMode: json['studyMode'] as int,
   );
 }
 

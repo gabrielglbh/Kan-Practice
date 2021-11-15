@@ -20,7 +20,7 @@ class ListPercentageIndicator extends StatelessWidget {
         animation: true,
         animationDuration: 1000,
         animateFromLastPercent: true,
-        center: Text("${(value*100).toStringAsPrecision(2)}%",
+        center: Text(value == 1 ? "100%" : "${(value*100).toStringAsPrecision(2)}%",
           style: TextStyle(color: Colors.white),
         ),
       ),

@@ -6,6 +6,7 @@ import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/theme/theme_consts.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
 import 'package:kanpractice/ui/widgets/WinRateBarChart.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class KanjiBottomSheet extends StatelessWidget {
   /// Kanji object to be displayed
@@ -40,17 +41,19 @@ class KanjiBottomSheet extends StatelessWidget {
       showDialog(
         context: context,
         builder: (context) => CustomDialog(
-          title: Text("Remove a Kanji"),
-          content: Text("Are you sure you want to remove this kanji?"),
-          positiveButtonText: "Remove",
+          title: Text("kanji_bottom_sheet_removeKanji_title".tr()),
+          content: Text("kanji_bottom_sheet_removeKanji_content".tr()),
+          positiveButtonText: "kanji_bottom_sheet_removeKanji_positive".tr(),
           onPositive: () async {
             final int code = await KanjiQueries.instance.removeKanji(listName, k);
             if (code == 0) {
               Navigator.of(context).pop();
               onRemove();
             }
-            else if (code == 1) GeneralUtils.getSnackBar(context, "Error removing kanji");
-            else GeneralUtils.getSnackBar(context, "Generic error removing kanji");
+            else if (code == 1)
+              GeneralUtils.getSnackBar(context, "kanji_bottom_sheet_createDialogForDeletingKanji_removal_failed".tr());
+            else
+              GeneralUtils.getSnackBar(context, "kanji_bottom_sheet_createDialogForDeletingKanji_failed".tr());
           }
         )
       );
@@ -75,24 +78,24 @@ class KanjiBottomSheet extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     child: FittedBox(
                       fit: BoxFit.contain,
-                      child: Text(kanji?.pronunciation ?? "?", textAlign: TextAlign.center,
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      child: Text(kanji?.pronunciation ?? "wildcard".tr(), textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16)),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     child: FittedBox(
                       fit: BoxFit.contain,
-                      child: Text(kanji?.kanji ?? "?", textAlign: TextAlign.center,
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
+                      child: Text(kanji?.kanji ?? "wildcard".tr(), textAlign: TextAlign.center,
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32)),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     child: FittedBox(
                       fit: BoxFit.contain,
-                      child: Text((kanji?.meaning ?? "?"), textAlign: TextAlign.center,
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))
+                      child: Text((kanji?.meaning ?? "wildcard".tr()), textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16))
                     ),
                   ),
                   Card(
@@ -110,7 +113,8 @@ class KanjiBottomSheet extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 8),
                     child: FittedBox(
                       fit: BoxFit.contain,
-                      child: Text("Created ${GeneralUtils.parseDateMilliseconds((kanji?.dateAdded ?? 0))}",
+                      child: Text("${"created_label".tr()} "
+                          "${GeneralUtils.parseDateMilliseconds(context, (kanji?.dateAdded ?? 0))}",
                           textAlign: TextAlign.center, style: TextStyle(fontSize: 14))
                     ),
                   ),
@@ -131,13 +135,13 @@ class KanjiBottomSheet extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            title: Text("Remove"),
+            title: Text("kanji_bottom_sheet_removal_label".tr()),
             trailing: Icon(Icons.clear),
             onTap: () => _createDialogForDeletingKanji(context, kanji?.kanji),
           ),
           Divider(),
           ListTile(
-            title: Text("Update"),
+            title: Text("kanji_bottom_sheet_update_label".tr()),
             trailing: Icon(Icons.arrow_forward_rounded),
             onTap: () {
               Navigator.of(context).pop();

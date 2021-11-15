@@ -5,6 +5,7 @@ import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
 import 'package:kanpractice/ui/widgets/WinRateBarChart.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class KanListTile extends StatelessWidget {
   /// [KanjiList] item to paint as a Tile
@@ -38,7 +39,7 @@ class KanListTile extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             ),
-            Text("Created ${GeneralUtils.parseDateMilliseconds(item.lastUpdated)}",
+            Text("${"created_label".tr()} ${GeneralUtils.parseDateMilliseconds(context, item.lastUpdated)}",
                 style: TextStyle(fontSize: 12))
           ],
         ),
@@ -60,9 +61,9 @@ class KanListTile extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => CustomDialog(
-        title: Text("Remove a KanList"),
-        content: Text("Are you sure you want to remove this list and all its content?"),
-        positiveButtonText: "Remove",
+        title: Text("kan_list_tile_createDialogForDeletingKanList_title".tr()),
+        content: Text("kan_list_tile_createDialogForDeletingKanList_content".tr()),
+        positiveButtonText: "kan_list_tile_createDialogForDeletingKanList_positive".tr(),
         onPositive: () => onRemoval(),
       )
     );

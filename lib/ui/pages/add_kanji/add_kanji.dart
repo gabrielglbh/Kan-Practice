@@ -5,6 +5,7 @@ import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/theme/theme_consts.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/widgets/CustomTextForm.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AddKanjiPage extends StatefulWidget {
   final AddKanjiArgs args;
@@ -63,8 +64,8 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
         _kanjiFocus.requestFocus();
       }
     }
-    else if (code == -1) GeneralUtils.getSnackBar(context, "Error creating kanji");
-    else GeneralUtils.getSnackBar(context, "Generic error creating kanji");
+    else if (code == -1) GeneralUtils.getSnackBar(context, "add_kanji_createKanji_failed_insertion".tr());
+    else GeneralUtils.getSnackBar(context, "add_kanji_createKanji_failed".tr());
   }
 
   Future<void> _updateKanji() async {
@@ -85,8 +86,8 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
           ).toJson()
       );
       if (code == 0) Navigator.of(context).pop(0);
-      else if (code == -1) GeneralUtils.getSnackBar(context, "Error updating kanji");
-      else GeneralUtils.getSnackBar(context, "Generic error updating kanji");
+      else if (code == -1) GeneralUtils.getSnackBar(context, "add_kanji_updateKanji_failed_update".tr());
+      else GeneralUtils.getSnackBar(context, "add_kanji_updateKanji_failed".tr());
     }
   }
 
@@ -96,7 +97,7 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
         _meaningController.text.trim().isNotEmpty)
       execute();
     else
-      GeneralUtils.getSnackBar(context, "Fill up the form correctly");
+      GeneralUtils.getSnackBar(context, "add_kanji_validateKanji_failed".tr());
   }
 
   @override
@@ -104,7 +105,10 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: appBarHeight,
-        title: Text(widget.args.kanji != null ? "Update Kanji" : "Add Kanji", overflow: TextOverflow.ellipsis)
+        title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.kanji != null
+            ? "add_kanji_update_title".tr()
+            : "add_kanji_new_title".tr(), overflow: TextOverflow.ellipsis
+        ))
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -121,12 +125,12 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
         CustomTextForm(
           controller: _kanjiController,
           focusNode: _kanjiFocus,
-          header: "Kanji Form",
+          header: "add_kanji_textForm_kanji".tr(),
           centerText: TextAlign.center,
           fontSize: 64,
           autofocus: widget.args.kanji == null,
           bold: FontWeight.bold,
-          hint: "家具",
+          hint: "add_kanji_textForm_kanji_ext".tr(),
           onEditingComplete: () => _pronunciationFocus.requestFocus(),
         ),
         Padding(
@@ -134,8 +138,8 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
           child: CustomTextForm(
             controller: _pronunciationController,
             focusNode: _pronunciationFocus,
-            header: "Pronunciation",
-            hint: "かぐ",
+            header: "add_kanji_textForm_reading".tr(),
+            hint: "add_kanji_textForm_reading_ext".tr(),
             onEditingComplete: () => _meaningFocus.requestFocus(),
           ),
         ),
@@ -144,8 +148,8 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
           child: CustomTextForm(
             controller: _meaningController,
             focusNode: _meaningFocus,
-            header: "Meaning",
-            hint: "Furniture",
+            header: "add_kanji_textForm_meaning".tr(),
+            hint: "add_kanji_textForm_meaning_ext".tr(),
             action: TextInputAction.done,
             onEditingComplete: () => _meaningFocus.unfocus(),
           ),
@@ -163,13 +167,13 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
                     else _createKanji();
                   });
                 },
-                child: Text("Save Kanji"),
+                child: Text("add_kanji_save".tr()),
               ),
               Visibility(
                 visible: widget.args.kanji == null,
                 child: ElevatedButton(
                   onPressed: () => _validateKanji(() => _createKanji(exit: false)),
-                  child: Text("Add Another Kanji"),
+                  child: Text("add_kanji_saveAndNext".tr()),
                 ),
               )
             ],

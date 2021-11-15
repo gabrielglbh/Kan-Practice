@@ -10,8 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_bloc: ^7.2.0
-  equatable: ^2.0.3
+  flutter_bloc:
+  equatable:
 
   cupertino_icons: ^1.0.2
 
@@ -21,6 +21,7 @@ dependencies:
   firebase_auth:
   cloud_firestore:
 
+  easy_localization:
   provider:
   shared_preferences:
 
@@ -57,3 +58,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/icon/icon.png
+    - lib/core/localization/

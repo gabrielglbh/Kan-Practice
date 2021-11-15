@@ -6,6 +6,7 @@ import 'package:kanpractice/ui/theme/theme_consts.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
 import 'package:kanpractice/ui/widgets/CustomTextForm.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 enum SignMode { login, signup }
 
@@ -13,9 +14,9 @@ extension SignModeExt on SignMode {
   String get name {
     switch(this) {
       case SignMode.login:
-        return "Log In";
+        return "login_login_title".tr();
       case SignMode.signup:
-        return "Sign Up";
+        return "login_signUp_title".tr();
     }
   }
 }
@@ -78,14 +79,14 @@ class _LoginPageState extends State<LoginPage> {
     FocusNode _newPasswordFn = FocusNode();
     showDialog(context: context, builder: (context) {
       return CustomDialog(
-        title: Text("Change Password"),
+        title: Text("login_changePasswordDialog_title".tr()),
         content: Container(
           height: 256,
           child: Column(
             children: [
               CustomTextForm(
-                hint: 'Password',
-                header: 'Current Password',
+                hint: 'login_changePasswordDialog_hint'.tr(),
+                header: 'login_changePasswordDialog_old_header'.tr(),
                 inputType: TextInputType.visiblePassword,
                 controller: _currPassword,
                 focusNode: _currPasswordFn,
@@ -96,8 +97,8 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: EdgeInsets.only(top: 16),
                 child: CustomTextForm(
-                  hint: 'Password',
-                  header: 'New Password',
+                  hint: 'login_changePasswordDialog_hint'.tr(),
+                  header: 'login_changePasswordDialog_new_header'.tr(),
                   inputType: TextInputType.visiblePassword,
                   controller: _newPassword,
                   focusNode: _newPasswordFn,
@@ -111,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
         ),
-        positiveButtonText: "Change",
+        positiveButtonText: "login_changePasswordDialog_positive".tr(),
         onPositive: () => _changePassword(_currPassword.text, _newPassword.text)
       );
     });
@@ -122,19 +123,18 @@ class _LoginPageState extends State<LoginPage> {
     FocusNode _currPasswordFn = FocusNode();
     showDialog(context: context, builder: (context) {
       return CustomDialog(
-        title: Text("Remove Account"),
+        title: Text("login_removeAccountDialog_title".tr()),
         content: Container(
           height: 200,
           child: Column(
             children: [
               Padding(
                 padding: EdgeInsets.only(bottom: 16),
-                child: Text("Removing your account will remove all your back ups too. Although you"
-                    "will still be able to use the app :)"),
+                child: Text("login_removeAccountDialog_content".tr()),
               ),
               CustomTextForm(
-                hint: 'Password',
-                header: 'Current Password',
+                hint: 'login_removeAccountDialog_hint'.tr(),
+                header: 'login_removeAccountDialog_header'.tr(),
                 inputType: TextInputType.visiblePassword,
                 controller: _currPassword,
                 focusNode: _currPasswordFn,
@@ -148,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
         ),
-        positiveButtonText: "Remove",
+        positiveButtonText: "login_removeAccountDialog_positive".tr(),
         onPositive: () => _removeAccount(_currPassword.text)
       );
     });
@@ -159,7 +159,23 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: appBarHeight,
-        title: Text(_mode == SignMode.login ? "Log In" : "Sign Up"),
+        title: BlocProvider(
+            create: (_) => _bloc..add(LoginIdle()),
+            child: BlocBuilder<LoginBloc, LoginState>(
+              builder: (context, state) {
+                if (state is LoginStateSuccessful)
+                  return FittedBox(fit: BoxFit.fitWidth,
+                      child: Text("settings_account_label".tr()));
+                else if (state is LoginStateIdle)
+                  return FittedBox(fit: BoxFit.fitWidth,
+                    child: Text(_mode == SignMode.login
+                        ? SignMode.login.name
+                        : SignMode.signup.name));
+                else
+                  return Container();
+              },
+            )
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -196,16 +212,11 @@ class _LoginPageState extends State<LoginPage> {
           Icon(Icons.info_outline_rounded, color: secondaryColor),
           Padding(
             padding: EdgeInsets.only(top: 16, bottom: 16),
-            child: Text(
-              "By creating an account or logging in, you gain access to back ups. "
-              "Back ups will allow you to maintain your current lists and scores "
-              "across devices. \n\nRead the dialogs prompted when creating, merging "
-              "or removing a back up for more information on these operations."
-            ),
+            child: Text("login_formDisclaimer".tr()),
           ),
           CustomTextForm(
-            header: "Email",
-            hint: "someone@provider.com",
+            header: "login_email_header".tr(),
+            hint: "login_email_hint".tr(),
             inputType: TextInputType.emailAddress,
             controller: _emailController,
             focusNode: _emailFocus,
@@ -214,8 +225,8 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
             padding: EdgeInsets.only(top: 32),
             child: CustomTextForm(
-              header: "Password",
-              hint: "••••••••••",
+              header: "login_password_header".tr(),
+              hint: "login_password_hint".tr(),
               inputType: TextInputType.visiblePassword,
               obscure: true,
               controller: _passwordController,
@@ -228,7 +239,7 @@ class _LoginPageState extends State<LoginPage> {
             visible: state.error != "",
             child: Padding(
               padding: EdgeInsets.all(16),
-              child: Text("Something went wrong while authenticating: ${state.error}",
+              child: Text("${"login_authentication_failed".tr()} ${state.error}",
                   style: TextStyle(color: secondaryColor)),
             ),
           ),
@@ -236,7 +247,7 @@ class _LoginPageState extends State<LoginPage> {
             padding: EdgeInsets.only(top: 16),
             child: ElevatedButton(
               onPressed: () => _handleLogin(),
-              child: Text("Submit"),
+              child: Text("login_form_positive".tr()),
             ),
           ),
           GestureDetector(
@@ -263,21 +274,20 @@ class _LoginPageState extends State<LoginPage> {
           Icon(Icons.check_circle_rounded, color: secondaryColor, size: 256),
           Padding(
             padding: EdgeInsets.all(16),
-            child: Text("You are logged in with ${state.user.email}.", textAlign: TextAlign.center),
+            child: Text("${"login_current_account_logged".tr()} ${state.user.email}.", textAlign: TextAlign.center),
           ),
           Container(
             height: appBarHeight,
             child: Padding(
               padding: EdgeInsets.all(16),
               child: ElevatedButton(
-                onPressed: () => Navigator.of(context).pushReplacementNamed(backUpPage,
-                    arguments: state.user.uid),
-                child: Text("Manage your back up"),
+                onPressed: () => Navigator.of(context).pushNamed(backUpPage, arguments: state.user.uid),
+                child: Text("login_manage_backup_title".tr()),
               ),
             ),
           ),
           ListTile(
-            title: Text("Misc", style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+            title: Text("login_miscellaneous_title".tr(), style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
           ),
           _loggedUserActions()
         ],
@@ -291,21 +301,23 @@ class _LoginPageState extends State<LoginPage> {
         Divider(),
         ListTile(
           leading: Icon(Icons.lock),
-          title: Text("Change Password"),
+          title: Text("login_changePasswordDialog_title".tr()),
           onTap: () => _changePasswordDialog(),
         ),
         Divider(),
         ListTile(
           leading: Icon(Icons.delete),
-          title: Text("Remove Account"),
+          title: Text("login_removeAccountDialog_title".tr()),
           onTap: () => _removeAccountDialog(),
         ),
         Divider(),
-        ListTile(
-          leading: Icon(Icons.logout),
-          title: Text("Close Session"),
-          contentPadding: EdgeInsets.only(bottom: 48),
-          onTap: () => _bloc..add(CloseSession()),
+        Padding(
+          padding: EdgeInsets.only(bottom: 32),
+          child: ListTile(
+            leading: Icon(Icons.logout),
+            title: Text("login_close_session_title".tr()),
+            onTap: () => _bloc..add(CloseSession()),
+          ),
         )
       ],
     );

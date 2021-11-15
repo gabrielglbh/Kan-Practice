@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class DevInfo extends StatelessWidget {
   const DevInfo();
@@ -41,7 +42,7 @@ class DevInfo extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 8),
-                  child: Text("Developer Info", textAlign: TextAlign.center,
+                  child: Text("developer_info_label".tr(), textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
                 )
               ),
@@ -76,7 +77,7 @@ class DevInfo extends StatelessWidget {
                 Icon(Icons.developer_mode_rounded),
                 Padding(
                   padding: EdgeInsets.only(left: 16, top: 16, bottom: 16),
-                  child: Text("@gabrielglbh on GitHub", style: TextStyle(fontSize: 14)),
+                  child: Text("developer_info_follow".tr(), style: TextStyle(fontSize: 14)),
                 )
               ],
             ),
@@ -92,9 +93,9 @@ class DevInfo extends StatelessWidget {
                   child: RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(text: "Report bugs to ", style: Theme.of(context).textTheme.bodyText2),
+                        TextSpan(text: "developer_info_report".tr(), style: Theme.of(context).textTheme.bodyText2),
                         TextSpan(
-                          text: "devgglop@gmail.com",
+                          text: " devgglop@gmail.com",
                           style: TextStyle(color: Colors.orange[400],
                               decoration: TextDecoration.underline, fontSize: 14
                           ),
@@ -109,7 +110,7 @@ class DevInfo extends StatelessWidget {
                               );
                               String url = _emailLaunchUri.toString().replaceAll("+", "%20");
                               if (await canLaunch(url)) await launch(url);
-                              else GeneralUtils.getSnackBar(context, "Could not launch website");
+                              else GeneralUtils.getSnackBar(context, "launch_url_failed".tr());
                             },
                         ),
                       ]

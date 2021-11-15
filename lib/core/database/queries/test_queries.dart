@@ -19,7 +19,7 @@ class TestQueries {
   /// 1: Error during insertion.
   ///
   /// 2: Database is not created.
-  Future<int> createTest(double score, int kanji, String mode, String lists) async {
+  Future<int> createTest(double score, int kanji, int mode, String lists) async {
     if (_database != null) {
       try {
         await _database?.insert(testTable, Test(

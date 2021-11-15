@@ -9,6 +9,7 @@ import 'package:kanpractice/ui/theme/theme_manager.dart';
 import 'package:kanpractice/ui/theme/theme_consts.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Settings extends StatefulWidget {
   const Settings();
@@ -37,41 +38,41 @@ class _SettingsState extends State<Settings> {
           icon: Icon(Icons.arrow_back_ios_rounded),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text("Settings"),
+        title: FittedBox(fit: BoxFit.fitWidth, child: Text("settings_title".tr())),
         actions: [
           IconButton(
-            onPressed: () => _settingsBloc..add(SettingsLoadingBackUpDate()),
+            onPressed: () => _settingsBloc..add(SettingsLoadingBackUpDate(context)),
             icon: Icon(Icons.sync),
           )
         ],
       ),
       body: ListView(
         children: [
-          _header("Appearance"),
+          _header("settings_appearance_section".tr()),
           Divider(),
           ListTile(
             leading: Icon(Icons.wb_sunny_rounded),
-            title: Text("Switch Theme"),
+            title: Text("settings_appearance_theme".tr()),
             onTap: () async {
               _mode = ThemeManager.instance.themeMode;
               ThemeManager.instance.switchMode(_mode == ThemeMode.light);
             },
           ),
-          _header("Progress"),
+          _header("settings_progress_section".tr()),
           Divider(),
           ListTile(
             leading: Icon(Icons.track_changes_rounded),
-            title: Text("Test History"),
+            title: Text("settings_progress_testHistory".tr()),
             onTap: () async => Navigator.of(context).pushNamed(testHistoryPage),
           ),
           BlocProvider(
-            create: (_) => _settingsBloc..add(SettingsLoadingBackUpDate()),
+            create: (_) => _settingsBloc..add(SettingsLoadingBackUpDate(context)),
             child: BlocBuilder<SettingsBloc, SettingsState>(
               builder: (context, state) {
                 if (state is SettingsStateBackUpDateLoaded) {
-                  return _header("Manage Account", subtitle: state.date);
+                  return _header("settings_account_section".tr(), subtitle: state.date);
                 } else if (state is SettingsStateBackUpDateLoading) {
-                  return _header("Manage Account");
+                  return _header("settings_account_section".tr());
                 } else {
                   return Container();
                 }
@@ -81,32 +82,32 @@ class _SettingsState extends State<Settings> {
           Divider(),
           ListTile(
             leading: Icon(Icons.whatshot_rounded),
-            title: Text("Account"),
+            title: Text("settings_account_label".tr()),
             onTap: () => Navigator.of(context).pushNamed(loginPage)
           ),
-          _header("Information"),
+          _header("settings_information_section".tr()),
           Divider(),
           ListTile(
             leading: Icon(Icons.star_rate_rounded, color: Colors.orangeAccent),
-            title: Text("Rate the app!"),
+            title: Text("settings_information_rating".tr()),
             onTap: () async {
               try {
-                await launch("https://play.google.com/store/apps/details?id=com.gabr.garc.kanpractice");
+                await launch("google_play_link".tr());
               } catch (err) {
-                GeneralUtils.getSnackBar(context, "Could not launch app store");
+                GeneralUtils.getSnackBar(context, "settings_information_rating_failed".tr());
               }
             }
           ),
           Divider(),
           ListTile(
             leading: Icon(Icons.handyman),
-            title: Text("Developer"),
+            title: Text("settings_information_developer_label".tr()),
             onTap: () => DevInfo.callModalSheet(context)
           ),
           Divider(),
           ListTile(
             leading: Icon(Icons.apps),
-            title: Text("Licenses"),
+            title: Text("settings_information_license_label".tr()),
             onTap: () {
               Navigator.of(context).push(
                 CupertinoPageRoute(builder: (context) {
@@ -126,12 +127,12 @@ class _SettingsState extends State<Settings> {
           Divider(),
           ListTile(
             leading: Icon(Icons.privacy_tip),
-            title: Text("Privacy Policy & Conditions"),
+            title: Text("settings_information_terms_label".tr()),
             onTap: () async {
               try {
                 await launch("https://kanpractice.web.app");
               } catch (err) {
-                GeneralUtils.getSnackBar(context, "Could not launch website");
+                GeneralUtils.getSnackBar(context, "launch_url_failed".tr());
               }
             }
           ),
@@ -144,7 +145,9 @@ class _SettingsState extends State<Settings> {
   ListTile _header(String title, {String? subtitle}) {
     return ListTile(
       title: Text(title, style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
-      subtitle: subtitle != null ? Text(subtitle) : null,
+      subtitle: subtitle != null ? FittedBox(
+        fit: BoxFit.contain, child: Text(subtitle),
+      ) : null,
     );
   }
 }

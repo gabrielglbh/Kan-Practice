@@ -5,6 +5,8 @@ import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dar
 import 'package:kanpractice/ui/theme/theme_consts.dart';
 import 'package:kanpractice/ui/widgets/ActionButton.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/ui/widgets/ValidationButtons.dart';
 
 class RecognitionStudy extends StatefulWidget {
   final ModeArguments args;
@@ -25,7 +27,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
   /// Widget auxiliary variable
   List<Kanji> _studyList = [];
 
-  final String _none = "?";
+  final String _none = "wildcard".tr();
 
   @override
   void initState() {
@@ -33,7 +35,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
     super.initState();
   }
 
-  Future<void> _updateUIOnSubmit({required double score}) async {
+  Future<void> _updateUIOnSubmit(double score) async {
     /// Calculate the current score
     final code = await _calculateKanjiScore(score);
 
@@ -85,7 +87,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: appBarHeight,
-          title: Text(widget.args.mode.mode),
+          title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.mode.mode)),
           centerTitle: true
         ),
         body: Container(
@@ -94,7 +96,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
           alignment: Alignment.center,
           child: Column(
             children: [
-              ListPercentageIndicator(value: _macro / _studyList.length),
+              ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
               Text(_getProperPronunciation()),
               Container(
                 height: listStudyHeight,
@@ -124,23 +126,12 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
   Visibility _validateButtons() {
     return Visibility(
       visible: _showMeaning,
-      child: Container(
-        height: listStudyHeight,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            ActionButton(
-              label: "[X] My Bad...",
-              onTap: () async => await _updateUIOnSubmit(score: 0),
-              color: Colors.grey,
-            ),
-            ActionButton(
-              label: "[O] Got it!",
-              onTap: () async => await _updateUIOnSubmit(score: 1)
-            )
-          ],
-        )
-      ),
+      child: ValidationButtons(
+        wrongAction: _updateUIOnSubmit,
+        midWrongAction: _updateUIOnSubmit,
+        midPerfectAction: _updateUIOnSubmit,
+        perfectAction: _updateUIOnSubmit,
+      )
     );
   }
 
@@ -148,7 +139,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
     return Visibility(
       visible: !_showMeaning,
       child: ActionButton(
-        label: "Done!",
+        label: "done_button_label".tr(),
         onTap: () async => setState(() => _showMeaning = true)
       ),
     );

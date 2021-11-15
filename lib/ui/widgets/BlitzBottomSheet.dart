@@ -3,6 +3,7 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/ui/widgets/StudyMode.dart';
 import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class BlitzBottomSheet extends StatelessWidget {
   /// String defining if the user wants to perform a Blitz Test on a practice
@@ -53,12 +54,12 @@ class BlitzBottomSheet extends StatelessWidget {
                 _dragContainer(),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
-                  child: Text("Make a blitz test", textAlign: TextAlign.center,
+                  child: Text("blitz_bottom_sheet_title".tr(), textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
-                  child: Text("30 random kanji will be selected. Let's take the blitz test!",
+                  child: Text("${numberOfKanjiInTest.toString()} ${"blitz_bottom_sheet_content".tr()}",
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 ),
@@ -66,7 +67,9 @@ class BlitzBottomSheet extends StatelessWidget {
                   future: _loadBlitzTest(),
                   builder: (context, snapshot) {
                     return TestStudyMode(
-                      listsNames: practiceList == null ? 'Blitz' : 'Blitz on $practiceList',
+                      listsNames: practiceList == null
+                          ? 'blitz_bottom_sheet_label'.tr()
+                          : '${"blitz_bottom_sheet_on_label".tr()} $practiceList',
                       list: (snapshot.data ?? []),
                     );
                   },

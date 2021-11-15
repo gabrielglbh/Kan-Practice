@@ -8,6 +8,7 @@ import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/pages/test_result/arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 /// Handler class to help evade boiler plate code when managing the calculation
 /// of scores in every mode
@@ -22,19 +23,22 @@ class StudyModeUpdateHandler {
     bool isPracticeFinished = !onPop && !args.isTest;
 
     String content = "";
-    if (isTestPopped) content = "The test will result invalid and no result will be provided.";
-    else if (isTestFinished) content = "Tap on 'Finish' to see the results.";
-    else if (isPracticePopped) content = "Score up to this kanji will be saved. "
-        "Current kanji will be count as 50%.";
-    else content = "Tap on 'Finish' to end the study session.";
+    if (isTestPopped) content = "study_mode_update_handler_poppedTest_content".tr();
+    else if (isTestFinished) content = "study_mode_update_handler_finishedTest_content".tr();
+    else if (isPracticePopped) content = "study_mode_update_handler_poppedPractice_content".tr();
+    else content = "study_mode_update_handler_finishedPractice_content".tr();
 
     showDialog(
       context: context,
       builder: (context) {
         return CustomDialog(
-          title: Text(isTestFinished || isPracticeFinished ? "You are done!" : "Do you want to leave?"),
+          title: Text(isTestFinished || isPracticeFinished
+              ? "study_mode_update_handler_finished_title".tr()
+              : "study_mode_update_handler_popped_title".tr()),
           content: Text(content),
-          positiveButtonText: isTestFinished || isPracticeFinished ? "Finish" : "Leave",
+          positiveButtonText: isTestFinished || isPracticeFinished
+              ? "study_mode_update_handler_finished_positive".tr()
+              : "study_mode_update_handler_popped_positive".tr(),
           popDialog: !isTestFinished,
           onPositive: () async {
             /// If user went back in mid test, just pop
@@ -45,7 +49,7 @@ class StudyModeUpdateHandler {
               Navigator.of(context).pop(); /// Dialog pop for proper functioning of next navigator call
               Navigator.of(context).pushReplacementNamed(testResultPage, arguments:
                 TestResultArguments(score: testScore, kanji: args.studyList.length,
-                    studyMode: args.mode.mode, listsName: args.listsNames)
+                    studyMode: args.mode.map, listsName: args.listsNames)
               );
             }
             /// If the user went back in mid list, update the list accordingly

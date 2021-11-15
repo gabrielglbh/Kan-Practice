@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database.dart';
@@ -12,11 +13,30 @@ void main() async {
   await StorageManager.getInstance();
   await CustomDatabase.instance.open();
   await Firebase.initializeApp();
-  runApp(KanPractice());
+  await EasyLocalization.ensureInitialized();
+  runApp(SetUpApp());
 }
 
+class SetUpApp extends StatelessWidget {
+  const SetUpApp();
+
+  @override
+  Widget build(BuildContext context) {
+    return EasyLocalization(
+      supportedLocales: [
+        Locale("en"),
+        Locale("es"),
+      ],
+      path: "lib/core/localization",
+      fallbackLocale: Locale("en"),
+      child: KanPractice(),
+    );
+  }
+}
+
+
 class KanPractice extends StatefulWidget {
-  const KanPractice({Key? key}) : super(key: key);
+  const KanPractice();
 
   @override
   _KanPracticeState createState() => _KanPracticeState();
@@ -40,6 +60,9 @@ class _KanPracticeState extends State<KanPractice> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'KanPractice',
+      locale: context.locale,
+      supportedLocales: context.supportedLocales,
+      localizationsDelegates: context.localizationDelegates,
       debugShowCheckedModeBanner: false,
       theme: ThemeManager.instance.currentLightThemeData,
       darkTheme: ThemeManager.instance.currentDarkThemeData,

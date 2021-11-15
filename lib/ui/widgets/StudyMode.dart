@@ -5,6 +5,7 @@ import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/theme/theme_consts.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/widgets/CustomButton.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class TestStudyMode extends StatelessWidget {
   /// List of [Kanji] to make the test with
@@ -34,7 +35,7 @@ class TestStudyMode extends StatelessWidget {
 
           Padding(
             padding: EdgeInsets.only(top: 16, bottom: 16),
-            child: Text("Good Luck!", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            child: Text("study_modes_good_luck".tr(), style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           )
         ],
       )
@@ -50,8 +51,7 @@ class TestStudyMode extends StatelessWidget {
       onTap: () async {
         if (list.isEmpty) {
           Navigator.of(context).pop();
-          GeneralUtils.getSnackBar(context, "The kanji list selected for the test "
-              "is empty. Cannot perform test.");
+          GeneralUtils.getSnackBar(context, "study_modes_empty".tr());
         }
         else {
           list.shuffle();

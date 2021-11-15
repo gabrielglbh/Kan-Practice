@@ -7,7 +7,9 @@ import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
 import 'package:kanpractice/ui/widgets/ActionButton.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
+import 'package:kanpractice/ui/widgets/ValidationButtons.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class WritingStudy extends StatefulWidget {
   final ModeArguments args;
@@ -26,9 +28,9 @@ class _WritingStudyState extends State<WritingStudy> {
   /// Array that saves all scores without any previous context for the test result
   List<double> _testScores = [];
   /// Score granted for each individual kanji of the word
-  List<int> _score = [];
+  List<double> _score = [];
   /// Maximum score the user can achieve on a certain word
-  List<int> _maxScore = [];
+  List<double> _maxScore = [];
 
   /// Current word index
   int _macro = 0;
@@ -38,7 +40,7 @@ class _WritingStudyState extends State<WritingStudy> {
   bool _showActualKanji = false;
   bool _goNextKanji = false;
 
-  final String _none = " ? ";
+  final String _none = "wildcard".tr();
 
   /// Widget auxiliary variable
   List<Kanji> _studyList = [];
@@ -67,14 +69,14 @@ class _WritingStudyState extends State<WritingStudy> {
       String kanji = _studyList[x].kanji;
       _score.add(0);
       _currentKanji.add([]);
-      _maxScore.add(kanji.length);
+      _maxScore.add(kanji.length.toDouble());
       for (int y = 0; y < kanji.length; y++) _currentKanji[x].add(_none);
     }
   }
 
-  _updateUIOnSubmit(bool isCorrect) {
-    /// If the user taps on "Got It!", then the user has achieved perfect score
-    if (isCorrect) _score[_macro] += 1;
+  _updateUIOnSubmit(double score) {
+    /// Update the macro of the word with the current score of each kanji
+    _score[_macro] += score;
 
     setState(() {
       /// When done, show the kanji in the header
@@ -143,7 +145,7 @@ class _WritingStudyState extends State<WritingStudy> {
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: appBarHeight,
-          title: Text(widget.args.mode.mode),
+          title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.mode.mode)),
           centerTitle: true,
           actions: [
             IconButton(
@@ -157,7 +159,7 @@ class _WritingStudyState extends State<WritingStudy> {
         ),
         body: Column(
           children: [
-            ListPercentageIndicator(value: _macro / _studyList.length),
+            ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
             _header(),
             Padding(
               padding: EdgeInsets.all(8),
@@ -218,13 +220,13 @@ class _WritingStudyState extends State<WritingStudy> {
     return Visibility(
       visible: !_showActualKanji,
       child: ActionButton(
-        label: _goNextKanji ? "Next Kanji" : "Done!",
+        label: _goNextKanji ? "writing_next_kanji_label".tr() : "done_button_label".tr(),
         onTap: () {
           if (_macro <= _studyList.length - 1)
             _resetKanji();
           else {
             if (_line.isNotEmpty) _resetKanji();
-            else GeneralUtils.getSnackBar(context, "Write the character first");
+            else GeneralUtils.getSnackBar(context, "writing_validation_failed".tr());
           }
         }
       )
@@ -234,23 +236,12 @@ class _WritingStudyState extends State<WritingStudy> {
   Visibility _validationButtons() {
     return Visibility(
       visible: _showActualKanji,
-      child: Container(
-        height: listStudyHeight,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            ActionButton(
-              label: "[X] My Bad...",
-              onTap: () => _updateUIOnSubmit(false),
-              color: Colors.grey,
-            ),
-            ActionButton(
-              label: "[O] Got it!",
-              onTap: () => _updateUIOnSubmit(true)
-            )
-          ],
-        )
-      ),
+      child: ValidationButtons(
+        wrongAction: _updateUIOnSubmit,
+        midWrongAction: _updateUIOnSubmit,
+        midPerfectAction: _updateUIOnSubmit,
+        perfectAction: _updateUIOnSubmit,
+      )
     );
   }
 

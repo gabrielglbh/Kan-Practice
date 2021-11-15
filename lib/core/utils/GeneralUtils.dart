@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:timeago/timeago.dart' as t;
 import 'package:flutter/material.dart';
 
@@ -32,27 +33,9 @@ class GeneralUtils {
 
   /// Parses the [date] that should be in milliseconds to a [DateTime] object
   /// and applies a parser with the time_ago package
-  static String parseDateMilliseconds(int date) {
+  static String parseDateMilliseconds(BuildContext context, int date) {
     final _d = DateTime.fromMillisecondsSinceEpoch(date);
     Duration e = DateTime.now().difference(_d);
-    return t.format(DateTime.now().subtract(e), locale: "en");
-    /*String _hour = "";
-    String _minute = "";
-    String _day = "";
-    String _month = "";
-
-    if (_d.hour < 10 && _d.hour >= 0) _hour = "0${_d.hour}";
-    else _hour = "${_d.hour}";
-
-    if (_d.minute < 10 && _d.minute >= 0) _minute = "0${_d.minute}";
-    else _minute = "${_d.minute}";
-
-    if (_d.day < 10 && _d.day >= 0) _day = "0${_d.day}";
-    else _day = "${_d.day}";
-
-    if (_d.month < 10 && _d.month >= 0) _month = "0${_d.month}";
-    else _month = "${_d.month}";
-
-    return "$_day/$_month/${_d.year} $_hour:$_minute";*/
+    return t.format(DateTime.now().subtract(e), locale: (EasyLocalization.of(context)?.currentLocale?.languageCode ?? "en"));
   }
 }

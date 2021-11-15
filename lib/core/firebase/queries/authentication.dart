@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kanpractice/core/firebase/firebase.dart';
 import 'package:kanpractice/core/firebase/queries/back_ups.dart';
 import 'package:kanpractice/ui/pages/firebase_login/login.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AuthRecords {
   FirebaseAuth? _auth;
@@ -43,9 +44,9 @@ class AuthRecords {
           return "";
         }
         else {
-          return "Re-authentication failed. Try again later.";
+          return "authentication_failed".tr();
         }
-      } else return "You are not logged in. Login, and you will be able to change your password.";
+      } else return "authentication_changePassword_log_out".tr();
     } catch (err) {
       return err.toString();
     }
@@ -68,9 +69,9 @@ class AuthRecords {
           return "";
         }
         else {
-          return "Re-authentication failed. Try again later.";
+          return "authentication_failed".tr();
         }
-      } else return "Wrong provider. Try again later.";
+      } else return "authentication_deleteAccount_wrong_provider".tr();
     } catch (err) {
       return err.toString();
     }

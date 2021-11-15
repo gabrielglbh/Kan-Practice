@@ -1,4 +1,5 @@
 import 'package:kanpractice/core/database/database_consts.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 enum KanListFilters { all, writing, reading, recognition }
 
@@ -6,13 +7,13 @@ extension KanListFiltersExtensions on KanListFilters {
   String get label {
     switch (this) {
       case KanListFilters.all:
-        return "Last Created";
+        return "filters_all".tr();
       case KanListFilters.writing:
-        return "Writing %";
+        return "filters_writing".tr();
       case KanListFilters.reading:
-        return "Reading %";
+        return "filters_reading".tr();
       case KanListFilters.recognition:
-        return "Recognition %";
+        return "filters_recognition".tr();
     }
   }
 

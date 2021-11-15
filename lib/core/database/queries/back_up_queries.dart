@@ -3,6 +3,7 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class BackUpQueries {
   Database? _database;
@@ -27,10 +28,10 @@ class BackUpQueries {
           batch?.insert(kanjiTable, kanji[x].toJson(), conflictAlgorithm: ConflictAlgorithm.ignore);
         }
         final results = await batch?.commit();
-        return results?.length == 0 ? "Batch failed" : "";
+        return results?.length == 0 ? "backup_queries_mergeBackUp_failed".tr() : "";
       } catch (err) {
         return err.toString();
       }
-    } else return "Database is null";
+    } else return "backup_queries_mergeBackUp_catch".tr();
   }
 }

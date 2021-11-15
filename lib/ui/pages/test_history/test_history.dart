@@ -9,6 +9,7 @@ import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
 import 'package:kanpractice/ui/widgets/EmptyList.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
 import 'package:kanpractice/ui/widgets/WinRateChart.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class TestHistory extends StatefulWidget {
   const TestHistory({Key? key}) : super(key: key);
@@ -24,10 +25,9 @@ class _TestHistoryState extends State<TestHistory> {
     showDialog(
       context: context,
       builder: (context) => CustomDialog(
-        title: Text("Removing All Tests"),
-        content: Text("All tests saved on this device will be removed. "
-            "This action cannot be undone. Do you want to proceed?"),
-        positiveButtonText: "Remove",
+        title: Text("test_history_showRemoveTestsDialog_title".tr()),
+        content: Text("test_history_showRemoveTestsDialog_content".tr()),
+        positiveButtonText: "test_history_showRemoveTestsDialog_positive".tr(),
         onPositive: () => _bloc..add(TestListEventRemoving()),
       )
     );
@@ -38,7 +38,7 @@ class _TestHistoryState extends State<TestHistory> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: appBarHeight,
-        title: Text("Test History"),
+        title: Text("test_history_title".tr()),
         actions: [
           IconButton(
             icon: Icon(Icons.clear_all_rounded),
@@ -57,11 +57,11 @@ class _TestHistoryState extends State<TestHistory> {
 
   _body(TestListState state) {
     if (state is TestListStateFailure)
-      return EmptyList(message: "Failed to retrieve tests");
+      return EmptyList(message: "test_history_load_failed".tr());
     else if (state is TestListStateLoading)
       return CustomProgressIndicator();
     else if (state is TestListStateLoaded) {
-      if (state.list.isEmpty) return EmptyList(message: "No available tests.");
+      if (state.list.isEmpty) return EmptyList(message: "test_history_empty".tr());
       return _testList(state);
     }
     else return Container();
@@ -90,7 +90,7 @@ class _TestHistoryState extends State<TestHistory> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("${t.studyMode} • "),
-                Text("Test taken ${GeneralUtils.parseDateMilliseconds(t.takenDate)}",
+                Text("${"test_history_testTaken".tr()} ${GeneralUtils.parseDateMilliseconds(context, t.takenDate)}",
                   style: TextStyle(fontStyle: FontStyle.italic))
               ],
             ),

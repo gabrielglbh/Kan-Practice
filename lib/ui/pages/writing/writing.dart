@@ -8,6 +8,7 @@ import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dar
 import 'package:kanpractice/ui/widgets/ActionButton.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class WritingStudy extends StatefulWidget {
   final ModeArguments args;
@@ -38,7 +39,7 @@ class _WritingStudyState extends State<WritingStudy> {
   bool _showActualKanji = false;
   bool _goNextKanji = false;
 
-  final String _none = " ? ";
+  final String _none = "wildcard".tr();
 
   /// Widget auxiliary variable
   List<Kanji> _studyList = [];
@@ -218,13 +219,13 @@ class _WritingStudyState extends State<WritingStudy> {
     return Visibility(
       visible: !_showActualKanji,
       child: ActionButton(
-        label: _goNextKanji ? "Next Kanji" : "Done!",
+        label: _goNextKanji ? "writing_next_kanji_label".tr() : "done_button_label".tr(),
         onTap: () {
           if (_macro <= _studyList.length - 1)
             _resetKanji();
           else {
             if (_line.isNotEmpty) _resetKanji();
-            else GeneralUtils.getSnackBar(context, "Write the character first");
+            else GeneralUtils.getSnackBar(context, "writing_validation_failed".tr());
           }
         }
       )
@@ -240,12 +241,12 @@ class _WritingStudyState extends State<WritingStudy> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             ActionButton(
-              label: "[X] My Bad...",
+              label: "wrong_button_label".tr(),
               onTap: () => _updateUIOnSubmit(false),
               color: Colors.grey,
             ),
             ActionButton(
-              label: "[O] Got it!",
+              label: "perfect_button_label".tr(),
               onTap: () => _updateUIOnSubmit(true)
             )
           ],

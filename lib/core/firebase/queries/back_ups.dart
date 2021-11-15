@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/back_up_queries.dart';
@@ -8,6 +9,7 @@ import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:kanpractice/core/firebase/firebase.dart';
 import 'package:kanpractice/core/firebase/models/backup.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class BackUpRecords {
   FirebaseFirestore? _ref;
@@ -59,7 +61,7 @@ class BackUpRecords {
     int date = GeneralUtils.getCurrentMilliseconds();
 
     if (lists.isEmpty) {
-      return "Current device data is empty";
+      return "backup_firebase_createBackUp_listEmpty".tr();
     } else {
       BackUp backUpObject = BackUp(lists: lists, kanji: kanji, lastUpdated: date);
       WriteBatch? batch = _ref?.batch();
@@ -156,7 +158,7 @@ class BackUpRecords {
   /// Gets the "last backup time" from Firebase.
   /// Returns the actual parsed date as a String if nothing happened, else,
   /// the error is returned.
-  Future<String> getLastUpdated() async {
+  Future<String> getLastUpdated(BuildContext context) async {
     User? _user = _auth?.currentUser;
     await _user?.reload();
 
@@ -164,10 +166,11 @@ class BackUpRecords {
       final snapshot = await _ref?.collection(collection).doc(_user?.uid).get();
       if (snapshot != null) {
         int date = snapshot.get("lastUpdated");
-        return "Last back up made ${GeneralUtils.parseDateMilliseconds(date)}";
-      } else return "No back up available with current account";
+        return "${"backup_firebase_getLastUpdated_successful".tr()} "
+            "${GeneralUtils.parseDateMilliseconds(context, date)}";
+      } else return "backup_firebase_getLastUpdated_noBackUp".tr();
     } catch (err) {
-      return "No back up available with current account";
+      return "backup_firebase_getLastUpdated_noBackUp".tr();
     }
   }
 }

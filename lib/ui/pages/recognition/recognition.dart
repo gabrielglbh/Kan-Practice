@@ -5,6 +5,7 @@ import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dar
 import 'package:kanpractice/ui/theme/theme_consts.dart';
 import 'package:kanpractice/ui/widgets/ActionButton.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class RecognitionStudy extends StatefulWidget {
   final ModeArguments args;
@@ -25,7 +26,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
   /// Widget auxiliary variable
   List<Kanji> _studyList = [];
 
-  final String _none = "?";
+  final String _none = "wildcard".tr();
 
   @override
   void initState() {
@@ -130,12 +131,12 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             ActionButton(
-              label: "[X] My Bad...",
+              label: "wrong_button_label".tr(),
               onTap: () async => await _updateUIOnSubmit(score: 0),
               color: Colors.grey,
             ),
             ActionButton(
-              label: "[O] Got it!",
+              label: "perfect_button_label".tr(),
               onTap: () async => await _updateUIOnSubmit(score: 1)
             )
           ],
@@ -148,7 +149,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
     return Visibility(
       visible: !_showMeaning,
       child: ActionButton(
-        label: "Done!",
+        label: "done_button_label".tr(),
         onTap: () async => setState(() => _showMeaning = true)
       ),
     );

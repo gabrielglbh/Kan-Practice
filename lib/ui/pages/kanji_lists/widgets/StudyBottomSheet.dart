@@ -9,6 +9,7 @@ import 'package:kanpractice/ui/theme/theme_consts.dart';
 import 'package:kanpractice/ui/widgets/CustomButton.dart';
 import 'package:kanpractice/ui/widgets/EmptyList.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class StudyBottomSheet extends StatefulWidget {
   const StudyBottomSheet();
@@ -55,7 +56,7 @@ class _StudyBottomSheetState extends State<StudyBottomSheet> {
                 _dragContainer(),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
-                  child: Text("Make a test with the KanLists of your choice",
+                  child: Text("study_bottom_sheet_title".tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                 ),
@@ -72,7 +73,7 @@ class _StudyBottomSheetState extends State<StudyBottomSheet> {
                     child: BlocBuilder<KanjiListBloc, KanjiListState>(
                       builder: (context, state) {
                         if (state is KanjiListStateFailure)
-                          return EmptyList(message: "Failed to retrieve lists.");
+                          return EmptyList(message: "study_bottom_sheet_load_failed".tr());
                         else if (state is KanjiListStateLoading)
                           return CustomProgressIndicator();
                         else if (state is KanjiListStateLoaded) {
@@ -120,8 +121,8 @@ class _StudyBottomSheetState extends State<StudyBottomSheet> {
           ),
         ),
         CustomButton(
-          title1: "終わり",
-          title2: "Done",
+          title1: "study_bottom_sheet_button_label_ext".tr(),
+          title2: "study_bottom_sheet_button_label".tr(),
           onTap: () async {
             if (_selectedLists.isNotEmpty) {
               await _loadKanjiFromListSelection(_selectedLists);

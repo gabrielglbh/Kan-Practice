@@ -4,6 +4,7 @@ import 'package:kanpractice/ui/pages/backup/bloc/backup_bloc.dart';
 import 'package:kanpractice/ui/theme/theme_consts.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class BackUpPage extends StatefulWidget {
   final String uid;
@@ -25,7 +26,7 @@ class _BackUpPageState extends State<BackUpPage> {
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: appBarHeight,
-          title: Text("Back Ups"),
+          title: Text("backup_title".tr()),
         ),
         body: BlocProvider(
           create: (_) => _bloc..add(BackUpIdle()),
@@ -38,19 +39,19 @@ class _BackUpPageState extends State<BackUpPage> {
                   children: [
                     ListTile(
                       leading: Icon(Icons.backup_rounded),
-                      title: Text("Create Back Up"),
+                      title: Text("backup_creation_tile".tr()),
                       onTap: () => _createDialogForCreatingBackUp()
                     ),
                     Divider(),
                     ListTile(
                       leading: Icon(Icons.cloud_download),
-                      title: Text("Merge Back Up"),
+                      title: Text("backup_merge_tile".tr()),
                       onTap: () => _createDialogForMergingBackUp(),
                     ),
                     Divider(),
                     ListTile(
                       leading: Icon(Icons.delete),
-                      title: Text("Remove Back Up"),
+                      title: Text("backup_removal_tile".tr()),
                       onTap: () => _createDialogForRemovingBackUp(),
                     ),
                     Divider(),
@@ -75,12 +76,9 @@ class _BackUpPageState extends State<BackUpPage> {
     showDialog(
       context: context,
       builder: (context) => CustomDialog(
-        title: Text("Creating Back Up"),
-        content: Text("The back up will be created in the cloud. The current data in "
-            "your device will be saved replacing the current back up data. Tests will"
-            "not be saved."
-            "Do you want to proceed?"),
-        positiveButtonText: "Create",
+        title: Text("backup_creation_dialog_title".tr()),
+        content: Text("backup_creation_dialog_content".tr()),
+        positiveButtonText: "backup_creation_dialog_positive".tr(),
         onPositive: () => _bloc..add(BackUpLoadingCreateBackUp()),
       )
     );
@@ -90,10 +88,9 @@ class _BackUpPageState extends State<BackUpPage> {
     showDialog(
       context: context,
       builder: (context) => CustomDialog(
-        title: Text("Merging Back Up"),
-        content: Text("The back up data will be installed in your device merging it "
-            "with the current data you have. Do you want to proceed?"),
-        positiveButtonText: "Merge",
+        title: Text("backup_merge_dialog_title".tr()),
+        content: Text("backup_merge_dialog_content".tr()),
+        positiveButtonText: "backup_merge_dialog_positive".tr(),
         onPositive: () => _bloc..add(BackUpLoadingMergeBackUp()),
       )
     );
@@ -103,10 +100,9 @@ class _BackUpPageState extends State<BackUpPage> {
     showDialog(
       context: context,
       builder: (context) => CustomDialog(
-        title: Text("Removing Back Up"),
-        content: Text("The back up data will be completely removed from the server "
-            "and it will be not available anymore. Do you want to proceed?"),
-        positiveButtonText: "Remove",
+        title: Text("backup_removal_dialog_title".tr()),
+        content: Text("backup_removal_dialog_content".tr()),
+        positiveButtonText: "backup_removal_dialog_positive".tr(),
         onPositive: () => _bloc..add(BackUpLoadingRemoveBackUp()),
       )
     );

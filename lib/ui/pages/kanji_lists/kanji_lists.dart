@@ -17,6 +17,7 @@ import 'package:kanpractice/ui/widgets/CustomTextForm.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class KanjiLists extends StatefulWidget {
   const KanjiLists();
@@ -80,14 +81,14 @@ class _KanjiListsState extends State<KanjiLists> {
     showDialog(
       context: context,
       builder: (context) => CustomDialog(
-        title: Text("New KanList"),
+        title: Text("kanji_lists_createDialogForAddingKanList_title".tr()),
         content: Container(
           height: alertDialogHeight,
           child: CustomTextForm(
-            header: "KanList Name",
+            header: "kanji_lists_createDialogForAddingKanList_header".tr(),
             controller: controller,
             action: TextInputAction.done,
-            hint: "Name",
+            hint: "kanji_lists_createDialogForAddingKanList_hint".tr(),
             autofocus: true,
             onSubmitted: (name) {
               _addCreateEvent(name);
@@ -97,7 +98,7 @@ class _KanjiListsState extends State<KanjiLists> {
             onEditingComplete: () => focusNode.unfocus(),
           ),
         ),
-        positiveButtonText: "Create",
+        positiveButtonText: "kanji_lists_createDialogForAddingKanList_positive".tr(),
         onPositive: () => _addCreateEvent(controller.text),
       )
     );
@@ -109,12 +110,12 @@ class _KanjiListsState extends State<KanjiLists> {
       barrierDismissible: true,
       builder: (context) {
         return CustomDialog(
-          title: Text("New version available"),
+          title: Text("kanji_lists_versionDialog_title".tr()),
           content: Text("$_newVersion"),
-          positiveButtonText: 'Go to store',
+          positiveButtonText: 'kanji_lists_versionDialog_button_label'.tr(),
           onPositive: () async {
-            if (await canLaunch("https://play.google.com/store/apps/details?id=com.gabr.garc.kanpractice"))
-              await launch("https://play.google.com/store/apps/details?id=com.gabr.garc.kanpractice");
+            if (await canLaunch("google_play_link".tr()))
+              await launch("google_play_link".tr());
           },
         );
       },
@@ -201,7 +202,7 @@ class _KanjiListsState extends State<KanjiLists> {
                 child: _updateContainer()
               ),
               CustomSearchBar(
-                hint: "Search by list name, kanji, meaning, pronunciation",
+                hint: "kanji_lists_searchBar_hint".tr(),
                 focus: _searchBarFn,
                 onQuery: (String query) => _bloc..add(KanjiListEventSearching(query)),
                 onExitSearch: () => _addLoadingEvent(),
@@ -251,12 +252,12 @@ class _KanjiListsState extends State<KanjiLists> {
     return BlocBuilder<KanjiListBloc, KanjiListState>(
       builder: (context, state) {
         if (state is KanjiListStateFailure)
-          return EmptyList(message: "Failed to retrieve lists.");
+          return EmptyList(message: "kanji_lists_load_failed".tr());
         else if (state is KanjiListStateLoading || state is KanjiListStateSearching)
           return Expanded(child: CustomProgressIndicator());
         else if (state is KanjiListStateLoaded)
           return state.lists.isEmpty
-              ? Expanded(child: EmptyList(message: "No available lists."))
+              ? Expanded(child: EmptyList(message: "kanji_lists_empty".tr()))
               : Expanded(
             child: ListView.builder(
               key: PageStorageKey<String>('kanListListsController'),
@@ -299,7 +300,7 @@ class _KanjiListsState extends State<KanjiLists> {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text("New Update!!", style: Theme.of(context)
+              child: Text("kanji_lists_newUpdateAvailable_label".tr(), style: Theme.of(context)
                 .textTheme.headline5?.copyWith(
                   fontWeight: FontWeight.bold, color: Colors.white
               )),

@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kanpractice/core/firebase/queries/authentication.dart';
 import 'package:kanpractice/ui/pages/firebase_login/login.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -40,24 +41,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> _mapCloseSessionToState() async* {
     yield LoginStateLoading();
     final error = await AuthRecords.instance.closeSession();
-    if (error == 0) yield LoginStateLoggedOut(message: "Successfully closed your session. "
-        "You may now close this page.");
+    if (error == 0) yield LoginStateLoggedOut(message: "login_bloc_close_session_successful".tr());
     else {
       final user = AuthRecords.instance.getUser();
       if (user != null) yield LoginStateSuccessful(user: user);
-      else yield LoginStateIdle(error: "Unknown error while closing session");
+      else yield LoginStateIdle(error: "login_bloc_close_session_failed".tr());
     }
   }
 
   Stream<LoginState> _mapRemoveAccountToState(RemoveAccount event) async* {
     yield LoginStateLoading();
     final error = await AuthRecords.instance.deleteAccount(event.password);
-    if (error == "") yield LoginStateLoggedOut(message: "Successfully removed your account "
-        "and all of your data in the server. You may now close this page.");
+    if (error == "") yield LoginStateLoggedOut(message: "login_bloc_remove_account_successful".tr());
     else {
       final user = AuthRecords.instance.getUser();
       if (user != null) yield LoginStateSuccessful(user: user);
-      else yield LoginStateIdle(error: "Unknown error while removing account");
+      else yield LoginStateIdle(error: "login_bloc_remove_account_failed".tr());
     }
   }
 

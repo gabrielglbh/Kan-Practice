@@ -6,6 +6,7 @@ import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
 import 'package:kanpractice/ui/widgets/ActionButton.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ReadingStudy extends StatefulWidget {
   final ModeArguments args;
@@ -28,7 +29,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
   /// For translating the hiragana
   KanaKit? _kanaKit;
 
-  final String _none = "?";
+  final String _none = "wildcard".tr();
 
   @override
   void initState() {
@@ -137,12 +138,12 @@ class _ReadingStudyState extends State<ReadingStudy> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             ActionButton(
-              label: "[X] My Bad...",
+              label: "wrong_button_label".tr(),
               onTap: () async => await _updateUIOnSubmit(score: 0),
               color: Colors.grey,
             ),
             ActionButton(
-              label: "[O] Got it!",
+              label: "perfect_button_label".tr(),
               onTap: () async => await _updateUIOnSubmit(score: 1)
             )
           ],
@@ -155,7 +156,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
     return Visibility(
       visible: !_showPronunciation,
       child: ActionButton(
-        label: "Done!",
+        label: "done_button_label".tr(),
         onTap: () async => setState(() => _showPronunciation = true)
       ),
     );

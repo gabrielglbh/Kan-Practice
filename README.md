@@ -16,6 +16,15 @@ If you wish to distribute a new app based on this one, remember to change the Bu
 
 Code is based on 2 main folders: `ui` and `core`, with self explanatory meanings. On `main.dart` you will find the main `Widget` that runs the app with all of its configuration.
 
+### Language Addition
+
+The language management system is handled by JSON files located under `lib/core/localization/`. Current languages are Spanish, English, German and French.
+If you wish to contribute by adding a new language, you must perform these actions:
+
+- Copy and paste an already added language JSON file and create the new language file with the name: `<language_code>.json`.
+- Then, add the language into the supported locales in `lib/main.dart` under the `EasyLocalization` widget.
+- You are good. In case you want to build the app for iOS, you must include the localization in the `info.plist`.
+
 ### `Core`
 
 Subdivided in:

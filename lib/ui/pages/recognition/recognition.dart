@@ -86,7 +86,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
       onWillPop: () async => StudyModeUpdateHandler.handle(context, widget.args, onPop: true, lastIndex: _macro),
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: appBarHeight,
+          toolbarHeight: CustomSizes.appBarHeight,
           title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.mode.mode)),
           centerTitle: true
         ),
@@ -99,7 +99,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
               ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
               Text(_getProperPronunciation()),
               Container(
-                height: listStudyHeight,
+                height: CustomSizes.listStudyHeight,
                 child: FittedBox(
                   fit: BoxFit.contain,
                   child: Text(_studyList[_macro].kanji, style: TextStyle(fontSize: 64)),

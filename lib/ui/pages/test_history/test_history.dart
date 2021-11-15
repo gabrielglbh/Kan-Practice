@@ -37,7 +37,7 @@ class _TestHistoryState extends State<TestHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: appBarHeight,
+        toolbarHeight: CustomSizes.appBarHeight,
         title: FittedBox(fit: BoxFit.fitWidth, child: Text("test_history_title".tr())),
         actions: [
           IconButton(
@@ -73,7 +73,7 @@ class _TestHistoryState extends State<TestHistory> {
       itemCount: state.list.length,
       itemBuilder: (context, k) {
         Test t = state.list[k];
-        Color chartColor = secondaryColor;
+        Color chartColor = CustomColors.secondaryColor;
         StudyModes mode = StudyModesUtil.mapStudyMode(t.studyMode);
 
         if (mode == StudyModes.writing) chartColor = StudyModes.writing.color;

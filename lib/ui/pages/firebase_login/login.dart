@@ -158,7 +158,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: appBarHeight,
+        toolbarHeight: CustomSizes.appBarHeight,
         title: BlocProvider(
             create: (_) => _bloc..add(LoginIdle()),
             child: BlocBuilder<LoginBloc, LoginState>(
@@ -209,7 +209,7 @@ class _LoginPageState extends State<LoginPage> {
       padding: EdgeInsets.only(right: 16, left: 16),
       child: Column(
         children: [
-          Icon(Icons.info_outline_rounded, color: secondaryColor),
+          Icon(Icons.info_outline_rounded, color: CustomColors.secondaryColor),
           Padding(
             padding: EdgeInsets.only(top: 16, bottom: 16),
             child: Text("login_formDisclaimer".tr()),
@@ -240,7 +240,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Padding(
               padding: EdgeInsets.all(16),
               child: Text("${"login_authentication_failed".tr()} ${state.error}",
-                  style: TextStyle(color: secondaryColor)),
+                  style: TextStyle(color: CustomColors.secondaryColor)),
             ),
           ),
           Padding(
@@ -271,17 +271,17 @@ class _LoginPageState extends State<LoginPage> {
     return Center(
       child: Column(
         children: [
-          Icon(Icons.check_circle_rounded, color: secondaryColor, size: 256),
+          Icon(Icons.check_circle_rounded, color: CustomColors.secondaryColor, size: 256),
           Padding(
             padding: EdgeInsets.all(16),
             child: Text("${"login_current_account_logged".tr()} ${state.user.email}.", textAlign: TextAlign.center),
           ),
           Container(
-            height: appBarHeight,
+            height: CustomSizes.appBarHeight,
             child: Padding(
               padding: EdgeInsets.all(16),
               child: ElevatedButton(
-                onPressed: () => Navigator.of(context).pushNamed(backUpPage, arguments: state.user.uid),
+                onPressed: () => Navigator.of(context).pushNamed(KanPracticePages.backUpPage, arguments: state.user.uid),
                 child: Text("login_manage_backup_title".tr()),
               ),
             ),
@@ -327,7 +327,7 @@ class _LoginPageState extends State<LoginPage> {
     return Center(
       child: Column(
         children: [
-          Icon(Icons.check_circle_rounded, color: secondaryColor, size: 256),
+          Icon(Icons.check_circle_rounded, color: CustomColors.secondaryColor, size: 256),
           Padding(
             padding: EdgeInsets.all(16),
             child: Text(state.message, textAlign: TextAlign.center),

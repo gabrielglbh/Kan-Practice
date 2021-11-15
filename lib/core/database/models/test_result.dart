@@ -5,15 +5,15 @@ part 'test_result.g.dart';
 
 @JsonSerializable()
 class Test {
-  @JsonKey(name: takenDateField)
+  @JsonKey(name: TestTableFields.takenDateField)
   final int takenDate;
-  @JsonKey(name: testScoreField)
+  @JsonKey(name: TestTableFields.testScoreField)
   final double testScore;
-  @JsonKey(name: kanjiInTestField)
+  @JsonKey(name: TestTableFields.kanjiInTestField)
   final int kanjiInTest;
-  @JsonKey(name: kanjiListsField)
+  @JsonKey(name: TestTableFields.kanjiListsField)
   final String kanjiLists;
-  @JsonKey(name: studyModeField)
+  @JsonKey(name: TestTableFields.studyModeField)
   final int studyMode;
 
   Test({required this.takenDate, required this.testScore, required this.kanjiLists,

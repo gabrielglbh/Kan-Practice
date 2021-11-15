@@ -112,8 +112,8 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
 
   Container _back() {
     return Container(
-      width: defaultSizeSearchBarIcons,
-      height: defaultSizeSearchBarIcons,
+      width: CustomSizes.defaultSizeSearchBarIcons,
+      height: CustomSizes.defaultSizeSearchBarIcons,
       child: InkWell(
         borderRadius: BorderRadius.circular(32),
         onTap: () {
@@ -133,8 +133,8 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
 
   Container _clear() {
     return Container(
-      width: defaultSizeSearchBarIcons,
-      height: defaultSizeSearchBarIcons,
+      width: CustomSizes.defaultSizeSearchBarIcons,
+      height: CustomSizes.defaultSizeSearchBarIcons,
       child: InkWell(
         borderRadius: BorderRadius.circular(32),
         onTap: () {

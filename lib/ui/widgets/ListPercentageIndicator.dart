@@ -14,8 +14,8 @@ class ListPercentageIndicator extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 16, right: 16, left: 16),
       child: LinearPercentIndicator(
         percent: value,
-        backgroundColor: secondarySubtleColor,
-        progressColor: secondaryColor,
+        backgroundColor: CustomColors.secondarySubtleColor,
+        progressColor: CustomColors.secondaryColor,
         lineHeight: 30,
         animation: true,
         animationDuration: 1000,

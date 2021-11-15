@@ -25,7 +25,7 @@ class KanListTile extends StatelessWidget {
     return ListTile(
       onTap: () async {
         onTap();
-        await Navigator.of(context).pushNamed(kanjiListDetailsPage, arguments: item)
+        await Navigator.of(context).pushNamed(KanPracticePages.kanjiListDetailsPage, arguments: item)
             .then((_) => onPopWhenTapped());
       },
       onLongPress: () => _createDialogForDeletingKanList(context, item),

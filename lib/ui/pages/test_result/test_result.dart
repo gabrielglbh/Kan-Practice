@@ -17,7 +17,7 @@ class TestResult extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: appBarHeight,
+          toolbarHeight: CustomSizes.appBarHeight,
         ),
         body: SingleChildScrollView(
           child: Column(

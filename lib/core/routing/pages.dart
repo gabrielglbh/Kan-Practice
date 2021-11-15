@@ -1,11 +1,13 @@
-const String kanjiListPage = "/KanjiListPage";
-const String settingsPage = "/settingsPage";
-const String kanjiListDetailsPage = "/KanjiListDetailsPage";
-const String addKanjiPage = "/addKanjiPage";
-const String writingStudyPage = "/writingStudyPage";
-const String readingStudyPage = "/readingStudyPage";
-const String recognitionStudyPage = "/recognitionStudyPage";
-const String loginPage = "/loginPage";
-const String backUpPage = "/backUpPage";
-const String testResultPage = "/testResultPage";
-const String testHistoryPage = "/testHistoryPage";
+class KanPracticePages {
+  static const String kanjiListPage = "/KanjiListPage";
+  static const String settingsPage = "/settingsPage";
+  static const String kanjiListDetailsPage = "/KanjiListDetailsPage";
+  static const String addKanjiPage = "/addKanjiPage";
+  static const String writingStudyPage = "/writingStudyPage";
+  static const String readingStudyPage = "/readingStudyPage";
+  static const String recognitionStudyPage = "/recognitionStudyPage";
+  static const String loginPage = "/loginPage";
+  static const String backUpPage = "/backUpPage";
+  static const String testResultPage = "/testResultPage";
+  static const String testHistoryPage = "/testHistoryPage";
+}

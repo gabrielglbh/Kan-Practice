@@ -43,7 +43,7 @@ final ThemeData dark = ThemeData(
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(secondaryColor),
+        backgroundColor: MaterialStateProperty.all<Color>(CustomColors.secondaryColor),
         shape: MaterialStateProperty.all<OutlinedBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
       ),
     ),
@@ -58,7 +58,7 @@ final ThemeData dark = ThemeData(
         contentTextStyle: TextStyle(color: _primary)
     ),
     textSelectionTheme: TextSelectionThemeData(
-        cursorColor: secondaryColor
+        cursorColor: CustomColors.secondaryColor
     ),
     inputDecorationTheme: InputDecorationTheme(
         hintStyle: TextStyle(color: Colors.grey[400]),
@@ -68,7 +68,7 @@ final ThemeData dark = ThemeData(
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(24)),
-          borderSide: BorderSide(color: secondaryColor, width: 2.0),
+          borderSide: BorderSide(color: CustomColors.secondaryColor, width: 2.0),
         )
     ),
     bottomSheetTheme: BottomSheetThemeData(
@@ -82,7 +82,7 @@ final ThemeData dark = ThemeData(
     ),
     dialogBackgroundColor: _primary,
     chipTheme: ChipThemeData(
-        selectedColor: secondaryColor,
+        selectedColor: CustomColors.secondaryColor,
         secondaryLabelStyle: TextStyle(color: Colors.black),
         brightness: Brightness.dark,
         backgroundColor: _chipColor,

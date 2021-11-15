@@ -5,21 +5,21 @@ part 'kanji.g.dart';
 
 @JsonSerializable()
 class Kanji {
-  @JsonKey(name: kanjiField)
+  @JsonKey(name: KanjiTableFields.kanjiField)
   final String kanji;
-  @JsonKey(name: listNameField)
+  @JsonKey(name: KanjiTableFields.listNameField)
   final String listName;
-  @JsonKey(name: meaningField)
+  @JsonKey(name: KanjiTableFields.meaningField)
   final String meaning;
-  @JsonKey(name: pronunciationField)
+  @JsonKey(name: KanjiTableFields.pronunciationField)
   final String pronunciation;
-  @JsonKey(name: winRateWritingField)
+  @JsonKey(name: KanjiTableFields.winRateWritingField)
   final double winRateWriting;
-  @JsonKey(name: winRateReadingField)
+  @JsonKey(name: KanjiTableFields.winRateReadingField)
   final double winRateReading;
-  @JsonKey(name: winRateRecognitionField)
+  @JsonKey(name: KanjiTableFields.winRateRecognitionField)
   final double winRateRecognition;
-  @JsonKey(name: dateAddedField)
+  @JsonKey(name: KanjiTableFields.dateAddedField)
   final int dateAdded;
 
   const Kanji({required this.kanji, required this.listName, required this.meaning,

@@ -68,7 +68,7 @@ class _StudyBottomSheetState extends State<StudyBottomSheet> {
                   visible: !_selectionMode,
                   child: BlocProvider(
                     create: (_) => KanjiListBloc()..add(KanjiListEventLoading(
-                        filter: lastUpdatedField, order: false
+                        filter: KanListTableFields.lastUpdatedField, order: false
                     )),
                     child: BlocBuilder<KanjiListBloc, KanjiListState>(
                       builder: (context, state) {
@@ -78,7 +78,7 @@ class _StudyBottomSheetState extends State<StudyBottomSheet> {
                           return CustomProgressIndicator();
                         else if (state is KanjiListStateLoaded) {
                           return Container(
-                            constraints: BoxConstraints(maxHeight: maxHeightForListsTest),
+                            constraints: BoxConstraints(maxHeight: CustomSizes.maxHeightForListsTest),
                             margin: EdgeInsets.all(8),
                             child: _listSelection(state)
                           );
@@ -108,7 +108,7 @@ class _StudyBottomSheetState extends State<StudyBottomSheet> {
                 padding: EdgeInsets.only(right: 8),
                 child: ActionChip(
                   label: Text(name),
-                  backgroundColor: _selectedLists.contains(name) ? secondaryColor : secondarySubtleColor,
+                  backgroundColor: _selectedLists.contains(name) ? CustomColors.secondaryColor : CustomColors.secondarySubtleColor,
                   onPressed: () {
                     setState(() {
                       if (_selectedLists.contains(name)) _selectedLists.remove(name);

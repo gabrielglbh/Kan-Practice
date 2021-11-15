@@ -32,7 +32,7 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: appBarHeight,
+        toolbarHeight: CustomSizes.appBarHeight,
         automaticallyImplyLeading: false,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_rounded),
@@ -63,7 +63,7 @@ class _SettingsState extends State<Settings> {
           ListTile(
             leading: Icon(Icons.track_changes_rounded),
             title: Text("settings_progress_testHistory".tr()),
-            onTap: () async => Navigator.of(context).pushNamed(testHistoryPage),
+            onTap: () async => Navigator.of(context).pushNamed(KanPracticePages.testHistoryPage),
           ),
           BlocProvider(
             create: (_) => _settingsBloc..add(SettingsLoadingBackUpDate(context)),
@@ -83,7 +83,7 @@ class _SettingsState extends State<Settings> {
           ListTile(
             leading: Icon(Icons.whatshot_rounded),
             title: Text("settings_account_label".tr()),
-            onTap: () => Navigator.of(context).pushNamed(loginPage)
+            onTap: () => Navigator.of(context).pushNamed(KanPracticePages.loginPage)
           ),
           _header("settings_information_section".tr()),
           Divider(),

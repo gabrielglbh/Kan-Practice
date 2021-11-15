@@ -16,7 +16,7 @@ class BackUpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: appBarHeight,
+        toolbarHeight: CustomSizes.appBarHeight,
         title: FittedBox(fit: BoxFit.fitWidth, child: Text("backup_title".tr())),
       ),
       body: BlocProvider(
@@ -50,7 +50,7 @@ class BackUpPage extends StatelessWidget {
                     Visibility(
                       visible: state.message != "",
                       child: ListTile(
-                        leading: Icon(Icons.info_rounded, color: secondaryColor),
+                        leading: Icon(Icons.info_rounded, color: CustomColors.secondaryColor),
                         title: Text(state.message)
                       ),
                     )

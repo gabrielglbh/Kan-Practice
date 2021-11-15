@@ -20,33 +20,33 @@ import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 /// Router generator in which all pages and their transitions are made.
 Route<dynamic>? onGenerateRoute(RouteSettings settings) {
   switch (settings.name) {
-    case kanjiListPage:
+    case KanPracticePages.kanjiListPage:
       return CupertinoPageRoute(builder: (_) => KanjiLists());
-    case kanjiListDetailsPage:
+    case KanPracticePages.kanjiListDetailsPage:
       KanjiList list = settings.arguments as KanjiList;
       return CupertinoPageRoute(builder: (_) => KanjiListDetails(list: list));
-    case settingsPage:
+    case KanPracticePages.settingsPage:
       return CupertinoPageRoute(builder: (_) => Settings());
-    case addKanjiPage:
+    case KanPracticePages.addKanjiPage:
       AddKanjiArgs args = settings.arguments as AddKanjiArgs;
       return CupertinoPageRoute(builder: (_) => AddKanjiPage(args: args));
-    case writingStudyPage:
+    case KanPracticePages.writingStudyPage:
       ModeArguments args = settings.arguments as ModeArguments;
       return CupertinoPageRoute(builder: (_) => WritingStudy(args: args));
-    case readingStudyPage:
+    case KanPracticePages.readingStudyPage:
       ModeArguments args = settings.arguments as ModeArguments;
       return CupertinoPageRoute(builder: (_) => ReadingStudy(args: args));
-    case recognitionStudyPage:
+    case KanPracticePages.recognitionStudyPage:
       ModeArguments args = settings.arguments as ModeArguments;
       return CupertinoPageRoute(builder: (_) => RecognitionStudy(args: args));
-    case testResultPage:
+    case KanPracticePages.testResultPage:
       TestResultArguments args = settings.arguments as TestResultArguments;
       return CupertinoPageRoute(builder: (_) => TestResult(args: args));
-    case testHistoryPage:
+    case KanPracticePages.testHistoryPage:
       return CupertinoPageRoute(builder: (_) => TestHistory());
-    case loginPage:
+    case KanPracticePages.loginPage:
       return CupertinoPageRoute(builder: (_) => LoginPage());
-    case backUpPage:
+    case KanPracticePages.backUpPage:
       String args = settings.arguments as String;
       return CupertinoPageRoute(builder: (_) => BackUpPage(uid: args));
   }

@@ -97,7 +97,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
       onWillPop: () async => StudyModeUpdateHandler.handle(context, widget.args, onPop: true, lastIndex: _macro),
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: appBarHeight,
+          toolbarHeight: CustomSizes.appBarHeight,
           title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.mode.mode)),
           centerTitle: true
         ),
@@ -108,10 +108,10 @@ class _ReadingStudyState extends State<ReadingStudy> {
           child: Column(
             children: [
               ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
-              Text(_getProperAlphabet(), style: TextStyle(fontSize: 24, color: secondaryColor)),
+              Text(_getProperAlphabet(), style: TextStyle(fontSize: 24, color: CustomColors.secondarySubtleColor)),
               Text(_getProperPronunciation(), style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
               Container(
-                height: listStudyHeight,
+                height: CustomSizes.listStudyHeight,
                 child: FittedBox(
                   fit: BoxFit.contain,
                   child: Text(_studyList[_macro].kanji, style: TextStyle(fontSize: 64)),

@@ -47,7 +47,7 @@ class StudyModeUpdateHandler {
             /// and go to the test page.
             else if (isTestFinished) {
               Navigator.of(context).pop(); /// Dialog pop for proper functioning of next navigator call
-              Navigator.of(context).pushReplacementNamed(testResultPage, arguments:
+              Navigator.of(context).pushReplacementNamed(KanPracticePages.testResultPage, arguments:
                 TestResultArguments(score: testScore, kanji: args.studyList.length,
                     studyMode: args.mode.map, listsName: args.listsNames)
               );
@@ -89,17 +89,17 @@ class StudyModeUpdateHandler {
       case StudyModes.writing:
         if (args.studyList[index].winRateWriting == -1) actualScore = score;
         else actualScore =  (score + args.studyList[index].winRateWriting) / 2;
-        toUpdate = { winRateWritingField: actualScore };
+        toUpdate = { KanjiTableFields.winRateWritingField: actualScore };
         break;
       case StudyModes.reading:
         if (args.studyList[index].winRateReading == -1) actualScore = score;
         else actualScore =  (score + args.studyList[index].winRateReading) / 2;
-        toUpdate = { winRateReadingField: actualScore };
+        toUpdate = { KanjiTableFields.winRateReadingField: actualScore };
         break;
       case StudyModes.recognition:
         if (args.studyList[index].winRateRecognition == -1) actualScore = score;
         else actualScore =  (score + args.studyList[index].winRateRecognition) / 2;
-        toUpdate = { winRateRecognitionField: actualScore };
+        toUpdate = { KanjiTableFields.winRateRecognitionField: actualScore };
         break;
     }
     return await KanjiQueries.instance.updateKanji(args.studyList[index].listName,
@@ -144,17 +144,17 @@ class StudyModeUpdateHandler {
       case StudyModes.writing:
         if (list.totalWinRateWriting == -1) actualOverall = overall;
         else actualOverall = (overall + list.totalWinRateWriting) / 2;
-        toUpdate = { totalWinRateWritingField: actualOverall };
+        toUpdate = { KanListTableFields.totalWinRateWritingField: actualOverall };
         break;
       case StudyModes.reading:
         if (list.totalWinRateReading == -1) actualOverall = overall;
         else actualOverall = (overall + list.totalWinRateReading) / 2;
-        toUpdate = { totalWinRateReadingField: actualOverall };
+        toUpdate = { KanListTableFields.totalWinRateReadingField: actualOverall };
         break;
       case StudyModes.recognition:
         if (list.totalWinRateRecognition == -1) actualOverall = overall;
         else actualOverall = (overall + list.totalWinRateRecognition) / 2;
-        toUpdate = { totalWinRateRecognitionField: actualOverall };
+        toUpdate = { KanListTableFields.totalWinRateRecognitionField: actualOverall };
         break;
     }
     await ListQueries.instance.updateList(args.studyList[0].listName, toUpdate);

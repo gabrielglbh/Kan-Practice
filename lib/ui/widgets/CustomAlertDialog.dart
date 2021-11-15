@@ -21,7 +21,7 @@ class CustomDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: alertDialogHeight,
+      height: CustomSizes.alertDialogHeight,
       child: AlertDialog(
         title: title,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(18))),
@@ -31,13 +31,19 @@ class CustomDialog extends StatelessWidget {
             visible: negativeButton,
             child: ElevatedButton(
               child: Text("back_button_label".tr()),
-              style: wrongButton,
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.grey),
+                shape: MaterialStateProperty.all<OutlinedBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+              ),
               onPressed: () => Navigator.of(context).pop()
             ),
           ),
           ElevatedButton(
             child: Text(positiveButtonText),
-            style: correctButton,
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+              shape: MaterialStateProperty.all<OutlinedBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+            ),
             onPressed: () async {
               await onPositive();
               if (popDialog) Navigator.of(context).pop();

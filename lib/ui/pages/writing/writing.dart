@@ -144,7 +144,7 @@ class _WritingStudyState extends State<WritingStudy> {
       onWillPop: () async => StudyModeUpdateHandler.handle(context, widget.args, onPop: true, lastIndex: _macro),
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: appBarHeight,
+          toolbarHeight: CustomSizes.appBarHeight,
           title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.mode.mode)),
           centerTitle: true,
           actions: [
@@ -174,9 +174,11 @@ class _WritingStudyState extends State<WritingStudy> {
   }
 
   Container _header() {
-    double finalHeight = MediaQuery.of(context).size.height < 700 ? listStudyHeight / 2 : listStudyHeight;
+    double finalHeight = MediaQuery.of(context).size.height < 700
+        ? CustomSizes.listStudyHeight / 2 : CustomSizes.listStudyHeight;
     return Container(
-      height: MediaQuery.of(context).size.height < 700 ? studyGuideHeight / 2 : studyGuideHeight,
+      height: MediaQuery.of(context).size.height < 700
+          ? CustomSizes.studyGuideHeight / 2 : CustomSizes.studyGuideHeight,
       padding: EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         children: [
@@ -200,7 +202,7 @@ class _WritingStudyState extends State<WritingStudy> {
                     return Text(_currentKanji[_macro][index] == _none ? _none : kanji[index],
                       style: TextStyle(fontSize:
                           MediaQuery.of(context).size.height < 700 ? 32 : 64,
-                          color: index == _inner ? secondaryColor : null)
+                          color: index == _inner ? CustomColors.secondaryColor : null)
                     );
                   },
                 ),

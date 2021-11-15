@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/ui/widgets/StudyMode.dart';
@@ -27,16 +28,16 @@ class BlitzBottomSheet extends StatelessWidget {
     if (listName == null) {
       List<Kanji> list = await KanjiQueries.instance.getAllKanji();
       list.shuffle();
-      return list.sublist(0, list.length < numberOfKanjiInTest
-          ? list.length : numberOfKanjiInTest);
+      return list.sublist(0, list.length < CustomSizes.numberOfKanjiInTest
+          ? list.length : CustomSizes.numberOfKanjiInTest);
     }
     /// If the listName is not empty, it means that the user wants to have
     /// a Blitz Test on a certain KanList defined in "listName"
     else {
       List<Kanji> list = await KanjiQueries.instance.getAllKanjiFromList(listName);
       list.shuffle();
-      return list.sublist(0, list.length < numberOfKanjiInTest
-          ? list.length : numberOfKanjiInTest);
+      return list.sublist(0, list.length < CustomSizes.numberOfKanjiInTest
+          ? list.length : CustomSizes.numberOfKanjiInTest);
     }
   }
 
@@ -59,7 +60,7 @@ class BlitzBottomSheet extends StatelessWidget {
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
-                  child: Text("${numberOfKanjiInTest.toString()} ${"blitz_bottom_sheet_content".tr()}",
+                  child: Text("${CustomSizes.numberOfKanjiInTest.toString()} ${"blitz_bottom_sheet_content".tr()}",
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 ),

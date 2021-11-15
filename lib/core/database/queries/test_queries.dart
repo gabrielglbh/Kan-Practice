@@ -22,7 +22,7 @@ class TestQueries {
   Future<int> createTest(double score, int kanji, int mode, String lists) async {
     if (_database != null) {
       try {
-        await _database?.insert(testTable, Test(
+        await _database?.insert(TestTableFields.testTable, Test(
           testScore: score, kanjiInTest: kanji,
           studyMode: mode,
           kanjiLists: lists,
@@ -46,7 +46,7 @@ class TestQueries {
   Future<int> removeTests() async {
     if (_database != null) {
       try {
-        await _database?.delete(testTable);
+        await _database?.delete(TestTableFields.testTable);
         return 0;
       } catch (err) {
         print(err.toString());
@@ -62,7 +62,8 @@ class TestQueries {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
-        res = await _database?.rawQuery("SELECT * FROM $testTable ORDER BY $takenDateField DESC "
+        res = await _database?.rawQuery("SELECT * FROM ${TestTableFields.testTable} "
+            "ORDER BY ${TestTableFields.takenDateField} DESC "
             "LIMIT $limit OFFSET ${offset * limit}");
         if (res != null) return List.generate(res.length, (i) => Test.fromJson(res![i]));
         else return [];

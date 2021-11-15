@@ -85,16 +85,20 @@ class _TestHistoryState extends State<TestHistory> {
           child: ListTile(
             contentPadding: EdgeInsets.all(8),
             onTap: () {},
-            title: Text(t.kanjiLists, overflow: TextOverflow.ellipsis),
+            title: Text(t.kanjiLists, textAlign: TextAlign.end, overflow: TextOverflow.ellipsis),
             subtitle: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("${t.studyMode} • "),
-                Text("${"test_history_testTaken".tr()} ${GeneralUtils.parseDateMilliseconds(context, t.takenDate)}",
-                  style: TextStyle(fontStyle: FontStyle.italic))
+                Expanded(
+                  child: Text("${"test_history_testTaken".tr()} "
+                      "${GeneralUtils.parseDateMilliseconds(context, t.takenDate)}",
+                      textAlign: TextAlign.end,
+                      style: TextStyle(fontStyle: FontStyle.italic))
+                )
               ],
             ),
-            trailing: WinRateChart(title: "", winRate: t.testScore,
+            leading: WinRateChart(title: "", winRate: t.testScore,
                 rateSize: 10, chartColor: chartColor),
           ),
         );

@@ -18,7 +18,9 @@ Code is based on 2 main folders: `ui` and `core`, with self explanatory meanings
 
 ### Language Addition
 
-The language management system is handled by JSON files located under `lib/core/localization/`. Current languages are Spanish, English, German and French.
+The language management system is handled by JSON files located under `lib/core/localization/`. Current languages are Spanish and English.
+Contribution needed for more languages to be added.
+
 If you wish to contribute by adding a new language, you must perform these actions:
 
 - Copy and paste an already added language JSON file and create the new language file with the name: `<language_code>.json`.

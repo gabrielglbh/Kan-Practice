@@ -129,7 +129,7 @@ class KanjiBottomSheet extends StatelessWidget {
           ),
           Divider(),
           ListTile(
-            title: Text("Details"),
+            title: Text("Update"),
             trailing: Icon(Icons.arrow_forward_rounded),
             onTap: () {
               Navigator.of(context).pop();

@@ -87,7 +87,7 @@
   "kanji_bottom_sheet_removeKanji_positive": "Remove",
   "kanji_bottom_sheet_createDialogForDeletingKanji_removal_failed": "Error removing kanji",
   "kanji_bottom_sheet_createDialogForDeletingKanji_failed": "Generic error removing kanji",
-  "wildcard": "?",
+  "wildcard": " ? ",
   "created_label": "Created",
   "kanji_bottom_sheet_update_label": "Update",
   "kanji_bottom_sheet_removal_label": "Remove",

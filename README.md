@@ -25,7 +25,7 @@ If you wish to contribute by adding a new language, you must perform these actio
 
 - Copy and paste an already added language JSON file and create the new language file with the name: `<language_code>.json`.
 - Then, add the language into the supported locales in `lib/main.dart` under the `EasyLocalization` widget.
-- You are good. In case you want to build the app for iOS, you must include the localization in the `info.plist`.
+- You are good. In case you want to build the app for iOS, you must include the localization in the `info.plist` under the key `CFBundleLocalizations`.
 
 ### `Core`
 

@@ -26,8 +26,6 @@ class SetUpApp extends StatelessWidget {
       supportedLocales: [
         Locale("en"),
         Locale("es"),
-        Locale("fr"),
-        Locale("de"),
       ],
       path: "lib/core/localization",
       fallbackLocale: Locale("en"),

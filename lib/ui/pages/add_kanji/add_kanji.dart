@@ -105,10 +105,10 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: appBarHeight,
-        title: Text(widget.args.kanji != null
+        title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.kanji != null
             ? "add_kanji_update_title".tr()
             : "add_kanji_new_title".tr(), overflow: TextOverflow.ellipsis
-        )
+        ))
       ),
       body: SingleChildScrollView(
         child: Padding(

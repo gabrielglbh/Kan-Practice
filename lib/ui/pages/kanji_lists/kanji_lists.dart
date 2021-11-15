@@ -166,10 +166,7 @@ class _KanjiListsState extends State<KanjiLists> {
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: appBarHeight,
-          title: FittedBox(
-            fit: BoxFit.fitWidth,
-            child: Text("KanPractice"),
-          ),
+          title: FittedBox(fit: BoxFit.fitWidth, child: Text("KanPractice")),
           actions: [
             IconButton(
               onPressed: () async {

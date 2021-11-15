@@ -145,7 +145,7 @@ class _WritingStudyState extends State<WritingStudy> {
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: appBarHeight,
-          title: Text(widget.args.mode.mode),
+          title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.mode.mode)),
           centerTitle: true,
           actions: [
             IconButton(

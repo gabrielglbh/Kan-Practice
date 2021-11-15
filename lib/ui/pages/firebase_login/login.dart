@@ -159,7 +159,23 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: appBarHeight,
-        title: Text(_mode == SignMode.login ? SignMode.login.name : SignMode.signup.name),
+        title: BlocProvider(
+            create: (_) => _bloc..add(LoginIdle()),
+            child: BlocBuilder<LoginBloc, LoginState>(
+              builder: (context, state) {
+                if (state is LoginStateSuccessful)
+                  return FittedBox(fit: BoxFit.fitWidth,
+                      child: Text("settings_account_label".tr()));
+                else if (state is LoginStateIdle)
+                  return FittedBox(fit: BoxFit.fitWidth,
+                    child: Text(_mode == SignMode.login
+                        ? SignMode.login.name
+                        : SignMode.signup.name));
+                else
+                  return Container();
+              },
+            )
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(

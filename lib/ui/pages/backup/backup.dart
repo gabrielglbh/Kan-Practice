@@ -6,53 +6,45 @@ import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class BackUpPage extends StatefulWidget {
+class BackUpPage extends StatelessWidget {
+  final BackUpBloc _bloc = BackUpBloc();
   final String uid;
-  const BackUpPage({required this.uid});
+  BackUpPage({required this.uid});
 
-  @override
-  _BackUpPageState createState() => _BackUpPageState();
-}
-
-class _BackUpPageState extends State<BackUpPage> {
-  BackUpBloc _bloc = BackUpBloc();
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return true;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: appBarHeight,
-          title: Text("backup_title".tr()),
-        ),
-        body: BlocProvider(
-          create: (_) => _bloc..add(BackUpIdle()),
-          child: BlocBuilder<BackUpBloc, BackUpState>(
-            builder: (context, state) {
-              if (state is BackUpStateLoading) {
-                return CustomProgressIndicator();
-              } else if (state is BackUpStateLoaded) {
-                return ListView(
+    return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: appBarHeight,
+        title: FittedBox(fit: BoxFit.fitWidth, child: Text("backup_title".tr())),
+      ),
+      body: BlocProvider(
+        create: (_) => _bloc..add(BackUpIdle()),
+        child: BlocBuilder<BackUpBloc, BackUpState>(
+          builder: (context, state) {
+            if (state is BackUpStateLoading) {
+              return CustomProgressIndicator();
+            } else if (state is BackUpStateLoaded) {
+              return SingleChildScrollView(
+                child: Column(
                   children: [
                     ListTile(
                       leading: Icon(Icons.backup_rounded),
                       title: Text("backup_creation_tile".tr()),
-                      onTap: () => _createDialogForCreatingBackUp()
+                      onTap: () => _createDialogForCreatingBackUp(context)
                     ),
                     Divider(),
                     ListTile(
                       leading: Icon(Icons.cloud_download),
                       title: Text("backup_merge_tile".tr()),
-                      onTap: () => _createDialogForMergingBackUp(),
+                      onTap: () => _createDialogForMergingBackUp(context),
                     ),
                     Divider(),
                     ListTile(
                       leading: Icon(Icons.delete),
                       title: Text("backup_removal_tile".tr()),
-                      onTap: () => _createDialogForRemovingBackUp(),
+                      onTap: () => _createDialogForRemovingBackUp(context),
                     ),
                     Divider(),
                     Visibility(
@@ -63,16 +55,16 @@ class _BackUpPageState extends State<BackUpPage> {
                       ),
                     )
                   ],
-                );
-              } else return Container();
-            },
-          ),
-        )
-      ),
+                ),
+              );
+            } else return Container();
+          },
+        ),
+      )
     );
   }
 
-  _createDialogForCreatingBackUp() {
+  _createDialogForCreatingBackUp(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => CustomDialog(
@@ -84,7 +76,7 @@ class _BackUpPageState extends State<BackUpPage> {
     );
   }
 
-  _createDialogForMergingBackUp() {
+  _createDialogForMergingBackUp(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => CustomDialog(
@@ -96,7 +88,7 @@ class _BackUpPageState extends State<BackUpPage> {
     );
   }
 
-  _createDialogForRemovingBackUp() {
+  _createDialogForRemovingBackUp(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => CustomDialog(

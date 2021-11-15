@@ -87,7 +87,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: appBarHeight,
-          title: Text(widget.args.mode.mode),
+          title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.mode.mode)),
           centerTitle: true
         ),
         body: Container(

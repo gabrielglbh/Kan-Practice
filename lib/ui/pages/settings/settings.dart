@@ -38,7 +38,7 @@ class _SettingsState extends State<Settings> {
           icon: Icon(Icons.arrow_back_ios_rounded),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text("settings_title".tr()),
+        title: FittedBox(fit: BoxFit.fitWidth, child: Text("settings_title".tr())),
         actions: [
           IconButton(
             onPressed: () => _settingsBloc..add(SettingsLoadingBackUpDate(context)),

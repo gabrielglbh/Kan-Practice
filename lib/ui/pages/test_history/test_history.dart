@@ -38,7 +38,7 @@ class _TestHistoryState extends State<TestHistory> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: appBarHeight,
-        title: Text("test_history_title".tr()),
+        title: FittedBox(fit: BoxFit.fitWidth, child: Text("test_history_title".tr())),
         actions: [
           IconButton(
             icon: Icon(Icons.clear_all_rounded),

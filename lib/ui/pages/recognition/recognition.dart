@@ -6,6 +6,7 @@ import 'package:kanpractice/ui/theme/theme_consts.dart';
 import 'package:kanpractice/ui/widgets/ActionButton.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/ui/widgets/ValidationButtons.dart';
 
 class RecognitionStudy extends StatefulWidget {
   final ModeArguments args;
@@ -34,7 +35,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
     super.initState();
   }
 
-  Future<void> _updateUIOnSubmit({required double score}) async {
+  Future<void> _updateUIOnSubmit(double score) async {
     /// Calculate the current score
     final code = await _calculateKanjiScore(score);
 
@@ -95,7 +96,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
           alignment: Alignment.center,
           child: Column(
             children: [
-              ListPercentageIndicator(value: _macro / _studyList.length),
+              ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
               Text(_getProperPronunciation()),
               Container(
                 height: listStudyHeight,
@@ -125,23 +126,12 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
   Visibility _validateButtons() {
     return Visibility(
       visible: _showMeaning,
-      child: Container(
-        height: listStudyHeight,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            ActionButton(
-              label: "wrong_button_label".tr(),
-              onTap: () async => await _updateUIOnSubmit(score: 0),
-              color: Colors.grey,
-            ),
-            ActionButton(
-              label: "perfect_button_label".tr(),
-              onTap: () async => await _updateUIOnSubmit(score: 1)
-            )
-          ],
-        )
-      ),
+      child: ValidationButtons(
+        wrongAction: _updateUIOnSubmit,
+        midWrongAction: _updateUIOnSubmit,
+        midPerfectAction: _updateUIOnSubmit,
+        perfectAction: _updateUIOnSubmit,
+      )
     );
   }
 

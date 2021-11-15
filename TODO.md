@@ -1,10 +1,5 @@
 # KanPractice TODO list
 
-- Put 4 buttons instead of 2 for validating the input in any learning mode:
-    - Failed: totally failed. Should submit 0%.
-    - Hard: somehow got away with some of the kanji meaning, pronunciation or writing. Should count as 33%.
-    - Good enough: got almost all the kanji meaning, pronunciation or writing perfectly learned. Should count as 66%.
-    - Perfect: got it on the spot. Should count as 100%.
 - Info of new version in the update available dialog from Firebase
 - (Maybe) Refactor all labels and import easy_localization:
     - Remove "kanji" references to make it universal

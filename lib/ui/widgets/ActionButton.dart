@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 
 class ActionButton extends StatelessWidget {
   /// Label to put on the button
@@ -11,31 +12,31 @@ class ActionButton extends StatelessWidget {
   final double vertical;
   final Function() onTap;
   const ActionButton({required this.label, this.color = Colors.green,
-    this.horizontal = 32, this.vertical = 8, required this.onTap});
+    this.horizontal = Margins.margin32, this.vertical = Margins.margin8, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
+      height: CustomSizes.defaultSizeActionButton,
       alignment: Alignment.center,
       margin: EdgeInsets.symmetric(horizontal: horizontal, vertical: vertical),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(CustomRadius.radius16),
         color: color,
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(CustomRadius.radius16),
           child: Container(
-            height: 60,
+            height: CustomSizes.defaultSizeActionButton,
             alignment: Alignment.center,
-            margin: EdgeInsets.all(16),
+            margin: EdgeInsets.all(Margins.margin16),
             child: FittedBox(
               fit: BoxFit.contain,
               child: Text(label, textAlign: TextAlign.center, overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)
+                  style: TextStyle(fontSize: FontSizes.fontSize16, fontWeight: FontWeight.bold, color: Colors.white)
               ),
             )
           ),

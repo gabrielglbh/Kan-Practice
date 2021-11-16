@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/ui/pages/writing/widgets/CustomCanvas.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
@@ -161,8 +161,8 @@ class _WritingStudyState extends State<WritingStudy> {
             ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
             _header(),
             Padding(
-              padding: EdgeInsets.all(8),
-              child: CustomCanvas(line: _line, allowEdit: !_showActualKanji, fatherPadding: 16)
+              padding: EdgeInsets.all(Margins.margin8),
+              child: CustomCanvas(line: _line, allowEdit: !_showActualKanji, fatherPadding: Margins.margin16)
             ),
             ValidationButtons(
               trigger: _showActualKanji,
@@ -192,11 +192,11 @@ class _WritingStudyState extends State<WritingStudy> {
     return Container(
       height: MediaQuery.of(context).size.height < CustomSizes.minimumHeight
           ? CustomSizes.studyGuideHeight / 2 : CustomSizes.studyGuideHeight,
-      padding: EdgeInsets.symmetric(horizontal: 8),
+      padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
       child: Column(
         children: [
           Container(
-            height: 20,
+            height: CustomSizes.defaultSizeLearningExtContainer,
             child: _goNextKanji
                 ? Text(_studyList[_macro].pronunciation, overflow: TextOverflow.ellipsis)
                 : Text(""),
@@ -212,14 +212,15 @@ class _WritingStudyState extends State<WritingStudy> {
                 String? kanji = _studyList[_macro].kanji;
                 return Text(_currentKanji[_macro][index] == _none ? _none : kanji[index],
                     style: TextStyle(fontSize:
-                    MediaQuery.of(context).size.height < CustomSizes.minimumHeight ? 32 : 64,
+                    MediaQuery.of(context).size.height < CustomSizes.minimumHeight
+                        ? FontSizes.fontSize32 : FontSizes.fontSize64,
                         color: index == _inner ? CustomColors.secondaryColor : null)
                 );
               },
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 8),
+            padding: EdgeInsets.only(top: Margins.margin8),
             child: Text(_studyList[_macro].meaning, overflow: TextOverflow.ellipsis),
           )
         ],

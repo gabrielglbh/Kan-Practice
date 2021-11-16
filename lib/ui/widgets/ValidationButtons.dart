@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/ActionButton.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -45,8 +45,8 @@ class ValidationButtons extends StatelessWidget {
 
   Widget _submit() {
     return _animation(1, up: false, child: ActionButton(
-      vertical: 12,
-      horizontal: 4,
+      vertical: Margins.margin12,
+      horizontal: Margins.margin4,
       label: submitLabel,
       onTap: onSubmit
     ));
@@ -60,7 +60,7 @@ class ValidationButtons extends StatelessWidget {
           flex: 1,
           child: _animation(1, child: ActionButton(
             label: "wrong_button_label".tr(),
-            horizontal: 2,
+            horizontal: Margins.margin2,
             onTap: () async => await wrongAction(0),
             color: Colors.red[700]!,
           )),
@@ -69,7 +69,7 @@ class ValidationButtons extends StatelessWidget {
           flex: 1,
           child: _animation(2, child: ActionButton(
             label: "mid_wrong_button_label".tr(),
-            horizontal: 2,
+            horizontal: Margins.margin2,
             onTap: () async => await midWrongAction(0.33),
             color: Colors.yellow[800]!,
           )),
@@ -78,7 +78,7 @@ class ValidationButtons extends StatelessWidget {
           flex: 1,
           child: _animation(3, child: ActionButton(
             label: "mid_perfect_button_label".tr(),
-            horizontal: 2,
+            horizontal: Margins.margin2,
             onTap: () async => await midPerfectAction(0.66),
             color: Colors.green[300]!,
           ))
@@ -87,7 +87,7 @@ class ValidationButtons extends StatelessWidget {
           flex: 1,
           child: _animation(4, child: ActionButton(
             label: "perfect_button_label".tr(),
-            horizontal: 2,
+            horizontal: Margins.margin2,
             onTap: () async => await perfectAction(1),
             color: Colors.green[700]!,
           )),

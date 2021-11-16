@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 
 import '../kanji_painter.dart';
 
@@ -37,7 +38,7 @@ class _CustomCanvasState extends State<CustomCanvas> {
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(CustomRadius.radius16),
                     color: Colors.yellow[100],
                   ),
                   child: CustomPaint(
@@ -54,16 +55,17 @@ class _CustomCanvasState extends State<CustomCanvas> {
           Visibility(
             visible: widget.allowEdit,
             child: Positioned(
-              top: 8, left: 16,
+              top: Margins.margin8, left: Margins.margin16,
               child: GestureDetector(
                 onTap: () => _undoLine(),
                 child: Container(
-                  height: 50, width: 50,
+                  height: CustomSizes.defaultSizeSearchBarIcons,
+                  width: CustomSizes.defaultSizeSearchBarIcons,
                   decoration: BoxDecoration(
                     color: Colors.yellow,
-                    borderRadius: BorderRadius.circular(18)
+                    borderRadius: BorderRadius.circular(CustomRadius.radius16)
                   ),
-                  child: Icon(Icons.undo_rounded, size: 32, color: Colors.black),
+                  child: Icon(Icons.undo_rounded, size: FontSizes.fontSize32, color: Colors.black),
                 ),
               )
             ),
@@ -71,16 +73,17 @@ class _CustomCanvasState extends State<CustomCanvas> {
           Visibility(
             visible: widget.allowEdit,
             child: Positioned(
-              top: 8, right: 16,
+              top: Margins.margin8, right: Margins.margin16,
               child: GestureDetector(
                 onTap: () => _clear(),
                 child: Container(
-                  height: 50, width: 50,
+                  height: CustomSizes.defaultSizeSearchBarIcons,
+                  width: CustomSizes.defaultSizeSearchBarIcons,
                   decoration: BoxDecoration(
                     color: Colors.yellow,
-                    borderRadius: BorderRadius.circular(18)
+                    borderRadius: BorderRadius.circular(CustomRadius.radius16)
                   ),
-                  child: Icon(Icons.redo_rounded, size: 32, color: Colors.black),
+                  child: Icon(Icons.redo_rounded, size: FontSizes.fontSize32, color: Colors.black),
                 ),
               )
             ),

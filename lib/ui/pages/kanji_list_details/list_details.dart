@@ -9,7 +9,7 @@ import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/bloc/details_bloc.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/widgets/kanji_item.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/widgets/BlitzBottomSheet.dart';
@@ -109,7 +109,8 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
       else if (newPage == 1) _selectedMode = StudyModes.reading;
       else _selectedMode = StudyModes.recognition;
     });
-    _controller.animateToPage(newPage, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+    _controller.animateToPage(newPage, duration: Duration(milliseconds: CustomAnimations.ms300),
+        curve: Curves.easeInOut);
   }
 
   _updateSelectedModePageView(double pv) {
@@ -153,19 +154,16 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
     showDialog(context: context, builder: (context) {
       return CustomDialog(
         title: Text("list_details_updateKanListName_title".tr()),
-        content: Container(
-          height: 140,
-          child: CustomTextForm(
-            hint: _listName,
-            header: 'list_details_updateKanListName_header'.tr(),
-            controller: _nameController,
-            focusNode: _nameControllerFn,
-            autofocus: true,
-            onEditingComplete: () {
-              Navigator.of(context).pop();
-              _updateName(_nameController.text);
-            },
-          ),
+        content: CustomTextForm(
+          hint: _listName,
+          header: 'list_details_updateKanListName_header'.tr(),
+          controller: _nameController,
+          focusNode: _nameControllerFn,
+          autofocus: true,
+          onEditingComplete: () {
+            Navigator.of(context).pop();
+            _updateName(_nameController.text);
+          },
         ),
         positiveButtonText: "list_details_updateKanListName_positive".tr(),
         onPositive: () => _updateName(_nameController.text)
@@ -179,9 +177,9 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
       onWillPop: () async {
         if ((_bloc.state as KanjiListDetailStateLoaded).list.length == 0) {
           await ListQueries.instance.updateList(_listName, {
-            KanListTableFields.totalWinRateWritingField: -1,
-            KanListTableFields.totalWinRateReadingField: -1,
-            KanListTableFields.totalWinRateRecognitionField: -1
+            KanListTableFields.totalWinRateWritingField: DatabaseConstants.emptyWinRate,
+            KanListTableFields.totalWinRateReadingField: DatabaseConstants.emptyWinRate,
+            KanListTableFields.totalWinRateRecognitionField: DatabaseConstants.emptyWinRate
           });
         }
         return true;
@@ -247,6 +245,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
                 return CustomProgressIndicator();
               else if (state is KanjiListDetailStateFailure)
                 return EmptyList(
+                  showTryButton: true,
                   onRefresh: () => _bloc..add(KanjiEventLoading(_listName)),
                   message: "list_details_load_failed".tr()
                 );
@@ -273,7 +272,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
         ),
         Divider(),
         Container(
-          height: 50,
+          height: CustomSizes.defaultSizeLearningModeBar,
           child: PageView(
             controller: _controller,
             children: [
@@ -286,7 +285,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
         ),
         Divider(),
         Padding(
-          padding: EdgeInsets.only(bottom: 8),
+          padding: EdgeInsets.only(bottom: Margins.margin8),
           child: CustomButton(
             title1: "list_details_practice_button_label_ext".tr(),
             title2: "list_details_practice_button_label".tr(),
@@ -308,7 +307,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
         ),
         Column(
           children: [
-            Text("$mode %", textAlign: TextAlign.center, style: TextStyle(fontSize: 24)),
+            Text("$mode %", textAlign: TextAlign.center, style: TextStyle(fontSize: FontSizes.fontSize24)),
             Text(_learningMode == LearningMode.spatial
                 ? LearningMode.spatial.name
                 : LearningMode.random.name,

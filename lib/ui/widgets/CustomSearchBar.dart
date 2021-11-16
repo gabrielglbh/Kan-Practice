@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kanpractice/core/database/models/list.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 
 class CustomSearchBar extends StatefulWidget {
   /// Action to perform when the query is ready to be searched on the db
@@ -19,7 +19,7 @@ class CustomSearchBar extends StatefulWidget {
     required this.onExitSearch,
     required this.hint,
     required this.focus,
-    this.padding = 8
+    this.padding = Margins.margin8
   });
 
   @override
@@ -52,7 +52,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
         padding: EdgeInsets.all(widget.padding),
         child: Column(children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(bottom: 8),
+            padding: EdgeInsets.only(bottom: Margins.margin8),
             child: _searchBar()
           )
         ])
@@ -70,7 +70,8 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
         showCursor: _showCursor,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.only(
-              top: 24, bottom: 16, left: 48, right: 48
+              top: Margins.margin24, bottom: Margins.margin16,
+              left: Margins.margin48, right: Margins.margin48
           ),
           hintText: widget.hint,
           filled: false
@@ -94,14 +95,14 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
         },
       ),
       Positioned(
-          bottom: 4,
+          bottom: Margins.margin4,
           left: 0,
           child: _back()
       ),
       Visibility(
         visible: _hasFocus,
         child: Positioned(
-          bottom: 4,
+          bottom: Margins.margin4,
           right: 0,
           child: _clear(),
         ),
@@ -115,7 +116,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
       width: CustomSizes.defaultSizeSearchBarIcons,
       height: CustomSizes.defaultSizeSearchBarIcons,
       child: InkWell(
-        borderRadius: BorderRadius.circular(32),
+        borderRadius: BorderRadius.circular(CustomRadius.radius32),
         onTap: () {
           if (_hasFocus) {
             widget.onExitSearch();
@@ -136,7 +137,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
       width: CustomSizes.defaultSizeSearchBarIcons,
       height: CustomSizes.defaultSizeSearchBarIcons,
       child: InkWell(
-        borderRadius: BorderRadius.circular(32),
+        borderRadius: BorderRadius.circular(CustomRadius.radius32),
         onTap: () {
           setState(() {
             _clearSearch();

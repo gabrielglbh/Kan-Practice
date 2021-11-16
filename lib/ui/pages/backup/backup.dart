@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/ui/pages/backup/bloc/backup_bloc.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
 import 'package:easy_localization/easy_localization.dart';

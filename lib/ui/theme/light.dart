@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'theme_consts.dart';
+import 'consts.dart';
 
 final Color _primary = Colors.white;
 final Color _cardColor = Colors.grey[200]!;
@@ -18,7 +18,7 @@ final ThemeData light = ThemeData(
     appBarTheme: AppBarTheme(
         color: _primary,
         elevation: 0,
-        titleTextStyle: TextStyle(fontSize: 32, color: _accent),
+        titleTextStyle: TextStyle(fontSize: FontSizes.fontSize32, color: _accent),
         iconTheme: IconThemeData(color: _accent),
     ),
     iconTheme: IconThemeData(color: _accent),
@@ -44,16 +44,17 @@ final ThemeData light = ThemeData(
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(CustomColors.secondaryColor),
-        shape: MaterialStateProperty.all<OutlinedBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+        shape: MaterialStateProperty.all<OutlinedBorder>(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(CustomRadius.radius8))),
       ),
     ),
     dialogTheme: DialogTheme(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(18))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(CustomRadius.radius16))),
     ),
     snackBarTheme: SnackBarThemeData(
         backgroundColor: Colors.grey,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(18))),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(CustomRadius.radius16))),
         elevation: 6,
         contentTextStyle: TextStyle(color: _accent)
     ),
@@ -63,11 +64,11 @@ final ThemeData light = ThemeData(
     inputDecorationTheme: InputDecorationTheme(
         hintStyle: TextStyle(color: Colors.grey[400]),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(24)),
+          borderRadius: BorderRadius.all(Radius.circular(CustomRadius.radius24)),
           borderSide: BorderSide(color: _accent),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(24)),
+          borderRadius: BorderRadius.all(Radius.circular(CustomRadius.radius24)),
           borderSide: BorderSide(color: CustomColors.secondaryColor, width: 2.0),
         )
     ),
@@ -75,8 +76,8 @@ final ThemeData light = ThemeData(
         backgroundColor: _primary,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(18),
-                topRight: Radius.circular(18)
+                topLeft: Radius.circular(CustomRadius.radius16),
+                topRight: Radius.circular(CustomRadius.radius16)
             )
         )
     ),
@@ -86,7 +87,7 @@ final ThemeData light = ThemeData(
         secondaryLabelStyle: TextStyle(color: _primary),
         brightness: Brightness.light,
         backgroundColor: _chipColor,
-        padding: EdgeInsets.all(4),
+        padding: EdgeInsets.all(Margins.margin4),
         disabledColor: Colors.grey,
         labelStyle: TextStyle(color: _primary),
         secondarySelectedColor: _accent

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/queries/test_queries.dart';
 import 'package:kanpractice/ui/pages/test_result/arguments.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/ActionButton.dart';
 import 'package:kanpractice/ui/widgets/WinRateChart.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -25,19 +25,19 @@ class TestResult extends StatelessWidget {
             children: [
               Text("test_result_title".tr(),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 32),
+                style: TextStyle(fontSize: FontSizes.fontSize32),
               ),
               WinRateChart(
                 title: "",
                 winRate: args.score,
                 size: MediaQuery.of(context).size.width / 2,
-                rateSize: 32,
+                rateSize: ChartSize.medium,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                padding: EdgeInsets.symmetric(horizontal: Margins.margin8, vertical: Margins.margin16),
                 child: Text("test_result_disclaimer".tr(),
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: FontSizes.fontSize20),
                 ),
               ),
               ActionButton(

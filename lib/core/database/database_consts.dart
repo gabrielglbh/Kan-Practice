@@ -28,3 +28,7 @@ class TestTableFields {
   static const String kanjiListsField = "kanjiLists";
   static const String studyModeField = "studyMode";
 }
+
+class DatabaseConstants {
+  static const double emptyWinRate = -1;
+}

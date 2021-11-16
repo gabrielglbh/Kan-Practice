@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kana_kit/kana_kit.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
@@ -101,26 +101,31 @@ class _ReadingStudyState extends State<ReadingStudy> {
           centerTitle: true
         ),
         body: Container(
-          margin: EdgeInsets.only(top: 32),
+          margin: EdgeInsets.only(top: Margins.margin32),
           alignment: Alignment.center,
-          padding: EdgeInsets.symmetric(horizontal: 8),
+          padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
           child: Column(
             children: [
               ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
-              Text(_getProperAlphabet(), style: TextStyle(fontSize: 24, color: CustomColors.secondarySubtleColor)),
+              Text(_getProperAlphabet(),
+                  style: TextStyle(fontSize: FontSizes.fontSize24,
+                  color: CustomColors.secondarySubtleColor)
+              ),
               Container(
-                height: 50,
-                child: Text(_getProperPronunciation(), style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+                height: CustomSizes.defaultSizeReadingExtContainer,
+                child: Text(_getProperPronunciation(),
+                    style: TextStyle(fontSize: FontSizes.fontSize32, fontWeight: FontWeight.bold)),
               ),
               Container(
                 height: CustomSizes.listStudyHeight,
                 child: FittedBox(
                   fit: BoxFit.contain,
-                  child: Text(_studyList[_macro].kanji, style: TextStyle(fontSize: 64)),
+                  child: Text(_studyList[_macro].kanji,
+                      style: TextStyle(fontSize: FontSizes.fontSize64)),
                 )
               ),
               Padding(
-                padding: EdgeInsets.only(top: 8, bottom: 32),
+                padding: EdgeInsets.only(top: Margins.margin8, bottom: Margins.margin32),
                 child: Text(_getProperMeaning(), overflow: TextOverflow.ellipsis),
               ),
               ValidationButtons(

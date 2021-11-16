@@ -39,9 +39,9 @@ class CustomDatabase {
             "${KanjiTableFields.listNameField} TEXT NOT NULL, "
             "${KanjiTableFields.meaningField} TEXT NOT NULL, "
             "${KanjiTableFields.pronunciationField} TEXT NOT NULL, "
-            "${KanjiTableFields.winRateWritingField} INTEGER NOT NULL DEFAULT -1, "
-            "${KanjiTableFields.winRateReadingField} INTEGER NOT NULL DEFAULT -1, "
-            "${KanjiTableFields.winRateRecognitionField} INTEGER NOT NULL DEFAULT -1, "
+            "${KanjiTableFields.winRateWritingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${KanjiTableFields.winRateReadingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${KanjiTableFields.winRateRecognitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${KanjiTableFields.dateAddedField} INTEGER NOT NULL DEFAULT 0, "
             "PRIMARY KEY (${KanjiTableFields.kanjiField}, ${KanjiTableFields.meaningField}, ${KanjiTableFields.pronunciationField}), "
             "FOREIGN KEY (${KanjiTableFields.listNameField}) "
@@ -50,9 +50,9 @@ class CustomDatabase {
 
         await db.execute("CREATE TABLE ${KanListTableFields.listsTable}("
             "${KanListTableFields.nameField} TEXT PRIMARY KEY NOT NULL, "
-            "${KanListTableFields.totalWinRateWritingField} INTEGER NOT NULL DEFAULT -1, "
-            "${KanListTableFields.totalWinRateReadingField} INTEGER NOT NULL DEFAULT -1, "
-            "${KanListTableFields.totalWinRateRecognitionField} INTEGER NOT NULL DEFAULT -1, "
+            "${KanListTableFields.totalWinRateWritingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${KanListTableFields.totalWinRateReadingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${KanListTableFields.totalWinRateRecognitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${KanListTableFields.lastUpdatedField} INTEGER NOT NULL DEFAULT 0)");
 
         await db.execute("CREATE TABLE ${TestTableFields.testTable}("

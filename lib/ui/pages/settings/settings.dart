@@ -6,7 +6,7 @@ import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/pages/settings/bloc/settings_bloc.dart';
 import 'package:kanpractice/ui/pages/settings/widgets/DevInfo.dart';
 import 'package:kanpractice/ui/theme/theme_manager.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -33,11 +33,6 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: CustomSizes.appBarHeight,
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_rounded),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
         title: FittedBox(fit: BoxFit.fitWidth, child: Text("settings_title".tr())),
         actions: [
           IconButton(
@@ -117,7 +112,10 @@ class _SettingsState extends State<Settings> {
                       return LicensePage(
                         applicationName: "KanPractice",
                         applicationVersion: snapshot.data?.version,
-                        applicationIcon: Container(width: 150, height: 150, child: Image.asset("assets/icon/icon.png")),
+                        applicationIcon: Container(
+                          width: CustomSizes.appIcon, height: CustomSizes.appIcon,
+                          child: Image.asset("assets/icon/icon.png")
+                        ),
                       );
                   });
                 }),
@@ -125,18 +123,20 @@ class _SettingsState extends State<Settings> {
             }
           ),
           Divider(),
-          ListTile(
-            leading: Icon(Icons.privacy_tip),
-            title: Text("settings_information_terms_label".tr()),
-            onTap: () async {
-              try {
-                await launch("https://kanpractice.web.app");
-              } catch (err) {
-                GeneralUtils.getSnackBar(context, "launch_url_failed".tr());
+          Padding(
+            padding: EdgeInsets.only(bottom: Margins.margin48),
+            child: ListTile(
+              leading: Icon(Icons.privacy_tip),
+              title: Text("settings_information_terms_label".tr()),
+              onTap: () async {
+                try {
+                  await launch("https://kanpractice.web.app");
+                } catch (err) {
+                  GeneralUtils.getSnackBar(context, "launch_url_failed".tr());
+                }
               }
-            }
+            ),
           ),
-          Container(height: 48)
         ],
       )
     );
@@ -144,7 +144,7 @@ class _SettingsState extends State<Settings> {
 
   ListTile _header(String title, {String? subtitle}) {
     return ListTile(
-      title: Text(title, style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+      title: Text(title, style: TextStyle(fontSize: FontSizes.fontSize26, fontWeight: FontWeight.bold)),
       subtitle: subtitle != null ? Text(subtitle) : null,
     );
   }

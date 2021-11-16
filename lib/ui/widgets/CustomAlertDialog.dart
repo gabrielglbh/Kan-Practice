@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 
 class CustomDialog extends StatelessWidget {
   /// Title of the dialog
@@ -20,37 +20,36 @@ class CustomDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: CustomSizes.alertDialogHeight,
-      child: AlertDialog(
-        title: title,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(18))),
-        content: content,
-        actions: [
-          Visibility(
-            visible: negativeButton,
-            child: ElevatedButton(
-              child: Text("back_button_label".tr()),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.grey),
-                shape: MaterialStateProperty.all<OutlinedBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-              ),
-              onPressed: () => Navigator.of(context).pop()
-            ),
-          ),
-          ElevatedButton(
-            child: Text(positiveButtonText),
+    return AlertDialog(
+      title: title,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(CustomRadius.radius16))),
+      content: Wrap(children: [content]),
+      actions: [
+        Visibility(
+          visible: negativeButton,
+          child: ElevatedButton(
+            child: Text("back_button_label".tr()),
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
-              shape: MaterialStateProperty.all<OutlinedBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.grey),
+              shape: MaterialStateProperty.all<OutlinedBorder>(
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(CustomRadius.radius8))),
             ),
-            onPressed: () async {
-              await onPositive();
-              if (popDialog) Navigator.of(context).pop();
-            }
+            onPressed: () => Navigator.of(context).pop()
           ),
-        ],
-      ),
+        ),
+        ElevatedButton(
+          child: Text(positiveButtonText),
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+            shape: MaterialStateProperty.all<OutlinedBorder>(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(CustomRadius.radius8))),
+          ),
+          onPressed: () async {
+            await onPositive();
+            if (popDialog) Navigator.of(context).pop();
+          }
+        ),
+      ],
     );
   }
 }

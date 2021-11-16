@@ -4,8 +4,9 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
+import 'package:kanpractice/ui/widgets/DragContainer.dart';
 import 'package:kanpractice/ui/widgets/StudyMode.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomButton.dart';
 import 'package:kanpractice/ui/widgets/EmptyList.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
@@ -54,12 +55,12 @@ class _StudyBottomSheetState extends State<StudyBottomSheet> {
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                _dragContainer(),
+                DragContainer(),
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
+                  padding: EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin32),
                   child: Text("study_bottom_sheet_title".tr(),
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize18)),
                 ),
                 Visibility(
                   visible: _selectionMode,
@@ -75,6 +76,7 @@ class _StudyBottomSheetState extends State<StudyBottomSheet> {
                       builder: (context, state) {
                         if (state is KanjiListStateFailure)
                           return EmptyList(
+                            showTryButton: true,
                             onRefresh: () => _bloc..add(KanjiListEventLoading(
                               filter: KanListTableFields.lastUpdatedField, order: false
                             )),
@@ -111,7 +113,7 @@ class _StudyBottomSheetState extends State<StudyBottomSheet> {
             itemBuilder: (context, index) {
               String name = state.lists[index].name;
               return Padding(
-                padding: EdgeInsets.only(right: 8),
+                padding: EdgeInsets.only(right: Margins.margin8),
                 child: ActionChip(
                   label: Text(name),
                   backgroundColor: _selectedLists.contains(name) ? CustomColors.secondaryColor : CustomColors.secondarySubtleColor,
@@ -137,20 +139,6 @@ class _StudyBottomSheetState extends State<StudyBottomSheet> {
           }
         )
       ],
-    );
-  }
-
-  Align _dragContainer() {
-    return Align(
-      alignment: Alignment.center,
-      child: Container(
-        width: 90, height: 5,
-        margin: EdgeInsets.only(bottom: 8, top: 8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(18),
-          color: Colors.grey
-        ),
-      ),
     );
   }
 }

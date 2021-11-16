@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/widgets/DragContainer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -22,28 +24,21 @@ class DevInfo extends StatelessWidget {
       enableDrag: false,
       onClosing: () => {},
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(
-          topRight: Radius.circular(18), topLeft: Radius.circular(18))
+          topRight: Radius.circular(CustomRadius.radius16), topLeft: Radius.circular(CustomRadius.radius16))
       ),
       builder: (context) {
         return Container(
-          height: 256,
-          margin: EdgeInsets.all(16),
+          height: CustomSizes.maxHeightBottomSheetDeveloper,
+          margin: EdgeInsets.all(Margins.margin16),
           child: Column(
             children: [
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                  width: 90, height: 5,
-                  margin: EdgeInsets.only(bottom: 8),
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(18), color: Colors.grey[300]),
-                ),
-              ),
+              DragContainer(),
               Align(
                 alignment: Alignment.center,
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 8),
+                  padding: EdgeInsets.only(bottom: Margins.margin8),
                   child: Text("developer_info_label".tr(), textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                      style: TextStyle(fontSize: FontSizes.fontSize24, fontWeight: FontWeight.bold)),
                 )
               ),
               Expanded(child: _developer(context))
@@ -57,15 +52,15 @@ class DevInfo extends StatelessWidget {
   Scrollbar _developer(BuildContext context) {
     return Scrollbar(
       child: ListView(
-        padding: EdgeInsets.only(top: 8),
+        padding: EdgeInsets.only(top: Margins.margin8),
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Icon(Icons.handyman),
               Padding(
-                padding: EdgeInsets.only(left: 16, top: 16, bottom: 16),
-                child: Text("Gabriel García", style: TextStyle(fontSize: 14)),
+                padding: EdgeInsets.only(left: Margins.margin16, top: Margins.margin16, bottom: Margins.margin16),
+                child: Text("Gabriel García", style: TextStyle(fontSize: FontSizes.fontSize14)),
               )
             ],
           ),
@@ -76,8 +71,8 @@ class DevInfo extends StatelessWidget {
               children: [
                 Icon(Icons.developer_mode_rounded),
                 Padding(
-                  padding: EdgeInsets.only(left: 16, top: 16, bottom: 16),
-                  child: Text("developer_info_follow".tr(), style: TextStyle(fontSize: 14)),
+                  padding: EdgeInsets.only(left: Margins.margin16, top: Margins.margin16, bottom: Margins.margin16),
+                  child: Text("developer_info_follow".tr(), style: TextStyle(fontSize: FontSizes.fontSize14)),
                 )
               ],
             ),
@@ -87,7 +82,7 @@ class DevInfo extends StatelessWidget {
             children: [
               Icon(Icons.bug_report),
               Padding(
-                padding: EdgeInsets.only(left: 16, top: 16, bottom: 16),
+                padding: EdgeInsets.only(left: Margins.margin16, top: Margins.margin16, bottom: Margins.margin16),
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2,
                   child: RichText(
@@ -97,7 +92,7 @@ class DevInfo extends StatelessWidget {
                         TextSpan(
                           text: " devgglop@gmail.com",
                           style: TextStyle(color: Colors.orange[400],
-                              decoration: TextDecoration.underline, fontSize: 14
+                              decoration: TextDecoration.underline, fontSize: FontSizes.fontSize14
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () async {

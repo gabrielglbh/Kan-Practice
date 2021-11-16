@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/widgets/ValidationButtons.dart';
@@ -90,29 +90,30 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
           centerTitle: true
         ),
         body: Container(
-          margin: EdgeInsets.only(top: 32),
-          padding: EdgeInsets.symmetric(horizontal: 8),
+          margin: EdgeInsets.only(top: Margins.margin32),
+          padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
           alignment: Alignment.center,
           child: Column(
             children: [
               ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
               Container(
-                height: 20,
+                height: CustomSizes.defaultSizeLearningExtContainer,
                 child: Text(_getProperPronunciation()),
               ),
               Container(
                 height: CustomSizes.listStudyHeight,
                 child: FittedBox(
                   fit: BoxFit.contain,
-                  child: Text(_studyList[_macro].kanji, style: TextStyle(fontSize: 64)),
+                  child: Text(_studyList[_macro].kanji,
+                      style: TextStyle(fontSize: FontSizes.fontSize64)),
                 )
               ),
               Padding(
-                padding: EdgeInsets.only(top: 8, bottom: 32),
+                padding: EdgeInsets.only(top: Margins.margin8, bottom: Margins.margin32),
                 child: Text(_getProperMeaning(),
                   maxLines: 3,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: FontSizes.fontSize24, fontWeight: FontWeight.bold),
                   overflow: TextOverflow.ellipsis
                 ),
               ),

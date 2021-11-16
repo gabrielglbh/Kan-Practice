@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/widgets/CustomButton.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -21,7 +21,7 @@ class TestStudyMode extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            height: CustomSizes.customButtonHeight,
+            height: CustomSizes.defaultSizeButtonHeight,
             child: ListView(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
@@ -34,8 +34,9 @@ class TestStudyMode extends StatelessWidget {
           ),
 
           Padding(
-            padding: EdgeInsets.only(top: 16, bottom: 16),
-            child: Text("study_modes_good_luck".tr(), style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            padding: EdgeInsets.only(top: Margins.margin16, bottom: Margins.margin16),
+            child: Text("study_modes_good_luck".tr(),
+                style: TextStyle(fontSize: FontSizes.fontSize24, fontWeight: FontWeight.bold)),
           )
         ],
       )
@@ -44,7 +45,7 @@ class TestStudyMode extends StatelessWidget {
 
   CustomButton _modeBasedButtons(BuildContext context, StudyModes mode) {
     return CustomButton(
-      width: (MediaQuery.of(context).size.width / 3) - 24,
+      width: (MediaQuery.of(context).size.width / 3) - Margins.margin24,
       title1: mode.japMode,
       title2: mode.mode,
       color: mode.color,

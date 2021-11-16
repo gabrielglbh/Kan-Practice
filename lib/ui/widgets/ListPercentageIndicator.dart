@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class ListPercentageIndicator extends StatelessWidget {
@@ -11,7 +11,7 @@ class ListPercentageIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 16, right: 16, left: 16),
+      padding: EdgeInsets.only(bottom: Margins.margin16, right: Margins.margin16, left: Margins.margin16),
       child: LinearPercentIndicator(
         percent: value,
         backgroundColor: CustomColors.secondarySubtleColor,

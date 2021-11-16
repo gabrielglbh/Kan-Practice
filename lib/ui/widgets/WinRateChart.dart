@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class WinRateChart extends StatelessWidget {
@@ -13,7 +13,8 @@ class WinRateChart extends StatelessWidget {
   final Color chartColor;
   /// Value of the [winRate] text size
   final double? rateSize;
-  const WinRateChart({required this.title, required this.winRate, this.size = 80, this.rateSize,
+  const WinRateChart({required this.title, required this.winRate,
+    this.size = CustomSizes.defaultSizeWinRateChart, this.rateSize,
     this.chartColor = CustomColors.secondaryColor
   });
 
@@ -21,7 +22,7 @@ class WinRateChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: size, width: size,
-      margin: EdgeInsets.all(8),
+      margin: EdgeInsets.all(Margins.margin8),
       child: SfRadialGauge(
         title: GaugeTitle(text: title),
         axes: <RadialAxis>[

@@ -16,8 +16,9 @@ class KanjiList {
   @JsonKey(name: KanListTableFields.lastUpdatedField)
   final int lastUpdated;
 
-  KanjiList({required this.name, this.totalWinRateWriting = -1, this.totalWinRateReading = -1,
-    this.totalWinRateRecognition = -1, required this.lastUpdated
+  KanjiList({required this.name, this.totalWinRateWriting =DatabaseConstants.emptyWinRate,
+    this.totalWinRateReading = DatabaseConstants.emptyWinRate,
+    this.totalWinRateRecognition = DatabaseConstants.emptyWinRate, required this.lastUpdated
   });
 
   /// Empty [KanjiList]

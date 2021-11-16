@@ -3,6 +3,7 @@ import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
 import 'package:kanpractice/ui/widgets/WinRateBarChart.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -30,17 +31,17 @@ class KanListTile extends StatelessWidget {
       },
       onLongPress: () => _createDialogForDeletingKanList(context, item),
       title: Padding(
-        padding: EdgeInsets.only(bottom: 8, top: 8),
+        padding: EdgeInsets.symmetric(vertical: Margins.margin8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
               child: Text(item.name,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  style: TextStyle(fontSize: FontSizes.fontSize24, fontWeight: FontWeight.bold)),
             ),
             Text("${"created_label".tr()} ${GeneralUtils.parseDateMilliseconds(context, item.lastUpdated)}",
-                style: TextStyle(fontSize: 12))
+                style: TextStyle(fontSize: FontSizes.fontSize12))
           ],
         ),
       ),

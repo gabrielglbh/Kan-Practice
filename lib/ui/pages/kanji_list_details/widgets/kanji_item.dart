@@ -4,7 +4,7 @@ import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/widgets/KanjiBottomSheet.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 
 class KanjiItem extends StatefulWidget {
   final String listName;
@@ -64,30 +64,30 @@ class _KanjiItemState extends State<KanjiItem> {
   AnimatedContainer _item(BuildContext context) {
     return AnimatedContainer(
       duration: Duration(milliseconds: CustomAnimations.ms300),
-      padding: EdgeInsets.all(2),
-      margin: EdgeInsets.all(4),
+      padding: EdgeInsets.all(Margins.margin2),
+      margin: EdgeInsets.all(Margins.margin4),
       decoration: BoxDecoration(
         color: GeneralUtils.getColorBasedOnWinRate(_getProperKanjiWinRate(widget.kanji)),
-        borderRadius: BorderRadius.all(Radius.circular(8)),
+        borderRadius: BorderRadius.all(Radius.circular(CustomRadius.radius8)),
         boxShadow: [
-          BoxShadow(color: Colors.grey, offset: Offset(0, 3), blurRadius: 4)
+          BoxShadow(color: Colors.grey, offset: Offset(0, 3), blurRadius: CustomRadius.radius4)
         ]
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
+          borderRadius: BorderRadius.all(Radius.circular(CustomRadius.radius8)),
           onTap: () async {
             await KanjiBottomSheet.callKanjiModeBottomSheet(context,
                 widget.listName, widget.kanji, onTap: widget.onTap, onRemove: widget.onRemoval);
           },
           // _createDialogForDeletingKanji(context, kanji.kanji),,
           child: Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(8))),
+            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(CustomRadius.radius8))),
             child: FittedBox(
               fit: BoxFit.contain,
               child: Text(widget.kanji.kanji, textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20, color: Colors.black)),
+                  style: TextStyle(fontSize: FontSizes.fontSize20, color: Colors.black)),
             )
           ),
         ),

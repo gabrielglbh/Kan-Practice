@@ -108,7 +108,10 @@ class _ReadingStudyState extends State<ReadingStudy> {
             children: [
               ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
               Text(_getProperAlphabet(), style: TextStyle(fontSize: 24, color: CustomColors.secondarySubtleColor)),
-              Text(_getProperPronunciation(), style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+              Container(
+                height: 50,
+                child: Text(_getProperPronunciation(), style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+              ),
               Container(
                 height: CustomSizes.listStudyHeight,
                 child: FittedBox(

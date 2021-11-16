@@ -96,7 +96,10 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
           child: Column(
             children: [
               ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
-              Text(_getProperPronunciation()),
+              Container(
+                height: 20,
+                child: Text(_getProperPronunciation()),
+              ),
               Container(
                 height: CustomSizes.listStudyHeight,
                 child: FittedBox(

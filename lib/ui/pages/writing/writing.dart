@@ -195,32 +195,28 @@ class _WritingStudyState extends State<WritingStudy> {
       padding: EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         children: [
-          Visibility(
-            visible: _goNextKanji,
-            child: Text(_studyList[_macro].pronunciation, overflow: TextOverflow.ellipsis),
+          Container(
+            height: 20,
+            child: _goNextKanji
+                ? Text(_studyList[_macro].pronunciation, overflow: TextOverflow.ellipsis)
+                : Text(""),
           ),
           Container(
             height: finalHeight,
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: Container(
-                height: finalHeight,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: _studyList[_macro].kanji.length,
-                  physics: NeverScrollableScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    String? kanji = _studyList[_macro].kanji;
-                    return Text(_currentKanji[_macro][index] == _none ? _none : kanji[index],
-                      style: TextStyle(fontSize:
-                          MediaQuery.of(context).size.height < 700 ? 32 : 64,
-                          color: index == _inner ? CustomColors.secondaryColor : null)
-                    );
-                  },
-                ),
-              )
-            )
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: _studyList[_macro].kanji.length,
+              physics: NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                String? kanji = _studyList[_macro].kanji;
+                return Text(_currentKanji[_macro][index] == _none ? _none : kanji[index],
+                    style: TextStyle(fontSize:
+                    MediaQuery.of(context).size.height < 700 ? 32 : 64,
+                        color: index == _inner ? CustomColors.secondaryColor : null)
+                );
+              },
+            ),
           ),
           Padding(
             padding: EdgeInsets.only(top: 8),

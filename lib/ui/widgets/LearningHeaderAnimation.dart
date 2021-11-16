@@ -10,12 +10,16 @@ class LearningHeaderAnimation extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
       duration: Duration(milliseconds: CustomAnimations.ms400),
+      switchInCurve: Curves.easeOut,
+      switchOutCurve: Curves.easeOut,
       transitionBuilder: (child, animation) {
         return FadeTransition(
           opacity: animation.drive(Tween(begin: 0, end: 1)),
           child: SlideTransition(
               child: child,
-              position: animation.drive(Tween(begin: Offset(2, 0), end: Offset.zero))
+              position: animation.drive(
+                Tween(begin: Offset(CustomAnimations.dxCardInfo, 0), end: Offset.zero)
+              )
           ),
         );
       },

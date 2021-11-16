@@ -67,7 +67,10 @@ class CustomRadius {
 }
 
 class CustomAnimations {
+  static const double dxCardInfo = 2;
+
   static const int kanjiItemDuration = 25;
+  static const int ms200 = 200;
   static const int ms300 = 300;
   static const int ms400 = 400;
 }

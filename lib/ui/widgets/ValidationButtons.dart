@@ -31,11 +31,18 @@ class ValidationButtons extends StatelessWidget {
     );
   }
 
-  TweenAnimationBuilder _animation(int duration, {required Widget child, bool up = true}) {
+  TweenAnimationBuilder _animation({int duration = 1, required Widget child, bool side = false}) {
     return TweenAnimationBuilder(
-      tween: Tween<Offset>(begin: Offset(up ? 0.5 : -0.5, 0), end: Offset(0, 0)),
+      tween: Tween<Offset>(begin: Offset(
+        /// For side ways animation --> same dx as LearningHeaderAnimation
+        side ? CustomAnimations.dxCardInfo : 0,
+        side ? 0 : -0.3),
+        end: Offset.zero
+      ),
       curve: Curves.easeOut,
-      duration: Duration(milliseconds: CustomAnimations.ms300 * duration),
+      duration: Duration(
+          milliseconds: side ? CustomAnimations.ms400 : CustomAnimations.ms200 * duration
+      ),
       builder: (context, offset, child) {
         return FractionalTranslation(translation: offset as Offset, child: child);
       },
@@ -44,7 +51,7 @@ class ValidationButtons extends StatelessWidget {
   }
 
   Widget _submit() {
-    return _animation(1, up: false, child: ActionButton(
+    return _animation(side: true, child: ActionButton(
       vertical: Margins.margin12,
       horizontal: 0,
       label: submitLabel,
@@ -58,7 +65,7 @@ class ValidationButtons extends StatelessWidget {
       children: [
         Expanded(
           flex: 1,
-          child: _animation(1, child: ActionButton(
+          child: _animation(duration: 1, child: ActionButton(
             label: "wrong_button_label".tr(),
             horizontal: Margins.margin2,
             onTap: () async => await wrongAction(0),
@@ -67,7 +74,7 @@ class ValidationButtons extends StatelessWidget {
         ),
         Expanded(
           flex: 1,
-          child: _animation(2, child: ActionButton(
+          child: _animation(duration: 2, child: ActionButton(
             label: "mid_wrong_button_label".tr(),
             horizontal: Margins.margin2,
             onTap: () async => await midWrongAction(0.33),
@@ -76,7 +83,7 @@ class ValidationButtons extends StatelessWidget {
         ),
         Expanded(
           flex: 1,
-          child: _animation(3, child: ActionButton(
+          child: _animation(duration: 3, child: ActionButton(
             label: "mid_perfect_button_label".tr(),
             horizontal: Margins.margin2,
             onTap: () async => await midPerfectAction(0.66),
@@ -85,7 +92,7 @@ class ValidationButtons extends StatelessWidget {
         ),
         Expanded(
           flex: 1,
-          child: _animation(4, child: ActionButton(
+          child: _animation(duration: 4, child: ActionButton(
             label: "perfect_button_label".tr(),
             horizontal: Margins.margin2,
             onTap: () async => await perfectAction(1),

@@ -90,10 +90,8 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
           title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.mode.mode)),
           centerTitle: true
         ),
-        body: Container(
-          margin: EdgeInsets.only(top: Margins.margin32),
-          padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
-          alignment: Alignment.center,
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
           child: Column(
             children: [
               ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
@@ -129,11 +127,11 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
         )
       ),
       Padding(
-        padding: EdgeInsets.only(top: Margins.margin8, bottom: Margins.margin32),
+        padding: EdgeInsets.only(top: Margins.margin8),
         child: Text(_getProperMeaning(),
           maxLines: 3,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: FontSizes.fontSize24, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: FontSizes.fontSize32, fontWeight: FontWeight.bold),
           overflow: TextOverflow.ellipsis
         ),
       ),

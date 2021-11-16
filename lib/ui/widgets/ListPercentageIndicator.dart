@@ -10,19 +10,16 @@ class ListPercentageIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: Margins.margin16, right: Margins.margin16, left: Margins.margin16),
-      child: LinearPercentIndicator(
-        percent: value,
-        backgroundColor: CustomColors.secondarySubtleColor,
-        progressColor: CustomColors.secondaryColor,
-        lineHeight: 30,
-        animation: true,
-        animationDuration: 1000,
-        animateFromLastPercent: true,
-        center: Text(value == 1 ? "100%" : "${(value*100).toStringAsPrecision(2)}%",
-          style: TextStyle(color: Colors.white),
-        ),
+    return LinearPercentIndicator(
+      percent: value,
+      backgroundColor: CustomColors.secondarySubtleColor,
+      progressColor: CustomColors.secondaryColor,
+      lineHeight: 30,
+      animation: true,
+      animationDuration: 1000,
+      animateFromLastPercent: true,
+      center: Text(value == 1 ? "100%" : "${(value*100).toStringAsPrecision(2)}%",
+        style: TextStyle(color: Colors.white),
       ),
     );
   }

@@ -69,6 +69,7 @@ class CustomRadius {
 class CustomAnimations {
   static const int kanjiItemDuration = 25;
   static const int ms300 = 300;
+  static const int ms400 = 400;
 }
 
 class CustomColors {

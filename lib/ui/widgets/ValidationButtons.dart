@@ -22,7 +22,6 @@ class ValidationButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: CustomSizes.listStudyHeight,
-      padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
       child: AnimatedSwitcher(
         duration: Duration(milliseconds: CustomAnimations.ms300),
         switchInCurve: Curves.easeOut,
@@ -47,7 +46,7 @@ class ValidationButtons extends StatelessWidget {
   Widget _submit() {
     return _animation(1, up: false, child: ActionButton(
       vertical: Margins.margin12,
-      horizontal: Margins.margin4,
+      horizontal: 0,
       label: submitLabel,
       onTap: onSubmit
     ));

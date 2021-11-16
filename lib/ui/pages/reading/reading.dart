@@ -101,10 +101,8 @@ class _ReadingStudyState extends State<ReadingStudy> {
           title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.mode.mode)),
           centerTitle: true
         ),
-        body: Container(
-          margin: EdgeInsets.only(top: Margins.margin32),
-          alignment: Alignment.center,
-          padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
           child: Column(
             children: [
               ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
@@ -145,8 +143,10 @@ class _ReadingStudyState extends State<ReadingStudy> {
         )
       ),
       Padding(
-        padding: EdgeInsets.only(top: Margins.margin8, bottom: Margins.margin32),
-        child: Text(_getProperMeaning(), overflow: TextOverflow.ellipsis),
+        padding: EdgeInsets.only(top: Margins.margin8),
+        child: Text(_getProperMeaning(),
+            style: TextStyle(fontSize: FontSizes.fontSize18),
+            overflow: TextOverflow.ellipsis),
       ),
     ];
   }

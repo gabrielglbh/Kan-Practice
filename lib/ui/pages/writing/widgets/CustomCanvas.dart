@@ -8,9 +8,7 @@ class CustomCanvas extends StatefulWidget {
   final List<Offset?> line;
   /// Whether to allow the user to paint or not
   final bool allowEdit;
-  /// Value to subtract to the height of the parent to the canvas
-  final double fatherPadding;
-  const CustomCanvas({required this.line, this.allowEdit = true, required this.fatherPadding});
+  const CustomCanvas({required this.line, this.allowEdit = true});
 
   @override
   _CustomCanvasState createState() => _CustomCanvasState();
@@ -22,9 +20,12 @@ class _CustomCanvasState extends State<CustomCanvas> {
 
   @override
   Widget build(BuildContext context) {
+    /// We subtract 32 padding to the size as we have an inherent 16 - 16
+    /// padding on the sides on the parent
+    final double size = MediaQuery.of(context).size.width - Margins.margin32;
     return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.width - widget.fatherPadding,
+      width: size,
+      height: size,
       child: Stack(
         children: [
           GestureDetector(
@@ -44,7 +45,7 @@ class _CustomCanvasState extends State<CustomCanvas> {
                   child: CustomPaint(
                     painter: KanjiPainter(
                       points: widget.line,
-                      size: MediaQuery.of(context).size.width - widget.fatherPadding
+                      size: size
                     ),
                     size: Size.square(MediaQuery.of(context).size.width),
                   )

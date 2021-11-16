@@ -157,31 +157,31 @@ class _WritingStudyState extends State<WritingStudy> {
             )
           ],
         ),
-        body: Column(
-          children: [
-            ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
-            LearningHeaderAnimation(id: _macro, children: _header()),
-            Padding(
-              padding: EdgeInsets.all(Margins.margin8),
-              child: CustomCanvas(line: _line, allowEdit: !_showActualKanji, fatherPadding: Margins.margin16)
-            ),
-            ValidationButtons(
-              trigger: _showActualKanji,
-              submitLabel: _goNextKanji ? "writing_next_kanji_label".tr() : "done_button_label".tr(),
-              wrongAction: _updateUIOnSubmit,
-              midWrongAction: _updateUIOnSubmit,
-              midPerfectAction: _updateUIOnSubmit,
-              perfectAction: _updateUIOnSubmit,
-              onSubmit: () {
-                if (_macro <= _studyList.length - 1)
-                  _resetKanji();
-                else {
-                  if (_line.isNotEmpty) _resetKanji();
-                  else GeneralUtils.getSnackBar(context, "writing_validation_failed".tr());
-                }
-              },
-            )
-          ],
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
+          child: Column(
+            children: [
+              ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
+              LearningHeaderAnimation(id: _macro, children: _header()),
+              CustomCanvas(line: _line, allowEdit: !_showActualKanji),
+              ValidationButtons(
+                trigger: _showActualKanji,
+                submitLabel: _goNextKanji ? "writing_next_kanji_label".tr() : "done_button_label".tr(),
+                wrongAction: _updateUIOnSubmit,
+                midWrongAction: _updateUIOnSubmit,
+                midPerfectAction: _updateUIOnSubmit,
+                perfectAction: _updateUIOnSubmit,
+                onSubmit: () {
+                  if (_macro <= _studyList.length - 1)
+                    _resetKanji();
+                  else {
+                    if (_line.isNotEmpty) _resetKanji();
+                    else GeneralUtils.getSnackBar(context, "writing_validation_failed".tr());
+                  }
+                },
+              )
+            ],
+          ),
         )
       ),
     );

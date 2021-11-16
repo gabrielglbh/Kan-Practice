@@ -9,7 +9,7 @@ class LearningHeaderAnimation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
-      duration: Duration(milliseconds: CustomAnimations.ms300),
+      duration: Duration(milliseconds: CustomAnimations.ms400),
       transitionBuilder: (child, animation) {
         return FadeTransition(
           opacity: animation.drive(Tween(begin: 0, end: 1)),
@@ -19,9 +19,21 @@ class LearningHeaderAnimation extends StatelessWidget {
           ),
         );
       },
-      child: Column(
+      child: Container(
         key: ValueKey<int>(id),
-        children: children
+        width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.symmetric(vertical: Margins.margin16),
+        padding: EdgeInsets.symmetric(vertical: Margins.margin8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(CustomRadius.radius8),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(color: Colors.grey, offset: Offset(0, 2), blurRadius: CustomRadius.radius4)
+          ],
+        ),
+        child: Column(
+          children: children
+        ),
       )
     );
   }

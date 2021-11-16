@@ -26,7 +26,7 @@ dependencies:
   shared_preferences:
 
   path:
-  json_annotation:
+  json_annotation: ^4.3.0
 
   syncfusion_flutter_gauges:
   charts_flutter:

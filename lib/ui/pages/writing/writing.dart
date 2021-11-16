@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/ui/pages/writing/widgets/CustomCanvas.dart';
+import 'package:kanpractice/ui/pages/writing/widgets/WritingButtonsAnimation.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
 import 'package:kanpractice/ui/widgets/LearningHeaderAnimation.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
-import 'package:kanpractice/ui/widgets/ValidationButtons.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -164,7 +164,11 @@ class _WritingStudyState extends State<WritingStudy> {
               ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
               LearningHeaderAnimation(id: _macro, children: _header()),
               CustomCanvas(line: _line, allowEdit: !_showActualKanji),
-              ValidationButtons(
+              WritingButtonsAnimations(
+                id: _macro,
+                /// Whenever a new kanji is shown, _inner will be 0. That's
+                /// the key to toggle the slide animation on the button.
+                triggerSlide: _inner == 0,
                 trigger: _showActualKanji,
                 submitLabel: _goNextKanji ? "writing_next_kanji_label".tr() : "done_button_label".tr(),
                 wrongAction: _updateUIOnSubmit,

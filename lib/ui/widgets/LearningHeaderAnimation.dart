@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 
 class LearningHeaderAnimation extends StatelessWidget {
+  /// Children to be painted in the header
   final List<Widget> children;
+  /// Integer value usually referring to the _macro of the list
+  /// to control properly the animation and to differ each Card
+  /// from each other
   final int id;
   const LearningHeaderAnimation({required this.children, required this.id});
 

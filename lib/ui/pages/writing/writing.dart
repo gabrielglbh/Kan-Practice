@@ -187,10 +187,10 @@ class _WritingStudyState extends State<WritingStudy> {
   }
 
   Container _header() {
-    double finalHeight = MediaQuery.of(context).size.height < 700
+    double finalHeight = MediaQuery.of(context).size.height < CustomSizes.minimumHeight
         ? CustomSizes.listStudyHeight / 2 : CustomSizes.listStudyHeight;
     return Container(
-      height: MediaQuery.of(context).size.height < 700
+      height: MediaQuery.of(context).size.height < CustomSizes.minimumHeight
           ? CustomSizes.studyGuideHeight / 2 : CustomSizes.studyGuideHeight,
       padding: EdgeInsets.symmetric(horizontal: 8),
       child: Column(
@@ -212,7 +212,7 @@ class _WritingStudyState extends State<WritingStudy> {
                 String? kanji = _studyList[_macro].kanji;
                 return Text(_currentKanji[_macro][index] == _none ? _none : kanji[index],
                     style: TextStyle(fontSize:
-                    MediaQuery.of(context).size.height < 700 ? 32 : 64,
+                    MediaQuery.of(context).size.height < CustomSizes.minimumHeight ? 32 : 64,
                         color: index == _inner ? CustomColors.secondaryColor : null)
                 );
               },

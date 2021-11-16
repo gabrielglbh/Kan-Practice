@@ -23,7 +23,7 @@ class ValidationButtons extends StatelessWidget {
     return Container(
       height: CustomSizes.listStudyHeight,
       child: AnimatedSwitcher(
-        duration: Duration(milliseconds: 300),
+        duration: Duration(milliseconds: CustomAnimations.ms300),
         switchInCurve: Curves.easeOut,
         switchOutCurve: Curves.easeOut,
         child: trigger ? _validation() : _submit()
@@ -35,7 +35,7 @@ class ValidationButtons extends StatelessWidget {
     return TweenAnimationBuilder(
       tween: Tween<Offset>(begin: Offset(up ? 0.5 : -0.5, 0), end: Offset(0, 0)),
       curve: Curves.easeOut,
-      duration: Duration(milliseconds: 300 * duration),
+      duration: Duration(milliseconds: CustomAnimations.ms300 * duration),
       builder: (context, offset, child) {
         return FractionalTranslation(translation: offset as Offset, child: child);
       },

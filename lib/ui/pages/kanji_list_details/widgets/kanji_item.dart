@@ -4,6 +4,7 @@ import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/widgets/KanjiBottomSheet.dart';
+import 'package:kanpractice/ui/theme/theme_consts.dart';
 
 class KanjiItem extends StatefulWidget {
   final String listName;
@@ -21,7 +22,7 @@ class KanjiItem extends StatefulWidget {
 }
 
 class _KanjiItemState extends State<KanjiItem> {
-  double _itemOpacity = 0.2;
+  double _itemOpacity = 0.4;
 
   double _getProperKanjiWinRate(Kanji kanji) {
     switch (widget.selectedMode) {
@@ -46,7 +47,7 @@ class _KanjiItemState extends State<KanjiItem> {
   Widget build(BuildContext context) {
     return TweenAnimationBuilder(
       tween: Tween<Offset>(begin: Offset(0, 0.4), end: Offset(0, 0)),
-      duration: Duration(milliseconds: 50 * widget.index),
+      duration: Duration(milliseconds: CustomAnimations.kanjiItemDuration * widget.index),
       curve: Curves.linear,
       builder: (context, offset, child) {
         return FractionalTranslation(translation: offset as Offset, child: child);
@@ -54,7 +55,7 @@ class _KanjiItemState extends State<KanjiItem> {
       child: AnimatedOpacity(
         opacity: _itemOpacity,
         curve: Curves.easeOut,
-        duration: Duration(milliseconds: 75 * widget.index),
+        duration: Duration(milliseconds: CustomAnimations.kanjiItemDuration * widget.index),
         child: _item(context),
       ),
     );
@@ -62,7 +63,7 @@ class _KanjiItemState extends State<KanjiItem> {
 
   AnimatedContainer _item(BuildContext context) {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 300),
+      duration: Duration(milliseconds: CustomAnimations.ms300),
       padding: EdgeInsets.all(2),
       margin: EdgeInsets.all(4),
       decoration: BoxDecoration(

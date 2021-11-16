@@ -11,7 +11,14 @@ class CustomSizes {
   static const double actionButtonsKanjiDetail = 130;
   static const double maxHeightForListsTest = 240;
 
+  static const double minimumHeight = 700;
+
   static const int numberOfKanjiInTest = 30;
+}
+
+class CustomAnimations {
+  static const int kanjiItemDuration = 25;
+  static const int ms300 = 300;
 }
 
 class CustomColors {

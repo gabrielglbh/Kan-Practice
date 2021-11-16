@@ -57,11 +57,18 @@ class _TestHistoryState extends State<TestHistory> {
 
   _body(TestListState state) {
     if (state is TestListStateFailure)
-      return EmptyList(message: "test_history_load_failed".tr());
+      return EmptyList(
+        onRefresh: () => _bloc..add(TestListEventLoading()),
+        message: "test_history_load_failed".tr()
+      );
     else if (state is TestListStateLoading)
       return CustomProgressIndicator();
     else if (state is TestListStateLoaded) {
-      if (state.list.isEmpty) return EmptyList(message: "test_history_empty".tr());
+      if (state.list.isEmpty)
+        return EmptyList(
+          onRefresh: () => _bloc..add(TestListEventLoading()),
+          message: "test_history_empty".tr()
+        );
       return _testList(state);
     }
     else return Container();

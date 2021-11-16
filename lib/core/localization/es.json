@@ -163,6 +163,6 @@
   "blitz_bottom_sheet_on_label": "Blitz en",
   "back_button_label": "Atrás",
   "study_modes_good_luck": "¡Buena Suerte!",
-  "study_modes_empty": "La lista seleccionada para la prueba está vacía. No se puede realizar."
-
+  "study_modes_empty": "La lista seleccionada para la prueba está vacía. No se puede realizar.",
+  "load_failed_try_again_button_label": "Inténtalo de nuevo"
 }

@@ -29,6 +29,7 @@ class StudyBottomSheet extends StatefulWidget {
 }
 
 class _StudyBottomSheetState extends State<StudyBottomSheet> {
+  KanjiListBloc _bloc = KanjiListBloc();
   List<Kanji> _kanji = [];
   List<String> _selectedLists = [];
   String _selectedFormattedLists = "";
@@ -67,13 +68,18 @@ class _StudyBottomSheetState extends State<StudyBottomSheet> {
                 Visibility(
                   visible: !_selectionMode,
                   child: BlocProvider(
-                    create: (_) => KanjiListBloc()..add(KanjiListEventLoading(
+                    create: (_) => _bloc..add(KanjiListEventLoading(
                         filter: KanListTableFields.lastUpdatedField, order: false
                     )),
                     child: BlocBuilder<KanjiListBloc, KanjiListState>(
                       builder: (context, state) {
                         if (state is KanjiListStateFailure)
-                          return EmptyList(message: "study_bottom_sheet_load_failed".tr());
+                          return EmptyList(
+                            onRefresh: () => _bloc..add(KanjiListEventLoading(
+                              filter: KanListTableFields.lastUpdatedField, order: false
+                            )),
+                            message: "study_bottom_sheet_load_failed".tr()
+                          );
                         else if (state is KanjiListStateLoading)
                           return CustomProgressIndicator();
                         else if (state is KanjiListStateLoaded) {

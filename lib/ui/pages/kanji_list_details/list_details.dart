@@ -246,7 +246,10 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
               else if (state is KanjiListDetailStateLoading)
                 return CustomProgressIndicator();
               else if (state is KanjiListDetailStateFailure)
-                return EmptyList(message: "list_details_load_failed".tr());
+                return EmptyList(
+                  onRefresh: () => _bloc..add(KanjiEventLoading(_listName)),
+                  message: "list_details_load_failed".tr()
+                );
               else
                 return Container();
             },
@@ -321,7 +324,11 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
   }
 
   Widget _kanjiList(KanjiListDetailStateLoaded state) {
-    if (state.list.isEmpty) return EmptyList(message: "list_details_empty".tr());
+    if (state.list.isEmpty)
+      return EmptyList(
+        onRefresh: () => _bloc..add(KanjiEventLoading(_listName)),
+        message: "list_details_empty".tr()
+      );
     return GridView.builder(
       key: PageStorageKey<String>('kanjiListController'),
       itemCount: state.list.length,

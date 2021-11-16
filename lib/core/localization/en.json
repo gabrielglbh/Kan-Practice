@@ -163,5 +163,6 @@
   "blitz_bottom_sheet_on_label": "Blitz on",
   "back_button_label": "Back",
   "study_modes_good_luck": "Good Luck!",
-  "study_modes_empty": "The list selected for the test is empty. Cannot perform test."
+  "study_modes_empty": "The list selected for the test is empty. Cannot perform test.",
+  "load_failed_try_again_button_label": "Try again"
 }

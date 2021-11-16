@@ -43,7 +43,6 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
           );
           emit(KanjiListStateLoaded(lists: lists));
         }
-        else emit(KanjiListStateFailure());
       }
     });
 
@@ -59,7 +58,6 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
           );
           emit(KanjiListStateLoaded(lists: lists));
         }
-        else emit(KanjiListStateFailure());
       }
     });
   }

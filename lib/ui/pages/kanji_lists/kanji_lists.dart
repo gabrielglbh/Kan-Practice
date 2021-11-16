@@ -249,12 +249,19 @@ class _KanjiListsState extends State<KanjiLists> {
     return BlocBuilder<KanjiListBloc, KanjiListState>(
       builder: (context, state) {
         if (state is KanjiListStateFailure)
-          return EmptyList(message: "kanji_lists_load_failed".tr());
+          return EmptyList(
+            onRefresh: () => _addLoadingEvent(),
+            message: "kanji_lists_load_failed".tr()
+          );
         else if (state is KanjiListStateLoading || state is KanjiListStateSearching)
           return Expanded(child: CustomProgressIndicator());
         else if (state is KanjiListStateLoaded)
           return state.lists.isEmpty
-              ? Expanded(child: EmptyList(message: "kanji_lists_empty".tr()))
+              ? Expanded(child:
+            EmptyList(
+              onRefresh: () => _addLoadingEvent(),
+              message: "kanji_lists_empty".tr())
+          )
               : Expanded(
             child: ListView.builder(
               key: PageStorageKey<String>('kanListListsController'),

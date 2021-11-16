@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
@@ -42,14 +43,15 @@ class WinRateChart extends StatelessWidget {
               GaugeAnnotation(
                 positionFactor: 0.5,
                 angle: 90,
-                widget: Text((((winRate == -1 ? 0 : winRate))*100).toStringAsFixed(2),
+                widget: Text((((winRate == DatabaseConstants.emptyWinRate
+                    ? 0 : winRate))*100).toStringAsFixed(2),
                   style: TextStyle(color: Colors.white, fontSize: rateSize)
                 )
               )
             ],
             pointers: <GaugePointer>[
               RangePointer(
-                value: winRate == -1 ? 0 : winRate,
+                value: winRate == DatabaseConstants.emptyWinRate ? 0 : winRate,
                 width: 0.1,
                 color: Colors.white,
                 pointerOffset: 0.1,

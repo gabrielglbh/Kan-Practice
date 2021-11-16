@@ -332,6 +332,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
       itemBuilder: (context, k) {
         Kanji? kanji = state.list[k];
         return KanjiItem(
+          index: k,
           kanji: kanji,
           list: widget.list,
           listName: _listName,

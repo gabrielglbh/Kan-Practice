@@ -4,6 +4,7 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
+import 'package:kanpractice/ui/widgets/LearningHeaderAnimation.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/widgets/ValidationButtons.dart';
@@ -107,27 +108,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
           child: Column(
             children: [
               ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
-              Text(_getProperAlphabet(),
-                  style: TextStyle(fontSize: FontSizes.fontSize24,
-                  color: CustomColors.secondarySubtleColor)
-              ),
-              Container(
-                height: CustomSizes.defaultSizeReadingExtContainer,
-                child: Text(_getProperPronunciation(),
-                    style: TextStyle(fontSize: FontSizes.fontSize32, fontWeight: FontWeight.bold)),
-              ),
-              Container(
-                height: CustomSizes.listStudyHeight,
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: Text(_studyList[_macro].kanji,
-                      style: TextStyle(fontSize: FontSizes.fontSize64)),
-                )
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: Margins.margin8, bottom: Margins.margin32),
-                child: Text(_getProperMeaning(), overflow: TextOverflow.ellipsis),
-              ),
+              LearningHeaderAnimation(id: _macro, children: _header()),
               ValidationButtons(
                 trigger: _showPronunciation,
                 submitLabel: "done_button_label".tr(),
@@ -142,5 +123,31 @@ class _ReadingStudyState extends State<ReadingStudy> {
         ),
       ),
     );
+  }
+
+  List<Widget> _header() {
+    return [
+      Text(_getProperAlphabet(),
+        style: TextStyle(fontSize: FontSizes.fontSize24,
+            color: CustomColors.secondarySubtleColor)
+      ),
+      Container(
+        height: CustomSizes.defaultSizeReadingExtContainer,
+        child: Text(_getProperPronunciation(),
+            style: TextStyle(fontSize: FontSizes.fontSize32, fontWeight: FontWeight.bold)),
+      ),
+      Container(
+        height: CustomSizes.listStudyHeight,
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: Text(_studyList[_macro].kanji,
+              style: TextStyle(fontSize: FontSizes.fontSize64)),
+        )
+      ),
+      Padding(
+        padding: EdgeInsets.only(top: Margins.margin8, bottom: Margins.margin32),
+        child: Text(_getProperMeaning(), overflow: TextOverflow.ellipsis),
+      ),
+    ];
   }
 }

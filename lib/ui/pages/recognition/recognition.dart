@@ -3,6 +3,7 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/widgets/LearningHeaderAnimation.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/widgets/ValidationButtons.dart';
@@ -96,27 +97,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
           child: Column(
             children: [
               ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
-              Container(
-                height: CustomSizes.defaultSizeLearningExtContainer,
-                child: Text(_getProperPronunciation()),
-              ),
-              Container(
-                height: CustomSizes.listStudyHeight,
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: Text(_studyList[_macro].kanji,
-                      style: TextStyle(fontSize: FontSizes.fontSize64)),
-                )
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: Margins.margin8, bottom: Margins.margin32),
-                child: Text(_getProperMeaning(),
-                  maxLines: 3,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: FontSizes.fontSize24, fontWeight: FontWeight.bold),
-                  overflow: TextOverflow.ellipsis
-                ),
-              ),
+              LearningHeaderAnimation(id: _macro, children: _header()),
               ValidationButtons(
                 trigger: _showMeaning,
                 submitLabel: "done_button_label".tr(),
@@ -131,5 +112,31 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
         ),
       ),
     );
+  }
+
+  List<Widget> _header() {
+    return [
+      Container(
+        height: CustomSizes.defaultSizeLearningExtContainer,
+        child: Text(_getProperPronunciation(), style: TextStyle(fontSize: FontSizes.fontSize18)),
+      ),
+      Container(
+        height: CustomSizes.listStudyHeight,
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: Text(_studyList[_macro].kanji,
+              style: TextStyle(fontSize: FontSizes.fontSize64)),
+        )
+      ),
+      Padding(
+        padding: EdgeInsets.only(top: Margins.margin8, bottom: Margins.margin32),
+        child: Text(_getProperMeaning(),
+          maxLines: 3,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: FontSizes.fontSize24, fontWeight: FontWeight.bold),
+          overflow: TextOverflow.ellipsis
+        ),
+      ),
+    ];
   }
 }

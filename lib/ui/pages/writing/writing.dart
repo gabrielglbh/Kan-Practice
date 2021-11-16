@@ -5,6 +5,7 @@ import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
+import 'package:kanpractice/ui/widgets/LearningHeaderAnimation.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
 import 'package:kanpractice/ui/widgets/ValidationButtons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -159,7 +160,7 @@ class _WritingStudyState extends State<WritingStudy> {
         body: Column(
           children: [
             ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
-            _header(),
+            LearningHeaderAnimation(id: _macro, children: _header()),
             Padding(
               padding: EdgeInsets.all(Margins.margin8),
               child: CustomCanvas(line: _line, allowEdit: !_showActualKanji, fatherPadding: Margins.margin16)
@@ -186,46 +187,39 @@ class _WritingStudyState extends State<WritingStudy> {
     );
   }
 
-  Container _header() {
+  List<Widget> _header() {
     double finalHeight = MediaQuery.of(context).size.height < CustomSizes.minimumHeight
         ? CustomSizes.listStudyHeight / 2 : CustomSizes.listStudyHeight;
-    return Container(
-      height: MediaQuery.of(context).size.height < CustomSizes.minimumHeight
-          ? CustomSizes.studyGuideHeight / 2 : CustomSizes.studyGuideHeight,
-      padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
-      child: Column(
-        children: [
-          Container(
-            height: CustomSizes.defaultSizeLearningExtContainer,
-            child: _goNextKanji
-                ? Text(_studyList[_macro].pronunciation, overflow: TextOverflow.ellipsis)
-                : Text(""),
-          ),
-          Container(
-            height: finalHeight,
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: _studyList[_macro].kanji.length,
-              physics: NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                String? kanji = _studyList[_macro].kanji;
-                return Text(_currentKanji[_macro][index] == _none ? _none : kanji[index],
-                    style: TextStyle(fontSize:
-                    MediaQuery.of(context).size.height < CustomSizes.minimumHeight
-                        ? FontSizes.fontSize32 : FontSizes.fontSize64,
-                        color: index == _inner ? CustomColors.secondaryColor : null)
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: Margins.margin8),
-            child: Text(_studyList[_macro].meaning, overflow: TextOverflow.ellipsis),
-          )
-        ],
+    return [
+      Container(
+        height: CustomSizes.defaultSizeLearningExtContainer,
+        child: _goNextKanji
+            ? Text(_studyList[_macro].pronunciation, overflow: TextOverflow.ellipsis)
+            : Text(""),
       ),
-    );
+      Container(
+        height: finalHeight,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: _studyList[_macro].kanji.length,
+          physics: NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            String? kanji = _studyList[_macro].kanji;
+            return Text(_currentKanji[_macro][index] == _none ? _none : kanji[index],
+                style: TextStyle(fontSize:
+                MediaQuery.of(context).size.height < CustomSizes.minimumHeight
+                    ? FontSizes.fontSize32 : FontSizes.fontSize64,
+                    color: index == _inner ? CustomColors.secondaryColor : null)
+            );
+          },
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.only(top: Margins.margin8),
+        child: Text(_studyList[_macro].meaning, overflow: TextOverflow.ellipsis),
+      )
+    ];
   }
 
   _clear() => setState(() => _line = []);

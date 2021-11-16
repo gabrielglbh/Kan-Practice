@@ -22,6 +22,7 @@ class ValidationButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: CustomSizes.listStudyHeight,
+      padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
       child: AnimatedSwitcher(
         duration: Duration(milliseconds: CustomAnimations.ms300),
         switchInCurve: Curves.easeOut,

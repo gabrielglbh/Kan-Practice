@@ -5,18 +5,20 @@ class ActionButton extends StatelessWidget {
   final String label;
   /// Color of the button. Defaults to green
   final Color color;
-  /// Vertical padding for the button. Defaults to 32.
+  /// Horizontal padding for the button. Defaults to 32.
   final double horizontal;
+  /// Vertical padding for the button. Defaults to 8.
+  final double vertical;
   final Function() onTap;
   const ActionButton({required this.label, this.color = Colors.green,
-    this.horizontal = 32, required this.onTap});
+    this.horizontal = 32, this.vertical = 8, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 60,
       alignment: Alignment.center,
-      margin: EdgeInsets.symmetric(horizontal: horizontal, vertical: 8),
+      margin: EdgeInsets.symmetric(horizontal: horizontal, vertical: vertical),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18),
         color: color,

@@ -3,7 +3,6 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
 import 'package:kanpractice/ui/theme/theme_consts.dart';
-import 'package:kanpractice/ui/widgets/ActionButton.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/widgets/ValidationButtons.dart';
@@ -114,33 +113,18 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
                   overflow: TextOverflow.ellipsis
                 ),
               ),
-              _validateButtons(),
-              _submitButton()
+              ValidationButtons(
+                trigger: _showMeaning,
+                submitLabel: "done_button_label".tr(),
+                wrongAction: _updateUIOnSubmit,
+                midWrongAction: _updateUIOnSubmit,
+                midPerfectAction: _updateUIOnSubmit,
+                perfectAction: _updateUIOnSubmit,
+                onSubmit: () => setState(() => _showMeaning = true),
+              )
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Visibility _validateButtons() {
-    return Visibility(
-      visible: _showMeaning,
-      child: ValidationButtons(
-        wrongAction: _updateUIOnSubmit,
-        midWrongAction: _updateUIOnSubmit,
-        midPerfectAction: _updateUIOnSubmit,
-        perfectAction: _updateUIOnSubmit,
-      )
-    );
-  }
-
-  Visibility _submitButton() {
-    return Visibility(
-      visible: !_showMeaning,
-      child: ActionButton(
-        label: "done_button_label".tr(),
-        onTap: () async => setState(() => _showMeaning = true)
       ),
     );
   }

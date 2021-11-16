@@ -5,7 +5,6 @@ import 'package:kanpractice/ui/theme/theme_consts.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
-import 'package:kanpractice/ui/widgets/ActionButton.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
 import 'package:kanpractice/ui/widgets/ValidationButtons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -165,8 +164,22 @@ class _WritingStudyState extends State<WritingStudy> {
               padding: EdgeInsets.all(8),
               child: CustomCanvas(line: _line, allowEdit: !_showActualKanji, fatherPadding: 16)
             ),
-            _validationButtons(),
-            _submitButton()
+            ValidationButtons(
+              trigger: _showActualKanji,
+              submitLabel: _goNextKanji ? "writing_next_kanji_label".tr() : "done_button_label".tr(),
+              wrongAction: _updateUIOnSubmit,
+              midWrongAction: _updateUIOnSubmit,
+              midPerfectAction: _updateUIOnSubmit,
+              perfectAction: _updateUIOnSubmit,
+              onSubmit: () {
+                if (_macro <= _studyList.length - 1)
+                  _resetKanji();
+                else {
+                  if (_line.isNotEmpty) _resetKanji();
+                  else GeneralUtils.getSnackBar(context, "writing_validation_failed".tr());
+                }
+              },
+            )
           ],
         )
       ),
@@ -215,35 +228,6 @@ class _WritingStudyState extends State<WritingStudy> {
           )
         ],
       ),
-    );
-  }
-
-  Visibility _submitButton() {
-    return Visibility(
-      visible: !_showActualKanji,
-      child: ActionButton(
-        label: _goNextKanji ? "writing_next_kanji_label".tr() : "done_button_label".tr(),
-        onTap: () {
-          if (_macro <= _studyList.length - 1)
-            _resetKanji();
-          else {
-            if (_line.isNotEmpty) _resetKanji();
-            else GeneralUtils.getSnackBar(context, "writing_validation_failed".tr());
-          }
-        }
-      )
-    );
-  }
-
-  Visibility _validationButtons() {
-    return Visibility(
-      visible: _showActualKanji,
-      child: ValidationButtons(
-        wrongAction: _updateUIOnSubmit,
-        midWrongAction: _updateUIOnSubmit,
-        midPerfectAction: _updateUIOnSubmit,
-        perfectAction: _updateUIOnSubmit,
-      )
     );
   }
 

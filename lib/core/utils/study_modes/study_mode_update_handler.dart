@@ -87,17 +87,17 @@ class StudyModeUpdateHandler {
     /// and then, a mean is calculated between the upcoming score and the previous one.
     switch (args.mode) {
       case StudyModes.writing:
-        if (args.studyList[index].winRateWriting == -1) actualScore = score;
+        if (args.studyList[index].winRateWriting == DatabaseConstants.emptyWinRate) actualScore = score;
         else actualScore =  (score + args.studyList[index].winRateWriting) / 2;
         toUpdate = { KanjiTableFields.winRateWritingField: actualScore };
         break;
       case StudyModes.reading:
-        if (args.studyList[index].winRateReading == -1) actualScore = score;
+        if (args.studyList[index].winRateReading == DatabaseConstants.emptyWinRate) actualScore = score;
         else actualScore =  (score + args.studyList[index].winRateReading) / 2;
         toUpdate = { KanjiTableFields.winRateReadingField: actualScore };
         break;
       case StudyModes.recognition:
-        if (args.studyList[index].winRateRecognition == -1) actualScore = score;
+        if (args.studyList[index].winRateRecognition == DatabaseConstants.emptyWinRate) actualScore = score;
         else actualScore =  (score + args.studyList[index].winRateRecognition) / 2;
         toUpdate = { KanjiTableFields.winRateRecognitionField: actualScore };
         break;
@@ -114,15 +114,15 @@ class StudyModeUpdateHandler {
     kanji.forEach((k) {
       switch (args.mode) {
         case StudyModes.writing:
-          if (k.winRateWriting == -1) overallScore += 0;
+          if (k.winRateWriting == DatabaseConstants.emptyWinRate) overallScore += 0;
           else overallScore += k.winRateWriting;
           break;
         case StudyModes.reading:
-          if (k.winRateReading == -1) overallScore += 0;
+          if (k.winRateReading == DatabaseConstants.emptyWinRate) overallScore += 0;
           else overallScore += k.winRateReading;
           break;
         case StudyModes.recognition:
-          if (k.winRateRecognition == -1) overallScore += 0;
+          if (k.winRateRecognition == DatabaseConstants.emptyWinRate) overallScore += 0;
           else overallScore += k.winRateRecognition;
           break;
       }
@@ -142,17 +142,17 @@ class StudyModeUpdateHandler {
     /// and then, a mean is calculated between the upcoming score and the previous one.
     switch (args.mode) {
       case StudyModes.writing:
-        if (list.totalWinRateWriting == -1) actualOverall = overall;
+        if (list.totalWinRateWriting == DatabaseConstants.emptyWinRate) actualOverall = overall;
         else actualOverall = (overall + list.totalWinRateWriting) / 2;
         toUpdate = { KanListTableFields.totalWinRateWritingField: actualOverall };
         break;
       case StudyModes.reading:
-        if (list.totalWinRateReading == -1) actualOverall = overall;
+        if (list.totalWinRateReading == DatabaseConstants.emptyWinRate) actualOverall = overall;
         else actualOverall = (overall + list.totalWinRateReading) / 2;
         toUpdate = { KanListTableFields.totalWinRateReadingField: actualOverall };
         break;
       case StudyModes.recognition:
-        if (list.totalWinRateRecognition == -1) actualOverall = overall;
+        if (list.totalWinRateRecognition == DatabaseConstants.emptyWinRate) actualOverall = overall;
         else actualOverall = (overall + list.totalWinRateRecognition) / 2;
         toUpdate = { KanListTableFields.totalWinRateRecognitionField: actualOverall };
         break;

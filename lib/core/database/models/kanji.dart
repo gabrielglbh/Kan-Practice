@@ -23,8 +23,9 @@ class Kanji {
   final int dateAdded;
 
   const Kanji({required this.kanji, required this.listName, required this.meaning,
-    required this.pronunciation, this.winRateReading = -1, this.winRateRecognition = -1,
-    this.winRateWriting = -1, this.dateAdded = 0
+    required this.pronunciation, this.winRateReading = DatabaseConstants.emptyWinRate,
+    this.winRateRecognition = DatabaseConstants.emptyWinRate,
+    this.winRateWriting = DatabaseConstants.emptyWinRate, this.dateAdded = 0
   });
 
   /// Empty [Kanji]

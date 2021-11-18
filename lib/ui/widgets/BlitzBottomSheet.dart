@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
+import 'package:kanpractice/ui/widgets/DragContainer.dart';
 import 'package:kanpractice/ui/widgets/StudyMode.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class BlitzBottomSheet extends StatelessWidget {
@@ -52,17 +52,17 @@ class BlitzBottomSheet extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                _dragContainer(),
+                DragContainer(),
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
+                  padding: EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin32),
                   child: Text("blitz_bottom_sheet_title".tr(), textAlign: TextAlign.center,
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize18)),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
+                  padding: EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin32),
                   child: Text("${CustomSizes.numberOfKanjiInTest.toString()} ${"blitz_bottom_sheet_content".tr()}",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize16)),
                 ),
                 FutureBuilder<List<Kanji>>(
                   future: _loadBlitzTest(),
@@ -80,20 +80,6 @@ class BlitzBottomSheet extends StatelessWidget {
           ]
         );
       },
-    );
-  }
-
-  Align _dragContainer() {
-    return Align(
-      alignment: Alignment.center,
-      child: Container(
-        width: 90, height: 5,
-        margin: EdgeInsets.only(bottom: 8, top: 8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(18),
-          color: Colors.grey
-        ),
-      ),
     );
   }
 }

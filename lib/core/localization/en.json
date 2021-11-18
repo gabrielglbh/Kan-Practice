@@ -87,7 +87,7 @@
   "kanji_bottom_sheet_removeKanji_positive": "Remove",
   "kanji_bottom_sheet_createDialogForDeletingKanji_removal_failed": "Error removing kanji",
   "kanji_bottom_sheet_createDialogForDeletingKanji_failed": "Generic error removing kanji",
-  "wildcard": " ? ",
+  "wildcard": "?",
   "created_label": "Created",
   "kanji_bottom_sheet_update_label": "Update",
   "kanji_bottom_sheet_removal_label": "Remove",
@@ -163,5 +163,6 @@
   "blitz_bottom_sheet_on_label": "Blitz on",
   "back_button_label": "Back",
   "study_modes_good_luck": "Good Luck!",
-  "study_modes_empty": "The list selected for the test is empty. Cannot perform test."
+  "study_modes_empty": "The list selected for the test is empty. Cannot perform test.",
+  "load_failed_try_again_button_label": "Try again"
 }

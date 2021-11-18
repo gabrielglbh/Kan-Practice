@@ -4,7 +4,7 @@ import 'package:kanpractice/core/database/models/test_result.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/pages/test_history/bloc/test_bloc.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
 import 'package:kanpractice/ui/widgets/EmptyList.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
@@ -57,11 +57,19 @@ class _TestHistoryState extends State<TestHistory> {
 
   _body(TestListState state) {
     if (state is TestListStateFailure)
-      return EmptyList(message: "test_history_load_failed".tr());
+      return EmptyList(
+        showTryButton: true,
+        onRefresh: () => _bloc..add(TestListEventLoading()),
+        message: "test_history_load_failed".tr()
+      );
     else if (state is TestListStateLoading)
       return CustomProgressIndicator();
     else if (state is TestListStateLoaded) {
-      if (state.list.isEmpty) return EmptyList(message: "test_history_empty".tr());
+      if (state.list.isEmpty)
+        return EmptyList(
+          onRefresh: () => _bloc..add(TestListEventLoading()),
+          message: "test_history_empty".tr()
+        );
       return _testList(state);
     }
     else return Container();
@@ -81,10 +89,10 @@ class _TestHistoryState extends State<TestHistory> {
         else if (mode == StudyModes.recognition) chartColor = StudyModes.recognition.color;
 
         return Card(
-          margin: EdgeInsets.all(8),
+          margin: EdgeInsets.all(Margins.margin8),
           elevation: 8,
           child: ListTile(
-            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            contentPadding: EdgeInsets.symmetric(horizontal: Margins.margin16, vertical: Margins.margin8),
             onTap: () {},
             title: Text(t.kanjiLists, textAlign: TextAlign.end, overflow: TextOverflow.ellipsis),
             subtitle: Row(
@@ -100,7 +108,7 @@ class _TestHistoryState extends State<TestHistory> {
               ],
             ),
             leading: WinRateChart(title: "", winRate: t.testScore,
-                rateSize: 10, chartColor: chartColor),
+                rateSize: ChartSize.small, chartColor: chartColor),
           ),
         );
       }

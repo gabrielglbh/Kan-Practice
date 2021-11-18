@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 
 import '../kanji_painter.dart';
 
@@ -7,9 +8,7 @@ class CustomCanvas extends StatefulWidget {
   final List<Offset?> line;
   /// Whether to allow the user to paint or not
   final bool allowEdit;
-  /// Value to subtract to the height of the parent to the canvas
-  final double fatherPadding;
-  const CustomCanvas({required this.line, this.allowEdit = true, required this.fatherPadding});
+  const CustomCanvas({required this.line, this.allowEdit = true});
 
   @override
   _CustomCanvasState createState() => _CustomCanvasState();
@@ -21,9 +20,12 @@ class _CustomCanvasState extends State<CustomCanvas> {
 
   @override
   Widget build(BuildContext context) {
+    /// We subtract 32 padding to the size as we have an inherent 16 - 16
+    /// padding on the sides on the parent
+    final double size = MediaQuery.of(context).size.width - Margins.margin32;
     return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.width - widget.fatherPadding,
+      width: size,
+      height: size,
       child: Stack(
         children: [
           GestureDetector(
@@ -37,13 +39,13 @@ class _CustomCanvasState extends State<CustomCanvas> {
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(CustomRadius.radius16),
                     color: Colors.yellow[100],
                   ),
                   child: CustomPaint(
                     painter: KanjiPainter(
                       points: widget.line,
-                      size: MediaQuery.of(context).size.width - widget.fatherPadding
+                      size: size
                     ),
                     size: Size.square(MediaQuery.of(context).size.width),
                   )
@@ -54,16 +56,17 @@ class _CustomCanvasState extends State<CustomCanvas> {
           Visibility(
             visible: widget.allowEdit,
             child: Positioned(
-              top: 8, left: 16,
+              top: Margins.margin8, left: Margins.margin16,
               child: GestureDetector(
                 onTap: () => _undoLine(),
                 child: Container(
-                  height: 50, width: 50,
+                  height: CustomSizes.defaultSizeSearchBarIcons,
+                  width: CustomSizes.defaultSizeSearchBarIcons,
                   decoration: BoxDecoration(
                     color: Colors.yellow,
-                    borderRadius: BorderRadius.circular(18)
+                    borderRadius: BorderRadius.circular(CustomRadius.radius16)
                   ),
-                  child: Icon(Icons.undo_rounded, size: 32, color: Colors.black),
+                  child: Icon(Icons.undo_rounded, size: FontSizes.fontSize32, color: Colors.black),
                 ),
               )
             ),
@@ -71,16 +74,17 @@ class _CustomCanvasState extends State<CustomCanvas> {
           Visibility(
             visible: widget.allowEdit,
             child: Positioned(
-              top: 8, right: 16,
+              top: Margins.margin8, right: Margins.margin16,
               child: GestureDetector(
                 onTap: () => _clear(),
                 child: Container(
-                  height: 50, width: 50,
+                  height: CustomSizes.defaultSizeSearchBarIcons,
+                  width: CustomSizes.defaultSizeSearchBarIcons,
                   decoration: BoxDecoration(
                     color: Colors.yellow,
-                    borderRadius: BorderRadius.circular(18)
+                    borderRadius: BorderRadius.circular(CustomRadius.radius16)
                   ),
-                  child: Icon(Icons.redo_rounded, size: 32, color: Colors.black),
+                  child: Icon(Icons.redo_rounded, size: FontSizes.fontSize32, color: Colors.black),
                 ),
               )
             ),

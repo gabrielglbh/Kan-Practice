@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as c;
+import 'package:kanpractice/core/database/database_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 
 class BarData {
   final String x;
@@ -16,14 +18,14 @@ class WinRateBarChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 90,
-      width: MediaQuery.of(context).size.width - 48,
+      height: CustomSizes.defaultSizeWinRateBarChart,
+      width: MediaQuery.of(context).size.width - Margins.margin48,
       child: c.BarChart(
         [c.Series<BarData, String>(
           id: "Win Rates",
           domainFn: (BarData data, _) => data.x,
           colorFn: (BarData data, _) => c.ColorUtil.fromDartColor(data.color),
-          measureFn: (BarData data, _) => (data.y == -1 ? 0 : data.y)*100,
+          measureFn: (BarData data, _) => (data.y == DatabaseConstants.emptyWinRate ? 0 : data.y)*100,
           data: dataSource
         )],
         primaryMeasureAxis: c.NumericAxisSpec(

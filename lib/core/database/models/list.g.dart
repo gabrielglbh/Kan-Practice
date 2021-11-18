@@ -6,16 +6,17 @@ part of 'list.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-KanjiList _$KanjiListFromJson(Map<String, dynamic> json) {
-  return KanjiList(
-    name: json['name'] as String,
-    totalWinRateWriting: (json['totalWinRateWriting'] as num).toDouble(),
-    totalWinRateReading: (json['totalWinRateReading'] as num).toDouble(),
-    totalWinRateRecognition:
-        (json['totalWinRateRecognition'] as num).toDouble(),
-    lastUpdated: json['lastUpdated'] as int,
-  );
-}
+KanjiList _$KanjiListFromJson(Map<String, dynamic> json) => KanjiList(
+      name: json['name'] as String,
+      totalWinRateWriting: (json['totalWinRateWriting'] as num?)?.toDouble() ??
+          DatabaseConstants.emptyWinRate,
+      totalWinRateReading: (json['totalWinRateReading'] as num?)?.toDouble() ??
+          DatabaseConstants.emptyWinRate,
+      totalWinRateRecognition:
+          (json['totalWinRateRecognition'] as num?)?.toDouble() ??
+              DatabaseConstants.emptyWinRate,
+      lastUpdated: json['lastUpdated'] as int,
+    );
 
 Map<String, dynamic> _$KanjiListToJson(KanjiList instance) => <String, dynamic>{
       'name': instance.name,

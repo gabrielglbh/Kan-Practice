@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/ui/pages/writing/widgets/CustomCanvas.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/pages/writing/widgets/WritingButtonsAnimation.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
-import 'package:kanpractice/ui/widgets/ActionButton.dart';
+import 'package:kanpractice/ui/widgets/LearningHeaderAnimation.dart';
+import 'package:kanpractice/ui/widgets/LearningHeaderContainer.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
-import 'package:kanpractice/ui/widgets/ValidationButtons.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -157,94 +158,73 @@ class _WritingStudyState extends State<WritingStudy> {
             )
           ],
         ),
-        body: Column(
-          children: [
-            ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
-            _header(),
-            Padding(
-              padding: EdgeInsets.all(8),
-              child: CustomCanvas(line: _line, allowEdit: !_showActualKanji, fatherPadding: 16)
-            ),
-            _validationButtons(),
-            _submitButton()
-          ],
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
+          child: Column(
+            children: [
+              ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
+              LearningHeaderAnimation(id: _macro, children: _header()),
+              CustomCanvas(line: _line, allowEdit: !_showActualKanji),
+              WritingButtonsAnimations(
+                id: _macro,
+                /// Whenever a new kanji is shown, _inner will be 0. That's
+                /// the key to toggle the slide animation on the button.
+                triggerSlide: _inner == 0,
+                trigger: _showActualKanji,
+                submitLabel: _goNextKanji ? "writing_next_kanji_label".tr() : "done_button_label".tr(),
+                wrongAction: _updateUIOnSubmit,
+                midWrongAction: _updateUIOnSubmit,
+                midPerfectAction: _updateUIOnSubmit,
+                perfectAction: _updateUIOnSubmit,
+                onSubmit: () {
+                  if (_macro <= _studyList.length - 1)
+                    _resetKanji();
+                  else {
+                    if (_line.isNotEmpty) _resetKanji();
+                    else GeneralUtils.getSnackBar(context, "writing_validation_failed".tr());
+                  }
+                },
+              )
+            ],
+          ),
         )
       ),
     );
   }
 
-  Container _header() {
-    double finalHeight = MediaQuery.of(context).size.height < 700
-        ? CustomSizes.listStudyHeight / 2 : CustomSizes.listStudyHeight;
-    return Container(
-      height: MediaQuery.of(context).size.height < 700
-          ? CustomSizes.studyGuideHeight / 2 : CustomSizes.studyGuideHeight,
-      padding: EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        children: [
-          Visibility(
-            visible: _goNextKanji,
-            child: Text(_studyList[_macro].pronunciation, overflow: TextOverflow.ellipsis),
-          ),
-          Container(
-            height: finalHeight,
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: Container(
-                height: finalHeight,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: _studyList[_macro].kanji.length,
-                  physics: NeverScrollableScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    String? kanji = _studyList[_macro].kanji;
-                    return Text(_currentKanji[_macro][index] == _none ? _none : kanji[index],
-                      style: TextStyle(fontSize:
-                          MediaQuery.of(context).size.height < 700 ? 32 : 64,
-                          color: index == _inner ? CustomColors.secondaryColor : null)
-                    );
-                  },
-                ),
-              )
-            )
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 8),
-            child: Text(_studyList[_macro].meaning, overflow: TextOverflow.ellipsis),
-          )
-        ],
+  List<Widget> _header() {
+    double finalHeight = MediaQuery.of(context).size.height < CustomSizes.minimumHeight
+        ? CustomSizes.listStudyHeight / 3 : CustomSizes.listStudyHeight;
+    return [
+      LearningHeaderContainer(
+        height: CustomSizes.defaultSizeLearningExtContainer + Margins.margin8,
+        text: _goNextKanji
+            ? _studyList[_macro].pronunciation : ""
       ),
-    );
-  }
-
-  Visibility _submitButton() {
-    return Visibility(
-      visible: !_showActualKanji,
-      child: ActionButton(
-        label: _goNextKanji ? "writing_next_kanji_label".tr() : "done_button_label".tr(),
-        onTap: () {
-          if (_macro <= _studyList.length - 1)
-            _resetKanji();
-          else {
-            if (_line.isNotEmpty) _resetKanji();
-            else GeneralUtils.getSnackBar(context, "writing_validation_failed".tr());
-          }
-        }
-      )
-    );
-  }
-
-  Visibility _validationButtons() {
-    return Visibility(
-      visible: _showActualKanji,
-      child: ValidationButtons(
-        wrongAction: _updateUIOnSubmit,
-        midWrongAction: _updateUIOnSubmit,
-        midPerfectAction: _updateUIOnSubmit,
-        perfectAction: _updateUIOnSubmit,
-      )
-    );
+      Container(
+        height: finalHeight,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: _studyList[_macro].kanji.length,
+          physics: NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            String? kanji = _studyList[_macro].kanji;
+            return Text(_currentKanji[_macro][index] == _none ? _none : kanji[index],
+                style: TextStyle(fontSize:
+                MediaQuery.of(context).size.height < CustomSizes.minimumHeight
+                    ? FontSizes.fontSize24 : FontSizes.fontSize64,
+                    color: index == _inner ? CustomColors.secondaryColor : null)
+            );
+          },
+        ),
+      ),
+      LearningHeaderContainer(
+        height: CustomSizes.defaultSizeLearningExtContainer,
+        text: _studyList[_macro].meaning,
+        top: Margins.margin8,
+      ),
+    ];
   }
 
   _clear() => setState(() => _line = []);

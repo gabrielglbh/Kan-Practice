@@ -3,7 +3,13 @@ import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/ActionButton.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class ValidationButtons extends StatelessWidget {
+class WritingButtonsAnimations extends StatelessWidget {
+  /// Integer value usually referring to the _macro of the list
+  /// to control properly the animation and to differ the _submit
+  /// widget from another one
+  final int id;
+  ///Whether to trigger the slide animation on the submit button or not
+  final bool triggerSlide;
   /// Whether to show the validation buttons or the submit one
   final bool trigger;
   /// Label to put on the submit button
@@ -22,8 +28,8 @@ class ValidationButtons extends StatelessWidget {
   final Function(double) perfectAction;
   /// Action to be performed when submitting the current card
   final Function() onSubmit;
-  const ValidationButtons({
-    required this.trigger,
+  const WritingButtonsAnimations({
+    required this.trigger, required this.triggerSlide, required this.id,
     required this.wrongAction, required this.midWrongAction,
     required this.midPerfectAction, required this.perfectAction,
     required this.onSubmit, required this.submitLabel
@@ -45,14 +51,13 @@ class ValidationButtons extends StatelessWidget {
   TweenAnimationBuilder _animation({int duration = 1, required Widget child, bool side = false}) {
     return TweenAnimationBuilder(
       tween: Tween<Offset>(begin: Offset(
-        /// For side ways animation --> same dx as LearningHeaderAnimation
-        side ? CustomAnimations.dxCardInfo : 0,
-        side ? 0 : -0.3),
+          side ? CustomAnimations.dxCardInfo : 0,
+          side ? 0 : -0.3),
         end: Offset.zero
       ),
       curve: Curves.easeOut,
       duration: Duration(
-          milliseconds: side ? CustomAnimations.ms400 : CustomAnimations.ms200 * duration
+        milliseconds: side ? CustomAnimations.ms400 : CustomAnimations.ms200 * duration
       ),
       builder: (context, offset, child) {
         return FractionalTranslation(translation: offset as Offset, child: child);
@@ -61,14 +66,18 @@ class ValidationButtons extends StatelessWidget {
     );
   }
 
-  /// This button will slide in as the info card
+  /// Depending on [triggerSlide], this button will slide from the right
+  /// or it will come from the top
   Widget _submit() {
-    return _animation(side: true, child: ActionButton(
-      vertical: Margins.margin12,
-      horizontal: 0,
-      label: submitLabel,
-      onTap: onSubmit
-    ));
+    return Container(
+      key: ValueKey<int>(id),
+      child: _animation(side: triggerSlide, child: ActionButton(
+        vertical: Margins.margin12,
+        horizontal: 0,
+        label: submitLabel,
+        onTap: onSubmit
+      )),
+    );
   }
 
   /// This buttons will slide from the top one by one

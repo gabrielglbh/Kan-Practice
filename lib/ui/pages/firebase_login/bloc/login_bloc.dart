@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,64 +9,55 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc() : super(LoginStateIdle());
+  LoginBloc() : super(LoginStateIdle()) {
+    on<LoginSubmitting>((event, emit) async {
+      emit(LoginStateLoading());
+      final error = await AuthRecords.instance.handleLogIn(event.mode, event.email, event.password);
+      if (error == "") {
+        final user = AuthRecords.instance.getUser();
+        if (user != null) emit(LoginStateSuccessful(user: user));
+        else emit(LoginStateIdle(error: error));
+      }
+      else emit(LoginStateIdle(error: error));
+    });
 
-  @override
-  Stream<LoginState> mapEventToState(LoginEvent event) async* {
-    if (event is LoginSubmitting) yield* _mapLoadedToState(event);
-    else if (event is LoginIdle) yield* _mapIdleToState();
-    else if (event is CloseSession) yield* _mapCloseSessionToState();
-    else if (event is RemoveAccount) yield* _mapRemoveAccountToState(event);
-    else if (event is ChangePassword) yield* _mapChangePasswordToState(event);
-  }
-
-  Stream<LoginState> _mapLoadedToState(LoginSubmitting event) async* {
-    yield LoginStateLoading();
-    final error = await AuthRecords.instance.handleLogIn(event.mode, event.email, event.password);
-    if (error == "") {
+    on<LoginIdle>((event, emit) {
       final user = AuthRecords.instance.getUser();
-      if (user != null) yield LoginStateSuccessful(user: user);
-      else yield LoginStateIdle(error: error);
-    }
-    else yield LoginStateIdle(error: error);
-  }
+      if (user != null) emit(LoginStateSuccessful(user: user));
+      else emit(LoginStateIdle());
+    });
 
-  Stream<LoginState> _mapIdleToState() async* {
-    final user = AuthRecords.instance.getUser();
-    if (user != null) yield LoginStateSuccessful(user: user);
-    else yield LoginStateIdle();
-  }
+    on<CloseSession>((event, emit) async {
+      emit(LoginStateLoading());
+      final error = await AuthRecords.instance.closeSession();
+      if (error == 0) emit(LoginStateLoggedOut(message: "login_bloc_close_session_successful".tr()));
+      else {
+        final user = AuthRecords.instance.getUser();
+        if (user != null) emit(LoginStateSuccessful(user: user));
+        else emit(LoginStateIdle(error: "login_bloc_close_session_failed".tr()));
+      }
+    });
 
-  Stream<LoginState> _mapCloseSessionToState() async* {
-    yield LoginStateLoading();
-    final error = await AuthRecords.instance.closeSession();
-    if (error == 0) yield LoginStateLoggedOut(message: "login_bloc_close_session_successful".tr());
-    else {
-      final user = AuthRecords.instance.getUser();
-      if (user != null) yield LoginStateSuccessful(user: user);
-      else yield LoginStateIdle(error: "login_bloc_close_session_failed".tr());
-    }
-  }
+    on<RemoveAccount>((event, emit) async {
+      emit(LoginStateLoading());
+      final error = await AuthRecords.instance.deleteAccount(event.password);
+      if (error == "") emit(LoginStateLoggedOut(message: "login_bloc_remove_account_successful".tr()));
+      else {
+        final user = AuthRecords.instance.getUser();
+        if (user != null) emit(LoginStateSuccessful(user: user));
+        else emit(LoginStateIdle(error: "login_bloc_remove_account_failed".tr()));
+      }
+    });
 
-  Stream<LoginState> _mapRemoveAccountToState(RemoveAccount event) async* {
-    yield LoginStateLoading();
-    final error = await AuthRecords.instance.deleteAccount(event.password);
-    if (error == "") yield LoginStateLoggedOut(message: "login_bloc_remove_account_successful".tr());
-    else {
-      final user = AuthRecords.instance.getUser();
-      if (user != null) yield LoginStateSuccessful(user: user);
-      else yield LoginStateIdle(error: "login_bloc_remove_account_failed".tr());
-    }
-  }
-
-  Stream<LoginState> _mapChangePasswordToState(ChangePassword event) async* {
-    yield LoginStateLoading();
-    final error = await AuthRecords.instance.changePassword(event.oldPassword, event.newPassword);
-    if (error == "") {
-      final user = AuthRecords.instance.getUser();
-      if (user != null) yield LoginStateSuccessful(user: user);
-      else yield LoginStateIdle(error: error);
-    }
-    else yield LoginStateIdle(error: error);
+    on<ChangePassword>((event, emit) async {
+      emit(LoginStateLoading());
+      final error = await AuthRecords.instance.changePassword(event.oldPassword, event.newPassword);
+      if (error == "") {
+        final user = AuthRecords.instance.getUser();
+        if (user != null) emit(LoginStateSuccessful(user: user));
+        else emit(LoginStateIdle(error: error));
+      }
+      else emit(LoginStateIdle(error: error));
+    });
   }
 }

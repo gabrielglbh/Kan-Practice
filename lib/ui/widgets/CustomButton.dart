@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 
 class CustomButton extends StatelessWidget {
   /// Width of the button
@@ -21,35 +21,35 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width,
-      height: CustomSizes.customButtonHeight,
+      height: CustomSizes.defaultSizeButtonHeight,
       alignment: Alignment.center,
-      margin: EdgeInsets.all(8),
+      margin: EdgeInsets.all(Margins.margin8),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(CustomRadius.radius16),
         color: color,
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: () => onTap(),
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(CustomRadius.radius16),
           child: Container(
             width: width,
-            height: CustomSizes.customButtonHeight,
+            height: CustomSizes.defaultSizeButtonHeight,
             alignment: Alignment.center,
-            margin: EdgeInsets.all(8),
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(18)),
+            margin: EdgeInsets.all(Margins.margin8),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(CustomRadius.radius16)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(bottom: 8),
+                  padding: EdgeInsets.only(bottom: Margins.margin8),
                   child: Text(title1, textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18, color: Colors.white)),
+                      style: TextStyle(fontSize: FontSizes.fontSize18, color: Colors.white)),
                 ),
                 Text(title2, textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white))
+                    style: TextStyle(fontSize: FontSizes.fontSize16, fontWeight: FontWeight.bold, color: Colors.white))
               ],
             ),
           ),

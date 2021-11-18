@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 
 class CustomTextForm extends StatelessWidget {
   /// Header text to show above the [TextField]
@@ -31,8 +32,8 @@ class CustomTextForm extends StatelessWidget {
     required this.header, required this.hint, required this.controller,
     required this.focusNode, required this.onEditingComplete, this.onSubmitted,
     this.inputType = TextInputType.text, this.action = TextInputAction.next,
-    this.fontSize = 18, this.bold, this.centerText = TextAlign.start, this.autofocus = false,
-    this.obscure = false
+    this.fontSize = FontSizes.fontSize18, this.bold, this.centerText = TextAlign.start,
+    this.autofocus = false, this.obscure = false
   });
 
   @override
@@ -41,8 +42,8 @@ class CustomTextForm extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.only(bottom: 16),
-          child: Text(header, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          padding: EdgeInsets.only(bottom: Margins.margin16),
+          child: Text(header, style: TextStyle(fontSize: FontSizes.fontSize18, fontWeight: FontWeight.bold)),
         ),
         TextField(
           controller: controller,

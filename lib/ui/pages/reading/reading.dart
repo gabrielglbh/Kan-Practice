@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kana_kit/kana_kit.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
-import 'package:kanpractice/ui/widgets/ActionButton.dart';
+import 'package:kanpractice/ui/widgets/LearningHeaderAnimation.dart';
+import 'package:kanpractice/ui/widgets/LearningHeaderContainer.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/widgets/ValidationButtons.dart';
@@ -101,28 +102,21 @@ class _ReadingStudyState extends State<ReadingStudy> {
           title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.mode.mode)),
           centerTitle: true
         ),
-        body: Container(
-          margin: EdgeInsets.only(top: 32),
-          alignment: Alignment.center,
-          padding: EdgeInsets.symmetric(horizontal: 8),
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
           child: Column(
             children: [
               ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
-              Text(_getProperAlphabet(), style: TextStyle(fontSize: 24, color: CustomColors.secondarySubtleColor)),
-              Text(_getProperPronunciation(), style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
-              Container(
-                height: CustomSizes.listStudyHeight,
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: Text(_studyList[_macro].kanji, style: TextStyle(fontSize: 64)),
-                )
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 8, bottom: 32),
-                child: Text(_getProperMeaning(), overflow: TextOverflow.ellipsis),
-              ),
-              _validateButtons(),
-              _submitButton()
+              LearningHeaderAnimation(id: _macro, children: _header()),
+              ValidationButtons(
+                trigger: _showPronunciation,
+                submitLabel: "done_button_label".tr(),
+                wrongAction: _updateUIOnSubmit,
+                midWrongAction: _updateUIOnSubmit,
+                midPerfectAction: _updateUIOnSubmit,
+                perfectAction: _updateUIOnSubmit,
+                onSubmit: () => setState(() => _showPronunciation = true),
+              )
             ],
           ),
         ),
@@ -130,25 +124,28 @@ class _ReadingStudyState extends State<ReadingStudy> {
     );
   }
 
-  Visibility _validateButtons() {
-    return Visibility(
-      visible: _showPronunciation,
-      child: ValidationButtons(
-        wrongAction: _updateUIOnSubmit,
-        midWrongAction: _updateUIOnSubmit,
-        midPerfectAction: _updateUIOnSubmit,
-        perfectAction: _updateUIOnSubmit,
-      )
-    );
-  }
-
-  Visibility _submitButton() {
-    return Visibility(
-      visible: !_showPronunciation,
-      child: ActionButton(
-        label: "done_button_label".tr(),
-        onTap: () async => setState(() => _showPronunciation = true)
+  List<Widget> _header() {
+    return [
+      LearningHeaderContainer(
+        color: CustomColors.secondarySubtleColor,
+        height: CustomSizes.defaultSizeLearningExtContainer,
+        text: _getProperAlphabet()
       ),
-    );
+      LearningHeaderContainer(
+        height: CustomSizes.largeSizeLearningExtContainer,
+        fontWeight: FontWeight.bold,
+        text: _getProperPronunciation()
+      ),
+      LearningHeaderContainer(
+        fontSize: FontSizes.fontSize64,
+        height: CustomSizes.listStudyHeight,
+        text: _studyList[_macro].kanji
+      ),
+      LearningHeaderContainer(
+        height: CustomSizes.defaultSizeLearningExtContainer,
+        text: _getProperMeaning(),
+        top: Margins.margin8
+      )
+    ];
   }
 }

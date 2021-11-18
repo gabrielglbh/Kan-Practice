@@ -10,7 +10,7 @@ import 'package:kanpractice/ui/widgets/BlitzBottomSheet.dart';
 import 'package:kanpractice/ui/widgets/CustomSearchBar.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListTile.dart';
 import 'package:kanpractice/ui/widgets/EmptyList.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/StudyBottomSheet.dart';
 import 'package:kanpractice/ui/widgets/CustomTextForm.dart';
@@ -82,21 +82,18 @@ class _KanjiListsState extends State<KanjiLists> {
       context: context,
       builder: (context) => CustomDialog(
         title: Text("kanji_lists_createDialogForAddingKanList_title".tr()),
-        content: Container(
-          height: CustomSizes.alertDialogHeight,
-          child: CustomTextForm(
-            header: "kanji_lists_createDialogForAddingKanList_header".tr(),
-            controller: controller,
-            action: TextInputAction.done,
-            hint: "kanji_lists_createDialogForAddingKanList_hint".tr(),
-            autofocus: true,
-            onSubmitted: (name) {
-              _addCreateEvent(name);
-              Navigator.of(context).pop();
-            },
-            focusNode: focusNode,
-            onEditingComplete: () => focusNode.unfocus(),
-          ),
+        content: CustomTextForm(
+          header: "kanji_lists_createDialogForAddingKanList_header".tr(),
+          controller: controller,
+          action: TextInputAction.done,
+          hint: "kanji_lists_createDialogForAddingKanList_hint".tr(),
+          autofocus: true,
+          onSubmitted: (name) {
+            _addCreateEvent(name);
+            Navigator.of(context).pop();
+          },
+          focusNode: focusNode,
+          onEditingComplete: () => focusNode.unfocus(),
         ),
         positiveButtonText: "kanji_lists_createDialogForAddingKanList_positive".tr(),
         onPositive: () => _addCreateEvent(controller.text),
@@ -224,18 +221,18 @@ class _KanjiListsState extends State<KanjiLists> {
         color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black);
 
     return Container(
-      height: 60,
-      padding: EdgeInsets.all(8),
+      height: CustomSizes.defaultSizeFiltersList,
+      padding: EdgeInsets.all(Margins.margin8),
       child: ListView.builder(
         itemCount: KanListFilters.values.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 2),
+            padding: EdgeInsets.symmetric(horizontal: Margins.margin2),
             child: ChoiceChip(
               label: Text(KanListFilters.values[index].label),
               avatar: _getCurrentIndexOfFilter() != index ? null : icon,
-              padding: EdgeInsets.symmetric(horizontal: 8),
+              padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
               onSelected: (bool selected) => _onFilterSelected(index),
               selected: _getCurrentIndexOfFilter() == index,
             ),
@@ -249,20 +246,28 @@ class _KanjiListsState extends State<KanjiLists> {
     return BlocBuilder<KanjiListBloc, KanjiListState>(
       builder: (context, state) {
         if (state is KanjiListStateFailure)
-          return EmptyList(message: "kanji_lists_load_failed".tr());
+          return EmptyList(
+            showTryButton: true,
+            onRefresh: () => _addLoadingEvent(),
+            message: "kanji_lists_load_failed".tr()
+          );
         else if (state is KanjiListStateLoading || state is KanjiListStateSearching)
           return Expanded(child: CustomProgressIndicator());
         else if (state is KanjiListStateLoaded)
           return state.lists.isEmpty
-              ? Expanded(child: EmptyList(message: "kanji_lists_empty".tr()))
+              ? Expanded(child:
+            EmptyList(
+              onRefresh: () => _addLoadingEvent(),
+              message: "kanji_lists_empty".tr())
+          )
               : Expanded(
             child: ListView.builder(
               key: PageStorageKey<String>('kanListListsController'),
               itemCount: state.lists.length,
-              padding: EdgeInsets.only(bottom: 82),
+              padding: EdgeInsets.only(bottom: CustomSizes.extraPaddingForFAB),
               itemBuilder: (context, k) {
                 return Card(
-                  margin: EdgeInsets.all(8),
+                  margin: EdgeInsets.all(Margins.margin8),
                   child: KanListTile(
                     item: state.lists[k],
                     onTap: () => _searchBarFn?.unfocus(),
@@ -287,23 +292,23 @@ class _KanjiListsState extends State<KanjiLists> {
       onTap: _versionDialog,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(CustomRadius.radius16),
           color: CustomColors.secondaryColor
         ),
-        padding: EdgeInsets.symmetric(vertical: 8),
-        margin: EdgeInsets.only(bottom: 8, right: 32, left: 32),
+        padding: EdgeInsets.symmetric(vertical: Margins.margin8),
+        margin: EdgeInsets.only(bottom: Margins.margin8, right: Margins.margin32, left: Margins.margin32),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
               child: Text("kanji_lists_newUpdateAvailable_label".tr(), style: Theme.of(context)
                 .textTheme.headline5?.copyWith(
                   fontWeight: FontWeight.bold, color: Colors.white
               )),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
               child: Icon(Icons.system_update, color: Colors.white)
             )
           ],

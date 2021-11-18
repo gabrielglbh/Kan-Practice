@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
-import 'package:kanpractice/ui/widgets/ActionButton.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/widgets/LearningHeaderAnimation.dart';
+import 'package:kanpractice/ui/widgets/LearningHeaderContainer.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/widgets/ValidationButtons.dart';
@@ -90,32 +91,21 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
           title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.mode.mode)),
           centerTitle: true
         ),
-        body: Container(
-          margin: EdgeInsets.only(top: 32),
-          padding: EdgeInsets.symmetric(horizontal: 8),
-          alignment: Alignment.center,
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
           child: Column(
             children: [
               ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
-              Text(_getProperPronunciation()),
-              Container(
-                height: CustomSizes.listStudyHeight,
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: Text(_studyList[_macro].kanji, style: TextStyle(fontSize: 64)),
-                )
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 8, bottom: 32),
-                child: Text(_getProperMeaning(),
-                  maxLines: 3,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  overflow: TextOverflow.ellipsis
-                ),
-              ),
-              _validateButtons(),
-              _submitButton()
+              LearningHeaderAnimation(id: _macro, children: _header()),
+              ValidationButtons(
+                trigger: _showMeaning,
+                submitLabel: "done_button_label".tr(),
+                wrongAction: _updateUIOnSubmit,
+                midWrongAction: _updateUIOnSubmit,
+                midPerfectAction: _updateUIOnSubmit,
+                perfectAction: _updateUIOnSubmit,
+                onSubmit: () => setState(() => _showMeaning = true),
+              )
             ],
           ),
         ),
@@ -123,25 +113,22 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
     );
   }
 
-  Visibility _validateButtons() {
-    return Visibility(
-      visible: _showMeaning,
-      child: ValidationButtons(
-        wrongAction: _updateUIOnSubmit,
-        midWrongAction: _updateUIOnSubmit,
-        midPerfectAction: _updateUIOnSubmit,
-        perfectAction: _updateUIOnSubmit,
-      )
-    );
-  }
-
-  Visibility _submitButton() {
-    return Visibility(
-      visible: !_showMeaning,
-      child: ActionButton(
-        label: "done_button_label".tr(),
-        onTap: () async => setState(() => _showMeaning = true)
+  List<Widget> _header() {
+    return [
+      LearningHeaderContainer(
+        height: CustomSizes.defaultSizeLearningExtContainer,
+        text: _getProperPronunciation()
       ),
-    );
+      LearningHeaderContainer(
+        fontSize: FontSizes.fontSize64,
+        height: CustomSizes.listStudyHeight,
+        text: _studyList[_macro].kanji
+      ),
+      LearningHeaderContainer(
+        height: CustomSizes.defaultSizeLearningExtContainer,
+        text: _getProperMeaning(),
+        top: Margins.margin8
+      ),
+    ];
   }
 }

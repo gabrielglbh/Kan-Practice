@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/core/database/database_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class WinRateChart extends StatelessWidget {
@@ -13,7 +14,8 @@ class WinRateChart extends StatelessWidget {
   final Color chartColor;
   /// Value of the [winRate] text size
   final double? rateSize;
-  const WinRateChart({required this.title, required this.winRate, this.size = 80, this.rateSize,
+  const WinRateChart({required this.title, required this.winRate,
+    this.size = CustomSizes.defaultSizeWinRateChart, this.rateSize,
     this.chartColor = CustomColors.secondaryColor
   });
 
@@ -21,7 +23,7 @@ class WinRateChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: size, width: size,
-      margin: EdgeInsets.all(8),
+      margin: EdgeInsets.all(Margins.margin8),
       child: SfRadialGauge(
         title: GaugeTitle(text: title),
         axes: <RadialAxis>[
@@ -41,14 +43,15 @@ class WinRateChart extends StatelessWidget {
               GaugeAnnotation(
                 positionFactor: 0.5,
                 angle: 90,
-                widget: Text((((winRate == -1 ? 0 : winRate))*100).toStringAsFixed(2),
+                widget: Text((((winRate == DatabaseConstants.emptyWinRate
+                    ? 0 : winRate))*100).toStringAsFixed(2),
                   style: TextStyle(color: Colors.white, fontSize: rateSize)
                 )
               )
             ],
             pointers: <GaugePointer>[
               RangePointer(
-                value: winRate == -1 ? 0 : winRate,
+                value: winRate == DatabaseConstants.emptyWinRate ? 0 : winRate,
                 width: 0.1,
                 color: Colors.white,
                 pointerOffset: 0.1,

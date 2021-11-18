@@ -22,6 +22,7 @@ class ListQueries {
   Future<int> createList(String name) async {
     if (_database != null) {
       try {
+        if (name.trim().isEmpty) return -1;
         await _database?.insert(KanListTableFields.listsTable,
             KanjiList(name: name, lastUpdated: GeneralUtils.getCurrentMilliseconds()).toJson());
         return 0;

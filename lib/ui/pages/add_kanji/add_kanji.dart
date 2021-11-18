@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
-import 'package:kanpractice/ui/theme/theme_consts.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/widgets/CustomTextForm.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -112,7 +112,7 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(8),
+          padding: EdgeInsets.all(Margins.margin8),
           child: _body()
         ),
       ),
@@ -127,14 +127,14 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
           focusNode: _kanjiFocus,
           header: "add_kanji_textForm_kanji".tr(),
           centerText: TextAlign.center,
-          fontSize: 64,
+          fontSize: FontSizes.fontSize64,
           autofocus: widget.args.kanji == null,
           bold: FontWeight.bold,
           hint: "add_kanji_textForm_kanji_ext".tr(),
           onEditingComplete: () => _pronunciationFocus.requestFocus(),
         ),
         Padding(
-          padding: EdgeInsets.only(top: 32),
+          padding: EdgeInsets.only(top: Margins.margin32),
           child: CustomTextForm(
             controller: _pronunciationController,
             focusNode: _pronunciationFocus,
@@ -144,7 +144,7 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(top: 32),
+          padding: EdgeInsets.only(top: Margins.margin32),
           child: CustomTextForm(
             controller: _meaningController,
             focusNode: _meaningFocus,
@@ -155,7 +155,7 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.all(16),
+          padding: EdgeInsets.all(Margins.margin16),
           child: Row(
             mainAxisAlignment: widget.args.kanji == null
                 ? MainAxisAlignment.spaceAround : MainAxisAlignment.center,

@@ -7,6 +7,7 @@ import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
 import 'package:kanpractice/ui/widgets/LearningHeaderAnimation.dart';
+import 'package:kanpractice/ui/widgets/LearningHeaderContainer.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -195,11 +196,10 @@ class _WritingStudyState extends State<WritingStudy> {
     double finalHeight = MediaQuery.of(context).size.height < CustomSizes.minimumHeight
         ? CustomSizes.listStudyHeight / 3 : CustomSizes.listStudyHeight;
     return [
-      Container(
-        height: CustomSizes.defaultSizeLearningExtContainer,
-        child: _goNextKanji
-            ? Text(_studyList[_macro].pronunciation, overflow: TextOverflow.ellipsis)
-            : Text(""),
+      LearningHeaderContainer(
+        height: CustomSizes.defaultSizeLearningExtContainer + Margins.margin8,
+        text: _goNextKanji
+            ? _studyList[_macro].pronunciation : ""
       ),
       Container(
         height: finalHeight,
@@ -219,10 +219,11 @@ class _WritingStudyState extends State<WritingStudy> {
           },
         ),
       ),
-      Padding(
-        padding: EdgeInsets.only(top: Margins.margin8),
-        child: Text(_studyList[_macro].meaning, overflow: TextOverflow.ellipsis),
-      )
+      LearningHeaderContainer(
+        height: CustomSizes.defaultSizeLearningExtContainer,
+        text: _studyList[_macro].meaning,
+        top: Margins.margin8,
+      ),
     ];
   }
 

@@ -39,9 +39,12 @@ class LearningHeaderAnimation extends StatelessWidget {
             BoxShadow(color: Colors.grey, offset: Offset(0, 2), blurRadius: CustomRadius.radius4)
           ],
         ),
-        child: Column(
-          children: children
-        ),
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: Column(
+            children: children
+          ),
+        )
       )
     );
   }

@@ -5,7 +5,7 @@ class CustomSizes {
   static const double defaultSizeLearningExtContainer = 20;
   static const double defaultSizeSearchBarIcons = 50;
   static const double defaultSizeLearningModeBar = 50;
-  static const double defaultSizeReadingExtContainer = 50;
+  static const double largeSizeLearningExtContainer = 50;
   static const double defaultSizeFiltersList = 60;
   static const double defaultSizeActionButton = 60;
   static const double appBarHeight = 80;

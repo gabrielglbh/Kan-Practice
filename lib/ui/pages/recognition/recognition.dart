@@ -4,6 +4,7 @@ import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/LearningHeaderAnimation.dart';
+import 'package:kanpractice/ui/widgets/LearningHeaderContainer.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/widgets/ValidationButtons.dart';
@@ -114,26 +115,19 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
 
   List<Widget> _header() {
     return [
-      Container(
+      LearningHeaderContainer(
         height: CustomSizes.defaultSizeLearningExtContainer,
-        child: Text(_getProperPronunciation(), style: TextStyle(fontSize: FontSizes.fontSize18)),
+        text: _getProperPronunciation()
       ),
-      Container(
+      LearningHeaderContainer(
+        fontSize: FontSizes.fontSize64,
         height: CustomSizes.listStudyHeight,
-        child: FittedBox(
-          fit: BoxFit.contain,
-          child: Text(_studyList[_macro].kanji,
-              style: TextStyle(fontSize: FontSizes.fontSize64)),
-        )
+        text: _studyList[_macro].kanji
       ),
-      Padding(
-        padding: EdgeInsets.only(top: Margins.margin8),
-        child: Text(_getProperMeaning(),
-          maxLines: 3,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: FontSizes.fontSize32, fontWeight: FontWeight.bold),
-          overflow: TextOverflow.ellipsis
-        ),
+      LearningHeaderContainer(
+        height: CustomSizes.defaultSizeLearningExtContainer,
+        text: _getProperMeaning(),
+        top: Margins.margin8
       ),
     ];
   }

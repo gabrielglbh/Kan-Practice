@@ -5,6 +5,7 @@ import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
 import 'package:kanpractice/ui/widgets/LearningHeaderAnimation.dart';
+import 'package:kanpractice/ui/widgets/LearningHeaderContainer.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/widgets/ValidationButtons.dart';
@@ -125,29 +126,26 @@ class _ReadingStudyState extends State<ReadingStudy> {
 
   List<Widget> _header() {
     return [
-      Text(_getProperAlphabet(),
-        style: TextStyle(fontSize: FontSizes.fontSize24,
-            color: CustomColors.secondarySubtleColor)
+      LearningHeaderContainer(
+        color: CustomColors.secondarySubtleColor,
+        height: CustomSizes.defaultSizeLearningExtContainer,
+        text: _getProperAlphabet()
       ),
-      Container(
-        height: CustomSizes.defaultSizeReadingExtContainer,
-        child: Text(_getProperPronunciation(),
-            style: TextStyle(fontSize: FontSizes.fontSize32, fontWeight: FontWeight.bold)),
+      LearningHeaderContainer(
+        height: CustomSizes.largeSizeLearningExtContainer,
+        fontWeight: FontWeight.bold,
+        text: _getProperPronunciation()
       ),
-      Container(
+      LearningHeaderContainer(
+        fontSize: FontSizes.fontSize64,
         height: CustomSizes.listStudyHeight,
-        child: FittedBox(
-          fit: BoxFit.contain,
-          child: Text(_studyList[_macro].kanji,
-              style: TextStyle(fontSize: FontSizes.fontSize64)),
-        )
+        text: _studyList[_macro].kanji
       ),
-      Padding(
-        padding: EdgeInsets.only(top: Margins.margin8),
-        child: Text(_getProperMeaning(),
-            style: TextStyle(fontSize: FontSizes.fontSize18),
-            overflow: TextOverflow.ellipsis),
-      ),
+      LearningHeaderContainer(
+        height: CustomSizes.defaultSizeLearningExtContainer,
+        text: _getProperMeaning(),
+        top: Margins.margin8
+      )
     ];
   }
 }

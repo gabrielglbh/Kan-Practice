@@ -27,22 +27,19 @@ class LearningHeaderAnimation extends StatelessWidget {
           ),
         );
       },
-      child: Container(
+      child: Card(
         key: ValueKey<int>(id),
-        width: MediaQuery.of(context).size.width,
         margin: EdgeInsets.symmetric(vertical: Margins.margin16),
-        padding: EdgeInsets.symmetric(vertical: Margins.margin8),
-        decoration: BoxDecoration(
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(CustomRadius.radius8),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(color: Colors.grey, offset: Offset(0, 2), blurRadius: CustomRadius.radius4)
-          ],
         ),
-        child: FittedBox(
-          fit: BoxFit.contain,
-          child: Column(
-            children: children
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: Margins.margin8),
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: Column(
+              children: children
+            ),
           ),
         )
       )

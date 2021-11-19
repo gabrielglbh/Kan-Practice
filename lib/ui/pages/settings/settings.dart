@@ -56,7 +56,7 @@ class _SettingsState extends State<Settings> {
           _header("settings_progress_section".tr()),
           Divider(),
           ListTile(
-            leading: Icon(Icons.track_changes_rounded),
+            leading: Icon(Icons.track_changes_rounded, color: CustomColors.secondarySubtleColor),
             title: Text("settings_progress_testHistory".tr()),
             onTap: () async => Navigator.of(context).pushNamed(KanPracticePages.testHistoryPage),
           ),
@@ -83,8 +83,21 @@ class _SettingsState extends State<Settings> {
           _header("settings_information_section".tr()),
           Divider(),
           ListTile(
+            leading: Icon(Icons.device_hub_rounded),
+            title: Text("settings_information_contribute".tr()),
+            trailing: Icon(Icons.link),
+            onTap: () async {
+              try {
+                await launch("https://github.com/gabrielglbh/Kan-Practice");
+              } catch (err) {
+                GeneralUtils.getSnackBar(context, "settings_information_rating_failed".tr());
+              }
+            }
+          ),Divider(),
+          ListTile(
             leading: Icon(Icons.star_rate_rounded, color: Colors.orangeAccent),
             title: Text("settings_information_rating".tr()),
+            trailing: Icon(Icons.link),
             onTap: () async {
               try {
                 await launch("google_play_link".tr());
@@ -128,6 +141,7 @@ class _SettingsState extends State<Settings> {
             child: ListTile(
               leading: Icon(Icons.privacy_tip),
               title: Text("settings_information_terms_label".tr()),
+              trailing: Icon(Icons.link),
               onTap: () async {
                 try {
                   await launch("https://kanpractice.web.app");

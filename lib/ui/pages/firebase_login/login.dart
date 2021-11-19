@@ -133,7 +133,6 @@ class _LoginPageState extends State<LoginPage> {
               inputType: TextInputType.visiblePassword,
               controller: _currPassword,
               focusNode: _currPasswordFn,
-              autofocus: true,
               obscure: true,
               onEditingComplete: () {
                 Navigator.of(context).pop();
@@ -304,19 +303,20 @@ class _LoginPageState extends State<LoginPage> {
         ),
         Divider(),
         ListTile(
-          leading: Icon(Icons.delete),
-          title: Text("login_removeAccountDialog_title".tr()),
-          onTap: () => _removeAccountDialog(),
+          leading: Icon(Icons.logout),
+          title: Text("login_close_session_title".tr()),
+          onTap: () => _bloc..add(CloseSession()),
         ),
         Divider(),
         Padding(
           padding: EdgeInsets.only(bottom: Margins.margin32),
           child: ListTile(
-            leading: Icon(Icons.logout),
-            title: Text("login_close_session_title".tr()),
-            onTap: () => _bloc..add(CloseSession()),
+            leading: Icon(Icons.delete),
+            title: Text("login_removeAccountDialog_title".tr(),
+                style: TextStyle(color: CustomColors.secondaryColor)),
+            onTap: () => _removeAccountDialog(),
           ),
-        )
+        ),
       ],
     );
   }

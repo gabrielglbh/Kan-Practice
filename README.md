@@ -10,6 +10,16 @@ Build your own word or sentences lists and study them whenever you want.
   </a>  
 </p>
 
+## Screenshots
+
+<img src="documentation/lists.png" width="33%">
+<img src="documentation/kanlist.png" width="33%">
+<img src="documentation/details.png" width="33%">
+
+<img src="documentation/writing.png" width="33%">
+<img src="documentation/reading.png" width="33%">
+<img src="documentation/recognition.png" width="33%">
+
 ## Making your own KanPractice
 
 If you want to replicate this app on your device with a custom back-end, fork the repo and include your own Google Services files for iOS or Android. Make sure your back-end matches the models described in code, although you can also change them to match yours!

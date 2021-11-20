@@ -4,6 +4,12 @@ A simple app for studying the japanese vocabulary you will learn in your japanes
 
 Build your own word or sentences lists and study them whenever you want.
 
+<p align="center">
+  <a href="https://play.google.com/store/apps/details?id=com.gabr.garc.kanpractice">
+    <img src="https://cdn.rawgit.com/steverichey/google-play-badge-svg/master/img/en_get.svg" width="30%">
+  </a>  
+</p>
+
 ## Making your own KanPractice
 
 If you want to replicate this app on your device with a custom back-end, fork the repo and include your own Google Services files for iOS or Android. Make sure your back-end matches the models described in code, although you can also change them to match yours!

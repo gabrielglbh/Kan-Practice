@@ -12,16 +12,16 @@ Build your own word or sentences lists and study them whenever you want.
 
 ## Screenshots
 
-<p float="middle">
-  <img src="documentation/lists.png" width="33%">
-  <img src="documentation/kanlist.png" width="33%">
-  <img src="documentation/details.png" width="33%">
+<p align="center">
+  <img src="documentation/lists.png" width="20%">
+  <img src="documentation/kanlist.png" width="20%">
+  <img src="documentation/details.png" width="20%">
 </p>
 
-<p float="middle">
-  <img src="documentation/writing.png" width="33%">
-  <img src="documentation/reading.png" width="33%">
-  <img src="documentation/recognition.png" width="33%">
+<p align="center">
+  <img src="documentation/writing.png" width="20%">
+  <img src="documentation/reading.png" width="20%">
+  <img src="documentation/recognition.png" width="20%">
 </p>
 
 ## Making your own KanPractice

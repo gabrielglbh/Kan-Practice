@@ -165,5 +165,12 @@
   "back_button_label": "Back",
   "study_modes_good_luck": "Good Luck!",
   "study_modes_empty": "The list selected for the test is empty. Cannot perform test.",
-  "load_failed_try_again_button_label": "Try again"
+  "load_failed_try_again_button_label": "Try again",
+  "tutorial_done": "Start!",
+  "tutorial_kanlist": "TODO",
+  "tutorial_lists": "TODO",
+  "tutorial_details": "TODO",
+  "tutorial_writing": "TODO",
+  "tutorial_reading": "TODO",
+  "tutorial_recognition": "TODO"
 }

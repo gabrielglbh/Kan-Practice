@@ -165,5 +165,12 @@
   "back_button_label": "Atrás",
   "study_modes_good_luck": "¡Buena Suerte!",
   "study_modes_empty": "La lista seleccionada para la prueba está vacía. No se puede realizar.",
-  "load_failed_try_again_button_label": "Inténtalo de nuevo"
+  "load_failed_try_again_button_label": "Inténtalo de nuevo",
+  "tutorial_done": "¡Empezar!",
+  "tutorial_kanlist": "TODO",
+  "tutorial_lists": "TODO",
+  "tutorial_details": "TODO",
+  "tutorial_writing": "TODO",
+  "tutorial_reading": "TODO",
+  "tutorial_recognition": "TODO"
 }

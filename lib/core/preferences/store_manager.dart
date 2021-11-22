@@ -4,6 +4,7 @@ class StorageManager {
   static final String themeMode = "themeMode";
   static final String filtersOnList = "listFilters";
   static final String orderOnList = "listOrder";
+  static final String hasDoneTutorial = "hasDoneTutorial";
 
   static StorageManager? _storageUtils;
   static SharedPreferences? _preferences;

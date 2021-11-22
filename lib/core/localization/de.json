@@ -165,5 +165,12 @@
   "back_button_label": "Zurück",
   "study_modes_good_luck": "Viel Glück!",
   "study_modes_empty": "Die für den Test ausgewählte Liste ist leer. Kann Test nicht durchführen.",
-  "load_failed_try_again_button_label": "Erneut versuchen"
+  "load_failed_try_again_button_label": "Erneut versuchen",
+  "tutorial_done": "Start!",
+  "tutorial_kanlist": "TODO",
+  "tutorial_lists": "TODO",
+  "tutorial_details": "TODO",
+  "tutorial_writing": "TODO",
+  "tutorial_reading": "TODO",
+  "tutorial_recognition": "TODO"
 }

@@ -4,9 +4,12 @@ import 'package:kanpractice/ui/theme/consts.dart';
 class BulletPageView extends StatefulWidget {
   final List<Widget> pageViewChildren;
   final int bullets;
+  final Function(int) onChanged;
   BulletPageView({
     required this.pageViewChildren,
-    required this.bullets});
+    required this.bullets,
+    required this.onChanged
+  });
 
   @override
   _BulletPageViewState createState() => _BulletPageViewState();
@@ -19,13 +22,17 @@ class _BulletPageViewState extends State<BulletPageView> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          height: MediaQuery.of(context).size.height - 96,
+          height: MediaQuery.of(context).size.height - (Margins.margin64*2),
           child: PageView(
             scrollDirection: Axis.horizontal,
             children: widget.pageViewChildren,
-            onPageChanged: (newPageIndex) => setState(() => _selectedPage = newPageIndex),
+            onPageChanged: (newPageIndex) {
+              widget.onChanged(newPageIndex);
+              setState(() => _selectedPage = newPageIndex);
+            },
           ),
         ),
         Container(

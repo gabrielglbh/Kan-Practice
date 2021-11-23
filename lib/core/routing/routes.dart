@@ -51,6 +51,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       String args = settings.arguments as String;
       return CupertinoPageRoute(builder: (_) => BackUpPage(uid: args));
     case KanPracticePages.tutorialPage:
-      return CupertinoPageRoute(builder: (_) => TutorialPage());
+      bool? args = settings.arguments as bool?;
+      return CupertinoPageRoute(builder: (_) => TutorialPage(alreadyShown: args));
   }
 }

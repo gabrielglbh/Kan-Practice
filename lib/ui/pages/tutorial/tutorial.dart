@@ -50,26 +50,55 @@ extension TestPagesExt on TutorialView {
   }
 }
 
-class TutorialPage extends StatelessWidget {
-  const TutorialPage();
+class TutorialPage extends StatefulWidget {
+  final bool? alreadyShown;
+  TutorialPage({this.alreadyShown});
+
+  @override
+  _TutorialPageState createState() => _TutorialPageState();
+}
+
+class _TutorialPageState extends State<TutorialPage> {
+  bool _showSkip = true;
+
+  _onEnd(BuildContext context) {
+    if (widget.alreadyShown == null) {
+      StorageManager.saveData(StorageManager.hasDoneTutorial, true);
+      Navigator.of(context).pushReplacementNamed(KanPracticePages.kanjiListPage);
+    } else {
+      Navigator.of(context).pop();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.secondaryColor,
       body: SafeArea(
-        child: BulletPageView(
-          bullets: 7,
-          pageViewChildren: [
-            _tutorialPage(context, TutorialView.kanList),
-            _tutorialPage(context, TutorialView.list),
-            _tutorialPage(context, TutorialView.details),
-            _tutorialPage(context, TutorialView.writing),
-            _tutorialPage(context, TutorialView.reading),
-            _tutorialPage(context, TutorialView.recognition),
-            _tutorialPage(context, TutorialView.tests),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            BulletPageView(
+              bullets: TutorialView.values.length,
+              onChanged: (newPage) => setState(() => _showSkip = newPage != TutorialView.values.length - 1),
+              pageViewChildren: [
+                _tutorialPage(context, TutorialView.kanList),
+                _tutorialPage(context, TutorialView.list),
+                _tutorialPage(context, TutorialView.details),
+                _tutorialPage(context, TutorialView.writing),
+                _tutorialPage(context, TutorialView.reading),
+                _tutorialPage(context, TutorialView.recognition),
+                _tutorialPage(context, TutorialView.tests),
+              ],
+            ),
+            ActionButton(
+              label: _showSkip ? "tutorial_skip".tr() : "tutorial_done".tr(),
+              color: Colors.white,
+              textColor: Colors.black,
+              onTap: () => _onEnd(context)
+            ),
           ],
-        ),
+        )
       )
     );
   }
@@ -77,45 +106,28 @@ class TutorialPage extends StatelessWidget {
   Column _tutorialPage(BuildContext context, TutorialView view) {
     return Column(
       children: [
-        Flexible(
-          fit: FlexFit.tight,
-          child: Column(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 1.75,
-                padding: EdgeInsets.all(8),
-                child: FittedBox(
-                  fit: BoxFit.fitHeight,
-                  child: Image.asset(view.asset)
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(8),
-                  child: SingleChildScrollView(
-                    child: Text(view.tutorial, style: TextStyle(color: Colors.white))
-                  ),
-                )
-              ),
-            ],
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height / 2.25,
+          decoration: BoxDecoration(
+            color: CustomColors.secondarySubtleColor,
+            borderRadius: BorderRadius.circular(CustomRadius.radius32)
+          ),
+          padding: EdgeInsets.all(8),
+          margin: EdgeInsets.symmetric(horizontal: 8),
+          child: FittedBox(
+            fit: BoxFit.fitHeight,
+            child: Image.asset(view.asset)
           ),
         ),
-        Visibility(
-          visible: view == TutorialView.tests,
+        Expanded(
           child: Padding(
-            padding: EdgeInsets.only(bottom: 0),
-            child: ActionButton(
-              label: "tutorial_done".tr(),
-              color: Colors.white,
-              textColor: Colors.black,
-              onTap: () {
-                StorageManager.saveData(StorageManager.hasDoneTutorial, true);
-                Navigator.of(context).pushReplacementNamed(KanPracticePages.kanjiListPage);
-              }
+            padding: EdgeInsets.all(8),
+            child: SingleChildScrollView(
+              child: Text(view.tutorial, style: TextStyle(color: Colors.white, fontSize: 16))
             ),
           )
-        )
+        ),
       ],
     );
   }

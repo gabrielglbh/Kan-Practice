@@ -60,6 +60,11 @@ class _SettingsState extends State<Settings> {
             title: Text("settings_progress_testHistory".tr()),
             onTap: () async => Navigator.of(context).pushNamed(KanPracticePages.testHistoryPage),
           ),
+          ListTile(
+            leading: Icon(Icons.school_rounded),
+            title: Text("settings_tutorial_label".tr()),
+            onTap: () async => Navigator.of(context).pushNamed(KanPracticePages.tutorialPage, arguments: true),
+          ),
           BlocProvider(
             create: (_) => _settingsBloc..add(SettingsLoadingBackUpDate(context)),
             child: BlocBuilder<SettingsBloc, SettingsState>(

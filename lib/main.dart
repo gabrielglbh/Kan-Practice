@@ -11,7 +11,8 @@ import 'core/routing/routes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await StorageManager.getInstance();
-  if (StorageManager.readData(StorageManager.hasDoneTutorial) == null)
+  if (StorageManager.readData(StorageManager.hasDoneTutorial) == null ||
+      StorageManager.readData(StorageManager.hasDoneTutorial) == false)
     StorageManager.saveData(StorageManager.hasDoneTutorial, false);
   await CustomDatabase.instance.open();
   await Firebase.initializeApp();

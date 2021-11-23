@@ -49,5 +49,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/icon/icon.png
-    - documentation/
+    - assets/tutorial/
     - lib/core/localization/

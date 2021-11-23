@@ -6,6 +6,50 @@ import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/ActionButton.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+enum TutorialView {
+  kanList, list, details, writing, reading, recognition, tests
+}
+
+extension TestPagesExt on TutorialView {
+  String get tutorial {
+    switch (this) {
+      case TutorialView.kanList:
+        return "tutorial_kanlist".tr();
+      case TutorialView.list:
+        return "tutorial_lists".tr();
+      case TutorialView.details:
+        return "tutorial_details".tr();
+      case TutorialView.writing:
+        return "tutorial_writing".tr();
+      case TutorialView.reading:
+        return "tutorial_reading".tr();
+      case TutorialView.recognition:
+        return "tutorial_recognition".tr();
+      case TutorialView.tests:
+        return "tutorial_tests".tr();
+    }
+  }
+
+  String get asset {
+    switch (this) {
+      case TutorialView.kanList:
+        return "assets/tutorial/kanLists.png";
+      case TutorialView.list:
+        return "assets/tutorial/lists.png";
+      case TutorialView.details:
+        return "assets/tutorial/details.png";
+      case TutorialView.writing:
+        return "assets/tutorial/writing.png";
+      case TutorialView.reading:
+        return "assets/tutorial/reading.png";
+      case TutorialView.recognition:
+        return "assets/tutorial/recognition.png";
+      case TutorialView.tests:
+        return "assets/tutorial/tests.png";
+    }
+  }
+}
+
 class TutorialPage extends StatelessWidget {
   const TutorialPage();
 
@@ -13,60 +57,58 @@ class TutorialPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.secondaryColor,
-      body: Center(
+      body: SafeArea(
         child: BulletPageView(
-          bullets: 6,
+          bullets: 7,
           pageViewChildren: [
-            _tutorialPage(context, 0, "tutorial_kanlist".tr(), "documentation/kanlist.png"),
-            _tutorialPage(context, 1, "tutorial_lists".tr(), "documentation/lists.png"),
-            _tutorialPage(context, 2, "tutorial_details".tr(), "documentation/details.png"),
-            _tutorialPage(context, 3, "tutorial_writing".tr(), "documentation/writing.png"),
-            _tutorialPage(context, 4, "tutorial_reading".tr(), "documentation/reading.png"),
-            _tutorialPage(context, 5, "tutorial_recognition".tr(), "documentation/recognition.png"),
+            _tutorialPage(context, TutorialView.kanList),
+            _tutorialPage(context, TutorialView.list),
+            _tutorialPage(context, TutorialView.details),
+            _tutorialPage(context, TutorialView.writing),
+            _tutorialPage(context, TutorialView.reading),
+            _tutorialPage(context, TutorialView.recognition),
+            _tutorialPage(context, TutorialView.tests),
           ],
-          height: 1.11,
         ),
       )
     );
   }
 
-  Column _tutorialPage(BuildContext context, int index, String tutorial, String asset) {
+  Column _tutorialPage(BuildContext context, TutorialView view) {
     return Column(
       children: [
-        Expanded(
+        Flexible(
+          fit: FlexFit.tight,
           child: Column(
             children: [
               Container(
-                width: MediaQuery.of(context).size.width - 16,
-                height: MediaQuery.of(context).size.height / 2.5,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height / 1.75,
                 padding: EdgeInsets.all(8),
-                margin: EdgeInsets.only(top: 72),
-                alignment: Alignment.center,
-                child: Image.asset(asset),
-              ),
-              Padding(
-                padding: EdgeInsets.only(right: 64, left: 64, bottom: 4),
-                child: Divider(),
+                child: FittedBox(
+                  fit: BoxFit.fitHeight,
+                  child: Image.asset(view.asset)
+                ),
               ),
               Expanded(
-                  child: Scrollbar(
-                    child: SingleChildScrollView(
-                      child: Padding(
-                          padding: EdgeInsets.only(top: 16, right: 16, left: 16),
-                          child: Text(tutorial, textAlign: TextAlign.justify)
-                      ),
-                    ),
-                  )
-              )
+                child: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: SingleChildScrollView(
+                    child: Text(view.tutorial, style: TextStyle(color: Colors.white))
+                  ),
+                )
+              ),
             ],
           ),
         ),
         Visibility(
-          visible: index == 5,
+          visible: view == TutorialView.tests,
           child: Padding(
             padding: EdgeInsets.only(bottom: 0),
             child: ActionButton(
-              label: "Done",
+              label: "tutorial_done".tr(),
+              color: Colors.white,
+              textColor: Colors.black,
               onTap: () {
                 StorageManager.saveData(StorageManager.hasDoneTutorial, true);
                 Navigator.of(context).pushReplacementNamed(KanPracticePages.kanjiListPage);

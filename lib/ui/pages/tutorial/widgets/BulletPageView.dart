@@ -4,11 +4,9 @@ import 'package:kanpractice/ui/theme/consts.dart';
 class BulletPageView extends StatefulWidget {
   final List<Widget> pageViewChildren;
   final int bullets;
-  final double height;
   BulletPageView({
     required this.pageViewChildren,
-    required this.bullets,
-    required this.height});
+    required this.bullets});
 
   @override
   _BulletPageViewState createState() => _BulletPageViewState();
@@ -23,7 +21,7 @@ class _BulletPageViewState extends State<BulletPageView> {
     return Column(
       children: [
         Container(
-          height: MediaQuery.of(context).size.height / widget.height,
+          height: MediaQuery.of(context).size.height - 96,
           child: PageView(
             scrollDirection: Axis.horizontal,
             children: widget.pageViewChildren,
@@ -33,14 +31,12 @@ class _BulletPageViewState extends State<BulletPageView> {
         Container(
           height: 15,
           alignment: Alignment.center,
-          child: Center(
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              itemCount: widget.bullets,
-              itemBuilder: (context, i) => _bullet(i),
-            ),
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            itemCount: widget.bullets,
+            itemBuilder: (context, i) => _bullet(i),
           )
         ),
       ],
@@ -54,7 +50,7 @@ class _BulletPageViewState extends State<BulletPageView> {
         width: 16, height: 16,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: _selectedPage == i ? CustomColors.secondaryColor : Colors.white60
+          color: _selectedPage == i ? Colors.white : CustomColors.secondarySubtleColor
         ),
       ),
     );

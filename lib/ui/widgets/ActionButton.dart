@@ -6,12 +6,14 @@ class ActionButton extends StatelessWidget {
   final String label;
   /// Color of the button. Defaults to green
   final Color color;
+  /// Color of the label button. Defaults to green
+  final Color textColor;
   /// Horizontal padding for the button. Defaults to 32.
   final double horizontal;
   /// Vertical padding for the button. Defaults to 8.
   final double vertical;
   final Function() onTap;
-  const ActionButton({required this.label, this.color = Colors.green,
+  const ActionButton({required this.label, this.color = Colors.green, this.textColor = Colors.white,
     this.horizontal = Margins.margin32, this.vertical = Margins.margin8, required this.onTap});
 
   @override
@@ -36,7 +38,7 @@ class ActionButton extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.contain,
               child: Text(label, textAlign: TextAlign.center, overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: FontSizes.fontSize16, fontWeight: FontWeight.bold, color: Colors.white)
+                  style: TextStyle(fontSize: FontSizes.fontSize16, fontWeight: FontWeight.bold, color: textColor)
               ),
             )
           ),

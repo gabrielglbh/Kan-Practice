@@ -11,6 +11,9 @@ import 'core/routing/routes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await StorageManager.getInstance();
+  if (StorageManager.readData(StorageManager.hasDoneTutorial) == null ||
+      StorageManager.readData(StorageManager.hasDoneTutorial) == false)
+    StorageManager.saveData(StorageManager.hasDoneTutorial, false);
   await CustomDatabase.instance.open();
   await Firebase.initializeApp();
   await EasyLocalization.ensureInitialized();
@@ -26,6 +29,7 @@ class SetUpApp extends StatelessWidget {
       supportedLocales: [
         Locale("en"),
         Locale("es"),
+        Locale("de"),
       ],
       path: "lib/core/localization",
       fallbackLocale: Locale("en"),
@@ -67,7 +71,8 @@ class _KanPracticeState extends State<KanPractice> {
       theme: ThemeManager.instance.currentLightThemeData,
       darkTheme: ThemeManager.instance.currentDarkThemeData,
       themeMode: ThemeManager.instance.themeMode,
-      initialRoute: KanPracticePages.kanjiListPage,
+      initialRoute: StorageManager.readData(StorageManager.hasDoneTutorial)
+          ? KanPracticePages.kanjiListPage : KanPracticePages.tutorialPage,
       onGenerateRoute: onGenerateRoute,
     );
   }

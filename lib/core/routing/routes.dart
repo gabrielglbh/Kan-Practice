@@ -14,6 +14,7 @@ import 'package:kanpractice/ui/pages/settings/settings.dart';
 import 'package:kanpractice/ui/pages/test_history/test_history.dart';
 import 'package:kanpractice/ui/pages/test_result/arguments.dart';
 import 'package:kanpractice/ui/pages/test_result/test_result.dart';
+import 'package:kanpractice/ui/pages/tutorial/tutorial.dart';
 import 'package:kanpractice/ui/pages/writing/writing.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 
@@ -49,5 +50,8 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case KanPracticePages.backUpPage:
       String args = settings.arguments as String;
       return CupertinoPageRoute(builder: (_) => BackUpPage(uid: args));
+    case KanPracticePages.tutorialPage:
+      bool? args = settings.arguments as bool?;
+      return CupertinoPageRoute(builder: (_) => TutorialPage(alreadyShown: args));
   }
 }

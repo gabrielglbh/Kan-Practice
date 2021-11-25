@@ -43,23 +43,29 @@ class _SettingsState extends State<Settings> {
       ),
       body: ListView(
         children: [
-          _header("settings_appearance_section".tr()),
+          _header("settings_general".tr()),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.star, color: Colors.green),
+            title: Text("settings_general_versionNotes".tr()),
+            onTap: () async => await GeneralUtils.showVersionNotes(context),
+          ),
           Divider(),
           ListTile(
             leading: Icon(Icons.wb_sunny_rounded),
-            title: Text("settings_appearance_theme".tr()),
+            title: Text("settings_general_theme".tr()),
             onTap: () async {
               _mode = ThemeManager.instance.themeMode;
               ThemeManager.instance.switchMode(_mode == ThemeMode.light);
             },
           ),
-          _header("settings_progress_section".tr()),
           Divider(),
           ListTile(
             leading: Icon(Icons.track_changes_rounded, color: CustomColors.secondarySubtleColor),
-            title: Text("settings_progress_testHistory".tr()),
+            title: Text("settings_general_testHistory".tr()),
             onTap: () async => Navigator.of(context).pushNamed(KanPracticePages.testHistoryPage),
           ),
+          Divider(),
           ListTile(
             leading: Icon(Icons.school_rounded),
             title: Text("settings_tutorial_label".tr()),

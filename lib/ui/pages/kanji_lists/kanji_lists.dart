@@ -4,6 +4,7 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/firebase/queries/back_ups.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
+import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/filters.dart';
 import 'package:kanpractice/ui/widgets/BlitzBottomSheet.dart';
@@ -16,7 +17,6 @@ import 'package:kanpractice/ui/pages/kanji_lists/widgets/StudyBottomSheet.dart';
 import 'package:kanpractice/ui/widgets/CustomTextForm.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
 import 'package:package_info/package_info.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class KanjiLists extends StatefulWidget {
@@ -98,24 +98,6 @@ class _KanjiListsState extends State<KanjiLists> {
         positiveButtonText: "kanji_lists_createDialogForAddingKanList_positive".tr(),
         onPositive: () => _addCreateEvent(controller.text),
       )
-    );
-  }
-
-  _versionDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (context) {
-        return CustomDialog(
-          title: Text("kanji_lists_versionDialog_title".tr()),
-          content: Text("$_newVersion"),
-          positiveButtonText: 'kanji_lists_versionDialog_button_label'.tr(),
-          onPositive: () async {
-            if (await canLaunch("google_play_link".tr()))
-              await launch("google_play_link".tr());
-          },
-        );
-      },
     );
   }
 
@@ -289,7 +271,7 @@ class _KanjiListsState extends State<KanjiLists> {
 
   Widget _updateContainer() {
     return GestureDetector(
-      onTap: _versionDialog,
+      onTap: () async => await GeneralUtils.showVersionNotes(context, version: _newVersion),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(CustomRadius.radius16),

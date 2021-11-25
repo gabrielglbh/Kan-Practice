@@ -49,6 +49,21 @@ class BackUpRecords {
     return "";
   }
 
+  /// Gets the version notes and changelogs of the current version.
+  Future<List<String>> getVersionNotes(BuildContext context) async {
+    List<String> notes = [];
+
+    try {
+      final Future<DocumentSnapshot>? ref = _ref?.collection("Versioning").doc("version_notes").get();
+      await ref?.then((snapshot) {
+        notes = snapshot.get(Localizations.localeOf(context).languageCode).cast<String>();
+      });
+    } catch (err) {
+      notes = [];
+    }
+    return notes;
+  }
+
   /// Creates the [BackUp] object and creates it in Firebase under the current UID.
   /// Based on sub collections.
   /// Returns an empty String if nothing happened, else, the error is returned.

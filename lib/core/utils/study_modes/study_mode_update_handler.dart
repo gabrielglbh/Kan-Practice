@@ -52,7 +52,7 @@ class StudyModeUpdateHandler {
               }
               Navigator.of(context).pushReplacementNamed(KanPracticePages.testResultPage, arguments:
                 TestResultArguments(score: testScore, kanji: args.studyList.length,
-                    studyMode: args.mode.map, listsName: args.listsNames)
+                    studyMode: args.mode.map, listsName: args.listsNames, studyList: _getMapOfKanjiInTest(args))
               );
             }
             /// If the user went back in mid list, update the list accordingly
@@ -109,6 +109,12 @@ class StudyModeUpdateHandler {
         args.studyList[index].kanji, toUpdate);
   }
 
+  static Map<String, List<Kanji>> _getMapOfKanjiInTest(ModeArguments args) {
+    Map<String, List<Kanji>> orderedMap = {};
+    args.studyList.forEach((kanji) => orderedMap[kanji.listName]?.add(kanji));
+    return orderedMap;
+  }
+
   static Future<void> _updateScoreForTestsAffectingPractice(ModeArguments args) async {
     /// Map for storing the overall scores on each appearing list on the test
     Map<String, double> overallScore = {};
@@ -132,9 +138,6 @@ class StudyModeUpdateHandler {
       orderedMap[kanListName] = await KanjiQueries.instance.getAllKanjiFromList(kanListName);
     }
     /// Calculate the overall score for each list on the treated map
-    orderedMap.forEach((key, kanjiList) {
-
-    });
     for (int x = 0; x < orderedMap.keys.toList().length; x++) {
       String kanListName = orderedMap.keys.toList()[x];
       orderedMap[kanListName]?.forEach((k) {

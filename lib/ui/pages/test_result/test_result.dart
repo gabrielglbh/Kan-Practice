@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/queries/test_queries.dart';
+import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/pages/test_result/arguments.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/ActionButton.dart';
@@ -44,7 +45,9 @@ class TestResult extends StatelessWidget {
                 label: "test_result_save_button_label".tr(),
                 onTap: () async {
                   await TestQueries.instance.createTest(args.score, args.kanji, args.studyMode, args.listsName);
-                  Navigator.of(context).pop();
+                  /// Remove all navigation stack and push kanList
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      KanPracticePages.kanjiListPage, (route) => false);
                 }
               )
             ],

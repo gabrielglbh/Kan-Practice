@@ -1,6 +1,5 @@
 # KanPractice TODO list
 
-- Make tests impact on study progression on each kanji. Make it toggable on Settings.
 - Show in test result page the number of kanji on each lesson taken.
 - Add Jiisho unofficial API: [See on Pub Dev](https://pub.dev/packages/unofficial_jisho_api)
 - Add contributors dialog on Settings.

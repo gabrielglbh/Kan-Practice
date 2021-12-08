@@ -4,6 +4,7 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
+import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/pages/test_result/arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
@@ -46,7 +47,9 @@ class StudyModeUpdateHandler {
             /// If the user went through all the test, get the testScore (no-context score)
             /// and go to the test page.
             else if (isTestFinished) {
-              Navigator.of(context).pop(); /// Dialog pop for proper functioning of next navigator call
+              if (StorageManager.readData(StorageManager.affectOnPractice) ?? false) {
+                await _updateScoreForTestsAffectingPractice(args);
+              }
               Navigator.of(context).pushReplacementNamed(KanPracticePages.testResultPage, arguments:
                 TestResultArguments(score: testScore, kanji: args.studyList.length,
                     studyMode: args.mode.map, listsName: args.listsNames)
@@ -59,14 +62,14 @@ class StudyModeUpdateHandler {
               if (lastIndex == 0) Navigator.of(context).pop();
               else {
                 await calculateScore(args, 0.5, lastIndex);
-                final double score = await _getScore(args);
+                final double score = await _getScore(args) / args.studyList.length;
                 await _updateList(score, args);
                 Navigator.of(context).pop();
               }
             }
             /// If the user went through all the list, update the list accordingly
             else {
-              final double score = await _getScore(args);
+              final double score = await _getScore(args) / args.studyList.length;
               await _updateList(score, args);
               Navigator.of(context).pop();
             }
@@ -106,6 +109,56 @@ class StudyModeUpdateHandler {
         args.studyList[index].kanji, toUpdate);
   }
 
+  static Future<void> _updateScoreForTestsAffectingPractice(ModeArguments args) async {
+    /// Map for storing the overall scores on each appearing list on the test
+    Map<String, double> overallScore = {};
+    Map<String, List<Kanji>> orderedMap = {};
+    /// Populate the Kanji arrays by their name in the orderedMap. It will look like this:
+    /// {
+    ///   list2: [],
+    ///   list4: [],
+    ///   ...,
+    ///   listN: [...]
+    /// }
+    /// The map is only populated with the empty lists that appears on the test.
+    args.studyList.forEach((kanji) {
+      orderedMap[kanji.listName] = [];
+      overallScore[kanji.listName] = 0;
+    });
+    /// For every entry, populate the list with all of the kanji of each list
+    /// that appeared on the test
+    for (int x = 0; x < orderedMap.keys.toList().length; x++) {
+      String kanListName = orderedMap.keys.toList()[x];
+      orderedMap[kanListName] = await KanjiQueries.instance.getAllKanjiFromList(kanListName);
+    }
+    /// Calculate the overall score for each list on the treated map
+    orderedMap.forEach((key, kanjiList) {
+
+    });
+    for (int x = 0; x < orderedMap.keys.toList().length; x++) {
+      String kanListName = orderedMap.keys.toList()[x];
+      orderedMap[kanListName]?.forEach((k) {
+        switch (args.mode) {
+          case StudyModes.writing:
+            if (k.winRateWriting != DatabaseConstants.emptyWinRate)
+              overallScore[kanListName] = (overallScore[kanListName] ?? 0) + k.winRateWriting;
+            break;
+          case StudyModes.reading:
+            if (k.winRateReading != DatabaseConstants.emptyWinRate)
+              overallScore[kanListName] = (overallScore[kanListName] ?? 0) + k.winRateReading;
+            break;
+          case StudyModes.recognition:
+            if (k.winRateRecognition != DatabaseConstants.emptyWinRate)
+              overallScore[kanListName] = (overallScore[kanListName] ?? 0) + k.winRateRecognition;
+            break;
+        }
+      });
+      /// For each list, update its overall rating after getting the overall score
+      final double overall = overallScore[kanListName]! / orderedMap[kanListName]!.length;
+      await _updateList(overall, args, kanListName: kanListName);
+    }
+  }
+
   static Future<double> _getScore(ModeArguments args) async {
     double overallScore = 0;
     /// Get the kanji from the DB rather than the args instance as the args
@@ -114,27 +167,27 @@ class StudyModeUpdateHandler {
     kanji.forEach((k) {
       switch (args.mode) {
         case StudyModes.writing:
-          if (k.winRateWriting == DatabaseConstants.emptyWinRate) overallScore += 0;
-          else overallScore += k.winRateWriting;
+          if (k.winRateWriting != DatabaseConstants.emptyWinRate)
+            overallScore += k.winRateWriting;
           break;
         case StudyModes.reading:
-          if (k.winRateReading == DatabaseConstants.emptyWinRate) overallScore += 0;
-          else overallScore += k.winRateReading;
+          if (k.winRateReading != DatabaseConstants.emptyWinRate)
+            overallScore += k.winRateReading;
           break;
         case StudyModes.recognition:
-          if (k.winRateRecognition == DatabaseConstants.emptyWinRate) overallScore += 0;
-          else overallScore += k.winRateRecognition;
+          if (k.winRateRecognition != DatabaseConstants.emptyWinRate)
+            overallScore += k.winRateRecognition;
           break;
       }
     });
     return overallScore;
   }
 
-  static Future<void> _updateList(double score, ModeArguments args) async {
+  static Future<void> _updateList(double overall, ModeArguments args, {String? kanListName}) async {
     double actualOverall = 0;
-    final double overall = score / args.studyList.length;
     Map<String, dynamic> toUpdate = {};
-    KanjiList list = await ListQueries.instance.getList(args.studyList[0].listName);
+    KanjiList list = await ListQueries.instance.getList(
+        kanListName != null ? kanListName : args.studyList[0].listName);
 
     /// If totalWinRate of list is -1, it means that the user has not studied this
     /// list yet. Therefore, the score should be untouched.
@@ -157,6 +210,7 @@ class StudyModeUpdateHandler {
         toUpdate = { KanListTableFields.totalWinRateRecognitionField: actualOverall };
         break;
     }
-    await ListQueries.instance.updateList(args.studyList[0].listName, toUpdate);
+    await ListQueries.instance.updateList(
+        kanListName != null ? kanListName : args.studyList[0].listName, toUpdate);
   }
 }

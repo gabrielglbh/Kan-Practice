@@ -14,6 +14,8 @@ void main() async {
   if (StorageManager.readData(StorageManager.hasDoneTutorial) == null ||
       StorageManager.readData(StorageManager.hasDoneTutorial) == false)
     StorageManager.saveData(StorageManager.hasDoneTutorial, false);
+  if (StorageManager.readData(StorageManager.affectOnPractice) == null)
+    StorageManager.saveData(StorageManager.affectOnPractice, false);
   await CustomDatabase.instance.open();
   await Firebase.initializeApp();
   await EasyLocalization.ensureInitialized();

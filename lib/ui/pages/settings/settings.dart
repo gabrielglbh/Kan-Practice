@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/pages/settings/bloc/settings_bloc.dart';
@@ -21,10 +22,12 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   SettingsBloc _settingsBloc = SettingsBloc();
   ThemeMode _mode = ThemeMode.light;
+  bool _toggleAffect = false;
 
   @override
   void initState() {
     _mode = ThemeManager.instance.themeMode;
+    _toggleAffect = StorageManager.readData(StorageManager.affectOnPractice);
     super.initState();
   }
 
@@ -57,6 +60,27 @@ class _SettingsState extends State<Settings> {
             onTap: () async {
               _mode = ThemeManager.instance.themeMode;
               ThemeManager.instance.switchMode(_mode == ThemeMode.light);
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.auto_graph_rounded),
+            title: Text("settings_general_toggle".tr()),
+            trailing: Switch(
+              activeColor: CustomColors.secondaryColor,
+              activeTrackColor: CustomColors.secondarySubtleColor,
+              inactiveThumbColor: Brightness.light == Theme.of(context).brightness
+                  ? Colors.grey[600] : Colors.white,
+              inactiveTrackColor: Colors.grey,
+              onChanged: (bool value) {
+                StorageManager.saveData(StorageManager.affectOnPractice, value);
+                setState(() => _toggleAffect = value);
+              },
+              value: _toggleAffect,
+            ),
+            onTap: () async {
+              StorageManager.saveData(StorageManager.affectOnPractice, !_toggleAffect);
+              setState(() => _toggleAffect = !_toggleAffect);
             },
           ),
           Divider(),

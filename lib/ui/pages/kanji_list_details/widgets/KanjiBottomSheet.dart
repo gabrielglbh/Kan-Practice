@@ -47,6 +47,7 @@ class KanjiBottomSheet extends StatelessWidget {
           content: Text("kanji_bottom_sheet_removeKanji_content".tr()),
           positiveButtonText: "kanji_bottom_sheet_removeKanji_positive".tr(),
           onPositive: () async {
+            /// TODO: Update KanList overall score
             final int code = await KanjiQueries.instance.removeKanji(listName, k);
             if (code == 0) {
               Navigator.of(context).pop();

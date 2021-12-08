@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
+import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/ui/pages/writing/widgets/CustomCanvas.dart';
 import 'package:kanpractice/ui/pages/writing/widgets/WritingButtonsAnimation.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
@@ -134,8 +135,12 @@ class _WritingStudyState extends State<WritingStudy> {
   Future<int> _calculateKanjiScore() async {
     final double currentScore = _score[_macro] / _maxScore[_macro];
     /// Add the current virgin score to the test scores...
-    if (widget.args.isTest) _testScores.add(currentScore);
-    else StudyModeUpdateHandler.calculateScore(widget.args, currentScore, _macro);
+    if (widget.args.isTest) {
+      if (StorageManager.readData(StorageManager.affectOnPractice) ?? false)
+        await StudyModeUpdateHandler.calculateScore(widget.args, currentScore, _macro);
+      _testScores.add(currentScore);
+    }
+    else await StudyModeUpdateHandler.calculateScore(widget.args, currentScore, _macro);
     return 0;
   }
 

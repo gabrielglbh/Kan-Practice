@@ -45,8 +45,8 @@ class CustomDialog extends StatelessWidget {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(CustomRadius.radius8))),
           ),
           onPressed: () async {
-            await onPositive();
             if (popDialog) Navigator.of(context).pop();
+            await onPositive();
           }
         ),
       ],

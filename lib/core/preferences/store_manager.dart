@@ -5,6 +5,7 @@ class StorageManager {
   static final String filtersOnList = "listFilters";
   static final String orderOnList = "listOrder";
   static final String hasDoneTutorial = "hasDoneTutorial";
+  static final String affectOnPractice = "affectOnPractice";
 
   static StorageManager? _storageUtils;
   static SharedPreferences? _preferences;

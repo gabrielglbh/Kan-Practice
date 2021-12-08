@@ -136,6 +136,7 @@
   "settings_title": "Einstellungen",
   "settings_general": "Allgemein",
   "settings_general_theme": "Theme wechseln",
+  "settings_general_toggle": "Testergebnisse beeinflussen Ihr Praxisergebnis",
   "settings_general_testHistory": "Testverlauf",
   "settings_tutorial_label": "Tutorial anzeigen",
   "settings_general_versionNotes": "Versionshinweise",

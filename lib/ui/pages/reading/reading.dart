@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kana_kit/kana_kit.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
+import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
@@ -68,8 +69,12 @@ class _ReadingStudyState extends State<ReadingStudy> {
 
   Future<int> _calculateKanjiScore(double score) async {
     /// Add the current virgin score to the test scores...
-    if (widget.args.isTest) _testScores.add(score);
-    else StudyModeUpdateHandler.calculateScore(widget.args, score, _macro);
+    if (widget.args.isTest) {
+      if (StorageManager.readData(StorageManager.affectOnPractice) ?? false)
+        await StudyModeUpdateHandler.calculateScore(widget.args, score, _macro);
+      _testScores.add(score);
+    }
+    else await StudyModeUpdateHandler.calculateScore(widget.args, score, _macro);
     return 0;
   }
 

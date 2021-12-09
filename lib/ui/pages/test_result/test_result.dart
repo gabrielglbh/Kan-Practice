@@ -38,7 +38,7 @@ class TestResult extends StatelessWidget {
             WinRateChart(
               title: "",
               winRate: args.score,
-              size: MediaQuery.of(context).size.width / 2,
+              size: MediaQuery.of(context).size.width / 2.5,
               rateSize: ChartSize.medium,
             ),
             Expanded(child: Padding(
@@ -72,35 +72,49 @@ class TestResult extends StatelessWidget {
     return ListView.builder(
       itemCount: args.studyList.keys.toList().length,
       itemBuilder: (context, index) {
+        String? listName = args.studyList.keys.toList()[index];
         return Row(
           children: [
-            Text(args.studyList.keys.toList()[index]),
+            Text("$listName:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize16)),
             Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: args.studyList[index]?.length,
-                itemBuilder: (context, inner) {
-                  Kanji? kanji = args.studyList[index]?[inner];
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: GeneralUtils.getColorBasedOnWinRate((_getProperKanjiWinRate(kanji) ?? 0)),
-                      borderRadius: BorderRadius.all(Radius.circular(CustomRadius.radius8)),
-                      boxShadow: [
-                        BoxShadow(color: Colors.grey, offset: Offset(0, 3), blurRadius: CustomRadius.radius4)
-                      ],
-                    ),
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: Text((kanji?.kanji ?? ""), textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: FontSizes.fontSize20, color: Colors.black)),
-                    )
-                  );
-                },
+              child: Container(
+                height: CustomSizes.defaultResultKanjiListOnTest,
+                margin: EdgeInsets.only(left: Margins.margin8),
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: args.studyList[listName]?.length,
+                  itemBuilder: (context, inner) {
+                    Kanji? kanji = args.studyList[listName]?[inner];
+                    return _kanjiElement(kanji);
+                  },
+                ),
               ),
             )
           ],
         );
       },
+    );
+  }
+
+  Widget _kanjiElement(Kanji? kanji) {
+    return Container(
+      width: CustomSizes.defaultSizeKanjiItemOnResultTest,
+      margin: EdgeInsets.only(
+          left: Margins.margin4, right: Margins.margin4, bottom: Margins.margin8
+      ),
+      padding: EdgeInsets.symmetric(horizontal: Margins.margin2),
+      decoration: BoxDecoration(
+        color: GeneralUtils.getColorBasedOnWinRate((_getProperKanjiWinRate(kanji) ?? 0)),
+        borderRadius: BorderRadius.all(Radius.circular(CustomRadius.radius8)),
+        boxShadow: [
+          BoxShadow(color: Colors.grey, offset: Offset(0, 3), blurRadius: CustomRadius.radius4)
+        ],
+      ),
+      child: FittedBox(
+        fit: BoxFit.contain,
+        child: Text((kanji?.kanji ?? ""), textAlign: TextAlign.center,
+            style: TextStyle(fontSize: FontSizes.fontSize20, color: Colors.black)),
+      )
     );
   }
 }

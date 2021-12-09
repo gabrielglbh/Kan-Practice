@@ -111,6 +111,7 @@ class StudyModeUpdateHandler {
 
   static Map<String, List<Kanji>> _getMapOfKanjiInTest(ModeArguments args) {
     Map<String, List<Kanji>> orderedMap = {};
+    args.studyList.forEach((kanji) => orderedMap[kanji.listName] = []);
     args.studyList.forEach((kanji) => orderedMap[kanji.listName]?.add(kanji));
     return orderedMap;
   }

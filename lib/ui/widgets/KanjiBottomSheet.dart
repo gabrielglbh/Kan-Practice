@@ -14,17 +14,16 @@ class KanjiBottomSheet extends StatelessWidget {
   /// Kanji object to be displayed
   final String listName;
   final Kanji? kanji;
-  final Function() onRemove;
-  final Function() onTap;
+  final Function()? onRemove;
+  final Function()? onTap;
   const KanjiBottomSheet({required this.listName, required this.kanji,
-    required this.onTap, required this.onRemove
+    this.onTap, this.onRemove
   });
 
   /// Creates and calls the [BottomSheet] with the content for displaying the data
   /// of the current selected kanji
   static Future<String?> callKanjiModeBottomSheet(BuildContext context,
-      String listName, Kanji? kanji, {required Function()
-      onRemove, required Function() onTap}) async {
+      String listName, Kanji? kanji, {Function()? onRemove, Function()? onTap}) async {
     return await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -51,7 +50,7 @@ class KanjiBottomSheet extends StatelessWidget {
             final int code = await KanjiQueries.instance.removeKanji(listName, k);
             if (code == 0) {
               Navigator.of(context).pop();
-              onRemove();
+              if (onRemove != null) onRemove!();
             }
             else if (code == 1)
               GeneralUtils.getSnackBar(context, "kanji_bottom_sheet_createDialogForDeletingKanji_removal_failed".tr());
@@ -119,7 +118,9 @@ class KanjiBottomSheet extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
+                    padding: EdgeInsets.only(
+                      left: Margins.margin8, right: Margins.margin8, bottom: Margins.margin16
+                    ),
                     child: FittedBox(
                       fit: BoxFit.contain,
                       child: Text("${"created_label".tr()} "
@@ -127,9 +128,17 @@ class KanjiBottomSheet extends StatelessWidget {
                           textAlign: TextAlign.center, style: TextStyle(fontSize: FontSizes.fontSize14))
                     ),
                   ),
-                  Divider(),
-                  _actionButtons(context),
-                ],
+                  Visibility(
+                    visible: onTap != null && onRemove != null,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Divider(),
+                        _actionButtons(context),
+                      ],
+                    ),
+                  ),
+                ]
               ),
             ),
           ]
@@ -154,7 +163,7 @@ class KanjiBottomSheet extends StatelessWidget {
             trailing: Icon(Icons.arrow_forward_rounded),
             onTap: () {
               Navigator.of(context).pop();
-              onTap();
+              if (onTap != null) onTap!();
             },
           )
         ],

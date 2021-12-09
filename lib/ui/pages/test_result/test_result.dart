@@ -6,6 +6,7 @@ import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/pages/test_result/arguments.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/ActionButton.dart';
+import 'package:kanpractice/ui/widgets/KanjiBottomSheet.dart';
 import 'package:kanpractice/ui/widgets/WinRateChart.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -85,7 +86,7 @@ class TestResult extends StatelessWidget {
                   itemCount: args.studyList[listName]?.length,
                   itemBuilder: (context, inner) {
                     Kanji? kanji = args.studyList[listName]?[inner];
-                    return _kanjiElement(kanji);
+                    return _kanjiElement(context, kanji);
                   },
                 ),
               ),
@@ -96,13 +97,12 @@ class TestResult extends StatelessWidget {
     );
   }
 
-  Widget _kanjiElement(Kanji? kanji) {
+  Widget _kanjiElement(BuildContext context, Kanji? kanji) {
     return Container(
       width: CustomSizes.defaultSizeKanjiItemOnResultTest,
       margin: EdgeInsets.only(
           left: Margins.margin4, right: Margins.margin4, bottom: Margins.margin8
       ),
-      padding: EdgeInsets.symmetric(horizontal: Margins.margin2),
       decoration: BoxDecoration(
         color: GeneralUtils.getColorBasedOnWinRate((_getProperKanjiWinRate(kanji) ?? 0)),
         borderRadius: BorderRadius.all(Radius.circular(CustomRadius.radius8)),
@@ -110,11 +110,25 @@ class TestResult extends StatelessWidget {
           BoxShadow(color: Colors.grey, offset: Offset(0, 3), blurRadius: CustomRadius.radius4)
         ],
       ),
-      child: FittedBox(
-        fit: BoxFit.contain,
-        child: Text((kanji?.kanji ?? ""), textAlign: TextAlign.center,
-            style: TextStyle(fontSize: FontSizes.fontSize20, color: Colors.black)),
-      )
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.all(Radius.circular(CustomRadius.radius8)),
+          onTap: () async {
+            await KanjiBottomSheet.callKanjiModeBottomSheet(context,
+                (kanji?.listName ?? ""), kanji);
+          },
+          // _createDialogForDeletingKanji(context, kanji.kanji),,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: Margins.margin2),
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: Text((kanji?.kanji ?? ""), textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: FontSizes.fontSize20, color: Colors.black)),
+            )
+          )
+        ),
+      ),
     );
   }
 }

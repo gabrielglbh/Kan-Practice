@@ -3,7 +3,7 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
-import 'package:kanpractice/ui/pages/kanji_list_details/widgets/KanjiBottomSheet.dart';
+import 'package:kanpractice/ui/widgets/KanjiBottomSheet.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 
 class KanjiItem extends StatefulWidget {

@@ -27,7 +27,7 @@ class TestResult extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: CustomSizes.appBarHeight,
+          toolbarHeight: Margins.margin32,
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -42,20 +42,23 @@ class TestResult extends StatelessWidget {
               size: MediaQuery.of(context).size.width / 2.5,
               rateSize: ChartSize.medium,
             ),
-            Expanded(child: Padding(
-              padding: EdgeInsets.all(Margins.margin16),
-              child: _kanjiOnTest(),
-            )),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
+              padding: EdgeInsets.only(
+                left: Margins.margin8, right: Margins.margin8,
+                bottom: Margins.margin8
+              ),
               child: Text("test_result_disclaimer".tr(),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: FontSizes.fontSize20),
+                style: TextStyle(fontSize: FontSizes.fontSize16),
               ),
             ),
+            Expanded(child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
+              child: _kanjiOnTest(),
+            )),
             ActionButton(
               label: "test_result_save_button_label".tr(),
-              vertical: Margins.margin32,
+              vertical: Margins.margin16,
               onTap: () async {
                 await TestQueries.instance.createTest(args.score, args.kanji, args.studyMode, args.listsName);
                 /// Remove all navigation stack and push kanList
@@ -76,11 +79,17 @@ class TestResult extends StatelessWidget {
         String? listName = args.studyList.keys.toList()[index];
         return Row(
           children: [
-            Text("$listName:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize16)),
+            Container(
+              width: MediaQuery.of(context).size.width / 4,
+              child: Text(
+                "$listName:",
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize16)
+              ),
+            ),
             Expanded(
               child: Container(
                 height: CustomSizes.defaultResultKanjiListOnTest,
-                margin: EdgeInsets.only(left: Margins.margin8),
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: args.studyList[listName]?.length,
@@ -101,13 +110,14 @@ class TestResult extends StatelessWidget {
     return Container(
       width: CustomSizes.defaultSizeKanjiItemOnResultTest,
       margin: EdgeInsets.only(
-          left: Margins.margin4, right: Margins.margin4, bottom: Margins.margin8
+          left: Margins.margin4, right: Margins.margin4,
+          bottom: Margins.margin4, top: Margins.margin4
       ),
       decoration: BoxDecoration(
         color: GeneralUtils.getColorBasedOnWinRate((_getProperKanjiWinRate(kanji) ?? 0)),
         borderRadius: BorderRadius.all(Radius.circular(CustomRadius.radius8)),
         boxShadow: [
-          BoxShadow(color: Colors.grey, offset: Offset(0, 3), blurRadius: CustomRadius.radius4)
+          BoxShadow(color: Colors.grey, offset: Offset(0, 0.5), blurRadius: CustomRadius.radius4)
         ],
       ),
       child: Material(

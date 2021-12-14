@@ -17,7 +17,7 @@ class StudyModeUpdateHandler {
   /// Handles the finish of the test/practice. Please, make sure to view the function
   /// itself to understand it better.
   static Future<bool> handle(BuildContext context, ModeArguments args, {bool onPop = false,
-    double testScore = 0, int lastIndex = 0}) async {
+    double testScore = 0, int lastIndex = 0, List<double> testScores = const []}) async {
     bool isTestFinished = !onPop && args.isTest;
     bool isTestPopped = onPop && args.isTest;
     bool isPracticePopped = onPop && !args.isTest;
@@ -52,7 +52,8 @@ class StudyModeUpdateHandler {
               }
               Navigator.of(context).pushReplacementNamed(KanPracticePages.testResultPage, arguments:
                 TestResultArguments(score: testScore, kanji: args.studyList.length,
-                    studyMode: args.mode.map, listsName: args.listsNames, studyList: _getMapOfKanjiInTest(args))
+                    studyMode: args.mode.map, listsName: args.listsNames,
+                    studyList: _getMapOfKanjiInTest(args.studyList, testScores))
               );
             }
             /// If the user went back in mid list, update the list accordingly
@@ -109,10 +110,13 @@ class StudyModeUpdateHandler {
         args.studyList[index].kanji, toUpdate);
   }
 
-  static Map<String, List<Kanji>> _getMapOfKanjiInTest(ModeArguments args) {
-    Map<String, List<Kanji>> orderedMap = {};
-    args.studyList.forEach((kanji) => orderedMap[kanji.listName] = []);
-    args.studyList.forEach((kanji) => orderedMap[kanji.listName]?.add(kanji));
+  static Map<String, List<Map<Kanji, double>>> _getMapOfKanjiInTest(
+      List<Kanji> studyList, List<double> testScores) {
+    Map<String, List<Map<Kanji, double>>> orderedMap = {};
+    studyList.forEach((kanji) => orderedMap[kanji.listName] = []);
+    for (int x = 0; x < studyList.length; x++) {
+      orderedMap[studyList[x].listName]?.add({ studyList[x]: testScores[x] });
+    }
     return orderedMap;
   }
 

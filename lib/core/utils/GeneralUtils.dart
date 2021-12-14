@@ -10,7 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 class GeneralUtils {
   /// Returns the color based on the given [winRate]
   static Color getColorBasedOnWinRate(double winRate) {
-    if (winRate >= 0 && winRate <= 0.1) return Colors.redAccent[400]!;
+    if (winRate >= 0 && winRate <= 0.1) return Colors.redAccent[700]!;
     else if (winRate > 0.1 && winRate <= 0.2) return Colors.redAccent[200]!;
     else if (winRate > 0.2 && winRate <= 0.3) return Colors.redAccent[100]!;
     else if (winRate > 0.3 && winRate <= 0.4) return Colors.yellow;

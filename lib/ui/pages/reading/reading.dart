@@ -61,7 +61,8 @@ class _ReadingStudyState extends State<ReadingStudy> {
           double testScore = 0;
           _testScores.forEach((s) => testScore += s);
           final score = testScore / _studyList.length;
-          await StudyModeUpdateHandler.handle(context, widget.args, testScore: score);
+          await StudyModeUpdateHandler.handle(context, widget.args,
+              testScore: score, testScores: _testScores);
         } else await StudyModeUpdateHandler.handle(context, widget.args);
       }
     }

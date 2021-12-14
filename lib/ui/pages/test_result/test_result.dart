@@ -14,12 +14,6 @@ class TestResult extends StatelessWidget {
   final TestResultArguments args;
   const TestResult({required this.args});
 
-  double? _getProperKanjiWinRate(Kanji? kanji) {
-    if (args.studyMode == 0) return kanji?.winRateWriting;
-    else if (args.studyMode == 1) return kanji?.winRateReading;
-    else return kanji?.winRateRecognition;
-  }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -94,8 +88,9 @@ class TestResult extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemCount: args.studyList[listName]?.length,
                   itemBuilder: (context, inner) {
-                    Kanji? kanji = args.studyList[listName]?[inner];
-                    return _kanjiElement(context, kanji);
+                    Kanji? kanji = args.studyList[listName]?[inner].keys.first;
+                    double? testScore = args.studyList[listName]?[inner].values.first;
+                    return _kanjiElement(context, kanji, testScore);
                   },
                 ),
               ),
@@ -106,7 +101,7 @@ class TestResult extends StatelessWidget {
     );
   }
 
-  Widget _kanjiElement(BuildContext context, Kanji? kanji) {
+  Widget _kanjiElement(BuildContext context, Kanji? kanji, double? testScore) {
     return Container(
       width: CustomSizes.defaultSizeKanjiItemOnResultTest,
       margin: EdgeInsets.only(
@@ -114,7 +109,7 @@ class TestResult extends StatelessWidget {
           bottom: Margins.margin4, top: Margins.margin4
       ),
       decoration: BoxDecoration(
-        color: GeneralUtils.getColorBasedOnWinRate((_getProperKanjiWinRate(kanji) ?? 0)),
+        color: GeneralUtils.getColorBasedOnWinRate(testScore ?? 0),
         borderRadius: BorderRadius.all(Radius.circular(CustomRadius.radius8)),
         boxShadow: [
           BoxShadow(color: Colors.grey, offset: Offset(0, 0.5), blurRadius: CustomRadius.radius4)

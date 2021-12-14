@@ -50,7 +50,7 @@
   "backup_creation_dialog_content": "La copia de seguridad se creará en la nube. Los datos actuales de tu dispositivo se guardarán sustituyendo los datos de la copia de seguridad actual. Los tests no se guardarán. ¿Quieres continuar?",
   "backup_creation_dialog_positive": "Crear",
   "backup_merge_dialog_title": "Fusión de copia de seguridad",
-  "backup_merge_dialog_content": "Los datos de la copia de seguridad se instalarán en tu dispositivo fusionándolos con los datos actuales que tienes. ¿Quieres continuar?",
+  "backup_merge_dialog_content": "Los datos de la copia de seguridad se instalarán en tu dispositivo remplazándolos con los datos actuales que tienes. ¿Quieres continuar?",
   "backup_merge_dialog_positive": "Fusionar",
   "backup_removal_dialog_title": "Eliminación de la copia de seguridad",
   "backup_removal_dialog_content": "Los datos de la copia de seguridad se eliminarán completamente del servidor y ya no estarán disponibles. ¿Quieres continuar?",

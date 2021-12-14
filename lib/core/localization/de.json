@@ -50,7 +50,7 @@
   "backup_creation_dialog_content": "Die Datensicherung wird in der Cloud erstellt. Die aktuellen Daten auf Ihrem Gerät werden gespeichert und ersetzen die aktuellen Sicherungsdaten. Tests werden nicht gespeichert. Wollen Sie fortfahren? ",
   "backup_creation_dialog_positive": "Erstellen",
   "backup_merge_dialog_title": "Kombiniere Datensicherungseinträge",
-  "backup_merge_dialog_content": "Die Sicherungsdaten werden auf Ihrem Gerät installiert und mit den aktuellen Daten, die Sie haben, zusammengeführt. Wollen Sie fortfahren? ",
+  "backup_merge_dialog_content": "Die Sicherungsdaten werden auf Ihrem Gerät installiert und mit den aktuellen Daten, die Sie haben, ersetzt. Wollen Sie fortfahren? ",
   "backup_merge_dialog_positive": "Zusammenführen",
   "backup_removal_dialog_title": "Datensicherung wird entfernt",
   "backup_removal_dialog_content": "Die Sicherungsdaten werden vollständig vom Server entfernt und stehen nicht mehr zur Verfügung. Wollen Sie fortfahren?",

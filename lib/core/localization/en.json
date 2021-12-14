@@ -50,7 +50,7 @@
   "backup_creation_dialog_content": "The back up will be created in the cloud. The current data in your device will be saved replacing the current back up data. Tests will not be saved. Do you want to proceed?",
   "backup_creation_dialog_positive": "Create",
   "backup_merge_dialog_title": "Merging Back Up",
-  "backup_merge_dialog_content": "The back up data will be installed in your device merging it with the current data you have. Do you want to proceed?",
+  "backup_merge_dialog_content": "The back up data will be installed in your device replacing it with the current data you have. Do you want to proceed?",
   "backup_merge_dialog_positive": "Merge",
   "backup_removal_dialog_title": "Removing Back Up",
   "backup_removal_dialog_content": "The back up data will be completely removed from the server and it will be not available anymore. Do you want to proceed?",

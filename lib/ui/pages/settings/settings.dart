@@ -71,9 +71,13 @@ class _SettingsState extends State<Settings> {
           ListTile(
             leading: Icon(Icons.auto_graph_rounded, color: Colors.blueAccent),
             title: Text("settings_general_toggle".tr()),
+            subtitle: Padding(
+              padding: EdgeInsets.only(top: Margins.margin8),
+              child: Text("settings_general_toggle_sub".tr())
+            ),
             trailing: Switch(
-              activeColor: CustomColors.secondaryColor,
-              activeTrackColor: CustomColors.secondarySubtleColor,
+              activeColor: Colors.blueAccent,
+              activeTrackColor: Colors.lightBlueAccent,
               inactiveThumbColor: Brightness.light == Theme.of(context).brightness
                   ? Colors.grey[600] : Colors.white,
               inactiveTrackColor: Colors.grey,

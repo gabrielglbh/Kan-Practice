@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
+import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
@@ -20,6 +21,28 @@ class TestStudyMode extends StatelessWidget {
       alignment: Alignment.center,
       child: Column(
         children: [
+          Visibility(
+            visible: StorageManager.readData(StorageManager.affectOnPractice) == true,
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: Margins.margin16),
+                    child: Icon(Icons.auto_graph_rounded, color: Colors.blueAccent),
+                  ),
+                  Expanded(
+                    child: Text("settings_general_toggle".tr(), textAlign: TextAlign.center)
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: Margins.margin16),
+                    child: Icon(Icons.auto_graph_rounded, color: Colors.blueAccent),
+                  ),
+                ],
+              )
+            ),
+          ),
           Container(
             height: CustomSizes.defaultSizeButtonHeight,
             child: ListView(
@@ -32,7 +55,6 @@ class TestStudyMode extends StatelessWidget {
               ],
             ),
           ),
-
           Padding(
             padding: EdgeInsets.only(top: Margins.margin16, bottom: Margins.margin16),
             child: Text("study_modes_good_luck".tr(),

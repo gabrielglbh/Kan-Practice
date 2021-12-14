@@ -9,6 +9,8 @@ class KanjiListDetailState extends Equatable {
 
 class KanjiListDetailStateLoading extends KanjiListDetailState {}
 
+class KanjiListDetailStateSearching extends KanjiListDetailState {}
+
 class KanjiListDetailStateLoaded extends KanjiListDetailState {
   final List<Kanji> list;
   final String name;

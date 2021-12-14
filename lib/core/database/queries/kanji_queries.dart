@@ -88,6 +88,30 @@ class KanjiQueries {
     } else return [];
   }
 
+  /// Query to get all [Kanji] from the db based on a [query] that will match:
+  /// kanji, meaning and pronunciation.
+  /// If anything goes wrong, an empty list will be returned.
+  Future<List<Kanji>> getKanjiMatchingQuery(String query) async {
+    if (_database != null) {
+      try {
+        List<Map<String, dynamic>>? res = [];
+        res = await _database?.rawQuery(
+            "SELECT * "
+                "FROM ${KanjiTableFields.kanjiTable} "
+                "WHERE ${KanjiTableFields.meaningField} LIKE '%$query%' "
+                "OR ${KanjiTableFields.kanjiField} LIKE '%$query%' "
+                "OR ${KanjiTableFields.pronunciationField} LIKE '%$query%' "
+                "ORDER BY ${KanjiTableFields.dateAddedField} ASC"
+        );
+        if (res != null) return List.generate(res.length, (i) => Kanji.fromJson(res![i]));
+        else return [];
+      } catch (err) {
+        print(err.toString());
+        return [];
+      }
+    } else return [];
+  }
+
   /// Query to get all kanji available in the current db within a list with the name [listName]
   /// that enables Spatial Learning: ordering in ASC order the [Kanji] with less winRate.
   /// If anything goes wrong, an empty list will be returned.

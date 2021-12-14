@@ -101,6 +101,7 @@
   "list_details_learningMode_spatial": "Aprendizaje espacial",
   "list_details_learningMode_random": "Aprendizaje aleatorio",
   "list_details_empty": "No hay kanji disponibles",
+  "list_details_searchBar_hint": "Buscar por kanji, significado, pronunciación",
   "kan_list_tile_createDialogForDeletingKanList_title": "Eliminar una KanList",
   "kan_list_tile_createDialogForDeletingKanList_content": "¿Estás seguro de que quieres eliminar esta lista y todo su contenido?",
   "kan_list_tile_createDialogForDeletingKanList_positive": "Eliminar",

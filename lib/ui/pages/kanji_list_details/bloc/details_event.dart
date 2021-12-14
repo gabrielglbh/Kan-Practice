@@ -16,6 +16,16 @@ class KanjiEventLoading extends KanjiListDetailEvent {
   List<Object> get props => [list];
 }
 
+class KanjiEventSearching extends KanjiListDetailEvent {
+  final String query;
+  final String list;
+
+  const KanjiEventSearching(this.query, this.list);
+
+  @override
+  List<Object> get props => [query, list];
+}
+
 class UpdateKanList extends KanjiListDetailEvent {
   final String name;
   final String og;

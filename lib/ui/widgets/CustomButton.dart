@@ -47,9 +47,12 @@ class CustomButton extends StatelessWidget {
                   child: Text(title1, textAlign: TextAlign.center,
                       style: TextStyle(fontSize: FontSizes.fontSize18, color: Colors.white)),
                 ),
-                Text(title2, textAlign: TextAlign.center,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: FontSizes.fontSize16, fontWeight: FontWeight.bold, color: Colors.white))
+                FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(title2, textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: FontSizes.fontSize16, fontWeight: FontWeight.bold, color: Colors.white)),
+                )
               ],
             ),
           ),

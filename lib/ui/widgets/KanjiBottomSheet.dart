@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
+import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
+import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
@@ -37,7 +39,7 @@ class KanjiBottomSheet extends StatelessWidget {
     );
   }
 
-  _createDialogForDeletingKanji(BuildContext context, String? k) {
+  _createDialogForDeletingKanji(BuildContext context, Kanji? k) {
     if (k != null) {
       showDialog(
         context: context,
@@ -46,10 +48,55 @@ class KanjiBottomSheet extends StatelessWidget {
           content: Text("kanji_bottom_sheet_removeKanji_content".tr()),
           positiveButtonText: "kanji_bottom_sheet_removeKanji_positive".tr(),
           onPositive: () async {
-            /// TODO: Update KanList overall score
-            final int code = await KanjiQueries.instance.removeKanji(listName, k);
+            final int code = await KanjiQueries.instance.removeKanji(listName, k.kanji);
             if (code == 0) {
-              Navigator.of(context).pop();
+              KanjiList kanList = await ListQueries.instance.getList(listName);
+              List<Kanji> list = await KanjiQueries.instance.getAllKanjiFromList(listName);
+              /// Update for each mode the overall score again. Issue: #10
+              ///
+              /// For each mode, recalculate the overall score based on the
+              /// winRates of the value to be deleted and the new KanList length.
+              /// It takes into account the empty values.
+              ///
+              /// If list is empty, update all values to -1.
+              if (list.isEmpty) {
+                await ListQueries.instance.updateList(listName, {
+                  KanListTableFields.totalWinRateWritingField: DatabaseConstants.emptyWinRate,
+                  KanListTableFields.totalWinRateReadingField: DatabaseConstants.emptyWinRate,
+                  KanListTableFields.totalWinRateRecognitionField: DatabaseConstants.emptyWinRate
+                });
+              } else {
+                double wNewScore = 0;
+                double readNewScore = 0;
+                double recNewScore = 0;
+
+                if (k.winRateWriting != DatabaseConstants.emptyWinRate) {
+                  /// Get the y value: total length of list prior to removal of
+                  /// kanji multiplied by the overall win rate
+                  double y = (list.length + 1) * kanList.totalWinRateWriting;
+                  /// Subtract the winRate of the removed kanji to y
+                  double partialScore = y - k.winRateWriting;
+                  /// Calculate the new overall score with the partialScore divided
+                  /// by the list without the kanji
+                  wNewScore = partialScore / list.length;
+                }
+                if (k.winRateReading != DatabaseConstants.emptyWinRate) {
+                  double y = (list.length + 1) * kanList.totalWinRateReading;
+                  double partialScore = y - k.winRateReading;
+                  readNewScore = partialScore / list.length;
+                }
+                if (k.winRateRecognition != DatabaseConstants.emptyWinRate) {
+                  double y = (list.length + 1) * kanList.totalWinRateRecognition;
+                  double partialScore = y - k.winRateRecognition;
+                  recNewScore = partialScore / list.length;
+                }
+
+                await ListQueries.instance.updateList(listName, {
+                  KanListTableFields.totalWinRateWritingField: wNewScore,
+                  KanListTableFields.totalWinRateReadingField: readNewScore,
+                  KanListTableFields.totalWinRateRecognitionField: recNewScore
+                });
+              }
               if (onRemove != null) onRemove!();
             }
             else if (code == 1)
@@ -155,7 +202,10 @@ class KanjiBottomSheet extends StatelessWidget {
           ListTile(
             title: Text("kanji_bottom_sheet_removal_label".tr()),
             trailing: Icon(Icons.clear),
-            onTap: () => _createDialogForDeletingKanji(context, kanji?.kanji),
+            onTap: () {
+              Navigator.of(context).pop();
+              _createDialogForDeletingKanji(context, kanji);
+            },
           ),
           Divider(),
           ListTile(

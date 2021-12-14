@@ -39,6 +39,14 @@ class _SettingsState extends State<Settings> {
         title: FittedBox(fit: BoxFit.fitWidth, child: Text("settings_title".tr())),
         actions: [
           IconButton(
+            onPressed: () {
+              _mode = ThemeManager.instance.themeMode;
+              ThemeManager.instance.switchMode(_mode == ThemeMode.light);
+            },
+            icon: Icon(Theme.of(context).brightness == Brightness.light
+                ? Icons.mode_night_rounded : Icons.light_mode_rounded),
+          ),
+          IconButton(
             onPressed: () => _settingsBloc..add(SettingsLoadingBackUpDate(context)),
             icon: Icon(Icons.sync),
           )
@@ -46,25 +54,22 @@ class _SettingsState extends State<Settings> {
       ),
       body: ListView(
         children: [
+          ListTile(
+            leading: Icon(Icons.local_florist_rounded, color: Colors.orangeAccent),
+            title: Text("settings_information_rating".tr()),
+            trailing: Icon(Icons.link),
+            onTap: () async {
+              try {
+                await launch("google_play_link".tr());
+              } catch (err) {
+                GeneralUtils.getSnackBar(context, "settings_information_rating_failed".tr());
+              }
+            }
+          ),
           _header("settings_general".tr()),
           Divider(),
           ListTile(
-            leading: Icon(Icons.star, color: Colors.green),
-            title: Text("settings_general_versionNotes".tr()),
-            onTap: () async => await GeneralUtils.showVersionNotes(context),
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.wb_sunny_rounded),
-            title: Text("settings_general_theme".tr()),
-            onTap: () async {
-              _mode = ThemeManager.instance.themeMode;
-              ThemeManager.instance.switchMode(_mode == ThemeMode.light);
-            },
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.auto_graph_rounded),
+            leading: Icon(Icons.auto_graph_rounded, color: Colors.blueAccent),
             title: Text("settings_general_toggle".tr()),
             trailing: Switch(
               activeColor: CustomColors.secondaryColor,
@@ -91,9 +96,16 @@ class _SettingsState extends State<Settings> {
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.school_rounded),
-            title: Text("settings_tutorial_label".tr()),
-            onTap: () async => Navigator.of(context).pushNamed(KanPracticePages.tutorialPage, arguments: true),
+            leading: Icon(Icons.device_hub_rounded),
+            title: Text("settings_information_contribute".tr()),
+            trailing: Icon(Icons.link),
+            onTap: () async {
+              try {
+                await launch("https://github.com/gabrielglbh/Kan-Practice");
+              } catch (err) {
+                GeneralUtils.getSnackBar(context, "settings_information_rating_failed".tr());
+              }
+            }
           ),
           BlocProvider(
             create: (_) => _settingsBloc..add(SettingsLoadingBackUpDate(context)),
@@ -118,28 +130,15 @@ class _SettingsState extends State<Settings> {
           _header("settings_information_section".tr()),
           Divider(),
           ListTile(
-            leading: Icon(Icons.device_hub_rounded),
-            title: Text("settings_information_contribute".tr()),
-            trailing: Icon(Icons.link),
-            onTap: () async {
-              try {
-                await launch("https://github.com/gabrielglbh/Kan-Practice");
-              } catch (err) {
-                GeneralUtils.getSnackBar(context, "settings_information_rating_failed".tr());
-              }
-            }
-          ),Divider(),
+            leading: Icon(Icons.school_rounded),
+            title: Text("settings_tutorial_label".tr()),
+            onTap: () async => Navigator.of(context).pushNamed(KanPracticePages.tutorialPage, arguments: true),
+          ),
+          Divider(),
           ListTile(
-            leading: Icon(Icons.star_rate_rounded, color: Colors.orangeAccent),
-            title: Text("settings_information_rating".tr()),
-            trailing: Icon(Icons.link),
-            onTap: () async {
-              try {
-                await launch("google_play_link".tr());
-              } catch (err) {
-                GeneralUtils.getSnackBar(context, "settings_information_rating_failed".tr());
-              }
-            }
+            leading: Icon(Icons.star, color: Colors.green),
+            title: Text("settings_general_versionNotes".tr()),
+            onTap: () async => await GeneralUtils.showVersionNotes(context),
           ),
           Divider(),
           ListTile(
@@ -193,7 +192,7 @@ class _SettingsState extends State<Settings> {
 
   ListTile _header(String title, {String? subtitle}) {
     return ListTile(
-      title: Text(title, style: TextStyle(fontSize: FontSizes.fontSize26, fontWeight: FontWeight.bold)),
+      title: Text(title, style: TextStyle(fontSize: FontSizes.fontSize20, fontWeight: FontWeight.bold)),
       subtitle: subtitle != null ? Text(subtitle) : null,
     );
   }

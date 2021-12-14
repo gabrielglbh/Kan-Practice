@@ -30,14 +30,14 @@ class TestStudyMode extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(right: Margins.margin16),
-                    child: Icon(Icons.auto_graph_rounded, color: Colors.blueAccent),
+                    child: Icon(Icons.auto_graph_rounded, color: Colors.lightBlueAccent),
                   ),
                   Expanded(
                     child: Text("settings_general_toggle".tr(), textAlign: TextAlign.center)
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: Margins.margin16),
-                    child: Icon(Icons.auto_graph_rounded, color: Colors.blueAccent),
+                    child: Icon(Icons.auto_graph_rounded, color: Colors.lightBlueAccent),
                   ),
                 ],
               )

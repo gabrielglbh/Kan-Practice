@@ -32,6 +32,7 @@ dependencies:
   flutter_launcher_icons:
   package_info:
   url_launcher:
+  flutter_tts:
 
 flutter_icons:
   android: "launcher_icon"

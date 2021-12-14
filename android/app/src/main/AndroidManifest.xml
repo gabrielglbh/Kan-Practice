@@ -8,7 +8,13 @@
         android:largeScreens="true"
         android:xlargeScreens="false"/>
 
-   <application
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
+
+    <application
         android:label="KanPractice"
         android:icon="@mipmap/launcher_icon">
         <activity

@@ -5,10 +5,12 @@ import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/core/utils/TextToSpeech.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
 import 'package:kanpractice/ui/widgets/DragContainer.dart';
+import 'package:kanpractice/ui/widgets/TTSIconButton.dart';
 import 'package:kanpractice/ui/widgets/WinRateBarChart.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -125,11 +127,18 @@ class KanjiBottomSheet extends StatelessWidget {
                   DragContainer(),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin16),
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: Text(kanji?.pronunciation ?? "wildcard".tr(), textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: FontSizes.fontSize16)),
-                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TTSIconButton(kanji: kanji, hidden: true),
+                        FittedBox(
+                          fit: BoxFit.contain,
+                          child: Text(kanji?.pronunciation ?? "wildcard".tr(), textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: FontSizes.fontSize16)),
+                        ),
+                        TTSIconButton(kanji: kanji)
+                      ],
+                    )
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: Margins.margin16),

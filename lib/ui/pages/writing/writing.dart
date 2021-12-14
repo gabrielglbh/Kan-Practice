@@ -10,6 +10,7 @@ import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dar
 import 'package:kanpractice/ui/widgets/LearningHeaderAnimation.dart';
 import 'package:kanpractice/ui/widgets/LearningHeaderContainer.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
+import 'package:kanpractice/ui/widgets/TTSIconButton.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -155,6 +156,10 @@ class _WritingStudyState extends State<WritingStudy> {
           title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.mode.mode)),
           centerTitle: true,
           actions: [
+            Visibility(
+              visible: _goNextKanji,
+              child: TTSIconButton(kanji: widget.args.studyList[_macro]),
+            ),
             IconButton(
               icon: Icon(Icons.info_outline_rounded),
               onPressed: () async {

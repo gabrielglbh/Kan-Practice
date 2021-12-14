@@ -8,6 +8,7 @@ import 'package:kanpractice/ui/widgets/LearningHeaderAnimation.dart';
 import 'package:kanpractice/ui/widgets/LearningHeaderContainer.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/ui/widgets/TTSIconButton.dart';
 import 'package:kanpractice/ui/widgets/ValidationButtons.dart';
 
 class RecognitionStudy extends StatefulWidget {
@@ -95,7 +96,13 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
         appBar: AppBar(
           toolbarHeight: CustomSizes.appBarHeight,
           title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.mode.mode)),
-          centerTitle: true
+          centerTitle: true,
+          actions: [
+            Visibility(
+              visible: _showMeaning,
+              child: TTSIconButton(kanji: widget.args.studyList[_macro]),
+            )
+          ],
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: Margins.margin16),

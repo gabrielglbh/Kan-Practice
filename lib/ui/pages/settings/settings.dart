@@ -69,7 +69,7 @@ class _SettingsState extends State<Settings> {
           _header("settings_general".tr()),
           Divider(),
           ListTile(
-            leading: Icon(Icons.auto_graph_rounded, color: Colors.blueAccent),
+            leading: Icon(Icons.auto_graph_rounded, color: Colors.lightBlueAccent),
             title: Text("settings_general_toggle".tr()),
             subtitle: Padding(
               padding: EdgeInsets.only(top: Margins.margin8),

@@ -5,7 +5,6 @@ import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
-import 'package:kanpractice/core/utils/TextToSpeech.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
@@ -68,9 +67,9 @@ class KanjiBottomSheet extends StatelessWidget {
                   KanListTableFields.totalWinRateRecognitionField: DatabaseConstants.emptyWinRate
                 });
               } else {
-                double wNewScore = 0;
-                double readNewScore = 0;
-                double recNewScore = 0;
+                double wNewScore = kanList.totalWinRateWriting;
+                double readNewScore = kanList.totalWinRateReading;
+                double recNewScore = kanList.totalWinRateRecognition;
 
                 if (k.winRateWriting != DatabaseConstants.emptyWinRate) {
                   /// Get the y value: total length of list prior to removal of

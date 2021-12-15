@@ -38,6 +38,7 @@ class _BulletPageViewState extends State<BulletPageView> {
         Container(
           height: 15,
           alignment: Alignment.center,
+          margin: EdgeInsets.only(bottom: Margins.margin16),
           child: ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
@@ -57,7 +58,7 @@ class _BulletPageViewState extends State<BulletPageView> {
         width: 16, height: 16,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: _selectedPage == i ? Colors.white : CustomColors.secondarySubtleColor
+          color: _selectedPage == i ? CustomColors.secondaryColor : CustomColors.secondarySubtleColor
         ),
       ),
     );

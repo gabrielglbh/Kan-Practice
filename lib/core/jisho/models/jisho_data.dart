@@ -1,8 +1,12 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:unofficial_jisho_api/api.dart' as jisho;
 
-part 'jisho_data.g.dart';
+class KanjiData {
+  final jisho.KanjiResultData? resultData;
+  final List<KanjiExample> example;
 
-@JsonSerializable()
+  const KanjiData({required this.resultData, required this.example});
+}
+
 class KanjiExample {
   final String? kanji;
   final String? kana;
@@ -10,6 +14,4 @@ class KanjiExample {
   final String? jishoUri;
 
   const KanjiExample({this.kanji, this.kana, this.english, this.jishoUri});
-
-  factory KanjiExample.fromJson(Map<String, dynamic> json) => _$KanjiExampleFromJson(json);
 }

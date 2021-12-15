@@ -177,5 +177,15 @@
   "tutorial_lists": "Esta es la vista detalle de una lista. Aquí verás todas las palabras incluidas en la lista con colores, denotando su nota individual. Podrás practicar o hacer tests de escritura, lectura o reconocimiento.",
   "tutorial_details": "Al pulsar en una palabra se podrá ver la propia palabra con todos sus datos: lectura (con opción a escucharla con TTS), la palabra en sí, significado, estadísticas en referencia a los tipos de aprendizaje y fecha de creación.",
   "tutorial_practicing": "Al practicar o hacer tests, tendrás que validar cada palabra o caracter para denotar la nota de la propia palabra. El conjunto de estas notas es la que determina la nota total de tus listas. El método de validación varía entre modos de apredizaje: escritura, lectura o reconocimiento.",
-  "tutorial_options": "Hay más opciones en los Ajustes, ¡asegúrate de probarlas!\n\n¡Empecemos!"
+  "tutorial_options": "Hay más opciones en los Ajustes, ¡asegúrate de probarlas!\n\n¡Empecemos!",
+  "jisho_no_match": "No se ha podido encontrar ninguna coincidencia en jisho.org",
+  "jisho_resultData_jlpt": "JLPT",
+  "jisho_resultData_strokes": "Trazos",
+  "jisho_resultData_meaning_label": "Significado",
+  "jisho_resultData_composed_label": "Compuesto por",
+  "jisho_resultData_kunyomi": "Kun'yomi",
+  "jisho_resultData_onyomi": "On'yomi",
+  "jisho_resultData_phrases_label": "Ejemplos de frases",
+  "jisho_resultData_examples_label": "Ejemplos",
+  "jisho_resultData_powered_by": "Desarrollado por Jisho & @h7x4"
 }

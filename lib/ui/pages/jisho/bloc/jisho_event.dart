@@ -8,7 +8,7 @@ abstract class JishoEvent extends Equatable {
 }
 
 class JishoLoadingEvent extends JishoEvent {
-  final Kanji kanji;
+  final String kanji;
 
   const JishoLoadingEvent({required this.kanji});
 

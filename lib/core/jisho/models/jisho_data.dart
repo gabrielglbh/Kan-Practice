@@ -2,9 +2,11 @@ import 'package:unofficial_jisho_api/api.dart' as jisho;
 
 class KanjiData {
   final jisho.KanjiResultData? resultData;
+  final List<jisho.JishoResult> resultPhrase;
   final List<KanjiExample> example;
 
-  const KanjiData({required this.resultData, required this.example});
+  const KanjiData({required this.resultData, required this.resultPhrase,
+    required this.example});
 }
 
 class KanjiExample {

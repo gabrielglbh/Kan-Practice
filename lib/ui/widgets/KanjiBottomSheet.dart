@@ -133,7 +133,7 @@ class KanjiBottomSheet extends StatelessWidget {
                         IconButton(
                           icon: Icon(Icons.menu_book_rounded),
                           onPressed: () {
-                            Navigator.of(context).pushNamed(KanPracticePages.jishoPage, arguments: kanji);
+                            Navigator.of(context).pushNamed(KanPracticePages.jishoPage, arguments: kanji?.kanji);
                           },
                         ),
                         Container(

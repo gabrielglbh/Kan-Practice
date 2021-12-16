@@ -17,3 +17,5 @@ class JishoStateLoaded extends JishoState {
 }
 
 class JishoStateLoading extends JishoState {}
+
+class JishoStateFailure extends JishoState {}

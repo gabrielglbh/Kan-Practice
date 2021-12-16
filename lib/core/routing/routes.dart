@@ -57,7 +57,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       bool? args = settings.arguments as bool?;
       return CupertinoPageRoute(builder: (_) => TutorialPage(alreadyShown: args));
     case KanPracticePages.jishoPage:
-      Kanji? args = settings.arguments as Kanji?;
+      String? args = settings.arguments as String?;
       return PageTransition(type: PageTransitionType.bottomToTop, child: JishoPage(kanji: args));
   }
 }

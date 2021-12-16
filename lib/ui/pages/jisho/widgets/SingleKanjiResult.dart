@@ -75,15 +75,14 @@ class SingleKanjiResult extends StatelessWidget {
     return Visibility(
       visible: data != null,
       child: JishoInfoTile(
+        needsHeight: false,
         children: [
           JishoHeader(header: header),
-          Expanded(
-            child: ScrollableText(
-              label: data is String? ? data : (data as List<String>?)?.join(_separator),
-              paddingTop: true,
-              italic: false,
-              rawText: true,
-            ),
+          ScrollableText(
+            label: data is String? ? data : (data as List<String>?)?.join(_separator),
+            paddingTop: true,
+            italic: false,
+            rawText: true,
           )
         ],
       ),
@@ -94,33 +93,23 @@ class SingleKanjiResult extends StatelessWidget {
       List<String>? data, List<YomiExample>? example) {
     return Visibility(
       visible: data != null && data.isNotEmpty,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: JishoInfoTile(
+        needsHeight: false,
         children: [
-          Container(
-            margin: EdgeInsets.only(top: Margins.margin8),
-            padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                JishoHeader(header: header),
-                ScrollableText(
-                  label: data?.toSet().toList().join(_separator),
-                  paddingTop: true,
-                  italic: false,
-                  rawText: true,
-                ),
-                Visibility(
-                  visible: example != null && example.isNotEmpty,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: Margins.margin8),
-                    child: _exampleExpansionTile(context, example)
-                  )
-                ),
-              ],
-            ),
+          JishoHeader(header: header),
+          ScrollableText(
+            label: data?.toSet().toList().join(_separator),
+            paddingTop: true,
+            italic: false,
+            rawText: true,
           ),
-          Divider()
+          Visibility(
+            visible: example != null && example.isNotEmpty,
+            child: Padding(
+              padding: EdgeInsets.only(top: Margins.margin8),
+              child: _exampleExpansionTile(context, example)
+            )
+          ),
         ],
       ),
     );

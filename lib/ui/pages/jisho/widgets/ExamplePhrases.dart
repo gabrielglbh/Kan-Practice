@@ -24,7 +24,6 @@ class ExamplePhrases extends StatelessWidget {
 
   Widget _displayExamplePhrases(BuildContext context, List<KanjiExample> data) {
     return Container(
-      margin: EdgeInsets.only(top: Margins.margin8),
       padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
       child: CustomExpansionTile(
         label: "${"jisho_resultData_phrases_label".tr()} (${data.length})",
@@ -53,6 +52,13 @@ class ExamplePhrases extends StatelessWidget {
                 child: ScrollableText(label: "(${data[i].kana})", fontSize: FontSizes.fontSize14),
               ),
               ScrollableText(label: data[i].english, italic: false),
+              Padding(
+                padding: EdgeInsets.only(
+                  right: Margins.margin64, left: Margins.margin64,
+                  top: Margins.margin8
+                ),
+                child: Divider(thickness: 2),
+              )
             ],
           ),
         );

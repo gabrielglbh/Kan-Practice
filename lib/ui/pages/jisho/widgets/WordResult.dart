@@ -119,17 +119,16 @@ class WordResult extends StatelessWidget {
     return Visibility(
       visible: data == null && d.isNotEmpty,
       child: JishoInfoTile(
+        needsHeight: false,
         children: [
           JishoHeader(header: header, guideline: guideline),
-          Expanded(
-            child: ScrollableText(
-              label: d is List<jisho.JishoWordSense> ? _sense(d)
-                  : d is List<jisho.JishoJapaneseWord> ? _readings(d)
-                  : "",
-              paddingTop: true,
-              rawText: true,
-              italic: false,
-            ),
+          ScrollableText(
+            label: d is List<jisho.JishoWordSense> ? _sense(d)
+                : d is List<jisho.JishoJapaneseWord> ? _readings(d)
+                : "",
+            paddingTop: true,
+            rawText: true,
+            italic: false,
           )
         ],
       ),

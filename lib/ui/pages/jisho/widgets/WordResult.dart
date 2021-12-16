@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/routing/pages.dart';
-import 'package:kanpractice/ui/pages/jisho/widgets/InfoChip.dart';
+import 'package:kanpractice/ui/pages/jisho/widgets/generic/CustomExpansionTile.dart';
+import 'package:kanpractice/ui/pages/jisho/widgets/generic/InfoChip.dart';
+import 'package:kanpractice/ui/pages/jisho/widgets/generic/JishoHeader.dart';
+import 'package:kanpractice/ui/pages/jisho/widgets/generic/JishoInfoTile.dart';
+import 'package:kanpractice/ui/pages/jisho/widgets/generic/ScrollableText.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:unofficial_jisho_api/api.dart' as jisho;
 import 'package:easy_localization/easy_localization.dart';
@@ -20,15 +24,9 @@ class WordResult extends StatelessWidget {
         _completePhraseData(),
         Visibility(
           visible: data == null && (phrase.length - 1) != 0,
-          child: ExpansionTile(
-            childrenPadding: EdgeInsets.zero,
-            tilePadding: EdgeInsets.symmetric(horizontal: Margins.margin16),
-            iconColor: CustomColors.secondarySubtleColor,
-            textColor: CustomColors.secondarySubtleColor,
-            title: Text("${"jisho_phraseData_show_meanings".tr()} (${phrase.length - 1})",
-                style: TextStyle(fontSize: FontSizes.fontSize18,
-                    fontWeight: FontWeight.bold, fontStyle: FontStyle.italic
-                )),
+          child: CustomExpansionTile(
+            label: "${"jisho_phraseData_show_meanings".tr()} (${phrase.length - 1})",
+            paddingHorizontal: EdgeInsets.symmetric(horizontal: Margins.margin16),
             children: [
               Container(
                 height: MediaQuery.of(context).size.height / 2,
@@ -53,21 +51,12 @@ class WordResult extends StatelessWidget {
       children: [
         Visibility(
           visible: data == null,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Visibility(
-                visible: phrase[index].jlpt.isNotEmpty,
-                child: InfoChip(label: "${"jisho_resultData_jlpt".tr()} "
-                    "${phrase[index].jlpt.isNotEmpty
-                    ? phrase[index].jlpt[index].substring(5).toUpperCase() : ""}"),
-              ),
-              Visibility(
-                visible: phrase[index].isCommon != null,
-                child: InfoChip(label: phrase[index].isCommon == true
-                    ? "jisho_phraseData_common".tr() : "jisho_phraseData_uncommon".tr()),
-              )
-            ],
+          child: Container(
+            height: Margins.margin32,
+            margin: EdgeInsets.only(
+              right: Margins.margin8, left: Margins.margin8, bottom: Margins.margin8
+            ),
+            child: _chips(index)
           ),
         ),
         Visibility(
@@ -77,10 +66,7 @@ class WordResult extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("jisho_phraseData_search_individually".tr(), style: TextStyle(
-                    fontSize: FontSizes.fontSize20,
-                    fontWeight: FontWeight.bold
-                )),
+                JishoHeader(header: "jisho_phraseData_search_individually".tr()),
                 Container(
                   height: CustomSizes.defaultJishoAPIContainer,
                   child: ListView.builder(
@@ -105,69 +91,66 @@ class WordResult extends StatelessWidget {
           )
         ),
         _displayInfo("jisho_resultData_meaning_label".tr(), phrase[index].senses),
-        _displayInfo("jisho_phraseData_readings".tr(), phrase[index].japanese),
+        _displayInfo("jisho_phraseData_readings".tr(), phrase[index].japanese, guideline: true),
       ],
     );
   }
 
-  Widget _displayInfo(String header, List<dynamic> d) {
+  Widget _chips(int index) {
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: [
+        Visibility(
+          visible: phrase[index].jlpt.isNotEmpty,
+          child: InfoChip(label: "${"jisho_resultData_jlpt".tr()} "
+              "${phrase[index].jlpt.isNotEmpty
+              ? phrase[index].jlpt[index].substring(5).toUpperCase() : ""}"),
+        ),
+        Visibility(
+          visible: phrase[index].isCommon != null,
+          child: InfoChip(label: phrase[index].isCommon == true
+              ? "jisho_phraseData_common".tr() : "jisho_phraseData_uncommon".tr()),
+        )
+      ],
+    );
+  }
+
+  Widget _displayInfo(String header, List<dynamic> d, {bool guideline = false}) {
     return Visibility(
       visible: data == null && d.isNotEmpty,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: JishoInfoTile(
         children: [
-          Container(
-            height: CustomSizes.defaultJishoAPIContainer,
-            margin: EdgeInsets.symmetric(vertical: Margins.margin8),
-            padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(header, style: TextStyle(
-                    fontSize: FontSizes.fontSize20,
-                    fontWeight: FontWeight.bold
-                )),
-                Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: Margins.margin8),
-                      child: d is List<jisho.JishoWordSense> ? _sense(d)
-                          : d is List<jisho.JishoJapaneseWord> ? _readings(d)
-                          : Text("")
-                    ),
-                  ),
-                )
-              ],
+          JishoHeader(header: header, guideline: guideline),
+          Expanded(
+            child: ScrollableText(
+              label: d is List<jisho.JishoWordSense> ? _sense(d)
+                  : d is List<jisho.JishoJapaneseWord> ? _readings(d)
+                  : "",
+              paddingTop: true,
+              rawText: true,
+              italic: false,
             ),
-          ),
-          Divider()
+          )
         ],
       ),
     );
   }
 
-  Widget _sense(List<jisho.JishoWordSense> sense) {
+  String _sense(List<jisho.JishoWordSense> sense) {
     List<String?> actualSenses = [];
     sense.forEach((meaning) => actualSenses.add(
         meaning.englishDefinitions.toSet().toList().join(_separator)
     ));
-    String data = actualSenses.join(_separator);
-    return Text(data, maxLines: 1,
-        style: TextStyle(fontSize: FontSizes.fontSize16)
-    );
+    return actualSenses.join(_separator);
   }
 
-  Widget _readings(List<jisho.JishoJapaneseWord> readings) {
+  String _readings(List<jisho.JishoJapaneseWord> readings) {
     List<String?> actualReadings = [];
     readings.forEach((word) {
       actualReadings.add(""
           "${word.word == null ? "" : word.word} "
           "${word.reading == null ? "" : "(${word.reading})"}");
     });
-    String reading = actualReadings.toSet().toList().join(_separator);
-    return Text(reading, maxLines: 1,
-        style: TextStyle(fontSize: FontSizes.fontSize16)
-    );
+    return actualReadings.toSet().toList().join(_separator);
   }
 }

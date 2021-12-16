@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/jisho/models/jisho_data.dart';
+import 'package:kanpractice/ui/pages/jisho/widgets/generic/CustomExpansionTile.dart';
+import 'package:kanpractice/ui/pages/jisho/widgets/generic/ScrollableText.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -24,17 +26,8 @@ class ExamplePhrases extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(top: Margins.margin8),
       padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
-      child: ExpansionTile(
-        childrenPadding: EdgeInsets.zero,
-        tilePadding: EdgeInsets.zero,
-        iconColor: Theme.of(context).brightness == Brightness.light
-            ? Colors.black : Colors.white,
-        textColor: Theme.of(context).brightness == Brightness.light
-            ? Colors.black : Colors.white,
-        title: Text("${"jisho_resultData_phrases_label".tr()} (${data.length})",
-            style: TextStyle(fontSize: FontSizes.fontSize18,
-                fontWeight: FontWeight.bold, fontStyle: FontStyle.italic
-            )),
+      child: CustomExpansionTile(
+        label: "${"jisho_resultData_phrases_label".tr()} (${data.length})",
         children: [
           Container(
             height: MediaQuery.of(context).size.height / 2,
@@ -54,27 +47,12 @@ class ExamplePhrases extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Text("• ${data[i].kanji}", maxLines: 2,
-                    style: TextStyle(fontSize: FontSizes.fontSize16)
-                ),
-              ),
+              ScrollableText(label: data[i].kanji, initial: true, italic: false),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: Margins.margin4),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Text("  ${data[i].kana}", maxLines: 2,
-                      style: TextStyle(fontSize: FontSizes.fontSize16, fontStyle: FontStyle.italic)
-                  ),
-                ),
+                child: ScrollableText(label: "(${data[i].kana})", fontSize: FontSizes.fontSize14),
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Text("  ${data[i].english}", maxLines: 2,
-                    style: TextStyle(fontSize: FontSizes.fontSize16)
-                ),
-              ),
+              ScrollableText(label: data[i].english, italic: false),
             ],
           ),
         );

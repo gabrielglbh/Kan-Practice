@@ -158,7 +158,7 @@ class _WritingStudyState extends State<WritingStudy> {
           actions: [
             Visibility(
               visible: _goNextKanji,
-              child: TTSIconButton(kanji: widget.args.studyList[_macro]),
+              child: TTSIconButton(kanji: widget.args.studyList[_macro].kanji),
             ),
             IconButton(
               icon: Icon(Icons.info_outline_rounded),

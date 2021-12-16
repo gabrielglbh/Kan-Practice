@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/ui/pages/jisho/widgets/InfoChip.dart';
+import 'package:kanpractice/ui/pages/jisho/widgets/generic/CustomExpansionTile.dart';
+import 'package:kanpractice/ui/pages/jisho/widgets/generic/InfoChip.dart';
+import 'package:kanpractice/ui/pages/jisho/widgets/generic/JishoHeader.dart';
+import 'package:kanpractice/ui/pages/jisho/widgets/generic/JishoInfoTile.dart';
+import 'package:kanpractice/ui/pages/jisho/widgets/generic/ScrollableText.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:unofficial_jisho_api/api.dart';
 import 'package:unofficial_jisho_api/api.dart' as jisho;
@@ -16,25 +20,12 @@ class SingleKanjiResult extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Visibility(
-              visible: data?.jlptLevel != null,
-              child: InfoChip(label: "${"jisho_resultData_jlpt".tr()} "
-                  "${data?.jlptLevel}"),
-            ),
-            Visibility(
-              visible: data?.strokeCount != null,
-              child: InfoChip(label: "${"jisho_resultData_strokes".tr()} "
-                  "${data?.strokeCount}"),
-            ),
-            Visibility(
-              visible: phrase.isNotEmpty && phrase[0].isCommon != null,
-              child: InfoChip(label: phrase[0].isCommon == true
-                  ? "jisho_phraseData_common".tr() : "jisho_phraseData_uncommon".tr()),
-            )
-          ],
+        Container(
+          height: Margins.margin32,
+          margin: EdgeInsets.only(
+            right: Margins.margin8, left: Margins.margin8, bottom: Margins.margin8
+          ),
+          child: _chips()
         ),
         Visibility(
           visible: data?.strokeOrderGifUri != null,
@@ -57,41 +48,43 @@ class SingleKanjiResult extends StatelessWidget {
     );
   }
 
+  Widget _chips() {
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: [
+        Visibility(
+          visible: data?.jlptLevel != null,
+          child: InfoChip(label: "${"jisho_resultData_jlpt".tr()} "
+              "${data?.jlptLevel}"),
+        ),
+        Visibility(
+          visible: data?.strokeCount != null,
+          child: InfoChip(label: "${"jisho_resultData_strokes".tr()} "
+              "${data?.strokeCount}"),
+        ),
+        Visibility(
+          visible: phrase.isNotEmpty && phrase[0].isCommon != null,
+          child: InfoChip(label: phrase[0].isCommon == true
+              ? "jisho_phraseData_common".tr() : "jisho_phraseData_uncommon".tr()),
+        )
+      ],
+    );
+  }
+
   Widget _displayInfo(String header, dynamic data) {
     return Visibility(
       visible: data != null,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: JishoInfoTile(
         children: [
-          Container(
-            height: CustomSizes.defaultJishoAPIContainer,
-            margin: EdgeInsets.symmetric(vertical: Margins.margin8),
-            padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(header, style: TextStyle(
-                    fontSize: FontSizes.fontSize20,
-                    fontWeight: FontWeight.bold
-                )),
-                Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: Margins.margin8),
-                      child: Text(data is String?
-                          ? (data ?? "")
-                          : (data as List<String>?)?.join(_separator) ?? "",
-                          maxLines: 1,
-                          style: TextStyle(fontSize: FontSizes.fontSize16)
-                      ),
-                    ),
-                  ),
-                )
-              ],
+          JishoHeader(header: header),
+          Expanded(
+            child: ScrollableText(
+              label: data is String? ? data : (data as List<String>?)?.join(_separator),
+              paddingTop: true,
+              italic: false,
+              rawText: true,
             ),
-          ),
-          Divider()
+          )
         ],
       ),
     );
@@ -110,22 +103,19 @@ class SingleKanjiResult extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(header, style: TextStyle(
-                    fontSize: FontSizes.fontSize20,
-                    fontWeight: FontWeight.bold
-                )),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: Margins.margin8),
-                    child: Text(data?.join(_separator) ?? "", maxLines: 1,
-                        style: TextStyle(fontSize: FontSizes.fontSize16)
-                    ),
-                  ),
+                JishoHeader(header: header),
+                ScrollableText(
+                  label: data?.toSet().toList().join(_separator),
+                  paddingTop: true,
+                  italic: false,
+                  rawText: true,
                 ),
                 Visibility(
-                    visible: example != null,
+                  visible: example != null && example.isNotEmpty,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: Margins.margin8),
                     child: _exampleExpansionTile(context, example)
+                  )
                 ),
               ],
             ),
@@ -137,18 +127,11 @@ class SingleKanjiResult extends StatelessWidget {
   }
 
   Widget _exampleExpansionTile(BuildContext context, List<YomiExample>? example) {
-    return ExpansionTile(
-      childrenPadding: EdgeInsets.zero,
-      tilePadding: EdgeInsets.zero,
-      iconColor: CustomColors.secondarySubtleColor,
-      textColor: CustomColors.secondarySubtleColor,
-      title: Text("${"jisho_resultData_examples_label".tr()} (${example?.length})",
-          style: TextStyle(fontSize: FontSizes.fontSize18,
-              fontWeight: FontWeight.bold, fontStyle: FontStyle.italic
-          )),
+    return CustomExpansionTile(
+      label: "${"jisho_resultData_examples_label".tr()} (${example?.length})",
       children: [
         Container(
-          height: CustomSizes.defaultJishoAPIContainer * 3.2,
+          height: MediaQuery.of(context).size.height / 2,
           child: ListView.builder(
             itemCount: example?.length,
             itemBuilder: (context, i) {
@@ -157,17 +140,13 @@ class SingleKanjiResult extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Text("• ${example?[i].example} (${example?[i].reading})", maxLines: 2,
-                          style: TextStyle(fontSize: FontSizes.fontSize16, fontStyle: FontStyle.italic)
-                      ),
+                    ScrollableText(
+                      label: "${example?[i].example} (${example?[i].reading})",
+                      initial: true,
                     ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Text("  ${example?[i].meaning}", maxLines: 2,
-                          style: TextStyle(fontSize: FontSizes.fontSize16)
-                      ),
+                    ScrollableText(
+                      label: example?[i].meaning,
+                      italic: false,
                     ),
                   ],
                 ),

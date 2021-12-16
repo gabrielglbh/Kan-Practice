@@ -1,5 +1,4 @@
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
 
 class TextToSpeech {
   /// Singleton instance of [TextToSpeech]
@@ -11,11 +10,11 @@ class TextToSpeech {
     _tts = FlutterTts();
   }
 
-  Future<void> speakKanji(Kanji? kanji) async {
+  Future<void> speakKanji(String? kanji) async {
     if (kanji != null) {
       await _tts.setLanguage("ja-JP");
       await _tts.setVolume(1.0);
-      await _tts.speak(kanji.kanji);
+      await _tts.speak(kanji);
     }
   }
 }

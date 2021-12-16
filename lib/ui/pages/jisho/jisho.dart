@@ -7,6 +7,7 @@ import 'package:kanpractice/ui/pages/jisho/widgets/WordResult.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/ui/widgets/TTSIconButton.dart';
 
 class JishoPage extends StatelessWidget {
   final String? kanji;
@@ -20,6 +21,9 @@ class JishoPage extends StatelessWidget {
         toolbarHeight: CustomSizes.appBarHeight,
         title: FittedBox(fit: BoxFit.fitWidth, child: Text(kanji ?? "?")),
         centerTitle: true,
+        actions: [
+          TTSIconButton(kanji: kanji)
+        ],
       ),
       body: Column(
         children: [

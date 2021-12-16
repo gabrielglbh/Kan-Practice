@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/utils/TextToSpeech.dart';
 
 class TTSIconButton extends StatelessWidget {
-  final Kanji? kanji;
+  final String? kanji;
   final bool hidden;
   const TTSIconButton({required this.kanji, this.hidden = false});
 

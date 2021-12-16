@@ -30,8 +30,8 @@ extension TestPagesExt on TutorialView {
   String asset({bool lightMode = true}) {
     switch (this) {
       case TutorialView.kanList:
-        if (lightMode) return "assets/tutorial/light/kanLists.png";
-        else return "assets/tutorial/dark/kanLists.png";
+        if (lightMode) return "assets/tutorial/light/kanlist.png";
+        else return "assets/tutorial/dark/kanlist.png";
       case TutorialView.list:
         if (lightMode) return "assets/tutorial/light/list.png";
         else return "assets/tutorial/dark/list.png";
@@ -85,24 +85,17 @@ class _TutorialPageState extends State<TutorialPage> {
           )
         ],
       ),
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            BulletPageView(
-              bullets: TutorialView.values.length,
-              onChanged: (newPage) => setState(() => _showSkip = newPage != TutorialView.values.length - 1),
-              pageViewChildren: [
-                _tutorialPage(context, TutorialView.kanList),
-                _tutorialPage(context, TutorialView.list),
-                _tutorialPage(context, TutorialView.details),
-                _tutorialPage(context, TutorialView.jisho),
-                _tutorialPage(context, TutorialView.practicing),
-                _tutorialPage(context, TutorialView.options),
-              ],
-            ),
-          ],
-        )
+      body: BulletPageView(
+        bullets: TutorialView.values.length,
+        onChanged: (newPage) => setState(() => _showSkip = newPage != TutorialView.values.length - 1),
+        pageViewChildren: [
+          _tutorialPage(context, TutorialView.kanList),
+          _tutorialPage(context, TutorialView.list),
+          _tutorialPage(context, TutorialView.details),
+          _tutorialPage(context, TutorialView.jisho),
+          _tutorialPage(context, TutorialView.practicing),
+          _tutorialPage(context, TutorialView.options),
+        ],
       )
     );
   }
@@ -110,22 +103,24 @@ class _TutorialPageState extends State<TutorialPage> {
   Column _tutorialPage(BuildContext context, TutorialView view) {
     return Column(
       children: [
-        Container(
-          height: 100,
-          margin: EdgeInsets.all(Margins.margin8),
-          child: Text(view.tutorial, textAlign: TextAlign.center)
+        Expanded(
+          child: Container(
+            margin: EdgeInsets.all(Margins.margin8),
+            child: SingleChildScrollView(child: Text(view.tutorial, textAlign: TextAlign.center)),
+          )
         ),
-        /*Expanded(
+        Expanded(
+          flex: 5,
           child: Container(
             width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.all(Margins.margin8),
             margin: EdgeInsets.symmetric(horizontal: Margins.margin8),
             child: FittedBox(
-              fit: BoxFit.fitHeight,
+              fit: view == TutorialView.jisho ? BoxFit.fitWidth : BoxFit.fitHeight,
               child: Image.asset(view.asset(lightMode: Theme.of(context).brightness == Brightness.light))
             ),
           ),
-        ),*/
+        ),
       ],
     );
   }

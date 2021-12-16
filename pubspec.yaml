@@ -33,6 +33,8 @@ dependencies:
   package_info:
   url_launcher:
   flutter_tts:
+  unofficial_jisho_api:
+  page_transition:
 
 flutter_icons:
   android: "launcher_icon"
@@ -50,5 +52,6 @@ flutter:
   uses-material-design: true
   assets:
     - assets/icon/icon.png
-    - assets/tutorial/
+    - assets/tutorial/dark/
+    - assets/tutorial/light/
     - lib/core/localization/

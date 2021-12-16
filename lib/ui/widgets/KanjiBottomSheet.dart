@@ -4,6 +4,7 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
+import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
@@ -129,13 +130,21 @@ class KanjiBottomSheet extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        TTSIconButton(kanji: kanji, hidden: true),
-                        FittedBox(
-                          fit: BoxFit.contain,
-                          child: Text(kanji?.pronunciation ?? "wildcard".tr(), textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: FontSizes.fontSize16)),
+                        IconButton(
+                          icon: Icon(Icons.menu_book_rounded),
+                          onPressed: () {
+                            Navigator.of(context).pushNamed(KanPracticePages.jishoPage, arguments: kanji?.kanji);
+                          },
                         ),
-                        TTSIconButton(kanji: kanji)
+                        Container(
+                          height: Margins.margin24,
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: Text(kanji?.pronunciation ?? "wildcard".tr(), textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: FontSizes.fontSize16)),
+                          ),
+                        ),
+                        TTSIconButton(kanji: kanji?.kanji)
                       ],
                     )
                   ),
@@ -151,7 +160,7 @@ class KanjiBottomSheet extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin16),
                     child: FittedBox(
                       fit: BoxFit.contain,
-                      child: Text((kanji?.meaning ?? "wildcard".tr()), textAlign: TextAlign.center,
+                      child: Text(kanji?.meaning ?? "wildcard".tr(), textAlign: TextAlign.center,
                           style: TextStyle(fontSize: FontSizes.fontSize16))
                     ),
                   ),

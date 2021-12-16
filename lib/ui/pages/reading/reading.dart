@@ -111,7 +111,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
           actions: [
             Visibility(
               visible: _showPronunciation,
-              child: TTSIconButton(kanji: widget.args.studyList[_macro]),
+              child: TTSIconButton(kanji: widget.args.studyList[_macro].kanji),
             )
           ],
         ),

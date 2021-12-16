@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/pages/add_kanji/add_kanji.dart';
 import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/pages/backup/backup.dart';
 import 'package:kanpractice/ui/pages/firebase_login/login.dart';
+import 'package:kanpractice/ui/pages/jisho/jisho.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/list_details.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/kanji_lists.dart';
 import 'package:kanpractice/ui/pages/reading/reading.dart';
@@ -17,6 +19,7 @@ import 'package:kanpractice/ui/pages/test_result/test_result.dart';
 import 'package:kanpractice/ui/pages/tutorial/tutorial.dart';
 import 'package:kanpractice/ui/pages/writing/writing.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
+import 'package:page_transition/page_transition.dart';
 
 /// Router generator in which all pages and their transitions are made.
 Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -53,5 +56,8 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case KanPracticePages.tutorialPage:
       bool? args = settings.arguments as bool?;
       return CupertinoPageRoute(builder: (_) => TutorialPage(alreadyShown: args));
+    case KanPracticePages.jishoPage:
+      String? args = settings.arguments as String?;
+      return PageTransition(type: PageTransitionType.bottomToTop, child: JishoPage(kanji: args));
   }
 }

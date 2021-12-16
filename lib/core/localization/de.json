@@ -194,5 +194,6 @@
   "jisho_phraseData_unknown": "Unbekannt",
   "jisho_phraseData_show_meanings": "Mehr Bedeutungen anzeigen",
   "jisho_phraseData_search_individually": "Individuell suchen",
-  "jisho_phraseData_readings": "Lesungen"
+  "jisho_phraseData_readings": "Lesungen",
+  "jisho_gif_not_loaded": "Konnte das GIF des Strichs nicht laden :("
 }

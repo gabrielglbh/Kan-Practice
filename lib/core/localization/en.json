@@ -194,5 +194,6 @@
   "jisho_phraseData_unknown": "Unknown",
   "jisho_phraseData_show_meanings": "Show more meanings",
   "jisho_phraseData_search_individually": "Search individually",
-  "jisho_phraseData_readings": "Readings"
+  "jisho_phraseData_readings": "Readings",
+  "jisho_gif_not_loaded": "Could not load stroke GIF :("
 }

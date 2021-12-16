@@ -35,6 +35,7 @@ dependencies:
   flutter_tts:
   unofficial_jisho_api:
   page_transition:
+  cached_network_image:
 
 flutter_icons:
   android: "launcher_icon"

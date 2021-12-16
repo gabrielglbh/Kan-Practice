@@ -194,5 +194,6 @@
   "jisho_phraseData_unknown": "Desconocido",
   "jisho_phraseData_show_meanings": "Mostrar más significados",
   "jisho_phraseData_search_individually": "Buscar individualmente",
-  "jisho_phraseData_readings": "Lecturas"
+  "jisho_phraseData_readings": "Lecturas",
+  "jisho_gif_not_loaded": "No se ha podido cargar el GIF del trazo :("
 }

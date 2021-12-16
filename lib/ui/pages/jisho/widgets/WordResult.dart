@@ -49,9 +49,7 @@ class WordResult extends StatelessWidget {
           visible: data == null && phrase.isNotEmpty,
           child: Container(
             height: Margins.margin32,
-            margin: EdgeInsets.only(
-              right: Margins.margin8, left: Margins.margin8, bottom: Margins.margin8
-            ),
+            margin: EdgeInsets.all( Margins.margin8),
             child: _chips(index)
           ),
         ),

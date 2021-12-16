@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/generic/CustomExpansionTile.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/generic/InfoChip.dart';
@@ -5,6 +6,7 @@ import 'package:kanpractice/ui/pages/jisho/widgets/generic/JishoHeader.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/generic/JishoInfoTile.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/generic/ScrollableText.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
 import 'package:unofficial_jisho_api/api.dart';
 import 'package:unofficial_jisho_api/api.dart' as jisho;
 import 'package:easy_localization/easy_localization.dart';
@@ -31,7 +33,18 @@ class SingleKanjiResult extends StatelessWidget {
             height: CustomSizes.defaultJishoGIF,
             alignment: Alignment.center,
             margin: EdgeInsets.symmetric(vertical: Margins.margin8),
-            child: Image.network(data?.strokeOrderGifUri ?? ""),
+            child: CachedNetworkImage(
+              imageUrl: data?.strokeOrderGifUri ?? "",
+              placeholder: (context, _) => CustomProgressIndicator(),
+              fadeInDuration: Duration(milliseconds: 200),
+              fadeOutDuration: Duration(milliseconds: 200),
+              errorWidget: (context, error, _) => Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
+                  child: Text("jisho_gif_not_loaded".tr())
+                ),
+              )
+            ),
           ),
         ),
         _displayInfo("jisho_resultData_meaning_label".tr(), data?.meaning),

@@ -27,42 +27,36 @@ class ExamplePhrases extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
       child: CustomExpansionTile(
         label: "${"jisho_resultData_phrases_label".tr()} (${data.length})",
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height / 2,
-            child: _listViewOfExamples(data)
-          ),
-        ],
+        children: _listViewOfExamples(data)
       )
     );
   }
 
-  Widget _listViewOfExamples(List<KanjiExample> data) {
-    return ListView.builder(
-      itemCount: data.length,
-      itemBuilder: (context, i) {
-        return Padding(
-          padding: EdgeInsets.only(top: i != 0 ? Margins.margin16 : 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ScrollableText(label: data[i].kanji, initial: true, italic: false),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: Margins.margin4),
-                child: ScrollableText(label: "(${data[i].kana})", fontSize: FontSizes.fontSize14),
-              ),
-              ScrollableText(label: data[i].english, italic: false),
-              Padding(
-                padding: EdgeInsets.only(
+  List<Widget> _listViewOfExamples(List<KanjiExample> data) {
+    List<Widget> res = [];
+    for (int i = 0; i < data.length; i++) {
+      res.add(Padding(
+        padding: EdgeInsets.only(top: i != 0 ? Margins.margin16 : 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ScrollableText(label: data[i].kanji, initial: true, italic: false),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: Margins.margin4),
+              child: ScrollableText(label: "(${data[i].kana})", fontSize: FontSizes.fontSize14),
+            ),
+            ScrollableText(label: data[i].english, italic: false),
+            Padding(
+              padding: EdgeInsets.only(
                   right: Margins.margin64, left: Margins.margin64,
                   top: Margins.margin8
-                ),
-                child: Divider(thickness: 2),
-              )
-            ],
-          ),
-        );
-      },
-    );
+              ),
+              child: Divider(thickness: 2),
+            )
+          ],
+        ),
+      ));
+    }
+    return res;
   }
 }

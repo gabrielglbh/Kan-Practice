@@ -18,11 +18,12 @@ class ScrollableText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: paddingTop ? EdgeInsets.only(top: Margins.margin8) : EdgeInsets.zero,
+    return Container(
+      margin: paddingTop ? EdgeInsets.only(top: Margins.margin8) : EdgeInsets.zero,
+      alignment: Alignment.centerLeft,
       child: Text(rawText ? label ?? ""
           : "${initial ? "• " : "  "}${label != null ? label : ""}",
-        maxLines: 3, textAlign: TextAlign.justify, overflow: TextOverflow.ellipsis,
+        maxLines: 10, textAlign: TextAlign.justify, overflow: TextOverflow.ellipsis,
         style: TextStyle(fontSize: fontSize, fontStyle: italic ? FontStyle.italic : null)
       ),
     );

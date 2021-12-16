@@ -60,6 +60,11 @@ class JishoPage extends StatelessWidget {
         Expanded(
           child: ListView(
             children: [
+              /// All info is based on the value of state.data.
+              /// If resultData is null, it means that the kanji searched is actually a
+              /// compound one.
+              /// Example, in the other hand, will be visible for single or compound
+              /// kanji.
               Visibility(
                 visible: state.data.resultData != null,
                 child: SingleKanjiResult(
@@ -78,6 +83,10 @@ class JishoPage extends StatelessWidget {
               Visibility(
                 visible: state.data.example.isNotEmpty,
                 child: ExamplePhrases(data: state.data.example)
+              ),
+              Container(
+                height: Margins.margin32,
+                color: Colors.transparent,
               )
             ],
           ),
@@ -98,8 +107,8 @@ class JishoPage extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: Margins.margin8),
       child: Chip(
-        backgroundColor: Colors.green,
-        label: Text("jisho_resultData_powered_by".tr()),
+        backgroundColor: Colors.green[200],
+        label: Text("jisho_resultData_powered_by".tr(), style: TextStyle(color: Colors.black)),
       ),
     );
   }

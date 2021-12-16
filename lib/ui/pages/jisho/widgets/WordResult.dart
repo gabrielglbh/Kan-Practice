@@ -27,30 +27,26 @@ class WordResult extends StatelessWidget {
           child: CustomExpansionTile(
             label: "${"jisho_phraseData_show_meanings".tr()} (${phrase.length - 1})",
             paddingHorizontal: EdgeInsets.symmetric(horizontal: Margins.margin16),
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height / 2,
-                child: ListView.builder(
-                  itemCount: phrase.length,
-                  itemBuilder: (context, index) {
-                    if (index == 0) return Container();
-                    return _completePhraseData(index: index);
-                  }
-                ),
-              )
-            ],
+            children: _listViewMoreMeanings()
           ),
         ),
       ],
     );
   }
 
-  Widget _completePhraseData({int index = 0}) {
+  List<Widget> _listViewMoreMeanings() {
+    List<Widget> res = [];
+    for (int i = 0; i < phrase.length - 1; i++) res.add(_completePhraseData(index: i, expanded: true));
+    return res;
+  }
+
+  Widget _completePhraseData({int index = 0, bool expanded = false}) {
+    if (expanded) index++;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Visibility(
-          visible: data == null,
+          visible: data == null && phrase.isNotEmpty,
           child: Container(
             height: Margins.margin32,
             margin: EdgeInsets.only(
@@ -102,14 +98,21 @@ class WordResult extends StatelessWidget {
       children: [
         Visibility(
           visible: phrase[index].jlpt.isNotEmpty,
-          child: InfoChip(label: "${"jisho_resultData_jlpt".tr()} "
-              "${phrase[index].jlpt.isNotEmpty
-              ? phrase[index].jlpt[index].substring(5).toUpperCase() : ""}"),
+          child: InfoChip(label: phrase[index].jlpt.isNotEmpty
+              ? phrase[index].jlpt[0].substring(5).toUpperCase() : "",
+            type: ChipType.jlpt
+          ),
         ),
         Visibility(
           visible: phrase[index].isCommon != null,
           child: InfoChip(label: phrase[index].isCommon == true
-              ? "jisho_phraseData_common".tr() : "jisho_phraseData_uncommon".tr()),
+              ? "jisho_phraseData_common".tr() : "jisho_phraseData_uncommon".tr(),
+            type: phrase[index].isCommon == true ? ChipType.common : ChipType.uncommon,
+          ),
+        ),
+        Visibility(
+          visible: phrase[index].isCommon == null,
+          child: InfoChip(label: "jisho_phraseData_unknown".tr(), type: ChipType.unknown),
         )
       ],
     );

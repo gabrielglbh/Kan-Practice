@@ -22,9 +22,7 @@ class SingleKanjiResult extends StatelessWidget {
       children: [
         Container(
           height: Margins.margin32,
-          margin: EdgeInsets.only(
-            right: Margins.margin8, left: Margins.margin8, bottom: Margins.margin8
-          ),
+          margin: EdgeInsets.all(Margins.margin8),
           child: _chips()
         ),
         Visibility(
@@ -54,18 +52,23 @@ class SingleKanjiResult extends StatelessWidget {
       children: [
         Visibility(
           visible: data?.jlptLevel != null,
-          child: InfoChip(label: "${"jisho_resultData_jlpt".tr()} "
-              "${data?.jlptLevel}"),
+          child: InfoChip(label: data?.jlptLevel, type: ChipType.jlpt),
         ),
         Visibility(
           visible: data?.strokeCount != null,
-          child: InfoChip(label: "${"jisho_resultData_strokes".tr()} "
-              "${data?.strokeCount}"),
+          child: InfoChip(label: data?.strokeCount.toString(), type: ChipType.stroke),
         ),
         Visibility(
           visible: phrase.isNotEmpty && phrase[0].isCommon != null,
           child: InfoChip(label: phrase[0].isCommon == true
-              ? "jisho_phraseData_common".tr() : "jisho_phraseData_uncommon".tr()),
+              ? "jisho_phraseData_common".tr()
+              : "jisho_phraseData_uncommon".tr(),
+            type: phrase[0].isCommon == true ? ChipType.common : ChipType.uncommon,
+          ),
+        ),
+        Visibility(
+          visible: phrase.isNotEmpty && phrase[0].isCommon == null,
+          child: InfoChip(label: "jisho_phraseData_unknown".tr(), type: ChipType.unknown),
         )
       ],
     );
@@ -118,32 +121,29 @@ class SingleKanjiResult extends StatelessWidget {
   Widget _exampleExpansionTile(BuildContext context, List<YomiExample>? example) {
     return CustomExpansionTile(
       label: "${"jisho_resultData_examples_label".tr()} (${example?.length})",
-      children: [
-        Container(
-          height: MediaQuery.of(context).size.height / 2,
-          child: ListView.builder(
-            itemCount: example?.length,
-            itemBuilder: (context, i) {
-              return Padding(
-                padding: EdgeInsets.only(top: i != 0 ? Margins.margin16 : 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ScrollableText(
-                      label: "${example?[i].example} (${example?[i].reading})",
-                      initial: true,
-                    ),
-                    ScrollableText(
-                      label: example?[i].meaning,
-                      italic: false,
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ],
+      children: _listViewWithExamples(example)
     );
+  }
+
+  List<Widget> _listViewWithExamples(List<YomiExample>? example) {
+    List<Widget> res = [];
+    for (int i = 0; i < (example?.length ?? 0); i++)
+      res.add(Padding(
+        padding: EdgeInsets.only(top: i != 0 ? Margins.margin16 : 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ScrollableText(
+              label: "${example?[i].example} (${example?[i].reading})",
+              initial: true,
+            ),
+            ScrollableText(
+              label: example?[i].meaning,
+              italic: false,
+            ),
+          ],
+        ),
+      ));
+    return res;
   }
 }

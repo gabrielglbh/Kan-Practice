@@ -136,6 +136,8 @@ class SingleKanjiResult extends StatelessWidget {
             ScrollableText(
               label: "${example?[i].example} (${example?[i].reading})",
               initial: true,
+              italic: false,
+              fontSize: FontSizes.fontSize18,
             ),
             ScrollableText(
               label: example?[i].meaning,

@@ -40,7 +40,8 @@ class ExamplePhrases extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ScrollableText(label: data[i].kanji, initial: true, italic: false),
+            ScrollableText(label: data[i].kanji, initial: true,
+              italic: false, fontSize: FontSizes.fontSize18),
             Padding(
               padding: EdgeInsets.symmetric(vertical: Margins.margin4),
               child: ScrollableText(label: "(${data[i].kana})", fontSize: FontSizes.fontSize14),

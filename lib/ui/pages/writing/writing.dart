@@ -173,7 +173,6 @@ class _WritingStudyState extends State<WritingStudy> {
           padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
           child: Column(
             children: [
-              /// TODO: Show jisho GIF on done with the character?
               ListPercentageIndicator(value: (_macro + 1) / _studyList.length),
               LearningHeaderAnimation(id: _macro, children: _header()),
               CustomCanvas(line: _line, allowEdit: !_showActualKanji),

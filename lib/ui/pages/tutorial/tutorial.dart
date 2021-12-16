@@ -6,7 +6,7 @@ import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 enum TutorialView {
-  kanList, list, details, practicing, options
+  kanList, list, details, jisho, practicing, options
 }
 
 extension TestPagesExt on TutorialView {
@@ -18,6 +18,8 @@ extension TestPagesExt on TutorialView {
         return "tutorial_lists".tr();
       case TutorialView.details:
         return "tutorial_details".tr();
+      case TutorialView.jisho:
+        return "tutorial_jisho".tr();
       case TutorialView.practicing:
         return "tutorial_practicing".tr();
       case TutorialView.options:
@@ -36,6 +38,9 @@ extension TestPagesExt on TutorialView {
       case TutorialView.details:
         if (lightMode) return "assets/tutorial/light/details.png";
         else return "assets/tutorial/dark/details.png";
+      case TutorialView.jisho:
+        if (lightMode) return "assets/tutorial/light/jisho.png";
+        else return "assets/tutorial/dark/jisho.png";
       case TutorialView.practicing:
         if (lightMode) return "assets/tutorial/light/practice.png";
         else return "assets/tutorial/dark/practice.png";
@@ -91,6 +96,7 @@ class _TutorialPageState extends State<TutorialPage> {
                 _tutorialPage(context, TutorialView.kanList),
                 _tutorialPage(context, TutorialView.list),
                 _tutorialPage(context, TutorialView.details),
+                _tutorialPage(context, TutorialView.jisho),
                 _tutorialPage(context, TutorialView.practicing),
                 _tutorialPage(context, TutorialView.options),
               ],

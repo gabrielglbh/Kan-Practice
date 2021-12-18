@@ -51,7 +51,8 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
         pronunciation: _pronunciationController.text,
         meaning: _meaningController.text,
         listName: widget.args.listName,
-        dateAdded: GeneralUtils.getCurrentMilliseconds()
+        dateAdded: GeneralUtils.getCurrentMilliseconds(),
+        dateLastShown: GeneralUtils.getCurrentMilliseconds()
     ));
     if (code == 0) {
       /// If exit is true, only one kanji should be created and exit
@@ -82,7 +83,8 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
             winRateWriting: k.winRateWriting,
             winRateReading: k.winRateReading,
             winRateRecognition: k.winRateRecognition,
-            dateAdded: k.dateAdded
+            dateAdded: k.dateAdded,
+            dateLastShown: k.dateLastShown
           ).toJson()
       );
       if (code == 0) Navigator.of(context).pop(0);

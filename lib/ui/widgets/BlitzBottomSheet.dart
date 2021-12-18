@@ -10,15 +10,19 @@ class BlitzBottomSheet extends StatelessWidget {
   /// String defining if the user wants to perform a Blitz Test on a practice
   /// lesson specifically. If null, all kanji available will be taken into consideration.
   final String? practiceList;
-  const BlitzBottomSheet({this.practiceList});
+  final bool remembranceTest;
+  const BlitzBottomSheet({this.practiceList, this.remembranceTest = false});
 
   /// Creates and calls the [BottomSheet] with the content for a blitz test
-  static Future<String?> callBlitzModeBottomSheet(BuildContext context, {String? practiceList}) async {
+  static Future<String?> callBlitzModeBottomSheet(BuildContext context,
+      {String? practiceList, bool remembranceTest = false}) async {
     return await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => BlitzBottomSheet(practiceList: practiceList)
+      builder: (context) => BlitzBottomSheet(
+        practiceList: practiceList, remembranceTest: remembranceTest
+      )
     );
   }
 
@@ -26,8 +30,9 @@ class BlitzBottomSheet extends StatelessWidget {
     String? listName = practiceList;
     /// Get all the list of all kanji and perform a 20 kanji random sublist
     if (listName == null) {
-      List<Kanji> list = await KanjiQueries.instance.getAllKanji();
-      list.shuffle();
+      List<Kanji> list = await KanjiQueries.instance.getAllKanji(orderedByLastShown: remembranceTest);
+      /// If it is a remembrance test, do NOT shuffle the list
+      if (!remembranceTest) list.shuffle();
       return list.sublist(0, list.length < CustomSizes.numberOfKanjiInTest
           ? list.length : CustomSizes.numberOfKanjiInTest);
     }
@@ -55,12 +60,18 @@ class BlitzBottomSheet extends StatelessWidget {
                 DragContainer(),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin32),
-                  child: Text("blitz_bottom_sheet_title".tr(), textAlign: TextAlign.center,
+                  child: Text(remembranceTest
+                      ? "remembrance_bottom_sheet_title".tr()
+                      : "blitz_bottom_sheet_title".tr(), textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize18)),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin32),
-                  child: Text("${CustomSizes.numberOfKanjiInTest.toString()} ${"blitz_bottom_sheet_content".tr()}",
+                  child: Text("${CustomSizes.numberOfKanjiInTest.toString()} ${
+                      remembranceTest
+                          ? "remembrance_bottom_sheet_content".tr()
+                          : "blitz_bottom_sheet_content".tr()
+                  }",
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize16)),
                 ),
@@ -68,8 +79,8 @@ class BlitzBottomSheet extends StatelessWidget {
                   future: _loadBlitzTest(),
                   builder: (context, snapshot) {
                     return TestStudyMode(
-                      listsNames: practiceList == null
-                          ? 'blitz_bottom_sheet_label'.tr()
+                      listsNames: remembranceTest ? "remembrance_bottom_sheet_label".tr()
+                          : practiceList == null ? 'blitz_bottom_sheet_label'.tr()
                           : '${"blitz_bottom_sheet_on_label".tr()} $practiceList',
                       list: (snapshot.data ?? []),
                     );

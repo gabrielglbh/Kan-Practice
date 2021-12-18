@@ -45,9 +45,8 @@ class TestStudyMode extends StatelessWidget {
           ),
           Container(
             height: CustomSizes.defaultSizeButtonHeight,
-            child: ListView(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _modeBasedButtons(context, StudyModes.writing),
                 _modeBasedButtons(context, StudyModes.reading),
@@ -67,7 +66,6 @@ class TestStudyMode extends StatelessWidget {
 
   CustomButton _modeBasedButtons(BuildContext context, StudyModes mode) {
     return CustomButton(
-      width: (MediaQuery.of(context).size.width / 3) - Margins.margin24,
       title1: mode.japMode,
       title2: mode.mode,
       color: mode.color,

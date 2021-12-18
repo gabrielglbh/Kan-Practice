@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
+import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/ui/pages/writing/widgets/CustomCanvas.dart';
 import 'package:kanpractice/ui/pages/writing/widgets/WritingButtonsAnimation.dart';
@@ -135,6 +137,11 @@ class _WritingStudyState extends State<WritingStudy> {
   }
 
   Future<int> _calculateKanjiScore() async {
+    /// Updates the dateLastShown attribute of the finished word
+    await KanjiQueries.instance.updateKanji(widget.args.studyList[_macro].listName,
+        widget.args.studyList[_macro].kanji, {
+          KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds()
+        });
     final double currentScore = _score[_macro] / _maxScore[_macro];
     /// Add the current virgin score to the test scores...
     if (widget.args.isTest) {

@@ -188,7 +188,9 @@ class KanjiBottomSheet extends StatelessWidget {
                     child: FittedBox(
                       fit: BoxFit.contain,
                       child: Text("${"created_label".tr()} "
-                          "${GeneralUtils.parseDateMilliseconds(context, (kanji?.dateAdded ?? 0))}",
+                          "${GeneralUtils.parseDateMilliseconds(context, (kanji?.dateAdded ?? 0))} • "
+                          "${"last_seen_label".tr()} "
+                          "${GeneralUtils.parseDateMilliseconds(context, (kanji?.dateLastShown ?? 0))}",
                           textAlign: TextAlign.center, style: TextStyle(fontSize: FontSizes.fontSize14))
                     ),
                   ),

@@ -89,6 +89,7 @@
   "kanji_bottom_sheet_createDialogForDeletingKanji_failed": "Generic error removing kanji",
   "wildcard": "?",
   "created_label": "Created",
+  "last_seen_label": "Last seen",
   "kanji_bottom_sheet_update_label": "Update",
   "kanji_bottom_sheet_removal_label": "Remove",
   "list_details_loadUpPractice_failed": "Add new Kanji to study first!",
@@ -195,5 +196,12 @@
   "jisho_phraseData_show_meanings": "Show more meanings",
   "jisho_phraseData_search_individually": "Search individually",
   "jisho_phraseData_readings": "Readings",
-  "jisho_gif_not_loaded": "Could not load stroke GIF :("
+  "jisho_gif_not_loaded": "Could not load stroke GIF :(",
+  "test_mode_selection": "Selection Test",
+  "test_mode_blitz": "Blitz Test",
+  "test_mode_remembrance": "Remembrance Test",
+  "test_selection_label": "Select a test to perform",
+  "remembrance_bottom_sheet_title": "Make a remembrance test",
+  "remembrance_bottom_sheet_content": "kanji that you have not seen for a long time will be selected. Let's take the remembrance test!",
+  "remembrance_bottom_sheet_label": "Remembrance"
 }

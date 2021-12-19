@@ -8,6 +8,7 @@ class KanjiTableFields {
   static const String winRateReadingField = "winRateReading";
   static const String winRateRecognitionField = "winRateRecognition";
   static const String dateAddedField = "dateAdded";
+  static const String dateLastShown = "dateLastShown";
 }
 
 class KanListTableFields {

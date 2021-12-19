@@ -89,6 +89,7 @@
   "kanji_bottom_sheet_createDialogForDeletingKanji_failed": "Error genérico al eliminar kanji",
   "wildcard": "?",
   "created_label": "Creado",
+  "last_seen_label": "Visto hace",
   "kanji_bottom_sheet_update_label": "Actualizar",
   "kanji_bottom_sheet_removal_label": "Eliminar",
   "list_details_loadUpPractice_failed": "¡Primero añade nuevos kanji para estudiar!",
@@ -195,5 +196,12 @@
   "jisho_phraseData_show_meanings": "Mostrar más significados",
   "jisho_phraseData_search_individually": "Buscar individualmente",
   "jisho_phraseData_readings": "Lecturas",
-  "jisho_gif_not_loaded": "No se ha podido cargar el GIF del trazo :("
+  "jisho_gif_not_loaded": "No se ha podido cargar el GIF del trazo :(",
+  "test_mode_selection": "Test de Selección",
+  "test_mode_blitz": "Test Blitz",
+  "test_mode_remembrance": "Test de Recuerdo",
+  "test_selection_label": "Selecciona un test a realizar",
+  "remembrance_bottom_sheet_title": "Hacer un test de recuerdo",
+  "remembrance_bottom_sheet_content": "kanji que no hayas visto en mucho tiempo serán seleccionados. ¡Empecemos el test de recuerdo!",
+  "remembrance_bottom_sheet_label": "Recuerdo"
 }

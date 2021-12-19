@@ -7,6 +7,7 @@ import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/filters.dart';
+import 'package:kanpractice/ui/pages/kanji_lists/widgets/TestBottomSheet.dart';
 import 'package:kanpractice/ui/widgets/BlitzBottomSheet.dart';
 import 'package:kanpractice/ui/widgets/CustomSearchBar.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListTile.dart';
@@ -149,15 +150,9 @@ class _KanjiListsState extends State<KanjiLists> {
           actions: [
             IconButton(
               onPressed: () async {
-                await StudyBottomSheet.callStudyModeBottomSheet(context);
+                await TestBottomSheet.callTestModeBottomSheet(context);
               },
-              icon: Icon(Icons.track_changes_rounded),
-            ),
-            IconButton(
-              onPressed: () async {
-                await BlitzBottomSheet.callBlitzModeBottomSheet(context);
-              },
-              icon: Icon(Icons.flash_on_rounded),
+              icon: Icon(Icons.track_changes_rounded, color: CustomColors.secondarySubtleColor),
             ),
             IconButton(
               onPressed: () async {

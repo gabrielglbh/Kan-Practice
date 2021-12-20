@@ -13,13 +13,16 @@ class CustomSearchBar extends StatefulWidget {
   /// [FocusNode] of the search bar created in the parent widget
   final FocusNode? focus;
   /// Padding to apply to the search bar, defaults to 8
-  final double padding;
+  final double top, bottom, right, left;
   CustomSearchBar({
     required this.onQuery,
     required this.onExitSearch,
     required this.hint,
     required this.focus,
-    this.padding = Margins.margin8
+    this.top = Margins.margin8,
+    this.bottom = 0,
+    this.left = Margins.margin8,
+    this.right = Margins.margin8
   });
 
   @override
@@ -49,7 +52,10 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
   Widget build(BuildContext context) {
     return Container(
       child: Padding(
-        padding: EdgeInsets.all(widget.padding),
+        padding: EdgeInsets.only(
+          left: widget.left, right: widget.right,
+          top: widget.top, bottom: widget.bottom
+        ),
         child: Column(children: <Widget>[
           Padding(
             padding: EdgeInsets.only(bottom: Margins.margin8),

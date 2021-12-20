@@ -91,5 +91,14 @@ final ThemeData light = ThemeData(
         disabledColor: Colors.grey,
         labelStyle: TextStyle(color: _primary),
         secondarySelectedColor: _accent
+    ),
+    tabBarTheme: TabBarTheme(
+        labelColor: Colors.black,
+        labelStyle: TextStyle(fontSize: FontSizes.fontSize18, fontWeight: FontWeight.bold),
+        indicator: ShapeDecoration(
+          shape: UnderlineInputBorder(
+              borderSide: BorderSide(color: CustomColors.secondarySubtleColor,
+                  width: 2, style: BorderStyle.solid)),
+        )
     )
 );

@@ -47,10 +47,10 @@ class KanjiListDetails extends StatefulWidget {
   _KanjiListDetailsState createState() => _KanjiListDetailsState();
 }
 
-class _KanjiListDetailsState extends State<KanjiListDetails> {
+class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerProviderStateMixin {
   KanjiListDetailBloc _bloc = KanjiListDetailBloc();
-  PageController _controller = PageController();
   FocusNode? _searchBarFn;
+  TabController? _tabController;
   StudyModes _selectedMode = StudyModes.writing;
   LearningMode _learningMode = LearningMode.spatial;
 
@@ -60,6 +60,8 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
   @override
   void initState() {
     _searchBarFn = FocusNode();
+    _tabController = TabController(length: StudyModes.values.length, vsync: this);
+    _tabController?.addListener(_tabControllerManagement);
     _searchBarFn?.addListener(_focusListener);
     _listName = widget.list.name;
     super.initState();
@@ -69,8 +71,15 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
   void dispose() {
     _searchBarFn?.removeListener(_focusListener);
     _searchBarFn?.dispose();
-    _controller.dispose();
+    _tabController?.dispose();
     super.dispose();
+  }
+
+  _tabControllerManagement() {
+    _searchBarFn?.unfocus();
+    setState(() {
+      _selectedMode = StudyModes.values[_tabController?.index ?? 0];
+    });
   }
 
   _focusListener() => setState(() => _searchHasFocus = (_searchBarFn?.hasFocus ?? false));
@@ -110,47 +119,34 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
     else GeneralUtils.getSnackBar(context, "list_details_loadUpPractice_failed".tr());
   }
 
-  _onChangePage(int newPage) {
+  _onModeChange(StudyModes newMode) {
     _searchBarFn?.unfocus();
     setState(() {
-      if (newPage == 0) _selectedMode = StudyModes.writing;
-      else if (newPage == 1) _selectedMode = StudyModes.reading;
+      if (newMode == StudyModes.writing) _selectedMode = StudyModes.writing;
+      else if (newMode == StudyModes.reading) _selectedMode = StudyModes.reading;
       else _selectedMode = StudyModes.recognition;
     });
-    _controller.animateToPage(newPage, duration: Duration(milliseconds: CustomAnimations.ms300),
+    _tabController?.animateTo(newMode.index,
+        duration: Duration(milliseconds: CustomAnimations.ms300),
         curve: Curves.easeInOut);
   }
 
   _updateSelectedModePageView(double pv) {
-    // Swiping in right direction.
-    if (pv < 0) {
-      switch (_selectedMode) {
-        case StudyModes.writing:
-          _onChangePage(1);
-          break;
-        case StudyModes.reading:
-          _onChangePage(2);
-          break;
-        case StudyModes.recognition:
-        default:
-          break;
-      }
-    }
-    // Swiping in left direction.
-    if (pv > 0) {
-      switch (_selectedMode) {
-        case StudyModes.reading:
-          _onChangePage(0);
-          break;
-        case StudyModes.recognition:
-          _onChangePage(1);
-          break;
-        case StudyModes.writing:
-        default:
-          break;
-      }
+    switch (_selectedMode) {
+      case StudyModes.writing:
+        if (pv < 0) _onModeChange(StudyModes.reading);
+        break;
+      case StudyModes.reading:
+        if (pv < 0) _onModeChange(StudyModes.recognition);
+        else if (pv > 0) _onModeChange(StudyModes.writing);
+        break;
+      case StudyModes.recognition:
+        if (pv > 0) _onModeChange(StudyModes.reading);
+        break;
     }
   }
+
+  _addLoadingEvent() => _bloc..add(KanjiEventLoading(_listName));
 
   _updateName(String name) {
     if (name.isNotEmpty) _bloc..add(UpdateKanList(name, _listName));
@@ -179,8 +175,6 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
     });
   }
 
-  _addLoadingEvent() => _bloc..add(KanjiEventLoading(_listName));
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -192,52 +186,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
         } else return true;
       },
       child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: CustomSizes.appBarHeight,
-          title: BlocProvider<KanjiListDetailBloc>(
-            create: (_) => _addLoadingEvent(),
-            child: BlocBuilder<KanjiListDetailBloc, KanjiListDetailState>(
-              builder: (context, state) {
-                if (state is KanjiListDetailStateLoaded) {
-                  _listName = state.name;
-                  return FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: GestureDetector(
-                      onTap: () async => await _updateKanListName(),
-                      child: Text(state.name, overflow: TextOverflow.ellipsis),
-                    )
-                  );
-                }
-                else return Container();
-              },
-            ),
-          ),
-          actions: [
-            IconButton(
-              icon: Icon(_learningMode == LearningMode.spatial
-                  ? LearningMode.spatial.icon
-                  : LearningMode.random.icon),
-              onPressed: () => setState(() {
-                if (_learningMode == LearningMode.spatial) _learningMode = LearningMode.random;
-                else _learningMode = LearningMode.spatial;
-              }),
-            ),
-            IconButton(
-              onPressed: () async => await BlitzBottomSheet.callBlitzModeBottomSheet(
-                context, practiceList: _listName
-              ),
-              icon: Icon(Icons.flash_on_rounded),
-            ),
-            IconButton(
-              onPressed: () async {
-                await Navigator.of(context).pushNamed(KanPracticePages.addKanjiPage,
-                    arguments: AddKanjiArgs(listName: _listName))
-                    .then((code) => _addLoadingEvent());
-              },
-              icon: Icon(Icons.add),
-            ),
-          ],
-        ),
+        appBar: _appBar(),
         body: BlocProvider<KanjiListDetailBloc>(
           create: (_) => _addLoadingEvent(),
           child: SingleChildScrollView(
@@ -281,20 +230,67 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
     );
   }
 
+  AppBar _appBar() {
+    return AppBar(
+      toolbarHeight: CustomSizes.appBarHeight,
+      title: BlocProvider<KanjiListDetailBloc>(
+        create: (_) => _addLoadingEvent(),
+        child: BlocBuilder<KanjiListDetailBloc, KanjiListDetailState>(
+          builder: (context, state) {
+            if (state is KanjiListDetailStateLoaded) {
+              _listName = state.name;
+              return FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: GestureDetector(
+                    onTap: () async => await _updateKanListName(),
+                    child: Text(state.name, overflow: TextOverflow.ellipsis),
+                  )
+              );
+            }
+            else return Container();
+          },
+        ),
+      ),
+      actions: [
+        IconButton(
+          icon: Icon(_learningMode == LearningMode.spatial
+              ? LearningMode.spatial.icon
+              : LearningMode.random.icon),
+          onPressed: () => setState(() {
+            if (_learningMode == LearningMode.spatial) _learningMode = LearningMode.random;
+            else _learningMode = LearningMode.spatial;
+          }),
+        ),
+        IconButton(
+          onPressed: () async => await BlitzBottomSheet.callBlitzModeBottomSheet(
+              context, practiceList: _listName
+          ),
+          icon: Icon(Icons.flash_on_rounded),
+        ),
+        IconButton(
+          onPressed: () async {
+            await Navigator.of(context).pushNamed(KanPracticePages.addKanjiPage,
+                arguments: AddKanjiArgs(listName: _listName))
+                .then((code) => _addLoadingEvent());
+          },
+          icon: Icon(Icons.add),
+        ),
+      ],
+    );
+  }
+
   Column _body(KanjiListDetailStateLoaded state) {
     return Column(
       children: [
-        Container(
-          height: CustomSizes.defaultSizeLearningModeBar,
-          margin: EdgeInsets.only(bottom: Margins.margin8),
-          child: PageView(
-            controller: _controller,
-            children: [
-              _pageViewHeader(StudyModes.writing.mode),
-              _pageViewHeader(StudyModes.reading.mode),
-              _pageViewHeader(StudyModes.recognition.mode),
+        Padding(
+          padding: EdgeInsets.only(bottom: Margins.margin8),
+          child: TabBar(
+            controller: _tabController,
+            tabs: [
+              _tabBarElement(StudyModes.writing.mode),
+              _tabBarElement(StudyModes.reading.mode),
+              _tabBarElement(StudyModes.recognition.mode),
             ],
-            onPageChanged: (newPage) => _onChangePage(newPage),
           ),
         ),
         Expanded(
@@ -306,38 +302,24 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
             child: _kanjiList(state),
           )
         ),
-        Padding(
-          padding: EdgeInsets.only(bottom: Margins.margin8),
-          child: CustomButton(
-            title1: "list_details_practice_button_label_ext".tr(),
-            title2: "${"list_details_practice_button_label".tr()}\n(${
-              _learningMode == LearningMode.spatial
-                  ? LearningMode.spatial.name : LearningMode.random.name
-            })",
-            width: MediaQuery.of(context).size.width / 2,
-            onTap: () async => await _loadUpPractice(state)
-          ),
+        CustomButton(
+          title1: "list_details_practice_button_label_ext".tr(),
+          title2: "${"list_details_practice_button_label".tr()}\n(${
+            _learningMode == LearningMode.spatial
+                ? LearningMode.spatial.name : LearningMode.random.name
+          })",
+          width: MediaQuery.of(context).size.width / 2,
+          onTap: () async => await _loadUpPractice(state)
         )
       ],
     );
   }
 
-  Row _pageViewHeader(String mode) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Visibility(
-          visible: _selectedMode != StudyModes.writing,
-          child: Icon(Icons.keyboard_arrow_left_rounded)
-        ),
-        Text(mode, textAlign: TextAlign.center,
-            style: TextStyle(fontSize: FontSizes.fontSize18,
-                fontWeight: FontWeight.bold)),
-        Visibility(
-          visible: _selectedMode != StudyModes.recognition,
-          child: Icon(Icons.keyboard_arrow_right_rounded),
-        ),
-      ],
+  Widget _tabBarElement(String mode) {
+    return Container(
+      height: CustomSizes.defaultSizeLearningModeBar,
+      alignment: Alignment.center,
+      child: Text(mode, textAlign: TextAlign.center),
     );
   }
 

@@ -36,6 +36,7 @@
   "add_kanji_textForm_meaning_ext": "Mobiliario",
   "add_kanji_save": "Guardar",
   "add_kanji_saveAndNext": "Añadir otro",
+  "add_kanji_copy": "Copiar a Pron.",
   "backup_bloc_creation_successful": "Copia de seguridad creada con éxito",
   "backup_bloc_creation_failed": "Algo salió mal mientras se creaba la copia de seguridad:",
   "backup_bloc_merge_successful": "Copia de seguridad instalada con éxito",

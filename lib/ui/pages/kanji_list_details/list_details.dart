@@ -111,6 +111,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
   }
 
   _onChangePage(int newPage) {
+    _searchBarFn?.unfocus();
     setState(() {
       if (newPage == 0) _selectedMode = StudyModes.writing;
       else if (newPage == 1) _selectedMode = StudyModes.reading;
@@ -361,6 +362,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> {
           list: widget.list,
           listName: _listName,
           selectedMode: _selectedMode,
+          onShowModal: () => _searchBarFn?.unfocus(),
           onTap: () async {
             await Navigator.of(context).pushNamed(KanPracticePages.addKanjiPage,
                 arguments: AddKanjiArgs(listName: _listName, kanji: kanji))

@@ -110,7 +110,27 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
         title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.kanji != null
             ? "add_kanji_update_title".tr()
             : "add_kanji_new_title".tr(), overflow: TextOverflow.ellipsis
-        ))
+        )),
+        actions: [
+          Visibility(
+            visible: widget.args.kanji == null,
+            child: IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                _validateKanji(() => _createKanji(exit: false));
+              },
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.check_rounded),
+            onPressed: () {
+              _validateKanji(() {
+                if (widget.args.kanji != null) _updateKanji();
+                else _createKanji();
+              });
+            },
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -128,6 +148,12 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
           controller: _kanjiController,
           focusNode: _kanjiFocus,
           header: "add_kanji_textForm_kanji".tr(),
+          additionalWidget: ElevatedButton(
+            onPressed: () {
+              _pronunciationController.text = _kanjiController.text;
+            },
+            child: Text("add_kanji_copy".tr()),
+          ),
           centerText: TextAlign.center,
           fontSize: FontSizes.fontSize64,
           autofocus: widget.args.kanji == null,
@@ -153,34 +179,18 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
             header: "add_kanji_textForm_meaning".tr(),
             hint: "add_kanji_textForm_meaning_ext".tr(),
             action: TextInputAction.done,
-            onEditingComplete: () => _meaningFocus.unfocus(),
+            onEditingComplete: () {
+              _meaningFocus.unfocus();
+              /// By default, if the user is updating a word, and presses the IME action,
+              /// update it. Else, create the word, empty the fields and continue adding
+              /// more words
+              _validateKanji(() {
+                if (widget.args.kanji == null) _createKanji(exit: false);
+                else _updateKanji();
+              });
+            },
           ),
         ),
-        Padding(
-          padding: EdgeInsets.all(Margins.margin16),
-          child: Row(
-            mainAxisAlignment: widget.args.kanji == null
-                ? MainAxisAlignment.spaceAround : MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  _validateKanji(() {
-                    if (widget.args.kanji != null) _updateKanji();
-                    else _createKanji();
-                  });
-                },
-                child: Text("add_kanji_save".tr()),
-              ),
-              Visibility(
-                visible: widget.args.kanji == null,
-                child: ElevatedButton(
-                  onPressed: () => _validateKanji(() => _createKanji(exit: false)),
-                  child: Text("add_kanji_saveAndNext".tr()),
-                ),
-              )
-            ],
-          ),
-        )
       ],
     );
   }

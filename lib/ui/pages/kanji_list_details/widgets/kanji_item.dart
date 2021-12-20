@@ -14,8 +14,11 @@ class KanjiItem extends StatefulWidget {
   final Function() onRemoval;
   final Function() onTap;
   final int index;
+  final Function() onShowModal;
   const KanjiItem({required this.listName, required this.kanji, required this.list,
-    required this.onRemoval, required this.onTap, required this.selectedMode, required this.index});
+    required this.onRemoval, required this.onTap, required this.selectedMode, required this.index,
+    required this.onShowModal
+  });
 
   @override
   _KanjiItemState createState() => _KanjiItemState();
@@ -78,6 +81,7 @@ class _KanjiItemState extends State<KanjiItem> {
         child: InkWell(
           borderRadius: BorderRadius.all(Radius.circular(CustomRadius.radius8)),
           onTap: () async {
+            widget.onShowModal();
             await KanjiBottomSheet.callKanjiModeBottomSheet(context,
                 widget.listName, widget.kanji, onTap: widget.onTap, onRemove: widget.onRemoval);
           },

@@ -36,6 +36,7 @@
   "add_kanji_textForm_meaning_ext": "Furniture",
   "add_kanji_save": "Save",
   "add_kanji_saveAndNext": "Add Another",
+  "add_kanji_copy": "Copy to Pron.",
   "backup_bloc_creation_successful": "Back up created successfully",
   "backup_bloc_creation_failed": "Something went wrong while creating the back up:",
   "backup_bloc_merge_successful": "Back up installed successfully",

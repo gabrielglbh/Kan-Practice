@@ -5,6 +5,7 @@ import 'package:kanpractice/ui/pages/jisho/widgets/generic/InfoChip.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/generic/JishoHeader.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/generic/JishoInfoTile.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/generic/ScrollableText.dart';
+import 'package:kanpractice/ui/pages/jisho/widgets/generic/SingleKanjiLookUpList.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
 import 'package:unofficial_jisho_api/api.dart';
@@ -47,8 +48,8 @@ class SingleKanjiResult extends StatelessWidget {
             ),
           ),
         ),
-        _displayInfo("jisho_resultData_meaning_label".tr(), data?.meaning),
-        _displayInfo("jisho_resultData_composed_label".tr(), data?.parts),
+        _displayMeaning("jisho_resultData_meaning_label".tr(), data?.meaning),
+        _displayComposed("jisho_resultData_composed_label".tr(), data?.parts),
         _displayInfoWithExample(context, "jisho_resultData_kunyomi".tr(),
             data?.kunyomi,
             data?.kunyomiExamples),
@@ -87,19 +88,27 @@ class SingleKanjiResult extends StatelessWidget {
     );
   }
 
-  Widget _displayInfo(String header, dynamic data) {
+  Widget _displayMeaning(String header, String? data) {
     return Visibility(
       visible: data != null,
       child: JishoInfoTile(
         needsHeight: false,
         children: [
           JishoHeader(header: header),
-          ScrollableText(
-            label: data is String? ? data : (data as List<String>?)?.join(_separator),
-            paddingTop: true,
-            italic: false,
-            rawText: true,
-          )
+          ScrollableText(label: data, paddingTop: true, italic: false, rawText: true),
+        ],
+      ),
+    );
+  }
+
+  Widget _displayComposed(String header, List<String>? data) {
+    return Visibility(
+      visible: data != null && data.length > 1,
+      child: JishoInfoTile(
+        needsHeight: false,
+        children: [
+          JishoHeader(header: header),
+          SingleKanjiLookUpList(kanjiList: data)
         ],
       ),
     );

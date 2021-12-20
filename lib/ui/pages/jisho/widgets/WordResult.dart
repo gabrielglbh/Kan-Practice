@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/generic/CustomExpansionTile.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/generic/InfoChip.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/generic/JishoHeader.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/generic/JishoInfoTile.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/generic/ScrollableText.dart';
+import 'package:kanpractice/ui/pages/jisho/widgets/generic/SingleKanjiLookUpList.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:unofficial_jisho_api/api.dart' as jisho;
 import 'package:easy_localization/easy_localization.dart';
@@ -49,7 +49,7 @@ class WordResult extends StatelessWidget {
           visible: data == null && phrase.isNotEmpty,
           child: Container(
             height: Margins.margin32,
-            margin: EdgeInsets.all( Margins.margin8),
+            margin: EdgeInsets.all(Margins.margin8),
             child: _chips(index)
           ),
         ),
@@ -61,25 +61,7 @@ class WordResult extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 JishoHeader(header: "jisho_phraseData_search_individually".tr()),
-                Container(
-                  height: CustomSizes.defaultJishoAPIContainer,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: kanji?.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: Margins.margin4),
-                        child: ActionChip(
-                          padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
-                          onPressed: () {
-                            Navigator.of(context).pushNamed(KanPracticePages.jishoPage, arguments: kanji?[index]);
-                          },
-                          label: Text(kanji?[index] ?? ""),
-                        ),
-                      );
-                    },
-                  ),
-                )
+                SingleKanjiLookUpList(kanjiList: kanji?.split(""))
               ],
             ),
           )

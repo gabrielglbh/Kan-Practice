@@ -44,11 +44,11 @@ class CustomTextForm extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.only(bottom: Margins.margin16),
+          padding: EdgeInsets.only(bottom: Margins.margin16, right: Margins.margin8, left: Margins.margin8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(header, style: TextStyle(fontSize: FontSizes.fontSize18, fontWeight: FontWeight.bold)),
+              Expanded(child: Text(header, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: FontSizes.fontSize18, fontWeight: FontWeight.bold))),
               additionalWidget ?? Container()
             ],
           ),

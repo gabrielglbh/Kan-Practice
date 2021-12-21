@@ -104,38 +104,45 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: CustomSizes.appBarHeight,
-        title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.kanji != null
-            ? "add_kanji_update_title".tr()
-            : "add_kanji_new_title".tr(), overflow: TextOverflow.ellipsis
-        )),
-        actions: [
-          Visibility(
-            visible: widget.args.kanji == null,
-            child: IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                _validateKanji(() => _createKanji(exit: false));
-              },
+    return GestureDetector(
+      onTap: () {
+        _kanjiFocus.unfocus();
+        _meaningFocus.unfocus();
+        _pronunciationFocus.unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: CustomSizes.appBarHeight,
+          title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.kanji != null
+              ? "add_kanji_update_title".tr()
+              : "add_kanji_new_title".tr(), overflow: TextOverflow.ellipsis
+          )),
+          actions: [
+            Visibility(
+              visible: widget.args.kanji == null,
+              child: IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () {
+                  _validateKanji(() => _createKanji(exit: false));
+                },
+              ),
             ),
+            IconButton(
+              icon: Icon(Icons.check_rounded),
+              onPressed: () {
+                _validateKanji(() {
+                  if (widget.args.kanji != null) _updateKanji();
+                  else _createKanji();
+                });
+              },
+            )
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(Margins.margin8),
+            child: _body()
           ),
-          IconButton(
-            icon: Icon(Icons.check_rounded),
-            onPressed: () {
-              _validateKanji(() {
-                if (widget.args.kanji != null) _updateKanji();
-                else _createKanji();
-              });
-            },
-          )
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(Margins.margin8),
-          child: _body()
         ),
       ),
     );
@@ -152,7 +159,13 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
             onPressed: () {
               _pronunciationController.text = _kanjiController.text;
             },
-            child: Text("add_kanji_copy".tr()),
+            child: Container(
+              width: MediaQuery.of(context).size.width / 3,
+              child: FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text("add_kanji_copy".tr()),
+              ),
+            ),
           ),
           centerText: TextAlign.center,
           fontSize: FontSizes.fontSize64,

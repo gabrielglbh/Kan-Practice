@@ -33,11 +33,16 @@ class KanjiQueries {
 
   /// Query to get all kanji available in the current db. If anything goes wrong,
   /// an empty list will be returned.
-  Future<List<Kanji>> getAllKanji() async {
+  /// [orderedByLastShown] serves as a control variable to order the kanjis by
+  /// their last shown parameter
+  Future<List<Kanji>> getAllKanji({bool orderedByLastShown = false}) async {
     if (_database != null) {
       try {
+        String query = orderedByLastShown
+            ? "SELECT * FROM ${KanjiTableFields.kanjiTable} ORDER BY ${KanjiTableFields.dateLastShown} ASC"
+            : "SELECT * FROM ${KanjiTableFields.kanjiTable}";
         List<Map<String, dynamic>>? res = [];
-        res = await _database?.query(KanjiTableFields.kanjiTable);
+        res = await _database?.rawQuery(query);
         if (res != null) return List.generate(res.length, (i) => Kanji.fromJson(res![i]));
         else return [];
       } catch (err) {
@@ -79,6 +84,30 @@ class KanjiQueries {
         res = await _database?.query(KanjiTableFields.kanjiTable,
             where: "${KanjiTableFields.listNameField}=?", whereArgs: [listName],
             orderBy: "${KanjiTableFields.dateAddedField} ASC");
+        if (res != null) return List.generate(res.length, (i) => Kanji.fromJson(res![i]));
+        else return [];
+      } catch (err) {
+        print(err.toString());
+        return [];
+      }
+    } else return [];
+  }
+
+  /// Query to get all [Kanji] from the db based on a [query] that will match:
+  /// kanji, meaning and pronunciation.
+  /// If anything goes wrong, an empty list will be returned.
+  Future<List<Kanji>> getKanjiMatchingQuery(String query) async {
+    if (_database != null) {
+      try {
+        List<Map<String, dynamic>>? res = [];
+        res = await _database?.rawQuery(
+            "SELECT * "
+                "FROM ${KanjiTableFields.kanjiTable} "
+                "WHERE ${KanjiTableFields.meaningField} LIKE '%$query%' "
+                "OR ${KanjiTableFields.kanjiField} LIKE '%$query%' "
+                "OR ${KanjiTableFields.pronunciationField} LIKE '%$query%' "
+                "ORDER BY ${KanjiTableFields.dateAddedField} ASC"
+        );
         if (res != null) return List.generate(res.length, (i) => Kanji.fromJson(res![i]));
         else return [];
       } catch (err) {

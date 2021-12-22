@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 class CustomSizes {
   static const double defaultSizeDragContainerHeight = 5;
   static const double defaultSizeLearningExtContainer = 20;
+  static const double defaultSizeLearningModeBar = 32;
+  static const double defaultResultKanjiListOnTest = 40;
   static const double defaultSizeSearchBarIcons = 50;
-  static const double defaultSizeLearningModeBar = 50;
   static const double largeSizeLearningExtContainer = 50;
+  static const double defaultJishoAPIContainer = 52;
   static const double defaultSizeFiltersList = 60;
   static const double defaultSizeActionButton = 60;
+  static const double defaultSizeKanjiItemOnResultTest = 60;
   static const double appBarHeight = 80;
   static const double defaultSizeWinRateChart = 80;
   static const double extraPaddingForFAB = 82;
@@ -17,6 +20,7 @@ class CustomSizes {
   static const double defaultSizeWinRateBarChart = 90;
   static const double alertDialogHeight = 100;
   static const double customButtonWidth = 110;
+  static const double defaultJishoGIF = 124;
   static const double studyGuideHeight = listStudyHeight + 44;
   static const double actionButtonsKanjiDetail = 130;
   static const double appIcon = 150;

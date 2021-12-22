@@ -75,4 +75,6 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:28.4.1')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "io.grpc:grpc-okhttp:1.32.2"
+    // https://stackoverflow.com/questions/68473542/mediasessioncompattargeting-s-version-31-and-above-requires-that-one-of-flag
+    implementation 'androidx.work:work-runtime-ktx:2.7.0'
 }

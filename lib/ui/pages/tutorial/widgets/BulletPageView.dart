@@ -24,8 +24,7 @@ class _BulletPageViewState extends State<BulletPageView> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(
-          height: MediaQuery.of(context).size.height - (Margins.margin64*2),
+        Expanded(
           child: PageView(
             scrollDirection: Axis.horizontal,
             children: widget.pageViewChildren,
@@ -36,8 +35,9 @@ class _BulletPageViewState extends State<BulletPageView> {
           ),
         ),
         Container(
-          height: 15,
+          height: Margins.margin16,
           alignment: Alignment.center,
+          margin: EdgeInsets.only(bottom: Margins.margin8),
           child: ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
@@ -54,10 +54,10 @@ class _BulletPageViewState extends State<BulletPageView> {
     return Padding(
       padding: EdgeInsets.all(2),
       child: Container(
-        width: 16, height: 16,
+        width: Margins.margin16, height: Margins.margin16,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: _selectedPage == i ? Colors.white : CustomColors.secondarySubtleColor
+          color: _selectedPage == i ? CustomColors.secondaryColor : CustomColors.secondarySubtleColor
         ),
       ),
     );

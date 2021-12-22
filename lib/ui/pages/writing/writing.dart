@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
+import 'package:kanpractice/core/database/queries/kanji_queries.dart';
+import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/ui/pages/writing/widgets/CustomCanvas.dart';
 import 'package:kanpractice/ui/pages/writing/widgets/WritingButtonsAnimation.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
@@ -9,6 +12,7 @@ import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dar
 import 'package:kanpractice/ui/widgets/LearningHeaderAnimation.dart';
 import 'package:kanpractice/ui/widgets/LearningHeaderContainer.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
+import 'package:kanpractice/ui/widgets/TTSIconButton.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -117,7 +121,8 @@ class _WritingStudyState extends State<WritingStudy> {
             double testScore = 0;
             _testScores.forEach((s) => testScore += s);
             final score = testScore / _studyList.length;
-            await StudyModeUpdateHandler.handle(context, widget.args, testScore: score);
+            await StudyModeUpdateHandler.handle(context, widget.args,
+                testScore: score, testScores: _testScores);
           } else await StudyModeUpdateHandler.handle(context, widget.args);
         }
       }
@@ -132,10 +137,19 @@ class _WritingStudyState extends State<WritingStudy> {
   }
 
   Future<int> _calculateKanjiScore() async {
+    /// Updates the dateLastShown attribute of the finished word
+    await KanjiQueries.instance.updateKanji(widget.args.studyList[_macro].listName,
+        widget.args.studyList[_macro].kanji, {
+          KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds()
+        });
     final double currentScore = _score[_macro] / _maxScore[_macro];
     /// Add the current virgin score to the test scores...
-    if (widget.args.isTest) _testScores.add(currentScore);
-    else StudyModeUpdateHandler.calculateScore(widget.args, currentScore, _macro);
+    if (widget.args.isTest) {
+      if (StorageManager.readData(StorageManager.affectOnPractice) ?? false)
+        await StudyModeUpdateHandler.calculateScore(widget.args, currentScore, _macro);
+      _testScores.add(currentScore);
+    }
+    else await StudyModeUpdateHandler.calculateScore(widget.args, currentScore, _macro);
     return 0;
   }
 
@@ -149,6 +163,10 @@ class _WritingStudyState extends State<WritingStudy> {
           title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.mode.mode)),
           centerTitle: true,
           actions: [
+            Visibility(
+              visible: _goNextKanji,
+              child: TTSIconButton(kanji: widget.args.studyList[_macro].kanji),
+            ),
             IconButton(
               icon: Icon(Icons.info_outline_rounded),
               onPressed: () async {

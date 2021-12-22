@@ -21,15 +21,19 @@ class Kanji {
   final double winRateRecognition;
   @JsonKey(name: KanjiTableFields.dateAddedField)
   final int dateAdded;
+  @JsonKey(name: KanjiTableFields.dateLastShown)
+  final int dateLastShown;
 
   const Kanji({required this.kanji, required this.listName, required this.meaning,
     required this.pronunciation, this.winRateReading = DatabaseConstants.emptyWinRate,
     this.winRateRecognition = DatabaseConstants.emptyWinRate,
-    this.winRateWriting = DatabaseConstants.emptyWinRate, this.dateAdded = 0
+    this.winRateWriting = DatabaseConstants.emptyWinRate, this.dateAdded = 0,
+    this.dateLastShown = 0
   });
 
   /// Empty [Kanji]
-  static const Kanji empty = Kanji(kanji: "", listName: "", meaning: "", pronunciation: "", dateAdded: 0);
+  static const Kanji empty = Kanji(kanji: "", listName: "", meaning: "",
+      pronunciation: "", dateAdded: 0, dateLastShown: 0);
 
   factory Kanji.fromJson(Map<String, dynamic> json) => _$KanjiFromJson(json);
   Map<String, dynamic> toJson() => _$KanjiToJson(this);

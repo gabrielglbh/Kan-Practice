@@ -18,6 +18,7 @@ Kanji _$KanjiFromJson(Map<String, dynamic> json) => Kanji(
       winRateWriting: (json['winRateWriting'] as num?)?.toDouble() ??
           DatabaseConstants.emptyWinRate,
       dateAdded: json['dateAdded'] as int? ?? 0,
+      dateLastShown: json['dateLastShown'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$KanjiToJson(Kanji instance) => <String, dynamic>{
@@ -29,4 +30,5 @@ Map<String, dynamic> _$KanjiToJson(Kanji instance) => <String, dynamic>{
       'winRateReading': instance.winRateReading,
       'winRateRecognition': instance.winRateRecognition,
       'dateAdded': instance.dateAdded,
+      'dateLastShown': instance.dateLastShown,
     };

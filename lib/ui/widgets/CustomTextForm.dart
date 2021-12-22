@@ -4,6 +4,8 @@ import 'package:kanpractice/ui/theme/consts.dart';
 class CustomTextForm extends StatelessWidget {
   /// Header text to show above the [TextField]
   final String header;
+  /// Additional action along the header for a certain Input Field
+  final Widget? additionalWidget;
   /// Hint text to show on the [TextField] when it is not used
   final String hint;
   /// [TextEditingController] for handling the [TextField] input
@@ -33,7 +35,7 @@ class CustomTextForm extends StatelessWidget {
     required this.focusNode, required this.onEditingComplete, this.onSubmitted,
     this.inputType = TextInputType.text, this.action = TextInputAction.next,
     this.fontSize = FontSizes.fontSize18, this.bold, this.centerText = TextAlign.start,
-    this.autofocus = false, this.obscure = false
+    this.autofocus = false, this.obscure = false, this.additionalWidget
   });
 
   @override
@@ -42,8 +44,14 @@ class CustomTextForm extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.only(bottom: Margins.margin16),
-          child: Text(header, style: TextStyle(fontSize: FontSizes.fontSize18, fontWeight: FontWeight.bold)),
+          padding: EdgeInsets.only(bottom: Margins.margin16, right: Margins.margin8, left: Margins.margin8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(child: Text(header, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: FontSizes.fontSize18, fontWeight: FontWeight.bold))),
+              additionalWidget ?? Container()
+            ],
+          ),
         ),
         TextField(
           controller: controller,

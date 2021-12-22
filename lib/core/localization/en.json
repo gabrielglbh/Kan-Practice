@@ -204,5 +204,6 @@
   "test_selection_label": "Select a test to perform",
   "remembrance_bottom_sheet_title": "Make a remembrance test",
   "remembrance_bottom_sheet_content": "kanji that you have not seen for a long time will be selected. Let's take the remembrance test!",
-  "remembrance_bottom_sheet_label": "Remembrance"
+  "remembrance_bottom_sheet_label": "Remembrance",
+  "image_not_loaded": "Could not load image :("
 }

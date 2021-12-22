@@ -4,6 +4,7 @@ import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/pages/tutorial/widgets/BulletPageView.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/ui/widgets/CustomCachedNetworkImage.dart';
 
 enum TutorialView {
   kanList, list, details, jisho, practicing, options
@@ -28,25 +29,26 @@ extension TestPagesExt on TutorialView {
   }
 
   String asset({bool lightMode = true}) {
+    String _baseUri = "https://firebasestorage.googleapis.com/v0/b/kanpractice.appspot.com/o";
     switch (this) {
       case TutorialView.kanList:
-        if (lightMode) return "assets/tutorial/light/kanlist.png";
-        else return "assets/tutorial/dark/kanlist.png";
+        if (lightMode) return "$_baseUri/tutorial%2Flight%2Fkanlist.png?alt=media";
+        else return "$_baseUri/tutorial%2Fdark%2Fkanlist.png?alt=media";
       case TutorialView.list:
-        if (lightMode) return "assets/tutorial/light/list.png";
-        else return "assets/tutorial/dark/list.png";
+        if (lightMode) return "$_baseUri/tutorial%2Flight%2Flist.png?alt=media";
+        else return "$_baseUri/tutorial%2Fdark%2Flist.png?alt=media";
       case TutorialView.details:
-        if (lightMode) return "assets/tutorial/light/details.png";
-        else return "assets/tutorial/dark/details.png";
+        if (lightMode) return "$_baseUri/tutorial%2Flight%2Fdetails.png?alt=media";
+        else return "$_baseUri/tutorial%2Fdark%2Fdetails.png?alt=media";
       case TutorialView.jisho:
-        if (lightMode) return "assets/tutorial/light/jisho.png";
-        else return "assets/tutorial/dark/jisho.png";
+        if (lightMode) return "$_baseUri/tutorial%2Flight%2Fjisho.png?alt=media";
+        else return "$_baseUri/tutorial%2Fdark%2Fjisho.png?alt=media";
       case TutorialView.practicing:
-        if (lightMode) return "assets/tutorial/light/practice.png";
-        else return "assets/tutorial/dark/practice.png";
+        if (lightMode) return "$_baseUri/tutorial%2Flight%2Fpractice.png?alt=media";
+        else return "$_baseUri/tutorial%2Fdark%2Fpractice.png?alt=media";
       case TutorialView.options:
-        if (lightMode) return "assets/tutorial/light/options.png";
-        else return "assets/tutorial/dark/options.png";
+        if (lightMode) return "$_baseUri/tutorial%2Flight%2Foptions.png?alt=media";
+        else return "$_baseUri/tutorial%2Fdark%2Foptions.png?alt=media";
     }
   }
 }
@@ -115,9 +117,9 @@ class _TutorialPageState extends State<TutorialPage> {
             width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.all(Margins.margin8),
             margin: EdgeInsets.symmetric(horizontal: Margins.margin8),
-            child: FittedBox(
-              fit: view == TutorialView.jisho ? BoxFit.fitWidth : BoxFit.fitHeight,
-              child: Image.asset(view.asset(lightMode: Theme.of(context).brightness == Brightness.light))
+            child: CustomCachedNetworkImage(
+              url: view.asset(lightMode: Theme.of(context).brightness == Brightness.light),
+              errorMessage: "image_not_loaded".tr(),
             ),
           ),
         ),

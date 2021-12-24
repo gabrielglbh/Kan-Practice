@@ -11,6 +11,7 @@ class CustomSizes {
   static const double defaultSizeFiltersList = 60;
   static const double defaultSizeActionButton = 60;
   static const double defaultSizeKanjiItemOnResultTest = 60;
+  static const double actionButtonsKanjiDetail = 65;
   static const double appBarHeight = 80;
   static const double defaultSizeWinRateChart = 80;
   static const double extraPaddingForFAB = 82;
@@ -22,8 +23,8 @@ class CustomSizes {
   static const double customButtonWidth = 110;
   static const double defaultJishoGIF = 124;
   static const double studyGuideHeight = listStudyHeight + 44;
-  static const double actionButtonsKanjiDetail = 130;
   static const double appIcon = 150;
+  static const double defaultSizeStudyModeSelection = 165;
   static const double maxHeightForListsTest = 240;
   static const double maxHeightValidationCircle = 256;
   static const double maxHeightBottomSheetDeveloper = 256;

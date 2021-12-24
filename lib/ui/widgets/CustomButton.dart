@@ -3,7 +3,7 @@ import 'package:kanpractice/ui/theme/consts.dart';
 
 class CustomButton extends StatelessWidget {
   /// Width of the button
-  final double width;
+  final double? width;
   /// Color of the button
   final Color color;
   /// First title of the button, usually the JP part
@@ -14,8 +14,7 @@ class CustomButton extends StatelessWidget {
   final String title2;
   /// Action to perform when tapping the button
   final Function onTap;
-  const CustomButton({this.width = CustomSizes.customButtonWidth,
-    this.color = CustomColors.secondaryColor,
+  const CustomButton({this.width, this.color = CustomColors.secondaryColor,
     this.title1, required this.title2, required this.onTap,
     this.icon
   });
@@ -23,7 +22,7 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width,
+      width: width != null ? CustomSizes.customButtonWidth : null,
       alignment: Alignment.center,
       margin: EdgeInsets.all(Margins.margin8),
       decoration: BoxDecoration(
@@ -36,7 +35,7 @@ class CustomButton extends StatelessWidget {
           onTap: () => onTap(),
           borderRadius: BorderRadius.circular(CustomRadius.radius16),
           child: Container(
-            width: width,
+            width: width != null ? CustomSizes.customButtonWidth : null,
             alignment: Alignment.center,
             margin: EdgeInsets.all(Margins.margin8),
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(CustomRadius.radius16)),

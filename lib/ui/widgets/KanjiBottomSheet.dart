@@ -246,24 +246,28 @@ class KanjiBottomSheet extends StatelessWidget {
   Container _actionButtons(BuildContext context) {
     return Container(
       height: CustomSizes.actionButtonsKanjiDetail,
-      child: Column(
+      child: Row(
         children: [
-          ListTile(
-            title: Text("kanji_bottom_sheet_removal_label".tr()),
-            trailing: Icon(Icons.clear),
-            onTap: () {
-              Navigator.of(context).pop();
-              _createDialogForDeletingKanji(context, kanji);
-            },
+          Expanded(
+            child: ListTile(
+              title: Text("kanji_bottom_sheet_removal_label".tr()),
+              trailing: Icon(Icons.clear),
+              onTap: () {
+                Navigator.of(context).pop();
+                _createDialogForDeletingKanji(context, kanji);
+              },
+            ),
           ),
-          Divider(),
-          ListTile(
-            title: Text("kanji_bottom_sheet_update_label".tr()),
-            trailing: Icon(Icons.arrow_forward_rounded),
-            onTap: () {
-              Navigator.of(context).pop();
-              if (onTap != null) onTap!();
-            },
+          RotatedBox(quarterTurns: 1, child: Divider()),
+          Expanded(
+            child: ListTile(
+              title: Text("kanji_bottom_sheet_update_label".tr()),
+              trailing: Icon(Icons.arrow_forward_rounded),
+              onTap: () {
+                Navigator.of(context).pop();
+                if (onTap != null) onTap!();
+              },
+            ),
           )
         ],
       ),

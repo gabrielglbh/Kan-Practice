@@ -319,7 +319,10 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
     return Container(
       height: CustomSizes.defaultSizeLearningModeBar,
       alignment: Alignment.center,
-      child: Text(mode, textAlign: TextAlign.center),
+      child: FittedBox(
+        fit: BoxFit.fitWidth,
+        child: Text(mode, textAlign: TextAlign.center),
+      ),
     );
   }
 

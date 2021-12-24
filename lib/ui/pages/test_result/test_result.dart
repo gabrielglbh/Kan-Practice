@@ -31,7 +31,6 @@ class TestResult extends StatelessWidget {
               style: TextStyle(fontSize: FontSizes.fontSize32),
             ),
             WinRateChart(
-              title: "",
               winRate: args.score,
               size: MediaQuery.of(context).size.width / 2.5,
               rateSize: ChartSize.medium,
@@ -74,9 +73,9 @@ class TestResult extends StatelessWidget {
         return Row(
           children: [
             Container(
-              width: MediaQuery.of(context).size.width / 4,
+              width: MediaQuery.of(context).size.width / 3.5,
               child: Text(
-                "$listName:",
+                "(${args.studyList[listName]?.length}) $listName:",
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize16)
               ),

@@ -46,6 +46,7 @@ class _KanjiListsState extends State<KanjiLists> {
   /// is applied. This value is then restored upon new session.
   bool _currentAppliedOrder = true;
   bool _searchHasFocus = false;
+  VisualizationMode _graphMode = VisualizationMode.radialChart;
 
   String _newVersion = "";
 
@@ -53,8 +54,12 @@ class _KanjiListsState extends State<KanjiLists> {
   void initState() {
     _searchBarFn = FocusNode();
     _searchBarFn?.addListener(_focusListener);
-    _currentAppliedFilter = StorageManager.readData(StorageManager.filtersOnList) ?? KanListTableFields.lastUpdatedField;
-    _currentAppliedOrder = StorageManager.readData(StorageManager.orderOnList) ?? true;
+    _graphMode = VisualizationModeExt.mode(StorageManager.readData(StorageManager.kanListGraphVisualization)
+        ?? VisualizationMode.radialChart);
+    _currentAppliedFilter = StorageManager.readData(StorageManager.filtersOnList)
+        ?? KanListTableFields.lastUpdatedField;
+    _currentAppliedOrder = StorageManager.readData(StorageManager.orderOnList)
+        ?? true;
     _getVersionNotice();
     super.initState();
   }
@@ -146,6 +151,13 @@ class _KanjiListsState extends State<KanjiLists> {
           toolbarHeight: CustomSizes.appBarHeight,
           title: FittedBox(fit: BoxFit.fitWidth, child: Text("KanPractice")),
           actions: [
+            IconButton(
+              onPressed: () {
+                setState(() => _graphMode = VisualizationModeExt.toggle(_graphMode));
+                StorageManager.saveData(StorageManager.kanListGraphVisualization, _graphMode.name);
+              },
+              icon: _graphMode.icon,
+            ),
             IconButton(
               onPressed: () async {
                 await TestBottomSheet.callTestModeBottomSheet(context);
@@ -246,6 +258,7 @@ class _KanjiListsState extends State<KanjiLists> {
                   child: KanListTile(
                     item: state.lists[k],
                     onTap: () => _searchBarFn?.unfocus(),
+                    mode: _graphMode,
                     onRemoval: () => _bloc..add(KanjiListEventDelete(
                       state.lists[k],
                       filter: _currentAppliedFilter,

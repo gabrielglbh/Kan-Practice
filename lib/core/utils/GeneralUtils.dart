@@ -35,6 +35,8 @@ class GeneralUtils {
   /// Transforms the current time to milliseconds
   static int getCurrentMilliseconds() => DateTime.now().millisecondsSinceEpoch;
 
+  static String getFixedDouble(double d) => d.toStringAsFixed(2);
+
   /// Parses the [date] that should be in milliseconds to a [DateTime] object
   /// and applies a parser with the time_ago package
   static String parseDateMilliseconds(BuildContext context, int date) {

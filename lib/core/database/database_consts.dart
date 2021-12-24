@@ -7,6 +7,7 @@ class KanjiTableFields {
   static const String winRateWritingField = "winRateWriting";
   static const String winRateReadingField = "winRateReading";
   static const String winRateRecognitionField = "winRateRecognition";
+  static const String winRateListeningField = "winRateListening";
   static const String dateAddedField = "dateAdded";
   static const String dateLastShown = "dateLastShown";
 }
@@ -17,6 +18,7 @@ class KanListTableFields {
   static const String totalWinRateWritingField = "totalWinRateWriting";
   static const String totalWinRateReadingField = "totalWinRateReading";
   static const String totalWinRateRecognitionField = "totalWinRateRecognition";
+  static const String totalWinRateListeningField = "totalWinRateListening";
   static const String lastUpdatedField = "lastUpdated";
 }
 

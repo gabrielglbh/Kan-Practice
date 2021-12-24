@@ -114,6 +114,9 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
               arguments: ModeArguments(studyList: list, isTest: false, mode: StudyModes.recognition))
               .then((value) => _addLoadingEvent());
           break;
+        case StudyModes.listening:
+          /// TODO: Create listening page
+          break;
       }
     }
     else GeneralUtils.getSnackBar(context, "list_details_loadUpPractice_failed".tr());
@@ -122,9 +125,16 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
   _onModeChange(StudyModes newMode) {
     _searchBarFn?.unfocus();
     setState(() {
-      if (newMode == StudyModes.writing) _selectedMode = StudyModes.writing;
-      else if (newMode == StudyModes.reading) _selectedMode = StudyModes.reading;
-      else _selectedMode = StudyModes.recognition;
+      switch (newMode) {
+        case StudyModes.writing:
+          _selectedMode = StudyModes.writing; break;
+        case StudyModes.reading:
+          _selectedMode = StudyModes.reading; break;
+        case StudyModes.recognition:
+          _selectedMode = StudyModes.recognition; break;
+        case StudyModes.listening:
+          _selectedMode = StudyModes.listening; break;
+      }
     });
     _tabController?.animateTo(newMode.index,
         duration: Duration(milliseconds: CustomAnimations.ms300),
@@ -141,7 +151,11 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
         else if (pv > 0) _onModeChange(StudyModes.writing);
         break;
       case StudyModes.recognition:
-        if (pv > 0) _onModeChange(StudyModes.reading);
+        if (pv < 0) _onModeChange(StudyModes.listening);
+        else if (pv > 0) _onModeChange(StudyModes.reading);
+        break;
+      case StudyModes.listening:
+        if (pv > 0) _onModeChange(StudyModes.recognition);
         break;
     }
   }
@@ -290,6 +304,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
               _tabBarElement(StudyModes.writing.mode),
               _tabBarElement(StudyModes.reading.mode),
               _tabBarElement(StudyModes.recognition.mode),
+              _tabBarElement(StudyModes.listening.mode),
             ],
           ),
         ),

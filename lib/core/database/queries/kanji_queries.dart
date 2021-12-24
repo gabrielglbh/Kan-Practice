@@ -137,6 +137,10 @@ class KanjiQueries {
             res = await _database?.query(KanjiTableFields.kanjiTable, where: "${KanjiTableFields.listNameField}=?",
                 whereArgs: [listName], orderBy: "${KanjiTableFields.winRateRecognitionField} ASC");
             break;
+          case StudyModes.listening:
+            res = await _database?.query(KanjiTableFields.kanjiTable, where: "${KanjiTableFields.listNameField}=?",
+                whereArgs: [listName], orderBy: "${KanjiTableFields.winRateListeningField} ASC");
+            break;
         }
         if (res != null) return List.generate(res.length, (i) => Kanji.fromJson(res![i]));
         else return [];

@@ -25,7 +25,7 @@ class CustomDatabase {
 
     database = await openDatabase(
       path,
-      version: 2,
+      version: 3,
       singleInstance: true,
       onConfigure: (db) async {
         await db.execute('PRAGMA foreign_keys = ON');
@@ -42,6 +42,7 @@ class CustomDatabase {
             "${KanjiTableFields.winRateWritingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${KanjiTableFields.winRateReadingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${KanjiTableFields.winRateRecognitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${KanjiTableFields.winRateListeningField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${KanjiTableFields.dateAddedField} INTEGER NOT NULL DEFAULT 0, "
             "${KanjiTableFields.dateLastShown} INTEGER NOT NULL DEFAULT 0, "
             "PRIMARY KEY (${KanjiTableFields.kanjiField}, ${KanjiTableFields.meaningField}, ${KanjiTableFields.pronunciationField}), "
@@ -54,6 +55,7 @@ class CustomDatabase {
             "${KanListTableFields.totalWinRateWritingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${KanListTableFields.totalWinRateReadingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${KanListTableFields.totalWinRateRecognitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${KanListTableFields.totalWinRateListeningField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${KanListTableFields.lastUpdatedField} INTEGER NOT NULL DEFAULT 0)");
 
         await db.execute("CREATE TABLE ${TestTableFields.testTable}("
@@ -70,6 +72,7 @@ class CustomDatabase {
   /// Whenever the update to the DB, automatically put it on the onCreate DB
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion <= 1) Migrations.version1to2(db);
+    if (oldVersion <= 2) Migrations.version2to3(db);
   }
 
   /// Closes up the current database.

@@ -4,12 +4,15 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
+import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
+import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListTile.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
 import 'package:kanpractice/ui/widgets/DragContainer.dart';
+import 'package:kanpractice/ui/widgets/RadialGraph.dart';
 import 'package:kanpractice/ui/widgets/TTSIconButton.dart';
 import 'package:kanpractice/ui/widgets/WinRateBarChart.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -65,12 +68,14 @@ class KanjiBottomSheet extends StatelessWidget {
                 await ListQueries.instance.updateList(listName, {
                   KanListTableFields.totalWinRateWritingField: DatabaseConstants.emptyWinRate,
                   KanListTableFields.totalWinRateReadingField: DatabaseConstants.emptyWinRate,
-                  KanListTableFields.totalWinRateRecognitionField: DatabaseConstants.emptyWinRate
+                  KanListTableFields.totalWinRateRecognitionField: DatabaseConstants.emptyWinRate,
+                  KanListTableFields.totalWinRateListeningField: DatabaseConstants.emptyWinRate
                 });
               } else {
                 double wNewScore = kanList.totalWinRateWriting;
                 double readNewScore = kanList.totalWinRateReading;
                 double recNewScore = kanList.totalWinRateRecognition;
+                double lisNewScore = kanList.totalWinRateListening;
 
                 if (k.winRateWriting != DatabaseConstants.emptyWinRate) {
                   /// Get the y value: total length of list prior to removal of
@@ -92,11 +97,17 @@ class KanjiBottomSheet extends StatelessWidget {
                   double partialScore = y - k.winRateRecognition;
                   recNewScore = partialScore / list.length;
                 }
+                if (k.winRateListening != DatabaseConstants.emptyWinRate) {
+                  double y = (list.length + 1) * kanList.totalWinRateListening;
+                  double partialScore = y - k.winRateListening;
+                  lisNewScore = partialScore / list.length;
+                }
 
                 await ListQueries.instance.updateList(listName, {
                   KanListTableFields.totalWinRateWritingField: wNewScore,
                   KanListTableFields.totalWinRateReadingField: readNewScore,
-                  KanListTableFields.totalWinRateRecognitionField: recNewScore
+                  KanListTableFields.totalWinRateRecognitionField: recNewScore,
+                  KanListTableFields.totalWinRateListeningField: lisNewScore
                 });
               }
               if (onRemove != null) onRemove!();
@@ -168,17 +179,13 @@ class KanjiBottomSheet extends StatelessWidget {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(CustomRadius.radius16)),
                     margin: EdgeInsets.only(bottom: Margins.margin16, top: Margins.margin8),
                     child: ListTile(
-                      title: WinRateBarChart(dataSource: [
-                        BarData(x: StudyModes.writing.mode,
-                            y: (kanji?.winRateWriting ?? DatabaseConstants.emptyWinRate),
-                            color: StudyModes.writing.color),
-                        BarData(x: StudyModes.reading.mode,
-                            y: (kanji?.winRateReading ?? DatabaseConstants.emptyWinRate),
-                            color: StudyModes.reading.color),
-                        BarData(x: StudyModes.recognition.mode,
-                            y: (kanji?.winRateRecognition ?? DatabaseConstants.emptyWinRate),
-                            color: StudyModes.recognition.color),
-                      ])
+                      title: StorageManager.readData(StorageManager.kanListGraphVisualization) == VisualizationMode.barChart.name
+                          ? _barChart() : RadialGraph(
+                        rateWriting: kanji?.winRateWriting ?? DatabaseConstants.emptyWinRate,
+                        rateReading: kanji?.winRateReading ?? DatabaseConstants.emptyWinRate,
+                        rateRecognition: kanji?.winRateRecognition ?? DatabaseConstants.emptyWinRate,
+                        rateListening: kanji?.winRateListening ?? DatabaseConstants.emptyWinRate,
+                      )
                     ),
                   ),
                   Padding(
@@ -211,6 +218,29 @@ class KanjiBottomSheet extends StatelessWidget {
         );
       },
     );
+  }
+
+  Widget _barChart() {
+    return WinRateBarChart(dataSource: List.generate(StudyModes.values.length, (index) {
+      switch (StudyModes.values[index]) {
+        case StudyModes.writing:
+          return BarData(x: StudyModes.writing.mode,
+              y: (kanji?.winRateWriting ?? DatabaseConstants.emptyWinRate),
+              color: StudyModes.writing.color);
+        case StudyModes.reading:
+          return BarData(x: StudyModes.reading.mode,
+              y: (kanji?.winRateReading ?? DatabaseConstants.emptyWinRate),
+              color: StudyModes.reading.color);
+        case StudyModes.recognition:
+          return BarData(x: StudyModes.recognition.mode,
+              y: (kanji?.winRateRecognition ?? DatabaseConstants.emptyWinRate),
+              color: StudyModes.recognition.color);
+        case StudyModes.listening:
+          return BarData(x: StudyModes.listening.mode,
+              y: (kanji?.winRateListening ?? DatabaseConstants.emptyWinRate),
+              color: StudyModes.listening.color);
+      }
+    }));
   }
 
   Container _actionButtons(BuildContext context) {

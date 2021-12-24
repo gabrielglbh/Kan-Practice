@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-enum StudyModes { writing, reading, recognition }
+enum StudyModes { writing, reading, recognition, listening }
 
 extension StudyModesExt on StudyModes {
   String get mode {
@@ -13,6 +13,8 @@ extension StudyModesExt on StudyModes {
         return "study_modes_reading".tr();
       case StudyModes.recognition:
         return "study_modes_recognition".tr();
+      case StudyModes.listening:
+        return "study_modes_listening".tr();
     }
   }
 
@@ -24,17 +26,21 @@ extension StudyModesExt on StudyModes {
         return "study_modes_reading_ext".tr();
       case StudyModes.recognition:
         return "study_modes_recognition_ext".tr();
+      case StudyModes.listening:
+        return "study_modes_listening_ext".tr();
     }
   }
 
   Color get color {
     switch(this) {
       case StudyModes.writing:
-        return Colors.blue[300]!;
+        return Colors.blue.shade300;
       case StudyModes.reading:
-        return Colors.purple[300]!;
+        return Colors.purple.shade300;
       case StudyModes.recognition:
-        return Colors.orange[300]!;
+        return Colors.orange.shade300;
+      case StudyModes.listening:
+        return Colors.green.shade300;
     }
   }
 
@@ -46,6 +52,8 @@ extension StudyModesExt on StudyModes {
         return 1;
       case StudyModes.recognition:
         return 2;
+      case StudyModes.listening:
+        return 3;
     }
   }
 }
@@ -60,6 +68,8 @@ class StudyModesUtil {
         return StudyModes.reading;
       case 2:
         return StudyModes.recognition;
+      case 3:
+        return StudyModes.listening;
     }
   }
 }

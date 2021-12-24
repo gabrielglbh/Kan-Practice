@@ -300,12 +300,18 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
           padding: EdgeInsets.only(bottom: Margins.margin8),
           child: TabBar(
             controller: _tabController,
-            tabs: [
-              _tabBarElement(StudyModes.writing.mode),
-              _tabBarElement(StudyModes.reading.mode),
-              _tabBarElement(StudyModes.recognition.mode),
-              _tabBarElement(StudyModes.listening.mode),
-            ],
+            tabs: List.generate(StudyModes.values.length, (index) {
+              switch (StudyModes.values[index]) {
+                case StudyModes.writing:
+                  return _tabBarElement(StudyModes.writing.mode);
+                case StudyModes.reading:
+                  return _tabBarElement(StudyModes.reading.mode);
+                case StudyModes.recognition:
+                  return _tabBarElement(StudyModes.recognition.mode);
+                case StudyModes.listening:
+                  return _tabBarElement(StudyModes.listening.mode);
+              }
+            })
           ),
         ),
         Expanded(

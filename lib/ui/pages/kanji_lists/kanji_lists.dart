@@ -38,7 +38,8 @@ class _KanjiListsState extends State<KanjiLists> {
     KanListTableFields.lastUpdatedField: true,
     KanListTableFields.totalWinRateWritingField: false,
     KanListTableFields.totalWinRateReadingField: false,
-    KanListTableFields.totalWinRateRecognitionField: false
+    KanListTableFields.totalWinRateRecognitionField: false,
+    KanListTableFields.totalWinRateListeningField: false
   };
 
   /// This variable keeps track of the order applied on the current filter only:

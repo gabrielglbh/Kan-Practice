@@ -39,6 +39,8 @@ class WinRateChart extends StatelessWidget {
       margin: padding,
       child: SfRadialGauge(
         title: title != null ? GaugeTitle(text: title!) : null,
+        enableLoadingAnimation: true,
+        animationDuration: 1000,
         axes: <RadialAxis>[
           RadialAxis(
             minimum: 0,

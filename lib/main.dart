@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
+import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListTile.dart';
 import 'package:kanpractice/ui/theme/theme_manager.dart';
 
 import 'core/routing/routes.dart';
@@ -16,6 +17,8 @@ void main() async {
     StorageManager.saveData(StorageManager.hasDoneTutorial, false);
   if (StorageManager.readData(StorageManager.affectOnPractice) == null)
     StorageManager.saveData(StorageManager.affectOnPractice, false);
+  if (StorageManager.readData(StorageManager.kanListGraphVisualization) == null)
+    StorageManager.saveData(StorageManager.kanListGraphVisualization, VisualizationMode.radialChart.name);
   await CustomDatabase.instance.open();
   await Firebase.initializeApp();
   await EasyLocalization.ensureInitialized();

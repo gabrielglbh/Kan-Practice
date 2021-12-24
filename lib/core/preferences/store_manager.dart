@@ -6,6 +6,7 @@ class StorageManager {
   static final String orderOnList = "listOrder";
   static final String hasDoneTutorial = "hasDoneTutorial";
   static final String affectOnPractice = "affectOnPractice";
+  static final String kanListGraphVisualization = "kanListGraphVisualization";
 
   static StorageManager? _storageUtils;
   static SharedPreferences? _preferences;

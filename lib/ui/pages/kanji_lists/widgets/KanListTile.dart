@@ -134,23 +134,23 @@ class KanListTile extends StatelessWidget {
       child: Stack(
         children: [
           Positioned(
-            left: 0, right: 0, top: 18, bottom: 18,
+            left: 0, right: 0, top: Margins.margin18, bottom: Margins.margin18,
             child: WinRateChart(
               winRate: item.totalWinRateRecognition,
               backgroundColor: Colors.transparent,
               chartColor: StudyModes.recognition.color,
               showGaugeAnnotation: false, padding: EdgeInsets.zero,
-              widthLine: 0.15,
+              widthLine: 0.15, pointerOffset: 0,
             ),
           ),
           Positioned(
-            left: 0, right: 0, top: 10, bottom: 10,
+            left: 0, right: 0, top: Margins.margin10, bottom: Margins.margin10,
             child: WinRateChart(
               winRate: item.totalWinRateReading,
               backgroundColor: Colors.transparent,
               chartColor: StudyModes.reading.color,
               showGaugeAnnotation: false, padding: EdgeInsets.zero,
-              widthLine: 0.15,
+              widthLine: 0.15, pointerOffset: 0,
             ),
           ),
           Positioned(
@@ -160,7 +160,7 @@ class KanListTile extends StatelessWidget {
               backgroundColor: Colors.transparent,
               chartColor: StudyModes.writing.color,
               showGaugeAnnotation: false, padding: EdgeInsets.zero,
-              widthLine: 0.15,
+              widthLine: 0.15, pointerOffset: 0,
             ),
           ),
         ],

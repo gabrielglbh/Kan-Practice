@@ -107,7 +107,7 @@ class _TestHistoryState extends State<TestHistory> {
                 )
               ],
             ),
-            leading: WinRateChart(title: "", winRate: t.testScore,
+            leading: WinRateChart(winRate: t.testScore,
                 rateSize: ChartSize.small, backgroundColor: chartColor),
           ),
         );

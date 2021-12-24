@@ -23,11 +23,13 @@ class WinRateChart extends StatelessWidget {
   final EdgeInsets padding;
   /// Size of the line graph
   final double widthLine;
+  /// Offset from the actual graph to the line
+  final double pointerOffset;
   const WinRateChart({this.title, required this.winRate,
     this.size = CustomSizes.defaultSizeWinRateChart, this.rateSize,
     this.backgroundColor = CustomColors.secondaryColor, this.chartColor = Colors.white,
     this.showGaugeAnnotation = true, this.padding = const EdgeInsets.all(Margins.margin8),
-    this.widthLine = 0.1
+    this.widthLine = 0.1, this.pointerOffset = 0.1
   });
 
   @override
@@ -65,6 +67,7 @@ class WinRateChart extends StatelessWidget {
                 value: winRate == DatabaseConstants.emptyWinRate ? 0 : winRate,
                 width: widthLine,
                 color: chartColor,
+                pointerOffset: pointerOffset,
                 cornerStyle: CornerStyle.bothCurve,
                 sizeUnit: GaugeSizeUnit.factor,
               )

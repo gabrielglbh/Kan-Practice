@@ -42,8 +42,10 @@ class Margins {
   static const double margin2 = 2;
   static const double margin4 = 4;
   static const double margin8 = 8;
+  static const double margin10 = 10;
   static const double margin12 = 12;
   static const double margin16 = 16;
+  static const double margin18 = 18;
   static const double margin24 = 24;
   static const double margin32 = 32;
   static const double margin48 = 48;

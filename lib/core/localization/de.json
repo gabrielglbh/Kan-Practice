@@ -152,6 +152,7 @@
   "settings_information_developer_label": "Entwickler",
   "settings_information_license_label": "Lizenz",
   "settings_information_terms_label": "Rechtliches",
+  "settings_information_about_label": "Copyright",
   "test_history_showRemoveTestsDialog_title": "Alle Tests entfernen ",
   "test_history_showRemoveTestsDialog_content": "Alle auf diesem Gerät gespeicherten Tests werden entfernt. Diese Aktion kann nicht rückgängig gemacht werden. Wollen Sie fortfahren? ",
   "test_history_showRemoveTestsDialog_positive": "Entfernen",

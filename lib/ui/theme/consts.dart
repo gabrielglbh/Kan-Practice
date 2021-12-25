@@ -27,7 +27,6 @@ class CustomSizes {
   static const double defaultSizeStudyModeSelection = 165;
   static const double maxHeightForListsTest = 240;
   static const double maxHeightValidationCircle = 256;
-  static const double maxHeightBottomSheetDeveloper = 256;
 
   static const double minimumHeight = 700;
 

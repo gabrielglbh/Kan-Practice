@@ -13,12 +13,15 @@ class KanjiList {
   double totalWinRateReading;
   @JsonKey(name: KanListTableFields.totalWinRateRecognitionField)
   double totalWinRateRecognition;
+  @JsonKey(name: KanListTableFields.totalWinRateListeningField)
+  double totalWinRateListening;
   @JsonKey(name: KanListTableFields.lastUpdatedField)
   final int lastUpdated;
 
   KanjiList({required this.name, this.totalWinRateWriting =DatabaseConstants.emptyWinRate,
     this.totalWinRateReading = DatabaseConstants.emptyWinRate,
-    this.totalWinRateRecognition = DatabaseConstants.emptyWinRate, required this.lastUpdated
+    this.totalWinRateRecognition = DatabaseConstants.emptyWinRate,
+    this.totalWinRateListening = DatabaseConstants.emptyWinRate, required this.lastUpdated
   });
 
   /// Empty [KanjiList]

@@ -44,14 +44,26 @@ class TestStudyMode extends StatelessWidget {
             ),
           ),
           Container(
-            height: CustomSizes.defaultSizeButtonHeight,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _modeBasedButtons(context, StudyModes.writing),
-                _modeBasedButtons(context, StudyModes.reading),
-                _modeBasedButtons(context, StudyModes.recognition)
-              ],
+            height: CustomSizes.defaultSizeStudyModeSelection,
+            padding: EdgeInsets.symmetric(horizontal: Margins.margin32),
+            child: GridView.builder(
+              itemCount: StudyModes.values.length,
+              physics: NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, childAspectRatio: 1.9
+              ),
+              itemBuilder: (context, index) {
+                switch (StudyModes.values[index]) {
+                  case StudyModes.writing:
+                    return _modeBasedButtons(context, StudyModes.writing);
+                  case StudyModes.reading:
+                    return _modeBasedButtons(context, StudyModes.reading);
+                  case StudyModes.recognition:
+                    return _modeBasedButtons(context, StudyModes.recognition);
+                  case StudyModes.listening:
+                    return _modeBasedButtons(context, StudyModes.listening);
+                }
+              },
             ),
           ),
           Padding(
@@ -64,37 +76,43 @@ class TestStudyMode extends StatelessWidget {
     );
   }
 
-  CustomButton _modeBasedButtons(BuildContext context, StudyModes mode) {
-    return CustomButton(
-      title1: mode.japMode,
-      title2: mode.mode,
-      color: mode.color,
-      onTap: () async {
-        if (list.isEmpty) {
-          Navigator.of(context).pop();
-          GeneralUtils.getSnackBar(context, "study_modes_empty".tr());
-        }
-        else {
-          list.shuffle();
-          List<Kanji> sortedList = list.sublist(0, list.length < CustomSizes.numberOfKanjiInTest
-              ? list.length : CustomSizes.numberOfKanjiInTest);
-          Navigator.of(context).pop(); // Dismiss bottom sheet
-          switch (mode) {
-            case StudyModes.writing:
-              await Navigator.of(context).pushNamed(KanPracticePages.writingStudyPage,
-                  arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
-              break;
-            case StudyModes.reading:
-              await Navigator.of(context).pushNamed(KanPracticePages.readingStudyPage,
-                  arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
-              break;
-            case StudyModes.recognition:
-              await Navigator.of(context).pushNamed(KanPracticePages.recognitionStudyPage,
-                  arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
-              break;
+  Widget _modeBasedButtons(BuildContext context, StudyModes mode) {
+    return Expanded(
+      child: CustomButton(
+        title1: mode.japMode,
+        title2: mode.mode,
+        color: mode.color,
+        onTap: () async {
+          if (list.isEmpty) {
+            Navigator.of(context).pop();
+            GeneralUtils.getSnackBar(context, "study_modes_empty".tr());
+          }
+          else {
+            list.shuffle();
+            List<Kanji> sortedList = list.sublist(0, list.length < CustomSizes.numberOfKanjiInTest
+                ? list.length : CustomSizes.numberOfKanjiInTest);
+            Navigator.of(context).pop(); // Dismiss bottom sheet
+            switch (mode) {
+              case StudyModes.writing:
+                await Navigator.of(context).pushNamed(KanPracticePages.writingStudyPage,
+                    arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+                break;
+              case StudyModes.reading:
+                await Navigator.of(context).pushNamed(KanPracticePages.readingStudyPage,
+                    arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+                break;
+              case StudyModes.recognition:
+                await Navigator.of(context).pushNamed(KanPracticePages.recognitionStudyPage,
+                    arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+                break;
+              case StudyModes.listening:
+                await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
+                    arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+                break;
+            }
           }
         }
-      }
+      ),
     );
   }
 }

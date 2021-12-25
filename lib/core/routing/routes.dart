@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/pages/add_kanji/add_kanji.dart';
@@ -10,6 +9,7 @@ import 'package:kanpractice/ui/pages/firebase_login/login.dart';
 import 'package:kanpractice/ui/pages/jisho/jisho.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/list_details.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/kanji_lists.dart';
+import 'package:kanpractice/ui/pages/listening/listening.dart';
 import 'package:kanpractice/ui/pages/reading/reading.dart';
 import 'package:kanpractice/ui/pages/recognition/recognition.dart';
 import 'package:kanpractice/ui/pages/settings/settings.dart';
@@ -43,6 +43,9 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case KanPracticePages.recognitionStudyPage:
       ModeArguments args = settings.arguments as ModeArguments;
       return CupertinoPageRoute(builder: (_) => RecognitionStudy(args: args));
+    case KanPracticePages.listeningStudyPage:
+      ModeArguments args = settings.arguments as ModeArguments;
+      return CupertinoPageRoute(builder: (_) => ListeningStudy(args: args));
     case KanPracticePages.testResultPage:
       TestResultArguments args = settings.arguments as TestResultArguments;
       return CupertinoPageRoute(builder: (_) => TestResult(args: args));

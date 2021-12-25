@@ -71,14 +71,19 @@ class _TestBottomSheetState extends State<TestBottomSheet> {
                 ),
                 Container(
                   height: CustomSizes.defaultSizeButtonHeight,
-                  margin: EdgeInsets.only(bottom: Margins.margin32),
+                  margin: EdgeInsets.only(bottom: Margins.margin16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _testBasedButtons(context, Tests.lists),
-                      _testBasedButtons(context, Tests.blitz),
-                      _testBasedButtons(context, Tests.time)
-                    ],
+                    children: List.generate(Tests.values.length, (index) {
+                      switch (Tests.values[index]) {
+                        case Tests.lists:
+                          return _testBasedButtons(context, Tests.lists);
+                        case Tests.blitz:
+                          return _testBasedButtons(context, Tests.blitz);
+                        case Tests.time:
+                          return _testBasedButtons(context, Tests.time);
+                      }
+                    })
                   ),
                 ),
               ],
@@ -89,24 +94,26 @@ class _TestBottomSheetState extends State<TestBottomSheet> {
     );
   }
 
-  CustomButton _testBasedButtons(BuildContext context, Tests mode) {
-    return CustomButton(
-      icon: mode.icon,
-      title2: mode.name,
-      color: CustomColors.secondarySubtleColor,
-      onTap: () async {
-        switch (mode) {
-          case Tests.lists:
-            await StudyBottomSheet.callStudyModeBottomSheet(context);
-            break;
-          case Tests.blitz:
-            await BlitzBottomSheet.callBlitzModeBottomSheet(context);
-            break;
-          case Tests.time:
-            await BlitzBottomSheet.callBlitzModeBottomSheet(context, remembranceTest: true);
-            break;
+  Widget _testBasedButtons(BuildContext context, Tests mode) {
+    return Expanded(
+      child: CustomButton(
+        icon: mode.icon,
+        title2: mode.name,
+        color: CustomColors.secondarySubtleColor,
+        onTap: () async {
+          switch (mode) {
+            case Tests.lists:
+              await StudyBottomSheet.callStudyModeBottomSheet(context);
+              break;
+            case Tests.blitz:
+              await BlitzBottomSheet.callBlitzModeBottomSheet(context);
+              break;
+            case Tests.time:
+              await BlitzBottomSheet.callBlitzModeBottomSheet(context, remembranceTest: true);
+              break;
+          }
         }
-      }
+      ),
     );
   }
 }

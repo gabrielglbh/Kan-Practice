@@ -19,6 +19,8 @@ class Kanji {
   final double winRateReading;
   @JsonKey(name: KanjiTableFields.winRateRecognitionField)
   final double winRateRecognition;
+  @JsonKey(name: KanjiTableFields.winRateListeningField)
+  final double winRateListening;
   @JsonKey(name: KanjiTableFields.dateAddedField)
   final int dateAdded;
   @JsonKey(name: KanjiTableFields.dateLastShown)
@@ -27,7 +29,8 @@ class Kanji {
   const Kanji({required this.kanji, required this.listName, required this.meaning,
     required this.pronunciation, this.winRateReading = DatabaseConstants.emptyWinRate,
     this.winRateRecognition = DatabaseConstants.emptyWinRate,
-    this.winRateWriting = DatabaseConstants.emptyWinRate, this.dateAdded = 0,
+    this.winRateWriting = DatabaseConstants.emptyWinRate,
+    this.winRateListening = DatabaseConstants.emptyWinRate, this.dateAdded = 0,
     this.dateLastShown = 0
   });
 

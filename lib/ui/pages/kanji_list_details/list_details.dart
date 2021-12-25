@@ -114,6 +114,11 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
               arguments: ModeArguments(studyList: list, isTest: false, mode: StudyModes.recognition))
               .then((value) => _addLoadingEvent());
           break;
+        case StudyModes.listening:
+          await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
+              arguments: ModeArguments(studyList: list, isTest: false, mode: StudyModes.listening))
+              .then((value) => _addLoadingEvent());
+          break;
       }
     }
     else GeneralUtils.getSnackBar(context, "list_details_loadUpPractice_failed".tr());
@@ -122,9 +127,16 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
   _onModeChange(StudyModes newMode) {
     _searchBarFn?.unfocus();
     setState(() {
-      if (newMode == StudyModes.writing) _selectedMode = StudyModes.writing;
-      else if (newMode == StudyModes.reading) _selectedMode = StudyModes.reading;
-      else _selectedMode = StudyModes.recognition;
+      switch (newMode) {
+        case StudyModes.writing:
+          _selectedMode = StudyModes.writing; break;
+        case StudyModes.reading:
+          _selectedMode = StudyModes.reading; break;
+        case StudyModes.recognition:
+          _selectedMode = StudyModes.recognition; break;
+        case StudyModes.listening:
+          _selectedMode = StudyModes.listening; break;
+      }
     });
     _tabController?.animateTo(newMode.index,
         duration: Duration(milliseconds: CustomAnimations.ms300),
@@ -141,7 +153,11 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
         else if (pv > 0) _onModeChange(StudyModes.writing);
         break;
       case StudyModes.recognition:
-        if (pv > 0) _onModeChange(StudyModes.reading);
+        if (pv < 0) _onModeChange(StudyModes.listening);
+        else if (pv > 0) _onModeChange(StudyModes.reading);
+        break;
+      case StudyModes.listening:
+        if (pv > 0) _onModeChange(StudyModes.recognition);
         break;
     }
   }
@@ -286,11 +302,18 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
           padding: EdgeInsets.only(bottom: Margins.margin8),
           child: TabBar(
             controller: _tabController,
-            tabs: [
-              _tabBarElement(StudyModes.writing.mode),
-              _tabBarElement(StudyModes.reading.mode),
-              _tabBarElement(StudyModes.recognition.mode),
-            ],
+            tabs: List.generate(StudyModes.values.length, (index) {
+              switch (StudyModes.values[index]) {
+                case StudyModes.writing:
+                  return _tabBarElement(StudyModes.writing.mode);
+                case StudyModes.reading:
+                  return _tabBarElement(StudyModes.reading.mode);
+                case StudyModes.recognition:
+                  return _tabBarElement(StudyModes.recognition.mode);
+                case StudyModes.listening:
+                  return _tabBarElement(StudyModes.listening.mode);
+              }
+            })
           ),
         ),
         Expanded(
@@ -303,14 +326,12 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
           )
         ),
         CustomButton(
-          title1: "list_details_practice_button_label_ext".tr(),
-          title2: "${"list_details_practice_button_label".tr()}\n(${
-            _learningMode == LearningMode.spatial
-                ? LearningMode.spatial.name : LearningMode.random.name
-          })",
-          width: MediaQuery.of(context).size.width / 2,
+          title1: "${"list_details_practice_button_label_ext".tr()}",
+          title2: "${"list_details_practice_button_label".tr()} • ${
+              _learningMode == LearningMode.spatial
+                  ? LearningMode.spatial.name : LearningMode.random.name}",
           onTap: () async => await _loadUpPractice(state)
-        )
+        ),
       ],
     );
   }

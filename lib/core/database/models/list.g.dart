@@ -15,6 +15,9 @@ KanjiList _$KanjiListFromJson(Map<String, dynamic> json) => KanjiList(
       totalWinRateRecognition:
           (json['totalWinRateRecognition'] as num?)?.toDouble() ??
               DatabaseConstants.emptyWinRate,
+      totalWinRateListening:
+          (json['totalWinRateListening'] as num?)?.toDouble() ??
+              DatabaseConstants.emptyWinRate,
       lastUpdated: json['lastUpdated'] as int,
     );
 
@@ -23,5 +26,6 @@ Map<String, dynamic> _$KanjiListToJson(KanjiList instance) => <String, dynamic>{
       'totalWinRateWriting': instance.totalWinRateWriting,
       'totalWinRateReading': instance.totalWinRateReading,
       'totalWinRateRecognition': instance.totalWinRateRecognition,
+      'totalWinRateListening': instance.totalWinRateListening,
       'lastUpdated': instance.lastUpdated,
     };

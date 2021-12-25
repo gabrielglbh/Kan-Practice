@@ -105,6 +105,11 @@ class StudyModeUpdateHandler {
         else actualScore =  (score + args.studyList[index].winRateRecognition) / 2;
         toUpdate = { KanjiTableFields.winRateRecognitionField: actualScore };
         break;
+      case StudyModes.listening:
+        if (args.studyList[index].winRateListening == DatabaseConstants.emptyWinRate) actualScore = score;
+        else actualScore =  (score + args.studyList[index].winRateListening) / 2;
+        toUpdate = { KanjiTableFields.winRateListeningField: actualScore };
+        break;
     }
     return await KanjiQueries.instance.updateKanji(args.studyList[index].listName,
         args.studyList[index].kanji, toUpdate);
@@ -159,6 +164,10 @@ class StudyModeUpdateHandler {
             if (k.winRateRecognition != DatabaseConstants.emptyWinRate)
               overallScore[kanListName] = (overallScore[kanListName] ?? 0) + k.winRateRecognition;
             break;
+          case StudyModes.listening:
+            if (k.winRateListening != DatabaseConstants.emptyWinRate)
+              overallScore[kanListName] = (overallScore[kanListName] ?? 0) + k.winRateListening;
+            break;
         }
       });
       /// For each list, update its overall rating after getting the overall score
@@ -185,6 +194,10 @@ class StudyModeUpdateHandler {
         case StudyModes.recognition:
           if (k.winRateRecognition != DatabaseConstants.emptyWinRate)
             overallScore += k.winRateRecognition;
+          break;
+        case StudyModes.listening:
+          if (k.winRateListening != DatabaseConstants.emptyWinRate)
+            overallScore += k.winRateListening;
           break;
       }
     });
@@ -216,6 +229,11 @@ class StudyModeUpdateHandler {
         if (list.totalWinRateRecognition == DatabaseConstants.emptyWinRate) actualOverall = overall;
         else actualOverall = (overall + list.totalWinRateRecognition) / 2;
         toUpdate = { KanListTableFields.totalWinRateRecognitionField: actualOverall };
+        break;
+      case StudyModes.listening:
+        if (list.totalWinRateListening == DatabaseConstants.emptyWinRate) actualOverall = overall;
+        else actualOverall = (overall + list.totalWinRateListening) / 2;
+        toUpdate = { KanListTableFields.totalWinRateListeningField: actualOverall };
         break;
     }
     await ListQueries.instance.updateList(

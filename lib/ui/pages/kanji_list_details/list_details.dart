@@ -317,7 +317,6 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
           ),
         ),
         Expanded(
-          flex: 5,
           child: GestureDetector(
             onHorizontalDragEnd: (details) {
               double? pv = details.primaryVelocity;

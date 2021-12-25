@@ -324,19 +324,14 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
             child: _kanjiList(state),
           )
         ),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 3),
-            child: CustomButton(
-              title1: "list_details_practice_button_label_ext".tr(),
-              title2: "${"list_details_practice_button_label".tr()}\n(${
-                _learningMode == LearningMode.spatial
-                    ? LearningMode.spatial.name : LearningMode.random.name
-              })",
-              onTap: () async => await _loadUpPractice(state)
-            ),
-          ),
-        )
+        CustomButton(
+          title1: "${"list_details_practice_button_label_ext".tr()}",
+          title2: "${"list_details_practice_button_label".tr()} (${
+              _learningMode == LearningMode.spatial
+                  ? LearningMode.spatial.name : LearningMode.random.name
+          })",
+          onTap: () async => await _loadUpPractice(state)
+        ),
       ],
     );
   }

@@ -3,6 +3,7 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/test_queries.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/pages/test_result/arguments.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/ActionButton.dart';
@@ -32,6 +33,7 @@ class TestResult extends StatelessWidget {
             ),
             WinRateChart(
               winRate: args.score,
+              backgroundColor: StudyModesUtil.mapStudyMode(args.studyMode).color,
               size: MediaQuery.of(context).size.width / 2.5,
               rateSize: ChartSize.medium,
             ),

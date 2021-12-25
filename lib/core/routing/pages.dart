@@ -6,6 +6,7 @@ class KanPracticePages {
   static const String writingStudyPage = "/writingStudyPage";
   static const String readingStudyPage = "/readingStudyPage";
   static const String recognitionStudyPage = "/recognitionStudyPage";
+  static const String listeningStudyPage = "/listeningStudyPage";
   static const String loginPage = "/loginPage";
   static const String backUpPage = "/backUpPage";
   static const String testResultPage = "/testResultPage";

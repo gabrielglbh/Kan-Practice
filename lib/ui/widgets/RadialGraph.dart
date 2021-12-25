@@ -49,23 +49,39 @@ class RadialGraph extends StatelessWidget {
                 children: [
                   Container(
                     width: Margins.margin8, height: Margins.margin8,
-                    margin: EdgeInsets.only(right: Margins.margin8, top: Margins.margin4),
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: StudyModes.values[index].color),
+                    margin: EdgeInsets.only(
+                      right: Margins.margin8, left: Margins.margin8, top: Margins.margin4
+                    ),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle, color: StudyModes.values[index].color
+                    ),
                   ),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("${StudyModes.values[index].mode}:",
-                          overflow: TextOverflow.ellipsis,
+                        Container(
+                          height: Margins.margin16,
+                          alignment: Alignment.centerLeft,
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: Text("${StudyModes.values[index].mode}:",
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(left: Margins.margin16),
-                          child: Text(rate != DatabaseConstants.emptyWinRate
-                              ? "${GeneralUtils.getFixedDouble(rate*100)}%" : "0%",
-                            style: TextStyle(fontWeight: FontWeight.bold,
-                                color: Theme.of(context).brightness == Brightness.light
-                                    ? Colors.black87 : Colors.white
+                        Container(
+                          height: Margins.margin16,
+                          alignment: Alignment.centerLeft,
+                          margin: EdgeInsets.only(left: Margins.margin16),
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: Text(rate != DatabaseConstants.emptyWinRate
+                                ? "${GeneralUtils.getFixedDouble(rate*100)}%" : "0%",
+                              style: TextStyle(fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).brightness == Brightness.light
+                                      ? Colors.black87 : Colors.white
+                              ),
                             ),
                           ),
                         )

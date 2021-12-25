@@ -232,7 +232,7 @@ class _WritingStudyState extends State<WritingStudy> {
                 style: TextStyle(fontSize:
                 MediaQuery.of(context).size.height < CustomSizes.minimumHeight
                     ? FontSizes.fontSize24 : FontSizes.fontSize64,
-                    color: index == _inner ? CustomColors.secondaryColor : null)
+                    color: index == _inner ? CustomColors.secondarySubtleColor : null)
             );
           },
         ),

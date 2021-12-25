@@ -115,7 +115,9 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
               .then((value) => _addLoadingEvent());
           break;
         case StudyModes.listening:
-          /// TODO: Create listening page
+          await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
+              arguments: ModeArguments(studyList: list, isTest: false, mode: StudyModes.listening))
+              .then((value) => _addLoadingEvent());
           break;
       }
     }

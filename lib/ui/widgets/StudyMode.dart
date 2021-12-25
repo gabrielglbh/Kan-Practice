@@ -106,7 +106,8 @@ class TestStudyMode extends StatelessWidget {
                     arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
                 break;
               case StudyModes.listening:
-                /// TODO: Navigate to listening study page
+                await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
+                    arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
                 break;
             }
           }

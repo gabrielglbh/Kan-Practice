@@ -77,42 +77,40 @@ class TestStudyMode extends StatelessWidget {
   }
 
   Widget _modeBasedButtons(BuildContext context, StudyModes mode) {
-    return Expanded(
-      child: CustomButton(
-        title1: mode.japMode,
-        title2: mode.mode,
-        color: mode.color,
-        onTap: () async {
-          if (list.isEmpty) {
-            Navigator.of(context).pop();
-            GeneralUtils.getSnackBar(context, "study_modes_empty".tr());
-          }
-          else {
-            list.shuffle();
-            List<Kanji> sortedList = list.sublist(0, list.length < CustomSizes.numberOfKanjiInTest
-                ? list.length : CustomSizes.numberOfKanjiInTest);
-            Navigator.of(context).pop(); // Dismiss bottom sheet
-            switch (mode) {
-              case StudyModes.writing:
-                await Navigator.of(context).pushNamed(KanPracticePages.writingStudyPage,
-                    arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
-                break;
-              case StudyModes.reading:
-                await Navigator.of(context).pushNamed(KanPracticePages.readingStudyPage,
-                    arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
-                break;
-              case StudyModes.recognition:
-                await Navigator.of(context).pushNamed(KanPracticePages.recognitionStudyPage,
-                    arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
-                break;
-              case StudyModes.listening:
-                await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
-                    arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
-                break;
-            }
+    return CustomButton(
+      title1: mode.japMode,
+      title2: mode.mode,
+      color: mode.color,
+      onTap: () async {
+        if (list.isEmpty) {
+          Navigator.of(context).pop();
+          GeneralUtils.getSnackBar(context, "study_modes_empty".tr());
+        }
+        else {
+          list.shuffle();
+          List<Kanji> sortedList = list.sublist(0, list.length < CustomSizes.numberOfKanjiInTest
+              ? list.length : CustomSizes.numberOfKanjiInTest);
+          Navigator.of(context).pop(); // Dismiss bottom sheet
+          switch (mode) {
+            case StudyModes.writing:
+              await Navigator.of(context).pushNamed(KanPracticePages.writingStudyPage,
+                  arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+              break;
+            case StudyModes.reading:
+              await Navigator.of(context).pushNamed(KanPracticePages.readingStudyPage,
+                  arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+              break;
+            case StudyModes.recognition:
+              await Navigator.of(context).pushNamed(KanPracticePages.recognitionStudyPage,
+                  arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+              break;
+            case StudyModes.listening:
+              await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
+                  arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+              break;
           }
         }
-      ),
+      }
     );
   }
 }

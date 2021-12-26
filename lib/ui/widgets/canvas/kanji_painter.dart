@@ -8,15 +8,14 @@ class KanjiPainter extends CustomPainter {
   KanjiPainter({required this.points, required this.size});
 
   List<Offset> offsetPoints = [];
+  static final Paint kanjiPaint = Paint()
+    ..color = Colors.black
+    ..strokeWidth = 10
+    ..isAntiAlias = true
+    ..strokeCap = StrokeCap.round;
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint kanjiPaint = Paint()
-      ..color = Colors.black
-      ..strokeWidth = 10
-      ..isAntiAlias = true
-      ..strokeCap = StrokeCap.round;
-
     Paint paint = Paint()
       ..color = Colors.grey
       ..strokeWidth = 1

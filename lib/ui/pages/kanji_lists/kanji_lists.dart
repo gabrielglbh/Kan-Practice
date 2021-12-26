@@ -183,11 +183,26 @@ class _KanjiListsState extends State<KanjiLists> {
                 visible: _newVersion.isNotEmpty,
                 child: _updateContainer()
               ),
-              CustomSearchBar(
-                hint: "kanji_lists_searchBar_hint".tr(),
-                focus: _searchBarFn,
-                onQuery: (String query) => _bloc..add(KanjiListEventSearching(query)),
-                onExitSearch: () => _addLoadingEvent(),
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomSearchBar(
+                      hint: "kanji_lists_searchBar_hint".tr(),
+                      focus: _searchBarFn,
+                      onQuery: (String query) => _bloc..add(KanjiListEventSearching(query)),
+                      onExitSearch: () => _addLoadingEvent(),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: Margins.margin16, left: Margins.margin4),
+                    child: IconButton(
+                      icon: Icon(Icons.menu_book_rounded),
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(KanPracticePages.dictionaryPage);
+                      },
+                    ),
+                  ),
+                ],
               ),
               _filterChips(),
               _lists()

@@ -1,14 +1,20 @@
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/widgets/CustomButton.dart';
 
-import '../kanji_painter.dart';
+import 'kanji_painter.dart';
 
 class CustomCanvas extends StatefulWidget {
   /// List of [Offset] points to draw over the canvas
   final List<Offset?> line;
   /// Whether to allow the user to paint or not
   final bool allowEdit;
-  const CustomCanvas({required this.line, this.allowEdit = true});
+  /// Whether the canvas allow to predict the drawn kanji or not
+  final bool allowPrediction;
+  const CustomCanvas({required this.line, this.allowEdit = true, this.allowPrediction = false});
 
   @override
   _CustomCanvasState createState() => _CustomCanvasState();
@@ -18,11 +24,29 @@ class _CustomCanvasState extends State<CustomCanvas> {
   /// In charge of keeping the indexes on the widget line for removal
   List<int> _lineIndex = [];
 
+  Future<ByteData?> _saveToImage(List<Offset?> points) async {
+    final canvasSize = MediaQuery.of(context).size.width;
+    final ui.PictureRecorder recorder = ui.PictureRecorder();
+    final Canvas canvas = Canvas(recorder, Rect.fromPoints(
+      Offset(0, 0), Offset(canvasSize, canvasSize)));
+    final Paint paint = KanjiPainter.kanjiPaint;
+
+    for (int i = 0; i < points.length - 1; i++) {
+      Offset? prev = points[i];
+      Offset? next = points[i + 1];
+      if (prev != null && next != null) canvas.drawLine(prev, next, paint);
+    }
+
+    final ui.Picture picture = recorder.endRecording();
+    final ui.Image img = await picture.toImage(canvasSize.toInt(), canvasSize.toInt());
+    return await img.toByteData(format: ui.ImageByteFormat.png);
+  }
+
   @override
   Widget build(BuildContext context) {
     /// We subtract 32 padding to the size as we have an inherent 16 - 16
     /// padding on the sides on the parent
-    final double size = MediaQuery.of(context).size.width - Margins.margin32;
+    final double size = MediaQuery.of(context).size.width - Margins.margin16;
     return Container(
       width: size,
       height: size,
@@ -86,6 +110,18 @@ class _CustomCanvasState extends State<CustomCanvas> {
                   ),
                   child: Icon(Icons.redo_rounded, size: FontSizes.fontSize32, color: Colors.black),
                 ),
+              )
+            ),
+          ),
+          Visibility(
+            visible: widget.allowPrediction,
+            child: Positioned(
+              bottom: 0,
+              right: MediaQuery.of(context).size.width / 3,
+              left: MediaQuery.of(context).size.width / 3,
+              child: CustomButton(
+                onTap: () async => await _saveToImage(widget.line),
+                title2: 'Search',
               )
             ),
           )

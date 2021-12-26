@@ -36,6 +36,7 @@ dependencies:
   unofficial_jisho_api:
   page_transition:
   cached_network_image:
+# bash android_tflite.sh to get the jniLibs
   tflite_flutter:
 
 flutter_icons:

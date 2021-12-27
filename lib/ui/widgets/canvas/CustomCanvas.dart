@@ -46,7 +46,7 @@ class _CustomCanvasState extends State<CustomCanvas> {
   Widget build(BuildContext context) {
     /// We subtract 32 padding to the size as we have an inherent 16 - 16
     /// padding on the sides on the parent
-    final double size = MediaQuery.of(context).size.width - Margins.margin16;
+    final double size = MediaQuery.of(context).size.width - Margins.margin32;
     return Container(
       width: size,
       height: size,
@@ -64,7 +64,8 @@ class _CustomCanvasState extends State<CustomCanvas> {
                   height: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(CustomRadius.radius16),
-                    color: Colors.yellow[100],
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.grey[300] : Colors.grey[600],
                   ),
                   child: CustomPaint(
                     painter: KanjiPainter(
@@ -77,42 +78,8 @@ class _CustomCanvasState extends State<CustomCanvas> {
               )
             ),
           ),
-          Visibility(
-            visible: widget.allowEdit,
-            child: Positioned(
-              top: Margins.margin8, left: Margins.margin16,
-              child: GestureDetector(
-                onTap: () => _undoLine(),
-                child: Container(
-                  height: CustomSizes.defaultSizeSearchBarIcons,
-                  width: CustomSizes.defaultSizeSearchBarIcons,
-                  decoration: BoxDecoration(
-                    color: Colors.yellow,
-                    borderRadius: BorderRadius.circular(CustomRadius.radius16)
-                  ),
-                  child: Icon(Icons.undo_rounded, size: FontSizes.fontSize32, color: Colors.black),
-                ),
-              )
-            ),
-          ),
-          Visibility(
-            visible: widget.allowEdit,
-            child: Positioned(
-              top: Margins.margin8, right: Margins.margin16,
-              child: GestureDetector(
-                onTap: () => _clear(),
-                child: Container(
-                  height: CustomSizes.defaultSizeSearchBarIcons,
-                  width: CustomSizes.defaultSizeSearchBarIcons,
-                  decoration: BoxDecoration(
-                    color: Colors.yellow,
-                    borderRadius: BorderRadius.circular(CustomRadius.radius16)
-                  ),
-                  child: Icon(Icons.redo_rounded, size: FontSizes.fontSize32, color: Colors.black),
-                ),
-              )
-            ),
-          ),
+          _actionIcon(action: () => _undoLine(), icon: Icons.undo_rounded, right: null),
+          _actionIcon(action: () => _clear(), icon: Icons.redo_rounded, left: null),
           Visibility(
             visible: widget.allowPrediction,
             child: Positioned(
@@ -126,6 +93,31 @@ class _CustomCanvasState extends State<CustomCanvas> {
             ),
           )
         ],
+      ),
+    );
+  }
+
+  _actionIcon({required Function() action, required IconData icon,
+    double? left = Margins.margin16, double? right = Margins.margin16}) {
+    return Visibility(
+      visible: widget.allowEdit,
+      child: Positioned(
+        top: Margins.margin8, left: left, right: right,
+        child: GestureDetector(
+          onTap: action,
+          child: Container(
+            height: CustomSizes.defaultSizeSearchBarIcons,
+            width: CustomSizes.defaultSizeSearchBarIcons,
+            decoration: BoxDecoration(
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Colors.white : Colors.black,
+              borderRadius: BorderRadius.circular(CustomRadius.radius16)
+            ),
+            child: Icon(icon, size: FontSizes.fontSize32,
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Colors.black : Colors.white),
+          )
+        )
       ),
     );
   }

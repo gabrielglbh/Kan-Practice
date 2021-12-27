@@ -8,6 +8,7 @@ class KanjiPainter extends CustomPainter {
   KanjiPainter({required this.points, required this.size});
 
   List<Offset> offsetPoints = [];
+  /// Actual brush to paint the kanji with
   static final Paint kanjiPaint = Paint()
     ..color = Colors.black
     ..strokeWidth = 10
@@ -16,6 +17,7 @@ class KanjiPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    /// Guideline to divide the canvas in a 4x4 square
     Paint paint = Paint()
       ..color = Colors.grey
       ..strokeWidth = 1

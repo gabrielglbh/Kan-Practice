@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
-
+import 'package:image/image.dart' as im;
 import 'package:flutter/material.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomButton.dart';
@@ -14,7 +14,11 @@ class CustomCanvas extends StatefulWidget {
   final bool allowEdit;
   /// Whether the canvas allow to predict the drawn kanji or not
   final bool allowPrediction;
-  const CustomCanvas({required this.line, this.allowEdit = true, this.allowPrediction = false});
+  /// Function to perform when the [im.Image] has been extracted
+  final Function(im.Image)? handleImage;
+  const CustomCanvas({required this.line, this.allowEdit = true, this.allowPrediction = false,
+    this.handleImage
+  });
 
   @override
   _CustomCanvasState createState() => _CustomCanvasState();
@@ -24,22 +28,33 @@ class _CustomCanvasState extends State<CustomCanvas> {
   /// In charge of keeping the indexes on the widget line for removal
   List<int> _lineIndex = [];
 
-  Future<ByteData?> _saveToImage(List<Offset?> points) async {
+  Future<void> _saveToImage(List<Offset?> points) async {
     final canvasSize = MediaQuery.of(context).size.width;
     final ui.PictureRecorder recorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(recorder, Rect.fromPoints(
       Offset(0, 0), Offset(canvasSize, canvasSize)));
     final Paint paint = KanjiPainter.kanjiPaint;
 
+    /// Repaints again the _line of Offsets in a new Canvas to get the proper
+    /// picture with PictureRecorder
     for (int i = 0; i < points.length - 1; i++) {
       Offset? prev = points[i];
       Offset? next = points[i + 1];
       if (prev != null && next != null) canvas.drawLine(prev, next, paint);
     }
 
+    /// Transforms the ui.Image to a im.Image to feed to the tflite model
     final ui.Picture picture = recorder.endRecording();
     final ui.Image img = await picture.toImage(canvasSize.toInt(), canvasSize.toInt());
-    return await img.toByteData(format: ui.ImageByteFormat.png);
+    final ByteData? byteData = await img.toByteData(format: ui.ImageByteFormat.png);
+    if (byteData != null) {
+      im.Image? image = im.decodeImage(byteData.buffer.asUint32List());
+      if (image != null)
+        if (widget.handleImage != null) widget.handleImage!(image);
+        else print('Function handleImage is null');
+      else print('Image is null');
+    }
+    else print('ByteData is null');
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image/image.dart' as im;
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomSearchBar.dart';
 import 'package:kanpractice/ui/widgets/canvas/CustomCanvas.dart';
@@ -47,7 +48,13 @@ class _DictionaryPageState extends State<DictionaryPage> {
             },
             onExitSearch: () {},
           ),
-          CustomCanvas(line: _line, allowPrediction: true),
+          CustomCanvas(
+            line: _line,
+            allowPrediction: true,
+            handleImage: (im.Image image) {
+
+            },
+          ),
         ],
       )
     );

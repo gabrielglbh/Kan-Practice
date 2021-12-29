@@ -1,4 +1,6 @@
-import 'dart:math';
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:image/image.dart';
 import 'package:collection/collection.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
@@ -6,53 +8,48 @@ import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 
 abstract class Classifier {
   late Interpreter interpreter;
-  late InterpreterOptions _interpreterOptions;
-
-  late List<int> _inputShape;
-  late List<int> _outputShape;
-
-  late TensorImage _inputImage;
-  late TensorBuffer _outputBuffer;
-
-  late TfLiteType _inputType;
-  late TfLiteType _outputType;
 
   final String _labelsFileName = 'assets/model/etlcb_9b_labels.txt';
   final int _labelsLength = 3036;
 
-  late var _probabilityProcessor;
+  static final int width = 64;
+  static final int height = 64;
 
   late List<String> labels;
 
   String get modelName;
 
-  NormalizeOp get preProcessNormalizeOp;
-  NormalizeOp get postProcessNormalizeOp;
-
-  Classifier({int? numThreads}) {
-    _interpreterOptions = InterpreterOptions();
-
-    if (numThreads != null) _interpreterOptions.threads = numThreads;
-
+  Classifier() {
     loadModel();
     loadLabels();
   }
 
+  /// Initializes the TFLite interpreter on android.
+  ///
+  /// Uses NnAPI for devices with Android API >= 27. Otherwise uses the
+  /// GPUDelegate. If it is detected that the apps runs on an emulator CPU mode
+  /// is used
   Future<void> loadModel() async {
-    try {
-      interpreter = await Interpreter.fromAsset(modelName, options: _interpreterOptions);
-      print('Interpreter Created Successfully');
+    Interpreter interpreter;
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
 
-      _inputShape = interpreter.getInputTensor(0).shape;
-      _outputShape = interpreter.getOutputTensor(0).shape;
-      _inputType = interpreter.getInputTensor(0).type;
-      _outputType = interpreter.getOutputTensor(0).type;
-
-      _outputBuffer = TensorBuffer.createFixedSize(_outputShape, _outputType);
-      _probabilityProcessor = TensorProcessorBuilder().add(postProcessNormalizeOp).build();
-    } catch (e) {
-      print('Unable to create interpreter, Caught Exception: ${e.toString()}');
+    try{
+      if(androidInfo.isPhysicalDevice ?? true){
+        // use NNAPI on android if android API >= 27
+        if ((androidInfo.version.sdkInt ?? 27) >= 27)
+          interpreter = await _nnapiInterpreter();
+        // otherwise fallback to GPU delegate
+        else interpreter = await _gpuInterpreterAndroid();
+      }
+      // use CPU inference on emulators
+      else interpreter = await _cpuInterpreter();
     }
+    catch (e) {
+      interpreter = await _cpuInterpreter();
+    }
+    this.interpreter = interpreter;
+    print('Interpreter loaded successfully');
   }
 
   Future<void> loadLabels() async {
@@ -64,57 +61,83 @@ abstract class Classifier {
     }
   }
 
-  TensorImage _preProcess() {
-    int cropSize = min(_inputImage.height, _inputImage.width);
+  TensorImage _processImage(Image image) {
+    TensorImage img = TensorImage(TfLiteType.float32);
+    img.loadImage(image);
     return ImageProcessorBuilder()
-        .add(ResizeWithCropOrPadOp(cropSize, cropSize))
-        .add(ResizeOp(_inputShape[1], _inputShape[2], ResizeMethod.NEAREST_NEIGHBOUR))
-        .add(preProcessNormalizeOp)
+        .add(ResizeOp(width, height, ResizeMethod.BILINEAR))
+        .add(NormalizeOp(0, 255))
         .build()
-        .process(_inputImage);
+        .process(img);
   }
 
-  Category predict(Image image) {
-    final pres = DateTime.now().millisecondsSinceEpoch;
-    _inputImage = TensorImage(_inputType);
-    _inputImage.loadImage(image);
-    _inputImage = _preProcess();
-    final pre = DateTime.now().millisecondsSinceEpoch - pres;
+  List<Category> predict(Image image) {
+    //TensorImage im = _processImage(image);
+    var _inputImage = List<List<double>>.generate(height, (i) =>
+        List.generate(width, (j) => 0.0)).reshape<double>([1, height, width, 1]);
 
-    print('Time to load image: $pre ms');
+    for (int x = 0; x < height; x++) {
+      for (int y = 0; y < width; y++) {
+        double val = image[(x * width) + y].toDouble();
+        val = val > 50 ? 1.0 : 0;
+        _inputImage[0][x][y][0] = val;
+      }
+    }
 
-    final runs = DateTime.now().millisecondsSinceEpoch;
-    interpreter.run(_inputImage.buffer, _outputBuffer.getBuffer());
-    final run = DateTime.now().millisecondsSinceEpoch - runs;
+    TensorBuffer outputBuffer = TensorBuffer.createFixedSize(
+      interpreter.getOutputTensor(0).shape,
+      interpreter.getOutputTensor(0).type);
 
-    print('Time to run inference: $run ms');
+    interpreter.run(_inputImage, outputBuffer);
+
+    final probabilityProcessor = TensorProcessorBuilder().build();
 
     Map<String, double> labeledProb = TensorLabel.fromList(
-        labels, _probabilityProcessor.process(_outputBuffer))
+        labels, probabilityProcessor.process(outputBuffer))
         .getMapWithFloatValue();
-    final pred = getTopProbability(labeledProb);
+    print(outputBuffer.getDoubleList());
+    final pred = getProbability(labeledProb).toList();
+    List<Category> categories = [];
 
-    return Category(pred.key, pred.value);
+    for (int x = 0; x < pred.length; x++)
+      categories.add(Category(pred[x].key, pred[x].value));
+
+    return categories;
   }
 
-  void close() {
-    interpreter.close();
+  /// Initializes the interpreter with NPU acceleration for Android.
+  Future<Interpreter> _nnapiInterpreter() async {
+    final options = InterpreterOptions()..useNnApiForAndroid = true;
+    Interpreter i = await Interpreter.fromAsset(modelName, options: options);
+    return i;
   }
+
+  /// Initializes the interpreter with GPU acceleration for Android.
+  Future<Interpreter> _gpuInterpreterAndroid() async {
+    final gpuDelegateV2 = GpuDelegateV2();
+    final options = InterpreterOptions()..addDelegate(gpuDelegateV2);
+    Interpreter i = await Interpreter.fromAsset(modelName, options: options);
+    return i;
+  }
+
+  /// Initializes the interpreter with CPU mode set.
+  Future<Interpreter> _cpuInterpreter() async {
+    final options = InterpreterOptions()..threads = Platform.numberOfProcessors - 1;
+    Interpreter i = await Interpreter.fromAsset(modelName, options: options);
+    return i;
+  }
+
+  close() => interpreter.close();
 }
 
-MapEntry<String, double> getTopProbability(Map<String, double> labeledProb) {
+PriorityQueue<MapEntry<String, double>> getProbability(Map<String, double> labeledProb) {
   var pq = PriorityQueue<MapEntry<String, double>>(compare);
   pq.addAll(labeledProb.entries);
-
-  return pq.first;
+  return pq;
 }
 
 int compare(MapEntry<String, double> e1, MapEntry<String, double> e2) {
-  if (e1.value > e2.value) {
-    return -1;
-  } else if (e1.value == e2.value) {
-    return 0;
-  } else {
-    return 1;
-  }
+  if (e1.value > e2.value) return -1;
+  else if (e1.value == e2.value) return 0;
+  else return 1;
 }

@@ -48,10 +48,11 @@ class _CustomCanvasState extends State<CustomCanvas> {
     final ui.Image img = await picture.toImage(canvasSize.toInt(), canvasSize.toInt());
     final ByteData? byteData = await img.toByteData(format: ui.ImageByteFormat.png);
     if (byteData != null) {
-      im.Image? image = im.decodeImage(byteData.buffer.asUint32List());
-      if (image != null)
+      im.Image? image = im.decodeImage(byteData.buffer.asUint8List());
+      if (image != null) {
         if (widget.handleImage != null) widget.handleImage!(image);
         else print('Function handleImage is null');
+      }
       else print('Image is null');
     }
     else print('ByteData is null');

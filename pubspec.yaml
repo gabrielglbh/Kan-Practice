@@ -39,6 +39,7 @@ dependencies:
 # bash android_tflite.sh to get the jniLibs
   tflite_flutter:
   tflite_flutter_helper:
+  device_info_plus:
 
 flutter_icons:
   android: "launcher_icon"

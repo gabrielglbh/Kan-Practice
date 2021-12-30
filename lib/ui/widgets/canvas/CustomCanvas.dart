@@ -3,7 +3,6 @@ import 'dart:ui' as ui;
 import 'package:image/image.dart' as im;
 import 'package:flutter/material.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
-import 'package:kanpractice/ui/widgets/CustomButton.dart';
 
 import 'kanji_painter.dart';
 
@@ -28,7 +27,7 @@ class _CustomCanvasState extends State<CustomCanvas> {
   /// In charge of keeping the indexes on the widget line for removal
   List<int> _lineIndex = [];
 
-  Future<void> _saveToImage(List<Offset?> points) async {
+  Future<void> _convertCanvasToImage(List<Offset?> points) async {
     final canvasSize = MediaQuery.of(context).size.width;
     final ui.PictureRecorder recorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(recorder, Rect.fromPoints(
@@ -96,18 +95,6 @@ class _CustomCanvasState extends State<CustomCanvas> {
           ),
           _actionIcon(action: () => _undoLine(), icon: Icons.undo_rounded, right: null),
           _actionIcon(action: () => _clear(), icon: Icons.redo_rounded, left: null),
-          Visibility(
-            visible: widget.allowPrediction,
-            child: Positioned(
-              bottom: 0,
-              right: MediaQuery.of(context).size.width / 3,
-              left: MediaQuery.of(context).size.width / 3,
-              child: CustomButton(
-                onTap: () async => await _saveToImage(widget.line),
-                title2: 'Search',
-              )
-            ),
-          )
         ],
       ),
     );
@@ -156,6 +143,7 @@ class _CustomCanvasState extends State<CustomCanvas> {
   }
 
   _onPanEnd(DragEndDetails details) {
+    if (widget.allowPrediction) _convertCanvasToImage(widget.line);
     if (widget.allowEdit) setState(() => widget.line.add(null));
   }
 
@@ -169,5 +157,6 @@ class _CustomCanvasState extends State<CustomCanvas> {
       setState(() => widget.line.removeRange(start, end));
       _lineIndex.removeLast();
     }
+    if (widget.allowPrediction) _convertCanvasToImage(widget.line);
   }
 }

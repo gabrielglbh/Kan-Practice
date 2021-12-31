@@ -10,16 +10,33 @@ import 'package:url_launcher/url_launcher.dart';
 class GeneralUtils {
   /// Returns the color based on the given [winRate]
   static Color getColorBasedOnWinRate(double winRate) {
-    if (winRate >= 0 && winRate <= 0.1) return Colors.redAccent[700]!;
-    else if (winRate > 0.1 && winRate <= 0.2) return Colors.redAccent[200]!;
-    else if (winRate > 0.2 && winRate <= 0.3) return Colors.redAccent[100]!;
+    if (winRate >= 0 && winRate <= 0.1) return Colors.redAccent.shade700;
+    else if (winRate > 0.1 && winRate <= 0.2) return Colors.redAccent.shade200;
+    else if (winRate > 0.2 && winRate <= 0.3) return Colors.redAccent.shade100;
     else if (winRate > 0.3 && winRate <= 0.4) return Colors.yellow;
-    else if (winRate > 0.4 && winRate <= 0.5) return Colors.yellow[400]!;
-    else if (winRate > 0.5 && winRate <= 0.6) return Colors.yellow[300]!;
-    else if (winRate > 0.6 && winRate <= 0.7) return Colors.yellow[200]!;
-    else if (winRate > 0.7 && winRate <= 0.8) return Colors.green[100]!;
-    else if (winRate > 0.8 && winRate <= 0.9) return Colors.green[300]!;
+    else if (winRate > 0.4 && winRate <= 0.5) return Colors.yellow.shade400;
+    else if (winRate > 0.5 && winRate <= 0.6) return Colors.yellow.shade300;
+    else if (winRate > 0.6 && winRate <= 0.7) return Colors.yellow.shade200;
+    else if (winRate > 0.7 && winRate <= 0.8) return Colors.green.shade100;
+    else if (winRate > 0.8 && winRate <= 0.9) return Colors.green.shade300;
     else if (winRate > 0.9 && winRate <= 1) return Colors.green;
+    else return Colors.white;
+  }
+
+  /// Returns the color based on the given [score]
+  static Color getColorBasedOnScore(double score) {
+    if (score >= 0 && score <= 0.2) return Colors.green.shade50;
+    else if (score > 0.2 && score <= 0.4) return Colors.green.shade200;
+    else if (score > 0.4 && score <= 0.6) return Colors.green.shade300;
+    else if (score > 0.6 && score <= 0.8) return Colors.green.shade400;
+    else if (score > 0.8 && score <= 1) return Colors.green;
+    else return Colors.white;
+  }
+
+  /// Returns the text color based on the given [score]
+  static Color getTextColorBasedOnScore(double score) {
+    if (score >= 0 && score <= 0.2) return Colors.black;
+    else if (score > 0.2 && score <= 0.4) return Colors.black;
     else return Colors.white;
   }
 

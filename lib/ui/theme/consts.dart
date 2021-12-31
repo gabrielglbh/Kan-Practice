@@ -27,11 +27,11 @@ class CustomSizes {
   static const double defaultSizeStudyModeSelection = 165;
   static const double maxHeightForListsTest = 240;
   static const double maxHeightValidationCircle = 256;
-  static const double maxHeightBottomSheetDeveloper = 256;
 
   static const double minimumHeight = 700;
 
   static const int numberOfKanjiInTest = 30;
+  static const int numberOfPredictedKanji = 20;
 }
 
 class ChartSize {

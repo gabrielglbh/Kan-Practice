@@ -350,6 +350,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
   Widget _kanjiList(KanjiListDetailStateLoaded state) {
     if (state.list.isEmpty)
       return EmptyList(
+        showTryButton: true,
         onRefresh: () => _addLoadingEvent(),
         message: "list_details_empty".tr()
       );

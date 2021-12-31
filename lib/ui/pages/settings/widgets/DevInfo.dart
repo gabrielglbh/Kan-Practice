@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
@@ -27,96 +26,68 @@ class DevInfo extends StatelessWidget {
           topRight: Radius.circular(CustomRadius.radius16), topLeft: Radius.circular(CustomRadius.radius16))
       ),
       builder: (context) {
-        return Container(
-          height: CustomSizes.maxHeightBottomSheetDeveloper,
-          margin: EdgeInsets.all(Margins.margin16),
-          child: Column(
-            children: [
-              DragContainer(),
-              Align(
-                alignment: Alignment.center,
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: Margins.margin8),
-                  child: Text("developer_info_label".tr(), textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: FontSizes.fontSize24, fontWeight: FontWeight.bold)),
-                )
+        return Wrap(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(Margins.margin8),
+              child: Column(
+                children: [
+                  DragContainer(),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: Margins.margin8),
+                      child: Text("developer_info_label".tr(), textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: FontSizes.fontSize24, fontWeight: FontWeight.bold)),
+                    )
+                  ),
+                  _developer(context)
+                ],
               ),
-              Expanded(child: _developer(context))
-            ],
-          ),
+            ),
+          ],
         );
       }
     );
   }
 
-  Scrollbar _developer(BuildContext context) {
-    return Scrollbar(
-      child: ListView(
-        padding: EdgeInsets.only(top: Margins.margin8),
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Icon(Icons.handyman),
-              Padding(
-                padding: EdgeInsets.only(left: Margins.margin16, top: Margins.margin16, bottom: Margins.margin16),
-                child: Text("Gabriel García", style: TextStyle(fontSize: FontSizes.fontSize14)),
-              )
-            ],
-          ),
-          InkWell(
-            onTap: () {launch("https://github.com/gabrielglbh");},
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Icon(Icons.developer_mode_rounded),
-                Padding(
-                  padding: EdgeInsets.only(left: Margins.margin16, top: Margins.margin16, bottom: Margins.margin16),
-                  child: Text("developer_info_follow".tr(), style: TextStyle(fontSize: FontSizes.fontSize14)),
-                )
-              ],
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Icon(Icons.bug_report),
-              Padding(
-                padding: EdgeInsets.only(left: Margins.margin16, top: Margins.margin16, bottom: Margins.margin16),
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 2,
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(text: "developer_info_report".tr(), style: Theme.of(context).textTheme.bodyText2),
-                        TextSpan(
-                          text: " devgglop@gmail.com",
-                          style: TextStyle(color: Colors.orange[400],
-                              decoration: TextDecoration.underline, fontSize: FontSizes.fontSize14
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () async {
-                              final Uri _emailLaunchUri = Uri(
-                                scheme: 'mailto',
-                                path: 'devgglop@gmail.com',
-                                queryParameters: {
-                                  'subject': "Found a bug on KanPractice!",
-                                }
-                              );
-                              String url = _emailLaunchUri.toString().replaceAll("+", "%20");
-                              if (await canLaunch(url)) await launch(url);
-                              else GeneralUtils.getSnackBar(context, "launch_url_failed".tr());
-                            },
-                        ),
-                      ]
-                    ),
-                  ),
-                )
-              )
-            ],
-          ),
-        ],
-      ),
+  Column _developer(BuildContext context) {
+    return Column(
+      children: [
+        ListTile(
+          title: Text("Gabriel García"),
+          leading: Icon(Icons.handyman),
+        ),
+        ListTile(
+          title: Text("developer_info_follow".tr()),
+          leading: Icon(Icons.developer_mode_rounded),
+          onTap: () async => await launch("https://github.com/gabrielglbh"),
+          trailing: Icon(Icons.link),
+        ),
+        ListTile(
+          title: Text("developer_info_github_issue".tr()),
+          leading: Icon(Icons.bug_report_outlined),
+          onTap: () async => await launch("https://github.com/gabrielglbh/Kan-Practice/issues/new"),
+          trailing: Icon(Icons.link),
+        ),
+        ListTile(
+          title: Text("${"developer_info_report".tr()} devgglop@gmail.com"),
+          leading: Icon(Icons.bug_report_rounded),
+          onTap: () async {
+            final Uri _emailLaunchUri = Uri(
+              scheme: 'mailto',
+              path: 'devgglop@gmail.com',
+              queryParameters: {
+                'subject': "Found a bug on KanPractice!",
+              }
+            );
+            String url = _emailLaunchUri.toString().replaceAll("+", "%20");
+            if (await canLaunch(url)) await launch(url);
+            else GeneralUtils.getSnackBar(context, "launch_url_failed".tr());
+          },
+          trailing: Icon(Icons.mail_outline_rounded),
+        ),
+      ],
     );
   }
 }

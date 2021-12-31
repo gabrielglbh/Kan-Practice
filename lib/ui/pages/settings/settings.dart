@@ -5,6 +5,7 @@ import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/pages/settings/bloc/settings_bloc.dart';
+import 'package:kanpractice/ui/pages/settings/widgets/CopyrightInfo.dart';
 import 'package:kanpractice/ui/pages/settings/widgets/DevInfo.dart';
 import 'package:kanpractice/ui/theme/theme_manager.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
@@ -149,6 +150,12 @@ class _SettingsState extends State<Settings> {
             leading: Icon(Icons.handyman),
             title: Text("settings_information_developer_label".tr()),
             onTap: () => DevInfo.callModalSheet(context)
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.copyright_rounded),
+            title: Text("settings_information_about_label".tr()),
+            onTap: () => CopyrightInfo.callModalSheet(context)
           ),
           Divider(),
           ListTile(

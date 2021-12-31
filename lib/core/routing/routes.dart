@@ -5,7 +5,9 @@ import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/pages/add_kanji/add_kanji.dart';
 import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/pages/backup/backup.dart';
+import 'package:kanpractice/ui/pages/dictionary/dictionary.dart';
 import 'package:kanpractice/ui/pages/firebase_login/login.dart';
+import 'package:kanpractice/ui/pages/jisho/arguments.dart';
 import 'package:kanpractice/ui/pages/jisho/jisho.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/list_details.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/kanji_lists.dart';
@@ -60,7 +62,9 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       bool? args = settings.arguments as bool?;
       return CupertinoPageRoute(builder: (_) => TutorialPage(alreadyShown: args));
     case KanPracticePages.jishoPage:
-      String? args = settings.arguments as String?;
-      return PageTransition(type: PageTransitionType.bottomToTop, child: JishoPage(kanji: args));
+      JishoArguments args = settings.arguments as JishoArguments;
+      return PageTransition(type: PageTransitionType.bottomToTop, child: JishoPage(args: args));
+    case KanPracticePages.dictionaryPage:
+      return CupertinoPageRoute(builder: (_) => DictionaryPage());
   }
 }

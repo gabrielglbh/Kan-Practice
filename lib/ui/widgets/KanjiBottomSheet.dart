@@ -8,6 +8,7 @@ import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
+import 'package:kanpractice/ui/pages/jisho/arguments.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListTile.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
@@ -144,7 +145,8 @@ class KanjiBottomSheet extends StatelessWidget {
                         IconButton(
                           icon: Icon(Icons.menu_book_rounded),
                           onPressed: () {
-                            Navigator.of(context).pushNamed(KanPracticePages.jishoPage, arguments: kanji?.kanji);
+                            Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
+                                arguments: JishoArguments(kanji: kanji?.kanji));
                           },
                         ),
                         Container(

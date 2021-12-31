@@ -22,7 +22,7 @@ class CustomSearchBar extends StatefulWidget {
     this.top = Margins.margin8,
     this.bottom = 0,
     this.left = Margins.margin8,
-    this.right = Margins.margin8
+    this.right = Margins.margin8,
   });
 
   @override

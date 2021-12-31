@@ -15,7 +15,8 @@ class SingleKanjiResult extends StatelessWidget {
   final KanjiResultData? data;
   final List<jisho.JishoResult> phrase;
   final String _separator = " • ";
-  const SingleKanjiResult({required this.data, required this.phrase});
+  final bool fromDictionary;
+  const SingleKanjiResult({required this.data, required this.phrase, required this.fromDictionary});
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +100,7 @@ class SingleKanjiResult extends StatelessWidget {
         needsHeight: false,
         children: [
           JishoHeader(header: header),
-          SingleKanjiLookUpList(kanjiList: data)
+          SingleKanjiLookUpList(kanjiList: data, fromDictionary: fromDictionary)
         ],
       ),
     );

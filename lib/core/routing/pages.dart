@@ -13,4 +13,5 @@ class KanPracticePages {
   static const String testHistoryPage = "/testHistoryPage";
   static const String tutorialPage = "/tutorialPage";
   static const String jishoPage = "/jishoPage";
+  static const String dictionaryPage = "/dictionaryPage";
 }

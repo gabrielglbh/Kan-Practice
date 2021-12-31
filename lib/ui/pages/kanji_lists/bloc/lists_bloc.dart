@@ -6,6 +6,7 @@ import 'package:kanpractice/core/database/queries/list_queries.dart';
 part 'lists_event.dart';
 part 'lists_state.dart';
 
+/// This bloc is used in kanji_lists.dart and jisho.dart
 class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
   KanjiListBloc() : super(KanjiListStateLoading()) {
     on<KanjiListEventLoading>((event, emit) async {

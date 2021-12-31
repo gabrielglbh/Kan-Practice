@@ -6,6 +6,7 @@ import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/jisho/models/jisho_data.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
+import 'package:kanpractice/ui/widgets/CreateKanListDialog.dart';
 import 'package:kanpractice/ui/widgets/DragContainer.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/EmptyList.dart';
@@ -112,7 +113,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
                         return CustomProgressIndicator();
                       else if (state is KanjiListStateLoaded) {
                         return Container(
-                          constraints: BoxConstraints(maxHeight: CustomSizes.maxHeightForListsTest),
+                          constraints: BoxConstraints(maxHeight: CustomSizes.maxHeightForListsTest + Margins.margin64),
                           margin: EdgeInsets.all(8),
                           child: _listSelection(state)
                         );
@@ -128,17 +129,32 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
     );
   }
 
-  ListView _listSelection(KanjiListStateLoaded state) {
-    return ListView.separated(
-      separatorBuilder: (context, index) => Divider(),
-      itemCount: state.lists.length,
-      itemBuilder: (context, index) {
-        String listName = state.lists[index].name;
-        return ListTile(
-          onTap: () async => await _addWordToKanList(context, listName),
-          title: Text(listName),
-        );
-      },
+  Widget _listSelection(KanjiListStateLoaded state) {
+    return Column(
+      children: [
+        ListTile(
+          onTap: () => CreateKanListDialog.showCreateKanListDialog(context, onSubmit: (String name) {
+            _bloc..add(KanjiListEventCreate(name,
+                filter: KanListTableFields.lastUpdatedField, order: false));
+          }),
+          title: Text("Create a new KanList"),
+          leading: Icon(Icons.add),
+        ),
+        Divider(),
+        Expanded(
+          child: ListView.separated(
+            separatorBuilder: (context, index) => Divider(),
+            itemCount: state.lists.length,
+            itemBuilder: (context, index) {
+              String listName = state.lists[index].name;
+              return ListTile(
+                onTap: () async => await _addWordToKanList(context, listName),
+                title: Text(listName),
+              );
+            },
+          ),
+        )
+      ],
     );
   }
 }

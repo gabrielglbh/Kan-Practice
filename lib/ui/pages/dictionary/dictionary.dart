@@ -67,45 +67,47 @@ class _DictionaryPageState extends State<DictionaryPage> {
           )
         ],
       ),
-      body: Column(
-        children: [
-          KanjiSearchBar(
-            hint: "dict_search_bar_hint".tr(),
-            controller: _searchBarTextController
-          ),
-          BlocProvider<DictBloc>(
-            create: (_) => _bloc..add(DictEventIdle()),
-            child: BlocBuilder<DictBloc, DictState>(
-              builder: (context, state) {
-                if (state is  DictStateFailure || state is DictStateLoading)
-                  return Container(height: CustomSizes.defaultSizeFiltersList);
-                else if (state is DictStateLoaded)
-                  return _predictions(state);
-                else
-                  return Container();
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            KanjiSearchBar(
+              hint: "dict_search_bar_hint".tr(),
+              controller: _searchBarTextController
+            ),
+            BlocProvider<DictBloc>(
+              create: (_) => _bloc..add(DictEventIdle()),
+              child: BlocBuilder<DictBloc, DictState>(
+                builder: (context, state) {
+                  if (state is  DictStateFailure || state is DictStateLoading)
+                    return Container(height: CustomSizes.defaultSizeFiltersList);
+                  else if (state is DictStateLoaded)
+                    return _predictions(state);
+                  else
+                    return Container();
+                },
+              ),
+            ),
+            CustomCanvas(
+              line: _line,
+              allowPrediction: true,
+              handleImage: (im.Image image) {
+                _bloc..add(DictEventLoading(image: image));
               },
             ),
-          ),
-          CustomCanvas(
-            line: _line,
-            allowPrediction: true,
-            handleImage: (im.Image image) {
-              _bloc..add(DictEventLoading(image: image));
-            },
-          ),
-          CustomButton(
-            width: MediaQuery.of(context).size.width / 3,
-            onTap: () {
-              String? text = _searchBarTextController?.text;
-              if (text != null && text.isNotEmpty)
-                Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
-                    arguments: JishoArguments(kanji: text, fromDictionary: true));
-              else
-                GeneralUtils.getSnackBar(context, "dict_search_empty".tr());
-            },
-            title2: 'dict_search_button_title'.tr(),
-          )
-        ],
+            CustomButton(
+              width: MediaQuery.of(context).size.width / 3,
+              onTap: () {
+                String? text = _searchBarTextController?.text;
+                if (text != null && text.isNotEmpty)
+                  Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
+                      arguments: JishoArguments(kanji: text, fromDictionary: true));
+                else
+                  GeneralUtils.getSnackBar(context, "dict_search_empty".tr());
+              },
+              title2: 'dict_search_button_title'.tr(),
+            )
+          ],
+        ),
       )
     );
   }

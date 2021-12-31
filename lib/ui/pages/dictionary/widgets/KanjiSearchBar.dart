@@ -92,7 +92,7 @@ class _KanjiSearchBarState extends State<KanjiSearchBar> {
         borderRadius: BorderRadius.circular(CustomRadius.radius32),
         onTap: () {
           String? text = widget.controller?.text;
-          if (text != null)
+          if (text != null && text.length >= 1)
             widget.controller?.text = text.substring(0, text.length - 1);
         },
         child: Icon(Icons.backspace_rounded),

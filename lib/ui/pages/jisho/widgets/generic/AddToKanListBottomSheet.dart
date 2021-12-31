@@ -41,12 +41,12 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
     //print(data.resultPhrase[0].senses[0].englishDefinitions[0]);
     //print(data.resultPhrase[0].japanese[0].reading);
     //print(data.resultData?.meaning.split(", ")[0]);
-    //print(data.resultData?.kunyomi[0]);
+    //print(data.resultData?.onyomi[0]);
 
     String? wordMeaning = widget.data.resultPhrase[0].senses[0].englishDefinitions[0];
     String? wordReading = widget.data.resultPhrase[0].japanese[0].reading ?? "";
     String? singleKanjiMeaning = widget.data.resultData?.meaning.split(", ")[0];
-    String? singleKanjiReading = widget.data.resultData?.kunyomi[0];
+    String? singleKanjiReading = widget.data.resultData?.onyomi[0];
 
     String meaning = singleKanjiMeaning == null ? wordMeaning : singleKanjiMeaning;
     String reading = singleKanjiReading == null ? wordReading : singleKanjiReading;

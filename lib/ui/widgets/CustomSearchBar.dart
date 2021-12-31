@@ -10,24 +10,19 @@ class CustomSearchBar extends StatefulWidget {
   final Function onExitSearch;
   /// Hint text to show on the search bar when not used
   final String hint;
-  /// [TextEditingController] in case the parent widget wants to handle it itself
-  final TextEditingController? controller;
   /// [FocusNode] of the search bar created in the parent widget
   final FocusNode? focus;
   /// Padding to apply to the search bar, defaults to 8
   final double top, bottom, right, left;
-  final bool enabled;
   CustomSearchBar({
     required this.onQuery,
     required this.onExitSearch,
     required this.hint,
     required this.focus,
-    this.controller,
     this.top = Margins.margin8,
     this.bottom = 0,
     this.left = Margins.margin8,
     this.right = Margins.margin8,
-    this.enabled = true
   });
 
   @override
@@ -43,14 +38,13 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
 
   @override
   void initState() {
-    if (widget.controller == null) _controller = TextEditingController();
-    else _controller = widget.controller;
+    _controller = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    if (widget.controller == null) _controller?.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 
@@ -80,7 +74,6 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
         focusNode: widget.focus,
         textCapitalization: TextCapitalization.sentences,
         showCursor: _showCursor,
-        enabled: widget.enabled,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.only(
               top: Margins.margin24, bottom: Margins.margin16,

@@ -4,10 +4,11 @@ import 'package:image/image.dart' as im;
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/pages/dictionary/bloc/dict_bloc.dart';
+import 'package:kanpractice/ui/pages/dictionary/widgets/KanjiSearchBar.dart';
+import 'package:kanpractice/ui/pages/jisho/arguments.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
 import 'package:kanpractice/ui/widgets/CustomButton.dart';
-import 'package:kanpractice/ui/widgets/CustomSearchBar.dart';
 import 'package:kanpractice/ui/widgets/canvas/CustomCanvas.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -68,13 +69,9 @@ class _DictionaryPageState extends State<DictionaryPage> {
       ),
       body: Column(
         children: [
-          CustomSearchBar(
+          KanjiSearchBar(
             hint: "dict_search_bar_hint".tr(),
-            controller: _searchBarTextController,
-            focus: null,
-            onQuery: (String query) {},
-            onExitSearch: () {},
-            enabled: false,
+            controller: _searchBarTextController
           ),
           BlocProvider<DictBloc>(
             create: (_) => _bloc..add(DictEventIdle()),
@@ -101,7 +98,8 @@ class _DictionaryPageState extends State<DictionaryPage> {
             onTap: () {
               String? text = _searchBarTextController?.text;
               if (text != null && text.isNotEmpty)
-                Navigator.of(context).pushNamed(KanPracticePages.jishoPage, arguments: text);
+                Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
+                    arguments: JishoArguments(kanji: text, fromDictionary: true));
               else
                 GeneralUtils.getSnackBar(context, "dict_search_empty".tr());
             },

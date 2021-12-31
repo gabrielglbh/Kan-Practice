@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/routing/pages.dart';
+import 'package:kanpractice/ui/pages/jisho/arguments.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 
 class SingleKanjiLookUpList extends StatelessWidget {
@@ -19,7 +20,8 @@ class SingleKanjiLookUpList extends StatelessWidget {
             child: ActionChip(
               padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
               onPressed: () {
-                Navigator.of(context).pushNamed(KanPracticePages.jishoPage, arguments: kanjiList?[index]);
+                Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
+                    arguments: JishoArguments(kanji: kanjiList?[index]));
               },
               label: Text(kanjiList?[index] ?? ""),
             ),

@@ -23,6 +23,7 @@
   "study_mode_update_handler_popped_title": "¿Quieres salir?",
   "study_mode_update_handler_finished_positive": "Terminar",
   "study_mode_update_handler_popped_positive": "Salir",
+  "add_kanji_createKanji_successful": "Kanji creado en KanList satisfactoriamente",
   "add_kanji_createKanji_failed_insertion": "Error al crear el kanji",
   "add_kanji_createKanji_failed": "Error genérico al creación el kanji",
   "add_kanji_updateKanji_failed_update": "Error al actualizar el kanji",
@@ -212,5 +213,6 @@
   "dict_search_button_title": "Buscar",
   "dict_predictions_most_likely": "Más probable",
   "dict_predictions_less_likely": "Menos probable",
-  "dict_predictions_disclaimer": "La función de búsqueda utiliza algoritmos de Machine Learning y las predicciones pueden no corresponderse con lo que hayas dibujado. Si las predicciones no son acertadas, intenta dibujar el kanji otra vez."
+  "dict_predictions_disclaimer": "La función de búsqueda utiliza algoritmos de Machine Learning y las predicciones pueden no corresponderse con lo que hayas dibujado. Si las predicciones no son acertadas, intenta dibujar el kanji otra vez.",
+  "dict_jisho_add_kanji_bottom_sheet_title": "Selecciona una KanList para añadir la palabra"
 }

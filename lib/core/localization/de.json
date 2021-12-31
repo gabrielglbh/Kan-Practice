@@ -23,6 +23,7 @@
   "study_mode_update_handler_popped_title": "Wirklich beenden?",
   "study_mode_update_handler_finished_positive": "Abschließen",
   "study_mode_update_handler_popped_positive": "Verlassen",
+  "add_kanji_createKanji_successful": "Kanji in KanList erfolgreich erstellt",
   "add_kanji_createKanji_failed_insertion": "Fehler beim Erstellen des Kanji ",
   "add_kanji_createKanji_failed": "Allgemeiner Fehler beim Erstellen des Kanji ",
   "add_kanji_updateKanji_failed_update": "Fehler beim Aktualisieren des Kanji ",
@@ -212,5 +213,6 @@
   "dict_search_button_title": "Suchen",
   "dict_predictions_most_likely": "Höchstwahrscheinlich",
   "dict_predictions_less_likely": "Weniger wahrscheinlich",
-  "dict_predictions_disclaimer": "Die Suchfunktion verwendet Algorithmen des maschinellen Lernens und die Vorhersagen stimmen möglicherweise nicht mit dem überein, was Sie zeichnen. Wenn die Vorhersagen nicht genau sind, versuchen Sie, das Kanji erneut zu zeichnen."
+  "dict_predictions_disclaimer": "Die Suchfunktion verwendet Algorithmen des maschinellen Lernens und die Vorhersagen stimmen möglicherweise nicht mit dem überein, was Sie zeichnen. Wenn die Vorhersagen nicht genau sind, versuchen Sie, das Kanji erneut zu zeichnen.",
+  "dict_jisho_add_kanji_bottom_sheet_title": "Wählen Sie eine KanList, um das Wort hinzuzufügen"
 }

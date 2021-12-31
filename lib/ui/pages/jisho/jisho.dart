@@ -5,6 +5,7 @@ import 'package:kanpractice/ui/pages/jisho/bloc/jisho_bloc.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/ExamplePhrases.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/SingleKanjiResult.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/WordResult.dart';
+import 'package:kanpractice/ui/pages/jisho/widgets/generic/AddToKanListBottomSheet.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomButton.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
@@ -67,7 +68,7 @@ class JishoPage extends StatelessWidget {
                 child: CustomButton(
                   title2: "Add to KanList",
                   onTap: () {
-
+                    AddToKanListBottomSheet.callAddToKanListBottomSheet(context, args.kanji, state.data);
                   },
                 ),
               ),
@@ -81,6 +82,7 @@ class JishoPage extends StatelessWidget {
                 child: SingleKanjiResult(
                   data: state.data.resultData,
                   phrase: state.data.resultPhrase,
+                  fromDictionary: args.fromDictionary,
                 )
               ),
               Visibility(
@@ -88,7 +90,8 @@ class JishoPage extends StatelessWidget {
                 child: WordResult(
                   kanji: args.kanji,
                   data: state.data.resultData,
-                  phrase: state.data.resultPhrase
+                  phrase: state.data.resultPhrase,
+                  fromDictionary: args.fromDictionary,
                 )
               ),
               Visibility(

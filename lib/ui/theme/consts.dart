@@ -31,7 +31,7 @@ class CustomSizes {
   static const double minimumHeight = 700;
 
   static const int numberOfKanjiInTest = 30;
-  static const int numberOfPredictedKanji = 24;
+  static const int numberOfPredictedKanji = 20;
 }
 
 class ChartSize {

@@ -23,10 +23,8 @@ class DictBloc extends Bloc<DictEvent,DictState> {
       try {
         emit(DictStateLoading());
         List<Category> categories = model.predict(event.image);
-        List<String> predictions = [];
         categories = categories.getRange(0, CustomSizes.numberOfPredictedKanji).toList();
-        categories.forEach((cat) => predictions.add(cat.label));
-        emit(DictStateLoaded(predictions));
+        emit(DictStateLoaded(categories));
       } on Exception {
         emit(DictStateFailure());
       }

@@ -235,6 +235,7 @@ class _KanjiListsState extends State<KanjiLists> {
             child: ChoiceChip(
               label: Text(KanListFilters.values[index].label),
               avatar: _getCurrentIndexOfFilter() != index ? null : icon,
+              pressElevation: Margins.margin4,
               padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
               onSelected: (bool selected) => _onFilterSelected(index),
               selected: _getCurrentIndexOfFilter() == index,

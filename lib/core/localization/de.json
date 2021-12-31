@@ -205,5 +205,12 @@
   "remembrance_bottom_sheet_title": "Einen Gedächtnistest durchführen",
   "remembrance_bottom_sheet_content": "Kanji, die Sie schon lange nicht mehr gesehen haben, werden ausgewählt. Machen wir den Gedächtnistest!",
   "remembrance_bottom_sheet_label": "Erinnerung",
-  "image_not_loaded": "Bild kann nicht geladen werden :("
+  "image_not_loaded": "Bild kann nicht geladen werden :(",
+  "dict_title": "Kanji-Wörterbuch",
+  "dict_search_bar_hint": "Zeichne ein Kanji und suche seine Bedeutung",
+  "dict_search_empty": "Zeichnen Sie zuerst ein Kanji",
+  "dict_search_button_title": "Suchen",
+  "dict_predictions_most_likely": "Höchstwahrscheinlich",
+  "dict_predictions_less_likely": "Weniger wahrscheinlich",
+  "dict_predictions_disclaimer": "Die Suchfunktion verwendet Algorithmen des maschinellen Lernens und die Vorhersagen stimmen möglicherweise nicht mit dem überein, was Sie zeichnen. Wenn die Vorhersagen nicht genau sind, versuchen Sie, das Kanji erneut zu zeichnen."
 }

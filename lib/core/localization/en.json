@@ -205,5 +205,12 @@
   "remembrance_bottom_sheet_title": "Make a remembrance test",
   "remembrance_bottom_sheet_content": "kanji that you have not seen for a long time will be selected. Let's take the remembrance test!",
   "remembrance_bottom_sheet_label": "Remembrance",
-  "image_not_loaded": "Could not load image :("
+  "image_not_loaded": "Could not load image :(",
+  "dict_title": "Kanji Dictionary",
+  "dict_search_bar_hint": "Draw a kanji and search its meaning",
+  "dict_search_empty": "Draw a kanji first",
+  "dict_search_button_title": "Search",
+  "dict_predictions_most_likely": "Most likely",
+  "dict_predictions_less_likely": "Less likely",
+  "dict_predictions_disclaimer": "Search function uses Machine Learning algorithms and the predictions may not be aligned with what you draw. If the predictions are not accurate, try drawing the kanji again."
 }

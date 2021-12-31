@@ -10,7 +10,7 @@ class DictState extends Equatable {
 class DictStateLoading extends DictState {}
 
 class DictStateLoaded extends DictState {
-  final List<String> predictions;
+  final List<Category> predictions;
 
   const DictStateLoaded([this.predictions = const []]);
 

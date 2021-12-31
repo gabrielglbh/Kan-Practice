@@ -99,7 +99,7 @@ class JishoPage extends StatelessWidget {
     return Center(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
-        child: Text("jisho_no_match".tr())
+        child: Text("jisho_no_match".tr(), textAlign: TextAlign.center)
       ));
   }
 

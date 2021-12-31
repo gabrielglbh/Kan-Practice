@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image/image.dart' as im;
 import 'package:kanpractice/core/routing/pages.dart';
+import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/pages/dictionary/bloc/dict_bloc.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
 import 'package:kanpractice/ui/widgets/CustomButton.dart';
 import 'package:kanpractice/ui/widgets/CustomSearchBar.dart';
 import 'package:kanpractice/ui/widgets/canvas/CustomCanvas.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class DictionaryPage extends StatefulWidget {
   const DictionaryPage({Key? key}) : super(key: key);
@@ -20,18 +23,33 @@ class _DictionaryPageState extends State<DictionaryPage> {
   List<Offset?> _line = [];
   DictBloc _bloc = DictBloc();
 
-  FocusNode? _searchBarFn;
+  TextEditingController? _searchBarTextController;
 
   @override
   void initState() {
-    _searchBarFn = FocusNode();
+    _searchBarTextController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    _searchBarFn?.dispose();
+    _searchBarTextController?.dispose();
     super.dispose();
+  }
+
+  _showDisclaimerDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return CustomDialog(
+          title: Center(child: Icon(Icons.warning_amber_rounded)),
+          content: Text("dict_predictions_disclaimer".tr()),
+          positiveButtonText: "Ok",
+          negativeButton: false,
+          onPositive: () {}
+        );
+      }
+    );
   }
 
   @override
@@ -39,29 +57,32 @@ class _DictionaryPageState extends State<DictionaryPage> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: CustomSizes.appBarHeight,
-        title: FittedBox(fit: BoxFit.fitWidth, child: Text("Kanji Dictionary")),
+        title: FittedBox(fit: BoxFit.fitWidth, child: Text("dict_title".tr())),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () => _showDisclaimerDialog(),
+            icon: Icon(Icons.info_outline_rounded)
+          )
+        ],
       ),
       body: Column(
         children: [
-          // TODO: Abstract text controller to the caller
           CustomSearchBar(
-            hint: "Search or draw a kanji",
-            focus: _searchBarFn,
-            onQuery: (String query) {
-
-            },
+            hint: "dict_search_bar_hint".tr(),
+            controller: _searchBarTextController,
+            focus: null,
+            onQuery: (String query) {},
             onExitSearch: () {},
+            enabled: false,
           ),
           BlocProvider<DictBloc>(
             create: (_) => _bloc..add(DictEventIdle()),
             child: BlocBuilder<DictBloc, DictState>(
               builder: (context, state) {
-                if (state is  DictStateFailure) {
-                  return Container();
-                } else if (state is DictStateLoading) {
-                  return Container();
-                } else if (state is DictStateLoaded)
+                if (state is  DictStateFailure || state is DictStateLoading)
+                  return Container(height: CustomSizes.defaultSizeFiltersList);
+                else if (state is DictStateLoaded)
                   return _predictions(state);
                 else
                   return Container();
@@ -78,10 +99,13 @@ class _DictionaryPageState extends State<DictionaryPage> {
           CustomButton(
             width: MediaQuery.of(context).size.width / 3,
             onTap: () {
-              // Navigator.of(context).pushNamed(
-              //    KanPracticePages.jishoPage, arguments: kanji)
+              String? text = _searchBarTextController?.text;
+              if (text != null && text.isNotEmpty)
+                Navigator.of(context).pushNamed(KanPracticePages.jishoPage, arguments: text);
+              else
+                GeneralUtils.getSnackBar(context, "dict_search_empty".tr());
             },
-            title2: 'Search',
+            title2: 'dict_search_button_title'.tr(),
           )
         ],
       )
@@ -93,22 +117,44 @@ class _DictionaryPageState extends State<DictionaryPage> {
       height: CustomSizes.defaultSizeFiltersList,
       padding: EdgeInsets.only(bottom: Margins.margin8,
           left: Margins.margin8, right: Margins.margin8),
-      child: ListView.builder(
-        itemCount: state.predictions.length,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          final String kanji = state.predictions[index].substring(0, 1);
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: Margins.margin2),
-            child: ActionChip(
-              label: Text(kanji, style: TextStyle(fontSize: FontSizes.fontSize18)),
-              padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
-              onPressed: () {
-                // TODO: On tap, add the kanji to the textController of the searchBar
-              },
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(child: Text("< ${"dict_predictions_most_likely".tr()}",
+                maxLines: 1, overflow: TextOverflow.ellipsis
+              )),
+              Expanded(child: Text("${"dict_predictions_less_likely".tr()} >",
+                maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.end,
+              ))
+            ],
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: state.predictions.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                final String kanji = state.predictions[index].label.substring(0, 1);
+                final double score = state.predictions[index].score;
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: Margins.margin2),
+                  child: ActionChip(
+                    label: Text(kanji, style: TextStyle(fontSize: FontSizes.fontSize18,
+                      color: GeneralUtils.getTextColorBasedOnScore(score))),
+                    padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
+                    backgroundColor: GeneralUtils.getColorBasedOnScore(score),
+                    pressElevation: Margins.margin2,
+                    onPressed: () {
+                      _searchBarTextController?.text += kanji;
+                      setState(() => _line = []);
+                    }
+                  ),
+                );
+              }
             ),
-          );
-        }
+          )
+        ],
       )
     );
   }

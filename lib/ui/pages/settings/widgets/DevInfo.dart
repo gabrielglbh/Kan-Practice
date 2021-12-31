@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
@@ -55,66 +54,38 @@ class DevInfo extends StatelessWidget {
   Column _developer(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Icon(Icons.handyman),
-            Padding(
-              padding: EdgeInsets.only(left: Margins.margin16, top: Margins.margin16, bottom: Margins.margin16),
-              child: Text("Gabriel García", style: TextStyle(fontSize: FontSizes.fontSize14)),
-            )
-          ],
+        ListTile(
+          title: Text("Gabriel García"),
+          leading: Icon(Icons.handyman),
         ),
-        InkWell(
-          onTap: () {launch("https://github.com/gabrielglbh");},
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Icon(Icons.developer_mode_rounded),
-              Padding(
-                padding: EdgeInsets.only(left: Margins.margin16, top: Margins.margin16, bottom: Margins.margin16),
-                child: Text("developer_info_follow".tr(), style: TextStyle(fontSize: FontSizes.fontSize14)),
-              )
-            ],
-          ),
+        ListTile(
+          title: Text("developer_info_follow".tr()),
+          leading: Icon(Icons.developer_mode_rounded),
+          onTap: () async => await launch("https://github.com/gabrielglbh"),
+          trailing: Icon(Icons.link),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Icon(Icons.bug_report),
-            Padding(
-              padding: EdgeInsets.only(left: Margins.margin16, top: Margins.margin16, bottom: Margins.margin16),
-              child: Container(
-                width: MediaQuery.of(context).size.width / 2,
-                child: RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(text: "developer_info_report".tr(), style: Theme.of(context).textTheme.bodyText2),
-                      TextSpan(
-                        text: " devgglop@gmail.com",
-                        style: TextStyle(color: CustomColors.secondarySubtleColor,
-                            decoration: TextDecoration.underline, fontSize: FontSizes.fontSize14
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () async {
-                            final Uri _emailLaunchUri = Uri(
-                              scheme: 'mailto',
-                              path: 'devgglop@gmail.com',
-                              queryParameters: {
-                                'subject': "Found a bug on KanPractice!",
-                              }
-                            );
-                            String url = _emailLaunchUri.toString().replaceAll("+", "%20");
-                            if (await canLaunch(url)) await launch(url);
-                            else GeneralUtils.getSnackBar(context, "launch_url_failed".tr());
-                          },
-                      ),
-                    ]
-                  ),
-                ),
-              )
-            )
-          ],
+        ListTile(
+          title: Text("developer_info_github_issue".tr()),
+          leading: Icon(Icons.bug_report_outlined),
+          onTap: () async => await launch("https://github.com/gabrielglbh/Kan-Practice/issues/new"),
+          trailing: Icon(Icons.link),
+        ),
+        ListTile(
+          title: Text("${"developer_info_report".tr()} devgglop@gmail.com"),
+          leading: Icon(Icons.bug_report_rounded),
+          onTap: () async {
+            final Uri _emailLaunchUri = Uri(
+              scheme: 'mailto',
+              path: 'devgglop@gmail.com',
+              queryParameters: {
+                'subject': "Found a bug on KanPractice!",
+              }
+            );
+            String url = _emailLaunchUri.toString().replaceAll("+", "%20");
+            if (await canLaunch(url)) await launch(url);
+            else GeneralUtils.getSnackBar(context, "launch_url_failed".tr());
+          },
+          trailing: Icon(Icons.mail_outline_rounded),
         ),
       ],
     );

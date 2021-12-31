@@ -135,6 +135,7 @@
   "developer_info_label": "Info del Desarrollador",
   "developer_info_follow": "@gabrielglbh en GitHub",
   "developer_info_report": "Reportar errores a",
+  "developer_info_github_issue": "Reportar errores mediante GitHub",
   "launch_url_failed": "No se ha podido lanzar el sitio web",
   "settings_title": "Ajustes",
   "settings_general": "General",

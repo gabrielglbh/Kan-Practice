@@ -135,6 +135,7 @@
   "developer_info_label": "Developer Info",
   "developer_info_follow": "@gabrielglbh on GitHub",
   "developer_info_report": "Report bugs to",
+  "developer_info_github_issue": "Report issues through GitHub",
   "launch_url_failed": "Could not launch website",
   "settings_title": "Settings",
   "settings_general": "General",

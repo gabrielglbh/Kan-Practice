@@ -66,7 +66,7 @@ class JishoPage extends StatelessWidget {
               Visibility(
                 visible: args.fromDictionary,
                 child: CustomButton(
-                  title2: "Add to KanList",
+                  title2: "dict_jisho_add_kanji_label".tr(),
                   onTap: () {
                     AddToKanListBottomSheet.callAddToKanListBottomSheet(context, args.kanji, state.data);
                   },

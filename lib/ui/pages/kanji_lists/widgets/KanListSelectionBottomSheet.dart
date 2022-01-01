@@ -116,7 +116,8 @@ class _KanListSelectionBottomSheetState extends State<KanListSelectionBottomShee
                 padding: EdgeInsets.only(right: Margins.margin8),
                 child: ActionChip(
                   label: Text(name),
-                  backgroundColor: _selectedLists.contains(name) ? CustomColors.secondaryColor : CustomColors.secondaryColor,
+                  backgroundColor: _selectedLists.contains(name)
+                      ? CustomColors.secondaryDarkerColor : CustomColors.secondaryColor,
                   onPressed: () {
                     setState(() {
                       if (_selectedLists.contains(name)) _selectedLists.remove(name);

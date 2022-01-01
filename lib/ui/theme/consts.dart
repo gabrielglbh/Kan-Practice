@@ -18,6 +18,7 @@ class CustomSizes {
   static const double listStudyHeight = 85;
   static const double defaultSizeDragContainerWidth = 90;
   static const double defaultSizeButtonHeight = 90;
+  static const double defaultSizeRangesHeight = 90;
   static const double defaultSizeWinRateBarChart = 90;
   static const double alertDialogHeight = 100;
   static const double customButtonWidth = 110;

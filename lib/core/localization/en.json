@@ -209,7 +209,7 @@
   "remembrance_bottom_sheet_content": "kanji that you have not seen for a long time will be selected. Let's take the remembrance test!",
   "remembrance_bottom_sheet_label": "Remembrance",
   "number_bottom_sheet_title": "Make a number test",
-  "number_bottom_sheet_content": "random numbers from 0 to 10 million will be selected to train your listening. Let's take the number test!",
+  "number_bottom_sheet_content": "random numbers from the range or ranges of your choice will be selected to train your listening. Let's take the number test!",
   "number_bottom_sheet_label": "Random Numbers",
   "number_bottom_sheet_begin_ext": "始める",
   "number_bottom_sheet_begin": "Begin",

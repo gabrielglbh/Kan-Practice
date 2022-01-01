@@ -209,7 +209,7 @@
   "remembrance_bottom_sheet_content": "kanji que no hayas visto en mucho tiempo serán seleccionados. ¡Empecemos el test de recuerdo!",
   "remembrance_bottom_sheet_label": "Recuerdo",
   "number_bottom_sheet_title": "Hacer un test de números",
-  "number_bottom_sheet_content": "números aleatorios de 0 a 10 millones serán seleccionados para entrenar tu escucha. ¡Empecemos el test de números!",
+  "number_bottom_sheet_content": "números aleatorios serán seleccionados del rango o rangos que elijas para entrenar tu escucha. ¡Empecemos el test de números!",
   "number_bottom_sheet_label": "Números aleatorios",
   "number_bottom_sheet_begin_ext": "始める",
   "number_bottom_sheet_begin": "Empezar",

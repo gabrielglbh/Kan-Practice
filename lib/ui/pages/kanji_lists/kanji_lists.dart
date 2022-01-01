@@ -123,6 +123,12 @@ class _KanjiListsState extends State<KanjiLists> {
           title: FittedBox(fit: BoxFit.fitWidth, child: Text("KanPractice")),
           actions: [
             IconButton(
+              icon: Icon(Icons.menu_book_rounded),
+              onPressed: () {
+                Navigator.of(context).pushNamed(KanPracticePages.dictionaryPage);
+              },
+            ),
+            IconButton(
               onPressed: () async {
                 await TestBottomSheet.show(context);
               },
@@ -146,26 +152,11 @@ class _KanjiListsState extends State<KanjiLists> {
                 visible: _newVersion.isNotEmpty,
                 child: _updateContainer()
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomSearchBar(
-                      hint: "kanji_lists_searchBar_hint".tr(),
-                      focus: _searchBarFn,
-                      onQuery: (String query) => _bloc..add(KanjiListEventSearching(query)),
-                      onExitSearch: () => _addLoadingEvent(),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: Margins.margin16, left: Margins.margin4),
-                    child: IconButton(
-                      icon: Icon(Icons.menu_book_rounded),
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(KanPracticePages.dictionaryPage);
-                      },
-                    ),
-                  ),
-                ],
+              CustomSearchBar(
+                hint: "kanji_lists_searchBar_hint".tr(),
+                focus: _searchBarFn,
+                onQuery: (String query) => _bloc..add(KanjiListEventSearching(query)),
+                onExitSearch: () => _addLoadingEvent(),
               ),
               _filterChips(),
               _lists()

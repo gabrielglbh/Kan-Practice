@@ -143,6 +143,7 @@
   "settings_general_toggle": "Los resultados de los tests influyen en las prácticas",
   "settings_general_toggle_sub": "Cuando se activa, la puntuación de cualquier palabra en cualquier prueba afectará a la puntuación global de la(s) respectiva(s) KanList",
   "settings_general_testHistory": "Historial de Tests",
+  "settings_general_graphs": "Cambiar modo de visualización de datos",
   "settings_tutorial_label": "Mostrar tutorial",
   "settings_general_versionNotes": "Notas de Versión",
   "settings_account_section": "Gestionar Cuenta",

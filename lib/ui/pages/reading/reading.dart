@@ -148,7 +148,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
   List<Widget> _header() {
     return [
       LearningHeaderContainer(
-        color: CustomColors.secondarySubtleColor,
+        color: CustomColors.secondaryColor,
         height: CustomSizes.defaultSizeLearningExtContainer,
         text: _getProperAlphabet()
       ),

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListTile.dart';
 import 'package:kanpractice/ui/pages/settings/bloc/settings_bloc.dart';
 import 'package:kanpractice/ui/pages/settings/widgets/CopyrightInfo.dart';
 import 'package:kanpractice/ui/pages/settings/widgets/DevInfo.dart';
@@ -23,12 +24,16 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   SettingsBloc _settingsBloc = SettingsBloc();
   ThemeMode _mode = ThemeMode.light;
+  VisualizationMode _graphMode = VisualizationMode.radialChart;
   bool _toggleAffect = false;
 
   @override
   void initState() {
     _mode = ThemeManager.instance.themeMode;
     _toggleAffect = StorageManager.readData(StorageManager.affectOnPractice);
+    _graphMode = VisualizationModeExt.mode(StorageManager.readData(
+        StorageManager.kanListGraphVisualization)
+          ?? VisualizationMode.radialChart);
     super.initState();
   }
 
@@ -95,9 +100,18 @@ class _SettingsState extends State<Settings> {
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.track_changes_rounded, color: CustomColors.secondarySubtleColor),
+            leading: Icon(Icons.track_changes_rounded, color: CustomColors.getSecondaryColor(context)),
             title: Text("settings_general_testHistory".tr()),
             onTap: () async => Navigator.of(context).pushNamed(KanPracticePages.testHistoryPage),
+          ),
+          Divider(),
+          ListTile(
+            leading: _graphMode.icon,
+            title: Text("settings_general_graphs".tr()),
+            onTap: () {
+              setState(() => _graphMode = VisualizationModeExt.toggle(_graphMode));
+              StorageManager.saveData(StorageManager.kanListGraphVisualization, _graphMode.name);
+            }
           ),
           Divider(),
           ListTile(

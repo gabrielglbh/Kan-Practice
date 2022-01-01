@@ -18,6 +18,7 @@ class CustomSizes {
   static const double listStudyHeight = 85;
   static const double defaultSizeDragContainerWidth = 90;
   static const double defaultSizeButtonHeight = 90;
+  static const double defaultSizeRangesHeight = 90;
   static const double defaultSizeWinRateBarChart = 90;
   static const double alertDialogHeight = 100;
   static const double customButtonWidth = 110;
@@ -84,6 +85,10 @@ class CustomAnimations {
 }
 
 class CustomColors {
-  static const Color secondaryColor = Color(0xFFD32F2F);
-  static const Color secondarySubtleColor = Color(0xFFE57373);
+  static Color getSecondaryColor(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.light
+          ? secondaryDarkerColor : secondaryColor;
+
+  static const Color secondaryDarkerColor = Color(0xFFD32F2F);
+  static const Color secondaryColor = Color(0xFFE57373);
 }

@@ -7,7 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/widgets/CustomCachedNetworkImage.dart';
 
 enum TutorialView {
-  kanList, list, details, jisho, practicing, options
+  kanList, dictionary, list, details, jisho, practicing, options
 }
 
 extension TestPagesExt on TutorialView {
@@ -15,6 +15,8 @@ extension TestPagesExt on TutorialView {
     switch (this) {
       case TutorialView.kanList:
         return "tutorial_kanlist".tr();
+      case TutorialView.dictionary:
+        return "tutorial_dictionary".tr();
       case TutorialView.list:
         return "tutorial_lists".tr();
       case TutorialView.details:
@@ -34,6 +36,9 @@ extension TestPagesExt on TutorialView {
       case TutorialView.kanList:
         if (lightMode) return "$_baseUri/tutorial%2Flight%2Fkanlist.png?alt=media";
         else return "$_baseUri/tutorial%2Fdark%2Fkanlist.png?alt=media";
+      case TutorialView.dictionary:
+        if (lightMode) return "$_baseUri/tutorial%2Flight%2Fdictionary.png?alt=media";
+        else return "$_baseUri/tutorial%2Fdark%2Fdictionary.png?alt=media";
       case TutorialView.list:
         if (lightMode) return "$_baseUri/tutorial%2Flight%2Flist.png?alt=media";
         else return "$_baseUri/tutorial%2Fdark%2Flist.png?alt=media";
@@ -82,7 +87,7 @@ class _TutorialPageState extends State<TutorialPage> {
           TextButton(
             onPressed: () => _onEnd(context),
             child: Text(_showSkip ? "tutorial_skip".tr() : "tutorial_done".tr(),
-              style: TextStyle(color: CustomColors.secondarySubtleColor),
+              style: TextStyle(color: CustomColors.secondaryColor),
             )
           )
         ],
@@ -90,14 +95,9 @@ class _TutorialPageState extends State<TutorialPage> {
       body: BulletPageView(
         bullets: TutorialView.values.length,
         onChanged: (newPage) => setState(() => _showSkip = newPage != TutorialView.values.length - 1),
-        pageViewChildren: [
-          _tutorialPage(context, TutorialView.kanList),
-          _tutorialPage(context, TutorialView.list),
-          _tutorialPage(context, TutorialView.details),
-          _tutorialPage(context, TutorialView.jisho),
-          _tutorialPage(context, TutorialView.practicing),
-          _tutorialPage(context, TutorialView.options),
-        ],
+        pageViewChildren: List.generate(TutorialView.values.length, (view) =>
+          _tutorialPage(context, TutorialView.values[view])
+        ),
       )
     );
   }

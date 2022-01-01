@@ -11,10 +11,12 @@ class BlitzBottomSheet extends StatelessWidget {
   /// lesson specifically. If null, all kanji available will be taken into consideration.
   final String? practiceList;
   final bool remembranceTest;
+  /// Creates a blitz test study mode selection bottom sheet for BLITZ and
+  /// REMEMBRANCE tests.
   const BlitzBottomSheet({this.practiceList, this.remembranceTest = false});
 
   /// Creates and calls the [BottomSheet] with the content for a blitz test
-  static Future<String?> callBlitzModeBottomSheet(BuildContext context,
+  static Future<String?> show(BuildContext context,
       {String? practiceList, bool remembranceTest = false}) async {
     return await showModalBottomSheet(
       context: context,

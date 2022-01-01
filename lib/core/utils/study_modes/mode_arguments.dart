@@ -80,6 +80,10 @@ class ModeArguments {
   final bool isTest;
   final StudyModes mode;
   final String listsNames;
+  /// Only used when in listening mode and performing a Number Test.
+  /// Defaults to false.
+  final bool isNumberTest;
 
-  ModeArguments({required this.studyList, required this.isTest, required this.mode, this.listsNames = ""});
+  ModeArguments({required this.studyList, required this.isTest, required this.mode,
+    this.listsNames = "", this.isNumberTest = false});
 }

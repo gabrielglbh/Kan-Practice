@@ -46,7 +46,6 @@ class _KanjiListsState extends State<KanjiLists> {
   /// is applied. This value is then restored upon new session.
   bool _currentAppliedOrder = true;
   bool _searchHasFocus = false;
-  VisualizationMode _graphMode = VisualizationMode.radialChart;
 
   String _newVersion = "";
 
@@ -54,8 +53,6 @@ class _KanjiListsState extends State<KanjiLists> {
   void initState() {
     _searchBarFn = FocusNode();
     _searchBarFn?.addListener(_focusListener);
-    _graphMode = VisualizationModeExt.mode(StorageManager.readData(StorageManager.kanListGraphVisualization)
-        ?? VisualizationMode.radialChart);
     _currentAppliedFilter = StorageManager.readData(StorageManager.filtersOnList)
         ?? KanListTableFields.lastUpdatedField;
     _currentAppliedOrder = StorageManager.readData(StorageManager.orderOnList)
@@ -126,17 +123,16 @@ class _KanjiListsState extends State<KanjiLists> {
           title: FittedBox(fit: BoxFit.fitWidth, child: Text("KanPractice")),
           actions: [
             IconButton(
+              icon: Icon(Icons.menu_book_rounded),
               onPressed: () {
-                setState(() => _graphMode = VisualizationModeExt.toggle(_graphMode));
-                StorageManager.saveData(StorageManager.kanListGraphVisualization, _graphMode.name);
+                Navigator.of(context).pushNamed(KanPracticePages.dictionaryPage);
               },
-              icon: _graphMode.icon,
             ),
             IconButton(
               onPressed: () async {
-                await TestBottomSheet.callTestModeBottomSheet(context);
+                await TestBottomSheet.show(context);
               },
-              icon: Icon(Icons.track_changes_rounded, color: CustomColors.secondarySubtleColor),
+              icon: Icon(Icons.track_changes_rounded, color: CustomColors.getSecondaryColor(context)),
             ),
             IconButton(
               onPressed: () async {
@@ -156,26 +152,11 @@ class _KanjiListsState extends State<KanjiLists> {
                 visible: _newVersion.isNotEmpty,
                 child: _updateContainer()
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomSearchBar(
-                      hint: "kanji_lists_searchBar_hint".tr(),
-                      focus: _searchBarFn,
-                      onQuery: (String query) => _bloc..add(KanjiListEventSearching(query)),
-                      onExitSearch: () => _addLoadingEvent(),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: Margins.margin16, left: Margins.margin4),
-                    child: IconButton(
-                      icon: Icon(Icons.menu_book_rounded),
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(KanPracticePages.dictionaryPage);
-                      },
-                    ),
-                  ),
-                ],
+              CustomSearchBar(
+                hint: "kanji_lists_searchBar_hint".tr(),
+                focus: _searchBarFn,
+                onQuery: (String query) => _bloc..add(KanjiListEventSearching(query)),
+                onExitSearch: () => _addLoadingEvent(),
               ),
               _filterChips(),
               _lists()
@@ -252,7 +233,9 @@ class _KanjiListsState extends State<KanjiLists> {
                     child: KanListTile(
                       item: state.lists[k],
                       onTap: () => _searchBarFn?.unfocus(),
-                      mode: _graphMode,
+                      mode: VisualizationModeExt.mode(StorageManager.readData(
+                          StorageManager.kanListGraphVisualization)
+                            ?? VisualizationMode.radialChart),
                       onRemoval: () => _bloc..add(KanjiListEventDelete(
                         state.lists[k],
                         filter: _currentAppliedFilter,
@@ -276,7 +259,7 @@ class _KanjiListsState extends State<KanjiLists> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(CustomRadius.radius16),
-          color: CustomColors.secondaryColor
+          color: CustomColors.getSecondaryColor(context)
         ),
         padding: EdgeInsets.symmetric(vertical: Margins.margin8),
         margin: EdgeInsets.only(bottom: Margins.margin8, right: Margins.margin32, left: Margins.margin32),

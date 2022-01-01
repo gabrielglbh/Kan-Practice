@@ -129,7 +129,7 @@ class BlitzBottomSheet extends StatelessWidget {
         CustomButton(
           title1: "number_bottom_sheet_begin_ext".tr(),
           title2: "number_bottom_sheet_begin".tr(),
-          width: MediaQuery.of(context).size.width / 4,
+          width: true,
           onTap: () async {
             if (list.isEmpty) {
               Navigator.of(context).pop();

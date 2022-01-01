@@ -129,7 +129,7 @@ class _StudyBottomSheetState extends State<StudyBottomSheet> {
           ),
         ),
         CustomButton(
-          width: CustomSizes.customButtonWidth,
+          width: true,
           title1: "study_bottom_sheet_button_label_ext".tr(),
           title2: "study_bottom_sheet_button_label".tr(),
           onTap: () async {

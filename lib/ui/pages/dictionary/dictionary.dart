@@ -95,7 +95,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
               },
             ),
             CustomButton(
-              width: MediaQuery.of(context).size.width / 3,
+              width: true,
               onTap: () {
                 String? text = _searchBarTextController?.text;
                 if (text != null && text.isNotEmpty)

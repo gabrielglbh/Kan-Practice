@@ -95,7 +95,7 @@ class _SettingsState extends State<Settings> {
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.track_changes_rounded, color: CustomColors.secondarySubtleColor),
+            leading: Icon(Icons.track_changes_rounded, color: CustomColors.getSecondaryColor(context)),
             title: Text("settings_general_testHistory".tr()),
             onTap: () async => Navigator.of(context).pushNamed(KanPracticePages.testHistoryPage),
           ),

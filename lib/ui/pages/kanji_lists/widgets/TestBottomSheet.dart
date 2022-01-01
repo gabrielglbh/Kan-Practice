@@ -109,7 +109,6 @@ class _TestBottomSheetState extends State<TestBottomSheet> {
     return CustomButton(
       icon: mode.icon,
       title2: mode.name,
-      color: CustomColors.secondarySubtleColor,
       onTap: () async {
         switch (mode) {
           case Tests.lists:

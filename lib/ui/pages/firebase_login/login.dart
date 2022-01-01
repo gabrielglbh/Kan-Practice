@@ -202,7 +202,7 @@ class _LoginPageState extends State<LoginPage> {
       padding: EdgeInsets.only(right: Margins.margin16, left: Margins.margin16),
       child: Column(
         children: [
-          Icon(Icons.info_outline_rounded, color: CustomColors.secondaryColor),
+          Icon(Icons.info_outline_rounded, color: CustomColors.getSecondaryColor(context)),
           Padding(
             padding: EdgeInsets.only(top: Margins.margin16, bottom: Margins.margin16),
             child: Text("login_formDisclaimer".tr()),
@@ -233,7 +233,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Padding(
               padding: EdgeInsets.all(Margins.margin16),
               child: Text("${"login_authentication_failed".tr()} ${state.error}",
-                  style: TextStyle(color: CustomColors.secondaryColor)),
+                  style: TextStyle(color: CustomColors.getSecondaryColor(context))),
             ),
           ),
           Padding(
@@ -264,7 +264,7 @@ class _LoginPageState extends State<LoginPage> {
     return Center(
       child: Column(
         children: [
-          Icon(Icons.check_circle_rounded, color: CustomColors.secondaryColor,
+          Icon(Icons.check_circle_rounded, color: CustomColors.getSecondaryColor(context),
               size: CustomSizes.maxHeightValidationCircle),
           Padding(
             padding: EdgeInsets.all(Margins.margin16),
@@ -313,7 +313,7 @@ class _LoginPageState extends State<LoginPage> {
           child: ListTile(
             leading: Icon(Icons.delete),
             title: Text("login_removeAccountDialog_title".tr(),
-                style: TextStyle(color: CustomColors.secondaryColor)),
+                style: TextStyle(color: CustomColors.getSecondaryColor(context))),
             onTap: () => _removeAccountDialog(),
           ),
         ),
@@ -325,7 +325,7 @@ class _LoginPageState extends State<LoginPage> {
     return Center(
       child: Column(
         children: [
-          Icon(Icons.check_circle_rounded, color: CustomColors.secondaryColor,
+          Icon(Icons.check_circle_rounded, color: CustomColors.getSecondaryColor(context),
               size: CustomSizes.maxHeightValidationCircle),
           Padding(
             padding: EdgeInsets.all(Margins.margin16),

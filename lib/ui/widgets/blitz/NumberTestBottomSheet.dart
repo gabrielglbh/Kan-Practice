@@ -9,7 +9,7 @@ import 'package:kanpractice/ui/widgets/DragContainer.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class NumberTestBottomSheet extends StatelessWidget {
+class NumberTestBottomSheet extends StatefulWidget {
   const NumberTestBottomSheet();
 
   /// Creates and calls the [BottomSheet] with the content for a blitz test
@@ -22,10 +22,18 @@ class NumberTestBottomSheet extends StatelessWidget {
     );
   }
 
+  @override
+  _NumberTestBottomSheetState createState() => _NumberTestBottomSheetState();
+}
+
+class _NumberTestBottomSheetState extends State<NumberTestBottomSheet> {
+  double _max = 1000000;
+  double _value = 1000000;
+
   Future<List<Kanji>> _loadBlitzTest() async {
     final _random = Random();
     return List.generate(CustomSizes.numberOfKanjiInTest, (n) {
-      String num = _random.nextInt(10000001).toString();
+      String num = _random.nextInt(_value.toInt() + 1).toString();
       return Kanji(kanji: num, pronunciation: num, meaning: num, listName: "Numbers");
     });
   }
@@ -53,6 +61,11 @@ class NumberTestBottomSheet extends StatelessWidget {
                     "${"number_bottom_sheet_content".tr()}",
                     textAlign: TextAlign.center,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize16)),
+                ),
+                Slider(
+                  value: _value,
+                  max: _max,
+                  onChanged: (newValue) => setState(() => _value = newValue)
                 ),
                 FutureBuilder<List<Kanji>>(
                   future: _loadBlitzTest(),

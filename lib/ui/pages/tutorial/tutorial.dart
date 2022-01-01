@@ -82,7 +82,7 @@ class _TutorialPageState extends State<TutorialPage> {
           TextButton(
             onPressed: () => _onEnd(context),
             child: Text(_showSkip ? "tutorial_skip".tr() : "tutorial_done".tr(),
-              style: TextStyle(color: CustomColors.secondarySubtleColor),
+              style: TextStyle(color: CustomColors.secondaryColor),
             )
           )
         ],

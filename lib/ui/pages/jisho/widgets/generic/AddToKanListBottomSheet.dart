@@ -91,7 +91,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
                     padding: EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin32),
                     child: Text(_error, textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold,
-                          color: CustomColors.secondarySubtleColor, fontSize: FontSizes.fontSize16)
+                          color: CustomColors.secondaryColor, fontSize: FontSizes.fontSize16)
                     ),
                   ),
                 ),

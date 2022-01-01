@@ -136,7 +136,7 @@ class _KanjiListsState extends State<KanjiLists> {
               onPressed: () async {
                 await TestBottomSheet.show(context);
               },
-              icon: Icon(Icons.track_changes_rounded, color: CustomColors.secondarySubtleColor),
+              icon: Icon(Icons.track_changes_rounded, color: CustomColors.getSecondaryColor(context)),
             ),
             IconButton(
               onPressed: () async {
@@ -276,7 +276,7 @@ class _KanjiListsState extends State<KanjiLists> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(CustomRadius.radius16),
-          color: CustomColors.secondaryColor
+          color: CustomColors.getSecondaryColor(context)
         ),
         padding: EdgeInsets.symmetric(vertical: Margins.margin8),
         margin: EdgeInsets.only(bottom: Margins.margin8, right: Margins.margin32, left: Margins.margin32),

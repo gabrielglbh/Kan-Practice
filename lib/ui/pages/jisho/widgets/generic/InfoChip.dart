@@ -31,7 +31,7 @@ extension ChipTypeExt on ChipType {
       case ChipType.unknown:
         return Colors.blueAccent.shade100;
       case ChipType.jlpt:
-        return CustomColors.secondarySubtleColor;
+        return CustomColors.secondaryColor;
       case ChipType.stroke:
         return Colors.orangeAccent.shade200;
     }

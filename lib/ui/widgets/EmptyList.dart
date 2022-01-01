@@ -24,7 +24,7 @@ class EmptyList extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 5),
             child: CustomButton(
               title2: "load_failed_try_again_button_label".tr(),
-              color: CustomColors.secondarySubtleColor,
+              color: CustomColors.secondaryColor,
               onTap: onRefresh
             ),
           ),

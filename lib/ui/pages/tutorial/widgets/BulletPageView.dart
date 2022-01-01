@@ -57,7 +57,7 @@ class _BulletPageViewState extends State<BulletPageView> {
         width: Margins.margin16, height: Margins.margin16,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: _selectedPage == i ? CustomColors.secondaryColor : CustomColors.secondaryColor
+          color: _selectedPage == i ? CustomColors.secondaryDarkerColor : CustomColors.secondaryColor
         ),
       ),
     );

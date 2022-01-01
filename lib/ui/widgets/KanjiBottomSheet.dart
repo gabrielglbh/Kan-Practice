@@ -30,7 +30,7 @@ class KanjiBottomSheet extends StatelessWidget {
 
   /// Creates and calls the [BottomSheet] with the content for displaying the data
   /// of the current selected kanji
-  static Future<String?> callKanjiModeBottomSheet(BuildContext context,
+  static Future<String?> show(BuildContext context,
       String listName, Kanji? kanji, {Function()? onRemove, Function()? onTap}) async {
     return await showModalBottomSheet(
       context: context,

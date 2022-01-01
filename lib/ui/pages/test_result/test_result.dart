@@ -126,7 +126,7 @@ class TestResult extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.all(Radius.circular(CustomRadius.radius8)),
           onTap: () async {
-            await KanjiBottomSheet.callKanjiModeBottomSheet(context,
+            await KanjiBottomSheet.show(context,
                 (kanji?.listName ?? ""), kanji);
           },
           // _createDialogForDeletingKanji(context, kanji.kanji),,

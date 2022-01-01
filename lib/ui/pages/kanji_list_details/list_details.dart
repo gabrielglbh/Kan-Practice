@@ -10,7 +10,7 @@ import 'package:kanpractice/ui/pages/kanji_list_details/widgets/kanji_item.dart'
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
-import 'package:kanpractice/ui/widgets/BlitzBottomSheet.dart';
+import 'package:kanpractice/ui/widgets/blitz/BlitzBottomSheet.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
 import 'package:kanpractice/ui/widgets/CustomButton.dart';
 import 'package:kanpractice/ui/widgets/CustomSearchBar.dart';
@@ -278,7 +278,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
           }),
         ),
         IconButton(
-          onPressed: () async => await BlitzBottomSheet.callBlitzModeBottomSheet(
+          onPressed: () async => await BlitzBottomSheet.show(
               context, practiceList: _listName
           ),
           icon: Icon(Icons.flash_on_rounded),

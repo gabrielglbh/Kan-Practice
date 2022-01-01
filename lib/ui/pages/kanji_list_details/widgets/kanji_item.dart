@@ -84,7 +84,7 @@ class _KanjiItemState extends State<KanjiItem> {
           borderRadius: BorderRadius.all(Radius.circular(CustomRadius.radius8)),
           onTap: () async {
             widget.onShowModal();
-            await KanjiBottomSheet.callKanjiModeBottomSheet(context,
+            await KanjiBottomSheet.show(context,
                 widget.listName, widget.kanji, onTap: widget.onTap, onRemove: widget.onRemoval);
           },
           // _createDialogForDeletingKanji(context, kanji.kanji),,

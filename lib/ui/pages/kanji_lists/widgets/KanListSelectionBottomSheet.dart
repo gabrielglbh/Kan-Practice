@@ -12,24 +12,24 @@ import 'package:kanpractice/ui/widgets/EmptyList.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class StudyBottomSheet extends StatefulWidget {
-  const StudyBottomSheet();
+class KanListSelectionBottomSheet extends StatefulWidget {
+  const KanListSelectionBottomSheet();
 
   @override
-  _StudyBottomSheetState createState() => _StudyBottomSheetState();
+  _KanListSelectionBottomSheetState createState() => _KanListSelectionBottomSheetState();
 
   /// Creates and calls the [BottomSheet] with the content for a regular test
-  static Future<String?> callStudyModeBottomSheet(BuildContext context) async {
+  static Future<String?> show(BuildContext context) async {
     return await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => StudyBottomSheet()
+      builder: (context) => KanListSelectionBottomSheet()
     );
   }
 }
 
-class _StudyBottomSheetState extends State<StudyBottomSheet> {
+class _KanListSelectionBottomSheetState extends State<KanListSelectionBottomSheet> {
   KanjiListBloc _bloc = KanjiListBloc();
   List<Kanji> _kanji = [];
   List<String> _selectedLists = [];

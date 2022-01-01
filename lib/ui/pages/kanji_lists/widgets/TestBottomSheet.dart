@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/ui/pages/kanji_lists/widgets/StudyBottomSheet.dart';
-import 'package:kanpractice/ui/widgets/BlitzBottomSheet.dart';
+import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListSelectionBottomSheet.dart';
+import 'package:kanpractice/ui/widgets/blitz/BlitzBottomSheet.dart';
 import 'package:kanpractice/ui/widgets/DragContainer.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomButton.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/ui/widgets/blitz/NumberTestBottomSheet.dart';
 
 enum Tests {
   lists, blitz, time, numbers
@@ -45,7 +46,7 @@ class TestBottomSheet extends StatefulWidget {
   _TestBottomSheetState createState() => _TestBottomSheetState();
 
   /// Creates and calls the [BottomSheet] with the content for a regular test
-  static Future<String?> callTestModeBottomSheet(BuildContext context) async {
+  static Future<String?> show(BuildContext context) async {
     return await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -112,16 +113,16 @@ class _TestBottomSheetState extends State<TestBottomSheet> {
       onTap: () async {
         switch (mode) {
           case Tests.lists:
-            await StudyBottomSheet.callStudyModeBottomSheet(context);
+            await KanListSelectionBottomSheet.show(context);
             break;
           case Tests.blitz:
-            await BlitzBottomSheet.callBlitzModeBottomSheet(context);
+            await BlitzBottomSheet.show(context);
             break;
           case Tests.time:
-            await BlitzBottomSheet.callBlitzModeBottomSheet(context, remembranceTest: true);
+            await BlitzBottomSheet.show(context, remembranceTest: true);
             break;
           case Tests.numbers:
-            await BlitzBottomSheet.callBlitzModeBottomSheet(context, numberTest: true);
+            await NumberTestBottomSheet.show(context);
             break;
         }
       }

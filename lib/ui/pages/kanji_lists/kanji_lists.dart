@@ -134,7 +134,7 @@ class _KanjiListsState extends State<KanjiLists> {
             ),
             IconButton(
               onPressed: () async {
-                await TestBottomSheet.callTestModeBottomSheet(context);
+                await TestBottomSheet.show(context);
               },
               icon: Icon(Icons.track_changes_rounded, color: CustomColors.secondarySubtleColor),
             ),

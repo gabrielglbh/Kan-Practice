@@ -47,14 +47,18 @@ class StudyModeUpdateHandler {
             /// If the user went through all the test, get the testScore (no-context score)
             /// and go to the test page.
             else if (isTestFinished) {
-              if (StorageManager.readData(StorageManager.affectOnPractice) ?? false) {
-                await _updateScoreForTestsAffectingPractice(args);
+              Map<String, List<Map<Kanji, double>>>? _studyList;
+              /// If the test was a number test, just go to the result page with
+              /// a null study list to not show anything.
+              if (!args.isNumberTest) {
+                if (StorageManager.readData(StorageManager.affectOnPractice) ?? false)
+                  await _updateScoreForTestsAffectingPractice(args);
+                _studyList = _getMapOfKanjiInTest(args.studyList, testScores);
               }
               Navigator.of(context).pushReplacementNamed(KanPracticePages.testResultPage, arguments:
-                TestResultArguments(score: testScore, kanji: args.studyList.length,
-                    studyMode: args.mode.map, listsName: args.listsNames,
-                    studyList: _getMapOfKanjiInTest(args.studyList, testScores))
-              );
+              TestResultArguments(score: testScore, kanji: args.studyList.length,
+                  studyMode: args.mode.map, listsName: args.listsNames,
+                  studyList: _studyList));
             }
             /// If the user went back in mid list, update the list accordingly
             /// keeping in mind that the score of the last kanji should be 0.5.

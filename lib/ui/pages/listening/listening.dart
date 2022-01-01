@@ -67,18 +67,24 @@ class _ListeningStudyState extends State<ListeningStudy> {
   }
 
   Future<int> _calculateKanjiScore(double score) async {
-    /// Updates the dateLastShown attribute of the finished word
-    await KanjiQueries.instance.updateKanji(widget.args.studyList[_macro].listName,
-        widget.args.studyList[_macro].kanji, {
-          KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds()
-        });
-    /// Add the current virgin score to the test scores...
-    if (widget.args.isTest) {
-      if (StorageManager.readData(StorageManager.affectOnPractice) ?? false)
-        await StudyModeUpdateHandler.calculateScore(widget.args, score, _macro);
+    if (widget.args.isNumberTest) {
+      /// If we are on a Number Test, just add the _testScores as the used numbers
+      /// are not stored in the Database
       _testScores.add(score);
+    } else {
+      /// Updates the dateLastShown attribute of the finished word
+      await KanjiQueries.instance.updateKanji(widget.args.studyList[_macro].listName,
+          widget.args.studyList[_macro].kanji, {
+            KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds()
+          });
+      /// Add the current virgin score to the test scores...
+      if (widget.args.isTest) {
+        if (StorageManager.readData(StorageManager.affectOnPractice) ?? false)
+          await StudyModeUpdateHandler.calculateScore(widget.args, score, _macro);
+        _testScores.add(score);
+      }
+      else await StudyModeUpdateHandler.calculateScore(widget.args, score, _macro);
     }
-    else await StudyModeUpdateHandler.calculateScore(widget.args, score, _macro);
     return 0;
   }
 

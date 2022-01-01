@@ -47,10 +47,15 @@ class TestResult extends StatelessWidget {
                 style: TextStyle(fontSize: FontSizes.fontSize16),
               ),
             ),
-            Expanded(child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
-              child: _kanjiOnTest(),
-            )),
+            Visibility(
+              visible: args.studyList != null,
+              child: Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
+                  child: _kanjiOnTest(),
+                ),
+              )
+            ),
             ActionButton(
               label: "test_result_save_button_label".tr(),
               vertical: Margins.margin16,
@@ -69,15 +74,15 @@ class TestResult extends StatelessWidget {
 
   Widget _kanjiOnTest() {
     return ListView.builder(
-      itemCount: args.studyList.keys.toList().length,
+      itemCount: args.studyList?.keys.toList().length,
       itemBuilder: (context, index) {
-        String? listName = args.studyList.keys.toList()[index];
+        String? listName = args.studyList?.keys.toList()[index];
         return Row(
           children: [
             Container(
               width: MediaQuery.of(context).size.width / 3.5,
               child: Text(
-                "(${args.studyList[listName]?.length}) $listName:",
+                "(${args.studyList?[listName]?.length}) $listName:",
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize16)
               ),
@@ -87,10 +92,10 @@ class TestResult extends StatelessWidget {
                 height: CustomSizes.defaultResultKanjiListOnTest,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: args.studyList[listName]?.length,
+                  itemCount: args.studyList?[listName]?.length,
                   itemBuilder: (context, inner) {
-                    Kanji? kanji = args.studyList[listName]?[inner].keys.first;
-                    double? testScore = args.studyList[listName]?[inner].values.first;
+                    Kanji? kanji = args.studyList?[listName]?[inner].keys.first;
+                    double? testScore = args.studyList?[listName]?[inner].values.first;
                     return _kanjiElement(context, kanji, testScore);
                   },
                 ),

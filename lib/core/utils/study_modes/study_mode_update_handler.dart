@@ -47,14 +47,18 @@ class StudyModeUpdateHandler {
             /// If the user went through all the test, get the testScore (no-context score)
             /// and go to the test page.
             else if (isTestFinished) {
-              if (StorageManager.readData(StorageManager.affectOnPractice) ?? false) {
-                await _updateScoreForTestsAffectingPractice(args);
+              Map<String, List<Map<Kanji, double>>>? _studyList;
+              /// If the test was a number test, just go to the result page with
+              /// a null study list to not show anything.
+              if (!args.isNumberTest) {
+                if (StorageManager.readData(StorageManager.affectOnPractice) ?? false)
+                  await _updateScoreForTestsAffectingPractice(args);
+                _studyList = _getMapOfKanjiInTest(args.studyList, testScores);
               }
               Navigator.of(context).pushReplacementNamed(KanPracticePages.testResultPage, arguments:
-                TestResultArguments(score: testScore, kanji: args.studyList.length,
-                    studyMode: args.mode.map, listsName: args.listsNames,
-                    studyList: _getMapOfKanjiInTest(args.studyList, testScores))
-              );
+              TestResultArguments(score: testScore, kanji: args.studyList.length,
+                  studyMode: args.mode.map, listsName: args.listsNames,
+                  studyList: _studyList));
             }
             /// If the user went back in mid list, update the list accordingly
             /// keeping in mind that the score of the last kanji should be 0.5.
@@ -104,6 +108,11 @@ class StudyModeUpdateHandler {
         if (args.studyList[index].winRateRecognition == DatabaseConstants.emptyWinRate) actualScore = score;
         else actualScore =  (score + args.studyList[index].winRateRecognition) / 2;
         toUpdate = { KanjiTableFields.winRateRecognitionField: actualScore };
+        break;
+      case StudyModes.listening:
+        if (args.studyList[index].winRateListening == DatabaseConstants.emptyWinRate) actualScore = score;
+        else actualScore =  (score + args.studyList[index].winRateListening) / 2;
+        toUpdate = { KanjiTableFields.winRateListeningField: actualScore };
         break;
     }
     return await KanjiQueries.instance.updateKanji(args.studyList[index].listName,
@@ -159,6 +168,10 @@ class StudyModeUpdateHandler {
             if (k.winRateRecognition != DatabaseConstants.emptyWinRate)
               overallScore[kanListName] = (overallScore[kanListName] ?? 0) + k.winRateRecognition;
             break;
+          case StudyModes.listening:
+            if (k.winRateListening != DatabaseConstants.emptyWinRate)
+              overallScore[kanListName] = (overallScore[kanListName] ?? 0) + k.winRateListening;
+            break;
         }
       });
       /// For each list, update its overall rating after getting the overall score
@@ -185,6 +198,10 @@ class StudyModeUpdateHandler {
         case StudyModes.recognition:
           if (k.winRateRecognition != DatabaseConstants.emptyWinRate)
             overallScore += k.winRateRecognition;
+          break;
+        case StudyModes.listening:
+          if (k.winRateListening != DatabaseConstants.emptyWinRate)
+            overallScore += k.winRateListening;
           break;
       }
     });
@@ -216,6 +233,11 @@ class StudyModeUpdateHandler {
         if (list.totalWinRateRecognition == DatabaseConstants.emptyWinRate) actualOverall = overall;
         else actualOverall = (overall + list.totalWinRateRecognition) / 2;
         toUpdate = { KanListTableFields.totalWinRateRecognitionField: actualOverall };
+        break;
+      case StudyModes.listening:
+        if (list.totalWinRateListening == DatabaseConstants.emptyWinRate) actualOverall = overall;
+        else actualOverall = (overall + list.totalWinRateListening) / 2;
+        toUpdate = { KanListTableFields.totalWinRateListeningField: actualOverall };
         break;
     }
     await ListQueries.instance.updateList(

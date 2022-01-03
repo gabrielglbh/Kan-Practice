@@ -12,8 +12,8 @@ class ListPercentageIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return LinearPercentIndicator(
       percent: value,
-      backgroundColor: CustomColors.secondarySubtleColor,
-      progressColor: CustomColors.secondaryColor,
+      backgroundColor: CustomColors.secondaryColor,
+      progressColor: CustomColors.secondaryDarkerColor,
       lineHeight: 30,
       animation: true,
       animationDuration: 1000,

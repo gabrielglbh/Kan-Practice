@@ -44,14 +44,26 @@ class TestStudyMode extends StatelessWidget {
             ),
           ),
           Container(
-            height: CustomSizes.defaultSizeButtonHeight,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _modeBasedButtons(context, StudyModes.writing),
-                _modeBasedButtons(context, StudyModes.reading),
-                _modeBasedButtons(context, StudyModes.recognition)
-              ],
+            height: CustomSizes.defaultSizeStudyModeSelection,
+            padding: EdgeInsets.symmetric(horizontal: Margins.margin32),
+            child: GridView.builder(
+              itemCount: StudyModes.values.length,
+              physics: NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, childAspectRatio: 1.9
+              ),
+              itemBuilder: (context, index) {
+                switch (StudyModes.values[index]) {
+                  case StudyModes.writing:
+                    return _modeBasedButtons(context, StudyModes.writing);
+                  case StudyModes.reading:
+                    return _modeBasedButtons(context, StudyModes.reading);
+                  case StudyModes.recognition:
+                    return _modeBasedButtons(context, StudyModes.recognition);
+                  case StudyModes.listening:
+                    return _modeBasedButtons(context, StudyModes.listening);
+                }
+              },
             ),
           ),
           Padding(
@@ -64,7 +76,7 @@ class TestStudyMode extends StatelessWidget {
     );
   }
 
-  CustomButton _modeBasedButtons(BuildContext context, StudyModes mode) {
+  Widget _modeBasedButtons(BuildContext context, StudyModes mode) {
     return CustomButton(
       title1: mode.japMode,
       title2: mode.mode,
@@ -90,6 +102,10 @@ class TestStudyMode extends StatelessWidget {
               break;
             case StudyModes.recognition:
               await Navigator.of(context).pushNamed(KanPracticePages.recognitionStudyPage,
+                  arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+              break;
+            case StudyModes.listening:
+              await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
                   arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
               break;
           }

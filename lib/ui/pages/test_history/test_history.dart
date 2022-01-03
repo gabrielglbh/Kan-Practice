@@ -81,13 +81,7 @@ class _TestHistoryState extends State<TestHistory> {
       itemCount: state.list.length,
       itemBuilder: (context, k) {
         Test t = state.list[k];
-        Color chartColor = CustomColors.secondaryColor;
         StudyModes mode = StudyModesUtil.mapStudyMode(t.studyMode);
-
-        if (mode == StudyModes.writing) chartColor = StudyModes.writing.color;
-        else if (mode == StudyModes.reading) chartColor = StudyModes.reading.color;
-        else if (mode == StudyModes.recognition) chartColor = StudyModes.recognition.color;
-
         return Card(
           margin: EdgeInsets.all(Margins.margin8),
           elevation: 8,
@@ -107,8 +101,8 @@ class _TestHistoryState extends State<TestHistory> {
                 )
               ],
             ),
-            leading: WinRateChart(title: "", winRate: t.testScore,
-                rateSize: ChartSize.small, chartColor: chartColor),
+            leading: WinRateChart(winRate: t.testScore,
+                rateSize: ChartSize.small, backgroundColor: mode.color),
           ),
         );
       }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-enum StudyModes { writing, reading, recognition }
+enum StudyModes { writing, reading, recognition, listening }
 
 extension StudyModesExt on StudyModes {
   String get mode {
@@ -13,6 +13,8 @@ extension StudyModesExt on StudyModes {
         return "study_modes_reading".tr();
       case StudyModes.recognition:
         return "study_modes_recognition".tr();
+      case StudyModes.listening:
+        return "study_modes_listening".tr();
     }
   }
 
@@ -24,17 +26,21 @@ extension StudyModesExt on StudyModes {
         return "study_modes_reading_ext".tr();
       case StudyModes.recognition:
         return "study_modes_recognition_ext".tr();
+      case StudyModes.listening:
+        return "study_modes_listening_ext".tr();
     }
   }
 
   Color get color {
     switch(this) {
       case StudyModes.writing:
-        return Colors.blue[300]!;
+        return Colors.blue.shade300;
       case StudyModes.reading:
-        return Colors.purple[300]!;
+        return Colors.purple.shade300;
       case StudyModes.recognition:
-        return Colors.orange[300]!;
+        return Colors.orange.shade300;
+      case StudyModes.listening:
+        return Colors.green.shade300;
     }
   }
 
@@ -46,13 +52,15 @@ extension StudyModesExt on StudyModes {
         return 1;
       case StudyModes.recognition:
         return 2;
+      case StudyModes.listening:
+        return 3;
     }
   }
 }
 
 class StudyModesUtil {
   /// Maps the integer received from the source to a StudyModes. Based on [map]
-  static mapStudyMode(int map) {
+  static StudyModes mapStudyMode(int map) {
     switch(map) {
       case 0:
         return StudyModes.writing;
@@ -60,6 +68,9 @@ class StudyModesUtil {
         return StudyModes.reading;
       case 2:
         return StudyModes.recognition;
+      case 3:
+      default:
+        return StudyModes.listening;
     }
   }
 }
@@ -69,6 +80,10 @@ class ModeArguments {
   final bool isTest;
   final StudyModes mode;
   final String listsNames;
+  /// Only used when in listening mode and performing a Number Test.
+  /// Defaults to false.
+  final bool isNumberTest;
 
-  ModeArguments({required this.studyList, required this.isTest, required this.mode, this.listsNames = ""});
+  ModeArguments({required this.studyList, required this.isTest, required this.mode,
+    this.listsNames = "", this.isNumberTest = false});
 }

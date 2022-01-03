@@ -1,7 +1,7 @@
 name: kanpractice
 description: A Flutter project to learn and study the different kanjis.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 1.1.0+4
+version: 1.2.0+5
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -36,6 +36,10 @@ dependencies:
   unofficial_jisho_api:
   page_transition:
   cached_network_image:
+# bash android_tflite.sh to get the jniLibs
+  tflite_flutter:
+  tflite_flutter_helper:
+  device_info_plus:
 
 flutter_icons:
   android: "launcher_icon"
@@ -54,3 +58,4 @@ flutter:
   assets:
     - assets/icon/icon.png
     - lib/core/localization/
+    - assets/model/

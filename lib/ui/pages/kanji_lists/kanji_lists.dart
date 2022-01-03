@@ -8,12 +8,11 @@ import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/filters.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/TestBottomSheet.dart';
+import 'package:kanpractice/ui/widgets/CreateKanListDialog.dart';
 import 'package:kanpractice/ui/widgets/CustomSearchBar.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListTile.dart';
 import 'package:kanpractice/ui/widgets/EmptyList.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
-import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
-import 'package:kanpractice/ui/widgets/CustomTextForm.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
 import 'package:package_info/package_info.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -38,7 +37,8 @@ class _KanjiListsState extends State<KanjiLists> {
     KanListTableFields.lastUpdatedField: true,
     KanListTableFields.totalWinRateWritingField: false,
     KanListTableFields.totalWinRateReadingField: false,
-    KanListTableFields.totalWinRateRecognitionField: false
+    KanListTableFields.totalWinRateRecognitionField: false,
+    KanListTableFields.totalWinRateListeningField: false
   };
 
   /// This variable keeps track of the order applied on the current filter only:
@@ -53,8 +53,10 @@ class _KanjiListsState extends State<KanjiLists> {
   void initState() {
     _searchBarFn = FocusNode();
     _searchBarFn?.addListener(_focusListener);
-    _currentAppliedFilter = StorageManager.readData(StorageManager.filtersOnList) ?? KanListTableFields.lastUpdatedField;
-    _currentAppliedOrder = StorageManager.readData(StorageManager.orderOnList) ?? true;
+    _currentAppliedFilter = StorageManager.readData(StorageManager.filtersOnList)
+        ?? KanListTableFields.lastUpdatedField;
+    _currentAppliedOrder = StorageManager.readData(StorageManager.orderOnList)
+        ?? true;
     _getVersionNotice();
     super.initState();
   }
@@ -73,32 +75,6 @@ class _KanjiListsState extends State<KanjiLists> {
   }
 
   _focusListener() => setState(() => _searchHasFocus = (_searchBarFn?.hasFocus ?? false));
-
-  _createDialogForAddingKanList() {
-    TextEditingController controller = TextEditingController();
-    FocusNode focusNode = FocusNode();
-    showDialog(
-      context: context,
-      builder: (context) => CustomDialog(
-        title: Text("kanji_lists_createDialogForAddingKanList_title".tr()),
-        content: CustomTextForm(
-          header: "kanji_lists_createDialogForAddingKanList_header".tr(),
-          controller: controller,
-          action: TextInputAction.done,
-          hint: "kanji_lists_createDialogForAddingKanList_hint".tr(),
-          autofocus: true,
-          onSubmitted: (name) {
-            _addCreateEvent(name);
-            Navigator.of(context).pop();
-          },
-          focusNode: focusNode,
-          onEditingComplete: () => focusNode.unfocus(),
-        ),
-        positiveButtonText: "kanji_lists_createDialogForAddingKanList_positive".tr(),
-        onPositive: () => _addCreateEvent(controller.text),
-      )
-    );
-  }
 
   _addLoadingEvent() => _bloc..add(KanjiListEventLoading(
       filter: _currentAppliedFilter, order: _currentAppliedOrder));
@@ -147,10 +123,16 @@ class _KanjiListsState extends State<KanjiLists> {
           title: FittedBox(fit: BoxFit.fitWidth, child: Text("KanPractice")),
           actions: [
             IconButton(
-              onPressed: () async {
-                await TestBottomSheet.callTestModeBottomSheet(context);
+              icon: Icon(Icons.menu_book_rounded),
+              onPressed: () {
+                Navigator.of(context).pushNamed(KanPracticePages.dictionaryPage);
               },
-              icon: Icon(Icons.track_changes_rounded, color: CustomColors.secondarySubtleColor),
+            ),
+            IconButton(
+              onPressed: () async {
+                await TestBottomSheet.show(context);
+              },
+              icon: Icon(Icons.track_changes_rounded, color: CustomColors.getSecondaryColor(context)),
             ),
             IconButton(
               onPressed: () async {
@@ -182,7 +164,8 @@ class _KanjiListsState extends State<KanjiLists> {
           )
         ),
         floatingActionButton: _searchHasFocus ? null : FloatingActionButton(
-          onPressed: () => _createDialogForAddingKanList(),
+          onPressed: () => CreateKanListDialog.showCreateKanListDialog(context,
+              onSubmit: (String name) => _addCreateEvent(name)),
           child: Icon(Icons.add, color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black),
         ),
       ),
@@ -207,6 +190,7 @@ class _KanjiListsState extends State<KanjiLists> {
             child: ChoiceChip(
               label: Text(KanListFilters.values[index].label),
               avatar: _getCurrentIndexOfFilter() != index ? null : icon,
+              pressElevation: Margins.margin4,
               padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
               onSelected: (bool selected) => _onFilterSelected(index),
               selected: _getCurrentIndexOfFilter() == index,
@@ -233,28 +217,35 @@ class _KanjiListsState extends State<KanjiLists> {
               ? Expanded(child:
             EmptyList(
               onRefresh: () => _addLoadingEvent(),
+              showTryButton: true,
               message: "kanji_lists_empty".tr())
           )
               : Expanded(
-            child: ListView.builder(
-              key: PageStorageKey<String>('kanListListsController'),
-              itemCount: state.lists.length,
-              padding: EdgeInsets.only(bottom: CustomSizes.extraPaddingForFAB),
-              itemBuilder: (context, k) {
-                return Card(
-                  margin: EdgeInsets.all(Margins.margin8),
-                  child: KanListTile(
-                    item: state.lists[k],
-                    onTap: () => _searchBarFn?.unfocus(),
-                    onRemoval: () => _bloc..add(KanjiListEventDelete(
-                      state.lists[k],
-                      filter: _currentAppliedFilter,
-                      order: _currentAppliedOrder
-                    )),
-                    onPopWhenTapped: () => _addLoadingEvent()
-                  ),
-                );
-              }
+            child: RefreshIndicator(
+              onRefresh: () => _addLoadingEvent(),
+              child: ListView.builder(
+                key: PageStorageKey<String>('kanListListsController'),
+                itemCount: state.lists.length,
+                padding: EdgeInsets.only(bottom: CustomSizes.extraPaddingForFAB),
+                itemBuilder: (context, k) {
+                  return Card(
+                    margin: EdgeInsets.all(Margins.margin8),
+                    child: KanListTile(
+                      item: state.lists[k],
+                      onTap: () => _searchBarFn?.unfocus(),
+                      mode: VisualizationModeExt.mode(StorageManager.readData(
+                          StorageManager.kanListGraphVisualization)
+                            ?? VisualizationMode.radialChart),
+                      onRemoval: () => _bloc..add(KanjiListEventDelete(
+                        state.lists[k],
+                        filter: _currentAppliedFilter,
+                        order: _currentAppliedOrder
+                      )),
+                      onPopWhenTapped: () => _addLoadingEvent()
+                    ),
+                  );
+                }
+              ),
             ),
           );
         else return Container();
@@ -268,7 +259,7 @@ class _KanjiListsState extends State<KanjiLists> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(CustomRadius.radius16),
-          color: CustomColors.secondaryColor
+          color: CustomColors.getSecondaryColor(context)
         ),
         padding: EdgeInsets.symmetric(vertical: Margins.margin8),
         margin: EdgeInsets.only(bottom: Margins.margin8, right: Margins.margin32, left: Margins.margin32),

@@ -1,7 +1,7 @@
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-enum KanListFilters { all, writing, reading, recognition }
+enum KanListFilters { all, writing, reading, recognition, listening }
 
 extension KanListFiltersExtensions on KanListFilters {
   String get label {
@@ -9,11 +9,13 @@ extension KanListFiltersExtensions on KanListFilters {
       case KanListFilters.all:
         return "filters_all".tr();
       case KanListFilters.writing:
-        return "filters_writing".tr();
+        return "${"study_modes_writing".tr()} %";
       case KanListFilters.reading:
-        return "filters_reading".tr();
+        return "${"study_modes_reading".tr()} %";
       case KanListFilters.recognition:
-        return "filters_recognition".tr();
+        return "${"study_modes_recognition".tr()} %";
+      case KanListFilters.listening:
+        return "${"study_modes_listening".tr()} %";
     }
   }
 
@@ -25,8 +27,9 @@ extension KanListFiltersExtensions on KanListFilters {
         return KanListTableFields.totalWinRateReadingField;
       case KanListFilters.recognition:
         return KanListTableFields.totalWinRateRecognitionField;
+      case KanListFilters.listening:
+        return KanListTableFields.totalWinRateListeningField;
       case KanListFilters.all:
-      default:
         return KanListTableFields.lastUpdatedField;
     }
   }

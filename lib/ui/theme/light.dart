@@ -43,7 +43,7 @@ final ThemeData light = ThemeData(
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(CustomColors.secondaryColor),
+        backgroundColor: MaterialStateProperty.all<Color>(CustomColors.secondaryDarkerColor),
         shape: MaterialStateProperty.all<OutlinedBorder>(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(CustomRadius.radius8))),
       ),
@@ -59,7 +59,7 @@ final ThemeData light = ThemeData(
         contentTextStyle: TextStyle(color: _accent)
     ),
     textSelectionTheme: TextSelectionThemeData(
-        cursorColor: CustomColors.secondaryColor
+        cursorColor: CustomColors.secondaryDarkerColor
     ),
     inputDecorationTheme: InputDecorationTheme(
         hintStyle: TextStyle(color: Colors.grey[400]),
@@ -69,7 +69,7 @@ final ThemeData light = ThemeData(
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(CustomRadius.radius24)),
-          borderSide: BorderSide(color: CustomColors.secondaryColor, width: 2.0),
+          borderSide: BorderSide(color: CustomColors.secondaryDarkerColor, width: 2.0),
         )
     ),
     bottomSheetTheme: BottomSheetThemeData(
@@ -83,7 +83,7 @@ final ThemeData light = ThemeData(
     ),
     dialogBackgroundColor: _primary,
     chipTheme: ChipThemeData(
-        selectedColor: CustomColors.secondaryColor,
+        selectedColor: CustomColors.secondaryDarkerColor,
         secondaryLabelStyle: TextStyle(color: _primary),
         brightness: Brightness.light,
         backgroundColor: _chipColor,
@@ -97,7 +97,7 @@ final ThemeData light = ThemeData(
         labelStyle: TextStyle(fontSize: FontSizes.fontSize18, fontWeight: FontWeight.bold),
         indicator: ShapeDecoration(
           shape: UnderlineInputBorder(
-              borderSide: BorderSide(color: CustomColors.secondarySubtleColor,
+              borderSide: BorderSide(color: CustomColors.secondaryDarkerColor,
                   width: 2, style: BorderStyle.solid)),
         )
     )

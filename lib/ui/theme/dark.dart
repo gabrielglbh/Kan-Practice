@@ -97,7 +97,7 @@ final ThemeData dark = ThemeData(
         labelStyle: TextStyle(fontSize: FontSizes.fontSize18, fontWeight: FontWeight.bold),
         indicator: ShapeDecoration(
           shape: UnderlineInputBorder(
-              borderSide: BorderSide(color: CustomColors.secondarySubtleColor,
+              borderSide: BorderSide(color: CustomColors.secondaryColor,
                   width: 2, style: BorderStyle.solid)),
         )
     )

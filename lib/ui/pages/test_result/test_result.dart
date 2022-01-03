@@ -3,6 +3,7 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/test_queries.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/pages/test_result/arguments.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/ActionButton.dart';
@@ -31,8 +32,8 @@ class TestResult extends StatelessWidget {
               style: TextStyle(fontSize: FontSizes.fontSize32),
             ),
             WinRateChart(
-              title: "",
               winRate: args.score,
+              backgroundColor: StudyModesUtil.mapStudyMode(args.studyMode).color,
               size: MediaQuery.of(context).size.width / 2.5,
               rateSize: ChartSize.medium,
             ),
@@ -46,10 +47,15 @@ class TestResult extends StatelessWidget {
                 style: TextStyle(fontSize: FontSizes.fontSize16),
               ),
             ),
-            Expanded(child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
-              child: _kanjiOnTest(),
-            )),
+            Visibility(
+              visible: args.studyList != null,
+              child: Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
+                  child: _kanjiOnTest(),
+                ),
+              )
+            ),
             ActionButton(
               label: "test_result_save_button_label".tr(),
               vertical: Margins.margin16,
@@ -68,15 +74,15 @@ class TestResult extends StatelessWidget {
 
   Widget _kanjiOnTest() {
     return ListView.builder(
-      itemCount: args.studyList.keys.toList().length,
+      itemCount: args.studyList?.keys.toList().length,
       itemBuilder: (context, index) {
-        String? listName = args.studyList.keys.toList()[index];
+        String? listName = args.studyList?.keys.toList()[index];
         return Row(
           children: [
             Container(
-              width: MediaQuery.of(context).size.width / 4,
+              width: MediaQuery.of(context).size.width / 3.5,
               child: Text(
-                "$listName:",
+                "(${args.studyList?[listName]?.length}) $listName:",
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize16)
               ),
@@ -86,10 +92,10 @@ class TestResult extends StatelessWidget {
                 height: CustomSizes.defaultResultKanjiListOnTest,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: args.studyList[listName]?.length,
+                  itemCount: args.studyList?[listName]?.length,
                   itemBuilder: (context, inner) {
-                    Kanji? kanji = args.studyList[listName]?[inner].keys.first;
-                    double? testScore = args.studyList[listName]?[inner].values.first;
+                    Kanji? kanji = args.studyList?[listName]?[inner].keys.first;
+                    double? testScore = args.studyList?[listName]?[inner].values.first;
                     return _kanjiElement(context, kanji, testScore);
                   },
                 ),
@@ -120,7 +126,7 @@ class TestResult extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.all(Radius.circular(CustomRadius.radius8)),
           onTap: () async {
-            await KanjiBottomSheet.callKanjiModeBottomSheet(context,
+            await KanjiBottomSheet.show(context,
                 (kanji?.listName ?? ""), kanji);
           },
           // _createDialogForDeletingKanji(context, kanji.kanji),,

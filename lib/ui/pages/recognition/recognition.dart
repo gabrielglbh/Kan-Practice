@@ -137,7 +137,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
   List<Widget> _header() {
     return [
       LearningHeaderContainer(
-        height: CustomSizes.defaultSizeLearningExtContainer,
+        height: CustomSizes.defaultSizeLearningExtContainer + Margins.margin8,
         text: _getProperPronunciation()
       ),
       LearningHeaderContainer(
@@ -148,7 +148,8 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
       LearningHeaderContainer(
         height: CustomSizes.defaultSizeLearningExtContainer,
         text: _getProperMeaning(),
-        top: Margins.margin8
+        top: Margins.margin8,
+        fontWeight: FontWeight.bold,
       ),
     ];
   }

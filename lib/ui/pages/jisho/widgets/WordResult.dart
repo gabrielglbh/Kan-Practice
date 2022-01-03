@@ -14,7 +14,10 @@ class WordResult extends StatelessWidget {
   final jisho.KanjiResultData? data;
   final List<jisho.JishoResult> phrase;
   final String _separator = " • ";
-  const WordResult({required this.kanji, required this.data, required this.phrase});
+  final bool fromDictionary;
+  const WordResult({required this.kanji, required this.data, required this.phrase,
+    required this.fromDictionary
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +64,7 @@ class WordResult extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 JishoHeader(header: "jisho_phraseData_search_individually".tr()),
-                SingleKanjiLookUpList(kanjiList: kanji?.split(""))
+                SingleKanjiLookUpList(kanjiList: kanji?.split(""), fromDictionary: fromDictionary)
               ],
             ),
           )

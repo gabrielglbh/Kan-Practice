@@ -44,14 +44,14 @@ class BackUpPage extends StatelessWidget {
                     ListTile(
                       leading: Icon(Icons.delete),
                       title: Text("backup_removal_tile".tr(),
-                          style: TextStyle(color: CustomColors.secondaryColor)),
+                          style: TextStyle(color: CustomColors.getSecondaryColor(context))),
                       onTap: () => _createDialogForRemovingBackUp(context),
                     ),
                     Divider(),
                     Visibility(
                       visible: state.message != "",
                       child: ListTile(
-                        leading: Icon(Icons.info_rounded, color: CustomColors.secondaryColor),
+                        leading: Icon(Icons.info_rounded, color: CustomColors.getSecondaryColor(context)),
                         title: Text(state.message)
                       ),
                     )

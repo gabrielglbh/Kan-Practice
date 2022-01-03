@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
@@ -209,35 +208,21 @@ class StudyModeUpdateHandler {
   }
 
   static Future<void> _updateList(double overall, ModeArguments args, {String? kanListName}) async {
-    double actualOverall = 0;
     Map<String, dynamic> toUpdate = {};
-    KanjiList list = await ListQueries.instance.getList(
-        kanListName != null ? kanListName : args.studyList[0].listName);
-
-    /// If totalWinRate of list is -1, it means that the user has not studied this
-    /// list yet. Therefore, the score should be untouched.
-    /// If the totalWinRate is different than -1, the user has already studied the list
-    /// and then, a mean is calculated between the upcoming score and the previous one.
+    /// We just need to update the totalWinRate as a reflection of the already
+    /// meaned out words in the KanList
     switch (args.mode) {
       case StudyModes.writing:
-        if (list.totalWinRateWriting == DatabaseConstants.emptyWinRate) actualOverall = overall;
-        else actualOverall = (overall + list.totalWinRateWriting) / 2;
-        toUpdate = { KanListTableFields.totalWinRateWritingField: actualOverall };
+        toUpdate = { KanListTableFields.totalWinRateWritingField: overall };
         break;
       case StudyModes.reading:
-        if (list.totalWinRateReading == DatabaseConstants.emptyWinRate) actualOverall = overall;
-        else actualOverall = (overall + list.totalWinRateReading) / 2;
-        toUpdate = { KanListTableFields.totalWinRateReadingField: actualOverall };
+        toUpdate = { KanListTableFields.totalWinRateReadingField: overall };
         break;
       case StudyModes.recognition:
-        if (list.totalWinRateRecognition == DatabaseConstants.emptyWinRate) actualOverall = overall;
-        else actualOverall = (overall + list.totalWinRateRecognition) / 2;
-        toUpdate = { KanListTableFields.totalWinRateRecognitionField: actualOverall };
+        toUpdate = { KanListTableFields.totalWinRateRecognitionField: overall };
         break;
       case StudyModes.listening:
-        if (list.totalWinRateListening == DatabaseConstants.emptyWinRate) actualOverall = overall;
-        else actualOverall = (overall + list.totalWinRateListening) / 2;
-        toUpdate = { KanListTableFields.totalWinRateListeningField: actualOverall };
+        toUpdate = { KanListTableFields.totalWinRateListeningField: overall };
         break;
     }
     await ListQueries.instance.updateList(

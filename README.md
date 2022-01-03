@@ -14,6 +14,7 @@ Build your own word or sentences lists and study them whenever you want.
 
 <p align="center">
   <img src="documentation/kanlist.png" width="20%">
+  <img src="documentation/dictionary.png" width="20%">
   <img src="documentation/lists.png" width="20%">
   <img src="documentation/details.png" width="20%">
 </p>

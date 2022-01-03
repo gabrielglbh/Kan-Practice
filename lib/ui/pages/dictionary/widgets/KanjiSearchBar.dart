@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 
 class KanjiSearchBar extends StatefulWidget {
@@ -9,9 +8,13 @@ class KanjiSearchBar extends StatefulWidget {
   final double top, bottom, right, left;
   /// Controller for the text field
   final TextEditingController? controller;
+  final Function() onClear;
+  final Function() onRemoveLast;
   KanjiSearchBar({
     required this.hint,
     required this.controller,
+    required this.onClear,
+    required this.onRemoveLast,
     this.top = Margins.margin8,
     this.bottom = 0,
     this.left = Margins.margin8,
@@ -90,11 +93,7 @@ class _KanjiSearchBarState extends State<KanjiSearchBar> {
       height: CustomSizes.defaultSizeSearchBarIcons,
       child: InkWell(
         borderRadius: BorderRadius.circular(CustomRadius.radius32),
-        onTap: () {
-          String? text = widget.controller?.text;
-          if (text != null && text.length >= 1)
-            widget.controller?.text = text.substring(0, text.length - 1);
-        },
+        onTap: () => widget.onRemoveLast(),
         child: Icon(Icons.backspace_rounded),
       )
     );
@@ -106,7 +105,7 @@ class _KanjiSearchBarState extends State<KanjiSearchBar> {
       height: CustomSizes.defaultSizeSearchBarIcons,
       child: InkWell(
         borderRadius: BorderRadius.circular(CustomRadius.radius32),
-        onTap: () => widget.controller?.clear(),
+        onTap: () => widget.onClear(),
         child: Icon(Icons.clear),
       )
     );

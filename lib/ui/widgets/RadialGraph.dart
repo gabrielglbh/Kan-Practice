@@ -44,6 +44,11 @@ class RadialGraph extends StatelessWidget {
                 case StudyModes.listening:
                   rate = rateListening; break;
               }
+              String pct = GeneralUtils.getFixedDouble(rate*100);
+              bool isRounded = pct.substring(3) == "00" // XX.00%
+                  || pct.substring(2) == "00" // X.00%
+                  || pct.substring(4) == "00"; // XXX.00%
+
               return Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -77,7 +82,7 @@ class RadialGraph extends StatelessWidget {
                           child: FittedBox(
                             fit: BoxFit.contain,
                             child: Text(rate != DatabaseConstants.emptyWinRate
-                                ? "${GeneralUtils.getFixedDouble(rate*100)}%" : "0%",
+                                ? "${isRounded ? pct.substring(0, pct.length - 3) : pct}%" : "0%",
                               style: TextStyle(fontWeight: FontWeight.bold,
                                   color: Theme.of(context).brightness == Brightness.light
                                       ? Colors.black87 : Colors.white

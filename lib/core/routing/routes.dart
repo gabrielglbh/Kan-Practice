@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/pages/add_kanji/add_kanji.dart';

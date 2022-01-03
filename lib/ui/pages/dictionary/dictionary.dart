@@ -72,7 +72,45 @@ class _DictionaryPageState extends State<DictionaryPage> {
           children: [
             KanjiSearchBar(
               hint: "dict_search_bar_hint".tr(),
-              controller: _searchBarTextController
+              controller: _searchBarTextController,
+              onClear: () => setState(() => _searchBarTextController?.clear()),
+              onRemoveLast: () {
+                String? text = _searchBarTextController?.text;
+                if (text != null && text.length >= 1)
+                  setState(() {
+                    _searchBarTextController?.text = text.substring(0, text.length - 1);
+                  });
+              }
+            ),
+            Visibility(
+              visible: _searchBarTextController?.text != ""
+                  || _searchBarTextController?.text.isNotEmpty == true,
+              child: CustomButton(
+                width: true,
+                onTap: () {
+                  String? text = _searchBarTextController?.text;
+                  if (text != null && text.isNotEmpty)
+                    Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
+                        arguments: JishoArguments(kanji: text, fromDictionary: true));
+                  else
+                    GeneralUtils.getSnackBar(context, "dict_search_empty".tr());
+                },
+                title2: 'dict_search_button_title'.tr(),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(child: Text("< ${"dict_predictions_most_likely".tr()}",
+                      maxLines: 1, overflow: TextOverflow.ellipsis
+                  )),
+                  Expanded(child: Text("${"dict_predictions_less_likely".tr()} >",
+                    maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.end,
+                  ))
+                ],
+              ),
             ),
             BlocProvider<DictBloc>(
               create: (_) => _bloc..add(DictEventIdle()),
@@ -94,18 +132,6 @@ class _DictionaryPageState extends State<DictionaryPage> {
                 _bloc..add(DictEventLoading(image: image));
               },
             ),
-            CustomButton(
-              width: true,
-              onTap: () {
-                String? text = _searchBarTextController?.text;
-                if (text != null && text.isNotEmpty)
-                  Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
-                      arguments: JishoArguments(kanji: text, fromDictionary: true));
-                else
-                  GeneralUtils.getSnackBar(context, "dict_search_empty".tr());
-              },
-              title2: 'dict_search_button_title'.tr(),
-            )
           ],
         ),
       )
@@ -115,46 +141,28 @@ class _DictionaryPageState extends State<DictionaryPage> {
   Container _predictions(DictStateLoaded state) {
     return Container(
       height: CustomSizes.defaultSizeFiltersList,
-      padding: EdgeInsets.only(bottom: Margins.margin8,
-          left: Margins.margin8, right: Margins.margin8),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(child: Text("< ${"dict_predictions_most_likely".tr()}",
-                maxLines: 1, overflow: TextOverflow.ellipsis
-              )),
-              Expanded(child: Text("${"dict_predictions_less_likely".tr()} >",
-                maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.end,
-              ))
-            ],
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: state.predictions.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                final String kanji = state.predictions[index].label.substring(0, 1);
-                final double score = state.predictions[index].score;
-                return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: Margins.margin2),
-                  child: ActionChip(
-                    label: Text(kanji, style: TextStyle(fontSize: FontSizes.fontSize18,
-                      color: GeneralUtils.getTextColorBasedOnScore(score))),
-                    padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
-                    backgroundColor: GeneralUtils.getColorBasedOnScore(score),
-                    pressElevation: Margins.margin2,
-                    onPressed: () {
-                      _searchBarTextController?.text += kanji;
-                      setState(() => _line = []);
-                    }
-                  ),
-                );
+      padding: EdgeInsets.only(left: Margins.margin8, right: Margins.margin8),
+      child: ListView.builder(
+        itemCount: state.predictions.length,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          final String kanji = state.predictions[index].label.substring(0, 1);
+          final double score = state.predictions[index].score;
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: Margins.margin2),
+            child: ActionChip(
+              label: Text(kanji, style: TextStyle(fontSize: FontSizes.fontSize18,
+                color: GeneralUtils.getTextColorBasedOnScore(score))),
+              padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
+              backgroundColor: GeneralUtils.getColorBasedOnScore(score),
+              pressElevation: Margins.margin2,
+              onPressed: () {
+                _searchBarTextController?.text += kanji;
+                setState(() => _line = []);
               }
             ),
-          )
-        ],
+          );
+        }
       )
     );
   }

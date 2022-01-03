@@ -22,7 +22,7 @@ class LearningHeaderContainer extends StatelessWidget {
       height: height,
       padding: EdgeInsets.symmetric(
         horizontal: horizontal == null
-            ? MediaQuery.of(context).size.width / 4 : horizontal!
+            ? MediaQuery.of(context).size.width / 8 : horizontal!
       ),
       margin: EdgeInsets.only(top: top),
       child: FittedBox(

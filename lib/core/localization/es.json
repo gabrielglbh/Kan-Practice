@@ -224,5 +224,6 @@
   "dict_predictions_less_likely": "Menos probable",
   "dict_predictions_disclaimer": "La función de búsqueda utiliza algoritmos de Machine Learning y las predicciones pueden no corresponderse con lo que hayas dibujado. Si las predicciones no son acertadas, intenta dibujar el kanji otra vez.",
   "dict_jisho_add_kanji_bottom_sheet_title": "Selecciona una KanList para añadir la palabra",
-  "dict_jisho_add_kanji_label": "Añadir a KanList"
+  "dict_jisho_add_kanji_label": "Añadir a KanList",
+  "dict_add_kanji_title": "Dibujar palabra"
 }

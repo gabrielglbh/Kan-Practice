@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image/image.dart' as im;
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
 import 'package:kanpractice/ui/pages/dictionary/bloc/dict_bloc.dart';
 import 'package:kanpractice/ui/pages/dictionary/widgets/KanjiSearchBar.dart';
 import 'package:kanpractice/ui/pages/jisho/arguments.dart';
@@ -13,7 +14,8 @@ import 'package:kanpractice/ui/widgets/canvas/CustomCanvas.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class DictionaryPage extends StatefulWidget {
-  const DictionaryPage({Key? key}) : super(key: key);
+  final DictionaryArguments args;
+  const DictionaryPage({required this.args});
 
   @override
   _DictionaryPageState createState() => _DictionaryPageState();
@@ -29,6 +31,8 @@ class _DictionaryPageState extends State<DictionaryPage> {
   @override
   void initState() {
     _searchBarTextController = TextEditingController();
+    String? word = widget.args.word;
+    if (word != null) _searchBarTextController?.text = word;
     super.initState();
   }
 
@@ -58,7 +62,9 @@ class _DictionaryPageState extends State<DictionaryPage> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: CustomSizes.appBarHeight,
-        title: FittedBox(fit: BoxFit.fitWidth, child: Text("dict_title".tr())),
+        title: FittedBox(fit: BoxFit.fitWidth, child: Text(
+          widget.args.searchInJisho ? "dict_title".tr() : 'dict_add_kanji_title'.tr()
+        )),
         centerTitle: true,
         actions: [
           IconButton(
@@ -71,7 +77,8 @@ class _DictionaryPageState extends State<DictionaryPage> {
         child: Column(
           children: [
             KanjiSearchBar(
-              hint: "dict_search_bar_hint".tr(),
+              hint: widget.args.searchInJisho
+                  ? "dict_search_bar_hint".tr() : "add_kanji_textForm_kanji_ext".tr(),
               controller: _searchBarTextController,
               onClear: () => setState(() => _searchBarTextController?.clear()),
               onRemoveLast: () {
@@ -89,13 +96,21 @@ class _DictionaryPageState extends State<DictionaryPage> {
                 width: true,
                 onTap: () {
                   String? text = _searchBarTextController?.text;
-                  if (text != null && text.isNotEmpty)
-                    Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
-                        arguments: JishoArguments(kanji: text, fromDictionary: true));
-                  else
+                  if (text != null && text.isNotEmpty) {
+                    /// If the user is searching for words, redirect them to Jisho
+                    /// If the user is adding words, pop and send the predicted word back
+                    if (widget.args.searchInJisho) {
+                      Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
+                          arguments: JishoArguments(kanji: text, fromDictionary: true));
+                    } else {
+                      Navigator.of(context).pop(text);
+                    }
+                  } else
                     GeneralUtils.getSnackBar(context, "dict_search_empty".tr());
                 },
-                title2: 'dict_search_button_title'.tr(),
+                title2: widget.args.searchInJisho
+                    ? 'dict_search_button_title'.tr()
+                    : 'done_button_label'.tr(),
               ),
             ),
             Padding(

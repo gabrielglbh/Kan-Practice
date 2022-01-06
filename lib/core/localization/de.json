@@ -224,5 +224,6 @@
   "dict_predictions_less_likely": "Weniger wahrscheinlich",
   "dict_predictions_disclaimer": "Die Suchfunktion verwendet Algorithmen des maschinellen Lernens und die Vorhersagen stimmen möglicherweise nicht mit dem überein, was Sie zeichnen. Wenn die Vorhersagen nicht genau sind, versuchen Sie, das Kanji erneut zu zeichnen.",
   "dict_jisho_add_kanji_bottom_sheet_title": "Wählen Sie eine KanList, um das Wort hinzuzufügen",
-  "dict_jisho_add_kanji_label": "Zu KanList hinzufügen"
+  "dict_jisho_add_kanji_label": "Zu KanList hinzufügen",
+  "dict_add_kanji_title": "Wort malen"
 }

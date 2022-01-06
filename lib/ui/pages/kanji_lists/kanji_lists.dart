@@ -5,6 +5,7 @@ import 'package:kanpractice/core/firebase/queries/back_ups.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/filters.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/TestBottomSheet.dart';
@@ -125,7 +126,8 @@ class _KanjiListsState extends State<KanjiLists> {
             IconButton(
               icon: Icon(Icons.menu_book_rounded),
               onPressed: () {
-                Navigator.of(context).pushNamed(KanPracticePages.dictionaryPage);
+                Navigator.of(context).pushNamed(
+                    KanPracticePages.dictionaryPage, arguments: DictionaryArguments(searchInJisho: true));
               },
             ),
             IconButton(

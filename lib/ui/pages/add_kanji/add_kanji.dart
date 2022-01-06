@@ -135,10 +135,10 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
                 /// If we are updating the kanji, pass over to the dictionary
                 /// the word
                 /// If not, just go to the next page
-                Kanji? kanji = widget.args.kanji;
+                String? kanji = _kanjiController?.text;
                 final drawnWord = await Navigator.of(context).pushNamed(
                   KanPracticePages.dictionaryPage, arguments: DictionaryArguments(
-                    searchInJisho: false, word: kanji != null ? kanji.kanji : null
+                    searchInJisho: false, word: kanji != null ? kanji : null
                 ));
                 /// We wait for the pop and update the _kanjiController with the
                 /// new drawn word. If it is empty, do not override the current

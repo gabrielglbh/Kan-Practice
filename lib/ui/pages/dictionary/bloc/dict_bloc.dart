@@ -13,7 +13,10 @@ class DictBloc extends Bloc<DictEvent,DictState> {
     late Classifier model;
     on<DictEventIdle>((event, emit) async {
       try {
-        model = Classifier();
+        /// Instantiate the classifier once the page has been animated in
+        await Future.delayed(Duration(milliseconds: 500), () {
+          model = Classifier();
+        });
       } on Exception {
         emit(DictStateFailure());
       }

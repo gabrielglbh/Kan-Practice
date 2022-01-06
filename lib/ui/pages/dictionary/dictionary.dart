@@ -9,7 +9,6 @@ import 'package:kanpractice/ui/pages/dictionary/widgets/KanjiSearchBar.dart';
 import 'package:kanpractice/ui/pages/jisho/arguments.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
-import 'package:kanpractice/ui/widgets/CustomButton.dart';
 import 'package:kanpractice/ui/widgets/canvas/CustomCanvas.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -76,42 +75,59 @@ class _DictionaryPageState extends State<DictionaryPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            KanjiSearchBar(
-              hint: widget.args.searchInJisho
-                  ? "dict_search_bar_hint".tr() : "add_kanji_textForm_kanji_ext".tr(),
-              controller: _searchBarTextController,
-              onClear: () => setState(() => _searchBarTextController?.clear()),
-              onRemoveLast: () {
-                String? text = _searchBarTextController?.text;
-                if (text != null && text.length >= 1)
-                  setState(() {
-                    _searchBarTextController?.text = text.substring(0, text.length - 1);
-                  });
-              }
-            ),
-            Visibility(
-              visible: _searchBarTextController?.text != ""
-                  || _searchBarTextController?.text.isNotEmpty == true,
-              child: CustomButton(
-                width: true,
-                onTap: () {
-                  String? text = _searchBarTextController?.text;
-                  if (text != null && text.isNotEmpty) {
-                    /// If the user is searching for words, redirect them to Jisho
-                    /// If the user is adding words, pop and send the predicted word back
-                    if (widget.args.searchInJisho) {
-                      Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
-                          arguments: JishoArguments(kanji: text, fromDictionary: true));
-                    } else {
-                      Navigator.of(context).pop(text);
+            Row(
+              children: [
+                Expanded(
+                  child: KanjiSearchBar(
+                    hint: widget.args.searchInJisho
+                        ? "dict_search_bar_hint".tr() : "add_kanji_textForm_kanji_ext".tr(),
+                    controller: _searchBarTextController,
+                    onClear: () => setState(() => _searchBarTextController?.clear()),
+                    onRemoveLast: () {
+                      String? text = _searchBarTextController?.text;
+                      if (text != null && text.length >= 1)
+                        setState(() {
+                          _searchBarTextController?.text = text.substring(0, text.length - 1);
+                        });
                     }
-                  } else
-                    GeneralUtils.getSnackBar(context, "dict_search_empty".tr());
-                },
-                title2: widget.args.searchInJisho
-                    ? 'dict_search_button_title'.tr()
-                    : 'done_button_label'.tr(),
-              ),
+                  ),
+                ),
+                GestureDetector(
+                  child: AnimatedContainer(
+                    width: _searchBarTextController?.text != ""
+                        || _searchBarTextController?.text.isNotEmpty == true
+                        ? CustomSizes.defaultSizeSearchBarIcons : 0,
+                    height: CustomSizes.defaultSizeSearchBarIcons,
+                    duration: Duration(milliseconds: 400),
+                    margin: EdgeInsets.symmetric(horizontal:
+                        _searchBarTextController?.text != "" ||
+                        _searchBarTextController?.text.isNotEmpty == true
+                            ? Margins.margin8 : 0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: CustomColors.secondaryColor
+                    ),
+                    child: Icon(
+                      widget.args.searchInJisho ? Icons.search : Icons.done,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onTap: () {
+                    String? text = _searchBarTextController?.text;
+                    if (text != null && text.isNotEmpty) {
+                      /// If the user is searching for words, redirect them to Jisho
+                      /// If the user is adding words, pop and send the predicted word back
+                      if (widget.args.searchInJisho) {
+                        Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
+                            arguments: JishoArguments(kanji: text, fromDictionary: true));
+                      } else {
+                        Navigator.of(context).pop(text);
+                      }
+                    } else
+                      GeneralUtils.getSnackBar(context, "dict_search_empty".tr());
+                  },
+                ),
+              ],
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: Margins.margin16),

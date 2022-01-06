@@ -4,6 +4,7 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/core/utils/TextToSpeech.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
@@ -36,6 +37,8 @@ class _ListeningStudyState extends State<ListeningStudy> {
   @override
   void initState() {
     _studyList = widget.args.studyList;
+    /// Execute the TTS when passing to the next kanji
+    TextToSpeech.instance.speakKanji(_studyList[_macro].pronunciation);
     super.initState();
   }
 
@@ -51,6 +54,8 @@ class _ListeningStudyState extends State<ListeningStudy> {
           _macro++;
           _showWord = false;
         });
+        /// Execute the TTS when passing to the next kanji
+        await TextToSpeech.instance.speakKanji(_studyList[_macro].pronunciation);
       }
       /// If we ended the list, update the statistics to DB and exit
       else {
@@ -100,7 +105,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
           actions: [
             Visibility(
               visible: _showWord,
-              child: TTSIconButton(kanji: widget.args.studyList[_macro].kanji),
+              child: TTSIconButton(kanji: widget.args.studyList[_macro].pronunciation),
             )
           ],
         ),
@@ -141,7 +146,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
       Visibility(
           visible: !_showWord,
           child: TTSIconButton(
-              kanji: _studyList[_macro].kanji,
+              kanji: _studyList[_macro].pronunciation,
               iconSize: Margins.margin64 + Margins.margin4
           )
       ),

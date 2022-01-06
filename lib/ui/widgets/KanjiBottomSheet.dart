@@ -157,7 +157,7 @@ class KanjiBottomSheet extends StatelessWidget {
                                 style: TextStyle(fontSize: FontSizes.fontSize16)),
                           ),
                         ),
-                        TTSIconButton(kanji: kanji?.kanji)
+                        TTSIconButton(kanji: kanji?.pronunciation)
                       ],
                     )
                   ),

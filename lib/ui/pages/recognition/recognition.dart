@@ -108,7 +108,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
           actions: [
             Visibility(
               visible: _showMeaning,
-              child: TTSIconButton(kanji: widget.args.studyList[_macro].kanji),
+              child: TTSIconButton(kanji: widget.args.studyList[_macro].pronunciation),
             )
           ],
         ),

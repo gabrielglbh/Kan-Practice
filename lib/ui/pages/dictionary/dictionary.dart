@@ -9,6 +9,7 @@ import 'package:kanpractice/ui/pages/dictionary/widgets/KanjiSearchBar.dart';
 import 'package:kanpractice/ui/pages/jisho/arguments.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
+import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
 import 'package:kanpractice/ui/widgets/canvas/CustomCanvas.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -129,39 +130,51 @@ class _DictionaryPageState extends State<DictionaryPage> {
                 ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(child: Text("< ${"dict_predictions_most_likely".tr()}",
-                      maxLines: 1, overflow: TextOverflow.ellipsis
-                  )),
-                  Expanded(child: Text("${"dict_predictions_less_likely".tr()} >",
-                    maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.end,
-                  ))
-                ],
-              ),
-            ),
             BlocProvider<DictBloc>(
               create: (_) => _bloc..add(DictEventIdle()),
               child: BlocBuilder<DictBloc, DictState>(
                 builder: (context, state) {
-                  if (state is  DictStateFailure || state is DictStateLoading)
-                    return Container(height: CustomSizes.defaultSizeFiltersList);
+                  if (state is DictStateLoading)
+                    return Center(child: Padding(
+                      padding: EdgeInsets.all(Margins.margin16),
+                      child: CustomProgressIndicator(),
+                    ));
+                  else if (state is DictStateFailure)
+                    return Center(child: Padding(
+                      padding: EdgeInsets.all(Margins.margin16),
+                      child: Text("dict_model_not_loaded".tr()),
+                    ));
                   else if (state is DictStateLoaded)
-                    return _predictions(state);
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(child: Text("< ${"dict_predictions_most_likely".tr()}",
+                                  maxLines: 1, overflow: TextOverflow.ellipsis
+                              )),
+                              Expanded(child: Text("${"dict_predictions_less_likely".tr()} >",
+                                maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.end,
+                              ))
+                            ],
+                          ),
+                        ),
+                        _predictions(state),
+                        CustomCanvas(
+                          line: _line,
+                          allowPrediction: true,
+                          handleImage: (im.Image image) {
+                            _bloc..add(DictEventLoading(image: image));
+                          },
+                        ),
+                      ],
+                    );
                   else
                     return Container();
                 },
               ),
-            ),
-            CustomCanvas(
-              line: _line,
-              allowPrediction: true,
-              handleImage: (im.Image image) {
-                _bloc..add(DictEventLoading(image: image));
-              },
             ),
           ],
         ),

@@ -224,5 +224,7 @@
   "dict_predictions_less_likely": "Less likely",
   "dict_predictions_disclaimer": "Search function uses Machine Learning algorithms and the predictions may not be aligned with what you draw. If the predictions are not accurate, try drawing the kanji again.",
   "dict_jisho_add_kanji_bottom_sheet_title": "Select a KanList to add the word",
-  "dict_jisho_add_kanji_label": "Add to KanList"
+  "dict_jisho_add_kanji_label": "Add to KanList",
+  "dict_add_kanji_title": "Draw word",
+  "dict_model_not_loaded": "Could not load model :("
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
+import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
+import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/widgets/CustomTextForm.dart';
@@ -16,40 +18,46 @@ class AddKanjiPage extends StatefulWidget {
 }
 
 class _AddKanjiPageState extends State<AddKanjiPage> {
-  TextEditingController _kanjiController = TextEditingController();
-  FocusNode _kanjiFocus = FocusNode();
-  TextEditingController _pronunciationController = TextEditingController();
-  FocusNode _pronunciationFocus = FocusNode();
-  TextEditingController _meaningController = TextEditingController();
-  FocusNode _meaningFocus = FocusNode();
+  TextEditingController? _kanjiController;
+  FocusNode? _kanjiFocus;
+  TextEditingController? _pronunciationController;
+  FocusNode? _pronunciationFocus;
+  TextEditingController? _meaningController;
+  FocusNode? _meaningFocus;
 
   @override
   void initState() {
+    _kanjiController = TextEditingController();
+    _kanjiFocus = FocusNode();
+    _pronunciationController = TextEditingController();
+    _pronunciationFocus = FocusNode();
+    _meaningController = TextEditingController();
+    _meaningFocus = FocusNode();
     Kanji? kanji = widget.args.kanji;
     if (kanji != null) {
-      _kanjiController.text = kanji.kanji.toString();
-      _pronunciationController.text = kanji.pronunciation.toString();
-      _meaningController.text = kanji.meaning.toString();
+      _kanjiController?.text = kanji.kanji.toString();
+      _pronunciationController?.text = kanji.pronunciation.toString();
+      _meaningController?.text = kanji.meaning.toString();
     }
     super.initState();
   }
 
   @override
   void dispose() {
-    _kanjiController.dispose();
-    _kanjiFocus.dispose();
-    _pronunciationController.dispose();
-    _pronunciationFocus.dispose();
-    _meaningController.dispose();
-    _meaningFocus.dispose();
+    _kanjiController?.dispose();
+    _kanjiFocus?.dispose();
+    _pronunciationController?.dispose();
+    _pronunciationFocus?.dispose();
+    _meaningController?.dispose();
+    _meaningFocus?.dispose();
     super.dispose();
   }
 
   Future<void> _createKanji({bool exit = true}) async {
     final code = await KanjiQueries.instance.createKanji(Kanji(
-        kanji: _kanjiController.text,
-        pronunciation: _pronunciationController.text,
-        meaning: _meaningController.text,
+        kanji: _kanjiController?.text ?? "",
+        pronunciation: _pronunciationController?.text ?? "",
+        meaning: _meaningController?.text ?? "",
         listName: widget.args.listName,
         dateAdded: GeneralUtils.getCurrentMilliseconds(),
         dateLastShown: GeneralUtils.getCurrentMilliseconds()
@@ -59,10 +67,10 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
       if (exit) Navigator.of(context).pop(0);
       /// If false, a new kanji could be added, so empty the fields
       else {
-        _kanjiController.clear();
-        _pronunciationController.clear();
-        _meaningController.clear();
-        _kanjiFocus.requestFocus();
+        _kanjiController?.clear();
+        _pronunciationController?.clear();
+        _meaningController?.clear();
+        _kanjiFocus?.requestFocus();
       }
     }
     else if (code == -1) GeneralUtils.getSnackBar(context, "add_kanji_createKanji_failed_insertion".tr());
@@ -76,9 +84,9 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
           widget.args.listName,
           k.kanji,
           Kanji(
-            kanji: _kanjiController.text,
-            pronunciation: _pronunciationController.text,
-            meaning: _meaningController.text,
+            kanji: _kanjiController?.text ?? "",
+            pronunciation: _pronunciationController?.text ?? "",
+            meaning: _meaningController?.text ?? "",
             listName: widget.args.listName,
             winRateWriting: k.winRateWriting,
             winRateReading: k.winRateReading,
@@ -94,22 +102,24 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
   }
 
   _validateKanji(Function execute) {
-    if (_kanjiController.text.trim().isNotEmpty &&
-        _pronunciationController.text.trim().isNotEmpty &&
-        _meaningController.text.trim().isNotEmpty)
+    if (_kanjiController?.text.trim().isNotEmpty == true &&
+        _pronunciationController?.text.trim().isNotEmpty == true &&
+        _meaningController?.text.trim().isNotEmpty == true)
       execute();
     else
       GeneralUtils.getSnackBar(context, "add_kanji_validateKanji_failed".tr());
   }
 
+  _clearFocus() {
+    _kanjiFocus?.unfocus();
+    _meaningFocus?.unfocus();
+    _pronunciationFocus?.unfocus();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        _kanjiFocus.unfocus();
-        _meaningFocus.unfocus();
-        _pronunciationFocus.unfocus();
-      },
+      onTap: () => _clearFocus(),
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: CustomSizes.appBarHeight,
@@ -118,6 +128,25 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
               : "add_kanji_new_title".tr(), overflow: TextOverflow.ellipsis
           )),
           actions: [
+            IconButton(
+              icon: Icon(Icons.create_rounded),
+              onPressed: () async {
+                _clearFocus();
+                /// If we are updating the kanji, pass over to the dictionary
+                /// the word
+                /// If not, just go to the next page
+                String? kanji = _kanjiController?.text;
+                final drawnWord = await Navigator.of(context).pushNamed(
+                  KanPracticePages.dictionaryPage, arguments: DictionaryArguments(
+                    searchInJisho: false, word: kanji != null ? kanji : null
+                ));
+                /// We wait for the pop and update the _kanjiController with the
+                /// new drawn word. If it is empty, do not override the current
+                /// input word (if any)
+                final String? word = drawnWord as String?;
+                if (word != null && word.isNotEmpty) _kanjiController?.text = word;
+              },
+            ),
             Visibility(
               visible: widget.args.kanji == null,
               child: IconButton(
@@ -157,10 +186,10 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
           header: "add_kanji_textForm_kanji".tr(),
           additionalWidget: ElevatedButton(
             onPressed: () {
-              _pronunciationController.text = _kanjiController.text;
+              _pronunciationController?.text = _kanjiController?.text ?? "";
             },
             child: Container(
-              width: MediaQuery.of(context).size.width / 3,
+              width: MediaQuery.of(context).size.width / 4,
               child: FittedBox(
                 fit: BoxFit.fitWidth,
                 child: Text("add_kanji_copy".tr()),
@@ -172,20 +201,20 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
           autofocus: widget.args.kanji == null,
           bold: FontWeight.bold,
           hint: "add_kanji_textForm_kanji_ext".tr(),
-          onEditingComplete: () => _pronunciationFocus.requestFocus(),
+          onEditingComplete: () => _pronunciationFocus?.requestFocus(),
         ),
         Padding(
-          padding: EdgeInsets.only(top: Margins.margin32),
+          padding: EdgeInsets.only(top: Margins.margin16),
           child: CustomTextForm(
             controller: _pronunciationController,
             focusNode: _pronunciationFocus,
             header: "add_kanji_textForm_reading".tr(),
             hint: "add_kanji_textForm_reading_ext".tr(),
-            onEditingComplete: () => _meaningFocus.requestFocus(),
+            onEditingComplete: () => _meaningFocus?.requestFocus(),
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(top: Margins.margin32),
+          padding: EdgeInsets.only(top: Margins.margin16),
           child: CustomTextForm(
             controller: _meaningController,
             focusNode: _meaningFocus,
@@ -193,7 +222,7 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
             hint: "add_kanji_textForm_meaning_ext".tr(),
             action: TextInputAction.done,
             onEditingComplete: () {
-              _meaningFocus.unfocus();
+              _meaningFocus?.unfocus();
               /// By default, if the user is updating a word, and presses the IME action,
               /// update it. Else, create the word, empty the fields and continue adding
               /// more words

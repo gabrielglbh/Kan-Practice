@@ -60,7 +60,11 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
         meaning: _meaningController?.text ?? "",
         listName: widget.args.listName,
         dateAdded: GeneralUtils.getCurrentMilliseconds(),
-        dateLastShown: GeneralUtils.getCurrentMilliseconds()
+        dateLastShown: GeneralUtils.getCurrentMilliseconds(),
+        dateLastShownWriting: GeneralUtils.getCurrentMilliseconds(),
+        dateLastShownReading: GeneralUtils.getCurrentMilliseconds(),
+        dateLastShownRecognition: GeneralUtils.getCurrentMilliseconds(),
+        dateLastShownListening: GeneralUtils.getCurrentMilliseconds(),
     ));
     if (code == 0) {
       /// If exit is true, only one kanji should be created and exit
@@ -92,7 +96,11 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
             winRateReading: k.winRateReading,
             winRateRecognition: k.winRateRecognition,
             dateAdded: k.dateAdded,
-            dateLastShown: k.dateLastShown
+            dateLastShown: k.dateLastShown,
+            dateLastShownWriting: k.dateLastShownWriting,
+            dateLastShownReading: k.dateLastShownReading,
+            dateLastShownRecognition: k.dateLastShownRecognition,
+            dateLastShownListening: k.dateLastShownListening
           ).toJson()
       );
       if (code == 0) Navigator.of(context).pop(0);

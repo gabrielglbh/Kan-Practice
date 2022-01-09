@@ -69,10 +69,12 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
   }
 
   Future<int> _calculateKanjiScore(double score) async {
-    /// Updates the dateLastShown attribute of the finished word
+    /// Updates the dateLastShown attribute of the finished word AND
+    /// the current specific last shown mode attribute
     await KanjiQueries.instance.updateKanji(widget.args.studyList[_macro].listName,
         widget.args.studyList[_macro].kanji, {
-          KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds()
+          KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds(),
+          KanjiTableFields.dateLastShownRecognition: GeneralUtils.getCurrentMilliseconds()
         });
     /// Add the current virgin score to the test scores...
     if (widget.args.isTest) {

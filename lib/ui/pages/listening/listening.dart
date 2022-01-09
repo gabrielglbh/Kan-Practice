@@ -77,10 +77,12 @@ class _ListeningStudyState extends State<ListeningStudy> {
       /// are not stored in the Database
       _testScores.add(score);
     } else {
-      /// Updates the dateLastShown attribute of the finished word
+      /// Updates the dateLastShown attribute of the finished word AND
+      /// the current specific last shown mode attribute
       await KanjiQueries.instance.updateKanji(widget.args.studyList[_macro].listName,
           widget.args.studyList[_macro].kanji, {
-            KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds()
+            KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds(),
+            KanjiTableFields.dateLastShownListening: GeneralUtils.getCurrentMilliseconds()
           });
       /// Add the current virgin score to the test scores...
       if (widget.args.isTest) {

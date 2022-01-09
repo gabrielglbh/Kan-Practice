@@ -21,6 +21,10 @@ Kanji _$KanjiFromJson(Map<String, dynamic> json) => Kanji(
           DatabaseConstants.emptyWinRate,
       dateAdded: json['dateAdded'] as int? ?? 0,
       dateLastShown: json['dateLastShown'] as int? ?? 0,
+      dateLastShownWriting: json['dateLastShownWriting'] as int? ?? 0,
+      dateLastShownReading: json['dateLastShownReading'] as int? ?? 0,
+      dateLastShownRecognition: json['dateLastShownRecognition'] as int? ?? 0,
+      dateLastShownListening: json['dateLastShownListening'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$KanjiToJson(Kanji instance) => <String, dynamic>{
@@ -34,4 +38,8 @@ Map<String, dynamic> _$KanjiToJson(Kanji instance) => <String, dynamic>{
       'winRateListening': instance.winRateListening,
       'dateAdded': instance.dateAdded,
       'dateLastShown': instance.dateLastShown,
+      'dateLastShownWriting': instance.dateLastShownWriting,
+      'dateLastShownReading': instance.dateLastShownReading,
+      'dateLastShownRecognition': instance.dateLastShownRecognition,
+      'dateLastShownListening': instance.dateLastShownListening,
     };

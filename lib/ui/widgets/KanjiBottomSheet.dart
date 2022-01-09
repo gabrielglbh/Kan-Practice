@@ -123,97 +123,124 @@ class KanjiBottomSheet extends StatelessWidget {
     }
   }
 
+  /// TODO: Make BLOC for getting the latest kanji data and deleting it
   @override
   Widget build(BuildContext context) {
     return BottomSheet(
       enableDrag: false,
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height - Margins.margin64
+      ),
       onClosing: () {},
       builder: (context) {
         return Wrap(
           children: [
             Container(
               margin: EdgeInsets.all(Margins.margin8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  DragContainer(),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.menu_book_rounded),
-                          onPressed: () {
-                            Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
-                                arguments: JishoArguments(kanji: kanji?.kanji));
-                          },
+              /// Make sure we get the latest data of the Kanji when looking it up
+              child: FutureBuilder(
+                future: KanjiQueries.instance.getKanji(kanji?.listName ?? "", kanji?.kanji ?? ""),
+                builder: (context, AsyncSnapshot<Kanji> snapshot) {
+                  Kanji? updatedKanji = snapshot.data;
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      DragContainer(),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.menu_book_rounded),
+                              onPressed: () {
+                                Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
+                                    arguments: JishoArguments(kanji: updatedKanji?.kanji));
+                              },
+                            ),
+                            Container(
+                              height: Margins.margin24,
+                              child: FittedBox(
+                                fit: BoxFit.contain,
+                                child: Text(updatedKanji?.pronunciation ?? "wildcard".tr(), textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: FontSizes.fontSize16)),
+                              ),
+                            ),
+                            TTSIconButton(kanji: updatedKanji?.pronunciation)
+                          ],
+                        )
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: Text(updatedKanji?.kanji ?? "wildcard".tr(), textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize32)),
                         ),
-                        Container(
-                          height: Margins.margin24,
-                          child: FittedBox(
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin16),
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: Text(updatedKanji?.meaning ?? "wildcard".tr(), textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: FontSizes.fontSize16))
+                        ),
+                      ),
+                      Card(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(CustomRadius.radius16)),
+                        margin: EdgeInsets.only(bottom: Margins.margin16, top: Margins.margin8),
+                        child: ListTile(
+                          title: StorageManager.readData(StorageManager.kanListGraphVisualization) == VisualizationMode.barChart.name
+                              ? _barChart(updatedKanji) : RadialGraph(
+                            rateWriting: updatedKanji?.winRateWriting ?? DatabaseConstants.emptyWinRate,
+                            rateReading: updatedKanji?.winRateReading ?? DatabaseConstants.emptyWinRate,
+                            rateRecognition: updatedKanji?.winRateRecognition ?? DatabaseConstants.emptyWinRate,
+                            rateListening: updatedKanji?.winRateListening ?? DatabaseConstants.emptyWinRate,
+                          )
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: Margins.margin8),
+                        child: ExpansionTile(
+                          iconColor: CustomColors.secondaryColor,
+                          textColor: CustomColors.secondaryColor,
+                          title: FittedBox(
                             fit: BoxFit.contain,
-                            child: Text(kanji?.pronunciation ?? "wildcard".tr(), textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: FontSizes.fontSize16)),
+                            child: Text("${"created_label".tr()} "
+                                "${GeneralUtils.parseDateMilliseconds(context, (updatedKanji?.dateAdded ?? 0))} • "
+                                "${"last_seen_label".tr()} "
+                                "${GeneralUtils.parseDateMilliseconds(context, (updatedKanji?.dateLastShown ?? 0))}",
+                                textAlign: TextAlign.center, style: TextStyle(fontSize: FontSizes.fontSize14))
                           ),
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height < CustomSizes.minimumHeight
+                                  ? CustomSizes.maxHeightForLastSeenDates : null,
+                              child: ListView.builder(
+                                shrinkWrap: MediaQuery.of(context).size.height < CustomSizes.minimumHeight
+                                    ? false : true,
+                                itemCount: StudyModes.values.length,
+                                itemBuilder: (context, index) {
+                                  return _lastSeenOnModes(context, updatedKanji, StudyModes.values[index]);
+                                },
+                              ),
+                            )
+                          ]
+                        )
+                      ),
+                      Visibility(
+                        visible: onTap != null && onRemove != null,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Divider(),
+                            _actionButtons(context),
+                          ],
                         ),
-                        TTSIconButton(kanji: kanji?.pronunciation)
-                      ],
-                    )
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: Text(kanji?.kanji ?? "wildcard".tr(), textAlign: TextAlign.center,
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize32)),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin16),
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: Text(kanji?.meaning ?? "wildcard".tr(), textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: FontSizes.fontSize16))
-                    ),
-                  ),
-                  Card(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(CustomRadius.radius16)),
-                    margin: EdgeInsets.only(bottom: Margins.margin16, top: Margins.margin8),
-                    child: ListTile(
-                      title: StorageManager.readData(StorageManager.kanListGraphVisualization) == VisualizationMode.barChart.name
-                          ? _barChart() : RadialGraph(
-                        rateWriting: kanji?.winRateWriting ?? DatabaseConstants.emptyWinRate,
-                        rateReading: kanji?.winRateReading ?? DatabaseConstants.emptyWinRate,
-                        rateRecognition: kanji?.winRateRecognition ?? DatabaseConstants.emptyWinRate,
-                        rateListening: kanji?.winRateListening ?? DatabaseConstants.emptyWinRate,
-                      )
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: Margins.margin8, right: Margins.margin8, bottom: Margins.margin16
-                    ),
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: Text("${"created_label".tr()} "
-                          "${GeneralUtils.parseDateMilliseconds(context, (kanji?.dateAdded ?? 0))} • "
-                          "${"last_seen_label".tr()} "
-                          "${GeneralUtils.parseDateMilliseconds(context, (kanji?.dateLastShown ?? 0))}",
-                          textAlign: TextAlign.center, style: TextStyle(fontSize: FontSizes.fontSize14))
-                    ),
-                  ),
-                  Visibility(
-                    visible: onTap != null && onRemove != null,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Divider(),
-                        _actionButtons(context),
-                      ],
-                    ),
-                  ),
-                ]
+                      ),
+                    ]
+                  );
+                }
               ),
             ),
           ]
@@ -222,24 +249,64 @@ class KanjiBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _barChart() {
+  Widget _lastSeenOnModes(BuildContext context, Kanji? updatedKanji, StudyModes mode) {
+    int? date = 0;
+    switch (mode) {
+      case StudyModes.writing:
+        date = updatedKanji?.dateLastShownWriting;
+        break;
+      case StudyModes.reading:
+        date = updatedKanji?.dateLastShownReading;
+        break;
+      case StudyModes.recognition:
+        date = updatedKanji?.dateLastShownRecognition;
+        break;
+      case StudyModes.listening:
+        date = updatedKanji?.dateLastShownListening;
+        break;
+    }
+    return Container(
+      height: Margins.margin24,
+      padding: EdgeInsets.only(
+        left: Margins.margin8, right: Margins.margin16, bottom: Margins.margin8
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Text(" • ${(mode.name).capitalized}:",
+              overflow: TextOverflow.ellipsis, textAlign: TextAlign.left,
+                style: TextStyle(fontSize: FontSizes.fontSize12)),
+          ),
+          Expanded(
+            child: Text("${"last_seen_label".tr()} "
+              "${GeneralUtils.parseDateMilliseconds(context, date ?? 0)}",
+              overflow: TextOverflow.ellipsis, textAlign: TextAlign.right,
+              style: TextStyle(fontSize: FontSizes.fontSize12))
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _barChart(Kanji? updatedKanji) {
     return WinRateBarChart(dataSource: List.generate(StudyModes.values.length, (index) {
       switch (StudyModes.values[index]) {
         case StudyModes.writing:
           return BarData(x: StudyModes.writing.mode,
-              y: (kanji?.winRateWriting ?? DatabaseConstants.emptyWinRate),
+              y: (updatedKanji?.winRateWriting ?? DatabaseConstants.emptyWinRate),
               color: StudyModes.writing.color);
         case StudyModes.reading:
           return BarData(x: StudyModes.reading.mode,
-              y: (kanji?.winRateReading ?? DatabaseConstants.emptyWinRate),
+              y: (updatedKanji?.winRateReading ?? DatabaseConstants.emptyWinRate),
               color: StudyModes.reading.color);
         case StudyModes.recognition:
           return BarData(x: StudyModes.recognition.mode,
-              y: (kanji?.winRateRecognition ?? DatabaseConstants.emptyWinRate),
+              y: (updatedKanji?.winRateRecognition ?? DatabaseConstants.emptyWinRate),
               color: StudyModes.recognition.color);
         case StudyModes.listening:
           return BarData(x: StudyModes.listening.mode,
-              y: (kanji?.winRateListening ?? DatabaseConstants.emptyWinRate),
+              y: (updatedKanji?.winRateListening ?? DatabaseConstants.emptyWinRate),
               color: StudyModes.listening.color);
       }
     }));

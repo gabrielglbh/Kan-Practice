@@ -25,18 +25,26 @@ class Kanji {
   final int dateAdded;
   @JsonKey(name: KanjiTableFields.dateLastShown)
   final int dateLastShown;
+  @JsonKey(name: KanjiTableFields.dateLastShownWriting)
+  final int dateLastShownWriting;
+  @JsonKey(name: KanjiTableFields.dateLastShownReading)
+  final int dateLastShownReading;
+  @JsonKey(name: KanjiTableFields.dateLastShownRecognition)
+  final int dateLastShownRecognition;
+  @JsonKey(name: KanjiTableFields.dateLastShownListening)
+  final int dateLastShownListening;
 
   const Kanji({required this.kanji, required this.listName, required this.meaning,
     required this.pronunciation, this.winRateReading = DatabaseConstants.emptyWinRate,
     this.winRateRecognition = DatabaseConstants.emptyWinRate,
     this.winRateWriting = DatabaseConstants.emptyWinRate,
     this.winRateListening = DatabaseConstants.emptyWinRate, this.dateAdded = 0,
-    this.dateLastShown = 0
+    this.dateLastShown = 0, this.dateLastShownWriting = 0, this.dateLastShownReading = 0,
+    this.dateLastShownRecognition = 0, this.dateLastShownListening = 0
   });
 
   /// Empty [Kanji]
-  static const Kanji empty = Kanji(kanji: "", listName: "", meaning: "",
-      pronunciation: "", dateAdded: 0, dateLastShown: 0);
+  static const Kanji empty = Kanji(kanji: "", listName: "", meaning: "", pronunciation: "");
 
   factory Kanji.fromJson(Map<String, dynamic> json) => _$KanjiFromJson(json);
   Map<String, dynamic> toJson() => _$KanjiToJson(this);

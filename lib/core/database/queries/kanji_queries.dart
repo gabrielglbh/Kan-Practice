@@ -33,14 +33,39 @@ class KanjiQueries {
 
   /// Query to get all kanji available in the current db. If anything goes wrong,
   /// an empty list will be returned.
-  /// [orderedByLastShown] serves as a control variable to order the kanjis by
+  ///
+  /// [mode] is a nullable parameter that serves as a control variable to
+  /// query all kanji by their last shown date based on the study mode to be
+  /// studied. If null, all kanji will be retrieved.
+  ///
+  /// [orderedByLastShown] serves as a control variable to order all the kanji by
   /// their last shown parameter
-  Future<List<Kanji>> getAllKanji({bool orderedByLastShown = false}) async {
+  Future<List<Kanji>> getAllKanji({StudyModes? mode, bool orderedByLastShown = false}) async {
     if (_database != null) {
       try {
-        String query = orderedByLastShown
-            ? "SELECT * FROM ${KanjiTableFields.kanjiTable} ORDER BY ${KanjiTableFields.dateLastShown} ASC"
-            : "SELECT * FROM ${KanjiTableFields.kanjiTable}";
+        String query = "";
+        if (mode != null) {
+          switch (mode) {
+            case StudyModes.writing:
+              query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                  "ORDER BY ${KanjiTableFields.dateLastShownWriting} ASC";
+              break;
+            case StudyModes.reading:
+              query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                  "ORDER BY ${KanjiTableFields.dateLastShownReading} ASC";
+              break;
+            case StudyModes.recognition:
+              query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                  "ORDER BY ${KanjiTableFields.dateLastShownRecognition} ASC";
+              break;
+            case StudyModes.listening:
+              query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                  "ORDER BY ${KanjiTableFields.dateLastShownListening} ASC";
+              break;
+          }
+        }
+        else query = "SELECT * FROM ${KanjiTableFields.kanjiTable}";
+
         List<Map<String, dynamic>>? res = [];
         res = await _database?.rawQuery(query);
         if (res != null) return List.generate(res.length, (i) => Kanji.fromJson(res![i]));

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
+import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
@@ -9,11 +10,41 @@ import 'package:kanpractice/ui/widgets/CustomButton.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class TestStudyMode extends StatelessWidget {
-  /// List of [Kanji] to make the test with
-  final List<Kanji> list;
+  /// List of [Kanji] to make the test with.
+  ///
+  /// If [list] is null, the list must be loaded upon the mode selection (BLITZ or REMEMBRANCE).
+  ///
+  /// If it is not null, the list must come from (SELECTION TEST).
+  final List<Kanji>? list;
   /// Chain of lists as a [String] used when creating the [list]
   final String listsNames;
-  const TestStudyMode({required this.list, required this.listsNames});
+  /// ONLY VALID FOR BLITZ OR REMEMBRANCE TESTS.
+  ///
+  /// String defining if the user wants to perform a Blitz Test on a practice
+  /// lesson specifically. If null, all kanji available will be taken into consideration.
+  final String? practiceList;
+  /// ONLY VALID FOR BLITZ OR REMEMBRANCE TESTS.
+  final bool remembranceTest;
+  const TestStudyMode({this.list, this.practiceList, this.remembranceTest = false,
+    required this.listsNames});
+
+  Future<List<Kanji>> _loadBlitzTest(StudyModes mode) async {
+    String? listName = practiceList;
+    /// Get all the list of all kanji and perform a 20 kanji random sublist
+    if (listName == null) {
+      List<Kanji> list = await KanjiQueries.instance.getAllKanji(mode: mode, orderedByLastShown: remembranceTest);
+      /// If it is a remembrance test, do NOT shuffle the list
+      if (!remembranceTest) list.shuffle();
+      return list;
+    }
+    /// If the listName is not empty, it means that the user wants to have
+    /// a Blitz Test on a certain KanList defined in "listName"
+    else {
+      List<Kanji> list = await KanjiQueries.instance.getAllKanjiFromList(listName);
+      list.shuffle();
+      return list;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,35 +113,46 @@ class TestStudyMode extends StatelessWidget {
       title2: mode.mode,
       color: mode.color,
       onTap: () async {
-        if (list.isEmpty) {
-          Navigator.of(context).pop();
-          GeneralUtils.getSnackBar(context, "study_modes_empty".tr());
-        }
-        else {
-          list.shuffle();
-          List<Kanji> sortedList = list.sublist(0, list.length < CustomSizes.numberOfKanjiInTest
-              ? list.length : CustomSizes.numberOfKanjiInTest);
-          Navigator.of(context).pop(); // Dismiss bottom sheet
-          switch (mode) {
-            case StudyModes.writing:
-              await Navigator.of(context).pushNamed(KanPracticePages.writingStudyPage,
-                  arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
-              break;
-            case StudyModes.reading:
-              await Navigator.of(context).pushNamed(KanPracticePages.readingStudyPage,
-                  arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
-              break;
-            case StudyModes.recognition:
-              await Navigator.of(context).pushNamed(KanPracticePages.recognitionStudyPage,
-                  arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
-              break;
-            case StudyModes.listening:
-              await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
-                  arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
-              break;
+        List<Kanji>? l = list;
+        if (l != null) {
+          if (l.isEmpty) {
+            Navigator.of(context).pop();
+            GeneralUtils.getSnackBar(context, "study_modes_empty".tr());
+          } else {
+            await _decideOnMode(context, l, mode);
           }
+        } else {
+          List<Kanji> l = await _loadBlitzTest(mode);
+          if (l.isEmpty) {
+            Navigator.of(context).pop();
+            GeneralUtils.getSnackBar(context, "study_modes_empty".tr());
+          } else await _decideOnMode(context, l, mode);
         }
       }
     );
+  }
+
+  Future<void> _decideOnMode(BuildContext context, List<Kanji> l, StudyModes mode) async {
+    List<Kanji> sortedList = l.sublist(0, l.length < CustomSizes.numberOfKanjiInTest
+        ? l.length : CustomSizes.numberOfKanjiInTest);
+    Navigator.of(context).pop(); // Dismiss bottom sheet
+    switch (mode) {
+      case StudyModes.writing:
+        await Navigator.of(context).pushNamed(KanPracticePages.writingStudyPage,
+            arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+        break;
+      case StudyModes.reading:
+        await Navigator.of(context).pushNamed(KanPracticePages.readingStudyPage,
+            arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+        break;
+      case StudyModes.recognition:
+        await Navigator.of(context).pushNamed(KanPracticePages.recognitionStudyPage,
+            arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+        break;
+      case StudyModes.listening:
+        await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
+            arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+        break;
+    }
   }
 }

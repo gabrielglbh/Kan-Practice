@@ -48,6 +48,7 @@ flutter_icons:
   image_path: "assets/icon/icon.png"
 
 dev_dependencies:
+  # flutter pub run build_runner build --delete-conflicting-outputs
   build_runner:
   json_serializable:
   flutter_test:

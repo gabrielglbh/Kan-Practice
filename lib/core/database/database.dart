@@ -25,7 +25,7 @@ class CustomDatabase {
 
     database = await openDatabase(
       path,
-      version: 3,
+      version: 4,
       singleInstance: true,
       onConfigure: (db) async {
         await db.execute('PRAGMA foreign_keys = ON');
@@ -45,6 +45,10 @@ class CustomDatabase {
             "${KanjiTableFields.winRateListeningField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${KanjiTableFields.dateAddedField} INTEGER NOT NULL DEFAULT 0, "
             "${KanjiTableFields.dateLastShown} INTEGER NOT NULL DEFAULT 0, "
+            "${KanjiTableFields.dateLastShownWriting} INTEGER NOT NULL DEFAULT 0, "
+            "${KanjiTableFields.dateLastShownReading} INTEGER NOT NULL DEFAULT 0, "
+            "${KanjiTableFields.dateLastShownRecognition} INTEGER NOT NULL DEFAULT 0, "
+            "${KanjiTableFields.dateLastShownListening} INTEGER NOT NULL DEFAULT 0, "
             "PRIMARY KEY (${KanjiTableFields.kanjiField}, ${KanjiTableFields.meaningField}, ${KanjiTableFields.pronunciationField}), "
             "FOREIGN KEY (${KanjiTableFields.listNameField}) "
             "REFERENCES ${KanListTableFields.listsTable}(${KanListTableFields.nameField}) "
@@ -73,6 +77,7 @@ class CustomDatabase {
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion <= 1) Migrations.version1to2(db);
     if (oldVersion <= 2) Migrations.version2to3(db);
+    if (oldVersion <= 3) Migrations.version3to4(db);
   }
 
   /// Closes up the current database.

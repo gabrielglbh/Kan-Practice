@@ -10,6 +10,10 @@ class KanjiTableFields {
   static const String winRateListeningField = "winRateListening";
   static const String dateAddedField = "dateAdded";
   static const String dateLastShown = "dateLastShown";
+  static const String dateLastShownWriting = "dateLastShownWriting";
+  static const String dateLastShownReading = "dateLastShownReading";
+  static const String dateLastShownRecognition = "dateLastShownRecognition";
+  static const String dateLastShownListening = "dateLastShownListening";
 }
 
 class KanListTableFields {

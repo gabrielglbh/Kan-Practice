@@ -213,6 +213,7 @@ class KanjiBottomSheet extends StatelessWidget {
 
   Widget _lastSeenOnModes(BuildContext context, Kanji updatedKanji, StudyModes mode) {
     int? date = 0;
+    String parsedDate = "-";
     switch (mode) {
       case StudyModes.writing:
         date = updatedKanji.dateLastShownWriting;
@@ -227,6 +228,8 @@ class KanjiBottomSheet extends StatelessWidget {
         date = updatedKanji.dateLastShownListening;
         break;
     }
+    if (date != 0) parsedDate = "${"last_seen_label".tr()} ${GeneralUtils.parseDateMilliseconds(context, date)}";
+
     return Container(
       height: Margins.margin24,
       padding: EdgeInsets.only(
@@ -241,9 +244,7 @@ class KanjiBottomSheet extends StatelessWidget {
                 style: TextStyle(fontSize: FontSizes.fontSize12)),
           ),
           Expanded(
-            child: Text("${"last_seen_label".tr()} "
-              "${GeneralUtils.parseDateMilliseconds(context, date)}",
-              overflow: TextOverflow.ellipsis, textAlign: TextAlign.right,
+            child: Text(parsedDate, overflow: TextOverflow.ellipsis, textAlign: TextAlign.right,
               style: TextStyle(fontSize: FontSizes.fontSize12))
           )
         ],

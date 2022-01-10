@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/routing/pages.dart';
@@ -61,10 +62,6 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
         listName: widget.args.listName,
         dateAdded: GeneralUtils.getCurrentMilliseconds(),
         dateLastShown: GeneralUtils.getCurrentMilliseconds(),
-        dateLastShownWriting: GeneralUtils.getCurrentMilliseconds(),
-        dateLastShownReading: GeneralUtils.getCurrentMilliseconds(),
-        dateLastShownRecognition: GeneralUtils.getCurrentMilliseconds(),
-        dateLastShownListening: GeneralUtils.getCurrentMilliseconds(),
     ));
     if (code == 0) {
       /// If exit is true, only one kanji should be created and exit
@@ -84,24 +81,12 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
   Future<void> _updateKanji() async {
     Kanji? k = widget.args.kanji;
     if (k != null) {
-      final code = await KanjiQueries.instance.updateKanji(
-          widget.args.listName,
-          k.kanji,
-          Kanji(
-            kanji: _kanjiController?.text ?? "",
-            pronunciation: _pronunciationController?.text ?? "",
-            meaning: _meaningController?.text ?? "",
-            listName: widget.args.listName,
-            winRateWriting: k.winRateWriting,
-            winRateReading: k.winRateReading,
-            winRateRecognition: k.winRateRecognition,
-            dateAdded: k.dateAdded,
-            dateLastShown: k.dateLastShown,
-            dateLastShownWriting: k.dateLastShownWriting,
-            dateLastShownReading: k.dateLastShownReading,
-            dateLastShownRecognition: k.dateLastShownRecognition,
-            dateLastShownListening: k.dateLastShownListening
-          ).toJson()
+      final code = await KanjiQueries.instance.updateKanji(widget.args.listName, k.kanji,
+        {
+          KanjiTableFields.kanjiField: _kanjiController?.text ?? "",
+          KanjiTableFields.pronunciationField: _pronunciationController?.text ?? "",
+          KanjiTableFields.meaningField: _meaningController?.text ?? "",
+        }
       );
       if (code == 0) Navigator.of(context).pop(0);
       else if (code == -1) GeneralUtils.getSnackBar(context, "add_kanji_updateKanji_failed_update".tr());

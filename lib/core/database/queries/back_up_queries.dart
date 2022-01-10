@@ -31,11 +31,6 @@ class BackUpQueries {
           if (kanji[x].dateLastShown == 0) {
             Migrations.batchUpdateDateLastShown(batch, kanji[x]);
           }
-          /// If the backup has no dateLastShown[StudyMode] set up, fill them up with dateAdded
-          if (kanji[x].dateLastShownWriting == 0 && kanji[x].dateLastShownReading == 0 &&
-              kanji[x].dateLastShownRecognition == 0 && kanji[x].dateLastShownListening == 0) {
-            Migrations.batchUpdateDateLastShownBasedOnMode(batch, kanji[x]);
-          }
         }
         final results = await batch?.commit();
         return results?.length == 0 ? "backup_queries_mergeBackUp_failed".tr() : "";

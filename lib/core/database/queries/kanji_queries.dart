@@ -44,25 +44,27 @@ class KanjiQueries {
     if (_database != null) {
       try {
         String query = "";
-        if (mode != null) {
-          switch (mode) {
-            case StudyModes.writing:
-              query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                  "ORDER BY ${KanjiTableFields.dateLastShownWriting} ASC";
-              break;
-            case StudyModes.reading:
-              query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                  "ORDER BY ${KanjiTableFields.dateLastShownReading} ASC";
-              break;
-            case StudyModes.recognition:
-              query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                  "ORDER BY ${KanjiTableFields.dateLastShownRecognition} ASC";
-              break;
-            case StudyModes.listening:
-              query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                  "ORDER BY ${KanjiTableFields.dateLastShownListening} ASC";
-              break;
-          }
+        if (orderedByLastShown) {
+          if (mode != null) {
+            switch (mode) {
+              case StudyModes.writing:
+                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                    "ORDER BY ${KanjiTableFields.dateLastShownWriting} ASC";
+                break;
+              case StudyModes.reading:
+                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                    "ORDER BY ${KanjiTableFields.dateLastShownReading} ASC";
+                break;
+              case StudyModes.recognition:
+                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                    "ORDER BY ${KanjiTableFields.dateLastShownRecognition} ASC";
+                break;
+              case StudyModes.listening:
+                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                    "ORDER BY ${KanjiTableFields.dateLastShownListening} ASC";
+                break;
+            }
+          } else return [];
         }
         else query = "SELECT * FROM ${KanjiTableFields.kanjiTable}";
 

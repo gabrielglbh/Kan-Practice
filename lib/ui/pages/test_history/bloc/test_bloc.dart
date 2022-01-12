@@ -8,11 +8,15 @@ part 'test_state.dart';
 
 class TestListBloc extends Bloc<TestListEvent,TestListState> {
   TestListBloc() : super(TestListStateLoading()) {
+    /// Maintain the list for pagination purposes
+    List<Test> _list = [];
+
     on<TestListEventLoading>((event, emit) async {
       try {
-        emit(TestListStateLoading());
-        final List<Test> list = await TestQueries.instance.getTests(0);
-        emit(TestListStateLoaded(list));
+        if (event.offset == 0) emit(TestListStateLoading());
+        final List<Test> pagination = await TestQueries.instance.getTests(event.offset);
+        _list.addAll(pagination);
+        emit(TestListStateLoaded(_list));
       } on Exception {
         emit(TestListStateFailure());
       }

@@ -19,7 +19,9 @@ class TestHistory extends StatefulWidget {
 }
 
 class _TestHistoryState extends State<TestHistory> {
+  final ScrollController _scrollController = ScrollController();
   final TestListBloc _bloc = TestListBloc();
+  int loadingTimes = 0;
 
   _showRemoveTestsDialog() {
     showDialog(
@@ -31,6 +33,27 @@ class _TestHistoryState extends State<TestHistory> {
         onPositive: () => _bloc..add(TestListEventRemoving()),
       )
     );
+  }
+
+  _addLoadingEvent({int offset = 0}) => _bloc..add(TestListEventLoading(offset: offset));
+
+  _scrollListener() {
+    if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
+      loadingTimes += 1;
+      _addLoadingEvent(offset: loadingTimes);
+    }
+  }
+
+  @override
+  void initState() {
+    _scrollController.addListener(_scrollListener);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -47,7 +70,7 @@ class _TestHistoryState extends State<TestHistory> {
         ],
       ),
       body: BlocProvider<TestListBloc>(
-        create: (_) => _bloc..add(TestListEventLoading()),
+        create: (_) => _addLoadingEvent(),
         child: BlocBuilder<TestListBloc, TestListState>(
           builder: (context, state) => _body(state)
         )
@@ -59,7 +82,7 @@ class _TestHistoryState extends State<TestHistory> {
     if (state is TestListStateFailure)
       return EmptyList(
         showTryButton: true,
-        onRefresh: () => _bloc..add(TestListEventLoading()),
+        onRefresh: () => _addLoadingEvent(),
         message: "test_history_load_failed".tr()
       );
     else if (state is TestListStateLoading)
@@ -67,7 +90,7 @@ class _TestHistoryState extends State<TestHistory> {
     else if (state is TestListStateLoaded) {
       if (state.list.isEmpty)
         return EmptyList(
-          onRefresh: () => _bloc..add(TestListEventLoading()),
+          onRefresh: () => _addLoadingEvent(),
           message: "test_history_empty".tr()
         );
       return _testList(state);
@@ -78,6 +101,7 @@ class _TestHistoryState extends State<TestHistory> {
   _testList(TestListStateLoaded state) {
     return ListView.builder(
       key: PageStorageKey<String>('testListController'),
+      controller: _scrollController,
       itemCount: state.list.length,
       itemBuilder: (context, k) {
         Test t = state.list[k];

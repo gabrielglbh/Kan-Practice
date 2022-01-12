@@ -12,11 +12,12 @@ class KanjiListEventLoading extends KanjiListEvent {
   final String filter;
   /// Maintains the order applied by the user for loading new lists
   final bool order;
+  final int offset;
 
-  const KanjiListEventLoading({required this.filter, required this.order});
+  const KanjiListEventLoading({required this.filter, required this.order, this.offset = 0});
 
   @override
-  List<Object> get props => [filter, order];
+  List<Object> get props => [filter, order, offset];
 }
 
 class KanjiListEventSearching extends KanjiListEvent {

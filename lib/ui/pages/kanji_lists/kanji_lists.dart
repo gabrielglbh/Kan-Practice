@@ -4,6 +4,7 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/firebase/queries/back_ups.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
+import 'package:kanpractice/core/service_locator/service_locator.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
@@ -26,7 +27,7 @@ class KanjiLists extends StatefulWidget {
 }
 
 class _KanjiListsState extends State<KanjiLists> {
-  KanjiListBloc _bloc = KanjiListBloc();
+  final ScrollController _scrollController = ScrollController();
   FocusNode? _searchBarFn;
 
   /// This variable keeps track of the actual filter applied. The value is
@@ -48,12 +49,16 @@ class _KanjiListsState extends State<KanjiLists> {
   bool _currentAppliedOrder = true;
   bool _searchHasFocus = false;
 
+  /// Loading offset for normal pagination
+  int _loadingTimes = 0;
+
   String _newVersion = "";
 
   @override
   void initState() {
     _searchBarFn = FocusNode();
     _searchBarFn?.addListener(_focusListener);
+    _scrollController.addListener(_scrollListener);
     _currentAppliedFilter = StorageManager.readData(StorageManager.filtersOnList)
         ?? KanListTableFields.lastUpdatedField;
     _currentAppliedOrder = StorageManager.readData(StorageManager.orderOnList)
@@ -66,6 +71,8 @@ class _KanjiListsState extends State<KanjiLists> {
   void dispose() {
     _searchBarFn?.removeListener(_focusListener);
     _searchBarFn?.dispose();
+    _searchBarFn?.removeListener(_scrollListener);
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -77,11 +84,21 @@ class _KanjiListsState extends State<KanjiLists> {
 
   _focusListener() => setState(() => _searchHasFocus = (_searchBarFn?.hasFocus ?? false));
 
-  _addLoadingEvent() => _bloc..add(KanjiListEventLoading(
-      filter: _currentAppliedFilter, order: _currentAppliedOrder));
+  _scrollListener() {
+    if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
+      _loadingTimes += 1;
+      _addLoadingEvent(offset: _loadingTimes);
+    }
+  }
 
-  _addCreateEvent(String name) => _bloc..add(KanjiListEventCreate(name,
-      filter: _currentAppliedFilter, order: _currentAppliedOrder));
+  _addLoadingEvent({int offset = 0}) {
+    if (offset == 0) _loadingTimes = 0;
+    return getIt<KanjiListBloc>()..add(KanjiListEventLoading(
+        filter: _currentAppliedFilter, order: _currentAppliedOrder, offset: offset));
+  }
+
+  _addCreateEvent(String name) => getIt<KanjiListBloc>()
+      ..add(KanjiListEventCreate(name, filter: _currentAppliedFilter, order: _currentAppliedOrder));
 
   _getCurrentIndexOfFilter() => _filterValues.keys.toList().indexOf(_currentAppliedFilter);
 
@@ -157,7 +174,8 @@ class _KanjiListsState extends State<KanjiLists> {
               CustomSearchBar(
                 hint: "kanji_lists_searchBar_hint".tr(),
                 focus: _searchBarFn,
-                onQuery: (String query) => _bloc..add(KanjiListEventSearching(query)),
+                onQuery: (String query) => getIt<KanjiListBloc>()
+                  ..add(KanjiListEventSearching(query)),
                 onExitSearch: () => _addLoadingEvent(),
               ),
               _filterChips(),
@@ -227,6 +245,7 @@ class _KanjiListsState extends State<KanjiLists> {
               onRefresh: () => _addLoadingEvent(),
               child: ListView.builder(
                 key: PageStorageKey<String>('kanListListsController'),
+                controller: _scrollController,
                 itemCount: state.lists.length,
                 padding: EdgeInsets.only(bottom: CustomSizes.extraPaddingForFAB),
                 itemBuilder: (context, k) {
@@ -238,7 +257,7 @@ class _KanjiListsState extends State<KanjiLists> {
                       mode: VisualizationModeExt.mode(StorageManager.readData(
                           StorageManager.kanListGraphVisualization)
                             ?? VisualizationMode.radialChart),
-                      onRemoval: () => _bloc..add(KanjiListEventDelete(
+                      onRemoval: () => getIt<KanjiListBloc>()..add(KanjiListEventDelete(
                         state.lists[k],
                         filter: _currentAppliedFilter,
                         order: _currentAppliedOrder

@@ -36,11 +36,15 @@ class ListQueries {
   /// Query to get all [KanjiList] from the db with an optional [order] and [filter].
   /// If anything goes wrong, an empty list will be returned.
   Future<List<KanjiList>> getAllLists({String filter = KanListTableFields.lastUpdatedField,
-    String order = "DESC"}) async {
+    String order = "DESC", int? limit, int? offset}) async {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
-        res = await _database?.rawQuery("SELECT * FROM ${KanListTableFields.listsTable} ORDER BY $filter $order");
+        res = await _database?.query(KanListTableFields.listsTable,
+          orderBy: "$filter $order",
+          limit: limit,
+          offset: (offset != null && limit != null) ? offset * limit : null
+        );
         if (res != null) return List.generate(res.length, (i) => KanjiList.fromJson(res![i]));
         else return [];
       } catch (err) {

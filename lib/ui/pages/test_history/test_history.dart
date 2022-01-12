@@ -52,6 +52,7 @@ class _TestHistoryState extends State<TestHistory> {
 
   @override
   void dispose() {
+    _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
     super.dispose();
   }

@@ -54,7 +54,13 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
   StudyModes _selectedMode = StudyModes.writing;
   LearningMode _learningMode = LearningMode.spatial;
 
+  /// Loading offset for normal pagination
   int _loadingTimes = 0;
+  /// Loading offset for search bar list pagination
+  int _loadingTimesForSearch = 0;
+  /// Saves the last state of the query
+  String _query = "";
+  /// Saves the last name of the current visited list
   String _listName = "";
   bool _searchHasFocus = false;
 
@@ -79,9 +85,18 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
   }
 
   _scrollListener() {
+    /// When reaching last pixel of the list
     if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
-      _loadingTimes += 1;
-      _addLoadingEvent(offset: _loadingTimes);
+      /// If the query is empty, use the pagination for search bar
+      if (_query.isNotEmpty) {
+        _loadingTimesForSearch += 1;
+        _addSearchingEvent(_query, offset: _loadingTimesForSearch);
+      }
+      /// Else use the normal pagination
+      else {
+        _loadingTimes += 1;
+        _addLoadingEvent(offset: _loadingTimes);
+      }
     }
   }
 
@@ -92,7 +107,12 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
     });
   }
 
-  _focusListener() => setState(() => _searchHasFocus = (_searchBarFn?.hasFocus ?? false));
+  _focusListener() => setState(() {
+    _searchHasFocus = (_searchBarFn?.hasFocus ?? false);
+    /// Everytime the user loses focus on the search bar, empty the query
+    /// in order to paginate properly
+    if (!_searchHasFocus) _query = "";
+  });
 
   _onModeChange(StudyModes newMode) {
     _searchBarFn?.unfocus();
@@ -134,6 +154,9 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
 
   _addLoadingEvent({int offset = 0}) =>
       _bloc..add(KanjiEventLoading(_listName, offset: offset));
+
+  _addSearchingEvent(String query, {int offset = 0}) =>
+      _bloc..add(KanjiEventSearching(query, _listName, offset));
 
   _updateName(String name) {
     if (name.isNotEmpty) _bloc..add(UpdateKanList(name, _listName));
@@ -210,7 +233,13 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
                   CustomSearchBar(
                     hint: "list_details_searchBar_hint".tr(),
                     focus: _searchBarFn,
-                    onQuery: (String query) => _bloc..add(KanjiEventSearching(query, _listName)),
+                    onQuery: (String query) {
+                      /// Everytime the user queries, reset the query itself and
+                      /// the pagination index
+                      _query = query;
+                      _loadingTimesForSearch = 0;
+                      _addSearchingEvent(query);
+                    },
                     onExitSearch: () => _addLoadingEvent(),
                   ),
                   Expanded(
@@ -362,6 +391,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
     return GridView.builder(
       key: PageStorageKey<String>('kanjiListController'),
       itemCount: state.list.length,
+      controller: _scrollController,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 5,
         childAspectRatio: 2

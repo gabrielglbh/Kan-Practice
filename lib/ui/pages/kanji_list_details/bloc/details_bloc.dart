@@ -13,8 +13,11 @@ part 'details_state.dart';
 
 class KanjiListDetailBloc extends Bloc<KanjiListDetailEvent, KanjiListDetailState> {
   KanjiListDetailBloc() : super(KanjiListDetailStateLoading()) {
-    /// Maintain the list for pagination purposes
+   /// Maintain the list for pagination purposes
    List<Kanji> _list = [];
+   /// Maintain the list for pagination purposes on search
+   List<Kanji> _searchList = [];
+   final int _limit = 75;
 
    on<KanjiEventLoading>((event, emit) async {
      try {
@@ -27,7 +30,7 @@ class KanjiListDetailBloc extends Bloc<KanjiListDetailEvent, KanjiListDetailStat
        /// of state. After, add to _list the elements for the next iteration.
        List<Kanji> fullList = List.of(_list);
        final List<Kanji> pagination = await KanjiQueries.instance.getAllKanjiFromList(
-           event.list, offset: event.offset, limit: 75);
+           event.list, offset: event.offset, limit: _limit);
        fullList.addAll(pagination);
        _list.addAll(pagination);
        emit(KanjiListDetailStateLoaded(fullList, event.list));
@@ -38,9 +41,19 @@ class KanjiListDetailBloc extends Bloc<KanjiListDetailEvent, KanjiListDetailStat
 
    on<KanjiEventSearching>((event, emit) async {
      try {
-       emit(KanjiListDetailStateLoading());
-       final lists = await KanjiQueries.instance.getKanjiMatchingQuery(event.query);
-       emit(KanjiListDetailStateLoaded(lists, event.list));
+       if (event.offset == 0) {
+         emit(KanjiListDetailStateLoading());
+         _searchList.clear();
+       }
+       /// For every time we want to retrieve data, we need to instantiate
+       /// a new list in order for Equatable to trigger and perform a change
+       /// of state. After, add to _list the elements for the next iteration.
+       List<Kanji> fullList = List.of(_searchList);
+       final List<Kanji> pagination = await KanjiQueries.instance.getKanjiMatchingQuery(
+           event.query, event.list, offset: event.offset, limit: _limit);
+       fullList.addAll(pagination);
+       _searchList.addAll(pagination);
+       emit(KanjiListDetailStateLoaded(fullList, event.list));
      } on Exception {
        emit(KanjiListDetailStateFailure());
      }

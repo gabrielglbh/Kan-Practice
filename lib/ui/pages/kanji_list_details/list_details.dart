@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
-import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/routing/pages.dart';
+import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/bloc/details_bloc.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/widgets/kanji_item.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
-import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/widgets/blitz/BlitzBottomSheet.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
@@ -95,47 +94,6 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
 
   _focusListener() => setState(() => _searchHasFocus = (_searchBarFn?.hasFocus ?? false));
 
-  Future<void> _loadUpPractice() async {
-    final List<Kanji> allList = await KanjiQueries.instance.getAllKanjiFromList(_listName);
-    if (allList.length != 0) {
-      /// Enable spatial learning, first elements are the ones with less %
-      List<Kanji> list = [];
-      switch (_learningMode) {
-        case LearningMode.spatial:
-          list = await KanjiQueries.instance.getAllKanjiForPractice(_listName, _selectedMode);
-          break;
-        case LearningMode.random:
-          allList.shuffle();
-          list = allList;
-          break;
-      }
-
-      switch (_selectedMode) {
-        case StudyModes.writing:
-          await Navigator.of(context).pushNamed(KanPracticePages.writingStudyPage,
-              arguments: ModeArguments(studyList: list, isTest: false, mode: StudyModes.writing))
-              .then((value) => _addLoadingEvent());
-          break;
-        case StudyModes.reading:
-          await Navigator.of(context).pushNamed(KanPracticePages.readingStudyPage,
-              arguments: ModeArguments(studyList: list, isTest: false, mode: StudyModes.reading))
-              .then((value) => _addLoadingEvent());
-          break;
-        case StudyModes.recognition:
-          await Navigator.of(context).pushNamed(KanPracticePages.recognitionStudyPage,
-              arguments: ModeArguments(studyList: list, isTest: false, mode: StudyModes.recognition))
-              .then((value) => _addLoadingEvent());
-          break;
-        case StudyModes.listening:
-          await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
-              arguments: ModeArguments(studyList: list, isTest: false, mode: StudyModes.listening))
-              .then((value) => _addLoadingEvent());
-          break;
-      }
-    }
-    else GeneralUtils.getSnackBar(context, "list_details_loadUpPractice_failed".tr());
-  }
-
   _onModeChange(StudyModes newMode) {
     _searchBarFn?.unfocus();
     setState(() {
@@ -204,6 +162,31 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
     });
   }
 
+  Future<void> _goToPractice(KanjiListDetailStateLoadedPractice state) async {
+    switch (state.mode) {
+      case StudyModes.writing:
+        await Navigator.of(context).pushNamed(KanPracticePages.writingStudyPage,
+            arguments: ModeArguments(studyList: state.list, isTest: false, mode: StudyModes.writing))
+            .then((value) => _addLoadingEvent());
+        break;
+      case StudyModes.reading:
+        await Navigator.of(context).pushNamed(KanPracticePages.readingStudyPage,
+            arguments: ModeArguments(studyList: state.list, isTest: false, mode: StudyModes.reading))
+            .then((value) => _addLoadingEvent());
+        break;
+      case StudyModes.recognition:
+        await Navigator.of(context).pushNamed(KanPracticePages.recognitionStudyPage,
+            arguments: ModeArguments(studyList: state.list, isTest: false, mode: StudyModes.recognition))
+            .then((value) => _addLoadingEvent());
+        break;
+      case StudyModes.listening:
+        await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
+            arguments: ModeArguments(studyList: state.list, isTest: false, mode: StudyModes.listening))
+            .then((value) => _addLoadingEvent());
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -231,23 +214,35 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
                     onExitSearch: () => _addLoadingEvent(),
                   ),
                   Expanded(
-                    child: BlocBuilder<KanjiListDetailBloc, KanjiListDetailState>(
-                      builder: (context, state) {
-                        if (state is KanjiListDetailStateLoaded) {
-                          _listName = state.name;
-                          return _body(state);
+                    child: BlocListener<KanjiListDetailBloc, KanjiListDetailState>(
+                      listener: (context, state) async {
+                        if (state is KanjiListDetailStateLoadedPractice) {
+                          await _goToPractice(state);
+                        } else if (state is KanjiListDetailStateFailure) {
+                          if (state.error.isNotEmpty)
+                            GeneralUtils.getSnackBar(context, state.error);
                         }
-                        else if (state is KanjiListDetailStateLoading || state is KanjiListDetailStateSearching)
-                          return CustomProgressIndicator();
-                        else if (state is KanjiListDetailStateFailure)
-                          return EmptyList(
-                              showTryButton: true,
-                              onRefresh: () => _addLoadingEvent(),
-                              message: "list_details_load_failed".tr()
-                          );
-                        else
-                          return Container();
                       },
+                      child: BlocBuilder<KanjiListDetailBloc, KanjiListDetailState>(
+                        builder: (context, state) {
+                          if (state is KanjiListDetailStateLoaded) {
+                            _listName = state.name;
+                            return _body(state);
+                          }
+                          else if (state is KanjiListDetailStateLoading ||
+                              state is KanjiListDetailStateSearching ||
+                              state is KanjiListDetailStateLoadedPractice)
+                            return CustomProgressIndicator();
+                          else if (state is KanjiListDetailStateFailure)
+                            return EmptyList(
+                                showTryButton: true,
+                                onRefresh: () => _addLoadingEvent(),
+                                message: "list_details_load_failed".tr()
+                            );
+                          else
+                            return Container();
+                        },
+                      ),
                     ),
                   ),
                 ],
@@ -340,7 +335,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
           title2: "${"list_details_practice_button_label".tr()} • ${
               _learningMode == LearningMode.spatial
                   ? LearningMode.spatial.name : LearningMode.random.name}",
-          onTap: () async => await _loadUpPractice()
+          onTap: () => _bloc..add(KanjiEventLoadUpPractice(_learningMode, _listName, _selectedMode))
         ),
       ],
     );

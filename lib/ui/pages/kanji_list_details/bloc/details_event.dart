@@ -9,11 +9,12 @@ abstract class KanjiListDetailEvent extends Equatable {
 
 class KanjiEventLoading extends KanjiListDetailEvent {
   final String list;
+  final int offset;
 
-  const KanjiEventLoading(this.list);
+  const KanjiEventLoading(this.list, {this.offset = 0});
 
   @override
-  List<Object> get props => [list];
+  List<Object> get props => [list, offset];
 }
 
 class KanjiEventSearching extends KanjiListDetailEvent {

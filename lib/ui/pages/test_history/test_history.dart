@@ -21,7 +21,7 @@ class TestHistory extends StatefulWidget {
 class _TestHistoryState extends State<TestHistory> {
   final ScrollController _scrollController = ScrollController();
   final TestListBloc _bloc = TestListBloc();
-  int loadingTimes = 0;
+  int _loadingTimes = 0;
 
   _showRemoveTestsDialog() {
     showDialog(
@@ -39,8 +39,8 @@ class _TestHistoryState extends State<TestHistory> {
 
   _scrollListener() {
     if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
-      loadingTimes += 1;
-      _addLoadingEvent(offset: loadingTimes);
+      _loadingTimes += 1;
+      _addLoadingEvent(offset: _loadingTimes);
     }
   }
 

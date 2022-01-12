@@ -49,11 +49,13 @@ class KanjiListDetails extends StatefulWidget {
 
 class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerProviderStateMixin {
   KanjiListDetailBloc _bloc = KanjiListDetailBloc();
+  final ScrollController _scrollController = ScrollController();
   FocusNode? _searchBarFn;
   TabController? _tabController;
   StudyModes _selectedMode = StudyModes.writing;
   LearningMode _learningMode = LearningMode.spatial;
 
+  int _loadingTimes = 0;
   String _listName = "";
   bool _searchHasFocus = false;
 
@@ -63,6 +65,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
     _tabController = TabController(length: StudyModes.values.length, vsync: this);
     _tabController?.addListener(_tabControllerManagement);
     _searchBarFn?.addListener(_focusListener);
+    _scrollController.addListener(_scrollListener);
     _listName = widget.list.name;
     super.initState();
   }
@@ -72,7 +75,15 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
     _searchBarFn?.removeListener(_focusListener);
     _searchBarFn?.dispose();
     _tabController?.dispose();
+    _scrollController.dispose();
     super.dispose();
+  }
+
+  _scrollListener() {
+    if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
+      _loadingTimes += 1;
+      _addLoadingEvent(offset: _loadingTimes);
+    }
   }
 
   _tabControllerManagement() {
@@ -84,8 +95,9 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
 
   _focusListener() => setState(() => _searchHasFocus = (_searchBarFn?.hasFocus ?? false));
 
-  Future<void> _loadUpPractice(KanjiListDetailStateLoaded state) async {
-    if (state.list.length != 0) {
+  Future<void> _loadUpPractice() async {
+    final List<Kanji> allList = await KanjiQueries.instance.getAllKanjiFromList(_listName);
+    if (allList.length != 0) {
       /// Enable spatial learning, first elements are the ones with less %
       List<Kanji> list = [];
       switch (_learningMode) {
@@ -93,8 +105,8 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
           list = await KanjiQueries.instance.getAllKanjiForPractice(_listName, _selectedMode);
           break;
         case LearningMode.random:
-          state.list.shuffle();
-          list = state.list;
+          allList.shuffle();
+          list = allList;
           break;
       }
 
@@ -162,7 +174,8 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
     }
   }
 
-  _addLoadingEvent() => _bloc..add(KanjiEventLoading(_listName));
+  _addLoadingEvent({int offset = 0}) =>
+      _bloc..add(KanjiEventLoading(_listName, offset: offset));
 
   _updateName(String name) {
     if (name.isNotEmpty) _bloc..add(UpdateKanList(name, _listName));
@@ -201,11 +214,11 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
           return false;
         } else return true;
       },
-      child: Scaffold(
-        appBar: _appBar(),
-        body: BlocProvider<KanjiListDetailBloc>(
-          create: (_) => _addLoadingEvent(),
-          child: SingleChildScrollView(
+      child: BlocProvider<KanjiListDetailBloc>(
+        create: (_) => _addLoadingEvent(),
+        child: Scaffold(
+          appBar: _appBar(),
+          body: SingleChildScrollView(
             child: Container(
               height: MediaQuery.of(context).size.height - CustomSizes.appBarHeight - Margins.margin32,
               child: Column(
@@ -240,7 +253,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
                 ],
               ),
             ),
-          )
+          ),
         ),
       ),
     );
@@ -249,23 +262,20 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
   AppBar _appBar() {
     return AppBar(
       toolbarHeight: CustomSizes.appBarHeight,
-      title: BlocProvider<KanjiListDetailBloc>(
-        create: (_) => _addLoadingEvent(),
-        child: BlocBuilder<KanjiListDetailBloc, KanjiListDetailState>(
-          builder: (context, state) {
-            if (state is KanjiListDetailStateLoaded) {
-              _listName = state.name;
-              return FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: GestureDetector(
-                    onTap: () async => await _updateKanListName(),
-                    child: Text(state.name, overflow: TextOverflow.ellipsis),
-                  )
-              );
-            }
-            else return Container();
-          },
-        ),
+      title: BlocBuilder<KanjiListDetailBloc, KanjiListDetailState>(
+        builder: (context, state) {
+          if (state is KanjiListDetailStateLoaded) {
+            _listName = state.name;
+            return FittedBox(
+                fit: BoxFit.fitWidth,
+                child: GestureDetector(
+                  onTap: () async => await _updateKanListName(),
+                  child: Text(state.name, overflow: TextOverflow.ellipsis),
+                )
+            );
+          }
+          else return Container();
+        },
       ),
       actions: [
         IconButton(
@@ -330,7 +340,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
           title2: "${"list_details_practice_button_label".tr()} • ${
               _learningMode == LearningMode.spatial
                   ? LearningMode.spatial.name : LearningMode.random.name}",
-          onTap: () async => await _loadUpPractice(state)
+          onTap: () async => await _loadUpPractice()
         ),
       ],
     );

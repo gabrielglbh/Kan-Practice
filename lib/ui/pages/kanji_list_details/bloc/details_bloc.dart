@@ -7,6 +7,7 @@ import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/list_details.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 
 part 'details_event.dart';
 part 'details_state.dart';
@@ -17,7 +18,7 @@ class KanjiListDetailBloc extends Bloc<KanjiListDetailEvent, KanjiListDetailStat
    List<Kanji> _list = [];
    /// Maintain the list for pagination purposes on search
    List<Kanji> _searchList = [];
-   final int _limit = 75;
+   final int _limit = LazyLoadingLimits.wordList;
 
    on<KanjiEventLoading>((event, emit) async {
      try {

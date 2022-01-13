@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 
 part 'lists_event.dart';
 part 'lists_state.dart';
@@ -13,7 +14,7 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
     List<KanjiList> _list = [];
     /// Maintain the list for pagination purposes on search
     List<KanjiList> _searchList = [];
-    final int _limit = 8;
+    final int _limit = LazyLoadingLimits.kanList;
 
     on<KanjiListEventLoading>((event, emit) async {
       try {
@@ -60,47 +61,50 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
       }
     });
 
-    /// TODO: Next batch not working correctly
     on<KanjiListEventDelete>((event, emit) async {
       if (state is KanjiListStateLoaded) {
         String name = event.list.name;
         final code = await ListQueries.instance.removeList(name);
         if (code == 0) {
-          /// When removing a new list, reset any pagination offset to load up,
-          /// from the start
           emit(KanjiListStateLoading());
-          final lists = await ListQueries.instance.getAllLists(
-            filter: event.filter,
-            order: _getSelectedOrder(event.order),
-            limit: _limit,
-            offset: 0
+          List<KanjiList> newList = await _getNewAllListsAndUpdateLazyLoadingState(
+              event.filter, event.order, limit: _limit, l: _list
           );
-          _list.clear();
-          emit(KanjiListStateLoaded(lists: lists));
+          emit(KanjiListStateLoaded(lists: newList));
         }
       }
     });
 
-    /// TODO: Next batch not working correctly
     on<KanjiListEventCreate>((event, emit) async {
       if (state is KanjiListStateLoaded) {
         String? name = event.name;
         final code = await ListQueries.instance.createList(name);
         if (code == 0) {
-          /// When creating a new list, reset any pagination offset to load up,
-          /// from the start
           emit(KanjiListStateLoading());
-          final lists = await ListQueries.instance.getAllLists(
-            filter: event.filter,
-            order: _getSelectedOrder(event.order),
-            limit: _limit,
-            offset: 0
+          List<KanjiList> newList = await _getNewAllListsAndUpdateLazyLoadingState(
+            event.filter, event.order, limit: _limit, l: _list
           );
-          _list.clear();
-          emit(KanjiListStateLoaded(lists: lists));
+          emit(KanjiListStateLoaded(lists: newList));
         }
       }
     });
+  }
+
+  Future<List<KanjiList>> _getNewAllListsAndUpdateLazyLoadingState(
+      String filter, bool order, {required int limit, required List<KanjiList> l}) async {
+    /// When creating or removing a new list, reset any pagination offset
+    /// to load up from the start
+    final List<KanjiList> lists = await ListQueries.instance.getAllLists(
+        filter: filter,
+        order: _getSelectedOrder(order),
+        limit: limit,
+        offset: 0
+    );
+    /// Clear the _list and repopulate it with the newest items for KanjiListEventLoading
+    /// to work properly for the next offset
+    l.clear();
+    l.addAll(lists);
+    return lists;
   }
 
   String _getSelectedOrder(bool order) => order ? "DESC" : "ASC";

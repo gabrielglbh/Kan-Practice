@@ -2,6 +2,7 @@ import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/test_result.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:sqflite/sqflite.dart';
 
 class TestQueries {
@@ -58,7 +59,7 @@ class TestQueries {
   /// Query to get all [Test] from the db using lazy loading. Each time, helper
   /// will get 10 tests. When user gets to the end of list, another 10 will be retrieved.
   /// If anything goes wrong, an empty list will be returned.
-  Future<List<Test>> getTests(int offset, {int limit = 15}) async {
+  Future<List<Test>> getTests(int offset, {int limit = LazyLoadingLimits.testHistory}) async {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];

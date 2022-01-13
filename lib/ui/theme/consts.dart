@@ -36,6 +36,12 @@ class CustomSizes {
   static const int numberOfPredictedKanji = 20;
 }
 
+class LazyLoadingLimits {
+  static const int kanList = 8;
+  static const int wordList = 75;
+  static const int testHistory = 15;
+}
+
 class ChartSize {
   static const double small = 8;
   static const double medium = 32;

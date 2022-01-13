@@ -113,8 +113,12 @@ class _KanjiListsState extends State<KanjiLists> {
         filter: _currentAppliedFilter, order: _currentAppliedOrder, offset: offset));
   }
 
-  _addSearchingEvent(String query, {int offset = 0}) =>
-      _bloc..add(KanjiListEventSearching(query, offset: offset));
+  _addSearchingEvent(String query, {int offset = 0}) {
+    /// If the loading occurs with an offset of 0, it means it is another
+    /// fresh load, so we need to update the _loadingTimes offset to 0
+    if (offset == 0) _loadingTimesForSearch = 0;
+    return _bloc..add(KanjiListEventSearching(query, offset: offset));
+  }
 
   _getCurrentIndexOfFilter() => _filterValues.keys.toList().indexOf(_currentAppliedFilter);
 
@@ -203,13 +207,11 @@ class _KanjiListsState extends State<KanjiLists> {
                   /// Everytime the user queries, reset the query itself and
                   /// the pagination index
                   _query = query;
-                  _loadingTimesForSearch = 0;
                   _addSearchingEvent(query);
                 },
                 onExitSearch: () {
                   /// Empty the query
                   _query = "";
-                  _loadingTimes = 0;
                   _addLoadingEvent();
                 },
               ),

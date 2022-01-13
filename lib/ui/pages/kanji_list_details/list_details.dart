@@ -157,8 +157,12 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
     return _bloc..add(KanjiEventLoading(_listName, offset: offset));
   }
 
-  _addSearchingEvent(String query, {int offset = 0}) =>
-      _bloc..add(KanjiEventSearching(query, _listName, offset));
+  _addSearchingEvent(String query, {int offset = 0}) {
+    /// If the loading occurs with an offset of 0, it means it is another
+    /// fresh load, so we need to update the _loadingTimes offset to 0
+    if (offset == 0) _loadingTimesForSearch = 0;
+    return _bloc..add(KanjiEventSearching(query, _listName, offset));
+  }
 
   _updateName(String name) {
     if (name.isNotEmpty) _bloc..add(UpdateKanList(name, _listName));
@@ -239,13 +243,11 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
                       /// Everytime the user queries, reset the query itself and
                       /// the pagination index
                       _query = query;
-                      _loadingTimesForSearch = 0;
                       _addSearchingEvent(query);
                     },
                     onExitSearch: () {
                       /// Empty the query
                       _query = "";
-                      _loadingTimes = 0;
                       _addLoadingEvent();
                     },
                   ),

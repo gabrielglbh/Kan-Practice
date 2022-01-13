@@ -34,7 +34,10 @@ class TestListBloc extends Bloc<TestListEvent,TestListState> {
       try {
         emit(TestListStateLoading());
         final int code = await TestQueries.instance.removeTests();
-        if (code == 0) emit(TestListStateLoaded([]));
+        if (code == 0) {
+          _list.clear();
+          emit(TestListStateLoaded([]));
+        }
         else emit(TestListStateFailure());
       } on Exception {
         emit(TestListStateFailure());

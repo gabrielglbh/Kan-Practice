@@ -60,6 +60,7 @@ class KanjiListDetailBloc extends Bloc<KanjiListDetailEvent, KanjiListDetailStat
      }
    });
 
+   /// TODO: Manage pagination
    on<UpdateKanList>((event, emit) async {
      emit(KanjiListDetailStateLoading());
      final error = await ListQueries.instance.updateList(event.og, {

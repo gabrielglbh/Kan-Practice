@@ -51,6 +51,10 @@ class _KanjiListsState extends State<KanjiLists> {
 
   /// Loading offset for normal pagination
   int _loadingTimes = 0;
+  /// Loading offset for search bar list pagination
+  int _loadingTimesForSearch = 0;
+  /// Saves the last state of the query
+  String _query = "";
 
   String _newVersion = "";
 
@@ -86,22 +90,42 @@ class _KanjiListsState extends State<KanjiLists> {
   _focusListener() => setState(() => _searchHasFocus = (_searchBarFn?.hasFocus ?? false));
 
   _scrollListener() {
+    /// When reaching last pixel of the list
     if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
-      _loadingTimes += 1;
-      _addLoadingEvent(offset: _loadingTimes);
+      /// If the query is empty, use the pagination for search bar
+      if (_query.isNotEmpty) {
+        _loadingTimesForSearch += 1;
+        _addSearchingEvent(_query, offset: _loadingTimesForSearch);
+      }
+      /// Else use the normal pagination
+      else {
+        _loadingTimes += 1;
+        _addLoadingEvent(offset: _loadingTimes);
+      }
     }
   }
 
   _addLoadingEvent({int offset = 0}) {
+    /// If the loading occurs with an offset of 0, it means it is another
+    /// fresh load, so we need to update the _loadingTimes offset to 0
     if (offset == 0) _loadingTimes = 0;
     return _bloc..add(KanjiListEventLoading(
         filter: _currentAppliedFilter, order: _currentAppliedOrder, offset: offset));
   }
 
-  _addCreateEvent(String name) => _bloc..add(KanjiListEventCreate(
-      name, filter: _currentAppliedFilter, order: _currentAppliedOrder));
+  _addSearchingEvent(String query, {int offset = 0}) =>
+      _bloc..add(KanjiListEventSearching(query, offset: offset));
 
   _getCurrentIndexOfFilter() => _filterValues.keys.toList().indexOf(_currentAppliedFilter);
+
+  _resetOffsets() {
+    /// When creating or removing a list, reset any pagination offset to load up,
+    /// from the start
+    _loadingTimes = 0;
+    _loadingTimesForSearch = 0;
+    /// And scroll to the top
+    _scrollController.animateTo(0, duration: Duration(milliseconds: 400), curve: Curves.easeOut);
+  }
 
   _onFilterSelected(int index) {
     /// If the user taps on the same filter twice, just change back and forth the
@@ -175,17 +199,32 @@ class _KanjiListsState extends State<KanjiLists> {
               CustomSearchBar(
                 hint: "kanji_lists_searchBar_hint".tr(),
                 focus: _searchBarFn,
-                onQuery: (String query) => _bloc..add(KanjiListEventSearching(query)),
-                onExitSearch: () => _addLoadingEvent(),
+                onQuery: (String query) {
+                  /// Everytime the user queries, reset the query itself and
+                  /// the pagination index
+                  _query = query;
+                  _loadingTimesForSearch = 0;
+                  _addSearchingEvent(query);
+                },
+                onExitSearch: () {
+                  /// Empty the query
+                  _query = "";
+                  _addLoadingEvent();
+                },
               ),
               _filterChips(),
               _lists()
             ],
           )
         ),
+        /// TODO: When onSubmitted from IME, not working
         floatingActionButton: _searchHasFocus ? null : FloatingActionButton(
           onPressed: () => CreateKanListDialog.showCreateKanListDialog(context,
-              onSubmit: (String name) => _addCreateEvent(name)),
+              onSubmit: (String name) {
+                _bloc..add(KanjiListEventCreate(
+                    name, filter: _currentAppliedFilter, order: _currentAppliedOrder));
+                _resetOffsets();
+              }),
           child: Icon(Icons.add, color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black),
         ),
       ),
@@ -247,6 +286,7 @@ class _KanjiListsState extends State<KanjiLists> {
                 key: PageStorageKey<String>('kanListListsController'),
                 controller: _scrollController,
                 itemCount: state.lists.length,
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                 padding: EdgeInsets.only(bottom: CustomSizes.extraPaddingForFAB),
                 itemBuilder: (context, k) {
                   return Card(
@@ -257,11 +297,14 @@ class _KanjiListsState extends State<KanjiLists> {
                       mode: VisualizationModeExt.mode(StorageManager.readData(
                           StorageManager.kanListGraphVisualization)
                             ?? VisualizationMode.radialChart),
-                      onRemoval: () => _bloc..add(KanjiListEventDelete(
-                        state.lists[k],
-                        filter: _currentAppliedFilter,
-                        order: _currentAppliedOrder
-                      )),
+                      onRemoval: () {
+                        _bloc..add(KanjiListEventDelete(
+                          state.lists[k],
+                          filter: _currentAppliedFilter,
+                          order: _currentAppliedOrder,
+                        ));
+                        _resetOffsets();
+                      },
                       onPopWhenTapped: () => _addLoadingEvent(offset: _loadingTimes)
                     ),
                   );

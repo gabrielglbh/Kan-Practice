@@ -110,12 +110,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
     });
   }
 
-  _focusListener() => setState(() {
-    _searchHasFocus = (_searchBarFn?.hasFocus ?? false);
-    /// Everytime the user loses focus on the search bar, empty the query
-    /// in order to paginate properly
-    if (!_searchHasFocus) _query = "";
-  });
+  _focusListener() => setState(() => _searchHasFocus = (_searchBarFn?.hasFocus ?? false));
 
   _onModeChange(StudyModes newMode) {
     _searchBarFn?.unfocus();
@@ -247,7 +242,11 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
                       _loadingTimesForSearch = 0;
                       _addSearchingEvent(query);
                     },
-                    onExitSearch: () => _addLoadingEvent(),
+                    onExitSearch: () {
+                      /// Empty the query
+                      _query = "";
+                      _addLoadingEvent();
+                    },
                   ),
                   Expanded(
                     child: BlocListener<KanjiListDetailBloc, KanjiListDetailState>(
@@ -399,6 +398,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
       key: PageStorageKey<String>('kanjiListController'),
       itemCount: state.list.length,
       controller: _scrollController,
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 5,
         childAspectRatio: 2

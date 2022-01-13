@@ -11,6 +11,8 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
   KanjiListBloc() : super(KanjiListStateLoading()) {
     /// Maintain the list for pagination purposes
     List<KanjiList> _list = [];
+    /// Maintain the list for pagination purposes on search
+    List<KanjiList> _searchList = [];
     final int _limit = 8;
 
     on<KanjiListEventLoading>((event, emit) async {
@@ -39,39 +41,62 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
 
     on<KanjiListEventSearching>((event, emit) async {
       try {
-        emit(KanjiListStateLoading());
-        final lists = await ListQueries.instance.getListsMatchingQuery(event.query);
-        emit(KanjiListStateLoaded(lists: lists));
+        if (event.offset == 0) {
+          emit(KanjiListStateLoading());
+          _searchList.clear();
+        }
+        /// For every time we want to retrieve data, we need to instantiate
+        /// a new list in order for Equatable to trigger and perform a change
+        /// of state. After, add to _list the elements for the next iteration.
+        List<KanjiList> fullList = List.of(_searchList);
+        final List<KanjiList> pagination = await ListQueries.instance.getListsMatchingQuery(
+            event.query, offset: event.offset, limit: _limit
+        );
+        fullList.addAll(pagination);
+        _searchList.addAll(pagination);
+        emit(KanjiListStateLoaded(lists: fullList));
       } on Exception {
         emit(KanjiListStateFailure());
       }
     });
 
+    /// TODO: Next batch not working correctly
     on<KanjiListEventDelete>((event, emit) async {
       if (state is KanjiListStateLoaded) {
         String name = event.list.name;
         final code = await ListQueries.instance.removeList(name);
         if (code == 0) {
+          /// When removing a new list, reset any pagination offset to load up,
+          /// from the start
           emit(KanjiListStateLoading());
           final lists = await ListQueries.instance.getAllLists(
-              filter: event.filter,
-              order: _getSelectedOrder(event.order)
+            filter: event.filter,
+            order: _getSelectedOrder(event.order),
+            limit: _limit,
+            offset: 0
           );
+          _list.clear();
           emit(KanjiListStateLoaded(lists: lists));
         }
       }
     });
 
+    /// TODO: Next batch not working correctly
     on<KanjiListEventCreate>((event, emit) async {
       if (state is KanjiListStateLoaded) {
         String? name = event.name;
         final code = await ListQueries.instance.createList(name);
         if (code == 0) {
+          /// When creating a new list, reset any pagination offset to load up,
+          /// from the start
           emit(KanjiListStateLoading());
           final lists = await ListQueries.instance.getAllLists(
-              filter: event.filter,
-              order: _getSelectedOrder(event.order)
+            filter: event.filter,
+            order: _getSelectedOrder(event.order),
+            limit: _limit,
+            offset: 0
           );
+          _list.clear();
           emit(KanjiListStateLoaded(lists: lists));
         }
       }

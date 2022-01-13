@@ -245,6 +245,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
                     onExitSearch: () {
                       /// Empty the query
                       _query = "";
+                      _loadingTimes = 0;
                       _addLoadingEvent();
                     },
                   ),

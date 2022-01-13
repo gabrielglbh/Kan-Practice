@@ -209,6 +209,7 @@ class _KanjiListsState extends State<KanjiLists> {
                 onExitSearch: () {
                   /// Empty the query
                   _query = "";
+                  _loadingTimes = 0;
                   _addLoadingEvent();
                 },
               ),
@@ -217,7 +218,6 @@ class _KanjiListsState extends State<KanjiLists> {
             ],
           )
         ),
-        /// TODO: When onSubmitted from IME, not working
         floatingActionButton: _searchHasFocus ? null : FloatingActionButton(
           onPressed: () => CreateKanListDialog.showCreateKanListDialog(context,
               onSubmit: (String name) {

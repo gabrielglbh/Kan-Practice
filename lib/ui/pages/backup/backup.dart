@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/core/service_locator/service_locator.dart';
 import 'package:kanpractice/ui/pages/backup/bloc/backup_bloc.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
@@ -8,9 +7,9 @@ import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class BackUpPage extends StatelessWidget {
+  final BackUpBloc _bloc = BackUpBloc();
   final String uid;
   BackUpPage({required this.uid});
-
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,7 @@ class BackUpPage extends StatelessWidget {
         title: FittedBox(fit: BoxFit.fitWidth, child: Text("backup_title".tr())),
       ),
       body: BlocProvider<BackUpBloc>(
-        create: (_) => getIt<BackUpBloc>()..add(BackUpIdle()),
+        create: (_) => _bloc..add(BackUpIdle()),
         child: BlocBuilder<BackUpBloc, BackUpState>(
           builder: (context, state) {
             if (state is BackUpStateLoading) {
@@ -72,7 +71,7 @@ class BackUpPage extends StatelessWidget {
         title: Text("backup_creation_dialog_title".tr()),
         content: Text("backup_creation_dialog_content".tr()),
         positiveButtonText: "backup_creation_dialog_positive".tr(),
-        onPositive: () => getIt<BackUpBloc>()..add(BackUpLoadingCreateBackUp()),
+        onPositive: () => _bloc..add(BackUpLoadingCreateBackUp()),
       )
     );
   }
@@ -84,7 +83,7 @@ class BackUpPage extends StatelessWidget {
         title: Text("backup_merge_dialog_title".tr()),
         content: Text("backup_merge_dialog_content".tr()),
         positiveButtonText: "backup_merge_dialog_positive".tr(),
-        onPositive: () => getIt<BackUpBloc>()..add(BackUpLoadingMergeBackUp()),
+        onPositive: () => _bloc..add(BackUpLoadingMergeBackUp()),
       )
     );
   }
@@ -96,7 +95,7 @@ class BackUpPage extends StatelessWidget {
         title: Text("backup_removal_dialog_title".tr()),
         content: Text("backup_removal_dialog_content".tr()),
         positiveButtonText: "backup_removal_dialog_positive".tr(),
-        onPositive: () => getIt<BackUpBloc>()..add(BackUpLoadingRemoveBackUp()),
+        onPositive: () => _bloc..add(BackUpLoadingRemoveBackUp()),
       )
     );
   }

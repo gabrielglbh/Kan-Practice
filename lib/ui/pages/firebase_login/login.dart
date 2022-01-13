@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/routing/pages.dart';
-import 'package:kanpractice/core/service_locator/service_locator.dart';
 import 'package:kanpractice/ui/pages/firebase_login/bloc/login_bloc.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
@@ -30,6 +29,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final LoginBloc _bloc = LoginBloc();
+
   TextEditingController? _emailController;
   TextEditingController? _passwordController;
   FocusNode? _emailFocus;
@@ -52,6 +53,7 @@ class _LoginPageState extends State<LoginPage> {
     _passwordController?.dispose();
     _emailFocus?.dispose();
     _passwordFocus?.dispose();
+    _bloc.close();
     super.dispose();
   }
 
@@ -59,17 +61,17 @@ class _LoginPageState extends State<LoginPage> {
     String? email = _emailController?.text;
     String? password = _passwordController?.text;
     if (email != null && password != null) {
-      getIt<LoginBloc>()..add(LoginSubmitting(_mode, email, password));
+      _bloc..add(LoginSubmitting(_mode, email, password));
     }
   }
 
   _changePassword(String prevPass, String newPass) {
     if (prevPass.isNotEmpty && newPass.isNotEmpty)
-      getIt<LoginBloc>()..add(ChangePassword(prevPass, newPass));
+      _bloc..add(ChangePassword(prevPass, newPass));
   }
 
   _removeAccount(String pass) {
-    if (pass.isNotEmpty) getIt<LoginBloc>()..add(RemoveAccount(pass));
+    if (pass.isNotEmpty) _bloc..add(RemoveAccount(pass));
   }
 
   _changePasswordDialog() {
@@ -153,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         toolbarHeight: CustomSizes.appBarHeight,
         title: BlocProvider<LoginBloc>(
-            create: (_) => getIt<LoginBloc>()..add(LoginIdle()),
+            create: (_) => _bloc..add(LoginIdle()),
             child: BlocBuilder<LoginBloc, LoginState>(
               builder: (context, state) {
                 if (state is LoginStateSuccessful)
@@ -175,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             BlocProvider<LoginBloc>(
-              create: (_) => getIt<LoginBloc>()..add(LoginIdle()),
+              create: (_) => _bloc..add(LoginIdle()),
               child: BlocBuilder<LoginBloc, LoginState>(
                 builder: (context, state) {
                   if (state is LoginStateLoading)
@@ -305,7 +307,7 @@ class _LoginPageState extends State<LoginPage> {
         ListTile(
           leading: Icon(Icons.logout),
           title: Text("login_close_session_title".tr()),
-          onTap: () => getIt<LoginBloc>()..add(CloseSession()),
+          onTap: () => _bloc..add(CloseSession()),
         ),
         Divider(),
         Padding(

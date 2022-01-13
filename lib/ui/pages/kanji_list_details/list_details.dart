@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/routing/pages.dart';
-import 'package:kanpractice/core/service_locator/service_locator.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/bloc/details_bloc.dart';
@@ -48,7 +47,9 @@ class KanjiListDetails extends StatefulWidget {
 }
 
 class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerProviderStateMixin {
+  final KanjiListDetailBloc _bloc = KanjiListDetailBloc();
   final ScrollController _scrollController = ScrollController();
+
   FocusNode? _searchBarFn;
   TabController? _tabController;
   StudyModes _selectedMode = StudyModes.writing;
@@ -82,6 +83,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
     _tabController?.dispose();
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
+    _bloc.close();
     super.dispose();
   }
 
@@ -157,14 +159,14 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
     /// If the loading occurs with an offset of 0, it means it is another
     /// fresh load, so we need to update the _loadingTimes offset to 0
     if (offset == 0) _loadingTimes = 0;
-    return getIt<KanjiListDetailBloc>()..add(KanjiEventLoading(_listName, offset: offset));
+    return _bloc..add(KanjiEventLoading(_listName, offset: offset));
   }
 
   _addSearchingEvent(String query, {int offset = 0}) =>
-      getIt<KanjiListDetailBloc>()..add(KanjiEventSearching(query, _listName, offset));
+      _bloc..add(KanjiEventSearching(query, _listName, offset));
 
   _updateName(String name) {
-    if (name.isNotEmpty) getIt<KanjiListDetailBloc>()..add(UpdateKanList(name, _listName));
+    if (name.isNotEmpty) _bloc..add(UpdateKanList(name, _listName));
   }
 
   _updateKanListName() {
@@ -369,8 +371,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
           title2: "${"list_details_practice_button_label".tr()} • ${
               _learningMode == LearningMode.spatial
                   ? LearningMode.spatial.name : LearningMode.random.name}",
-          onTap: () => getIt<KanjiListDetailBloc>()
-            ..add(KanjiEventLoadUpPractice(_learningMode, _listName, _selectedMode))
+          onTap: () => _bloc..add(KanjiEventLoadUpPractice(_learningMode, _listName, _selectedMode))
         ),
       ],
     );

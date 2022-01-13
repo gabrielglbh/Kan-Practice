@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image/image.dart' as im;
 import 'package:kanpractice/core/routing/pages.dart';
-import 'package:kanpractice/core/service_locator/service_locator.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
 import 'package:kanpractice/ui/pages/dictionary/bloc/dict_bloc.dart';
@@ -23,6 +22,8 @@ class DictionaryPage extends StatefulWidget {
 }
 
 class _DictionaryPageState extends State<DictionaryPage> {
+  final DictBloc _bloc = DictBloc();
+
   /// Current drawn line in the canvas
   List<Offset?> _line = [];
 
@@ -39,6 +40,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
   @override
   void dispose() {
     _searchBarTextController?.dispose();
+    _bloc.close();
     super.dispose();
   }
 
@@ -131,7 +133,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
               ],
             ),
             BlocProvider<DictBloc>(
-              create: (_) => getIt<DictBloc>()..add(DictEventIdle()),
+              create: (_) => _bloc..add(DictEventIdle()),
               child: BlocBuilder<DictBloc, DictState>(
                 builder: (context, state) {
                   if (state is DictStateLoading)
@@ -166,7 +168,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
                           line: _line,
                           allowPrediction: true,
                           handleImage: (im.Image image) {
-                            getIt<DictBloc>()..add(DictEventLoading(image: image));
+                            _bloc..add(DictEventLoading(image: image));
                           },
                         ),
                       ],

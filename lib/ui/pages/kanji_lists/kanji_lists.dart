@@ -156,7 +156,7 @@ class _KanjiListsState extends State<KanjiLists> {
             IconButton(
               onPressed: () async {
                 await Navigator.of(context).pushNamed(KanPracticePages.settingsPage).then((code) {
-                  _addLoadingEvent();
+                  _addLoadingEvent(offset: _loadingTimes);
                 });
               },
               icon: Icon(Icons.settings),
@@ -262,7 +262,7 @@ class _KanjiListsState extends State<KanjiLists> {
                         filter: _currentAppliedFilter,
                         order: _currentAppliedOrder
                       )),
-                      onPopWhenTapped: () => _addLoadingEvent()
+                      onPopWhenTapped: () => _addLoadingEvent(offset: _loadingTimes)
                     ),
                   );
                 }

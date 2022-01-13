@@ -326,7 +326,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
           onPressed: () async {
             await Navigator.of(context).pushNamed(KanPracticePages.addKanjiPage,
                 arguments: AddKanjiArgs(listName: _listName))
-                .then((code) => _addLoadingEvent());
+                .then((code) => _addLoadingEvent(offset: _loadingTimes));
           },
           icon: Icon(Icons.add),
         ),

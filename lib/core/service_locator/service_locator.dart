@@ -11,15 +11,19 @@ import 'package:kanpractice/ui/widgets/kanji_bottom_sheet/bloc/kanji_bs_bloc.dar
 
 final GetIt getIt = GetIt.I;
 
+/// Instead of singletons, which maintain the state even navigating back,
+/// we should consider Factories instead of Singletons.
 init() {
   getIt
     ..registerSingleton<KanjiListBloc>(KanjiListBloc())
     ..registerSingleton<KanjiListDetailBloc>(KanjiListDetailBloc())
     ..registerSingleton<DictBloc>(DictBloc())
     ..registerSingleton<JishoBloc>(JishoBloc())
+    /// Always showing the same kanji. Rest untested
     ..registerSingleton<KanjiBSBloc>(KanjiBSBloc())
     ..registerSingleton<SettingsBloc>(SettingsBloc())
     ..registerSingleton<BackUpBloc>(BackUpBloc())
+    /// No update whatsoever
     ..registerSingleton<LoginBloc>(LoginBloc())
     ..registerSingleton<TestListBloc>(TestListBloc());
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
+import 'package:kanpractice/core/service_locator/service_locator.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListTile.dart';
 import 'package:kanpractice/ui/pages/settings/bloc/settings_bloc.dart';
@@ -22,7 +23,6 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  SettingsBloc _settingsBloc = SettingsBloc();
   ThemeMode _mode = ThemeMode.light;
   VisualizationMode _graphMode = VisualizationMode.radialChart;
   bool _toggleAffect = false;
@@ -53,7 +53,7 @@ class _SettingsState extends State<Settings> {
                 ? Icons.mode_night_rounded : Icons.light_mode_rounded),
           ),
           IconButton(
-            onPressed: () => _settingsBloc..add(SettingsLoadingBackUpDate(context)),
+            onPressed: () => getIt<SettingsBloc>()..add(SettingsLoadingBackUpDate(context)),
             icon: Icon(Icons.sync),
           )
         ],
@@ -126,8 +126,8 @@ class _SettingsState extends State<Settings> {
               }
             }
           ),
-          BlocProvider(
-            create: (_) => _settingsBloc..add(SettingsLoadingBackUpDate(context)),
+          BlocProvider<SettingsBloc>(
+            create: (_) => getIt<SettingsBloc>()..add(SettingsLoadingBackUpDate(context)),
             child: BlocBuilder<SettingsBloc, SettingsState>(
               builder: (context, state) {
                 if (state is SettingsStateBackUpDateLoaded) {

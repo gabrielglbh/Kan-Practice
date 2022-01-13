@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
+import 'package:kanpractice/core/service_locator/service_locator.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/pages/jisho/arguments.dart';
@@ -63,7 +64,7 @@ class KanjiBottomSheet extends StatelessWidget {
                 children: [
                   DragContainer(),
                   BlocProvider<KanjiBSBloc>(
-                    create: (_) => KanjiBSBloc()..add(KanjiBSEventLoading(kanji ?? Kanji.empty)),
+                    create: (_) => getIt<KanjiBSBloc>()..add(KanjiBSEventLoading(kanji ?? Kanji.empty)),
                     child: BlocListener<KanjiBSBloc, KanjiBSState>(
                       listener: (context, state) {
                         if (state is KanjiBSStateFailure) {
@@ -275,7 +276,7 @@ class KanjiBottomSheet extends StatelessWidget {
     }));
   }
 
-  Container _actionButtons(BuildContext blocContext) {
+  Container _actionButtons(BuildContext context) {
     return Container(
       height: CustomSizes.actionButtonsKanjiDetail,
       child: Row(
@@ -286,14 +287,14 @@ class KanjiBottomSheet extends StatelessWidget {
               trailing: Icon(Icons.clear),
               onTap: () {
                 showDialog(
-                  context: blocContext,
+                  context: context,
                   builder: (context) => CustomDialog(
                     title: Text("kanji_bottom_sheet_removeKanji_title".tr()),
                     content: Text("kanji_bottom_sheet_removeKanji_content".tr()),
                     positiveButtonText: "kanji_bottom_sheet_removeKanji_positive".tr(),
                     onPositive: () {
                       Navigator.of(context).pop();
-                      blocContext.read<KanjiBSBloc>()..add(KanjiBSEventDelete(kanji));
+                      getIt<KanjiBSBloc>()..add(KanjiBSEventDelete(kanji));
                     }
                   )
                 );
@@ -306,7 +307,7 @@ class KanjiBottomSheet extends StatelessWidget {
               title: Text("kanji_bottom_sheet_update_label".tr()),
               trailing: Icon(Icons.arrow_forward_rounded),
               onTap: () {
-                Navigator.of(blocContext).pop();
+                Navigator.of(context).pop();
                 if (onTap != null) onTap!();
               },
             ),

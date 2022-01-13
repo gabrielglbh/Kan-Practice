@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/models/test_result.dart';
+import 'package:kanpractice/core/service_locator/service_locator.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/pages/test_history/bloc/test_bloc.dart';
@@ -20,7 +21,6 @@ class TestHistory extends StatefulWidget {
 
 class _TestHistoryState extends State<TestHistory> {
   final ScrollController _scrollController = ScrollController();
-  final TestListBloc _bloc = TestListBloc();
   int _loadingTimes = 0;
 
   _showRemoveTestsDialog() {
@@ -30,12 +30,12 @@ class _TestHistoryState extends State<TestHistory> {
         title: Text("test_history_showRemoveTestsDialog_title".tr()),
         content: Text("test_history_showRemoveTestsDialog_content".tr()),
         positiveButtonText: "test_history_showRemoveTestsDialog_positive".tr(),
-        onPositive: () => _bloc..add(TestListEventRemoving()),
+        onPositive: () => getIt<TestListBloc>()..add(TestListEventRemoving()),
       )
     );
   }
 
-  _addLoadingEvent({int offset = 0}) => _bloc..add(TestListEventLoading(offset: offset));
+  _addLoadingEvent({int offset = 0}) => getIt<TestListBloc>()..add(TestListEventLoading(offset: offset));
 
   _scrollListener() {
     if (_scrollController.offset == _scrollController.position.maxScrollExtent) {

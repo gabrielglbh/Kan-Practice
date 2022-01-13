@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/routing/pages.dart';
+import 'package:kanpractice/core/service_locator/service_locator.dart';
 import 'package:kanpractice/ui/pages/firebase_login/bloc/login_bloc.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
@@ -36,8 +37,6 @@ class _LoginPageState extends State<LoginPage> {
 
   SignMode _mode = SignMode.login;
 
-  LoginBloc _bloc = LoginBloc();
-
   @override
   void initState() {
     _emailController = TextEditingController();
@@ -60,16 +59,17 @@ class _LoginPageState extends State<LoginPage> {
     String? email = _emailController?.text;
     String? password = _passwordController?.text;
     if (email != null && password != null) {
-      _bloc..add(LoginSubmitting(_mode, email, password));
+      getIt<LoginBloc>()..add(LoginSubmitting(_mode, email, password));
     }
   }
 
   _changePassword(String prevPass, String newPass) {
-    if (prevPass.isNotEmpty && newPass.isNotEmpty) _bloc..add(ChangePassword(prevPass, newPass));
+    if (prevPass.isNotEmpty && newPass.isNotEmpty)
+      getIt<LoginBloc>()..add(ChangePassword(prevPass, newPass));
   }
 
   _removeAccount(String pass) {
-    if (pass.isNotEmpty) _bloc..add(RemoveAccount(pass));
+    if (pass.isNotEmpty) getIt<LoginBloc>()..add(RemoveAccount(pass));
   }
 
   _changePasswordDialog() {
@@ -152,8 +152,8 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: CustomSizes.appBarHeight,
-        title: BlocProvider(
-            create: (_) => _bloc..add(LoginIdle()),
+        title: BlocProvider<LoginBloc>(
+            create: (_) => getIt<LoginBloc>()..add(LoginIdle()),
             child: BlocBuilder<LoginBloc, LoginState>(
               builder: (context, state) {
                 if (state is LoginStateSuccessful)
@@ -174,8 +174,8 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            BlocProvider(
-              create: (_) => _bloc..add(LoginIdle()),
+            BlocProvider<LoginBloc>(
+              create: (_) => getIt<LoginBloc>()..add(LoginIdle()),
               child: BlocBuilder<LoginBloc, LoginState>(
                 builder: (context, state) {
                   if (state is LoginStateLoading)
@@ -305,7 +305,7 @@ class _LoginPageState extends State<LoginPage> {
         ListTile(
           leading: Icon(Icons.logout),
           title: Text("login_close_session_title".tr()),
-          onTap: () => _bloc..add(CloseSession()),
+          onTap: () => getIt<LoginBloc>()..add(CloseSession()),
         ),
         Divider(),
         Padding(

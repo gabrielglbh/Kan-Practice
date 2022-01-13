@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/core/service_locator/service_locator.dart';
 import 'package:kanpractice/ui/pages/jisho/arguments.dart';
 import 'package:kanpractice/ui/pages/jisho/bloc/jisho_bloc.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/ExamplePhrases.dart';
@@ -32,7 +33,7 @@ class JishoPage extends StatelessWidget {
         children: [
           Expanded(
             child: BlocProvider<JishoBloc>(
-              create: (_) => JishoBloc()..add(JishoLoadingEvent(kanji: args.kanji ?? "")),
+              create: (_) => getIt<JishoBloc>()..add(JishoLoadingEvent(kanji: args.kanji ?? "")),
               child: BlocBuilder<JishoBloc, JishoState>(
                 builder: (context, state) {
                   if (state is JishoStateLoading)

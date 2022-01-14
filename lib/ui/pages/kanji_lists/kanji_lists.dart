@@ -75,7 +75,7 @@ class _KanjiListsState extends State<KanjiLists> {
   void dispose() {
     _searchBarFn?.removeListener(_focusListener);
     _searchBarFn?.dispose();
-    _searchBarFn?.removeListener(_scrollListener);
+    _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
     _bloc.close();
     super.dispose();

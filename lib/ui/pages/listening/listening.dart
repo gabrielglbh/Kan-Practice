@@ -28,6 +28,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
   int _macro = 0;
 
   bool _showWord = false;
+  bool _hasFinished = false;
 
   /// Array that saves all scores without any previous context for the test result
   List<double> _testScores = [];
@@ -43,32 +44,39 @@ class _ListeningStudyState extends State<ListeningStudy> {
   }
 
   Future<void> _updateUIOnSubmit(double score) async {
-    /// Calculate the current score
-    final code = await _calculateKanjiScore(score);
+    if (_hasFinished) {
+      await _handleFinishedPractice();
+    } else {
+      /// Calculate the current score
+      final code = await _calculateKanjiScore(score);
 
-    /// If everything went well, and we have words left in the list,
-    /// update _macro to the next one.
-    if (code == 0) {
-      if (_macro < _studyList.length - 1) {
-        setState(() {
-          _macro++;
-          _showWord = false;
-        });
-        /// Execute the TTS when passing to the next kanji
-        await TextToSpeech.instance.speakKanji(_studyList[_macro].pronunciation);
-      }
-      /// If we ended the list, update the statistics to DB and exit
-      else {
-        /// If the user is in a test, explicitly pass the _testScores to the handler
-        if (widget.args.isTest) {
-          double testScore = 0;
-          _testScores.forEach((s) => testScore += s);
-          final score = testScore / _studyList.length;
-          await StudyModeUpdateHandler.handle(context, widget.args,
-              testScore: score, testScores: _testScores);
-        } else await StudyModeUpdateHandler.handle(context, widget.args);
+      /// If everything went well, and we have words left in the list,
+      /// update _macro to the next one.
+      if (code == 0) {
+        if (_macro < _studyList.length - 1) {
+          setState(() {
+            _macro++;
+            _showWord = false;
+          });
+          /// Execute the TTS when passing to the next kanji
+          await TextToSpeech.instance.speakKanji(_studyList[_macro].pronunciation);
+        }
+        /// If we ended the list, update the statistics to DB and exit
+        else await _handleFinishedPractice();
       }
     }
+  }
+
+  Future<void> _handleFinishedPractice() async {
+    _hasFinished = true;
+    /// If the user is in a test, explicitly pass the _testScores to the handler
+    if (widget.args.isTest) {
+      double testScore = 0;
+      _testScores.forEach((s) => testScore += s);
+      final score = testScore / _studyList.length;
+      await StudyModeUpdateHandler.handle(context, widget.args,
+          testScore: score, testScores: _testScores);
+    } else await StudyModeUpdateHandler.handle(context, widget.args);
   }
 
   Future<int> _calculateKanjiScore(double score) async {
@@ -120,10 +128,10 @@ class _ListeningStudyState extends State<ListeningStudy> {
               ValidationButtons(
                 trigger: _showWord,
                 submitLabel: "done_button_label".tr(),
-                wrongAction: _updateUIOnSubmit,
-                midWrongAction: _updateUIOnSubmit,
-                midPerfectAction: _updateUIOnSubmit,
-                perfectAction: _updateUIOnSubmit,
+                wrongAction: (score) async => await _updateUIOnSubmit(score),
+                midWrongAction: (score) async => await _updateUIOnSubmit(score),
+                midPerfectAction: (score) async => await _updateUIOnSubmit(score),
+                perfectAction: (score) async => await _updateUIOnSubmit(score),
                 onSubmit: () => setState(() => _showWord = true),
               )
             ],

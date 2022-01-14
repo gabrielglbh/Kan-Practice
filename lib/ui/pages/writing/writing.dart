@@ -44,6 +44,7 @@ class _WritingStudyState extends State<WritingStudy> {
 
   bool _showActualKanji = false;
   bool _goNextKanji = false;
+  bool _hasFinished = false;
 
   final String _none = "wildcard".tr();
 
@@ -99,31 +100,26 @@ class _WritingStudyState extends State<WritingStudy> {
   _resetKanji() async {
     /// If we are done with the current word...
     if (_goNextKanji) {
-      /// Empty the current canvas
-      _clear();
-      /// Calculate the current score
-      final int code = await _calculateKanjiScore();
+      if (_hasFinished) {
+        await _handleFinishedPractice();
+      } else {
+        /// Empty the current canvas
+        _clear();
+        /// Calculate the current score
+        final int code = await _calculateKanjiScore();
 
-      /// If everything went well, and we have words left in the list,
-      /// update _macro to the next one and reset _inner.
-      if (code == 0) {
-        if (_macro < _studyList.length - 1) {
-          setState(() {
-            _macro++;
-            _inner = 0;
-            _goNextKanji = false;
-          });
-        }
-        /// If we ended the list, update the statistics to DB and exit
-        else {
-          /// If the user is in a test, explicitly pass the _testScores to the handler
-          if (widget.args.isTest) {
-            double testScore = 0;
-            _testScores.forEach((s) => testScore += s);
-            final score = testScore / _studyList.length;
-            await StudyModeUpdateHandler.handle(context, widget.args,
-                testScore: score, testScores: _testScores);
-          } else await StudyModeUpdateHandler.handle(context, widget.args);
+        /// If everything went well, and we have words left in the list,
+        /// update _macro to the next one and reset _inner.
+        if (code == 0) {
+          if (_macro < _studyList.length - 1) {
+            setState(() {
+              _macro++;
+              _inner = 0;
+              _goNextKanji = false;
+            });
+          }
+          /// If we ended the list, update the statistics to DB and exit
+          else await _handleFinishedPractice();
         }
       }
     }
@@ -134,6 +130,18 @@ class _WritingStudyState extends State<WritingStudy> {
         _currentKanji[_macro][_inner] = _studyList[_macro].kanji[_inner];
       });
     }
+  }
+
+  Future<void> _handleFinishedPractice() async {
+    _hasFinished = true;
+    /// If the user is in a test, explicitly pass the _testScores to the handler
+    if (widget.args.isTest) {
+      double testScore = 0;
+      _testScores.forEach((s) => testScore += s);
+      final score = testScore / _studyList.length;
+      await StudyModeUpdateHandler.handle(context, widget.args,
+          testScore: score, testScores: _testScores);
+    } else await StudyModeUpdateHandler.handle(context, widget.args);
   }
 
   Future<int> _calculateKanjiScore() async {
@@ -192,10 +200,10 @@ class _WritingStudyState extends State<WritingStudy> {
                 triggerSlide: _inner == 0,
                 trigger: _showActualKanji,
                 submitLabel: _goNextKanji ? "writing_next_kanji_label".tr() : "done_button_label".tr(),
-                wrongAction: _updateUIOnSubmit,
-                midWrongAction: _updateUIOnSubmit,
-                midPerfectAction: _updateUIOnSubmit,
-                perfectAction: _updateUIOnSubmit,
+                wrongAction: (score) async => await _updateUIOnSubmit(score),
+                midWrongAction: (score) async => await _updateUIOnSubmit(score),
+                midPerfectAction: (score) async => await _updateUIOnSubmit(score),
+                perfectAction: (score) async => await _updateUIOnSubmit(score),
                 onSubmit: () {
                   if (_macro <= _studyList.length - 1)
                     _resetKanji();

@@ -165,7 +165,13 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
   }
 
   _updateName(String name) {
-    if (name.isNotEmpty) _bloc..add(UpdateKanList(name, _listName));
+    if (name.isNotEmpty) {
+      _bloc..add(UpdateKanList(name, _listName));
+      /// Resets offsets when updating list's name to make proper pagination
+      /// with new name
+      _loadingTimes = 0;
+      _loadingTimesForSearch = 0;
+    }
   }
 
   _updateKanListName() {

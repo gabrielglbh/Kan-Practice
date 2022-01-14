@@ -294,6 +294,7 @@ class KanjiBottomSheet extends StatelessWidget {
                     onPositive: () {
                       Navigator.of(context).pop();
                       bloc.read<KanjiBSBloc>()..add(KanjiBSEventDelete(kanji));
+                      if (onRemove != null) onRemove!();
                     }
                   )
                 );

@@ -307,7 +307,7 @@ class _KanjiListsState extends State<KanjiLists> {
                         ));
                         _resetOffsets();
                       },
-                      onPopWhenTapped: () => _addLoadingEvent(offset: _loadingTimes)
+                      onPopWhenTapped: () => _addLoadingEvent()
                     ),
                   );
                 }

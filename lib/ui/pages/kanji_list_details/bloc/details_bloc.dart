@@ -60,14 +60,21 @@ class KanjiListDetailBloc extends Bloc<KanjiListDetailEvent, KanjiListDetailStat
      }
    });
 
-   /// TODO: Manage pagination
    on<UpdateKanList>((event, emit) async {
      emit(KanjiListDetailStateLoading());
      final error = await ListQueries.instance.updateList(event.og, {
        KanListTableFields.nameField: event.name
      });
      if (error == 0) {
-       final lists = await KanjiQueries.instance.getAllKanjiFromList(event.name);
+       /// When updating the list's name, reset any pagination offset
+       /// to load up from the start
+       final List<Kanji> lists = await KanjiQueries.instance.getAllKanjiFromList(
+           event.name, limit: _limit, offset: 0
+       );
+       /// Clear the _list and repopulate it with the newest items for KanjiListEventLoading
+       /// to work properly for the next offset
+       _list.clear();
+       _list.addAll(lists);
        emit(KanjiListDetailStateLoaded(lists, event.name));
      }
      else emit(KanjiListDetailStateFailure());

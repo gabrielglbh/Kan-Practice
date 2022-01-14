@@ -22,9 +22,10 @@ class DictionaryPage extends StatefulWidget {
 }
 
 class _DictionaryPageState extends State<DictionaryPage> {
+  final DictBloc _bloc = DictBloc();
+
   /// Current drawn line in the canvas
   List<Offset?> _line = [];
-  DictBloc _bloc = DictBloc();
 
   TextEditingController? _searchBarTextController;
 
@@ -39,6 +40,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
   @override
   void dispose() {
     _searchBarTextController?.dispose();
+    _bloc.close();
     super.dispose();
   }
 

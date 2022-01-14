@@ -275,7 +275,7 @@ class KanjiBottomSheet extends StatelessWidget {
     }));
   }
 
-  Container _actionButtons(BuildContext blocContext) {
+  Container _actionButtons(BuildContext bloc) {
     return Container(
       height: CustomSizes.actionButtonsKanjiDetail,
       child: Row(
@@ -286,14 +286,15 @@ class KanjiBottomSheet extends StatelessWidget {
               trailing: Icon(Icons.clear),
               onTap: () {
                 showDialog(
-                  context: blocContext,
+                  context: bloc,
                   builder: (context) => CustomDialog(
                     title: Text("kanji_bottom_sheet_removeKanji_title".tr()),
                     content: Text("kanji_bottom_sheet_removeKanji_content".tr()),
                     positiveButtonText: "kanji_bottom_sheet_removeKanji_positive".tr(),
                     onPositive: () {
                       Navigator.of(context).pop();
-                      blocContext.read<KanjiBSBloc>()..add(KanjiBSEventDelete(kanji));
+                      bloc.read<KanjiBSBloc>()..add(KanjiBSEventDelete(kanji));
+                      if (onRemove != null) onRemove!();
                     }
                   )
                 );
@@ -306,7 +307,7 @@ class KanjiBottomSheet extends StatelessWidget {
               title: Text("kanji_bottom_sheet_update_label".tr()),
               trailing: Icon(Icons.arrow_forward_rounded),
               onTap: () {
-                Navigator.of(blocContext).pop();
+                Navigator.of(bloc).pop();
                 if (onTap != null) onTap!();
               },
             ),

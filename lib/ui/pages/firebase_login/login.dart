@@ -29,14 +29,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final LoginBloc _bloc = LoginBloc();
+
   TextEditingController? _emailController;
   TextEditingController? _passwordController;
   FocusNode? _emailFocus;
   FocusNode? _passwordFocus;
 
   SignMode _mode = SignMode.login;
-
-  LoginBloc _bloc = LoginBloc();
 
   @override
   void initState() {
@@ -53,6 +53,7 @@ class _LoginPageState extends State<LoginPage> {
     _passwordController?.dispose();
     _emailFocus?.dispose();
     _passwordFocus?.dispose();
+    _bloc.close();
     super.dispose();
   }
 
@@ -65,7 +66,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _changePassword(String prevPass, String newPass) {
-    if (prevPass.isNotEmpty && newPass.isNotEmpty) _bloc..add(ChangePassword(prevPass, newPass));
+    if (prevPass.isNotEmpty && newPass.isNotEmpty)
+      _bloc..add(ChangePassword(prevPass, newPass));
   }
 
   _removeAccount(String pass) {
@@ -152,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: CustomSizes.appBarHeight,
-        title: BlocProvider(
+        title: BlocProvider<LoginBloc>(
             create: (_) => _bloc..add(LoginIdle()),
             child: BlocBuilder<LoginBloc, LoginState>(
               builder: (context, state) {
@@ -174,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            BlocProvider(
+            BlocProvider<LoginBloc>(
               create: (_) => _bloc..add(LoginIdle()),
               child: BlocBuilder<LoginBloc, LoginState>(
                 builder: (context, state) {

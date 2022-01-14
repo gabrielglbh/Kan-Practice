@@ -15,7 +15,7 @@ class CustomTextForm extends StatelessWidget {
   /// Action to perform when the user taps on the Input Action on the Soft Keyboard
   final Function onEditingComplete;
   /// Action to perform when the user taps on the Input Action NEXT or PREVIOUS on the Soft Keyboard
-  final Function? onSubmitted;
+  final Function(String)? onSubmitted;
   /// [TextInputType] of the Soft Keyboard, defaults to [TextInputType.text]
   final TextInputType? inputType;
   /// [TextInputAction] of the Soft Keyboard, defaults to [TextInputAction.next]
@@ -65,7 +65,7 @@ class CustomTextForm extends StatelessWidget {
           obscureText: obscure,
           decoration: InputDecoration(hintText: hint),
           onEditingComplete: () => onEditingComplete(),
-          onSubmitted: (kanji) { if (onSubmitted != null) onSubmitted!(); }
+          onSubmitted: (kanji) { if (onSubmitted != null) onSubmitted!(kanji); }
         ),
       ],
     );

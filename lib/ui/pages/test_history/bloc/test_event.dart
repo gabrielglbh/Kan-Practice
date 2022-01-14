@@ -7,6 +7,13 @@ abstract class TestListEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class TestListEventLoading extends TestListEvent {}
+class TestListEventLoading extends TestListEvent {
+  final int offset;
+
+  const TestListEventLoading({this.offset = 0});
+
+  @override
+  List<Object> get props => [offset];
+}
 
 class TestListEventRemoving extends TestListEvent {}

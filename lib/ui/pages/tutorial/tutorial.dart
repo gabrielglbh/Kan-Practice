@@ -103,6 +103,9 @@ class _TutorialPageState extends State<TutorialPage> {
                   actions: [
                     TextButton(
                       onPressed: () async => await _onEnd(context),
+                      style: ButtonStyle(
+                        overlayColor: MaterialStateProperty.all(Colors.transparent),
+                      ),
                       child: Text(_showSkip ? "tutorial_skip".tr() : "tutorial_done".tr(),
                         style: TextStyle(color: CustomColors.secondaryColor),
                       )

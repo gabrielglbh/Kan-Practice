@@ -37,9 +37,9 @@ class CustomSizes {
 }
 
 class LazyLoadingLimits {
-  static const int kanList = 8;
-  static const int wordList = 75;
-  static const int testHistory = 15;
+  static const int kanList = 12;
+  static const int wordList = 100;
+  static const int testHistory = 20;
 }
 
 class ChartSize {

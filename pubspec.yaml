@@ -40,7 +40,6 @@ dependencies:
   tflite_flutter:
   tflite_flutter_helper:
   device_info_plus:
-  translator:
   tutorial_coach_mark:
 
 flutter_icons:

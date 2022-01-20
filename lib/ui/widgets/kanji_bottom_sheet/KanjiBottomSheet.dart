@@ -239,7 +239,7 @@ class KanjiBottomSheet extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-            child: Text(" • ${(mode.name).capitalized}:",
+            child: Text(" • ${(mode.mode).capitalized}:",
               overflow: TextOverflow.ellipsis, textAlign: TextAlign.left,
                 style: TextStyle(fontSize: FontSizes.fontSize12)),
           ),

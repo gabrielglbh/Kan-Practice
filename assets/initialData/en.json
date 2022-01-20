@@ -1,0 +1,424 @@
+{
+    "Lists": [
+        {
+            "lastUpdated": 0,
+            "name": "Adjectives",
+            "totalWinRateListening": -1,
+            "totalWinRateWriting": -1,
+            "totalWinRateReading": -1,
+            "totalWinRateRecognition": -1
+        },
+        {
+            "lastUpdated": 0,
+            "name": "Food",
+            "totalWinRateListening": -1,
+            "totalWinRateWriting": -1,
+            "totalWinRateReading": -1,
+            "totalWinRateRecognition": -1
+        }
+    ],
+    "Kanji": [
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "きれい", "meaning": "Beautiful", "name": "Adjectives", "pronunciation": "きれい",
+            "winRateListening": -1, "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "静か", "meaning": "Quiet", "name": "Adjectives", "pronunciation": "しずか",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "賑やか", "meaning": "Lively", "name": "Adjectives", "pronunciation": "にぎやか",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "有名", "meaning": "Famous", "name": "Adjectives", "pronunciation": "ゆうめい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "親切", "meaning": "Helpful", "name": "Adjectives", "pronunciation": "しんせつ",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "元気", "meaning": "Healthy", "name": "Adjectives", "pronunciation": "げんき",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "暇", "meaning": "Free (time)", "name": "Adjectives", "pronunciation": "ひま",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "便利", "meaning": "Convenient", "name": "Adjectives", "pronunciation": "べんり",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "すでき", "meaning": "Fine", "name": "Adjectives", "pronunciation": "すでき",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "大きい", "meaning": "Big", "name": "Adjectives", "pronunciation": "おおきい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "小さい", "meaning": "Small", "name": "Adjectives", "pronunciation": "ちいさい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "新し", "meaning": "New", "name": "Adjectives", "pronunciation": "あたらし",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "古い", "meaning": "Old (objects)", "name": "Adjectives", "pronunciation": "ふるい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "いい", "meaning": "Good", "name": "Adjectives", "pronunciation": "いい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "悪い", "meaning": "Bad", "name": "Adjectives", "pronunciation": "わるい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "暑い", "meaning": "Hot", "name": "Adjectives", "pronunciation": "あつい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "寒い", "meaning": "Cold (temperature)", "name": "Adjectives", "pronunciation": "さむい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "冷たい", "meaning": "Cold (touch)", "name": "Adjectives", "pronunciation": "つめたい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "難しい", "meaning": "Difficult", "name": "Adjectives", "pronunciation": "むずかしい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "易しい", "meaning": "Easy", "name": "Adjectives", "pronunciation": "やさしい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "高い", "meaning": "Expensive, tall", "name": "Adjectives", "pronunciation": "たかい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "安い", "meaning": "Cheap", "name": "Adjectives", "pronunciation": "やすい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "低い", "meaning": "Low", "name": "Adjectives", "pronunciation": "ひくい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "面白い", "meaning": "Interesting", "name": "Adjectives", "pronunciation": "おもしろい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "美味しい", "meaning": "Delicious", "name": "Adjectives", "pronunciation": "おいしい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "忙しい", "meaning": "Busy", "name": "Adjectives", "pronunciation": "いそがしい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "楽しい", "meaning": "Enjoyable", "name": "Adjectives", "pronunciation": "たのしい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "白い", "meaning": "White", "name": "Adjectives", "pronunciation": "しろい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "黒い", "meaning": "Black", "name": "Adjectives", "pronunciation": "くろい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "赤い", "meaning": "Red", "name": "Adjectives", "pronunciation": "あかい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "青い", "meaning": "Blue", "name": "Adjectives", "pronunciation": "あおい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "緑", "meaning": "Green", "name": "Adjectives", "pronunciation": "みどり",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "紫", "meaning": "Purple", "name": "Adjectives", "pronunciation": "むらさき",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "黄色い", "meaning": "Yellow", "name": "Adjectives", "pronunciation": "きいろい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "茶色い", "meaning": "Brown", "name": "Adjectives", "pronunciation": "ちゃいろい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "卵", "meaning": "Egg", "name": "Food", "pronunciation": "たまご",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "肉", "meaning": "Meat", "name": "Food", "pronunciation": "にく",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "魚", "meaning": "Fish", "name": "Food", "pronunciation": "さかな",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "野菜", "meaning": "Vegetables", "name": "Food", "pronunciation": "やさい",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "果物", "meaning": "Fruit", "name": "Food", "pronunciation": "くだもの",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "お茶", "meaning": "Tea", "name": "Food", "pronunciation": "おちゃ",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "紅茶", "meaning": "Black tea", "name": "Food", "pronunciation": "こおちゃ",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "牛乳", "meaning": "Milk", "name": "Food", "pronunciation": "ぎゅうにゅう",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "酒", "meaning": "Alcohol", "name": "Food", "pronunciation": "さけ",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "鮭", "meaning": "Salmon", "name": "Food", "pronunciation": "さけ",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "鮪", "meaning": "Tuna", "name": "Food", "pronunciation": "まぐろ",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "蛸", "meaning": "Octopus", "name": "Food", "pronunciation": "たこ",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "牛肉", "meaning": "Cow meat", "name": "Food", "pronunciation": "ぎゅうにく",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "鶏肉", "meaning": "Chicken meat", "name": "Food", "pronunciation": "とりにく",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "豚肉", "meaning": "Pork meat", "name": "Food", "pronunciation": "ぶたにく",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "苺", "meaning": "Strawberry", "name": "Food", "pronunciation": "いちご",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "桃", "meaning": "Peach", "name": "Food", "pronunciation": "もも",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "西瓜", "meaning": "Watermelon", "name": "Food", "pronunciation": "すいか",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "林檎", "meaning": "Apple", "name": "Food", "pronunciation": "りんご",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "パン", "meaning": "Bread", "name": "Food", "pronunciation": "ぱん",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "ジュース", "meaning": "Juice", "name": "Food", "pronunciation": "じゅーす",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "バナナ", "meaning": "Banana", "name": "Food", "pronunciation": "ばなな",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "鰯", "meaning": "Sardine", "name": "Food", "pronunciation": "いわし",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "トマト", "meaning": "Tomato", "name": "Food", "pronunciation": "とまと",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "レタス", "meaning": "Lettuce", "name": "Food", "pronunciation": "れたす",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "じゃがいも", "meaning": "Potato", "name": "Food", "pronunciation": "じゃがいも",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "玉葱", "meaning": "Onion", "name": "Food", "pronunciation": "たまねぎ",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "人参", "meaning": "Carrot", "name": "Food", "pronunciation": "にんじん",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "ソーセージ", "meaning": "Sausage", "name": "Food", "pronunciation": "そーせーじ",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "ハム", "meaning": "Ham", "name": "Food", "pronunciation": "はむ",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "蟹", "meaning": "Crab", "name": "Food", "pronunciation": "かに",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        },
+        {
+            "dateAdded": 0, "dateLastShown": 0, "dateLastShownWriting": 0,
+            "dateLastShownReading": 0, "dateLastShownRecognition": 0, "dateLastShownListening": 0,
+            "kanji": "海老", "meaning": "Shrimp", "name": "Food", "pronunciation": "えび",
+            "winRateListening": -1,  "winRateReading": -1, "winRateRecognition": -1, "winRateWriting": -1
+        }
+    ]
+}

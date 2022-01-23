@@ -19,6 +19,15 @@ void main() async {
     StorageManager.saveData(StorageManager.affectOnPractice, false);
   if (StorageManager.readData(StorageManager.kanListGraphVisualization) == null)
     StorageManager.saveData(StorageManager.kanListGraphVisualization, VisualizationMode.radialChart.name);
+  /// Make the value the same as hasDoneTutorial. If the user has already seen
+  /// the overall tutorial, do not show the coach mark tutorial
+  // DEBUG ONLY
+  //StorageManager.saveData(StorageManager.haveSeenKanListCoachMark, false);
+  //StorageManager.saveData(StorageManager.haveSeenKanListDetailCoachMark, false);
+  if (StorageManager.readData(StorageManager.haveSeenKanListCoachMark) == null)
+    StorageManager.saveData(StorageManager.haveSeenKanListCoachMark, StorageManager.readData(StorageManager.hasDoneTutorial));
+  if (StorageManager.readData(StorageManager.haveSeenKanListDetailCoachMark) == null)
+    StorageManager.saveData(StorageManager.haveSeenKanListDetailCoachMark, StorageManager.readData(StorageManager.hasDoneTutorial));
   await CustomDatabase.instance.open();
   await Firebase.initializeApp();
   await EasyLocalization.ensureInitialized();

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
+import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
+import 'package:kanpractice/core/tutorial/tutorial_manager.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/bloc/details_bloc.dart';
@@ -50,6 +52,12 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
   final KanjiListDetailBloc _bloc = KanjiListDetailBloc();
   final ScrollController _scrollController = ScrollController();
 
+  /// Tutorial Global Keys
+  final GlobalKey vocabulary = GlobalKey();
+  final GlobalKey addVocabulary = GlobalKey();
+  final GlobalKey actions = GlobalKey();
+  final GlobalKey changeName = GlobalKey();
+
   FocusNode? _searchBarFn;
   TabController? _tabController;
   StudyModes _selectedMode = StudyModes.writing;
@@ -63,7 +71,9 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
   String _query = "";
   /// Saves the last name of the current visited list
   String _listName = "";
+
   bool _searchHasFocus = false;
+  bool _onTutorial = false;
 
   @override
   void initState() {
@@ -73,6 +83,13 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
     _searchBarFn?.addListener(_focusListener);
     _scrollController.addListener(_scrollListener);
     _listName = widget.list.name;
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      if (StorageManager.readData(StorageManager.haveSeenKanListDetailCoachMark) == false) {
+        _onTutorial = true;
+        TutorialCoach([vocabulary, addVocabulary, actions, changeName], CoachTutorialParts.details)
+            .showTutorial(context, onEnd: () => _onTutorial = false);
+      }
+    });
     super.initState();
   }
 
@@ -226,6 +243,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
+        if (_onTutorial) return false;
         if (_searchHasFocus) {
           _addLoadingEvent();
           _searchBarFn?.unfocus();
@@ -309,7 +327,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
                 fit: BoxFit.fitWidth,
                 child: GestureDetector(
                   onTap: () async => await _updateKanListName(),
-                  child: Text(state.name, overflow: TextOverflow.ellipsis),
+                  child: Text(state.name, key: changeName, overflow: TextOverflow.ellipsis),
                 )
             );
           }
@@ -317,22 +335,28 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
         },
       ),
       actions: [
-        IconButton(
-          icon: Icon(_learningMode == LearningMode.spatial
-              ? LearningMode.spatial.icon
-              : LearningMode.random.icon),
-          onPressed: () => setState(() {
-            if (_learningMode == LearningMode.spatial) _learningMode = LearningMode.random;
-            else _learningMode = LearningMode.spatial;
-          }),
+        Row(
+          key: actions,
+          children: [
+            IconButton(
+              icon: Icon(_learningMode == LearningMode.spatial
+                  ? LearningMode.spatial.icon
+                  : LearningMode.random.icon),
+              onPressed: () => setState(() {
+                if (_learningMode == LearningMode.spatial) _learningMode = LearningMode.random;
+                else _learningMode = LearningMode.spatial;
+              }),
+            ),
+            IconButton(
+              onPressed: () async => await BlitzBottomSheet.show(
+                  context, practiceList: _listName
+              ),
+              icon: Icon(Icons.flash_on_rounded),
+            ),
+          ],
         ),
         IconButton(
-          onPressed: () async => await BlitzBottomSheet.show(
-              context, practiceList: _listName
-          ),
-          icon: Icon(Icons.flash_on_rounded),
-        ),
-        IconButton(
+          key: addVocabulary,
           onPressed: () async {
             await Navigator.of(context).pushNamed(KanPracticePages.addKanjiPage,
                 arguments: AddKanjiArgs(listName: _listName))
@@ -367,6 +391,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
         ),
         Expanded(
           child: GestureDetector(
+            key: vocabulary,
             onHorizontalDragEnd: (details) {
               double? pv = details.primaryVelocity;
               if (pv != null) _updateSelectedModePageView(pv);

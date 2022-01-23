@@ -146,7 +146,7 @@ class _TutorialPageState extends State<TutorialPage> {
           )
         ),
         Expanded(
-          flex: 5,
+          flex: 3,
           child: Container(
             width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.all(Margins.margin8),

@@ -73,7 +73,7 @@ class TutorialCoach {
       onFinish: () {
         if (_part == CoachTutorialParts.kanList)
           StorageManager.saveData(StorageManager.haveSeenKanListCoachMark, true);
-        else
+        else if (_part == CoachTutorialParts.details)
           StorageManager.saveData(StorageManager.haveSeenKanListDetailCoachMark, true);
         onEnd();
       },

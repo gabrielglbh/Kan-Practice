@@ -16,7 +16,10 @@ class EmptyList extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(message),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
+          child: Text(message, textAlign: TextAlign.center),
+        ),
         Container(),
         Visibility(
           visible: showTryButton,

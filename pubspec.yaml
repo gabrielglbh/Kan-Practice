@@ -40,6 +40,7 @@ dependencies:
   tflite_flutter:
   tflite_flutter_helper:
   device_info_plus:
+  tutorial_coach_mark:
 
 flutter_icons:
   android: "launcher_icon"
@@ -60,3 +61,4 @@ flutter:
     - assets/icon/icon.png
     - lib/core/localization/
     - assets/model/
+    - assets/initialData/

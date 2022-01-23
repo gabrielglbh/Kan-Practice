@@ -48,4 +48,21 @@ class Kanji {
 
   factory Kanji.fromJson(Map<String, dynamic> json) => _$KanjiFromJson(json);
   Map<String, dynamic> toJson() => _$KanjiToJson(this);
+
+  Kanji copyWithUpdatedDate({int? dateAdded, int? dateLastShown}) => Kanji(
+    kanji: this.kanji,
+    listName: this.listName,
+    meaning:  this.meaning,
+    pronunciation: this.pronunciation,
+    winRateWriting: this.winRateWriting,
+    winRateReading: this.winRateReading,
+    winRateRecognition: this.winRateRecognition,
+    winRateListening: this.winRateListening,
+    dateLastShownWriting: this.dateLastShownWriting,
+    dateLastShownReading: this.dateLastShownReading,
+    dateLastShownRecognition: this.dateLastShownRecognition,
+    dateLastShownListening: this.dateLastShownListening,
+    dateAdded: dateAdded ?? this.dateAdded,
+    dateLastShown: dateLastShown ?? this.dateLastShown
+  );
 }

@@ -29,4 +29,13 @@ class KanjiList {
 
   factory KanjiList.fromJson(Map<String, dynamic> json) => _$KanjiListFromJson(json);
   Map<String, dynamic> toJson() => _$KanjiListToJson(this);
+
+  KanjiList copyWithUpdatedDate({int? lastUpdated}) => KanjiList(
+    name: this.name,
+    totalWinRateWriting: this.totalWinRateWriting,
+    totalWinRateReading: this.totalWinRateReading,
+    totalWinRateRecognition: this.totalWinRateRecognition,
+    totalWinRateListening: this.totalWinRateListening,
+    lastUpdated: lastUpdated ?? this.lastUpdated
+  );
 }

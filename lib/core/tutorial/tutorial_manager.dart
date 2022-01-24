@@ -44,7 +44,7 @@ class TutorialCoach {
           break;
         case CoachTutorialParts.details:
           if (y != 0) align = ContentAlign.bottom;
-          if (y == 0) offset = Offset(0, Margins.margin32);
+          if (y == 0) offset = Offset(0, Margins.margin64);
           break;
       }
 

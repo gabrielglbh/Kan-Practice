@@ -75,13 +75,6 @@ class _KanjiListsState extends State<KanjiLists> {
     _currentAppliedOrder = StorageManager.readData(StorageManager.orderOnList)
         ?? true;
     _getVersionNotice();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      if (StorageManager.readData(StorageManager.haveSeenKanListCoachMark) == false) {
-        _onTutorial = true;
-        TutorialCoach([lists, addLists, actions], CoachTutorialParts.kanList)
-            .showTutorial(context, onEnd: () => _onTutorial = false);
-      }
-    });
     super.initState();
   }
 
@@ -283,61 +276,72 @@ class _KanjiListsState extends State<KanjiLists> {
     );
   }
 
-  BlocBuilder _lists() {
-    return BlocBuilder<KanjiListBloc, KanjiListState>(
-      key: lists,
-      builder: (context, state) {
-        if (state is KanjiListStateFailure)
-          return EmptyList(
-            showTryButton: true,
-            onRefresh: () => _addLoadingEvent(),
-            message: "kanji_lists_load_failed".tr()
-          );
-        else if (state is KanjiListStateLoading || state is KanjiListStateSearching)
-          return Expanded(child: CustomProgressIndicator());
-        else if (state is KanjiListStateLoaded)
-          return state.lists.isEmpty
-              ? Expanded(child:
-            EmptyList(
-              onRefresh: () => _addLoadingEvent(),
-              showTryButton: true,
-              message: "kanji_lists_empty".tr())
-          )
-              : Expanded(
-            child: RefreshIndicator(
-              onRefresh: () => _addLoadingEvent(),
-              child: ListView.builder(
-                key: PageStorageKey<String>('kanListListsController'),
-                controller: _scrollController,
-                itemCount: state.lists.length,
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                padding: EdgeInsets.only(bottom: CustomSizes.extraPaddingForFAB),
-                itemBuilder: (context, k) {
-                  return Card(
-                    margin: EdgeInsets.all(Margins.margin8),
-                    child: KanListTile(
-                      item: state.lists[k],
-                      onTap: () => _searchBarFn?.unfocus(),
-                      mode: VisualizationModeExt.mode(StorageManager.readData(
-                          StorageManager.kanListGraphVisualization)
-                            ?? VisualizationMode.radialChart),
-                      onRemoval: () {
-                        _bloc..add(KanjiListEventDelete(
-                          state.lists[k],
-                          filter: _currentAppliedFilter,
-                          order: _currentAppliedOrder,
-                        ));
-                        _resetOffsets();
-                      },
-                      onPopWhenTapped: () => _addLoadingEvent()
-                    ),
-                  );
-                }
-              ),
-            ),
-          );
-        else return Container();
+  BlocListener _lists() {
+    return BlocListener<KanjiListBloc, KanjiListState>(
+      listener: (context, state) {
+        if (state is KanjiListStateLoaded) {
+          if (StorageManager.readData(StorageManager.haveSeenKanListCoachMark) == false) {
+            _onTutorial = true;
+            TutorialCoach([lists, addLists, actions], CoachTutorialParts.kanList)
+                .showTutorial(context, onEnd: () => _onTutorial = false);
+          }
+        }
       },
+      child: BlocBuilder<KanjiListBloc, KanjiListState>(
+        key: lists,
+        builder: (context, state) {
+          if (state is KanjiListStateFailure)
+            return EmptyList(
+              showTryButton: true,
+              onRefresh: () => _addLoadingEvent(),
+              message: "kanji_lists_load_failed".tr()
+            );
+          else if (state is KanjiListStateLoading || state is KanjiListStateSearching)
+            return Expanded(child: CustomProgressIndicator());
+          else if (state is KanjiListStateLoaded)
+            return state.lists.isEmpty
+                ? Expanded(child:
+              EmptyList(
+                onRefresh: () => _addLoadingEvent(),
+                showTryButton: true,
+                message: "kanji_lists_empty".tr())
+            )
+                : Expanded(
+              child: RefreshIndicator(
+                onRefresh: () => _addLoadingEvent(),
+                child: ListView.builder(
+                  key: PageStorageKey<String>('kanListListsController'),
+                  controller: _scrollController,
+                  itemCount: state.lists.length,
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                  padding: EdgeInsets.only(bottom: CustomSizes.extraPaddingForFAB),
+                  itemBuilder: (context, k) {
+                    return Card(
+                      margin: EdgeInsets.all(Margins.margin8),
+                      child: KanListTile(
+                        item: state.lists[k],
+                        onTap: () => _searchBarFn?.unfocus(),
+                        mode: VisualizationModeExt.mode(StorageManager.readData(
+                            StorageManager.kanListGraphVisualization)
+                              ?? VisualizationMode.radialChart),
+                        onRemoval: () {
+                          _bloc..add(KanjiListEventDelete(
+                            state.lists[k],
+                            filter: _currentAppliedFilter,
+                            order: _currentAppliedOrder,
+                          ));
+                          _resetOffsets();
+                        },
+                        onPopWhenTapped: () => _addLoadingEvent()
+                      ),
+                    );
+                  }
+                ),
+              ),
+            );
+          else return Container();
+        },
+      ),
     );
   }
 

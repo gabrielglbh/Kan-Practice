@@ -278,11 +278,11 @@ class _KanjiListsState extends State<KanjiLists> {
 
   BlocListener _lists() {
     return BlocListener<KanjiListBloc, KanjiListState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is KanjiListStateLoaded) {
           if (StorageManager.readData(StorageManager.haveSeenKanListCoachMark) == false) {
             _onTutorial = true;
-            TutorialCoach([lists, addLists, actions], CoachTutorialParts.kanList)
+            await TutorialCoach([lists, addLists, actions], CoachTutorialParts.kanList)
                 .showTutorial(context, onEnd: () => _onTutorial = false);
           }
         }

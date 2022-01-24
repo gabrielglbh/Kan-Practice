@@ -76,24 +76,27 @@ class TutorialCoach {
     }
   }
 
-  showTutorial(BuildContext context, {required Function() onEnd}) {
-    TutorialCoachMark(
-      context,
-      targets: _targets,
-      colorShadow: CustomColors.secondaryDarkerColor,
-      opacityShadow: 0.9,
-      hideSkip: true,
-      onFinish: () {
-        switch (_part) {
-          case CoachTutorialParts.kanList:
-            StorageManager.saveData(StorageManager.haveSeenKanListCoachMark, true);
-            break;
-          case CoachTutorialParts.details:
-            StorageManager.saveData(StorageManager.haveSeenKanListDetailCoachMark, true);
-            break;
-        }
-        onEnd();
-      },
-    )..show();
+  Future<void> showTutorial(BuildContext context, {required Function() onEnd}) async {
+    /// Added a few delay in order for the coach to load up properly
+    await Future.delayed(Duration(seconds: 1), () {
+      TutorialCoachMark(
+        context,
+        targets: _targets,
+        colorShadow: CustomColors.secondaryDarkerColor,
+        opacityShadow: 0.9,
+        hideSkip: true,
+        onFinish: () {
+          switch (_part) {
+            case CoachTutorialParts.kanList:
+              StorageManager.saveData(StorageManager.haveSeenKanListCoachMark, true);
+              break;
+            case CoachTutorialParts.details:
+              StorageManager.saveData(StorageManager.haveSeenKanListDetailCoachMark, true);
+              break;
+          }
+          onEnd();
+        },
+      )..show();
+    });
   }
 }

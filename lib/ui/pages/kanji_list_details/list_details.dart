@@ -279,12 +279,9 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
                         } else if (state is KanjiListDetailStateLoaded) {
                           if (StorageManager.readData(StorageManager.haveSeenKanListDetailCoachMark) == false) {
                             _onTutorial = true;
-                            /// Added a few delay in order for the coach to load up properly
-                            await Future.delayed(Duration(milliseconds: 500), () {
-                              TutorialCoach([vocabulary, addVocabulary, actions, changeName],
-                                  CoachTutorialParts.details).showTutorial(context,
-                                  onEnd: () => _onTutorial = false);
-                            });
+                            await TutorialCoach([vocabulary, addVocabulary, actions, changeName],
+                                CoachTutorialParts.details).showTutorial(context,
+                                onEnd: () => _onTutorial = false);
                           }
                         }
                       },

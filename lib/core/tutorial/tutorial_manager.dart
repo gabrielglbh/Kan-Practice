@@ -13,19 +13,22 @@ class TutorialCoach {
   List<String> _tutorialText = [];
 
   TutorialCoach(this._markers, this._part) {
-    if (_part == CoachTutorialParts.kanList) {
-      _tutorialText = [
-        "coach_tutorial_kanlists_1".tr(),
-        "coach_tutorial_kanlists_2".tr(),
-        "coach_tutorial_kanlists_3".tr()
-      ];
-    } else {
-      _tutorialText = [
-        "coach_tutorial_detail_1".tr(),
-        "coach_tutorial_detail_2".tr(),
-        "coach_tutorial_detail_3".tr(),
-        "coach_tutorial_detail_4".tr()
-      ];
+    switch (_part) {
+      case CoachTutorialParts.kanList:
+        _tutorialText = [
+          "coach_tutorial_kanlists_1".tr(),
+          "coach_tutorial_kanlists_2".tr(),
+          "coach_tutorial_kanlists_3".tr()
+        ];
+        break;
+      case CoachTutorialParts.details:
+        _tutorialText = [
+          "coach_tutorial_detail_1".tr(),
+          "coach_tutorial_detail_2".tr(),
+          "coach_tutorial_detail_3".tr(),
+          "coach_tutorial_detail_4".tr()
+        ];
+        break;
     }
     _initTargets(_markers, _part);
   }
@@ -34,10 +37,13 @@ class TutorialCoach {
     _targets.clear();
     for (int y = 0; y < markers.length; y++) {
       ContentAlign align = ContentAlign.top;
-      if (part == CoachTutorialParts.kanList) {
-        if (y == markers.length - 1) align = ContentAlign.bottom;
-      } else {
-        if (y != 0) align = ContentAlign.bottom;
+      switch (_part) {
+        case CoachTutorialParts.kanList:
+          if (y == markers.length - 1) align = ContentAlign.bottom;
+          break;
+        case CoachTutorialParts.details:
+          if (y != 0) align = ContentAlign.bottom;
+          break;
       }
 
       _targets.add(TargetFocus(
@@ -71,10 +77,14 @@ class TutorialCoach {
       opacityShadow: 0.9,
       hideSkip: true,
       onFinish: () {
-        if (_part == CoachTutorialParts.kanList)
-          StorageManager.saveData(StorageManager.haveSeenKanListCoachMark, true);
-        else if (_part == CoachTutorialParts.details)
-          StorageManager.saveData(StorageManager.haveSeenKanListDetailCoachMark, true);
+        switch (_part) {
+          case CoachTutorialParts.kanList:
+            StorageManager.saveData(StorageManager.haveSeenKanListCoachMark, true);
+            break;
+          case CoachTutorialParts.details:
+            StorageManager.saveData(StorageManager.haveSeenKanListDetailCoachMark, true);
+            break;
+        }
         onEnd();
       },
     )..show();

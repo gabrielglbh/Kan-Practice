@@ -6,6 +6,12 @@ import 'package:timeago/timeago.dart' as t;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+extension StringExtension on String {
+  String get capitalized {
+    return "${this[0].toUpperCase()}${this.substring(1).toLowerCase()}";
+  }
+}
+
 /// Class that contains useful methods for all classes to use
 class GeneralUtils {
   /// Returns the color based on the given [winRate]
@@ -38,6 +44,13 @@ class GeneralUtils {
     if (score >= 0 && score <= 0.2) return Colors.black;
     else if (score > 0.2 && score <= 0.4) return Colors.black;
     else return Colors.white;
+  }
+
+  static String roundUpAsString(String num) {
+    bool isRounded = num.substring(3) == "00" // XX.00%
+        || num.substring(2) == "00" // X.00%
+        || num.substring(4) == "00"; // XXX.00%
+    return isRounded ? num.substring(0, num.length - 3) : num;
   }
 
   /// Creates a snack bar with the given [message]

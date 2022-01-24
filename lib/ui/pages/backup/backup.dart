@@ -11,7 +11,6 @@ class BackUpPage extends StatelessWidget {
   final String uid;
   BackUpPage({required this.uid});
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +18,7 @@ class BackUpPage extends StatelessWidget {
         toolbarHeight: CustomSizes.appBarHeight,
         title: FittedBox(fit: BoxFit.fitWidth, child: Text("backup_title".tr())),
       ),
-      body: BlocProvider(
+      body: BlocProvider<BackUpBloc>(
         create: (_) => _bloc..add(BackUpIdle()),
         child: BlocBuilder<BackUpBloc, BackUpState>(
           builder: (context, state) {

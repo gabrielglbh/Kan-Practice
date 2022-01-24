@@ -39,6 +39,7 @@ class _KanListSelectionBottomSheetState extends State<KanListSelectionBottomShee
 
   Future<void> _loadKanjiFromListSelection(List<String> lists) async {
     _kanji = await KanjiQueries.instance.getKanjiBasedOnSelectedLists(lists);
+    _kanji.shuffle();
     /// Keep the list names all the way to the Test Result page in a formatted way
     _selectedLists.forEach((name) => _selectedFormattedLists += "$name, ");
     _selectedFormattedLists = _selectedFormattedLists.substring(0, _selectedFormattedLists.length - 2);
@@ -136,7 +137,7 @@ class _KanListSelectionBottomSheetState extends State<KanListSelectionBottomShee
           onTap: () async {
             if (_selectedLists.isNotEmpty) {
               await _loadKanjiFromListSelection(_selectedLists);
-              setState(() => _selectionMode = true);
+              if (_kanji.isNotEmpty) setState(() => _selectionMode = true);
             }
           }
         )

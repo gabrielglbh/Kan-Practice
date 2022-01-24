@@ -27,16 +27,23 @@ class CustomSizes {
   static const double appIcon = 150;
   static const double defaultSizeStudyModeSelection = 165;
   static const double maxHeightForListsTest = 240;
+  static const double maxHeightForLastSeenDates = 256;
   static const double maxHeightValidationCircle = 256;
 
-  static const double minimumHeight = 700;
+  static const double minimumHeight = 600;
 
   static const int numberOfKanjiInTest = 30;
   static const int numberOfPredictedKanji = 20;
 }
 
+class LazyLoadingLimits {
+  static const int kanList = 12;
+  static const int wordList = 100;
+  static const int testHistory = 20;
+}
+
 class ChartSize {
-  static const double small = 10;
+  static const double small = 8;
   static const double medium = 32;
 }
 

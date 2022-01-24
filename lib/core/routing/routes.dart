@@ -4,6 +4,7 @@ import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/pages/add_kanji/add_kanji.dart';
 import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/pages/backup/backup.dart';
+import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
 import 'package:kanpractice/ui/pages/dictionary/dictionary.dart';
 import 'package:kanpractice/ui/pages/firebase_login/login.dart';
 import 'package:kanpractice/ui/pages/jisho/arguments.dart';
@@ -64,6 +65,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       JishoArguments args = settings.arguments as JishoArguments;
       return PageTransition(type: PageTransitionType.bottomToTop, child: JishoPage(args: args));
     case KanPracticePages.dictionaryPage:
-      return CupertinoPageRoute(builder: (_) => DictionaryPage());
+      DictionaryArguments args = settings.arguments as DictionaryArguments;
+      return CupertinoPageRoute(builder: (_) => DictionaryPage(args: args));
   }
 }

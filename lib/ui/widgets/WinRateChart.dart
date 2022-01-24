@@ -58,8 +58,11 @@ class WinRateChart extends StatelessWidget {
               GaugeAnnotation(
                 positionFactor: 0.5,
                 angle: 90,
-                widget: Text(GeneralUtils.getFixedDouble((((winRate == DatabaseConstants.emptyWinRate
-                    ? 0 : winRate))*100)),
+                widget: Text(
+                  "${GeneralUtils.roundUpAsString(
+                      GeneralUtils.getFixedDouble(((
+                          (winRate == DatabaseConstants.emptyWinRate ? 0 : winRate))*100)
+                      ))}%",
                   style: TextStyle(color: Colors.white, fontSize: rateSize)
                 )
               )

@@ -36,11 +36,15 @@ class ListQueries {
   /// Query to get all [KanjiList] from the db with an optional [order] and [filter].
   /// If anything goes wrong, an empty list will be returned.
   Future<List<KanjiList>> getAllLists({String filter = KanListTableFields.lastUpdatedField,
-    String order = "DESC"}) async {
+    String order = "DESC", int? limit, int? offset}) async {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
-        res = await _database?.rawQuery("SELECT * FROM ${KanListTableFields.listsTable} ORDER BY $filter $order");
+        res = await _database?.query(KanListTableFields.listsTable,
+          orderBy: "$filter $order",
+          limit: limit,
+          offset: (offset != null && limit != null) ? offset * limit : null
+        );
         if (res != null) return List.generate(res.length, (i) => KanjiList.fromJson(res![i]));
         else return [];
       } catch (err) {
@@ -53,7 +57,8 @@ class ListQueries {
   /// Query to get all [KanjiList] from the db based on a [query] that will match:
   /// list name, kanji, meaning and pronunciation.
   /// If anything goes wrong, an empty list will be returned.
-  Future<List<KanjiList>> getListsMatchingQuery(String query) async {
+  Future<List<KanjiList>> getListsMatchingQuery(String query,
+      {required int offset, required int limit}) async {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
@@ -62,12 +67,14 @@ class ListQueries {
           "L.${KanListTableFields.totalWinRateWritingField}, "
           "L.${KanListTableFields.totalWinRateReadingField}, "
           "L.${KanListTableFields.totalWinRateRecognitionField}, "
+          "L.${KanListTableFields.totalWinRateListeningField}, "
           "L.${KanListTableFields.lastUpdatedField} "
           "FROM ${KanListTableFields.listsTable} L JOIN ${KanjiTableFields.kanjiTable} K "
           "ON K.${KanjiTableFields.listNameField}=L.${KanListTableFields.nameField} "
           "WHERE L.${KanListTableFields.nameField} LIKE '%$query%' OR K.${KanjiTableFields.meaningField} LIKE '%$query%' "
           "OR K.${KanjiTableFields.kanjiField} LIKE '%$query%' OR K.${KanjiTableFields.pronunciationField} LIKE '%$query%' "
-          "ORDER BY ${KanListTableFields.lastUpdatedField} DESC"
+          "ORDER BY ${KanListTableFields.lastUpdatedField} DESC "
+          "LIMIT $limit OFFSET ${offset * limit}"
         );
         if (res != null) return List.generate(res.length, (i) => KanjiList.fromJson(res![i]));
         else return [];

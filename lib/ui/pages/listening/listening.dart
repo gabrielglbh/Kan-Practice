@@ -4,6 +4,7 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/core/utils/TextToSpeech.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
@@ -27,6 +28,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
   int _macro = 0;
 
   bool _showWord = false;
+  bool _hasFinished = false;
 
   /// Array that saves all scores without any previous context for the test result
   List<double> _testScores = [];
@@ -36,34 +38,45 @@ class _ListeningStudyState extends State<ListeningStudy> {
   @override
   void initState() {
     _studyList = widget.args.studyList;
+    /// Execute the TTS when passing to the next kanji
+    TextToSpeech.instance.speakKanji(_studyList[_macro].pronunciation);
     super.initState();
   }
 
   Future<void> _updateUIOnSubmit(double score) async {
-    /// Calculate the current score
-    final code = await _calculateKanjiScore(score);
+    if (_hasFinished) {
+      await _handleFinishedPractice();
+    } else {
+      /// Calculate the current score
+      final code = await _calculateKanjiScore(score);
 
-    /// If everything went well, and we have words left in the list,
-    /// update _macro to the next one.
-    if (code == 0) {
-      if (_macro < _studyList.length - 1) {
-        setState(() {
-          _macro++;
-          _showWord = false;
-        });
-      }
-      /// If we ended the list, update the statistics to DB and exit
-      else {
-        /// If the user is in a test, explicitly pass the _testScores to the handler
-        if (widget.args.isTest) {
-          double testScore = 0;
-          _testScores.forEach((s) => testScore += s);
-          final score = testScore / _studyList.length;
-          await StudyModeUpdateHandler.handle(context, widget.args,
-              testScore: score, testScores: _testScores);
-        } else await StudyModeUpdateHandler.handle(context, widget.args);
+      /// If everything went well, and we have words left in the list,
+      /// update _macro to the next one.
+      if (code == 0) {
+        if (_macro < _studyList.length - 1) {
+          setState(() {
+            _macro++;
+            _showWord = false;
+          });
+          /// Execute the TTS when passing to the next kanji
+          await TextToSpeech.instance.speakKanji(_studyList[_macro].pronunciation);
+        }
+        /// If we ended the list, update the statistics to DB and exit
+        else await _handleFinishedPractice();
       }
     }
+  }
+
+  Future<void> _handleFinishedPractice() async {
+    _hasFinished = true;
+    /// If the user is in a test, explicitly pass the _testScores to the handler
+    if (widget.args.isTest) {
+      double testScore = 0;
+      _testScores.forEach((s) => testScore += s);
+      final score = testScore / _studyList.length;
+      await StudyModeUpdateHandler.handle(context, widget.args,
+          testScore: score, testScores: _testScores);
+    } else await StudyModeUpdateHandler.handle(context, widget.args);
   }
 
   Future<int> _calculateKanjiScore(double score) async {
@@ -72,10 +85,12 @@ class _ListeningStudyState extends State<ListeningStudy> {
       /// are not stored in the Database
       _testScores.add(score);
     } else {
-      /// Updates the dateLastShown attribute of the finished word
+      /// Updates the dateLastShown attribute of the finished word AND
+      /// the current specific last shown mode attribute
       await KanjiQueries.instance.updateKanji(widget.args.studyList[_macro].listName,
           widget.args.studyList[_macro].kanji, {
-            KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds()
+            KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds(),
+            KanjiTableFields.dateLastShownListening: GeneralUtils.getCurrentMilliseconds()
           });
       /// Add the current virgin score to the test scores...
       if (widget.args.isTest) {
@@ -100,7 +115,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
           actions: [
             Visibility(
               visible: _showWord,
-              child: TTSIconButton(kanji: widget.args.studyList[_macro].kanji),
+              child: TTSIconButton(kanji: widget.args.studyList[_macro].pronunciation),
             )
           ],
         ),
@@ -113,10 +128,10 @@ class _ListeningStudyState extends State<ListeningStudy> {
               ValidationButtons(
                 trigger: _showWord,
                 submitLabel: "done_button_label".tr(),
-                wrongAction: _updateUIOnSubmit,
-                midWrongAction: _updateUIOnSubmit,
-                midPerfectAction: _updateUIOnSubmit,
-                perfectAction: _updateUIOnSubmit,
+                wrongAction: (score) async => await _updateUIOnSubmit(score),
+                midWrongAction: (score) async => await _updateUIOnSubmit(score),
+                midPerfectAction: (score) async => await _updateUIOnSubmit(score),
+                perfectAction: (score) async => await _updateUIOnSubmit(score),
                 onSubmit: () => setState(() => _showWord = true),
               )
             ],
@@ -141,7 +156,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
       Visibility(
           visible: !_showWord,
           child: TTSIconButton(
-              kanji: _studyList[_macro].kanji,
+              kanji: _studyList[_macro].pronunciation,
               iconSize: Margins.margin64 + Margins.margin4
           )
       ),

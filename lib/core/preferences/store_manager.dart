@@ -7,6 +7,8 @@ class StorageManager {
   static final String hasDoneTutorial = "hasDoneTutorial";
   static final String affectOnPractice = "affectOnPractice";
   static final String kanListGraphVisualization = "kanListGraphVisualization";
+  static final String haveSeenKanListCoachMark = "haveSeenKanListCoachMark";
+  static final String haveSeenKanListDetailCoachMark = "haveSeenKanListDetailCoachMark";
 
   static StorageManager? _storageUtils;
   static SharedPreferences? _preferences;

@@ -6,19 +6,31 @@ import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListTile.dart';
 import 'package:kanpractice/ui/theme/theme_manager.dart';
-
 import 'core/routing/routes.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+Future<void> _initSharedPreferences() async {
   await StorageManager.getInstance();
-  if (StorageManager.readData(StorageManager.hasDoneTutorial) == null ||
-      StorageManager.readData(StorageManager.hasDoneTutorial) == false)
+  if (StorageManager.readData(StorageManager.hasDoneTutorial) == null)
     StorageManager.saveData(StorageManager.hasDoneTutorial, false);
   if (StorageManager.readData(StorageManager.affectOnPractice) == null)
     StorageManager.saveData(StorageManager.affectOnPractice, false);
   if (StorageManager.readData(StorageManager.kanListGraphVisualization) == null)
     StorageManager.saveData(StorageManager.kanListGraphVisualization, VisualizationMode.radialChart.name);
+  /// Make the value the same as hasDoneTutorial. If the user has already seen
+  /// the overall tutorial, do not show the coach mark tutorial
+  // DEBUG ONLY
+  //StorageManager.saveData(StorageManager.haveSeenKanListCoachMark, false);
+  //StorageManager.saveData(StorageManager.haveSeenKanListDetailCoachMark, false);
+  bool hasDoneTutorial = StorageManager.readData(StorageManager.hasDoneTutorial);
+  if (StorageManager.readData(StorageManager.haveSeenKanListCoachMark) == null)
+    StorageManager.saveData(StorageManager.haveSeenKanListCoachMark, hasDoneTutorial);
+  if (StorageManager.readData(StorageManager.haveSeenKanListDetailCoachMark) == null)
+    StorageManager.saveData(StorageManager.haveSeenKanListDetailCoachMark, hasDoneTutorial);
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await _initSharedPreferences();
   await CustomDatabase.instance.open();
   await Firebase.initializeApp();
   await EasyLocalization.ensureInitialized();
@@ -42,7 +54,6 @@ class SetUpApp extends StatelessWidget {
     );
   }
 }
-
 
 class KanPractice extends StatefulWidget {
   const KanPractice();

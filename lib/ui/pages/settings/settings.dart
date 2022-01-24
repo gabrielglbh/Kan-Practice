@@ -22,7 +22,7 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  SettingsBloc _settingsBloc = SettingsBloc();
+  final SettingsBloc _bloc = SettingsBloc();
   ThemeMode _mode = ThemeMode.light;
   VisualizationMode _graphMode = VisualizationMode.radialChart;
   bool _toggleAffect = false;
@@ -35,6 +35,12 @@ class _SettingsState extends State<Settings> {
         StorageManager.kanListGraphVisualization)
           ?? VisualizationMode.radialChart);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _bloc.close();
+    super.dispose();
   }
 
   @override
@@ -53,7 +59,7 @@ class _SettingsState extends State<Settings> {
                 ? Icons.mode_night_rounded : Icons.light_mode_rounded),
           ),
           IconButton(
-            onPressed: () => _settingsBloc..add(SettingsLoadingBackUpDate(context)),
+            onPressed: () => _bloc..add(SettingsLoadingBackUpDate(context)),
             icon: Icon(Icons.sync),
           )
         ],
@@ -126,8 +132,8 @@ class _SettingsState extends State<Settings> {
               }
             }
           ),
-          BlocProvider(
-            create: (_) => _settingsBloc..add(SettingsLoadingBackUpDate(context)),
+          BlocProvider<SettingsBloc>(
+            create: (_) => _bloc..add(SettingsLoadingBackUpDate(context)),
             child: BlocBuilder<SettingsBloc, SettingsState>(
               builder: (context, state) {
                 if (state is SettingsStateBackUpDateLoaded) {

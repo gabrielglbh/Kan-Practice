@@ -7,7 +7,7 @@ import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/pages/test_result/arguments.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/ActionButton.dart';
-import 'package:kanpractice/ui/widgets/KanjiBottomSheet.dart';
+import 'package:kanpractice/ui/widgets/kanji_bottom_sheet/KanjiBottomSheet.dart';
 import 'package:kanpractice/ui/widgets/WinRateChart.dart';
 import 'package:easy_localization/easy_localization.dart';
 

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/ui/widgets/DragContainer.dart';
 import 'package:kanpractice/ui/widgets/StudyMode.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
@@ -26,26 +24,6 @@ class BlitzBottomSheet extends StatelessWidget {
         practiceList: practiceList, remembranceTest: remembranceTest
       )
     );
-  }
-
-  Future<List<Kanji>> _loadBlitzTest() async {
-    String? listName = practiceList;
-    /// Get all the list of all kanji and perform a 20 kanji random sublist
-    if (listName == null) {
-      List<Kanji> list = await KanjiQueries.instance.getAllKanji(orderedByLastShown: remembranceTest);
-      /// If it is a remembrance test, do NOT shuffle the list
-      if (!remembranceTest) list.shuffle();
-      return list.sublist(0, list.length < CustomSizes.numberOfKanjiInTest
-          ? list.length : CustomSizes.numberOfKanjiInTest);
-    }
-    /// If the listName is not empty, it means that the user wants to have
-    /// a Blitz Test on a certain KanList defined in "listName"
-    else {
-      List<Kanji> list = await KanjiQueries.instance.getAllKanjiFromList(listName);
-      list.shuffle();
-      return list.sublist(0, list.length < CustomSizes.numberOfKanjiInTest
-          ? list.length : CustomSizes.numberOfKanjiInTest);
-    }
   }
 
   @override
@@ -77,16 +55,12 @@ class BlitzBottomSheet extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize16)),
                 ),
-                FutureBuilder<List<Kanji>>(
-                  future: _loadBlitzTest(),
-                  builder: (context, snapshot) {
-                    return TestStudyMode(
-                      listsNames: remembranceTest ? "remembrance_bottom_sheet_label".tr()
-                          : practiceList == null ? 'blitz_bottom_sheet_label'.tr()
-                          : '${"blitz_bottom_sheet_on_label".tr()} $practiceList',
-                      list: (snapshot.data ?? []),
-                    );
-                  },
+                TestStudyMode(
+                  practiceList: practiceList,
+                  remembranceTest: remembranceTest,
+                  listsNames: remembranceTest ? "remembrance_bottom_sheet_label".tr()
+                      : practiceList == null ? 'blitz_bottom_sheet_label'.tr()
+                      : '${"blitz_bottom_sheet_on_label".tr()} $practiceList',
                 )
               ],
             ),

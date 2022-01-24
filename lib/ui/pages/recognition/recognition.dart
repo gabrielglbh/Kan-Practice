@@ -27,6 +27,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
   int _macro = 0;
 
   bool _showMeaning = false;
+  bool _hasFinished = false;
 
   /// Array that saves all scores without any previous context for the test result
   List<double> _testScores = [];
@@ -42,37 +43,46 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
   }
 
   Future<void> _updateUIOnSubmit(double score) async {
-    /// Calculate the current score
-    final code = await _calculateKanjiScore(score);
+    if (_hasFinished) {
+      await _handleFinishedPractice();
+    } else {
+      /// Calculate the current score
+      final code = await _calculateKanjiScore(score);
 
-    /// If everything went well, and we have words left in the list,
-    /// update _macro to the next one.
-    if (code == 0) {
-      if (_macro < _studyList.length - 1) {
-        setState(() {
-          _macro++;
-          _showMeaning = false;
-        });
-      }
-      /// If we ended the list, update the statistics to DB and exit
-      else {
-        /// If the user is in a test, explicitly pass the _testScores to the handler
-        if (widget.args.isTest) {
-          double testScore = 0;
-          _testScores.forEach((s) => testScore += s);
-          final score = testScore / _studyList.length;
-          await StudyModeUpdateHandler.handle(context, widget.args,
-              testScore: score, testScores: _testScores);
-        } else await StudyModeUpdateHandler.handle(context, widget.args);
+      /// If everything went well, and we have words left in the list,
+      /// update _macro to the next one.
+      if (code == 0) {
+        if (_macro < _studyList.length - 1) {
+          setState(() {
+            _macro++;
+            _showMeaning = false;
+          });
+        }
+        /// If we ended the list, update the statistics to DB and exit
+        else await _handleFinishedPractice();
       }
     }
   }
 
+  Future<void> _handleFinishedPractice() async {
+    _hasFinished = true;
+    /// If the user is in a test, explicitly pass the _testScores to the handler
+    if (widget.args.isTest) {
+      double testScore = 0;
+      _testScores.forEach((s) => testScore += s);
+      final score = testScore / _studyList.length;
+      await StudyModeUpdateHandler.handle(context, widget.args,
+          testScore: score, testScores: _testScores);
+    } else await StudyModeUpdateHandler.handle(context, widget.args);
+  }
+
   Future<int> _calculateKanjiScore(double score) async {
-    /// Updates the dateLastShown attribute of the finished word
+    /// Updates the dateLastShown attribute of the finished word AND
+    /// the current specific last shown mode attribute
     await KanjiQueries.instance.updateKanji(widget.args.studyList[_macro].listName,
         widget.args.studyList[_macro].kanji, {
-          KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds()
+          KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds(),
+          KanjiTableFields.dateLastShownRecognition: GeneralUtils.getCurrentMilliseconds()
         });
     /// Add the current virgin score to the test scores...
     if (widget.args.isTest) {
@@ -108,7 +118,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
           actions: [
             Visibility(
               visible: _showMeaning,
-              child: TTSIconButton(kanji: widget.args.studyList[_macro].kanji),
+              child: TTSIconButton(kanji: widget.args.studyList[_macro].pronunciation),
             )
           ],
         ),
@@ -121,10 +131,10 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
               ValidationButtons(
                 trigger: _showMeaning,
                 submitLabel: "done_button_label".tr(),
-                wrongAction: _updateUIOnSubmit,
-                midWrongAction: _updateUIOnSubmit,
-                midPerfectAction: _updateUIOnSubmit,
-                perfectAction: _updateUIOnSubmit,
+                wrongAction: (score) async => await _updateUIOnSubmit(score),
+                midWrongAction: (score) async => await _updateUIOnSubmit(score),
+                midPerfectAction: (score) async => await _updateUIOnSubmit(score),
+                perfectAction: (score) async => await _updateUIOnSubmit(score),
                 onSubmit: () => setState(() => _showMeaning = true),
               )
             ],

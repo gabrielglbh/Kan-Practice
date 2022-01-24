@@ -3,6 +3,21 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Migrations {
+  static Future<void> version3to4(Database db) async {
+    await db.rawQuery("ALTER TABLE ${KanjiTableFields.kanjiTable} "
+        "ADD COLUMN ${KanjiTableFields.dateLastShownWriting} INTEGER NOT NULL "
+        "DEFAULT 0");
+    await db.rawQuery("ALTER TABLE ${KanjiTableFields.kanjiTable} "
+        "ADD COLUMN ${KanjiTableFields.dateLastShownReading} INTEGER NOT NULL "
+        "DEFAULT 0");
+    await db.rawQuery("ALTER TABLE ${KanjiTableFields.kanjiTable} "
+        "ADD COLUMN ${KanjiTableFields.dateLastShownRecognition} INTEGER NOT NULL "
+        "DEFAULT 0");
+    await db.rawQuery("ALTER TABLE ${KanjiTableFields.kanjiTable} "
+        "ADD COLUMN ${KanjiTableFields.dateLastShownListening} INTEGER NOT NULL "
+        "DEFAULT 0");
+  }
+
   static Future<void> version2to3(Database db) async {
     await db.rawQuery("ALTER TABLE ${KanjiTableFields.kanjiTable} "
         "ADD COLUMN ${KanjiTableFields.winRateListeningField} INTEGER NOT NULL "

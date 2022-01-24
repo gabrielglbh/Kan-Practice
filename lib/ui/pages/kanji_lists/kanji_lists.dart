@@ -236,7 +236,7 @@ class _KanjiListsState extends State<KanjiLists> {
                 },
               ),
               _filterChips(),
-              Container(key: lists, child: _lists())
+              _lists()
             ],
           )
         ),
@@ -285,6 +285,7 @@ class _KanjiListsState extends State<KanjiLists> {
 
   BlocBuilder _lists() {
     return BlocBuilder<KanjiListBloc, KanjiListState>(
+      key: lists,
       builder: (context, state) {
         if (state is KanjiListStateFailure)
           return EmptyList(

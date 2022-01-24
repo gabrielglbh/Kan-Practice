@@ -241,11 +241,11 @@ class KanjiBottomSheet extends StatelessWidget {
           Expanded(
             child: Text(" • ${(mode.mode).capitalized}:",
               overflow: TextOverflow.ellipsis, textAlign: TextAlign.left,
-                style: TextStyle(fontSize: FontSizes.fontSize12)),
+                style: TextStyle(fontSize: FontSizes.fontSize14)),
           ),
           Expanded(
             child: Text(parsedDate, overflow: TextOverflow.ellipsis, textAlign: TextAlign.right,
-              style: TextStyle(fontSize: FontSizes.fontSize12))
+              style: TextStyle(fontSize: FontSizes.fontSize14))
           )
         ],
       ),

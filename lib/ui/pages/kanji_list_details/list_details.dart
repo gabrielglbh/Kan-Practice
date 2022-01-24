@@ -286,6 +286,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
                         }
                       },
                       child: BlocBuilder<KanjiListDetailBloc, KanjiListDetailState>(
+                        key: vocabulary,
                         builder: (context, state) {
                           if (state is KanjiListDetailStateLoaded) {
                             _listName = state.name;
@@ -391,7 +392,6 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
         ),
         Expanded(
           child: GestureDetector(
-            key: vocabulary,
             onHorizontalDragEnd: (details) {
               double? pv = details.primaryVelocity;
               if (pv != null) _updateSelectedModePageView(pv);

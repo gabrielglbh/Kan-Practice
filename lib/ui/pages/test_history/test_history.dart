@@ -112,28 +112,21 @@ class _TestHistoryState extends State<TestHistory> {
           margin: EdgeInsets.all(Margins.margin8),
           elevation: 8,
           child: ListTile(
-            contentPadding: EdgeInsets.symmetric(horizontal: Margins.margin16, vertical: Margins.margin8),
+            contentPadding: EdgeInsets.symmetric(horizontal: Margins.margin8, vertical: Margins.margin8),
             onTap: () {},
             title: Text(t.kanjiLists, textAlign: TextAlign.end, overflow: TextOverflow.ellipsis),
-            subtitle: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("${mode.mode} • "),
-                Expanded(
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: Text("${"test_history_testTaken".tr()} "
-                          "${GeneralUtils.parseDateMilliseconds(context, t.takenDate)}",
-                          style: TextStyle(fontStyle: FontStyle.italic)),
-                    ),
-                  )
-                )
-              ],
+            subtitle: Container(
+              alignment: Alignment.centerRight,
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Text("${mode.mode} • ${"test_history_testTaken".tr()} "
+                    "${GeneralUtils.parseDateMilliseconds(context, t.takenDate)}",
+                    style: TextStyle(fontStyle: FontStyle.italic)),
+              ),
             ),
             leading: WinRateChart(winRate: t.testScore,
-                rateSize: ChartSize.small, backgroundColor: mode.color),
+                padding: EdgeInsets.zero, rateSize: ChartSize.medium,
+                backgroundColor: mode.color),
           ),
         );
       }

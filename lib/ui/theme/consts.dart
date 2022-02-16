@@ -44,7 +44,8 @@ class LazyLoadingLimits {
 
 class ChartSize {
   static const double small = 8;
-  static const double medium = 32;
+  static const double medium = 12;
+  static const double large = 32;
 }
 
 class Margins {

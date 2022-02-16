@@ -135,25 +135,35 @@ class TestStudyMode extends StatelessWidget {
   }
 
   Future<void> _decideOnMode(BuildContext context, List<Kanji> l, StudyModes mode) async {
+    String displayTestName = remembranceTest ? "test_mode_remembrance".tr()
+        : lessPctTest ? "test_mode_less".tr()
+        : list != null ? "test_mode_selection".tr()
+        : "test_mode_blitz".tr();
+
     List<Kanji> sortedList = l.sublist(0, l.length < CustomSizes.numberOfKanjiInTest
         ? l.length : CustomSizes.numberOfKanjiInTest);
     Navigator.of(context).pop(); // Dismiss bottom sheet
+
     switch (mode) {
       case StudyModes.writing:
         await Navigator.of(context).pushNamed(KanPracticePages.writingStudyPage,
-            arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+            arguments: ModeArguments(studyList: sortedList, isTest: true,
+                display: displayTestName, mode: mode, listsNames: listsNames));
         break;
       case StudyModes.reading:
         await Navigator.of(context).pushNamed(KanPracticePages.readingStudyPage,
-            arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+            arguments: ModeArguments(studyList: sortedList, isTest: true,
+                display: displayTestName, mode: mode, listsNames: listsNames));
         break;
       case StudyModes.recognition:
         await Navigator.of(context).pushNamed(KanPracticePages.recognitionStudyPage,
-            arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+            arguments: ModeArguments(studyList: sortedList, isTest: true,
+                display: displayTestName, mode: mode, listsNames: listsNames));
         break;
       case StudyModes.listening:
         await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
-            arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+            arguments: ModeArguments(studyList: sortedList, isTest: true,
+                display: displayTestName, mode: mode, listsNames: listsNames));
         break;
     }
   }

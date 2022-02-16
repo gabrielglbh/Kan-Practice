@@ -211,22 +211,26 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
     switch (state.mode) {
       case StudyModes.writing:
         await Navigator.of(context).pushNamed(KanPracticePages.writingStudyPage,
-            arguments: ModeArguments(studyList: state.list, isTest: false, mode: StudyModes.writing))
+            arguments: ModeArguments(studyList: state.list, isTest: false,
+                mode: StudyModes.writing, display: widget.list.name))
             .then((value) => _addLoadingEvent());
         break;
       case StudyModes.reading:
         await Navigator.of(context).pushNamed(KanPracticePages.readingStudyPage,
-            arguments: ModeArguments(studyList: state.list, isTest: false, mode: StudyModes.reading))
+            arguments: ModeArguments(studyList: state.list, isTest: false,
+                mode: StudyModes.reading, display: widget.list.name))
             .then((value) => _addLoadingEvent());
         break;
       case StudyModes.recognition:
         await Navigator.of(context).pushNamed(KanPracticePages.recognitionStudyPage,
-            arguments: ModeArguments(studyList: state.list, isTest: false, mode: StudyModes.recognition))
+            arguments: ModeArguments(studyList: state.list, isTest: false,
+                mode: StudyModes.recognition, display: widget.list.name))
             .then((value) => _addLoadingEvent());
         break;
       case StudyModes.listening:
         await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
-            arguments: ModeArguments(studyList: state.list, isTest: false, mode: StudyModes.listening))
+            arguments: ModeArguments(studyList: state.list, isTest: false,
+                mode: StudyModes.listening, display: widget.list.name))
             .then((value) => _addLoadingEvent());
         break;
     }

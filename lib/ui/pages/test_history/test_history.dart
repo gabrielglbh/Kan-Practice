@@ -116,14 +116,19 @@ class _TestHistoryState extends State<TestHistory> {
             onTap: () {},
             title: Text(t.kanjiLists, textAlign: TextAlign.end, overflow: TextOverflow.ellipsis),
             subtitle: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text("${mode.mode} • "),
                 Expanded(
-                  child: Text("${"test_history_testTaken".tr()} "
-                      "${GeneralUtils.parseDateMilliseconds(context, t.takenDate)}",
-                      textAlign: TextAlign.end,
-                      style: TextStyle(fontStyle: FontStyle.italic))
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: Text("${"test_history_testTaken".tr()} "
+                          "${GeneralUtils.parseDateMilliseconds(context, t.takenDate)}",
+                          style: TextStyle(fontStyle: FontStyle.italic)),
+                    ),
+                  )
                 )
               ],
             ),

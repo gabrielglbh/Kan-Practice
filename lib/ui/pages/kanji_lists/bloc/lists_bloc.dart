@@ -40,6 +40,16 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
       }
     });
 
+    on<KanjiListForTestEventLoading>((event, emit) async {
+      try {
+        emit(KanjiListStateLoading());
+        final List<KanjiList> lists = await ListQueries.instance.getAllLists();
+        emit(KanjiListStateLoaded(lists: lists));
+      } on Exception {
+        emit(KanjiListStateFailure());
+      }
+    });
+
     on<KanjiListEventSearching>((event, emit) async {
       try {
         if (event.offset == 0) {

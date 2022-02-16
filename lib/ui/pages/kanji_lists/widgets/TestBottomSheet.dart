@@ -8,7 +8,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/widgets/blitz/NumberTestBottomSheet.dart';
 
 enum Tests {
-  lists, blitz, time, numbers
+  lists, blitz, time, numbers, less
 }
 
 extension TestsExt on Tests {
@@ -22,6 +22,8 @@ extension TestsExt on Tests {
         return "test_mode_remembrance".tr();
       case Tests.numbers:
         return "test_mode_number".tr();
+      case Tests.less:
+        return "test_mode_less".tr();
     }
   }
 
@@ -35,6 +37,8 @@ extension TestsExt on Tests {
         return Icons.access_time_rounded;
       case Tests.numbers:
         return Icons.pin_rounded;
+      case Tests.less:
+        return Icons.indeterminate_check_box_outlined;
     }
   }
 }
@@ -75,7 +79,7 @@ class _TestBottomSheetState extends State<TestBottomSheet> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize18)),
                 ),
                 Container(
-                  height: CustomSizes.defaultSizeStudyModeSelection,
+                  height: CustomSizes.defaultSizeStudyModeSelection * 1.6,
                   padding: EdgeInsets.symmetric(horizontal: Margins.margin32),
                   child: GridView(
                     physics: NeverScrollableScrollPhysics(),
@@ -92,6 +96,8 @@ class _TestBottomSheetState extends State<TestBottomSheet> {
                           return _testBasedButtons(context, Tests.time);
                         case Tests.numbers:
                           return _testBasedButtons(context, Tests.numbers);
+                        case Tests.less:
+                          return _testBasedButtons(context, Tests.less);
                       }
                     })
                   ),
@@ -122,6 +128,9 @@ class _TestBottomSheetState extends State<TestBottomSheet> {
             break;
           case Tests.numbers:
             await NumberTestBottomSheet.show(context);
+            break;
+          case Tests.less:
+            await BlitzBottomSheet.show(context, lessPctTest: true);
             break;
         }
       }

@@ -169,7 +169,8 @@ class _NumberTestBottomSheetState extends State<NumberTestBottomSheet> {
               Navigator.of(context).pop(); // Dismiss bottom sheet
               await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
                 arguments: ModeArguments(studyList: list, isTest: true,
-                mode: StudyModes.listening, listsNames: listsNames, isNumberTest: true));
+                  mode: StudyModes.listening, display: "test_mode_number".tr(),
+                  listsNames: listsNames, isNumberTest: true));
             }
           }
         ),

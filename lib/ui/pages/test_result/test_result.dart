@@ -35,7 +35,7 @@ class TestResult extends StatelessWidget {
               winRate: args.score,
               backgroundColor: StudyModesUtil.mapStudyMode(args.studyMode).color,
               size: MediaQuery.of(context).size.width / 2.5,
-              rateSize: ChartSize.medium,
+              rateSize: ChartSize.large,
             ),
             Padding(
               padding: EdgeInsets.only(

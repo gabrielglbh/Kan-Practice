@@ -12,6 +12,7 @@ import 'package:kanpractice/ui/widgets/LearningHeaderAnimation.dart';
 import 'package:kanpractice/ui/widgets/LearningHeaderContainer.dart';
 import 'package:kanpractice/ui/widgets/ListPercentageIndicator.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/ui/widgets/StudyModeAppBar.dart';
 import 'package:kanpractice/ui/widgets/TTSIconButton.dart';
 import 'package:kanpractice/ui/widgets/ValidationButtons.dart';
 
@@ -124,7 +125,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: CustomSizes.appBarHeight,
-          title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.args.mode.mode)),
+          title: StudyModeAppBar(title: widget.args.display, studyMode: widget.args.mode.mode),
           centerTitle: true,
           actions: [
             Visibility(

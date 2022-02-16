@@ -244,8 +244,14 @@ class KanjiBottomSheet extends StatelessWidget {
                 style: TextStyle(fontSize: FontSizes.fontSize14)),
           ),
           Expanded(
-            child: Text(parsedDate, overflow: TextOverflow.ellipsis, textAlign: TextAlign.right,
-              style: TextStyle(fontSize: FontSizes.fontSize14))
+            child: Container(
+              alignment: Alignment.centerRight,
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Text(parsedDate, overflow: TextOverflow.ellipsis, textAlign: TextAlign.right,
+                  style: TextStyle(fontSize: FontSizes.fontSize14)),
+              ),
+            )
           )
         ],
       ),

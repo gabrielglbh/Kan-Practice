@@ -20,6 +20,13 @@ class KanjiListEventLoading extends KanjiListEvent {
   List<Object> get props => [filter, order, offset];
 }
 
+class KanjiListForTestEventLoading extends KanjiListEvent {
+  const KanjiListForTestEventLoading();
+
+  @override
+  List<Object> get props => [];
+}
+
 class KanjiListEventSearching extends KanjiListEvent {
   final String query;
   final int offset;

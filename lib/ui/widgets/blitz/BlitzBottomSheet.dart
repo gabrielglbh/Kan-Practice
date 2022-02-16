@@ -9,19 +9,20 @@ class BlitzBottomSheet extends StatelessWidget {
   /// lesson specifically. If null, all kanji available will be taken into consideration.
   final String? practiceList;
   final bool remembranceTest;
+  final bool lessPctTest;
   /// Creates a blitz test study mode selection bottom sheet for BLITZ and
   /// REMEMBRANCE tests.
-  const BlitzBottomSheet({this.practiceList, this.remembranceTest = false});
+  const BlitzBottomSheet({this.practiceList, this.remembranceTest = false, this.lessPctTest = false});
 
   /// Creates and calls the [BottomSheet] with the content for a blitz test
   static Future<String?> show(BuildContext context,
-      {String? practiceList, bool remembranceTest = false}) async {
+      {String? practiceList, bool remembranceTest = false, bool lessPctTest = false}) async {
     return await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => BlitzBottomSheet(
-        practiceList: practiceList, remembranceTest: remembranceTest
+        practiceList: practiceList, remembranceTest: remembranceTest, lessPctTest: lessPctTest
       )
     );
   }
@@ -42,6 +43,8 @@ class BlitzBottomSheet extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin32),
                   child: Text(remembranceTest
                       ? "remembrance_bottom_sheet_title".tr()
+                      : lessPctTest
+                      ? "less_pct_bottom_sheet_title".tr()
                       : "blitz_bottom_sheet_title".tr(), textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize18)),
                 ),
@@ -50,6 +53,8 @@ class BlitzBottomSheet extends StatelessWidget {
                   child: Text("${CustomSizes.numberOfKanjiInTest.toString()} ${
                       remembranceTest
                           ? "remembrance_bottom_sheet_content".tr()
+                          : lessPctTest
+                          ? "less_pct_bottom_sheet_content".tr()
                           : "blitz_bottom_sheet_content".tr()
                   }",
                       textAlign: TextAlign.center,
@@ -58,7 +63,9 @@ class BlitzBottomSheet extends StatelessWidget {
                 TestStudyMode(
                   practiceList: practiceList,
                   remembranceTest: remembranceTest,
+                  lessPctTest: lessPctTest,
                   listsNames: remembranceTest ? "remembrance_bottom_sheet_label".tr()
+                      : lessPctTest ? "less_pct_bottom_sheet_label".tr()
                       : practiceList == null ? 'blitz_bottom_sheet_label'.tr()
                       : '${"blitz_bottom_sheet_on_label".tr()} $practiceList',
                 )

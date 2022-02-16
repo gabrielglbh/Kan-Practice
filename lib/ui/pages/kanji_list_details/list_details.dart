@@ -192,6 +192,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
         title: Text("list_details_updateKanListName_title".tr()),
         content: CustomTextForm(
           hint: _listName,
+          maxLength: 32,
           header: 'list_details_updateKanListName_header'.tr(),
           controller: _nameController,
           focusNode: _nameControllerFn,

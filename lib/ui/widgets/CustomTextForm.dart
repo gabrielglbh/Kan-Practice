@@ -30,12 +30,14 @@ class CustomTextForm extends StatelessWidget {
   final bool autofocus;
   /// Whether to obscure the [TextField] or not
   final bool obscure;
+  /// Max length of this. Defaults to null
+  final int? maxLength;
   const CustomTextForm({
     required this.header, required this.hint, required this.controller,
     required this.focusNode, required this.onEditingComplete, this.onSubmitted,
     this.inputType = TextInputType.text, this.action = TextInputAction.next,
     this.fontSize = FontSizes.fontSize18, this.bold, this.centerText = TextAlign.start,
-    this.autofocus = false, this.obscure = false, this.additionalWidget
+    this.autofocus = false, this.obscure = false, this.additionalWidget, this.maxLength
   });
 
   @override
@@ -60,6 +62,7 @@ class CustomTextForm extends StatelessWidget {
           style: TextStyle(fontWeight: bold, fontSize: fontSize),
           textInputAction: action,
           keyboardType: inputType,
+          maxLength: maxLength,
           textCapitalization: TextCapitalization.sentences,
           autofocus: autofocus,
           obscureText: obscure,

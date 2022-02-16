@@ -24,6 +24,7 @@ class CreateKanListDialog extends StatelessWidget {
       title: Text("kanji_lists_createDialogForAddingKanList_title".tr()),
       content: CustomTextForm(
         header: "kanji_lists_createDialogForAddingKanList_header".tr(),
+        maxLength: 32,
         controller: controller,
         action: TextInputAction.done,
         hint: "kanji_lists_createDialogForAddingKanList_hint".tr(),

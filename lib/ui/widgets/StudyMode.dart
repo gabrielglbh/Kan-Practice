@@ -23,18 +23,20 @@ class TestStudyMode extends StatelessWidget {
   /// String defining if the user wants to perform a Blitz Test on a practice
   /// lesson specifically. If null, all kanji available will be taken into consideration.
   final String? practiceList;
-  /// ONLY VALID FOR BLITZ OR REMEMBRANCE TESTS.
+  /// ONLY VALID FOR BLITZ OR REMEMBRANCE TESTS OR LESS % TESTS.
   final bool remembranceTest;
+  final bool lessPctTest;
   const TestStudyMode({this.list, this.practiceList, this.remembranceTest = false,
-    required this.listsNames});
+    required this.listsNames, this.lessPctTest = false});
 
   Future<List<Kanji>> _loadBlitzTest(StudyModes mode) async {
     String? listName = practiceList;
     /// Get all the list of all kanji and perform a 20 kanji random sublist
     if (listName == null) {
-      List<Kanji> list = await KanjiQueries.instance.getAllKanji(mode: mode, orderedByLastShown: remembranceTest);
-      /// If it is a remembrance test, do NOT shuffle the list
-      if (!remembranceTest) list.shuffle();
+      List<Kanji> list = await KanjiQueries.instance.getAllKanji(mode: mode,
+          orderedByLastShown: remembranceTest, orderedByWorstAccuracy: lessPctTest);
+      /// If it is a remembrance or less % test, do NOT shuffle the list
+      if (!remembranceTest && !lessPctTest) list.shuffle();
       return list;
     }
     /// If the listName is not empty, it means that the user wants to have

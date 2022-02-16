@@ -224,7 +224,7 @@ class _SettingsState extends State<Settings> {
   ListTile _header(String title, {String? subtitle}) {
     return ListTile(
       title: Text(title, style: TextStyle(fontSize: FontSizes.fontSize20, fontWeight: FontWeight.bold)),
-      subtitle: subtitle != null ? FittedBox(fit: BoxFit.contain, child: Text(subtitle)) : null,
+      subtitle: subtitle != null ? Text(subtitle) : null,
     );
   }
 }

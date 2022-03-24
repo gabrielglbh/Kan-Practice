@@ -74,4 +74,80 @@ class TestQueries {
       }
     } else return [];
   }
+
+  /// Retrieves the total test count saved locally in the device.
+  Future<int> getTotalTestCount() async {
+    if (_database != null) {
+      try {
+        List<Map<String, dynamic>>? res = [];
+        res = await _database?.query(TestTableFields.testTable);
+        if (res != null) return res.length;
+        else return 0;
+      } catch (err) {
+        print(err.toString());
+        return 0;
+      }
+    } else return -1;
+  }
+
+  /// Retrieves the total test accuracy saved locally in the device.
+  Future<double> getTotalTestAccuracy() async {
+    if (_database != null) {
+      try {
+        List<Map<String, dynamic>>? res = [];
+        res = await _database?.query(TestTableFields.testTable);
+        if (res != null) {
+          List<Test> l = List.generate(res.length, (i) => Test.fromJson(res![i]));
+          double acc = 0;
+          l.forEach((test) => acc += test.testScore);
+          return acc / l.length;
+        }
+        else return 0;
+      } catch (err) {
+        print(err.toString());
+        return 0;
+      }
+    } else return -1;
+  }
+
+  /// Retrieves the test count saved locally in the device based on the [StudyModes].
+  Future<int> getTestCountBasedOnStudyMode(int mode) async {
+    if (_database != null) {
+      try {
+        List<Map<String, dynamic>>? res = [];
+        res = await _database?.query(TestTableFields.testTable,
+          where: "${TestTableFields.studyModeField}=?",
+          whereArgs: [mode]
+        );
+        if (res != null) return res.length;
+        else return 0;
+      } catch (err) {
+        print(err.toString());
+        return 0;
+      }
+    } else return -1;
+  }
+
+  /// Retrieves the test accuracy saved locally in the device based on the [StudyModes].
+  Future<double> getTestAccuracyBasedOnStudyMode(int mode) async {
+    if (_database != null) {
+      try {
+        List<Map<String, dynamic>>? res = [];
+        res = await _database?.query(TestTableFields.testTable,
+            where: "${TestTableFields.studyModeField}=?",
+            whereArgs: [mode]
+        );
+        if (res != null) {
+          List<Test> l = List.generate(res.length, (i) => Test.fromJson(res![i]));
+          double acc = 0;
+          l.forEach((test) => acc += test.testScore);
+          return acc / l.length;
+        }
+        else return 0;
+      } catch (err) {
+        print(err.toString());
+        return 0;
+      }
+    } else return -1;
+  }
 }

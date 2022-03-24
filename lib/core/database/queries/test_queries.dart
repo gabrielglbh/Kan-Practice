@@ -141,7 +141,7 @@ class TestQueries {
           List<Test> l = List.generate(res.length, (i) => Test.fromJson(res![i]));
           double acc = 0;
           l.forEach((test) => acc += test.testScore);
-          return acc / l.length;
+          return acc == 0 ? 0 : acc / l.length;
         }
         else return 0;
       } catch (err) {

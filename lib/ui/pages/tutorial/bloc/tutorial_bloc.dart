@@ -20,5 +20,7 @@ class TutorialBloc extends Bloc<TutorialEvent, TutorialState> {
         emit(TutorialStateFailure());
       }
     });
+
+    on<TutorialEventIdle>((event, emit) {});
   }
 }

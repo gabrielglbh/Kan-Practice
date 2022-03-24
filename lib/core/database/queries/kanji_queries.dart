@@ -241,17 +241,21 @@ class KanjiQueries {
           double recognition = 0;
           double listening = 0;
           l.forEach((kanji) {
-            writing += kanji.winRateRecognition;
-            reading += kanji.winRateReading;
-            recognition += kanji.winRateRecognition;
-            listening += kanji.winRateListening;
+            writing += (kanji.winRateWriting == DatabaseConstants.emptyWinRate
+                ? 0 : kanji.winRateWriting);
+            reading += (kanji.winRateReading == DatabaseConstants.emptyWinRate
+                ? 0 : kanji.winRateReading);
+            recognition += (kanji.winRateRecognition == DatabaseConstants.emptyWinRate
+                ? 0 : kanji.winRateRecognition);
+            listening += (kanji.winRateListening == DatabaseConstants.emptyWinRate
+                ? 0 : kanji.winRateListening);
           });
           return Kanji(
               meaning: '', pronunciation: '', listName: '', kanji: '',
-              winRateWriting: writing / total,
-              winRateReading: reading / total,
-              winRateRecognition: recognition / total,
-              winRateListening: listening / total
+              winRateWriting: writing == 0 ? 0 : writing / total,
+              winRateReading: reading == 0 ? 0 : reading / total,
+              winRateRecognition: recognition == 0 ? 0 : recognition / total,
+              winRateListening: listening == 0 ? 0 : listening / total
           );
         }
         else return Kanji.empty;

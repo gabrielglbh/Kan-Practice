@@ -10,7 +10,7 @@ import 'package:kanpractice/ui/pages/settings/widgets/CopyrightInfo.dart';
 import 'package:kanpractice/ui/pages/settings/widgets/DevInfo.dart';
 import 'package:kanpractice/ui/theme/theme_manager.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -79,6 +79,12 @@ class _SettingsState extends State<Settings> {
             }
           ),
           _header("settings_general".tr()),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.insert_chart_outlined_rounded, color: Colors.purpleAccent),
+            title: Text("settings_general_statistics".tr()),
+            onTap: () => Navigator.of(context).pushNamed(KanPracticePages.statisticsPage),
+          ),
           Divider(),
           ListTile(
             leading: Icon(Icons.auto_graph_rounded, color: Colors.lightBlueAccent),

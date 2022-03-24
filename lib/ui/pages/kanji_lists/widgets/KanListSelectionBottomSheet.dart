@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
@@ -70,17 +69,13 @@ class _KanListSelectionBottomSheetState extends State<KanListSelectionBottomShee
                 Visibility(
                   visible: !_selectionMode,
                   child: BlocProvider(
-                    create: (_) => _bloc..add(KanjiListEventLoading(
-                        filter: KanListTableFields.lastUpdatedField, order: false
-                    )),
+                    create: (_) => _bloc..add(KanjiListForTestEventLoading()),
                     child: BlocBuilder<KanjiListBloc, KanjiListState>(
                       builder: (context, state) {
                         if (state is KanjiListStateFailure)
                           return EmptyList(
                             showTryButton: true,
-                            onRefresh: () => _bloc..add(KanjiListEventLoading(
-                              filter: KanListTableFields.lastUpdatedField, order: false
-                            )),
+                            onRefresh: () => _bloc..add(KanjiListForTestEventLoading()),
                             message: "study_bottom_sheet_load_failed".tr()
                           );
                         else if (state is KanjiListStateLoading)
@@ -114,17 +109,27 @@ class _KanListSelectionBottomSheetState extends State<KanListSelectionBottomShee
             itemBuilder: (context, index) {
               String name = state.lists[index].name;
               return Padding(
-                padding: EdgeInsets.only(right: Margins.margin8),
-                child: ActionChip(
-                  label: Text(name),
-                  backgroundColor: _selectedLists.contains(name)
-                      ? CustomColors.secondaryDarkerColor : CustomColors.secondaryColor,
-                  onPressed: () {
+                padding: EdgeInsets.all(Margins.margin4),
+                child: GestureDetector(
+                  onTap: () {
                     setState(() {
                       if (_selectedLists.contains(name)) _selectedLists.remove(name);
                       else _selectedLists.add(name);
                     });
-                  }
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(horizontal: Margins.margin4),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(CustomRadius.radius16),
+                      color: _selectedLists.contains(name)
+                          ? CustomColors.secondaryDarkerColor : CustomColors.secondaryColor,
+                    ),
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: Text(name, style: TextStyle(color: Colors.white))
+                    )
+                  ),
                 ),
               );
             },

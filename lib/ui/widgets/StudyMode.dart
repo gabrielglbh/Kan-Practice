@@ -23,18 +23,20 @@ class TestStudyMode extends StatelessWidget {
   /// String defining if the user wants to perform a Blitz Test on a practice
   /// lesson specifically. If null, all kanji available will be taken into consideration.
   final String? practiceList;
-  /// ONLY VALID FOR BLITZ OR REMEMBRANCE TESTS.
+  /// ONLY VALID FOR BLITZ OR REMEMBRANCE TESTS OR LESS % TESTS.
   final bool remembranceTest;
+  final bool lessPctTest;
   const TestStudyMode({this.list, this.practiceList, this.remembranceTest = false,
-    required this.listsNames});
+    required this.listsNames, this.lessPctTest = false});
 
   Future<List<Kanji>> _loadBlitzTest(StudyModes mode) async {
     String? listName = practiceList;
     /// Get all the list of all kanji and perform a 20 kanji random sublist
     if (listName == null) {
-      List<Kanji> list = await KanjiQueries.instance.getAllKanji(mode: mode, orderedByLastShown: remembranceTest);
-      /// If it is a remembrance test, do NOT shuffle the list
-      if (!remembranceTest) list.shuffle();
+      List<Kanji> list = await KanjiQueries.instance.getAllKanji(mode: mode,
+          orderedByLastShown: remembranceTest, orderedByWorstAccuracy: lessPctTest);
+      /// If it is a remembrance or less % test, do NOT shuffle the list
+      if (!remembranceTest && !lessPctTest) list.shuffle();
       return list;
     }
     /// If the listName is not empty, it means that the user wants to have
@@ -133,25 +135,35 @@ class TestStudyMode extends StatelessWidget {
   }
 
   Future<void> _decideOnMode(BuildContext context, List<Kanji> l, StudyModes mode) async {
+    String displayTestName = remembranceTest ? "test_mode_remembrance".tr()
+        : lessPctTest ? "test_mode_less".tr()
+        : list != null ? "test_mode_selection".tr()
+        : "test_mode_blitz".tr();
+
     List<Kanji> sortedList = l.sublist(0, l.length < CustomSizes.numberOfKanjiInTest
         ? l.length : CustomSizes.numberOfKanjiInTest);
     Navigator.of(context).pop(); // Dismiss bottom sheet
+
     switch (mode) {
       case StudyModes.writing:
         await Navigator.of(context).pushNamed(KanPracticePages.writingStudyPage,
-            arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+            arguments: ModeArguments(studyList: sortedList, isTest: true,
+                display: displayTestName, mode: mode, listsNames: listsNames));
         break;
       case StudyModes.reading:
         await Navigator.of(context).pushNamed(KanPracticePages.readingStudyPage,
-            arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+            arguments: ModeArguments(studyList: sortedList, isTest: true,
+                display: displayTestName, mode: mode, listsNames: listsNames));
         break;
       case StudyModes.recognition:
         await Navigator.of(context).pushNamed(KanPracticePages.recognitionStudyPage,
-            arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+            arguments: ModeArguments(studyList: sortedList, isTest: true,
+                display: displayTestName, mode: mode, listsNames: listsNames));
         break;
       case StudyModes.listening:
         await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
-            arguments: ModeArguments(studyList: sortedList, isTest: true, mode: mode, listsNames: listsNames));
+            arguments: ModeArguments(studyList: sortedList, isTest: true,
+                display: displayTestName, mode: mode, listsNames: listsNames));
         break;
     }
   }

@@ -40,7 +40,11 @@ class KanjiQueries {
   ///
   /// [orderedByLastShown] serves as a control variable to order all the kanji by
   /// their last shown parameter
-  Future<List<Kanji>> getAllKanji({StudyModes? mode, bool orderedByLastShown = false}) async {
+  ///
+  /// [orderedByWorstAccuracy] serves as a control variable to order all the kanji by
+  /// their win rate
+  Future<List<Kanji>> getAllKanji({StudyModes? mode, bool orderedByLastShown = false,
+    bool orderedByWorstAccuracy = false}) async {
     if (_database != null) {
       try {
         String query = "";
@@ -62,6 +66,27 @@ class KanjiQueries {
               case StudyModes.listening:
                 query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
                     "ORDER BY ${KanjiTableFields.dateLastShownListening} ASC";
+                break;
+            }
+          } else return [];
+        } else if (orderedByWorstAccuracy) {
+          if (mode != null) {
+            switch (mode) {
+              case StudyModes.writing:
+                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                    "ORDER BY ${KanjiTableFields.winRateWritingField} ASC";
+                break;
+              case StudyModes.reading:
+                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                    "ORDER BY ${KanjiTableFields.winRateReadingField} ASC";
+                break;
+              case StudyModes.recognition:
+                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                    "ORDER BY ${KanjiTableFields.winRateRecognitionField} ASC";
+                break;
+              case StudyModes.listening:
+                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                    "ORDER BY ${KanjiTableFields.winRateListeningField} ASC";
                 break;
             }
           } else return [];

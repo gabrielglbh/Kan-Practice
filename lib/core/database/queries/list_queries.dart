@@ -54,6 +54,21 @@ class ListQueries {
     } else return [];
   }
 
+  /// Query to get all [KanjiList] from the db to return the count.
+  Future<int> getTotalListCount() async {
+    if (_database != null) {
+      try {
+        List<Map<String, dynamic>>? res = [];
+        res = await _database?.query(KanListTableFields.listsTable);
+        if (res != null) return res.length;
+        else return 0;
+      } catch (err) {
+        print(err.toString());
+        return 0;
+      }
+    } else return -1;
+  }
+
   /// Query to get all [KanjiList] from the db based on a [query] that will match:
   /// list name, kanji, meaning and pronunciation.
   /// If anything goes wrong, an empty list will be returned.

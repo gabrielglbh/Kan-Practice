@@ -240,5 +240,6 @@
   "coach_tutorial_detail_4": "Wenn Sie hier klicken, können Sie schließlich den Namen der Liste ändern, falls Sie einen Fehler gemacht oder Ihre Meinung über das gewählte Thema oder die Kategorisierung geändert haben.",
   "settings_general_statistics": "Allgemeine Statistik",
   "stats_words": "Gesamtzahl der Wörter",
-  "stats_tests": "Gesamtzahl der Tests"
+  "stats_tests": "Gesamtzahl der Tests",
+  "stats_words_lists": "Listen"
 }

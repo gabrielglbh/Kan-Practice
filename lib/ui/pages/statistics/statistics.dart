@@ -46,7 +46,7 @@ class StatisticsPage extends StatelessWidget {
 
     return ListView(
       children: [
-        _header("stats_words".tr()),
+        _header("${"stats_words".tr()} • ${s.totalLists} ${"stats_words_lists".tr()}"),
         _countLabel(s.totalKanji.toString()),
         Padding(
           padding: EdgeInsets.only(top: Margins.margin16),
@@ -96,7 +96,10 @@ class StatisticsPage extends StatelessWidget {
             }
           }),
         ),
-        _countLabel(s.totalTests.toString()),
+        Padding(
+          padding: EdgeInsets.only(top: Margins.margin16),
+          child: _countLabel(s.totalTests.toString()),
+        ),
         Padding(
           padding: EdgeInsets.only(top: Margins.margin16),
           child: DependentGraph(
@@ -135,7 +138,8 @@ class StatisticsPage extends StatelessWidget {
     return Container(
       width: Margins.margin8, height: Margins.margin8,
       margin: EdgeInsets.only(
-          right: Margins.margin8, left: Margins.margin8, top: Margins.margin4
+        right: Margins.margin8, left: Margins.margin8,
+        top: Margins.margin4, bottom: Margins.margin4
       ),
       decoration: BoxDecoration(
           shape: BoxShape.circle, color: mode.color

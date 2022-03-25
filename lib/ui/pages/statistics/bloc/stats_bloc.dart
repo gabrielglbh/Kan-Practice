@@ -2,7 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
+import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:kanpractice/core/database/queries/test_queries.dart';
+import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
 
 part 'stats_event.dart';
@@ -13,20 +15,30 @@ class StatisticsBloc extends Bloc<StatsEvent, StatsState> {
     on<StatisticsEventLoading>((event, emit) async {
       emit(StatisticsLoading());
 
+      final int totalLists = await ListQueries.instance.getTotalListCount();
       final int totalKanji = await KanjiQueries.instance.getTotalKanjiCount();
       final Kanji winRates = await KanjiQueries.instance.getTotalKanjiWinRates();
       final int totalTests = await TestQueries.instance.getTotalTestCount();
       final double totalTestAccuracy = await TestQueries.instance.getTotalTestAccuracy();
-      final int testTotalCountWriting = await TestQueries.instance.getTestCountBasedOnStudyMode(0);
-      final int testTotalCountReading = await TestQueries.instance.getTestCountBasedOnStudyMode(1);
-      final int testTotalCountRecognition = await TestQueries.instance.getTestCountBasedOnStudyMode(2);
-      final int testTotalCountListening = await TestQueries.instance.getTestCountBasedOnStudyMode(3);
-      final double testTotalWinRateWriting = await TestQueries.instance.getTestAccuracyBasedOnStudyMode(0);
-      final double testTotalWinRateReading = await TestQueries.instance.getTestAccuracyBasedOnStudyMode(1);
-      final double testTotalWinRateRecognition = await TestQueries.instance.getTestAccuracyBasedOnStudyMode(2);
-      final double testTotalWinRateListening = await TestQueries.instance.getTestAccuracyBasedOnStudyMode(3);
+      final int testTotalCountWriting = await TestQueries.instance.getTestCountBasedOnStudyMode(
+          StudyModes.writing.map);
+      final int testTotalCountReading = await TestQueries.instance.getTestCountBasedOnStudyMode(
+          StudyModes.reading.map);
+      final int testTotalCountRecognition = await TestQueries.instance.getTestCountBasedOnStudyMode(
+          StudyModes.recognition.map);
+      final int testTotalCountListening = await TestQueries.instance.getTestCountBasedOnStudyMode(
+          StudyModes.listening.map);
+      final double testTotalWinRateWriting = await TestQueries.instance.getTestAccuracyBasedOnStudyMode(
+          StudyModes.writing.map);
+      final double testTotalWinRateReading = await TestQueries.instance.getTestAccuracyBasedOnStudyMode(
+          StudyModes.reading.map);
+      final double testTotalWinRateRecognition = await TestQueries.instance.getTestAccuracyBasedOnStudyMode(
+          StudyModes.recognition.map);
+      final double testTotalWinRateListening = await TestQueries.instance.getTestAccuracyBasedOnStudyMode(
+          StudyModes.listening.map);
 
       emit(StatisticsLoaded(stats: KanPracticeStats(
+          totalLists: totalLists,
           totalKanji: totalKanji,
           totalWinRateWriting: winRates.winRateWriting,
           totalWinRateReading: winRates.winRateReading,

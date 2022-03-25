@@ -240,5 +240,6 @@
   "coach_tutorial_detail_4": "Finally, if you click here, you will be able to change the name of the list, in case you have made a mistake or changed your mind about the chosen subject or categorisation.",
   "settings_general_statistics": "General Statistics",
   "stats_words": "Total Number of Words",
-  "stats_tests": "Total Number of Tests"
+  "stats_tests": "Total Number of Tests",
+  "stats_words_lists": "Lists"
 }

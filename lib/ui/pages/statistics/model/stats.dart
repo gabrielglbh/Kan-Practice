@@ -1,4 +1,5 @@
 class KanPracticeStats {
+  final int totalLists;
   final int totalKanji;
   final double totalWinRateWriting;
   final double totalWinRateReading;
@@ -16,6 +17,7 @@ class KanPracticeStats {
   final double testTotalWinRateListening;
 
   KanPracticeStats({
+    required this.totalLists,
     required this.totalKanji,
     required this.totalWinRateWriting,
     required this.totalWinRateReading,

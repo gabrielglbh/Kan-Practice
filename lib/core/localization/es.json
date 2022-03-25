@@ -240,5 +240,6 @@
   "coach_tutorial_detail_4": "Por último, si pulsas aquí, podrás cambiar el nombre de la lista, por si te has equivocado o cambiado de opinión con respecto a la temática o categorización elegida.",
   "settings_general_statistics": "Estadísticas Generales",
   "stats_words": "Número Total de Palabras",
-  "stats_tests": "Número Total de Tests"
+  "stats_tests": "Número Total de Tests",
+  "stats_words_lists": "Listas"
 }

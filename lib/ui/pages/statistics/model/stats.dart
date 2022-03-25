@@ -5,6 +5,8 @@ class KanPracticeStats {
   final double totalWinRateReading;
   final double totalWinRateRecognition;
   final double totalWinRateListening;
+  final String bestList;
+  final String worstList;
   final int totalTests;
   final double totalTestAccuracy;
   final int testTotalCountWriting;
@@ -23,6 +25,8 @@ class KanPracticeStats {
     required this.totalWinRateReading,
     required this.totalWinRateRecognition,
     required this.totalWinRateListening,
+    required this.bestList,
+    required this.worstList,
     required this.totalTests,
     required this.totalTestAccuracy,
     required this.testTotalCountWriting,

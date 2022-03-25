@@ -241,5 +241,7 @@
   "settings_general_statistics": "General Statistics",
   "stats_words": "Total Number of Words",
   "stats_tests": "Total Number of Tests",
-  "stats_words_lists": "Lists"
+  "stats_words_lists": "Lists",
+  "stats_best_list": "Best list",
+  "stats_worst_list": "Worst list"
 }

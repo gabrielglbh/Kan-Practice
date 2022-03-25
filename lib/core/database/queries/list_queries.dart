@@ -2,6 +2,7 @@ import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ListQueries {
@@ -67,6 +68,41 @@ class ListQueries {
         return 0;
       }
     } else return -1;
+  }
+
+  /// Query the [KanjiList] with the best scoring overall and the worst one.
+  /// Returns the name of the list: FIRST -> best , SECOND -> worst
+  Future<List<String>> getBestAndWorstList() async {
+    if (_database != null) {
+      try {
+        List<Map<String, dynamic>>? res = [];
+        res = await _database?.query(KanListTableFields.listsTable);
+        if (res != null) {
+          final List<KanjiList> l = List.generate(res.length, (i) => KanjiList.fromJson(res![i]));
+          List<String> listNames = [];
+          List<double> listAcc = [];
+          l.forEach((list) {
+            listNames.add(list.name);
+            final double acc = list.totalWinRateWriting + list.totalWinRateReading +
+                list.totalWinRateRecognition + list.totalWinRateListening;
+            listAcc.add((acc <= 0 ? 0 : acc) / StudyModes.values.length);
+            print(acc / 4);
+          });
+          final double best = listAcc.reduce((curr, next)
+            => curr > next ? curr : next);
+          final double worst = listAcc.reduce((curr, next)
+            => curr < next ? curr : next);
+          return [
+            listNames[listAcc.indexOf(best)],
+            listNames[listAcc.indexOf(worst)]
+          ];
+        }
+        else return ["", ""];
+      } catch (err) {
+        print(err.toString());
+        return ["", ""];
+      }
+    } else return ["", ""];
   }
 
   /// Query to get all [KanjiList] from the db based on a [query] that will match:

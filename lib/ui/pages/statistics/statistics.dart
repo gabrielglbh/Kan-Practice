@@ -46,7 +46,7 @@ class StatisticsPage extends StatelessWidget {
 
     return ListView(
       children: [
-        _header("${"stats_words".tr()} • ${s.totalLists} ${"stats_words_lists".tr()}"),
+        _header(context, "${"stats_words".tr()} • ", "${s.totalLists} ${"stats_words_lists".tr()}"),
         _countLabel(s.totalKanji.toString()),
         Padding(
           padding: EdgeInsets.only(top: Margins.margin16),
@@ -59,7 +59,28 @@ class StatisticsPage extends StatelessWidget {
           )
         ),
         Divider(),
-        _header("${"stats_tests".tr()} • ${GeneralUtils.roundUpAsString(
+        Row(
+          children: [
+            Expanded(
+              child: ListTile(
+                title: Text("stats_best_list".tr(), textAlign: TextAlign.center, style: TextStyle(
+                    fontWeight: FontWeight.bold
+                )),
+                subtitle: Text(s.bestList, textAlign: TextAlign.center),
+              ),
+            ),
+            Expanded(
+              child: ListTile(
+                title: Text("stats_worst_list".tr(), textAlign: TextAlign.center, style: TextStyle(
+                  fontWeight: FontWeight.bold
+                )),
+                subtitle: Text(s.worstList, textAlign: TextAlign.center),
+              ),
+            )
+          ],
+        ),
+        Divider(),
+        _header(context, "${"stats_tests".tr()} • ", "${GeneralUtils.roundUpAsString(
             GeneralUtils.getFixedDouble(s.totalTestAccuracy * 100))}%"),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -69,28 +90,28 @@ class StatisticsPage extends StatelessWidget {
                 return Row(
                   children: [
                     _bullet(StudyModes.values[index]),
-                    Text(s.testTotalCountWriting.toString())
+                    _fittedText(s.testTotalCountWriting.toString())
                   ],
                 );
               case StudyModes.reading:
                 return Row(
                   children: [
                     _bullet(StudyModes.values[index]),
-                    Text(s.testTotalCountReading.toString())
+                    _fittedText(s.testTotalCountReading.toString())
                   ],
                 );
               case StudyModes.recognition:
                 return Row(
                   children: [
                     _bullet(StudyModes.values[index]),
-                    Text(s.testTotalCountRecognition.toString())
+                    _fittedText(s.testTotalCountRecognition.toString())
                   ],
                 );
               case StudyModes.listening:
                 return Row(
                   children: [
                     _bullet(StudyModes.values[index]),
-                    Text(s.testTotalCountListening.toString())
+                    _fittedText(s.testTotalCountListening.toString())
                   ],
                 );
             }
@@ -114,11 +135,26 @@ class StatisticsPage extends StatelessWidget {
     );
   }
 
-  ListTile _header(String title) {
+  ListTile _header(BuildContext context, String title, String value) {
     return ListTile(
-      title: Text(title,
-          style: TextStyle(fontSize: FontSizes.fontSize20, fontWeight: FontWeight.bold)
-      ),
+      title: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: title,
+              style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                  fontSize: FontSizes.fontSize20, fontWeight: FontWeight.bold
+              )
+            ),
+            TextSpan(
+              text: value,
+              style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                  fontSize: FontSizes.fontSize20
+              )
+            )
+          ]
+        ),
+      )
     );
   }
 
@@ -126,12 +162,12 @@ class StatisticsPage extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
       alignment: Alignment.center,
-      child: FittedBox(
-        fit: BoxFit.contain,
-        child: Text(count, style: TextStyle(fontSize: FontSizes.fontSize64)
-        ),
-      ),
+      child: _fittedText(count, style: TextStyle(fontSize: FontSizes.fontSize64))
     );
+  }
+
+  FittedBox _fittedText(String t, {TextStyle? style}) {
+    return FittedBox(fit: BoxFit.contain, child: Text(t, style: style));
   }
 
   Container _bullet(StudyModes mode) {

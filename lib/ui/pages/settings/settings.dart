@@ -81,7 +81,7 @@ class _SettingsState extends State<Settings> {
           _header("settings_general".tr()),
           Divider(),
           ListTile(
-            leading: Icon(Icons.insert_chart_outlined_rounded, color: Colors.purpleAccent),
+            leading: Icon(Icons.insert_chart_outlined_rounded, color: Colors.teal),
             title: Text("settings_general_statistics".tr()),
             onTap: () => Navigator.of(context).pushNamed(KanPracticePages.statisticsPage),
           ),

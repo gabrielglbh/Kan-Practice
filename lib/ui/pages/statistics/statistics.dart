@@ -8,9 +8,8 @@ import 'package:kanpractice/ui/pages/statistics/bloc/stats_bloc.dart';
 import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/ui/widgets/DependentGraph.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
-import 'package:kanpractice/ui/widgets/RadialGraph.dart';
-import 'package:kanpractice/ui/widgets/WinRateBarChart.dart';
 
 class StatisticsPage extends StatelessWidget {
   StatisticsPage();
@@ -51,13 +50,13 @@ class StatisticsPage extends StatelessWidget {
         _countLabel(s.totalKanji.toString()),
         Padding(
           padding: EdgeInsets.only(top: Margins.margin16),
-          child: mode == VisualizationMode.radialChart ? RadialGraph(
-            rateWriting: s.totalWinRateWriting,
-            rateReading: s.totalWinRateReading,
-            rateRecognition: s.totalWinRateRecognition,
-            rateListening: s.totalWinRateListening,
-          ) : _barChart(s.totalWinRateWriting, s.totalWinRateReading,
-              s.totalWinRateRecognition, s.totalWinRateListening),
+          child: DependentGraph(
+            mode: mode,
+            writing: s.totalWinRateWriting,
+            reading: s.totalWinRateReading,
+            recognition: s.totalWinRateRecognition,
+            listening: s.totalWinRateListening
+          )
         ),
         Divider(),
         _header("${"stats_tests".tr()} • ${GeneralUtils.roundUpAsString(
@@ -100,13 +99,13 @@ class StatisticsPage extends StatelessWidget {
         _countLabel(s.totalTests.toString()),
         Padding(
           padding: EdgeInsets.only(top: Margins.margin16),
-          child: mode == VisualizationMode.radialChart ? RadialGraph(
-            rateWriting: s.testTotalWinRateWriting,
-            rateReading: s.testTotalWinRateReading,
-            rateRecognition: s.testTotalWinRateRecognition,
-            rateListening: s.testTotalWinRateListening,
-          ) : _barChart(s.testTotalWinRateWriting, s.testTotalWinRateReading,
-              s.testTotalWinRateRecognition, s.testTotalWinRateListening)
+          child: DependentGraph(
+            mode: mode,
+            writing: s.testTotalWinRateWriting,
+            reading: s.testTotalWinRateReading,
+            recognition: s.testTotalWinRateRecognition,
+            listening: s.testTotalWinRateListening
+          )
         )
       ],
     );
@@ -141,26 +140,6 @@ class StatisticsPage extends StatelessWidget {
       decoration: BoxDecoration(
           shape: BoxShape.circle, color: mode.color
       ),
-    );
-  }
-
-  Widget _barChart(double w, double r, double recog, double l) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        WinRateBarChart(dataSource: List.generate(StudyModes.values.length, (index) {
-          switch (StudyModes.values[index]) {
-            case StudyModes.writing:
-              return BarData(x: StudyModes.writing.mode, y: w, color: StudyModes.writing.color);
-            case StudyModes.reading:
-              return BarData(x: StudyModes.reading.mode, y: r, color: StudyModes.reading.color);
-            case StudyModes.recognition:
-              return BarData(x: StudyModes.recognition.mode, y: recog, color: StudyModes.recognition.color);
-            case StudyModes.listening:
-              return BarData(x: StudyModes.listening.mode, y: l, color: StudyModes.listening.color);
-          }
-        }))
-      ],
     );
   }
 }

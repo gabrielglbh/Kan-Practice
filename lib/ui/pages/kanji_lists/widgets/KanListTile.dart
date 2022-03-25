@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
-import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
-import 'package:kanpractice/ui/widgets/RadialGraph.dart';
+import 'package:kanpractice/ui/widgets/DependentGraph.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
-import 'package:kanpractice/ui/widgets/WinRateBarChart.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 enum VisualizationMode { barChart, radialChart }
@@ -92,32 +90,13 @@ class KanListTile extends StatelessWidget {
           ],
         ),
       ),
-      subtitle: mode == VisualizationMode.barChart ? _barChart() : RadialGraph(
-        rateWriting: item.totalWinRateWriting,
-        rateReading: item.totalWinRateReading,
-        rateRecognition: item.totalWinRateRecognition,
-        rateListening: item.totalWinRateListening,
+      subtitle: DependentGraph(
+        mode: mode,
+        writing: item.totalWinRateWriting,
+        reading: item.totalWinRateReading,
+        recognition: item.totalWinRateRecognition,
+        listening: item.totalWinRateListening
       )
-    );
-  }
-
-  Widget _barChart() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        WinRateBarChart(dataSource: List.generate(StudyModes.values.length, (index) {
-          switch (StudyModes.values[index]) {
-            case StudyModes.writing:
-              return BarData(x: StudyModes.writing.mode, y: item.totalWinRateWriting, color: StudyModes.writing.color);
-            case StudyModes.reading:
-              return BarData(x: StudyModes.reading.mode, y: item.totalWinRateReading, color: StudyModes.reading.color);
-            case StudyModes.recognition:
-              return BarData(x: StudyModes.recognition.mode, y: item.totalWinRateRecognition, color: StudyModes.recognition.color);
-            case StudyModes.listening:
-              return BarData(x: StudyModes.listening.mode, y: item.totalWinRateListening, color: StudyModes.listening.color);
-          }
-        }))
-      ],
     );
   }
 

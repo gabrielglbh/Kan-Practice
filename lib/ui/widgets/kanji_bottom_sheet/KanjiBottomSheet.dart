@@ -9,11 +9,10 @@ import 'package:kanpractice/ui/pages/jisho/arguments.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListTile.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
+import 'package:kanpractice/ui/widgets/DependentGraph.dart';
 import 'package:kanpractice/ui/widgets/DragContainer.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
-import 'package:kanpractice/ui/widgets/RadialGraph.dart';
 import 'package:kanpractice/ui/widgets/TTSIconButton.dart';
-import 'package:kanpractice/ui/widgets/WinRateBarChart.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/widgets/kanji_bottom_sheet/bloc/kanji_bs_bloc.dart';
 
@@ -128,12 +127,13 @@ class KanjiBottomSheet extends StatelessWidget {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(CustomRadius.radius16)),
             margin: EdgeInsets.only(bottom: Margins.margin16, top: Margins.margin8),
             child: ListTile(
-              title: StorageManager.readData(StorageManager.kanListGraphVisualization) == VisualizationMode.barChart.name
-                  ? _barChart(updatedKanji) : RadialGraph(
-                rateWriting: updatedKanji.winRateWriting,
-                rateReading: updatedKanji.winRateReading,
-                rateRecognition: updatedKanji.winRateRecognition,
-                rateListening: updatedKanji.winRateListening,
+              title: DependentGraph(
+                mode: VisualizationModeExt.mode(StorageManager.readData(
+                    StorageManager.kanListGraphVisualization) ?? VisualizationMode.radialChart),
+                writing: updatedKanji.winRateWriting,
+                reading: updatedKanji.winRateReading,
+                recognition: updatedKanji.winRateRecognition,
+                listening: updatedKanji.winRateListening,
               )
             ),
           ),
@@ -256,29 +256,6 @@ class KanjiBottomSheet extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Widget _barChart(Kanji updatedKanji) {
-    return WinRateBarChart(dataSource: List.generate(StudyModes.values.length, (index) {
-      switch (StudyModes.values[index]) {
-        case StudyModes.writing:
-          return BarData(x: StudyModes.writing.mode,
-              y: (updatedKanji.winRateWriting),
-              color: StudyModes.writing.color);
-        case StudyModes.reading:
-          return BarData(x: StudyModes.reading.mode,
-              y: (updatedKanji.winRateReading),
-              color: StudyModes.reading.color);
-        case StudyModes.recognition:
-          return BarData(x: StudyModes.recognition.mode,
-              y: (updatedKanji.winRateRecognition),
-              color: StudyModes.recognition.color);
-        case StudyModes.listening:
-          return BarData(x: StudyModes.listening.mode,
-              y: (updatedKanji.winRateListening),
-              color: StudyModes.listening.color);
-      }
-    }));
   }
 
   Container _actionButtons(BuildContext bloc) {

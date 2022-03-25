@@ -15,6 +15,7 @@ class ListPercentageIndicator extends StatelessWidget {
       backgroundColor: CustomColors.secondaryColor,
       progressColor: CustomColors.secondaryDarkerColor,
       lineHeight: 30,
+      barRadius: Radius.circular(CustomRadius.radius8),
       animation: true,
       animationDuration: 1000,
       animateFromLastPercent: true,

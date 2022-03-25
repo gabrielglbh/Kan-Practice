@@ -16,7 +16,7 @@ import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListTile.dart';
 import 'package:kanpractice/ui/widgets/EmptyList.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class KanjiLists extends StatefulWidget {

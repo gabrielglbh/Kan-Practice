@@ -237,5 +237,11 @@
   "coach_tutorial_detail_1": "Aquí se muestra todo el vocabulario de la lista. Podrás añadir más en cualquier momento a medida que tu estudio avance.\n\nCada vez que practiques en una área (escritura por ejemplo), el vocabulario se actualizará mostrando el porcentaje de acierto de la misma.",
   "coach_tutorial_detail_2": "Añade más vocabulario que veas por la calle, estudiando, leyendo, en videojuegos o anime pulsando aquí.\n\nPodrás crear palabras añadiendo su pronunciación y su significado.",
   "coach_tutorial_detail_3": "Aquí están las acciones suplementarias. Podrás cambiar de modo de aprendizaje: aleatorio o espacial (izquierda) o realizar un test Blitz solamente de esta lista de vocabulario (derecha).\n\nEl modo de aprendizaje determina el orden de estudio al practicar una lista de vocabulario:\n\nSi es aleatorio, el orden de las palabras al practicar será aleatorio.\n\nSi es espacial, las palabras que peor se te han dado en anteriores sesiones aparecerán las primeras, siendo las últimas las que mejor te sabes.",
-  "coach_tutorial_detail_4": "Por último, si pulsas aquí, podrás cambiar el nombre de la lista, por si te has equivocado o cambiado de opinión con respecto a la temática o categorización elegida."
+  "coach_tutorial_detail_4": "Por último, si pulsas aquí, podrás cambiar el nombre de la lista, por si te has equivocado o cambiado de opinión con respecto a la temática o categorización elegida.",
+  "settings_general_statistics": "Estadísticas Generales",
+  "stats_words": "Número Total de Palabras",
+  "stats_tests": "Número Total de Tests",
+  "stats_words_lists": "Listas",
+  "stats_best_list": "Mejor lista",
+  "stats_worst_list": "Peor lista"
 }

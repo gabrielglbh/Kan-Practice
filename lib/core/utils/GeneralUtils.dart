@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/core/firebase/queries/back_ups.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:timeago/timeago.dart' as t;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -47,6 +47,7 @@ class GeneralUtils {
   }
 
   static String roundUpAsString(String num) {
+    if (num == "NaN") return "0";
     bool isRounded = num.substring(3) == "00" // XX.00%
         || num.substring(2) == "00" // X.00%
         || num.substring(4) == "00"; // XXX.00%

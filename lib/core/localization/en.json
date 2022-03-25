@@ -237,5 +237,11 @@
   "coach_tutorial_detail_1": "All the vocabulary in the list is displayed here. You can add more at any time as your study progresses.\n\nEach time you practise in an area (e.g. writing), the vocabulary will be updated showing the percentage of success in that area.",
   "coach_tutorial_detail_2": "Add more vocabulary you see on the street, studying, reading, video games or anime by clicking here.\n\nYou can create words by adding their pronunciation and meaning.",
   "coach_tutorial_detail_3": "Here are the supplementary actions. You can change the learning mode: random or spatial (left) or do a Blitz test of this vocabulary list only (right).\n\nThe learning mode determines the order of study when practising a vocabulary list:\n\nIf it is random, the order of the words when practising will be random.\n\nIf it is spatial, the words that you have been worst at in previous sessions will appear first, the last ones being the ones you know best.",
-  "coach_tutorial_detail_4": "Finally, if you click here, you will be able to change the name of the list, in case you have made a mistake or changed your mind about the chosen subject or categorisation."
+  "coach_tutorial_detail_4": "Finally, if you click here, you will be able to change the name of the list, in case you have made a mistake or changed your mind about the chosen subject or categorisation.",
+  "settings_general_statistics": "General Statistics",
+  "stats_words": "Total Number of Words",
+  "stats_tests": "Total Number of Tests",
+  "stats_words_lists": "Lists",
+  "stats_best_list": "Best list",
+  "stats_worst_list": "Worst list"
 }

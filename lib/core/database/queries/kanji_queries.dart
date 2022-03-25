@@ -209,6 +209,63 @@ class KanjiQueries {
     } else return [];
   }
 
+  /// Query to get the count of [Kanji] on the whole database
+  Future<int> getTotalKanjiCount() async {
+    if (_database != null) {
+      try {
+        List<Map<String, dynamic>>? res = [];
+        res = await _database?.query(KanjiTableFields.kanjiTable);
+        if (res != null) return res.length;
+        else return 0;
+      } catch (err) {
+        print(err.toString());
+        return 0;
+      }
+    } else return -1;
+  }
+
+  /// Query to get the total win rates of all [Kanji] on the whole database
+  ///
+  /// Returns an emptied [Kanji] with the sole purpose to store the values of
+  /// the win rates
+  Future<Kanji> getTotalKanjiWinRates() async {
+    if (_database != null) {
+      try {
+        List<Map<String, dynamic>>? res = [];
+        res = await _database?.query(KanjiTableFields.kanjiTable);
+        if (res != null) {
+          List<Kanji> l = List.generate(res.length, (i) => Kanji.fromJson(res![i]));
+          final int total = l.length;
+          double writing = 0;
+          double reading = 0;
+          double recognition = 0;
+          double listening = 0;
+          l.forEach((kanji) {
+            writing += (kanji.winRateWriting == DatabaseConstants.emptyWinRate
+                ? 0 : kanji.winRateWriting);
+            reading += (kanji.winRateReading == DatabaseConstants.emptyWinRate
+                ? 0 : kanji.winRateReading);
+            recognition += (kanji.winRateRecognition == DatabaseConstants.emptyWinRate
+                ? 0 : kanji.winRateRecognition);
+            listening += (kanji.winRateListening == DatabaseConstants.emptyWinRate
+                ? 0 : kanji.winRateListening);
+          });
+          return Kanji(
+              meaning: '', pronunciation: '', listName: '', kanji: '',
+              winRateWriting: writing == 0 ? 0 : writing / total,
+              winRateReading: reading == 0 ? 0 : reading / total,
+              winRateRecognition: recognition == 0 ? 0 : recognition / total,
+              winRateListening: listening == 0 ? 0 : listening / total
+          );
+        }
+        else return Kanji.empty;
+      } catch (err) {
+        print(err.toString());
+        return Kanji.empty;
+      }
+    } else return Kanji.empty;
+  }
+
   /// Query to get a [Kanji] based on a [listName] and its definition [kanji].
   /// If anything goes wrong, a [Kanji.empty] will be returned.
   Future<Kanji> getKanji(String listName, String kanji) async {

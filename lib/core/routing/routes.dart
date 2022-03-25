@@ -15,6 +15,7 @@ import 'package:kanpractice/ui/pages/listening/listening.dart';
 import 'package:kanpractice/ui/pages/reading/reading.dart';
 import 'package:kanpractice/ui/pages/recognition/recognition.dart';
 import 'package:kanpractice/ui/pages/settings/settings.dart';
+import 'package:kanpractice/ui/pages/statistics/statistics.dart';
 import 'package:kanpractice/ui/pages/test_history/test_history.dart';
 import 'package:kanpractice/ui/pages/test_result/arguments.dart';
 import 'package:kanpractice/ui/pages/test_result/test_result.dart';
@@ -67,5 +68,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case KanPracticePages.dictionaryPage:
       DictionaryArguments args = settings.arguments as DictionaryArguments;
       return CupertinoPageRoute(builder: (_) => DictionaryPage(args: args));
+    case KanPracticePages.statisticsPage:
+      return CupertinoPageRoute(builder: (_) => StatisticsPage());
   }
 }

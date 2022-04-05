@@ -28,7 +28,8 @@ import 'package:page_transition/page_transition.dart';
 Route<dynamic>? onGenerateRoute(RouteSettings settings) {
   switch (settings.name) {
     case KanPracticePages.kanjiListPage:
-      return CupertinoPageRoute(builder: (_) => KanjiLists());
+      bool? showTestBottomSheet = settings.arguments as bool?;
+      return CupertinoPageRoute(builder: (_) => KanjiLists(showTestBottomSheet: showTestBottomSheet));
     case KanPracticePages.kanjiListDetailsPage:
       KanjiList list = settings.arguments as KanjiList;
       return CupertinoPageRoute(builder: (_) => KanjiListDetails(list: list));
@@ -71,4 +72,5 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case KanPracticePages.statisticsPage:
       return CupertinoPageRoute(builder: (_) => StatisticsPage());
   }
+  return null;
 }

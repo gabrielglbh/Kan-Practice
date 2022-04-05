@@ -20,7 +20,8 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class KanjiLists extends StatefulWidget {
-  const KanjiLists();
+  final bool? showTestBottomSheet;
+  const KanjiLists({this.showTestBottomSheet = false});
 
   @override
   _KanjiListsState createState() => _KanjiListsState();
@@ -75,6 +76,13 @@ class _KanjiListsState extends State<KanjiLists> {
     _currentAppliedOrder = StorageManager.readData(StorageManager.orderOnList)
         ?? true;
     _getVersionNotice();
+
+    /// If showTestBottomSheet is true, show directly the test bottom sheet
+    /// when launching the page. Only true when coming back from the TestResultPage.
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+      if (widget.showTestBottomSheet != null && widget.showTestBottomSheet!)
+        await _loadTests();
+    });
     super.initState();
   }
 
@@ -93,6 +101,8 @@ class _KanjiListsState extends State<KanjiLists> {
     PackageInfo pi = await PackageInfo.fromPlatform();
     if (v != pi.version && v != "") setState(() => _newVersion = v);
   }
+
+  Future<void> _loadTests() async => await TestBottomSheet.show(context);
 
   _focusListener() => setState(() => _searchHasFocus = (_searchBarFn?.hasFocus ?? false));
 
@@ -188,9 +198,7 @@ class _KanjiListsState extends State<KanjiLists> {
                   },
                 ),
                 IconButton(
-                  onPressed: () async {
-                    await TestBottomSheet.show(context);
-                  },
+                  onPressed: () async => await _loadTests(),
                   icon: Icon(Icons.track_changes_rounded, color: CustomColors.getSecondaryColor(context)),
                 ),
               ],

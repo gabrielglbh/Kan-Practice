@@ -11,9 +11,29 @@ import 'package:kanpractice/ui/widgets/kanji_bottom_sheet/KanjiBottomSheet.dart'
 import 'package:kanpractice/ui/widgets/WinRateChart.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class TestResult extends StatelessWidget {
+class TestResult extends StatefulWidget {
   final TestResultArguments args;
   const TestResult({required this.args});
+
+  @override
+  State<TestResult> createState() => _TestResultState();
+}
+
+class _TestResultState extends State<TestResult> {
+  bool _performAnotherTest = false;
+
+  /// Saves the current test on the database on the initialization of the current
+  /// page to avoid unusual behaviors.
+  Future<void> _saveTest() async {
+    await TestQueries.instance.createTest(widget.args.score,
+        widget.args.kanji, widget.args.studyMode, widget.args.listsName);
+  }
+
+  @override
+  void initState() {
+    WidgetsBinding.instance?.addPostFrameCallback((_) async => await _saveTest());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,49 +44,70 @@ class TestResult extends StatelessWidget {
           automaticallyImplyLeading: false,
           toolbarHeight: Margins.margin32,
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("test_result_title".tr(),
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: FontSizes.fontSize32),
-            ),
-            WinRateChart(
-              winRate: args.score,
-              backgroundColor: StudyModesUtil.mapStudyMode(args.studyMode).color,
-              size: MediaQuery.of(context).size.width / 2.5,
-              rateSize: ChartSize.large,
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                left: Margins.margin8, right: Margins.margin8,
-                bottom: Margins.margin8
-              ),
-              child: Text("test_result_disclaimer".tr(),
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("test_result_title".tr(),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: FontSizes.fontSize16),
+                style: TextStyle(fontSize: FontSizes.fontSize32),
               ),
-            ),
-            Visibility(
-              visible: args.studyList != null,
-              child: Expanded(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
-                  child: _kanjiOnTest(),
+              WinRateChart(
+                winRate: widget.args.score,
+                backgroundColor: StudyModesUtil.mapStudyMode(widget.args.studyMode).color,
+                size: MediaQuery.of(context).size.width / 2.5,
+                rateSize: ChartSize.large,
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: Margins.margin8),
+                child: Text("test_result_disclaimer".tr(),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: FontSizes.fontSize16),
                 ),
-              )
-            ),
-            ActionButton(
-              label: "test_result_save_button_label".tr(),
-              vertical: Margins.margin16,
-              onTap: () async {
-                await TestQueries.instance.createTest(args.score, args.kanji, args.studyMode, args.listsName);
-                /// Remove all navigation stack and push kanList
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    KanPracticePages.kanjiListPage, (route) => false);
-              }
-            )
-          ],
+              ),
+              Visibility(
+                visible: widget.args.studyList != null,
+                child: Expanded(child: _kanjiOnTest())
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Icon(Icons.track_changes_rounded, color: CustomColors.getSecondaryColor(context)),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: Margins.margin8),
+                            child: Text("test_result_do_test_button_label".tr(),
+                                maxLines: 2,
+                                style: TextStyle(fontSize: FontSizes.fontSize16)
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Switch(
+                    value: _performAnotherTest,
+                    onChanged: (value) => setState(() =>  _performAnotherTest = value)
+                  ),
+                ],
+              ),
+              ActionButton(
+                label: "test_result_save_button_label".tr(),
+                vertical: Margins.margin16,
+                onTap: () {
+                  /// Remove all navigation stack and push kanList
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      KanPracticePages.kanjiListPage, (route) => false,
+                      arguments: _performAnotherTest
+                  );
+                }
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -74,15 +115,15 @@ class TestResult extends StatelessWidget {
 
   Widget _kanjiOnTest() {
     return ListView.builder(
-      itemCount: args.studyList?.keys.toList().length,
+      itemCount: widget.args.studyList?.keys.toList().length,
       itemBuilder: (context, index) {
-        String? listName = args.studyList?.keys.toList()[index];
+        String? listName = widget.args.studyList?.keys.toList()[index];
         return Row(
           children: [
             Container(
               width: MediaQuery.of(context).size.width / 3.5,
               child: Text(
-                "(${args.studyList?[listName]?.length}) $listName:",
+                "$listName (${widget.args.studyList?[listName]?.length}):",
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize16)
               ),
@@ -92,10 +133,10 @@ class TestResult extends StatelessWidget {
                 height: CustomSizes.defaultResultKanjiListOnTest,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: args.studyList?[listName]?.length,
+                  itemCount: widget.args.studyList?[listName]?.length,
                   itemBuilder: (context, inner) {
-                    Kanji? kanji = args.studyList?[listName]?[inner].keys.first;
-                    double? testScore = args.studyList?[listName]?[inner].values.first;
+                    Kanji? kanji = widget.args.studyList?[listName]?[inner].keys.first;
+                    double? testScore = widget.args.studyList?[listName]?[inner].values.first;
                     return _kanjiElement(context, kanji, testScore);
                   },
                 ),

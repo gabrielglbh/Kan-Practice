@@ -6,10 +6,15 @@ import 'package:sqflite/sqflite.dart';
 
 class KanjiQueries {
   Database? _database;
-  /// Singleton instance of [KanjiQueries]
-  static KanjiQueries instance = KanjiQueries();
 
-  KanjiQueries() { _database = CustomDatabase.instance.database; }
+  KanjiQueries._() {
+    _database = CustomDatabase.instance.database;
+  }
+
+  static final KanjiQueries _instance = KanjiQueries._();
+
+  /// Singleton instance of [KanjiQueries]
+  static KanjiQueries get instance => _instance;
 
   /// Creates a [Kanji] and inserts it to the db.
   /// Returns an integer depending on the error given:

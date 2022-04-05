@@ -11,10 +11,15 @@ import 'package:sqflite/sqflite.dart';
 
 class InitialQueries {
   Database? _database;
-  /// Singleton instance of [InitialQueries]
-  static InitialQueries instance = InitialQueries();
 
-  InitialQueries() { _database = CustomDatabase.instance.database; }
+  InitialQueries._() {
+    _database = CustomDatabase.instance.database;
+  }
+
+  static final InitialQueries _instance = InitialQueries._();
+
+  /// Singleton instance of [InitialQueries]
+  static InitialQueries get instance => _instance;
 
   /// Sets the initial KanLists on first app view. The initial KanLists
   /// and their words are extracted from: assets/initialData/en.json

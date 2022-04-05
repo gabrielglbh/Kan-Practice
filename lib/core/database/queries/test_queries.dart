@@ -7,10 +7,15 @@ import 'package:sqflite/sqflite.dart';
 
 class TestQueries {
   Database? _database;
-  /// Singleton instance of [TestQueries]
-  static TestQueries instance = TestQueries();
 
-  TestQueries() { _database = CustomDatabase.instance.database; }
+  TestQueries._() {
+    _database = CustomDatabase.instance.database;
+  }
+
+  static final TestQueries _instance = TestQueries._();
+
+  /// Singleton instance of [TestQueries]
+  static TestQueries get instance => _instance;
 
   /// Creates a [Test] and inserts it to the db.
   /// Returns an integer depending on the error given:

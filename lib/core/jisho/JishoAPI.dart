@@ -2,8 +2,12 @@ import 'package:kanpractice/core/jisho/models/jisho_data.dart';
 import 'package:unofficial_jisho_api/api.dart' as jisho;
 
 class JishoAPI {
+  JishoAPI._();
+
+  static final JishoAPI _instance = JishoAPI._();
+
   /// Singleton instance of [JishoAPI]
-  static JishoAPI instance = JishoAPI();
+  static JishoAPI get instance => _instance;
 
   Future<jisho.KanjiResultData?> searchKanji(String kanji) async {
     jisho.KanjiResult res = await jisho.searchForKanji(kanji);

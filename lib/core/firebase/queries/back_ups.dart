@@ -18,13 +18,15 @@ class BackUpRecords {
   final String kanjiLabel= "Kanji";
   final String listsLabel = "Lists";
 
-  /// Singleton instance of [BackUpRecords]
-  static BackUpRecords instance = BackUpRecords();
-
-  BackUpRecords() {
+  BackUpRecords._() {
     _ref = FirebaseUtils.instance.dbRef;
     _auth = FirebaseUtils.instance.authRef;
   }
+
+  static final BackUpRecords _instance = BackUpRecords._();
+
+  /// Singleton instance of [BackUpRecords]
+  static BackUpRecords get instance => _instance;
 
   /// We make sure that when the limit of 500 WRITES per batch is met,
   /// we commit the current batch and initialize it again to perform

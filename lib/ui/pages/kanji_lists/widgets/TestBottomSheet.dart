@@ -67,7 +67,7 @@ class _TestBottomSheetState extends State<TestBottomSheet> {
       enableDrag: false,
       onClosing: () {},
       constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height / 1.5
+        maxHeight: MediaQuery.of(context).size.height / 1.2
       ),
       builder: (context) {
         return Wrap(

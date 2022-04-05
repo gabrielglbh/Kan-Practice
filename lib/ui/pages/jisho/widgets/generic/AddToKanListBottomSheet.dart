@@ -38,11 +38,6 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
   String _error = "";
 
   Future<void> _addWordToKanList(BuildContext context, String listName) async {
-    //print(data.resultPhrase[0].senses[0].englishDefinitions[0]);
-    //print(data.resultPhrase[0].japanese[0].reading);
-    //print(data.resultData?.meaning.split(", ")[0]);
-    //print(data.resultData?.onyomi[0]);
-
     String? wordMeaning = widget.data.resultPhrase[0].senses[0].englishDefinitions[0];
     String? wordReading = widget.data.resultPhrase[0].japanese[0].reading ?? "";
     String? singleKanjiMeaning = widget.data.resultData?.meaning.split(", ")[0];
@@ -96,25 +91,21 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
                   ),
                 ),
                 BlocProvider<KanjiListBloc>(
-                  create: (_) => _bloc..add(KanjiListEventLoading(
-                      filter: KanListTableFields.lastUpdatedField, order: false
-                  )),
+                  create: (_) => _bloc..add(KanjiListForTestEventLoading()),
                   child: BlocBuilder<KanjiListBloc, KanjiListState>(
                     builder: (context, state) {
                       if (state is KanjiListStateFailure)
                         return EmptyList(
                           showTryButton: true,
-                          onRefresh: () => _bloc..add(KanjiListEventLoading(
-                              filter: KanListTableFields.lastUpdatedField, order: false
-                          )),
+                          onRefresh: () => _bloc..add(KanjiListForTestEventLoading()),
                           message: "study_bottom_sheet_load_failed".tr()
                         );
                       else if (state is KanjiListStateLoading)
                         return CustomProgressIndicator();
                       else if (state is KanjiListStateLoaded) {
                         return Container(
-                          constraints: BoxConstraints(maxHeight: CustomSizes.maxHeightForListsTest + Margins.margin64),
-                          margin: EdgeInsets.all(8),
+                          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height / 2.5),
+                          margin: EdgeInsets.all(Margins.margin8),
                           child: _listSelection(state)
                         );
                       } else return Container();
@@ -135,9 +126,11 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
         ListTile(
           onTap: () => CreateKanListDialog.showCreateKanListDialog(context, onSubmit: (String name) {
             _bloc..add(KanjiListEventCreate(name,
-                filter: KanListTableFields.lastUpdatedField, order: false));
+                filter: KanListTableFields.lastUpdatedField,
+                order: false, useLazyLoading: false
+            ));
           }),
-          title: Text("Create a new KanList"),
+          title: Text("dict_jisho_create_kanji_list".tr()),
           leading: Icon(Icons.add),
         ),
         Divider(),

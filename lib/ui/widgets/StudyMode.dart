@@ -76,12 +76,12 @@ class TestStudyMode extends StatelessWidget {
               )
             ),
           ),
-          Container(
-            height: CustomSizes.defaultSizeStudyModeSelection,
-            padding: EdgeInsets.symmetric(horizontal: Margins.margin32),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
             child: GridView.builder(
               itemCount: StudyModes.values.length,
               physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, childAspectRatio: 1.9
               ),

@@ -66,6 +66,9 @@ class _TestBottomSheetState extends State<TestBottomSheet> {
     return BottomSheet(
       enableDrag: false,
       onClosing: () {},
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height / 1.5
+      ),
       builder: (context) {
         return Wrap(
           children: [
@@ -78,11 +81,11 @@ class _TestBottomSheetState extends State<TestBottomSheet> {
                   child: Text("test_selection_label".tr(), textAlign: TextAlign.center,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize18)),
                 ),
-                Container(
-                  height: CustomSizes.defaultSizeStudyModeSelection * 1.6,
-                  padding: EdgeInsets.symmetric(horizontal: Margins.margin32),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
                   child: GridView(
                     physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2, childAspectRatio: 1.9
                     ),

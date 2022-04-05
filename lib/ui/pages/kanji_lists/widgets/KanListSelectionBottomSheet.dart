@@ -82,8 +82,8 @@ class _KanListSelectionBottomSheetState extends State<KanListSelectionBottomShee
                           return CustomProgressIndicator();
                         else if (state is KanjiListStateLoaded) {
                           return Container(
-                            constraints: BoxConstraints(maxHeight: CustomSizes.maxHeightForListsTest),
-                            margin: EdgeInsets.all(8),
+                            constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height / 2.5),
+                            margin: EdgeInsets.all(Margins.margin8),
                             child: _listSelection(state)
                           );
                         } else return Container();

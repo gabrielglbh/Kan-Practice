@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
+import 'package:kanpractice/ui/pages/kanji_lists/test_modes.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListTile.dart';
 import 'package:kanpractice/ui/pages/statistics/bloc/stats_bloc.dart';
 import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
@@ -121,8 +122,11 @@ class StatisticsPage extends StatelessWidget {
           padding: EdgeInsets.only(top: Margins.margin16),
           child: _countLabel(s.totalTests.toString()),
         ),
+        Divider(),
+        _expandedTestCount(s),
+        Divider(),
         Padding(
-          padding: EdgeInsets.only(top: Margins.margin16),
+          padding: EdgeInsets.symmetric(vertical: Margins.margin8),
           child: DependentGraph(
             mode: mode,
             writing: s.testTotalWinRateWriting,
@@ -179,6 +183,45 @@ class StatisticsPage extends StatelessWidget {
       ),
       decoration: BoxDecoration(
           shape: BoxShape.circle, color: mode.color
+      ),
+    );
+  }
+
+  ListView _expandedTestCount(KanPracticeStats s) {
+    return ListView(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      children: List.generate(Tests.values.length, (index) {
+        switch (Tests.values[index]) {
+          case Tests.lists:
+            return _testModeCountContainer(Tests.lists, s.selectionTests);
+          case Tests.blitz:
+            return _testModeCountContainer(Tests.blitz, s.blitzTests);
+          case Tests.time:
+            return _testModeCountContainer(Tests.time, s.remembranceTests);
+          case Tests.numbers:
+            return _testModeCountContainer(Tests.numbers, s.numberTests);
+          case Tests.less:
+            return _testModeCountContainer(Tests.less, s.lessPctTests);
+        }
+      })
+    );
+  }
+
+  Widget _testModeCountContainer(Tests t, int count) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
+      child: Row(
+        children: [
+          Icon(t.icon, size: Margins.margin18),
+          Padding(
+            padding: EdgeInsets.only(left: Margins.margin8),
+            child: Text(t.name, style: TextStyle(fontSize: FontSizes.fontSize14)),
+          ),
+          Expanded(child: Container()),
+          Text(count.toString(), style: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize16))
+        ],
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/test_result.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/ui/pages/kanji_lists/test_modes.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -154,5 +155,37 @@ class TestQueries {
         return 0;
       }
     } else return -1;
+  }
+
+  /// Returns a list of counters of all the performed tests based on their test mode.
+  /// See [TestsUtils]. Each position represents the number of tests performed
+  /// in that mode.
+  ///
+  /// 0 -> Selection, 1 -> Blitz, 2 -> Remembrance, 3 -> Numbers, 4 -> Less %
+  Future<List<int>> getAllTestsBasedOnTestMode() async {
+    List<int> counters = List.filled(Tests.values.length, 0);
+    if (_database != null) {
+      try {
+        List<Map<String, dynamic>>? res = [];
+        res = await _database?.query(TestTableFields.testTable);
+        if (res != null) {
+          final List<Test> tests = List.generate(res.length, (i) => Test.fromJson(res![i]));
+          tests.forEach((t) {
+            switch (TestsUtils.mapTestMode(t.kanjiLists)) {
+              case Tests.lists: counters[0] += 1; break;
+              case Tests.blitz: counters[1] += 1; break;
+              case Tests.time: counters[2] += 1; break;
+              case Tests.numbers: counters[3] += 1; break;
+              case Tests.less: counters[4] += 1; break;
+            }
+          });
+          return counters;
+        }
+        else return counters;
+      } catch (err) {
+        print(err.toString());
+        return counters;
+      }
+    } else return counters;
   }
 }

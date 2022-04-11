@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kanpractice/ui/pages/kanji_lists/test_modes.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListSelectionBottomSheet.dart';
 import 'package:kanpractice/ui/widgets/blitz/BlitzBottomSheet.dart';
 import 'package:kanpractice/ui/widgets/DragContainer.dart';
@@ -6,42 +7,6 @@ import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomButton.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/widgets/blitz/NumberTestBottomSheet.dart';
-
-enum Tests {
-  lists, blitz, time, numbers, less
-}
-
-extension TestsExt on Tests {
-  String get name {
-    switch (this) {
-      case Tests.lists:
-        return "test_mode_selection".tr();
-      case Tests.blitz:
-        return "test_mode_blitz".tr();
-      case Tests.time:
-        return "test_mode_remembrance".tr();
-      case Tests.numbers:
-        return "test_mode_number".tr();
-      case Tests.less:
-        return "test_mode_less".tr();
-    }
-  }
-
-  IconData get icon {
-    switch (this) {
-      case Tests.lists:
-        return Icons.select_all_rounded;
-      case Tests.blitz:
-        return Icons.flash_on_rounded;
-      case Tests.time:
-        return Icons.access_time_rounded;
-      case Tests.numbers:
-        return Icons.pin_rounded;
-      case Tests.less:
-        return Icons.indeterminate_check_box_outlined;
-    }
-  }
-}
 
 class TestBottomSheet extends StatefulWidget {
   const TestBottomSheet();

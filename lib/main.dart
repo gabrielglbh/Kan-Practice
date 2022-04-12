@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
-import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListTile.dart';
+import 'package:kanpractice/core/utils/types/visualization_mode.dart';
 import 'package:kanpractice/ui/theme/theme_manager.dart';
 import 'core/routing/routes.dart';
 

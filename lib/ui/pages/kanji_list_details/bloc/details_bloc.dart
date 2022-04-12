@@ -4,8 +4,8 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
-import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
-import 'package:kanpractice/ui/pages/kanji_list_details/list_details.dart';
+import 'package:kanpractice/core/utils/types/learning_mode.dart';
+import 'package:kanpractice/core/utils/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 

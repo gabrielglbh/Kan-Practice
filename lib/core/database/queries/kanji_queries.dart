@@ -1,7 +1,7 @@
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
+import 'package:kanpractice/core/utils/types/study_modes.dart';
 import 'package:sqflite/sqflite.dart';
 
 class KanjiQueries {

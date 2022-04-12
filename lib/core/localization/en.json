@@ -245,5 +245,15 @@
   "stats_tests": "Total Number of Tests",
   "stats_words_lists": "Lists",
   "stats_best_list": "Best list",
-  "stats_worst_list": "Worst list"
+  "stats_worst_list": "Worst list",
+  "kanji_category_noun": "Noun",
+  "kanji_category_pronoun": "Pronoun",
+  "kanji_category_verb": "Verb",
+  "kanji_category_adjective": "Adjective",
+  "kanji_category_adverb": "Adverb",
+  "kanji_category_expression": "Expression",
+  "kanji_category_counter": "Counter",
+  "kanji_category_preposition": "Preposition",
+  "kanji_category_conjunction": "Conjunction",
+  "kanji_category_interjection": "Interjection"
 }

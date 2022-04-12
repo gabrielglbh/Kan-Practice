@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/ui/pages/kanji_lists/test_modes.dart';
+import 'package:kanpractice/core/utils/types/test_modes.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListSelectionBottomSheet.dart';
 import 'package:kanpractice/ui/widgets/blitz/BlitzBottomSheet.dart';
 import 'package:kanpractice/ui/widgets/DragContainer.dart';

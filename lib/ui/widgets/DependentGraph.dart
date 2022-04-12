@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
-import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListTile.dart';
+import 'package:kanpractice/core/utils/types/study_modes.dart';
+import 'package:kanpractice/core/utils/types/visualization_mode.dart';
 import 'package:kanpractice/ui/widgets/RadialGraph.dart';
 import 'package:kanpractice/ui/widgets/WinRateBarChart.dart';
 

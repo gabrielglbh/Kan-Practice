@@ -6,6 +6,9 @@ import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/tutorial/tutorial_manager.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/core/utils/types/coach_tutorial_parts.dart';
+import 'package:kanpractice/core/utils/types/learning_mode.dart';
+import 'package:kanpractice/core/utils/types/study_modes.dart';
 import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/bloc/details_bloc.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/widgets/kanji_item.dart';
@@ -19,26 +22,6 @@ import 'package:kanpractice/ui/widgets/CustomTextForm.dart';
 import 'package:kanpractice/ui/widgets/EmptyList.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
 import 'package:easy_localization/easy_localization.dart';
-
-enum LearningMode { random, spatial }
-extension on LearningMode {
-  String get name {
-    switch (this) {
-      case LearningMode.random:
-        return "list_details_learningMode_random".tr();
-      case LearningMode.spatial:
-        return "list_details_learningMode_spatial".tr();
-    }
-  }
-  IconData get icon {
-    switch (this) {
-      case LearningMode.random:
-        return Icons.shuffle;
-      case LearningMode.spatial:
-        return Icons.spa_rounded;
-    }
-  }
-}
 
 class KanjiListDetails extends StatefulWidget {
   final KanjiList list;

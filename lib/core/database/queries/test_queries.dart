@@ -2,7 +2,7 @@ import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/test_result.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
-import 'package:kanpractice/ui/pages/kanji_lists/test_modes.dart';
+import 'package:kanpractice/core/utils/types/test_modes.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:sqflite/sqflite.dart';
 

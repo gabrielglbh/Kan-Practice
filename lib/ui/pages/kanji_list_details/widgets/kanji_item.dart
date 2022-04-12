@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
-import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
+import 'package:kanpractice/core/utils/types/study_modes.dart';
 import 'package:kanpractice/ui/widgets/kanji_bottom_sheet/KanjiBottomSheet.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 

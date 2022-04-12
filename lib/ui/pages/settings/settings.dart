@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
-import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListTile.dart';
+import 'package:kanpractice/core/utils/types/visualization_mode.dart';
 import 'package:kanpractice/ui/pages/settings/bloc/settings_bloc.dart';
 import 'package:kanpractice/ui/pages/settings/widgets/CopyrightInfo.dart';
 import 'package:kanpractice/ui/pages/settings/widgets/DevInfo.dart';

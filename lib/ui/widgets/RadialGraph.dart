@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
-import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
+import 'package:kanpractice/core/utils/types/study_modes.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/WinRateChart.dart';
 

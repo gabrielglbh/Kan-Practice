@@ -6,13 +6,17 @@ import 'package:sqflite/sqflite.dart';
 import 'migrations.dart';
 
 class CustomDatabase {
+  CustomDatabase._();
+
+  static final CustomDatabase _instance = CustomDatabase._();
+
   /// Singleton instance of [CustomDatabase]
-  static CustomDatabase instance = CustomDatabase();
+  static CustomDatabase get instance => _instance;
 
   /// Database to perform all the queries on
-  Database? database;
+  static Database? _database;
 
-  CustomDatabase() { open(); }
+  Database? get database => _database;
 
   /// Opens up the db and configures all of it
   Future<void> open() async {
@@ -23,7 +27,7 @@ class CustomDatabase {
       await Directory(databasesPath).create(recursive: true);
     } catch (_) {}
 
-    database = await openDatabase(
+    _database = await openDatabase(
       path,
       version: 4,
       singleInstance: true,

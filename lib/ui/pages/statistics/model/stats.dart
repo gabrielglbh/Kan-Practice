@@ -17,6 +17,11 @@ class KanPracticeStats {
   final double testTotalWinRateReading;
   final double testTotalWinRateRecognition;
   final double testTotalWinRateListening;
+  final int selectionTests;
+  final int blitzTests;
+  final int remembranceTests;
+  final int numberTests;
+  final int lessPctTests;
 
   KanPracticeStats({
     required this.totalLists,
@@ -36,6 +41,11 @@ class KanPracticeStats {
     required this.testTotalWinRateWriting,
     required this.testTotalWinRateReading,
     required this.testTotalWinRateRecognition,
-    required this.testTotalWinRateListening
+    required this.testTotalWinRateListening,
+    required this.selectionTests,
+    required this.blitzTests,
+    required this.remembranceTests,
+    required this.numberTests,
+    required this.lessPctTests
   });
 }

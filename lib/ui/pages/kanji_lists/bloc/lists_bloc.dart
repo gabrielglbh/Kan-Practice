@@ -91,9 +91,13 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
         final code = await ListQueries.instance.createList(name);
         if (code == 0) {
           emit(KanjiListStateLoading());
-          List<KanjiList> newList = await _getNewAllListsAndUpdateLazyLoadingState(
-            event.filter, event.order, limit: _limit, l: _list
-          );
+          List<KanjiList> newList = [];
+          if (event.useLazyLoading) {
+            newList = await _getNewAllListsAndUpdateLazyLoadingState(
+                event.filter, event.order, limit: _limit, l: _list
+            );
+          }
+          else newList = await ListQueries.instance.getAllLists();
           emit(KanjiListStateLoaded(lists: newList));
         }
       }

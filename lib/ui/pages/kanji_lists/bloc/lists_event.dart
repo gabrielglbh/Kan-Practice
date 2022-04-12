@@ -43,11 +43,12 @@ class KanjiListEventCreate extends KanjiListEvent {
   final String filter;
   /// Maintains the order applied by the user for loading new lists
   final bool order;
+  final bool useLazyLoading;
 
-  const KanjiListEventCreate(this.name, {required this.filter, required this.order});
+  const KanjiListEventCreate(this.name, {required this.filter, required this.order, this.useLazyLoading = true});
 
   @override
-  List<Object> get props => [name, filter, order];
+  List<Object> get props => [name, filter, order, useLazyLoading];
 }
 
 class KanjiListEventDelete extends KanjiListEvent {

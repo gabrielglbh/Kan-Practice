@@ -115,33 +115,31 @@ class _NumberTestBottomSheetState extends State<NumberTestBottomSheet> {
                     textAlign: TextAlign.center,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize16)),
                 ),
-                Container(
-                  height: CustomSizes.defaultSizeRangesHeight,
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, childAspectRatio: 4.5
-                    ),
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: Ranges.values.length,
-                    itemBuilder: (context, index) {
-                      Ranges range = Ranges.values[index];
-                      return Padding(
-                        padding: EdgeInsets.only(right: Margins.margin8),
-                        child: ActionChip(
-                            label: Text(range.label),
-                            pressElevation: Margins.margin4,
-                            backgroundColor: _selectedLists.contains(range)
-                                ? CustomColors.secondaryDarkerColor : CustomColors.secondaryColor,
-                            onPressed: () {
-                              setState(() {
-                                if (_selectedLists.contains(range)) _selectedLists.remove(range);
-                                else _selectedLists.add(range);
-                              });
-                            }
-                        ),
-                      );
-                    },
+                GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, childAspectRatio: 4.5
                   ),
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: Ranges.values.length,
+                  itemBuilder: (context, index) {
+                    Ranges range = Ranges.values[index];
+                    return Padding(
+                      padding: EdgeInsets.only(right: Margins.margin8),
+                      child: ActionChip(
+                          label: Text(range.label),
+                          pressElevation: Margins.margin4,
+                          backgroundColor: _selectedLists.contains(range)
+                              ? CustomColors.secondaryDarkerColor : CustomColors.secondaryColor,
+                          onPressed: () {
+                            setState(() {
+                              if (_selectedLists.contains(range)) _selectedLists.remove(range);
+                              else _selectedLists.add(range);
+                            });
+                          }
+                      ),
+                    );
+                  },
                 ),
                 _numberButton(context, "number_bottom_sheet_label".tr())
               ],

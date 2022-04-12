@@ -37,6 +37,7 @@ class StatisticsBloc extends Bloc<StatsEvent, StatsState> {
           StudyModes.recognition.map);
       final double testTotalWinRateListening = await TestQueries.instance.getTestAccuracyBasedOnStudyMode(
           StudyModes.listening.map);
+      final List<int> testModesCount = await TestQueries.instance.getAllTestsBasedOnTestMode();
 
       emit(StatisticsLoaded(stats: KanPracticeStats(
           totalLists: totalLists,
@@ -56,7 +57,12 @@ class StatisticsBloc extends Bloc<StatsEvent, StatsState> {
           testTotalWinRateWriting: testTotalWinRateWriting,
           testTotalWinRateReading: testTotalWinRateReading,
           testTotalWinRateRecognition: testTotalWinRateRecognition,
-          testTotalWinRateListening: testTotalWinRateListening
+          testTotalWinRateListening: testTotalWinRateListening,
+          selectionTests: testModesCount[0],
+          blitzTests: testModesCount[1],
+          remembranceTests: testModesCount[2],
+          numberTests: testModesCount[3],
+          lessPctTests: testModesCount[4]
       )));
     });
   }

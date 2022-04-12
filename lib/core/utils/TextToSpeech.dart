@@ -1,7 +1,6 @@
 import 'package:flutter_tts/flutter_tts.dart';
 
 class TextToSpeech {
-  /// Singleton instance of [TextToSpeech]
   static TextToSpeech instance = TextToSpeech();
 
   late FlutterTts _tts;

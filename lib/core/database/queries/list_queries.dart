@@ -7,10 +7,15 @@ import 'package:sqflite/sqflite.dart';
 
 class ListQueries {
   Database? _database;
-  /// Singleton instance of [ListQueries]
-  static ListQueries instance = ListQueries();
 
-  ListQueries() { _database = CustomDatabase.instance.database; }
+  ListQueries._() {
+    _database = CustomDatabase.instance.database;
+  }
+
+  static final ListQueries _instance = ListQueries._();
+
+  /// Singleton instance of [ListQueries]
+  static ListQueries get instance => _instance;
 
   /// Creates a [KanjiList] and inserts it to the db.
   /// Returns an integer depending on the error given:

@@ -6,12 +6,15 @@ import 'package:easy_localization/easy_localization.dart';
 
 class AuthRecords {
   FirebaseAuth? _auth;
-  /// Singleton instance of [AuthRecords]
-  static AuthRecords instance = AuthRecords();
 
-  AuthRecords() {
+  AuthRecords._() {
     _auth = FirebaseUtils.instance.authRef;
   }
+
+  static final AuthRecords _instance = AuthRecords._();
+
+  /// Singleton instance of [AuthRecords]
+  static AuthRecords get instance => _instance;
 
   /// Handles the log in with Firebase based on an [email] and [password]. The [mode]
   /// just indicates if we have to perform a sign in or a create user.

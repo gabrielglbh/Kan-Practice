@@ -8,10 +8,15 @@ import 'package:easy_localization/easy_localization.dart';
 
 class BackUpQueries {
   Database? _database;
-  /// Singleton instance of [BackUpQueries]
-  static BackUpQueries instance = BackUpQueries();
 
-  BackUpQueries() { _database = CustomDatabase.instance.database; }
+  BackUpQueries._() {
+    _database = CustomDatabase.instance.database;
+  }
+
+  static final BackUpQueries _instance = BackUpQueries._();
+
+  /// Singleton instance of [BackUpQueries]
+  static BackUpQueries get instance => _instance;
 
   /// Merges the back up from Firebase to the local database.
   /// It takes as parameter [kanji] and [lists] to be MERGED into the

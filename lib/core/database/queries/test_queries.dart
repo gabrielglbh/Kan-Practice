@@ -161,7 +161,7 @@ class TestQueries {
   /// See [TestsUtils]. Each position represents the number of tests performed
   /// in that mode.
   ///
-  /// 0 -> Selection, 1 -> Blitz, 2 -> Remembrance, 3 -> Numbers, 4 -> Less %
+  /// 0 -> Selection, 1 -> Blitz, 2 -> Remembrance, 3 -> Numbers, 4 -> Less %, 5 -> Category
   Future<List<int>> getAllTestsBasedOnTestMode() async {
     List<int> counters = List.filled(Tests.values.length, 0);
     if (_database != null) {
@@ -177,6 +177,7 @@ class TestQueries {
               case Tests.time: counters[2] += 1; break;
               case Tests.numbers: counters[3] += 1; break;
               case Tests.less: counters[4] += 1; break;
+              case Tests.categories: counters[5] += 1; break;
             }
           });
           return counters;

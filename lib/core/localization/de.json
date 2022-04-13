@@ -256,5 +256,8 @@
   "kanji_category_preposition": "Präposition",
   "kanji_category_conjunction": "Konjunktion",
   "kanji_category_interjection": "Interjektion",
-  "kanji_category_label": "Kategorie"
+  "kanji_category_label": "Kategorie",
+  "test_mode_categories": "Kategorie Test",
+  "categories_test_bottom_sheet_title": "Machen Sie einen Test mit der Kategorie Ihrer Wahl",
+  "categories_test_bottom_sheet_label": "Kategorie:"
 }

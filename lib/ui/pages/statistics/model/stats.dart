@@ -22,6 +22,7 @@ class KanPracticeStats {
   final int remembranceTests;
   final int numberTests;
   final int lessPctTests;
+  final int categoryTests;
 
   KanPracticeStats({
     required this.totalLists,
@@ -46,6 +47,7 @@ class KanPracticeStats {
     required this.blitzTests,
     required this.remembranceTests,
     required this.numberTests,
-    required this.lessPctTests
+    required this.lessPctTests,
+    required this.categoryTests
   });
 }

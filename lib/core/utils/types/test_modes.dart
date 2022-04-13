@@ -1,8 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:kanpractice/core/utils/types/kanji_categories.dart';
 
 enum Tests {
-  lists, blitz, time, numbers, less
+  lists, blitz, time, numbers, less, categories
 }
 
 extension TestsExt on Tests {
@@ -18,6 +19,8 @@ extension TestsExt on Tests {
         return "test_mode_number".tr();
       case Tests.less:
         return "test_mode_less".tr();
+      case Tests.categories:
+        return "test_mode_categories".tr();
     }
   }
 
@@ -33,6 +36,8 @@ extension TestsExt on Tests {
         return Icons.pin_rounded;
       case Tests.less:
         return Icons.indeterminate_check_box_outlined;
+      case Tests.categories:
+        return Icons.category;
     }
   }
 }
@@ -44,6 +49,15 @@ class TestsUtils {
     else if (map == 'remembrance_bottom_sheet_label'.tr()) return Tests.time;
     else if (map == 'number_bottom_sheet_label'.tr()) return Tests.numbers;
     else if (map == 'less_pct_bottom_sheet_label'.tr()) return Tests.less;
+    /// Match --> 'Categories: Adverb'
+    else if (map.contains('categories_test_bottom_sheet_label'.tr(), 0)) {
+      bool containsCategory = false;
+      KanjiCategory.values.forEach((c) {
+        if (map.endsWith(c.category)) containsCategory = true;
+      });
+      if (containsCategory) return Tests.categories;
+      else return Tests.lists;
+    }
     /// If the map consists of various lessons, just return lists.
     else return Tests.lists;
   }

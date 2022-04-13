@@ -256,5 +256,8 @@
   "kanji_category_preposition": "Preposition",
   "kanji_category_conjunction": "Conjunction",
   "kanji_category_interjection": "Interjection",
-  "kanji_category_label": "Category"
+  "kanji_category_label": "Category",
+  "test_mode_categories": "Category Test",
+  "categories_test_bottom_sheet_title": "Take a test with the category of your choice",
+  "categories_test_bottom_sheet_label": "Category: "
 }

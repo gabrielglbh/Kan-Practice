@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/utils/types/test_modes.dart';
+import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListCategorySelectionBottomSheet.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListSelectionBottomSheet.dart';
 import 'package:kanpractice/ui/widgets/blitz/BlitzBottomSheet.dart';
 import 'package:kanpractice/ui/widgets/DragContainer.dart';
@@ -66,6 +67,8 @@ class _TestBottomSheetState extends State<TestBottomSheet> {
                           return _testBasedButtons(context, Tests.numbers);
                         case Tests.less:
                           return _testBasedButtons(context, Tests.less);
+                        case Tests.categories:
+                          return _testBasedButtons(context, Tests.categories);
                       }
                     })
                   ),
@@ -99,6 +102,9 @@ class _TestBottomSheetState extends State<TestBottomSheet> {
             break;
           case Tests.less:
             await BlitzBottomSheet.show(context, lessPctTest: true);
+            break;
+          case Tests.categories:
+            KanListCategorySelectionBottomSheet.show(context);
             break;
         }
       }

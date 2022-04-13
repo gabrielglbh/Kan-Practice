@@ -62,7 +62,8 @@ class StatisticsBloc extends Bloc<StatsEvent, StatsState> {
           blitzTests: testModesCount[1],
           remembranceTests: testModesCount[2],
           numberTests: testModesCount[3],
-          lessPctTests: testModesCount[4]
+          lessPctTests: testModesCount[4],
+          categoryTests: testModesCount[5]
       )));
     });
   }

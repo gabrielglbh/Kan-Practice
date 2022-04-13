@@ -11,6 +11,7 @@ import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:kanpractice/ui/widgets/CustomTextForm.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/ui/widgets/KanjiCategoryList.dart';
 
 class AddKanjiPage extends StatefulWidget {
   final AddKanjiArgs args;
@@ -31,18 +32,6 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
   FocusNode? _meaningFocus;
 
   KanjiCategory _currentCategory = KanjiCategory.noun;
-  Map<KanjiCategory, bool> _categories = {
-    KanjiCategory.noun: true,
-    KanjiCategory.pronoun: false,
-    KanjiCategory.verb: false,
-    KanjiCategory.adjective: false,
-    KanjiCategory.adverb: false,
-    KanjiCategory.expression: false,
-    KanjiCategory.counter: false,
-    KanjiCategory.preposition: false,
-    KanjiCategory.conjunction: false,
-    KanjiCategory.interjection: false
-  };
 
   @override
   void initState() {
@@ -97,8 +86,6 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
           }));
     }
   }
-
-  _getCurrentIndexOfFilter() => _categories.keys.toList().indexOf(_currentCategory);
 
   _validateKanji(Function execute) {
     if (_kanjiController?.text.trim().isNotEmpty == true &&
@@ -275,26 +262,9 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
           child: Text("kanji_category_label".tr(), overflow: TextOverflow.ellipsis,
               style: TextStyle(fontSize: FontSizes.fontSize18, fontWeight: FontWeight.bold)),
         ),
-        GridView(
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3, childAspectRatio: 3.5
-          ),
-          children: List.generate(KanjiCategory.values.length, (index) {
-            return ChoiceChip(
-                label: Text(KanjiCategory.values[index].category),
-                selected: index == _getCurrentIndexOfFilter(),
-                pressElevation: Margins.margin4,
-                onSelected: (_) {
-                  _currentCategory = KanjiCategory.values[index];
-                  setState(() {
-                    _categories.updateAll((key, value) => false);
-                    _categories.update(_currentCategory, (value) => true);
-                  });
-                }
-            );
-          }),
+        KanjiCategoryList(
+          selected: (index) => index == _currentCategory.index,
+          onSelected: (index) => setState(() => _currentCategory = KanjiCategory.values[index])
         )
       ],
     );

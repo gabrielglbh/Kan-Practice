@@ -111,7 +111,7 @@
   "kan_list_tile_createDialogForDeletingKanList_content": "¿Estás seguro de que quieres eliminar esta lista y todo su contenido?",
   "kan_list_tile_createDialogForDeletingKanList_positive": "Eliminar",
   "filters_all": "Creado",
-  "study_bottom_sheet_title": "Haz una prueba con las KanList de tu elección",
+  "study_bottom_sheet_title": "Haz un test con las KanList de tu elección",
   "study_bottom_sheet_load_failed": "Fallo en la recuperación de las listas",
   "study_bottom_sheet_button_label_ext": "終わり",
   "study_bottom_sheet_button_label": "¡Hecho!",
@@ -256,5 +256,8 @@
   "kanji_category_preposition": "Preposición",
   "kanji_category_conjunction": "Conjunción",
   "kanji_category_interjection": "Interjección",
-  "kanji_category_label": "Categoría"
+  "kanji_category_label": "Categoría",
+  "test_mode_categories": "Test de categoría",
+  "categories_test_bottom_sheet_title": "Haz un test con la categoría de tu elección",
+  "categories_test_bottom_sheet_label": "Categoría: "
 }

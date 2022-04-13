@@ -132,6 +132,24 @@ class KanjiQueries {
     } else return [];
   }
 
+  /// Query to get all kanji available in the current db based on their category
+  /// that the user has previously selected.
+  /// If anything goes wrong, an empty list will be returned.
+  Future<List<Kanji>> getKanjiBasedOnCategory(int category) async {
+    if (_database != null) {
+      try {
+        List<Map<String, dynamic>>? res = [];
+        res = await _database?.query(KanjiTableFields.kanjiTable,
+            where: "${KanjiTableFields.categoryField}=?", whereArgs: [category]);
+        if (res != null) return List.generate(res.length, (i) => Kanji.fromJson(res![i]));
+        else return [];
+      } catch (err) {
+        print(err.toString());
+        return [];
+      }
+    } else return [];
+  }
+
   /// Query to get all kanji available in the current db within a list with the name [listName].
   /// If anything goes wrong, an empty list will be returned.
   Future<List<Kanji>> getAllKanjiFromList(String listName, {int? offset, int? limit}) async {

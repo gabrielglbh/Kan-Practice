@@ -4,6 +4,7 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/core/utils/types/kanji_categories.dart';
 import 'package:kanpractice/core/utils/types/study_modes.dart';
 import 'package:kanpractice/core/utils/types/visualization_mode.dart';
 import 'package:kanpractice/ui/pages/jisho/arguments.dart';
@@ -111,6 +112,15 @@ class KanjiBottomSheet extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
             child: FittedBox(
               fit: BoxFit.contain,
+              child: Text(KanjiCategory.values[updatedKanji.category].category,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: FontSizes.fontSize14, fontStyle: FontStyle.italic))
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
+            child: FittedBox(
+              fit: BoxFit.contain,
               child: Text(updatedKanji.kanji, textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize32)),
             ),
@@ -154,7 +164,7 @@ class KanjiBottomSheet extends StatelessWidget {
 
   Widget _header(BuildContext context, Kanji updatedKanji) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin16),
+      padding: EdgeInsets.symmetric(vertical: Margins.margin4, horizontal: Margins.margin16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

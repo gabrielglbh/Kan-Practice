@@ -36,10 +36,12 @@ class _KanListCategorySelectionBottomSheetState extends State<KanListCategorySel
   KanjiCategory _selectedCategory = KanjiCategory.noun;
 
   bool _selectionMode = false;
+  bool _onListEmpty = false;
 
-  Future<void> _loadKanjiFromListSelection(KanjiCategory category) async {
-    _kanji = await KanjiQueries.instance.getKanjiBasedOnCategory(category.index);
-    _kanji.shuffle();
+  Future<List<Kanji>> _loadKanjiFromListSelection(KanjiCategory category) async {
+    final k = await KanjiQueries.instance.getKanjiBasedOnCategory(category.index);
+    k.shuffle();
+    return k;
   }
 
   @override
@@ -60,10 +62,18 @@ class _KanListCategorySelectionBottomSheetState extends State<KanListCategorySel
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize18)),
                 ),
-                // TODO: Perform actual call
+                Visibility(
+                  visible: _onListEmpty,
+                  child: Text("categories_test_bottom_sheet_error".tr(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: FontSizes.fontSize18)),
+                ),
                 Visibility(
                   visible: _selectionMode,
-                  child: TestStudyMode(list: _kanji, listsNames: ""),
+                  child: TestStudyMode(
+                    list: _kanji,
+                    listsNames: "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category}"
+                  ),
                 ),
                 Visibility(
                   visible: !_selectionMode,
@@ -102,15 +112,23 @@ class _KanListCategorySelectionBottomSheetState extends State<KanListCategorySel
       children: [
         KanjiCategoryList(
           selected: (index) => index == _selectedCategory.index,
-          onSelected: (index) => setState(() => _selectedCategory = KanjiCategory.values[index])
+          onSelected: (index) => setState(() {
+            _selectedCategory = KanjiCategory.values[index];
+            _onListEmpty = false;
+          })
         ),
         CustomButton(
           width: true,
           title1: "study_bottom_sheet_button_label_ext".tr(),
           title2: "study_bottom_sheet_button_label".tr(),
           onTap: () async {
-            await _loadKanjiFromListSelection(_selectedCategory);
-            if (_kanji.isNotEmpty) setState(() => _selectionMode = true);
+            final List<Kanji> k = await _loadKanjiFromListSelection(_selectedCategory);
+            if (k.isNotEmpty) {
+              _kanji = k;
+              setState(() => _selectionMode = true);
+            } else {
+              setState(() => _onListEmpty = true);
+            }
           }
         )
       ],

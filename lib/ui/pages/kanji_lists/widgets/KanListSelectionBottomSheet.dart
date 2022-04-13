@@ -35,6 +35,7 @@ class _KanListSelectionBottomSheetState extends State<KanListSelectionBottomShee
   String _selectedFormattedLists = "";
 
   bool _selectionMode = false;
+  bool _onListEmpty = false;
 
   Future<void> _loadKanjiFromListSelection(List<String> lists) async {
     _kanji = await KanjiQueries.instance.getKanjiBasedOnSelectedLists(lists);
@@ -61,6 +62,12 @@ class _KanListSelectionBottomSheetState extends State<KanListSelectionBottomShee
                   child: Text("study_bottom_sheet_title".tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize18)),
+                ),
+                Visibility(
+                  visible: _onListEmpty,
+                  child: Text("study_bottom_sheet_load_failed".tr(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: FontSizes.fontSize18)),
                 ),
                 Visibility(
                   visible: _selectionMode,
@@ -113,6 +120,7 @@ class _KanListSelectionBottomSheetState extends State<KanListSelectionBottomShee
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
+                      _onListEmpty = false;
                       if (_selectedLists.contains(name)) _selectedLists.remove(name);
                       else _selectedLists.add(name);
                     });
@@ -143,6 +151,8 @@ class _KanListSelectionBottomSheetState extends State<KanListSelectionBottomShee
             if (_selectedLists.isNotEmpty) {
               await _loadKanjiFromListSelection(_selectedLists);
               if (_kanji.isNotEmpty) setState(() => _selectionMode = true);
+            } else {
+              setState(() => _onListEmpty = true);
             }
           }
         )

@@ -259,5 +259,6 @@
   "kanji_category_label": "Kategorie",
   "test_mode_categories": "Kategorie Test",
   "categories_test_bottom_sheet_title": "Machen Sie einen Test mit der Kategorie Ihrer Wahl",
-  "categories_test_bottom_sheet_label": "Kategorie:"
+  "categories_test_bottom_sheet_label": "Kategorie:",
+  "categories_test_bottom_sheet_error": "Für diese Kategorie gibt es keine Wörter."
 }

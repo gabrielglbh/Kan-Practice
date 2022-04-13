@@ -46,6 +46,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
     String meaning = singleKanjiMeaning == null ? wordMeaning : singleKanjiMeaning;
     String reading = singleKanjiReading == null ? wordReading : singleKanjiReading;
 
+    // TODO: Somehow add the category here
     final code = await KanjiQueries.instance.createKanji(Kanji(
       kanji: widget.kanji ?? "",
       meaning: "${meaning[0].toUpperCase()}${meaning.substring(1).toLowerCase()}",

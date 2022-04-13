@@ -255,5 +255,6 @@
   "kanji_category_counter": "Zähler",
   "kanji_category_preposition": "Präposition",
   "kanji_category_conjunction": "Konjunktion",
-  "kanji_category_interjection": "Interjektion"
+  "kanji_category_interjection": "Interjektion",
+  "kanji_category_label": "Kategorie"
 }

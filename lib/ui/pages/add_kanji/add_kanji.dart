@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/routing/pages.dart';
+import 'package:kanpractice/core/utils/types/kanji_categories.dart';
 import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/pages/add_kanji/bloc/add_kanji_bloc.dart';
 import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
@@ -29,6 +30,20 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
   TextEditingController? _meaningController;
   FocusNode? _meaningFocus;
 
+  KanjiCategory _currentCategory = KanjiCategory.noun;
+  Map<KanjiCategory, bool> _categories = {
+    KanjiCategory.noun: true,
+    KanjiCategory.pronoun: false,
+    KanjiCategory.verb: false,
+    KanjiCategory.adjective: false,
+    KanjiCategory.adverb: false,
+    KanjiCategory.expression: false,
+    KanjiCategory.counter: false,
+    KanjiCategory.preposition: false,
+    KanjiCategory.conjunction: false,
+    KanjiCategory.interjection: false
+  };
+
   @override
   void initState() {
     _kanjiController = TextEditingController();
@@ -42,6 +57,7 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
       _kanjiController?.text = kanji.kanji.toString();
       _pronunciationController?.text = kanji.pronunciation.toString();
       _meaningController?.text = kanji.meaning.toString();
+      _currentCategory = KanjiCategory.values[kanji.category];
     }
     super.initState();
   }
@@ -63,6 +79,7 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
         pronunciation: _pronunciationController?.text ?? "",
         meaning: _meaningController?.text ?? "",
         listName: widget.args.listName,
+        category: _currentCategory.index,
         dateAdded: GeneralUtils.getCurrentMilliseconds(),
         dateLastShown: GeneralUtils.getCurrentMilliseconds(),
     )));
@@ -76,9 +93,12 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
             KanjiTableFields.kanjiField: _kanjiController?.text ?? "",
             KanjiTableFields.pronunciationField: _pronunciationController?.text ?? "",
             KanjiTableFields.meaningField: _meaningController?.text ?? "",
+            KanjiTableFields.categoryField: _currentCategory.index
           }));
     }
   }
+
+  _getCurrentIndexOfFilter() => _categories.keys.toList().indexOf(_currentCategory);
 
   _validateKanji(Function execute) {
     if (_kanjiController?.text.trim().isNotEmpty == true &&
@@ -220,6 +240,10 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
         ),
         Padding(
           padding: EdgeInsets.only(top: Margins.margin16),
+          child: _categorySelection(),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: Margins.margin16),
           child: CustomTextForm(
             controller: _meaningController,
             focusNode: _meaningFocus,
@@ -238,6 +262,40 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
             },
           ),
         ),
+      ],
+    );
+  }
+
+  Column _categorySelection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(bottom: Margins.margin16, left: Margins.margin8),
+          child: Text("kanji_category_label".tr(), overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: FontSizes.fontSize18, fontWeight: FontWeight.bold)),
+        ),
+        GridView(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3, childAspectRatio: 3.5
+          ),
+          children: List.generate(KanjiCategory.values.length, (index) {
+            return ChoiceChip(
+                label: Text(KanjiCategory.values[index].category),
+                selected: index == _getCurrentIndexOfFilter(),
+                pressElevation: Margins.margin4,
+                onSelected: (_) {
+                  _currentCategory = KanjiCategory.values[index];
+                  setState(() {
+                    _categories.updateAll((key, value) => false);
+                    _categories.update(_currentCategory, (value) => true);
+                  });
+                }
+            );
+          }),
+        )
       ],
     );
   }

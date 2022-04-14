@@ -2,6 +2,7 @@ import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/utils/types/study_modes.dart';
+import 'package:kanpractice/core/utils/types/test_modes.dart';
 import 'package:sqflite/sqflite.dart';
 
 class KanjiQueries {
@@ -43,17 +44,13 @@ class KanjiQueries {
   /// query all kanji by their last shown date based on the study mode to be
   /// studied. If null, all kanji will be retrieved.
   ///
-  /// [orderedByLastShown] serves as a control variable to order all the kanji by
-  /// their last shown parameter
-  ///
-  /// [orderedByWorstAccuracy] serves as a control variable to order all the kanji by
-  /// their win rate
-  Future<List<Kanji>> getAllKanji({StudyModes? mode, bool orderedByLastShown = false,
-    bool orderedByWorstAccuracy = false}) async {
+  /// [type] serves as a control variable to order all the kanji by
+  /// their last shown parameter or worst accuracy parameter. See [Tests].
+  Future<List<Kanji>> getAllKanji({StudyModes? mode, Tests? type}) async {
     if (_database != null) {
       try {
         String query = "";
-        if (orderedByLastShown) {
+        if (type == Tests.time) {
           if (mode != null) {
             switch (mode) {
               case StudyModes.writing:
@@ -74,7 +71,7 @@ class KanjiQueries {
                 break;
             }
           } else return [];
-        } else if (orderedByWorstAccuracy) {
+        } else if (type == Tests.less) {
           if (mode != null) {
             switch (mode) {
               case StudyModes.writing:

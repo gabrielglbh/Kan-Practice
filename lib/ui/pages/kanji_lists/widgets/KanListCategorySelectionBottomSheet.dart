@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/utils/types/kanji_categories.dart';
+import 'package:kanpractice/core/utils/types/test_modes.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
 import 'package:kanpractice/ui/widgets/DragContainer.dart';
 import 'package:kanpractice/ui/widgets/KanjiCategoryList.dart';
@@ -72,7 +73,8 @@ class _KanListCategorySelectionBottomSheetState extends State<KanListCategorySel
                   visible: _selectionMode,
                   child: TestStudyMode(
                     list: _kanji,
-                    listsNames: "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category}"
+                    type: Tests.categories,
+                    testName: "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category}"
                   ),
                 ),
                 Visibility(

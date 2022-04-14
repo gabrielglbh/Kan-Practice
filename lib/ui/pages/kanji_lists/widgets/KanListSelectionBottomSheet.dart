@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
+import 'package:kanpractice/core/utils/types/test_modes.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
 import 'package:kanpractice/ui/widgets/DragContainer.dart';
 import 'package:kanpractice/ui/widgets/StudyMode.dart';
@@ -71,7 +72,11 @@ class _KanListSelectionBottomSheetState extends State<KanListSelectionBottomShee
                 ),
                 Visibility(
                   visible: _selectionMode,
-                  child: TestStudyMode(list: _kanji, listsNames: _selectedFormattedLists),
+                  child: TestStudyMode(
+                    list: _kanji,
+                    type: Tests.lists,
+                    testName: _selectedFormattedLists
+                  ),
                 ),
                 Visibility(
                   visible: !_selectionMode,

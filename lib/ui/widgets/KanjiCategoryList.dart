@@ -3,17 +3,21 @@ import 'package:kanpractice/core/utils/types/kanji_categories.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 
 class KanjiCategoryList extends StatelessWidget {
+  /// Function called when a certain category is tapped. Index is provided
   final Function(int) onSelected;
+  /// Function that should return [bool] to change style of the selected category
   final Function(int) selected;
+  final bool hasScrollablePhysics;
   const KanjiCategoryList({
     required this.onSelected,
-    required this.selected
+    required this.selected,
+    this.hasScrollablePhysics = false
   });
 
   @override
   Widget build(BuildContext context) {
     return GridView(
-      physics: NeverScrollableScrollPhysics(),
+      physics: hasScrollablePhysics ? null : NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3, childAspectRatio: 2.8

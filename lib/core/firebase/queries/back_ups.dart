@@ -6,8 +6,10 @@ import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/back_up_queries.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
+import 'package:kanpractice/core/database/queries/test_queries.dart';
 import 'package:kanpractice/core/firebase/firebase.dart';
 import 'package:kanpractice/core/firebase/models/backup.dart';
+import 'package:kanpractice/core/firebase/models/test_data.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -17,6 +19,7 @@ class BackUpRecords {
   final String collection = "BackUps";
   final String kanjiLabel= "Kanji";
   final String listsLabel = "Lists";
+  final String testsDataLabel = "TestsData";
 
   BackUpRecords._() {
     _ref = FirebaseUtils.instance.dbRef;
@@ -75,12 +78,13 @@ class BackUpRecords {
 
     List<Kanji> kanji = await KanjiQueries.instance.getAllKanji();
     List<KanjiList> lists = await ListQueries.instance.getAllLists();
+    TestData test = await TestQueries.instance.getTestData();
     int date = GeneralUtils.getCurrentMilliseconds();
 
     if (lists.isEmpty) {
       return "backup_firebase_createBackUp_listEmpty".tr();
     } else {
-      BackUp backUpObject = BackUp(lists: lists, kanji: kanji, lastUpdated: date);
+      BackUp backUpObject = BackUp(lists: lists, kanji: kanji, testData: test, lastUpdated: date);
       WriteBatch? batch = _ref?.batch();
       try {
         /// Making sure the back up only contains the actual data of the device
@@ -100,6 +104,10 @@ class BackUpRecords {
           batch?.set(doc, data[BackUp.listLabel][x]);
           batch = await _reinitializeBatch(batch, x);
         }
+
+        // TODO: Create test data object in Firebase
+        final DocumentReference doc = _ref?.collection(collection).doc(_user?.uid)
+              .collection(testsDataLabel).doc();
 
         batch?.set(_ref?.collection(collection).doc(_user?.uid) as DocumentReference, {
           BackUp.updatedLabel: data[BackUp.updatedLabel]
@@ -123,6 +131,8 @@ class BackUpRecords {
     try {
       final kanjiSnapshot = await _ref?.collection(collection).doc(_user?.uid).collection(kanjiLabel).get();
       final listsSnapshot = await _ref?.collection(collection).doc(_user?.uid).collection(listsLabel).get();
+
+      // TODO: Retrieve test data from Firebase
 
       List<Kanji> backUpKanji = [];
       List<KanjiList> backUpLists = [];
@@ -149,6 +159,9 @@ class BackUpRecords {
     try {
       final kanjiSnapshot = await _ref?.collection(collection).doc(_user?.uid).collection(kanjiLabel).get();
       final listsSnapshot = await _ref?.collection(collection).doc(_user?.uid).collection(listsLabel).get();
+
+      // TODO: Remove test data from Firebase
+
       WriteBatch? batch = _ref?.batch();
 
       if (kanjiSnapshot != null && listsSnapshot != null) {

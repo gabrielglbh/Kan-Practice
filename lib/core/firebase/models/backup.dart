@@ -1,47 +1,29 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
+import 'package:kanpractice/core/firebase/models/test_data.dart';
 
+part 'backup.g.dart';
+
+@JsonSerializable()
 class BackUp {
   final List<KanjiList> lists;
   final List<Kanji> kanji;
+  final TestData testData;
   final int lastUpdated;
 
   static final String kanjiLabel = "kanji";
   static final String listLabel = "lists";
+  static final String testDataLabel = "testData";
   static final String updatedLabel = "lastUpdated";
 
-  const BackUp({required this.lists, required this.kanji, required this.lastUpdated});
+  const BackUp({required this.lists, required this.kanji,
+    required this.testData, required this.lastUpdated});
 
   /// Empty instance of [BackUp]
-  static const BackUp empty = BackUp(lists: [], kanji: [], lastUpdated: 0);
+  static const BackUp empty = BackUp(lists: [], kanji: [],
+      testData: TestData.empty, lastUpdated: 0);
 
-  /// Creates a JSON map from all of its attributes: [lists], [kanji] and [tests]
-  Map<String, dynamic> toJson() {
-    List<Map<String, dynamic>> lists = [];
-    List<Map<String, dynamic>> kanji = [];
-    this.lists.forEach((l) => lists.add(l.toJson()));
-    this.kanji.forEach((k) => kanji.add(k.toJson()));
-
-    return {
-      listLabel: lists,
-      kanjiLabel: kanji,
-      updatedLabel: lastUpdated
-    };
-  }
-
-  /// Converts the [json] map into Plain Objects of [Kanji]
-  List<Kanji> kanjiFromJson(Map<String, dynamic> json) {
-    List<dynamic> jsonKanji = json[kanjiLabel];
-    List<Kanji> parsedKanji= [];
-    for(int y = 0; y < jsonKanji.length; y++) parsedKanji.add(Kanji.fromJson(jsonKanji[y]));
-    return parsedKanji;
-  }
-
-  /// Converts the [json] map into Plain Objects of [KanjiList]
-  List<KanjiList> kanjiListFromJson(Map<String, dynamic> json) {
-    List<dynamic> jsonKanjiLists = json[listLabel];
-    List<KanjiList> parsedKanjiLists= [];
-    for(int y = 0; y < jsonKanjiLists.length; y++) parsedKanjiLists.add(KanjiList.fromJson(jsonKanjiLists[y]));
-    return parsedKanjiLists;
-  }
+  factory BackUp.fromJson(Map<String, dynamic> json) => _$BackUpFromJson(json);
+  Map<String, dynamic> toJson() => _$BackUpToJson(this);
 }

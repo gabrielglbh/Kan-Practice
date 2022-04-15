@@ -64,83 +64,23 @@ class _SettingsState extends State<Settings> {
           )
         ],
       ),
-      body: ListView(
-        children: [
-          ListTile(
-            leading: Icon(Icons.local_florist_rounded, color: Colors.orangeAccent),
-            title: Text("settings_information_rating".tr()),
-            trailing: Icon(Icons.link),
-            onTap: () async {
-              try {
-                await launch("google_play_link".tr());
-              } catch (err) {
-                GeneralUtils.getSnackBar(context, "settings_information_rating_failed".tr());
+      body: BlocProvider<SettingsBloc>(
+        create: (_) => _bloc..add(SettingsLoadingBackUpDate(context)),
+        child: ListView(
+          children: [
+            ListTile(
+              leading: Icon(Icons.local_florist_rounded, color: Colors.orangeAccent),
+              title: Text("settings_information_rating".tr()),
+              trailing: Icon(Icons.link),
+              onTap: () async {
+                try {
+                  await launch("google_play_link".tr());
+                } catch (err) {
+                  GeneralUtils.getSnackBar(context, "settings_information_rating_failed".tr());
+                }
               }
-            }
-          ),
-          _header("settings_general".tr()),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.insert_chart_outlined_rounded, color: Colors.teal),
-            title: Text("settings_general_statistics".tr()),
-            onTap: () => Navigator.of(context).pushNamed(KanPracticePages.statisticsPage),
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.auto_graph_rounded, color: Colors.lightBlueAccent),
-            title: Text("settings_general_toggle".tr()),
-            subtitle: Padding(
-              padding: EdgeInsets.only(top: Margins.margin8),
-              child: Text("settings_general_toggle_sub".tr())
             ),
-            trailing: Switch(
-              activeColor: Colors.blueAccent,
-              activeTrackColor: Colors.lightBlueAccent,
-              inactiveThumbColor: Brightness.light == Theme.of(context).brightness
-                  ? Colors.grey[600] : Colors.white,
-              inactiveTrackColor: Colors.grey,
-              onChanged: (bool value) {
-                StorageManager.saveData(StorageManager.affectOnPractice, value);
-                setState(() => _toggleAffect = value);
-              },
-              value: _toggleAffect,
-            ),
-            onTap: () async {
-              StorageManager.saveData(StorageManager.affectOnPractice, !_toggleAffect);
-              setState(() => _toggleAffect = !_toggleAffect);
-            },
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.track_changes_rounded, color: CustomColors.getSecondaryColor(context)),
-            title: Text("settings_general_testHistory".tr()),
-            onTap: () async => Navigator.of(context).pushNamed(KanPracticePages.testHistoryPage),
-          ),
-          Divider(),
-          ListTile(
-            leading: _graphMode.icon,
-            title: Text("settings_general_graphs".tr()),
-            onTap: () {
-              setState(() => _graphMode = VisualizationModeExt.toggle(_graphMode));
-              StorageManager.saveData(StorageManager.kanListGraphVisualization, _graphMode.name);
-            }
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.device_hub_rounded),
-            title: Text("settings_information_contribute".tr()),
-            trailing: Icon(Icons.link),
-            onTap: () async {
-              try {
-                await launch("https://github.com/gabrielglbh/Kan-Practice");
-              } catch (err) {
-                GeneralUtils.getSnackBar(context, "settings_information_rating_failed".tr());
-              }
-            }
-          ),
-          BlocProvider<SettingsBloc>(
-            create: (_) => _bloc..add(SettingsLoadingBackUpDate(context)),
-            child: BlocBuilder<SettingsBloc, SettingsState>(
+            BlocBuilder<SettingsBloc, SettingsState>(
               builder: (context, state) {
                 if (state is SettingsStateBackUpDateLoaded) {
                   return _header("settings_account_section".tr(), subtitle: state.date);
@@ -151,78 +91,138 @@ class _SettingsState extends State<Settings> {
                 }
               },
             ),
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.whatshot_rounded),
-            title: Text("settings_account_label".tr()),
-            onTap: () => Navigator.of(context).pushNamed(KanPracticePages.loginPage)
-          ),
-          _header("settings_information_section".tr()),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.school_rounded),
-            title: Text("settings_tutorial_label".tr()),
-            onTap: () async => Navigator.of(context).pushNamed(KanPracticePages.tutorialPage, arguments: true),
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.star, color: Colors.green),
-            title: Text("settings_general_versionNotes".tr()),
-            onTap: () async => await GeneralUtils.showVersionNotes(context),
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.handyman),
-            title: Text("settings_information_developer_label".tr()),
-            onTap: () => DevInfo.callModalSheet(context)
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.copyright_rounded),
-            title: Text("settings_information_about_label".tr()),
-            onTap: () => CopyrightInfo.callModalSheet(context)
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.apps),
-            title: Text("settings_information_license_label".tr()),
-            onTap: () {
-              Navigator.of(context).push(
-                CupertinoPageRoute(builder: (context) {
-                  return FutureBuilder<PackageInfo>(
-                    future: PackageInfo.fromPlatform(),
-                    builder: (context, snapshot) {
-                      return LicensePage(
-                        applicationName: "KanPractice",
-                        applicationVersion: snapshot.data?.version,
-                        applicationIcon: Container(
-                          width: CustomSizes.appIcon, height: CustomSizes.appIcon,
-                          child: Image.asset("assets/icon/icon.png")
-                        ),
-                      );
-                  });
-                }),
-              );
-            }
-          ),
-          Divider(),
-          Padding(
-            padding: EdgeInsets.only(bottom: Margins.margin48),
-            child: ListTile(
-              leading: Icon(Icons.privacy_tip),
-              title: Text("settings_information_terms_label".tr()),
+            Divider(),
+            ListTile(
+                leading: Icon(Icons.whatshot_rounded),
+                title: Text("settings_account_label".tr()),
+                onTap: () => Navigator.of(context).pushNamed(KanPracticePages.loginPage)
+            ),
+            _header("settings_general".tr()),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.insert_chart_outlined_rounded, color: Colors.teal),
+              title: Text("settings_general_statistics".tr()),
+              onTap: () => Navigator.of(context).pushNamed(KanPracticePages.statisticsPage),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.auto_graph_rounded, color: Colors.lightBlueAccent),
+              title: Text("settings_general_toggle".tr()),
+              subtitle: Padding(
+                padding: EdgeInsets.only(top: Margins.margin8),
+                child: Text("settings_general_toggle_sub".tr())
+              ),
+              trailing: Switch(
+                activeColor: Colors.blueAccent,
+                activeTrackColor: Colors.lightBlueAccent,
+                inactiveThumbColor: Brightness.light == Theme.of(context).brightness
+                    ? Colors.grey[600] : Colors.white,
+                inactiveTrackColor: Colors.grey,
+                onChanged: (bool value) {
+                  StorageManager.saveData(StorageManager.affectOnPractice, value);
+                  setState(() => _toggleAffect = value);
+                },
+                value: _toggleAffect,
+              ),
+              onTap: () async {
+                StorageManager.saveData(StorageManager.affectOnPractice, !_toggleAffect);
+                setState(() => _toggleAffect = !_toggleAffect);
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.track_changes_rounded, color: CustomColors.getSecondaryColor(context)),
+              title: Text("settings_general_testHistory".tr()),
+              onTap: () async => Navigator.of(context).pushNamed(KanPracticePages.testHistoryPage),
+            ),
+            Divider(),
+            ListTile(
+              leading: _graphMode.icon,
+              title: Text("settings_general_graphs".tr()),
+              onTap: () {
+                setState(() => _graphMode = VisualizationModeExt.toggle(_graphMode));
+                StorageManager.saveData(StorageManager.kanListGraphVisualization, _graphMode.name);
+              }
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.device_hub_rounded),
+              title: Text("settings_information_contribute".tr()),
               trailing: Icon(Icons.link),
               onTap: () async {
                 try {
-                  await launch("https://kanpractice.web.app");
+                  await launch("https://github.com/gabrielglbh/Kan-Practice");
                 } catch (err) {
-                  GeneralUtils.getSnackBar(context, "launch_url_failed".tr());
+                  GeneralUtils.getSnackBar(context, "settings_information_rating_failed".tr());
                 }
               }
             ),
-          ),
-        ],
+            _header("settings_information_section".tr()),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.school_rounded),
+              title: Text("settings_tutorial_label".tr()),
+              onTap: () async => Navigator.of(context).pushNamed(KanPracticePages.tutorialPage, arguments: true),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.star, color: Colors.green),
+              title: Text("settings_general_versionNotes".tr()),
+              onTap: () async => await GeneralUtils.showVersionNotes(context),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.handyman),
+              title: Text("settings_information_developer_label".tr()),
+              onTap: () => DevInfo.callModalSheet(context)
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.copyright_rounded),
+              title: Text("settings_information_about_label".tr()),
+              onTap: () => CopyrightInfo.callModalSheet(context)
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.apps),
+              title: Text("settings_information_license_label".tr()),
+              onTap: () {
+                Navigator.of(context).push(
+                  CupertinoPageRoute(builder: (context) {
+                    return FutureBuilder<PackageInfo>(
+                      future: PackageInfo.fromPlatform(),
+                      builder: (context, snapshot) {
+                        return LicensePage(
+                          applicationName: "KanPractice",
+                          applicationVersion: snapshot.data?.version,
+                          applicationIcon: Container(
+                            width: CustomSizes.appIcon, height: CustomSizes.appIcon,
+                            child: Image.asset("assets/icon/icon.png")
+                          ),
+                        );
+                    });
+                  }),
+                );
+              }
+            ),
+            Divider(),
+            Padding(
+              padding: EdgeInsets.only(bottom: Margins.margin48),
+              child: ListTile(
+                leading: Icon(Icons.privacy_tip),
+                title: Text("settings_information_terms_label".tr()),
+                trailing: Icon(Icons.link),
+                onTap: () async {
+                  try {
+                    await launch("https://kanpractice.web.app");
+                  } catch (err) {
+                    GeneralUtils.getSnackBar(context, "launch_url_failed".tr());
+                  }
+                }
+              ),
+            ),
+          ],
+        ),
       )
     );
   }

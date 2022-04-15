@@ -147,7 +147,7 @@
   "settings_general_graphs": "Change data display mode",
   "settings_tutorial_label": "Show tutorial",
   "settings_general_versionNotes": "Version Notes",
-  "settings_account_section": "Manage Account",
+  "settings_account_section": "Manage Account & Back Up",
   "settings_account_label": "Account",
   "settings_information_section": "Information",
   "settings_information_contribute": "KanPractice Development Status on GitHub",
@@ -261,5 +261,5 @@
   "test_mode_categories": "Category Test",
   "categories_test_bottom_sheet_title": "Take a test with the category of your choice",
   "categories_test_bottom_sheet_label": "Category:",
-  "categories_test_bottom_sheet_error": "There are no words with this category.",
+  "categories_test_bottom_sheet_error": "There are no words with this category."
 }

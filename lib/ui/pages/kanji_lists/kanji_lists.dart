@@ -242,19 +242,18 @@ class _KanjiListsState extends State<KanjiLists> {
   }
 
   Widget _fab() {
-    final color = Theme.of(context).brightness == Brightness.light
-        ? Colors.white : Colors.black;
     return Dial(
       key: addLists,
       icon: AnimatedIcons.menu_close,
-      color: color,
+      color: Theme.of(context).brightness == Brightness.light
+          ? Colors.white : Colors.black,
       dialChildren: [
         DialChild(
-          child: Icon(Icons.track_changes_rounded, color: color),
+          child: Icon(Icons.track_changes_rounded, color: Colors.white),
           onPressed: () async => await _loadTests()
         ),
         DialChild(
-          child: Icon(Icons.add, color: color),
+          child: Icon(Icons.add, color: Colors.white),
           onPressed: () => CreateKanListDialog.showCreateKanListDialog(context,
             onSubmit: (String name) {
               _bloc..add(KanjiListEventCreate(

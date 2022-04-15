@@ -65,13 +65,33 @@ class BackUpPage extends StatelessWidget {
   }
 
   _createDialogForCreatingBackUp(BuildContext context) {
+    bool _backUpTests = true;
     showDialog(
       context: context,
-      builder: (context) => CustomDialog(
-        title: Text("backup_creation_dialog_title".tr()),
-        content: Text("backup_creation_dialog_content".tr()),
-        positiveButtonText: "backup_creation_dialog_positive".tr(),
-        onPositive: () => _bloc..add(BackUpLoadingCreateBackUp()),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) {
+          return CustomDialog(
+            title: Text("backup_creation_dialog_title".tr()),
+            content: Column(
+              children: [
+                Text("backup_creation_dialog_content".tr()),
+                Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Expanded(child: Text("backup_creation_dialog_tests".tr())),
+                    Switch(
+                      value: _backUpTests,
+                      onChanged: (val) => setState(() => _backUpTests = !_backUpTests)
+                    )
+                  ],
+                )
+              ],
+            ),
+            positiveButtonText: "backup_creation_dialog_positive".tr(),
+            onPositive: () => _bloc..add(BackUpLoadingCreateBackUp(backUpTests: _backUpTests)),
+          );
+        },
       )
     );
   }

@@ -53,6 +53,7 @@
   "backup_creation_dialog_title": "Datensicherung wird erstellt",
   "backup_creation_dialog_content": "Die Datensicherung wird in der Cloud erstellt. Die aktuellen Daten auf Ihrem Gerät werden gespeichert und ersetzen die aktuellen Sicherungsdaten. Tests werden nicht gespeichert. Wollen Sie fortfahren? ",
   "backup_creation_dialog_positive": "Erstellen",
+  "backup_creation_dialog_tests": "Möchten Sie alle Ihre Tests speichern?",
   "backup_merge_dialog_title": "Kombiniere Datensicherungseinträge",
   "backup_merge_dialog_content": "Die Sicherungsdaten werden auf Ihrem Gerät installiert. Entsprechend werden Ihre aktuellen Daten, die auf ihrem Gerät sind, ersetzt. Wollen Sie fortfahren? ",
   "backup_merge_dialog_positive": "Installieren",

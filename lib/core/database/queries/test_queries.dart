@@ -83,6 +83,21 @@ class TestQueries {
     } else return [];
   }
 
+  /// Query to get all [Test] from the db.
+  Future<List<Test>> getAllTests() async {
+    if (_database != null) {
+      try {
+        List<Map<String, dynamic>>? res = [];
+        res = await _database?.query(TestTableFields.testTable);
+        if (res != null) return List.generate(res.length, (i) => Test.fromJson(res![i]));
+        else return [];
+      } catch (err) {
+        print(err.toString());
+        return [];
+      }
+    } else return [];
+  }
+
   /// Gets all [TestData]
   Future<TestData> getTestData() async {
     final int totalTests = await _getTotalTestCount();

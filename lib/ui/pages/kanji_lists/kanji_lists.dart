@@ -250,6 +250,10 @@ class _KanjiListsState extends State<KanjiLists> {
       color: color,
       dialChildren: [
         DialChild(
+          child: Icon(Icons.track_changes_rounded, color: color),
+          onPressed: () async => await _loadTests()
+        ),
+        DialChild(
           child: Icon(Icons.add, color: color),
           onPressed: () => CreateKanListDialog.showCreateKanListDialog(context,
             onSubmit: (String name) {
@@ -258,10 +262,6 @@ class _KanjiListsState extends State<KanjiLists> {
               _resetOffsets();
             }),
         ),
-        DialChild(
-          child: Icon(Icons.track_changes_rounded, color: color),
-          onPressed: () async => await _loadTests()
-        )
       ]
     );
   }

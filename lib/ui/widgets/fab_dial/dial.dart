@@ -81,36 +81,33 @@ class _DialState extends State<Dial> with TickerProviderStateMixin {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
         if (!_animationController.isDismissed)
-          Padding(
-            padding: const EdgeInsets.only(right: Margins.margin4),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: widget.dialChildren.map<Widget>((DialChild dialChild) {
-                final Widget dialChildWidget = Opacity(
-                  opacity: _dialChildAnimations[dialChildAnimationIndex].value,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      ScaleTransition(
-                        scale: _dialChildAnimations[dialChildAnimationIndex],
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: Margins.margin4),
-                          child: FloatingActionButton(
-                            heroTag: dialChildAnimationIndex,
-                            mini: true,
-                            child: dialChild.child,
-                            onPressed: () => _onTap(dialChild),
-                          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: widget.dialChildren.map<Widget>((DialChild dialChild) {
+              final Widget dialChildWidget = Opacity(
+                opacity: _dialChildAnimations[dialChildAnimationIndex].value,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    ScaleTransition(
+                      scale: _dialChildAnimations[dialChildAnimationIndex],
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: Margins.margin4),
+                        child: FloatingActionButton(
+                          heroTag: dialChildAnimationIndex,
+                          child: dialChild.child,
+                          backgroundColor: dialChild.color,
+                          onPressed: () => _onTap(dialChild),
                         ),
                       ),
-                    ],
-                  ),
-                );
-                dialChildAnimationIndex++;
-                return dialChildWidget;
-              }).toList(),
-            ),
+                    ),
+                  ],
+                ),
+              );
+              dialChildAnimationIndex++;
+              return dialChildWidget;
+            }).toList(),
           ),
         Padding(
           padding: const EdgeInsets.only(top: Margins.margin8),
@@ -135,9 +132,9 @@ class _DialState extends State<Dial> with TickerProviderStateMixin {
     );
   }
 
-  // TODO: Test on tapped
   void _onTap(DialChild dialChild) {
     _animationController.reverse();
+    _iconAnimationController.reverse();
     dialChild.onPressed.call();
   }
 }

@@ -82,6 +82,7 @@ class TutorialCoach {
         context,
         targets: _targets,
         colorShadow: CustomColors.secondaryDarkerColor,
+        focusAnimationDuration: Duration(milliseconds: 200),
         opacityShadow: 0.9,
         hideSkip: true,
         onFinish: () {

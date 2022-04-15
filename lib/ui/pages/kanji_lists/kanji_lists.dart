@@ -18,6 +18,7 @@ import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListTile.dart';
 import 'package:kanpractice/ui/widgets/EmptyList.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
+import 'package:kanpractice/ui/widgets/fab_dial/dial.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -189,21 +190,13 @@ class _KanjiListsState extends State<KanjiLists> {
           toolbarHeight: CustomSizes.appBarHeight,
           title: FittedBox(fit: BoxFit.fitWidth, child: Text("KanPractice")),
           actions: [
-            Row(
+            IconButton(
               key: actions,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.menu_book_rounded),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(
-                        KanPracticePages.dictionaryPage, arguments: DictionaryArguments(searchInJisho: true));
-                  },
-                ),
-                IconButton(
-                  onPressed: () async => await _loadTests(),
-                  icon: Icon(Icons.track_changes_rounded, color: CustomColors.getSecondaryColor(context)),
-                ),
-              ],
+              icon: Icon(Icons.menu_book_rounded),
+              onPressed: () {
+                Navigator.of(context).pushNamed(
+                    KanPracticePages.dictionaryPage, arguments: DictionaryArguments(searchInJisho: true));
+              },
             ),
             IconButton(
               onPressed: () async {
@@ -243,17 +236,33 @@ class _KanjiListsState extends State<KanjiLists> {
             ],
           )
         ),
-        floatingActionButton: _searchHasFocus ? null : FloatingActionButton(
-          key: addLists,
-          onPressed: () => CreateKanListDialog.showCreateKanListDialog(context,
-              onSubmit: (String name) {
-                _bloc..add(KanjiListEventCreate(
-                    name, filter: _currentAppliedFilter, order: _currentAppliedOrder));
-                _resetOffsets();
-              }),
-          child: Icon(Icons.add, color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black),
-        ),
+        floatingActionButton: _searchHasFocus ? null : _fab(),
       ),
+    );
+  }
+
+  Widget _fab() {
+    final color = Theme.of(context).brightness == Brightness.light
+        ? Colors.white : Colors.black;
+    return Dial(
+      key: addLists,
+      icon: AnimatedIcons.menu_close,
+      color: color,
+      dialChildren: [
+        DialChild(
+          child: Icon(Icons.add, color: color),
+          onPressed: () => CreateKanListDialog.showCreateKanListDialog(context,
+            onSubmit: (String name) {
+              _bloc..add(KanjiListEventCreate(
+                  name, filter: _currentAppliedFilter, order: _currentAppliedOrder));
+              _resetOffsets();
+            }),
+        ),
+        DialChild(
+          child: Icon(Icons.track_changes_rounded, color: color),
+          onPressed: () async => await _loadTests()
+        )
+      ]
     );
   }
 

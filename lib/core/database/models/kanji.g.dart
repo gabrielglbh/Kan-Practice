@@ -25,6 +25,7 @@ Kanji _$KanjiFromJson(Map<String, dynamic> json) => Kanji(
       dateLastShownReading: json['dateLastShownReading'] as int? ?? 0,
       dateLastShownRecognition: json['dateLastShownRecognition'] as int? ?? 0,
       dateLastShownListening: json['dateLastShownListening'] as int? ?? 0,
+      category: json['category'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$KanjiToJson(Kanji instance) => <String, dynamic>{
@@ -42,4 +43,5 @@ Map<String, dynamic> _$KanjiToJson(Kanji instance) => <String, dynamic>{
       'dateLastShownReading': instance.dateLastShownReading,
       'dateLastShownRecognition': instance.dateLastShownRecognition,
       'dateLastShownListening': instance.dateLastShownListening,
+      'category': instance.category,
     };

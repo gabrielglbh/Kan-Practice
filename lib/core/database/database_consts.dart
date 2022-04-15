@@ -14,6 +14,7 @@ class KanjiTableFields {
   static const String dateLastShownReading = "dateLastShownReading";
   static const String dateLastShownRecognition = "dateLastShownRecognition";
   static const String dateLastShownListening = "dateLastShownListening";
+  static const String categoryField = "category";
 }
 
 class KanListTableFields {

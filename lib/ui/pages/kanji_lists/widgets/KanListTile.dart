@@ -2,54 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/core/utils/types/visualization_mode.dart';
 import 'package:kanpractice/ui/widgets/DependentGraph.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
 import 'package:easy_localization/easy_localization.dart';
-
-enum VisualizationMode { barChart, radialChart }
-
-extension VisualizationModeExt on VisualizationMode {
-  String get name {
-    switch (this) {
-      case VisualizationMode.barChart:
-        return "barChart";
-      case VisualizationMode.radialChart:
-        return "radialChart";
-    }
-  }
-
-  Widget get icon {
-    switch (this) {
-      case VisualizationMode.radialChart:
-        return RotatedBox(
-          quarterTurns: 1,
-          child: Icon(Icons.bar_chart_rounded),
-        );
-      case VisualizationMode.barChart:
-        return Icon(Icons.donut_large_rounded);
-    }
-  }
-
-  static VisualizationMode mode(String name) {
-    switch (name) {
-      case "barChart":
-        return VisualizationMode.barChart;
-      case "radialChart":
-      default:
-        return VisualizationMode.radialChart;
-    }
-  }
-
-  static VisualizationMode toggle(VisualizationMode mode) {
-    switch (mode) {
-      case VisualizationMode.barChart:
-        return VisualizationMode.radialChart;
-      case VisualizationMode.radialChart:
-        return VisualizationMode.barChart;
-    }
-  }
-}
 
 class KanListTile extends StatelessWidget {
   /// [KanjiList] item to paint as a Tile

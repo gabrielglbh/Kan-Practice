@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
+import 'package:kanpractice/core/utils/types/coach_tutorial_parts.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:easy_localization/easy_localization.dart';
-
-enum CoachTutorialParts { kanList, details }
 
 class TutorialCoach {
   CoachTutorialParts _part;
@@ -83,6 +82,7 @@ class TutorialCoach {
         context,
         targets: _targets,
         colorShadow: CustomColors.secondaryDarkerColor,
+        focusAnimationDuration: Duration(milliseconds: 200),
         opacityShadow: 0.9,
         hideSkip: true,
         onFinish: () {

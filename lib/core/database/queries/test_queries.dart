@@ -1,8 +1,10 @@
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/test_result.dart';
+import 'package:kanpractice/core/firebase/models/test_data.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
-import 'package:kanpractice/ui/pages/kanji_lists/test_modes.dart';
+import 'package:kanpractice/core/utils/types/study_modes.dart';
+import 'package:kanpractice/core/utils/types/test_modes.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -81,8 +83,65 @@ class TestQueries {
     } else return [];
   }
 
+  /// Query to get all [Test] from the db.
+  Future<List<Test>> getAllTests() async {
+    if (_database != null) {
+      try {
+        List<Map<String, dynamic>>? res = [];
+        res = await _database?.query(TestTableFields.testTable);
+        if (res != null) return List.generate(res.length, (i) => Test.fromJson(res![i]));
+        else return [];
+      } catch (err) {
+        print(err.toString());
+        return [];
+      }
+    } else return [];
+  }
+
+  /// Gets all [TestData]
+  Future<TestData> getTestData() async {
+    final int totalTests = await _getTotalTestCount();
+    final double totalTestAccuracy = await _getTotalTestAccuracy();
+    final int testTotalCountWriting = await _getTestCountBasedOnStudyMode(
+        StudyModes.writing.map);
+    final int testTotalCountReading = await _getTestCountBasedOnStudyMode(
+        StudyModes.reading.map);
+    final int testTotalCountRecognition = await _getTestCountBasedOnStudyMode(
+        StudyModes.recognition.map);
+    final int testTotalCountListening = await _getTestCountBasedOnStudyMode(
+        StudyModes.listening.map);
+    final double testTotalWinRateWriting = await _getTestAccuracyBasedOnStudyMode(
+        StudyModes.writing.map);
+    final double testTotalWinRateReading = await _getTestAccuracyBasedOnStudyMode(
+        StudyModes.reading.map);
+    final double testTotalWinRateRecognition = await _getTestAccuracyBasedOnStudyMode(
+        StudyModes.recognition.map);
+    final double testTotalWinRateListening = await _getTestAccuracyBasedOnStudyMode(
+        StudyModes.listening.map);
+    final List<int> testModesCount = await _getAllTestsBasedOnTestMode();
+
+    return TestData(
+      totalTests: totalTests,
+      totalTestAccuracy: totalTestAccuracy,
+      testTotalCountWriting: testTotalCountWriting,
+      testTotalCountReading: testTotalCountReading,
+      testTotalCountRecognition: testTotalCountRecognition,
+      testTotalCountListening: testTotalCountListening,
+      testTotalWinRateWriting: testTotalWinRateWriting,
+      testTotalWinRateReading: testTotalWinRateReading,
+      testTotalWinRateRecognition: testTotalWinRateRecognition,
+      testTotalWinRateListening: testTotalWinRateListening,
+      selectionTests: testModesCount[0],
+      blitzTests: testModesCount[1],
+      remembranceTests: testModesCount[2],
+      numberTests: testModesCount[3],
+      lessPctTests: testModesCount[4],
+      categoryTests: testModesCount[5]
+    );
+  }
+
   /// Retrieves the total test count saved locally in the device.
-  Future<int> getTotalTestCount() async {
+  Future<int> _getTotalTestCount() async {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
@@ -97,7 +156,7 @@ class TestQueries {
   }
 
   /// Retrieves the total test accuracy saved locally in the device.
-  Future<double> getTotalTestAccuracy() async {
+  Future<double> _getTotalTestAccuracy() async {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
@@ -117,7 +176,7 @@ class TestQueries {
   }
 
   /// Retrieves the test count saved locally in the device based on the [StudyModes].
-  Future<int> getTestCountBasedOnStudyMode(int mode) async {
+  Future<int> _getTestCountBasedOnStudyMode(int mode) async {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
@@ -135,7 +194,7 @@ class TestQueries {
   }
 
   /// Retrieves the test accuracy saved locally in the device based on the [StudyModes].
-  Future<double> getTestAccuracyBasedOnStudyMode(int mode) async {
+  Future<double> _getTestAccuracyBasedOnStudyMode(int mode) async {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
@@ -161,8 +220,8 @@ class TestQueries {
   /// See [TestsUtils]. Each position represents the number of tests performed
   /// in that mode.
   ///
-  /// 0 -> Selection, 1 -> Blitz, 2 -> Remembrance, 3 -> Numbers, 4 -> Less %
-  Future<List<int>> getAllTestsBasedOnTestMode() async {
+  /// 0 -> Selection, 1 -> Blitz, 2 -> Remembrance, 3 -> Numbers, 4 -> Less %, 5 -> Category
+  Future<List<int>> _getAllTestsBasedOnTestMode() async {
     List<int> counters = List.filled(Tests.values.length, 0);
     if (_database != null) {
       try {
@@ -177,6 +236,7 @@ class TestQueries {
               case Tests.time: counters[2] += 1; break;
               case Tests.numbers: counters[3] += 1; break;
               case Tests.less: counters[4] += 1; break;
+              case Tests.categories: counters[5] += 1; break;
             }
           });
           return counters;

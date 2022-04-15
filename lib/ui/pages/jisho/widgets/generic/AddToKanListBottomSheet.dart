@@ -5,11 +5,13 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/jisho/models/jisho_data.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/core/utils/types/kanji_categories.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
 import 'package:kanpractice/ui/widgets/CreateKanListDialog.dart';
 import 'package:kanpractice/ui/widgets/DragContainer.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/EmptyList.dart';
+import 'package:kanpractice/ui/widgets/KanjiCategoryList.dart';
 import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -35,9 +37,10 @@ class AddToKanListBottomSheet extends StatefulWidget {
 
 class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
   final KanjiListBloc _bloc = KanjiListBloc();
+  KanjiCategory _category = KanjiCategory.noun;
   String _error = "";
 
-  Future<void> _addWordToKanList(BuildContext context, String listName) async {
+  Future<void> _addWordToKanList(BuildContext context, KanjiCategory category, String listName) async {
     String? wordMeaning = widget.data.resultPhrase[0].senses[0].englishDefinitions[0];
     String? wordReading = widget.data.resultPhrase[0].japanese[0].reading ?? "";
     String? singleKanjiMeaning = widget.data.resultData?.meaning.split(", ")[0];
@@ -50,6 +53,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
       kanji: widget.kanji ?? "",
       meaning: "${meaning[0].toUpperCase()}${meaning.substring(1).toLowerCase()}",
       pronunciation: reading,
+      category: category.index,
       listName: listName,
       dateAdded: GeneralUtils.getCurrentMilliseconds(),
       dateLastShown: GeneralUtils.getCurrentMilliseconds()
@@ -104,7 +108,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
                         return CustomProgressIndicator();
                       else if (state is KanjiListStateLoaded) {
                         return Container(
-                          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height / 2.5),
+                          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height /  2),
                           margin: EdgeInsets.all(Margins.margin8),
                           child: _listSelection(state)
                         );
@@ -123,6 +127,15 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
   Widget _listSelection(KanjiListStateLoaded state) {
     return Column(
       children: [
+        Expanded(
+          child: KanjiCategoryList(
+            hasScrollablePhysics: true,
+            selected: (index) => _category.index == index,
+            onSelected: (index) {
+              setState(() => _category = KanjiCategory.values[index]);
+            },
+          ),
+        ),
         ListTile(
           onTap: () => CreateKanListDialog.showCreateKanListDialog(context, onSubmit: (String name) {
             _bloc..add(KanjiListEventCreate(name,
@@ -135,13 +148,14 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
         ),
         Divider(),
         Expanded(
+          flex: 2,
           child: ListView.separated(
             separatorBuilder: (context, index) => Divider(),
             itemCount: state.lists.length,
             itemBuilder: (context, index) {
               String listName = state.lists[index].name;
               return ListTile(
-                onTap: () async => await _addWordToKanList(context, listName),
+                onTap: () async => await _addWordToKanList(context, _category, listName),
                 title: Text(listName),
               );
             },

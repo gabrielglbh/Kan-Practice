@@ -1,7 +1,8 @@
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
+import 'package:kanpractice/core/utils/types/study_modes.dart';
+import 'package:kanpractice/core/utils/types/test_modes.dart';
 import 'package:sqflite/sqflite.dart';
 
 class KanjiQueries {
@@ -43,17 +44,13 @@ class KanjiQueries {
   /// query all kanji by their last shown date based on the study mode to be
   /// studied. If null, all kanji will be retrieved.
   ///
-  /// [orderedByLastShown] serves as a control variable to order all the kanji by
-  /// their last shown parameter
-  ///
-  /// [orderedByWorstAccuracy] serves as a control variable to order all the kanji by
-  /// their win rate
-  Future<List<Kanji>> getAllKanji({StudyModes? mode, bool orderedByLastShown = false,
-    bool orderedByWorstAccuracy = false}) async {
+  /// [type] serves as a control variable to order all the kanji by
+  /// their last shown parameter or worst accuracy parameter. See [Tests].
+  Future<List<Kanji>> getAllKanji({StudyModes? mode, Tests? type}) async {
     if (_database != null) {
       try {
         String query = "";
-        if (orderedByLastShown) {
+        if (type == Tests.time) {
           if (mode != null) {
             switch (mode) {
               case StudyModes.writing:
@@ -74,7 +71,7 @@ class KanjiQueries {
                 break;
             }
           } else return [];
-        } else if (orderedByWorstAccuracy) {
+        } else if (type == Tests.less) {
           if (mode != null) {
             switch (mode) {
               case StudyModes.writing:
@@ -123,6 +120,24 @@ class KanjiQueries {
         List<Map<String, dynamic>>? res = [];
 
         res = await _database?.query(KanjiTableFields.kanjiTable, where: whereClause, whereArgs: listNames);
+        if (res != null) return List.generate(res.length, (i) => Kanji.fromJson(res![i]));
+        else return [];
+      } catch (err) {
+        print(err.toString());
+        return [];
+      }
+    } else return [];
+  }
+
+  /// Query to get all kanji available in the current db based on their category
+  /// that the user has previously selected.
+  /// If anything goes wrong, an empty list will be returned.
+  Future<List<Kanji>> getKanjiBasedOnCategory(int category) async {
+    if (_database != null) {
+      try {
+        List<Map<String, dynamic>>? res = [];
+        res = await _database?.query(KanjiTableFields.kanjiTable,
+            where: "${KanjiTableFields.categoryField}=?", whereArgs: [category]);
         if (res != null) return List.generate(res.length, (i) => Kanji.fromJson(res![i]));
         else return [];
       } catch (err) {

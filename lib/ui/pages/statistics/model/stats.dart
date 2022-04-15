@@ -1,3 +1,5 @@
+import 'package:kanpractice/core/firebase/models/test_data.dart';
+
 class KanPracticeStats {
   final int totalLists;
   final int totalKanji;
@@ -7,21 +9,7 @@ class KanPracticeStats {
   final double totalWinRateListening;
   final String bestList;
   final String worstList;
-  final int totalTests;
-  final double totalTestAccuracy;
-  final int testTotalCountWriting;
-  final int testTotalCountReading;
-  final int testTotalCountRecognition;
-  final int testTotalCountListening;
-  final double testTotalWinRateWriting;
-  final double testTotalWinRateReading;
-  final double testTotalWinRateRecognition;
-  final double testTotalWinRateListening;
-  final int selectionTests;
-  final int blitzTests;
-  final int remembranceTests;
-  final int numberTests;
-  final int lessPctTests;
+  final TestData test;
 
   KanPracticeStats({
     required this.totalLists,
@@ -32,20 +20,6 @@ class KanPracticeStats {
     required this.totalWinRateListening,
     required this.bestList,
     required this.worstList,
-    required this.totalTests,
-    required this.totalTestAccuracy,
-    required this.testTotalCountWriting,
-    required this.testTotalCountReading,
-    required this.testTotalCountRecognition,
-    required this.testTotalCountListening,
-    required this.testTotalWinRateWriting,
-    required this.testTotalWinRateReading,
-    required this.testTotalWinRateRecognition,
-    required this.testTotalWinRateListening,
-    required this.selectionTests,
-    required this.blitzTests,
-    required this.remembranceTests,
-    required this.numberTests,
-    required this.lessPctTests
+    required this.test
   });
 }

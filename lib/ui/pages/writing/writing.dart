@@ -3,6 +3,7 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
+import 'package:kanpractice/core/utils/types/study_modes.dart';
 import 'package:kanpractice/ui/widgets/StudyModeAppBar.dart';
 import 'package:kanpractice/ui/widgets/canvas/CustomCanvas.dart';
 import 'package:kanpractice/ui/pages/writing/widgets/WritingButtonsAnimation.dart';

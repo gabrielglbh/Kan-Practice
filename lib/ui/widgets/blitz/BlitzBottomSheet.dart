@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kanpractice/core/utils/types/test_modes.dart';
 import 'package:kanpractice/ui/widgets/DragContainer.dart';
 import 'package:kanpractice/ui/widgets/StudyMode.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
@@ -62,9 +63,10 @@ class BlitzBottomSheet extends StatelessWidget {
                 ),
                 TestStudyMode(
                   practiceList: practiceList,
-                  remembranceTest: remembranceTest,
-                  lessPctTest: lessPctTest,
-                  listsNames: remembranceTest ? "remembrance_bottom_sheet_label".tr()
+                  type: remembranceTest ? Tests.time
+                      : lessPctTest ? Tests.less
+                      : Tests.blitz,
+                  testName: remembranceTest ? "remembrance_bottom_sheet_label".tr()
                       : lessPctTest ? "less_pct_bottom_sheet_label".tr()
                       : practiceList == null ? 'blitz_bottom_sheet_label'.tr()
                       : '${"blitz_bottom_sheet_on_label".tr()} $practiceList',

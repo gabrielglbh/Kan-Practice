@@ -1,0 +1,1 @@
+enum CoachTutorialParts { kanList, details }

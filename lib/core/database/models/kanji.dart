@@ -33,6 +33,8 @@ class Kanji {
   final int dateLastShownRecognition;
   @JsonKey(name: KanjiTableFields.dateLastShownListening)
   final int dateLastShownListening;
+  @JsonKey(name: KanjiTableFields.categoryField)
+  final int category;
 
   const Kanji({required this.kanji, required this.listName, required this.meaning,
     required this.pronunciation, this.winRateReading = DatabaseConstants.emptyWinRate,
@@ -40,7 +42,7 @@ class Kanji {
     this.winRateWriting = DatabaseConstants.emptyWinRate,
     this.winRateListening = DatabaseConstants.emptyWinRate, this.dateAdded = 0,
     this.dateLastShown = 0, this.dateLastShownWriting = 0, this.dateLastShownReading = 0,
-    this.dateLastShownRecognition = 0, this.dateLastShownListening = 0
+    this.dateLastShownRecognition = 0, this.dateLastShownListening = 0, this.category = 0
   });
 
   /// Empty [Kanji]
@@ -63,6 +65,7 @@ class Kanji {
     dateLastShownRecognition: this.dateLastShownRecognition,
     dateLastShownListening: this.dateLastShownListening,
     dateAdded: dateAdded ?? this.dateAdded,
-    dateLastShown: dateLastShown ?? this.dateLastShown
+    dateLastShown: dateLastShown ?? this.dateLastShown,
+    category: this.category
   );
 }

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/utils/GeneralUtils.dart';
-import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
-import 'package:kanpractice/ui/pages/kanji_lists/test_modes.dart';
-import 'package:kanpractice/ui/pages/kanji_lists/widgets/KanListTile.dart';
+import 'package:kanpractice/core/utils/types/study_modes.dart';
+import 'package:kanpractice/core/utils/types/visualization_mode.dart';
+import 'package:kanpractice/core/utils/types/test_modes.dart';
 import 'package:kanpractice/ui/pages/statistics/bloc/stats_bloc.dart';
 import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
@@ -82,7 +82,7 @@ class StatisticsPage extends StatelessWidget {
         ),
         Divider(),
         _header(context, "${"stats_tests".tr()} • ", "${GeneralUtils.roundUpAsString(
-            GeneralUtils.getFixedDouble(s.totalTestAccuracy * 100))}%"),
+            GeneralUtils.getFixedDouble(s.test.totalTestAccuracy * 100))}%"),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: List.generate(StudyModes.values.length, (index) {
@@ -91,28 +91,28 @@ class StatisticsPage extends StatelessWidget {
                 return Row(
                   children: [
                     _bullet(StudyModes.values[index]),
-                    _fittedText(s.testTotalCountWriting.toString())
+                    _fittedText(s.test.testTotalCountWriting.toString())
                   ],
                 );
               case StudyModes.reading:
                 return Row(
                   children: [
                     _bullet(StudyModes.values[index]),
-                    _fittedText(s.testTotalCountReading.toString())
+                    _fittedText(s.test.testTotalCountReading.toString())
                   ],
                 );
               case StudyModes.recognition:
                 return Row(
                   children: [
                     _bullet(StudyModes.values[index]),
-                    _fittedText(s.testTotalCountRecognition.toString())
+                    _fittedText(s.test.testTotalCountRecognition.toString())
                   ],
                 );
               case StudyModes.listening:
                 return Row(
                   children: [
                     _bullet(StudyModes.values[index]),
-                    _fittedText(s.testTotalCountListening.toString())
+                    _fittedText(s.test.testTotalCountListening.toString())
                   ],
                 );
             }
@@ -120,7 +120,7 @@ class StatisticsPage extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.only(top: Margins.margin16),
-          child: _countLabel(s.totalTests.toString()),
+          child: _countLabel(s.test.totalTests.toString()),
         ),
         Divider(),
         _expandedTestCount(s),
@@ -129,10 +129,10 @@ class StatisticsPage extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: Margins.margin8),
           child: DependentGraph(
             mode: mode,
-            writing: s.testTotalWinRateWriting,
-            reading: s.testTotalWinRateReading,
-            recognition: s.testTotalWinRateRecognition,
-            listening: s.testTotalWinRateListening
+            writing: s.test.testTotalWinRateWriting,
+            reading: s.test.testTotalWinRateReading,
+            recognition: s.test.testTotalWinRateRecognition,
+            listening: s.test.testTotalWinRateListening
           )
         )
       ],
@@ -194,15 +194,17 @@ class StatisticsPage extends StatelessWidget {
       children: List.generate(Tests.values.length, (index) {
         switch (Tests.values[index]) {
           case Tests.lists:
-            return _testModeCountContainer(Tests.lists, s.selectionTests);
+            return _testModeCountContainer(Tests.lists, s.test.selectionTests);
           case Tests.blitz:
-            return _testModeCountContainer(Tests.blitz, s.blitzTests);
+            return _testModeCountContainer(Tests.blitz, s.test.blitzTests);
           case Tests.time:
-            return _testModeCountContainer(Tests.time, s.remembranceTests);
+            return _testModeCountContainer(Tests.time, s.test.remembranceTests);
           case Tests.numbers:
-            return _testModeCountContainer(Tests.numbers, s.numberTests);
+            return _testModeCountContainer(Tests.numbers, s.test.numberTests);
           case Tests.less:
-            return _testModeCountContainer(Tests.less, s.lessPctTests);
+            return _testModeCountContainer(Tests.less, s.test.lessPctTests);
+          case Tests.categories:
+            return _testModeCountContainer(Tests.categories, s.test.categoryTests);
         }
       })
     );

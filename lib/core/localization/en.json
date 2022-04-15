@@ -53,6 +53,7 @@
   "backup_creation_dialog_title": "Creating Back Up",
   "backup_creation_dialog_content": "The back up will be created in the cloud. The current data in your device will be saved replacing the current back up data. Tests will not be saved. Do you want to proceed?",
   "backup_creation_dialog_positive": "Create",
+  "backup_creation_dialog_tests": "Do you want to store all your tests?",
   "backup_merge_dialog_title": "Installing Back Up",
   "backup_merge_dialog_content": "The back up data will be installed in your device replacing it with the current data you have. Do you want to proceed?",
   "backup_merge_dialog_positive": "Install",
@@ -260,5 +261,5 @@
   "test_mode_categories": "Category Test",
   "categories_test_bottom_sheet_title": "Take a test with the category of your choice",
   "categories_test_bottom_sheet_label": "Category:",
-  "categories_test_bottom_sheet_error": "There are no words with this category."
+  "categories_test_bottom_sheet_error": "There are no words with this category.",
 }

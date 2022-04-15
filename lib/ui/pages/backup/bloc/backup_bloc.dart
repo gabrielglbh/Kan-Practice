@@ -10,7 +10,7 @@ class BackUpBloc extends Bloc<BackUpEvent, BackUpState> {
   BackUpBloc() : super(BackUpStateLoaded()) {
     on<BackUpLoadingCreateBackUp>((event, emit) async {
       emit(BackUpStateLoading());
-      final error = await BackUpRecords.instance.createBackUp();
+      final error = await BackUpRecords.instance.createBackUp(backUpTests: event.backUpTests);
       if (error == "") emit(BackUpStateLoaded(message: "backup_bloc_creation_successful".tr()));
       else emit(BackUpStateLoaded(message: "${"backup_bloc_creation_failed".tr()} $error"));
     });

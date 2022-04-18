@@ -3,6 +3,7 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/market_queries.dart';
 import 'package:kanpractice/core/firebase/firebase.dart';
+import 'package:kanpractice/core/firebase/models/market_list.dart';
 
 class MarketRecords {
   FirebaseFirestore? _ref;
@@ -32,11 +33,13 @@ class MarketRecords {
   /// Uploads a Kanlist to the market place. Every list and kanji will be
   /// reset upon upload.
   /// [list] and [kanji] will reset their win rates and dates upon upload.
-  Future<int> uploadToMarketPlace(KanjiList list, List<Kanji> kanji) async {
+  ///
+  /// In order to be able to upload to the market place, AN USER MUST BE AUTHENTICATED.
+  Future<int> uploadToMarketPlace(MarketList list, List<Kanji> kanji) async {
     try {
       var batch = _ref?.batch();
 
-      final KanjiList resetList = list.copyWithReset();
+      final MarketList resetList = list.copyWithReset();
       final List<Kanji> resetKanji = [];
       resetKanji.forEach((k) => resetKanji.add(k.copyWithReset()));
 
@@ -73,7 +76,7 @@ class MarketRecords {
       List<Kanji> backUpKanji = [];
 
       if (kanjiSnapshot != null && listSnapshot != null && listData != null) {
-        backUpList = KanjiList.fromJson(listData);
+        backUpList = MarketList.fromJson(listData).list;
 
         for (int x = 0; x < kanjiSnapshot.size; x++)
           backUpKanji.add(Kanji.fromJson(kanjiSnapshot.docs[x].data()));

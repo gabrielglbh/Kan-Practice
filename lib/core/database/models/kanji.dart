@@ -6,35 +6,21 @@ part 'kanji.g.dart';
 
 @JsonSerializable()
 class Kanji {
-  @JsonKey(name: KanjiTableFields.kanjiField)
   final String kanji;
   @JsonKey(name: KanjiTableFields.listNameField)
   final String listName;
-  @JsonKey(name: KanjiTableFields.meaningField)
   final String meaning;
-  @JsonKey(name: KanjiTableFields.pronunciationField)
   final String pronunciation;
-  @JsonKey(name: KanjiTableFields.winRateWritingField)
   final double winRateWriting;
-  @JsonKey(name: KanjiTableFields.winRateReadingField)
   final double winRateReading;
-  @JsonKey(name: KanjiTableFields.winRateRecognitionField)
   final double winRateRecognition;
-  @JsonKey(name: KanjiTableFields.winRateListeningField)
   final double winRateListening;
-  @JsonKey(name: KanjiTableFields.dateAddedField)
   final int dateAdded;
-  @JsonKey(name: KanjiTableFields.dateLastShown)
   final int dateLastShown;
-  @JsonKey(name: KanjiTableFields.dateLastShownWriting)
   final int dateLastShownWriting;
-  @JsonKey(name: KanjiTableFields.dateLastShownReading)
   final int dateLastShownReading;
-  @JsonKey(name: KanjiTableFields.dateLastShownRecognition)
   final int dateLastShownRecognition;
-  @JsonKey(name: KanjiTableFields.dateLastShownListening)
   final int dateLastShownListening;
-  @JsonKey(name: KanjiTableFields.categoryField)
   final int category;
 
   const Kanji({required this.kanji, required this.listName, required this.meaning,

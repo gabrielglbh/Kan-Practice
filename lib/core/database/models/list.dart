@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
+import 'package:kanpractice/core/utils/GeneralUtils.dart';
 
 part 'list.g.dart';
 
@@ -37,5 +38,14 @@ class KanjiList {
     totalWinRateRecognition: this.totalWinRateRecognition,
     totalWinRateListening: this.totalWinRateListening,
     lastUpdated: lastUpdated ?? this.lastUpdated
+  );
+
+  KanjiList copyWithReset() => KanjiList(
+      name: this.name,
+      totalWinRateWriting: DatabaseConstants.emptyWinRate,
+      totalWinRateReading: DatabaseConstants.emptyWinRate,
+      totalWinRateRecognition: DatabaseConstants.emptyWinRate,
+      totalWinRateListening: DatabaseConstants.emptyWinRate,
+      lastUpdated: GeneralUtils.getCurrentMilliseconds()
   );
 }

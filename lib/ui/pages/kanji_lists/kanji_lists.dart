@@ -39,6 +39,7 @@ class _KanjiListsState extends State<KanjiLists> {
   final GlobalKey lists = GlobalKey();
   final GlobalKey addLists = GlobalKey();
   final GlobalKey actions = GlobalKey();
+  final GlobalKey market = GlobalKey();
 
   /// This variable keeps track of the actual filter applied. The value is
   /// saved into the shared preferences when a filter is applied.
@@ -191,6 +192,15 @@ class _KanjiListsState extends State<KanjiLists> {
           title: FittedBox(fit: BoxFit.fitWidth, child: Text("KanPractice")),
           actions: [
             IconButton(
+              key: market,
+              icon: Icon(Icons.shopping_bag_rounded),
+              onPressed: () async {
+                await Navigator.of(context).pushNamed(KanPracticePages.marketPlace).then((code) {
+                  _addLoadingEvent(offset: _loadingTimes);
+                });
+              },
+            ),
+            IconButton(
               key: actions,
               icon: Icon(Icons.menu_book_rounded),
               onPressed: () {
@@ -300,7 +310,7 @@ class _KanjiListsState extends State<KanjiLists> {
         if (state is KanjiListStateLoaded) {
           if (StorageManager.readData(StorageManager.haveSeenKanListCoachMark) == false) {
             _onTutorial = true;
-            await TutorialCoach([lists, addLists, actions], CoachTutorialParts.kanList)
+            await TutorialCoach([lists, addLists, actions, market], CoachTutorialParts.kanList)
                 .showTutorial(context, onEnd: () => _onTutorial = false);
           }
         }

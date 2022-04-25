@@ -12,6 +12,7 @@ import 'package:kanpractice/ui/pages/jisho/jisho.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/list_details.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/kanji_lists.dart';
 import 'package:kanpractice/ui/pages/listening/listening.dart';
+import 'package:kanpractice/ui/pages/market/market.dart';
 import 'package:kanpractice/ui/pages/reading/reading.dart';
 import 'package:kanpractice/ui/pages/recognition/recognition.dart';
 import 'package:kanpractice/ui/pages/settings/settings.dart';
@@ -71,6 +72,8 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return CupertinoPageRoute(builder: (_) => DictionaryPage(args: args));
     case KanPracticePages.statisticsPage:
       return CupertinoPageRoute(builder: (_) => StatisticsPage());
+    case KanPracticePages.marketPlace:
+      return CupertinoPageRoute(builder: (_) => MarketPlace());
   }
   return null;
 }

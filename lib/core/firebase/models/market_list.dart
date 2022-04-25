@@ -1,7 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/list.dart';
-import 'package:kanpractice/core/utils/GeneralUtils.dart';
 
 part 'market_list.g.dart';
 
@@ -19,11 +17,11 @@ class MarketList {
   final int updatedToMarket;
 
   MarketList({required this.list, this.rating = const {}, this.downloads = 0,
-    this.description = "", this.author = "", this.updatedToMarket = 0
+    required this.description, required this.author, this.updatedToMarket = 0
   });
 
   /// Empty [MarketList]
-  static final MarketList empty = MarketList(list: KanjiList.empty);
+  static final MarketList empty = MarketList(list: KanjiList.empty, description: "", author: "");
 
   factory MarketList.fromJson(Map<String, dynamic> json) => _$MarketListFromJson(json);
   Map<String, dynamic> toJson() => _$MarketListToJson(this);
@@ -37,12 +35,14 @@ class MarketList {
       updatedToMarket: lastUpdated ?? this.updatedToMarket
   );
 
-  MarketList copyWithReset() => MarketList(
+  MarketList copyWithReset({
+    required String author
+  }) => MarketList(
       list: this.list.copyWithReset(),
       rating: this.rating,
       downloads: this.downloads,
       description: this.description,
-      author: this.author,
+      author: author,
       updatedToMarket: this.updatedToMarket
   );
 }

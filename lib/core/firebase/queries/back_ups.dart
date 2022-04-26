@@ -14,8 +14,8 @@ import 'package:kanpractice/core/utils/general_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class BackUpRecords {
-  FirebaseFirestore? _ref;
-  FirebaseAuth? _auth;
+  late FirebaseFirestore _ref;
+  late FirebaseAuth _auth;
   final String collection = "BackUps";
   final String kanjiLabel= "Kanji";
   final String listsLabel = "Lists";
@@ -35,9 +35,9 @@ class BackUpRecords {
   /// we commit the current batch and initialize it again to perform
   /// more operations.
   Future<WriteBatch?> _reinitializeBatch(WriteBatch? curr, int max) async {
-    if (max % 500 == 0) {
+    if ((max + 1) % 500 == 0) {
       await curr?.commit();
-      return _ref?.batch();
+      return _ref.batch();
     } else {
       return curr;
     }
@@ -47,7 +47,7 @@ class BackUpRecords {
   /// built version.
   Future<String> getVersion() async {
     try {
-      final DocumentSnapshot? ref = await _ref?.collection("Versioning").doc("version").get();
+      final DocumentSnapshot? ref = await _ref.collection("Versioning").doc("version").get();
       return await ref?.get("version");
     } catch (err) {
       print(err.toString());
@@ -60,7 +60,7 @@ class BackUpRecords {
     List<String> notes = [];
 
     try {
-      final Future<DocumentSnapshot>? ref = _ref?.collection("Versioning").doc("version_notes").get();
+      final Future<DocumentSnapshot>? ref = _ref.collection("Versioning").doc("version_notes").get();
       await ref?.then((snapshot) {
         notes = snapshot.get(Localizations.localeOf(context).languageCode).cast<String>();
       });
@@ -77,7 +77,7 @@ class BackUpRecords {
   ///
   /// Returns an empty String if nothing happened, else, the error is returned.
   Future<String> createBackUp({bool backUpTests = false}) async {
-    User? _user = _auth?.currentUser;
+    User? _user = _auth.currentUser;
     await _user?.reload();
 
     List<Kanji> kanji = await KanjiQueries.instance.getAllKanji();
@@ -89,43 +89,52 @@ class BackUpRecords {
       return "backup_firebase_createBackUp_listEmpty".tr();
     } else {
       BackUp backUpObject = BackUp(lists: lists, kanji: kanji, test: test, lastUpdated: date);
-      WriteBatch? batch = _ref?.batch();
+      WriteBatch? batch = _ref.batch();
       try {
         /// Making sure the back up only contains the actual data of the device
         await removeBackUp();
 
         /// Kanji list
         for (int x = 0; x < kanji.length; x++) {
-          final DocumentReference doc = _ref?.collection(collection).doc(_user?.uid)
-              .collection(kanjiLabel).doc(kanji[x].kanji) as DocumentReference;
+          final DocumentReference doc = _ref.collection(collection).doc(_user?.uid)
+              .collection(kanjiLabel).doc(kanji[x].kanji);
           batch?.set(doc, backUpObject.kanji[x].toJson());
           batch = await _reinitializeBatch(batch, x);
         }
 
+        await batch?.commit();
+        batch = _ref.batch();
+
         /// Lists
         for (int x = 0; x < lists.length; x++) {
-          final DocumentReference doc = _ref?.collection(collection).doc(_user?.uid)
-              .collection(listsLabel).doc(lists[x].name) as DocumentReference;
+          final DocumentReference doc = _ref.collection(collection).doc(_user?.uid)
+              .collection(listsLabel).doc(lists[x].name);
           batch?.set(doc, backUpObject.lists[x].toJson());
           batch = await _reinitializeBatch(batch, x);
         }
 
+        await batch?.commit();
+        batch = _ref.batch();
+
         /// Tests
         if (backUpTests && test.isNotEmpty) {
           for (int x = 0; x < test.length; x++) {
-            final DocumentReference doc = _ref?.collection(collection).doc(_user?.uid)
-                .collection(testsLabel).doc(test[x].takenDate.toString()) as DocumentReference;
+            final DocumentReference doc = _ref.collection(collection).doc(_user?.uid)
+                .collection(testsLabel).doc(test[x].takenDate.toString());
             batch?.set(doc, backUpObject.test[x].toJson());
             batch = await _reinitializeBatch(batch, x);
           }
         }
 
+        await batch?.commit();
+        batch = _ref.batch();
+
         /// Last updated
-        batch?.set(_ref?.collection(collection).doc(_user?.uid) as DocumentReference, {
+        batch.set(_ref.collection(collection).doc(_user?.uid), {
           BackUp.updatedLabel: backUpObject.lastUpdated
         });
 
-        await batch?.commit();
+        await batch.commit();
         return "";
       } catch (e) {
         return e.toString();
@@ -137,20 +146,20 @@ class BackUpRecords {
   /// from the local db.
   /// Returns an empty String if nothing happened, else, the error is returned.
   Future<String> restoreBackUp() async {
-    User? _user = _auth?.currentUser;
+    User? _user = _auth.currentUser;
     await _user?.reload();
 
     try {
-      final kanjiSnapshot = await _ref?.collection(collection).doc(_user?.uid).collection(kanjiLabel).get();
-      final listsSnapshot = await _ref?.collection(collection).doc(_user?.uid).collection(listsLabel).get();
-      final testsSnapshot = await _ref?.collection(collection).doc(_user?.uid).collection(testsLabel).get();
+      final kanjiSnapshot = await _ref.collection(collection).doc(_user?.uid).collection(kanjiLabel).get();
+      final listsSnapshot = await _ref.collection(collection).doc(_user?.uid).collection(listsLabel).get();
+      final testsSnapshot = await _ref.collection(collection).doc(_user?.uid).collection(testsLabel).get();
 
       List<Kanji> backUpKanji = [];
       List<KanjiList> backUpLists = [];
       /// If snapshot is null, backUpTests will be empty
       List<Test> backUpTests = [];
 
-      if (kanjiSnapshot != null && listsSnapshot != null) {
+      if (kanjiSnapshot.size > 0 && listsSnapshot.size > 0) {
         for (int x = 0; x < kanjiSnapshot.size; x++) {
           backUpKanji.add(Kanji.fromJson(kanjiSnapshot.docs[x].data()));
         }
@@ -159,7 +168,7 @@ class BackUpRecords {
         }
       }
 
-      if (testsSnapshot != null) {
+      if (testsSnapshot.size > 0) {
         for (int x = 0; x < testsSnapshot.size; x++) {
           backUpTests.add(Test.fromJson(testsSnapshot.docs[x].data()));
         }
@@ -174,38 +183,38 @@ class BackUpRecords {
   /// Removes the [BackUp] object from Firebase.
   /// Returns an empty String if nothing happened, else, the error is returned.
   Future<String> removeBackUp() async {
-    User? _user = _auth?.currentUser;
+    User? _user = _auth.currentUser;
     await _user?.reload();
 
     try {
-      final kanjiSnapshot = await _ref?.collection(collection).doc(_user?.uid).collection(kanjiLabel).get();
-      final listsSnapshot = await _ref?.collection(collection).doc(_user?.uid).collection(listsLabel).get();
-      final testsSnapshot = await _ref?.collection(collection).doc(_user?.uid).collection(testsLabel).get();
+      final kanjiSnapshot = await _ref.collection(collection).doc(_user?.uid).collection(kanjiLabel).get();
+      final listsSnapshot = await _ref.collection(collection).doc(_user?.uid).collection(listsLabel).get();
+      final testsSnapshot = await _ref.collection(collection).doc(_user?.uid).collection(testsLabel).get();
 
-      WriteBatch? batch = _ref?.batch();
+      WriteBatch? batch = _ref.batch();
 
-      if (kanjiSnapshot != null && listsSnapshot != null) {
+      if (kanjiSnapshot.size > 0 && listsSnapshot.size > 0) {
         for (int x = 0; x < kanjiSnapshot.size; x++) {
-          batch?.delete(_ref?.collection(collection).doc(_user?.uid).collection(kanjiLabel)
-              .doc(Kanji.fromJson(kanjiSnapshot.docs[x].data()).kanji) as DocumentReference);
+          batch?.delete(_ref.collection(collection).doc(_user?.uid).collection(kanjiLabel)
+              .doc(Kanji.fromJson(kanjiSnapshot.docs[x].data()).kanji));
           batch = await _reinitializeBatch(batch, x);
         }
         for (int x = 0; x < listsSnapshot.size; x++) {
-          batch?.delete(_ref?.collection(collection).doc(_user?.uid).collection(listsLabel)
-              .doc(KanjiList.fromJson(listsSnapshot.docs[x].data()).name) as DocumentReference);
+          batch?.delete(_ref.collection(collection).doc(_user?.uid).collection(listsLabel)
+              .doc(KanjiList.fromJson(listsSnapshot.docs[x].data()).name));
           batch = await _reinitializeBatch(batch, x);
         }
       }
 
-      if (testsSnapshot != null) {
+      if (testsSnapshot.size > 0) {
         for (int x = 0; x < testsSnapshot.size; x++) {
-          batch?.delete(_ref?.collection(collection).doc(_user?.uid).collection(testsLabel)
-              .doc(Test.fromJson(testsSnapshot.docs[x].data()).takenDate.toString()) as DocumentReference);
+          batch?.delete(_ref.collection(collection).doc(_user?.uid).collection(testsLabel)
+              .doc(Test.fromJson(testsSnapshot.docs[x].data()).takenDate.toString()));
           batch = await _reinitializeBatch(batch, x);
         }
       }
 
-      batch?.delete(_ref?.collection(collection).doc(_user?.uid) as DocumentReference);
+      batch?.delete(_ref.collection(collection).doc(_user?.uid));
       await batch?.commit();
       return "";
     } catch (err) {
@@ -217,12 +226,12 @@ class BackUpRecords {
   /// Returns the actual parsed date as a String if nothing happened, else,
   /// the error is returned.
   Future<String> getLastUpdated(BuildContext context) async {
-    User? _user = _auth?.currentUser;
+    User? _user = _auth.currentUser;
     await _user?.reload();
 
     try {
-      final snapshot = await _ref?.collection(collection).doc(_user?.uid).get();
-      if (snapshot != null) {
+      final snapshot = await _ref.collection(collection).doc(_user?.uid).get();
+      if (snapshot.exists) {
         int date = snapshot.get("lastUpdated");
         return "${"backup_firebase_getLastUpdated_successful".tr()} "
             "${GeneralUtils.parseDateMilliseconds(context, date)}";

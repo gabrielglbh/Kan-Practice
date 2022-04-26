@@ -14,6 +14,7 @@ class MarketRecords {
   late FirebaseAuth _auth;
   final String collection = "Market";
   final String kanjiLabel = "Kanji";
+  final String listLabel = "List";
 
   MarketRecords._() {
     _ref = FirebaseUtils.instance.dbRef;
@@ -29,7 +30,7 @@ class MarketRecords {
   /// we commit the current batch and initialize it again to perform
   /// more operations.
   Future<WriteBatch> _reinitializeBatch(WriteBatch curr, int max) async {
-    if (max % 500 == 0) {
+    if ((max + 1) % 500 == 0) {
       await curr.commit();
       return _ref.batch();
     } else {
@@ -46,22 +47,27 @@ class MarketRecords {
   Future<List<MarketList>> getLists({
     MarketFilters filter = MarketFilters.all,
     bool descending = true,
-    String? offsetDocumentId,
+    required String offsetDocumentId,
     required Function(String) onLastQueriedDocument
   }) async {
     try {
       final List<MarketList> lists = [];
-
-      final DocumentSnapshot startFrom = await _ref.collection(collection).doc(offsetDocumentId).get();
-      final listsSnapshot = await _ref.collection(collection)
+      final Query<Map<String, dynamic>> listsSnapshot = _ref.collection(collection)
           .orderBy(filter.filter, descending: descending)
-          .limit(LazyLoadingLimits.kanList)
-          .startAtDocument(startFrom).get();
+          .limit(LazyLoadingLimits.kanList);
 
-      if (listsSnapshot.size > 0) {
-        for (int x = 0; x < listsSnapshot.size; x++) {
-          lists.add(MarketList.fromJson(listsSnapshot.docs[x].data()));
-          if (x == listsSnapshot.size - 1) onLastQueriedDocument(listsSnapshot.docs[x].id);
+      if (offsetDocumentId.isNotEmpty) {
+        final DocumentSnapshot startFrom = await _ref.collection(collection)
+            .doc(offsetDocumentId).get();
+        listsSnapshot.startAtDocument(startFrom);
+      }
+
+      final snapshot = await listsSnapshot.get();
+
+      if (snapshot.size > 0) {
+        for (int x = 0; x < snapshot.size; x++) {
+          lists.add(MarketList.fromJson(snapshot.docs[x].data()));
+          if (x == snapshot.size - 1) onLastQueriedDocument(snapshot.docs[x].id);
         }
         return lists;
       } else {
@@ -82,21 +88,26 @@ class MarketRecords {
   /// 
   /// TODO: Set keywords on MarketList for matching queries
   Future<List<MarketList>> getListsBasedOnQuery(String query, {
-    String? offsetDocumentId,
+    required String offsetDocumentId,
     required Function(String) onLastQueriedDocument
   }) async {
     try {
       final List<MarketList> lists = [];
+      final Query<Map<String, dynamic>> listsSnapshot = _ref.collection(collection)
+          .limit(LazyLoadingLimits.kanList);
 
-      final DocumentSnapshot startFrom = await _ref.collection(collection).doc(offsetDocumentId).get();
-      final listsSnapshot = await _ref.collection(collection)
-          .limit(LazyLoadingLimits.kanList)
-          .startAtDocument(startFrom).get();
+      if (offsetDocumentId.isNotEmpty) {
+        final DocumentSnapshot startFrom = await _ref.collection(collection)
+            .doc(offsetDocumentId).get();
+        listsSnapshot.startAtDocument(startFrom);
+      }
 
-      if (listsSnapshot.size > 0) {
-        for (int x = 0; x < listsSnapshot.size; x++) {
-          lists.add(MarketList.fromJson(listsSnapshot.docs[x].data()));
-          if (x == listsSnapshot.size - 1) onLastQueriedDocument(listsSnapshot.docs[x].id);
+      final snapshot = await listsSnapshot.get();
+
+      if (snapshot.size > 0) {
+        for (int x = 0; x < snapshot.size; x++) {
+          lists.add(MarketList.fromJson(snapshot.docs[x].data()));
+          if (x == snapshot.size - 1) onLastQueriedDocument(snapshot.docs[x].id);
         }
         return lists;
       } else {
@@ -118,39 +129,48 @@ class MarketRecords {
     User? _user = _auth.currentUser;
     await _user?.reload();
 
-    if (_user == null) return -2;
+    if (_user == null) {
+      return -2;
+    } else {
+      try {
+        var batch = _ref.batch();
 
-    try {
-      var batch = _ref.batch();
+        final MarketList resetList = MarketList(
+            author: _user.uid,
+            description: description,
+            updatedToMarket: GeneralUtils.getCurrentMilliseconds()
+        );
+        final KanjiList raw = list.copyWithReset();
+        final List<Kanji> resetKanji = [];
+        for (var k in kanji) {
+          resetKanji.add(k.copyWithReset());
+        }
 
-      final MarketList resetList = MarketList(
-        list: list.copyWithReset(),
-        author: _user.uid,
-        description: description,
-        updatedToMarket: GeneralUtils.getCurrentMilliseconds()
-      );
-      final List<Kanji> resetKanji = [];
-      for (var k in resetKanji) {
-        resetKanji.add(k.copyWithReset());
+        final DocumentReference doc = _ref.collection(collection).doc();
+
+        /// Market List
+        batch.set(doc, resetList.toJson());
+
+        /// KanList
+        final DocumentReference k = doc.collection(listLabel).doc(raw.name);
+        batch.set(k, raw.toJson());
+
+        await batch.commit();
+
+        /// Kanji list
+        batch = _ref.batch();
+        for (int x = 0; x < resetKanji.length; x++) {
+          final DocumentReference k = doc.collection(kanjiLabel).doc(resetKanji[x].kanji);
+          batch.set(k, resetKanji[x].toJson());
+          batch = await _reinitializeBatch(batch, x);
+        }
+
+        await batch.commit();
+        return 0;
+      } catch (err) {
+        print (err);
+        return -1;
       }
-
-      final DocumentReference doc = _ref.collection(collection).doc();
-
-      /// List
-      batch.set(doc, resetList.toJson());
-
-      /// Kanji list
-      for (int x = 0; x < resetKanji.length; x++) {
-        final DocumentReference k = doc.collection(kanjiLabel).doc(resetKanji[x].kanji);
-        batch.set(k, resetKanji[x].toJson());
-        batch = await _reinitializeBatch(batch, x);
-      }
-
-      await batch.commit();
-      return 0;
-    } catch (err) {
-      print (err);
-      return -1;
     }
   }
 
@@ -159,15 +179,14 @@ class MarketRecords {
   /// The [id] comes from the Firebase document id when retrieving the lists.
   Future<String> downloadFromMarketPlace(String id) async {
     try {
-      final listSnapshot = await _ref.collection(collection).doc(id).get();
-      final listData = listSnapshot.data();
+      final listSnapshot = await _ref.collection(collection).doc(id).collection(listLabel).get();
       final kanjiSnapshot = await _ref.collection(collection).doc(id).collection(kanjiLabel).get();
 
       late KanjiList backUpList;
       List<Kanji> backUpKanji = [];
 
-      if (kanjiSnapshot.size > 0 && listSnapshot.exists && listData != null) {
-        backUpList = MarketList.fromJson(listData).list;
+      if (kanjiSnapshot.size > 0 && listSnapshot.size > 0) {
+        backUpList = KanjiList.fromJson(listSnapshot.docs[0].data());
 
         for (int x = 0; x < kanjiSnapshot.size; x++) {
           backUpKanji.add(Kanji.fromJson(kanjiSnapshot.docs[x].data()));

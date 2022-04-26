@@ -132,7 +132,8 @@ class StatisticsPage extends StatelessWidget {
             recognition: s.test.testTotalWinRateRecognition,
             listening: s.test.testTotalWinRateListening
           )
-        )
+        ),
+        const SizedBox(height: Margins.margin64)
       ],
     );
   }

@@ -26,23 +26,24 @@ class KPDependentGraph extends StatelessWidget {
     );
   }
 
-  // TODO: Overflow
   Widget _barChart() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        KPWinRateBarChart(dataSource: List.generate(StudyModes.values.length, (index) {
-          switch (StudyModes.values[index]) {
-            case StudyModes.writing:
-              return BarData(x: StudyModes.writing.mode, y: writing, color: StudyModes.writing.color);
-            case StudyModes.reading:
-              return BarData(x: StudyModes.reading.mode, y: reading, color: StudyModes.reading.color);
-            case StudyModes.recognition:
-              return BarData(x: StudyModes.recognition.mode, y: recognition, color: StudyModes.recognition.color);
-            case StudyModes.listening:
-              return BarData(x: StudyModes.listening.mode, y: listening, color: StudyModes.listening.color);
-          }
-        }))
+        Expanded(
+          child: KPWinRateBarChart(dataSource: List.generate(StudyModes.values.length, (index) {
+            switch (StudyModes.values[index]) {
+              case StudyModes.writing:
+                return BarData(x: StudyModes.writing.mode, y: writing, color: StudyModes.writing.color);
+              case StudyModes.reading:
+                return BarData(x: StudyModes.reading.mode, y: reading, color: StudyModes.reading.color);
+              case StudyModes.recognition:
+                return BarData(x: StudyModes.recognition.mode, y: recognition, color: StudyModes.recognition.color);
+              case StudyModes.listening:
+                return BarData(x: StudyModes.listening.mode, y: listening, color: StudyModes.listening.color);
+            }
+          })),
+        )
       ],
     );
   }

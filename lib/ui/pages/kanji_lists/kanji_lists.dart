@@ -10,7 +10,7 @@ import 'package:kanpractice/core/types/coach_tutorial_parts.dart';
 import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
-import 'package:kanpractice/core/types/filters.dart';
+import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/test_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/kp_create_kanlist_dialog.dart';
 import 'package:kanpractice/ui/widgets/kp_search_bar.dart';

@@ -5,6 +5,11 @@ part 'market_list.g.dart';
 
 @JsonSerializable()
 class MarketList {
+  static const ratingField = "rating";
+  static const downloadField = "download";
+  static const authorField = "author";
+  static const updatedToMarketField = "updatedToMarket";
+
   KanjiList list;
   /// Rating will hold a map of authenticated users IDs with their rating on a list.
   /// A certain person will only be able to change the rating on their rating,

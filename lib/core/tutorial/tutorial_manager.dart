@@ -17,7 +17,8 @@ class TutorialCoach {
         _tutorialText = [
           "coach_tutorial_kanlists_1".tr(),
           "coach_tutorial_kanlists_2".tr(),
-          "coach_tutorial_kanlists_3".tr()
+          "coach_tutorial_kanlists_3".tr(),
+          "coach_tutorial_kanlists_4".tr()
         ];
         break;
       case CoachTutorialParts.details:

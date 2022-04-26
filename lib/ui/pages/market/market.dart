@@ -5,6 +5,7 @@ import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
 import 'package:kanpractice/ui/pages/market/bloc/market_bloc.dart';
+import 'package:kanpractice/ui/pages/market/widgets/market_list_tile.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
@@ -209,8 +210,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                   keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                   padding: const EdgeInsets.only(bottom: CustomSizes.extraPaddingForFAB),
                   itemBuilder: (context, k) {
-                    // TODO: Market List
-                    return Container();
+                    return MarketListTile(list: state.lists[k]);
                   }
               ),
             ),

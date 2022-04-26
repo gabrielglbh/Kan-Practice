@@ -135,7 +135,10 @@ class MarketRecords {
       try {
         var batch = _ref.batch();
 
+        final DocumentReference doc = _ref.collection(collection).doc();
+
         final MarketList resetList = MarketList(
+            id: doc.id,
             author: _user.uid,
             description: description,
             updatedToMarket: GeneralUtils.getCurrentMilliseconds()
@@ -145,8 +148,6 @@ class MarketRecords {
         for (var k in kanji) {
           resetKanji.add(k.copyWithReset());
         }
-
-        final DocumentReference doc = _ref.collection(collection).doc();
 
         /// Market List
         batch.set(doc, resetList.toJson());

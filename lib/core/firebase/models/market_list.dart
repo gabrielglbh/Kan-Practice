@@ -4,11 +4,13 @@ part 'market_list.g.dart';
 
 @JsonSerializable()
 class MarketList {
+  static const idField = "id";
   static const ratingField = "rating";
   static const downloadField = "download";
   static const authorField = "author";
   static const updatedToMarketField = "updatedToMarket";
 
+  final String id;
   /// Rating will hold a map of authenticated users IDs with their rating on a list.
   /// A certain person will only be able to change the rating on their rating,
   /// updating the whole rating that is being done by the mean of rates.
@@ -19,7 +21,7 @@ class MarketList {
   final String author;
   final int updatedToMarket;
 
-  MarketList({this.rating = const {}, this.downloads = 0,
+  MarketList({this.id = "", this.rating = const {}, this.downloads = 0,
     required this.description, required this.author, this.updatedToMarket = 0
   });
 
@@ -30,6 +32,7 @@ class MarketList {
   Map<String, dynamic> toJson() => _$MarketListToJson(this);
 
   MarketList copyWithUpdatedDate({int? lastUpdated}) => MarketList(
+      id: id,
       rating: rating,
       downloads: downloads,
       description: description,
@@ -40,6 +43,7 @@ class MarketList {
   MarketList copyWithReset({
     required String author
   }) => MarketList(
+      id: id,
       rating: rating,
       downloads: downloads,
       description: description,

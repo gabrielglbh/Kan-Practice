@@ -1,6 +1,7 @@
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/list.dart';
+import 'package:kanpractice/core/types/filters.dart';
 import 'package:kanpractice/core/utils/general_utils.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:sqflite/sqflite.dart';
@@ -43,13 +44,13 @@ class ListQueries {
 
   /// Query to get all [KanjiList] from the db with an optional [order] and [filter].
   /// If anything goes wrong, an empty list will be returned.
-  Future<List<KanjiList>> getAllLists({String filter = KanListTableFields.lastUpdatedField,
+  Future<List<KanjiList>> getAllLists({KanListFilters filter = KanListFilters.all,
     String order = "DESC", int? limit, int? offset}) async {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.query(KanListTableFields.listsTable,
-          orderBy: "$filter $order",
+          orderBy: "${filter.filter} $order",
           limit: limit,
           offset: (offset != null && limit != null) ? offset * limit : null
         );

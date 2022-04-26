@@ -48,15 +48,7 @@ class _KanjiListsState extends State<KanjiLists> {
   /// This variable keeps track of the actual filter applied. The value is
   /// saved into the shared preferences when a filter is applied.
   /// This value is then restored upon new session.
-  String _currentAppliedFilter = KanListTableFields.lastUpdatedField;
-  /// State map for the filters, independent of the bloc.
-  final Map<String, bool> _filterValues = {
-    KanListTableFields.lastUpdatedField: true,
-    KanListTableFields.totalWinRateWritingField: false,
-    KanListTableFields.totalWinRateReadingField: false,
-    KanListTableFields.totalWinRateRecognitionField: false,
-    KanListTableFields.totalWinRateListeningField: false
-  };
+  KanListFilters _currentAppliedFilter = KanListFilters.all;
 
   /// This variable keeps track of the order applied on the current filter only:
   /// true --> DESC or false --> ASC. The value is saved into the shared preferences when a filter
@@ -79,8 +71,11 @@ class _KanjiListsState extends State<KanjiLists> {
     _searchBarFn = FocusNode();
     _searchBarFn?.addListener(_focusListener);
     _scrollController.addListener(_scrollListener);
-    _currentAppliedFilter = StorageManager.readData(StorageManager.filtersOnList)
+
+    final filterText = StorageManager.readData(StorageManager.filtersOnList)
         ?? KanListTableFields.lastUpdatedField;
+    _currentAppliedFilter = KanListFiltersUtils.getFilterFrom(filterText);
+
     _currentAppliedOrder = StorageManager.readData(StorageManager.orderOnList)
         ?? true;
     _getVersionNotice();
@@ -146,8 +141,6 @@ class _KanjiListsState extends State<KanjiLists> {
     return _bloc..add(KanjiListEventSearching(query, offset: offset));
   }
 
-  _getCurrentIndexOfFilter() => _filterValues.keys.toList().indexOf(_currentAppliedFilter);
-
   _resetOffsets() {
     /// When creating or removing a list, reset any pagination offset to load up,
     /// from the start
@@ -161,7 +154,7 @@ class _KanjiListsState extends State<KanjiLists> {
     /// If the user taps on the same filter twice, just change back and forth the
     /// order value.
     /// Else, means the user has changed the filter, therefore default the order to DESC
-    if (_getCurrentIndexOfFilter() == index) {
+    if (_currentAppliedFilter.index == index) {
       setState(() => _currentAppliedOrder = !_currentAppliedOrder);
     } else {
       setState(() => _currentAppliedOrder = true);
@@ -169,15 +162,12 @@ class _KanjiListsState extends State<KanjiLists> {
 
     /// Change the current applied filter based on the index selected on the ChoiceChip
     /// and change the value on _filterValues map to reflect the change on the UI
-    _currentAppliedFilter = KanListFilters.values[index].filter;
-    setState(() {
-      _filterValues.updateAll((key, value) => false);
-      _filterValues.update(_currentAppliedFilter, (value) => true);
-    });
+    _currentAppliedFilter = KanListFilters.values[index];
+
     /// Adds the loading event to the bloc builder to load the new specified list
     _addLoadingEvent();
     /// Stores the new filter and order applied to shared preferences
-    StorageManager.saveData(StorageManager.filtersOnList, _currentAppliedFilter);
+    StorageManager.saveData(StorageManager.filtersOnList, _currentAppliedFilter.filter);
     StorageManager.saveData(StorageManager.orderOnList, _currentAppliedOrder);
   }
 
@@ -295,11 +285,11 @@ class _KanjiListsState extends State<KanjiLists> {
             padding: const EdgeInsets.symmetric(horizontal: Margins.margin2),
             child: ChoiceChip(
               label: Text(KanListFilters.values[index].label),
-              avatar: _getCurrentIndexOfFilter() != index ? null : icon,
+              avatar: _currentAppliedFilter.index != index ? null : icon,
               pressElevation: Margins.margin4,
               padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
               onSelected: (bool selected) => _onFilterSelected(index),
-              selected: _getCurrentIndexOfFilter() == index,
+              selected: _currentAppliedFilter.index == index,
             ),
           );
         }

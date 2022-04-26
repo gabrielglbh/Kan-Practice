@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/jisho/models/jisho_data.dart';
+import 'package:kanpractice/core/types/filters.dart';
 import 'package:kanpractice/core/utils/general_utils.dart';
 import 'package:kanpractice/core/types/kanji_categories.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
@@ -148,7 +148,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
         ListTile(
           onTap: () => KPCreateKanListDialog.showCreateKanListDialog(context, onSubmit: (String name) {
             _bloc.add(KanjiListEventCreate(name,
-                filter: KanListTableFields.lastUpdatedField,
+                filter: KanListFilters.all,
                 order: false, useLazyLoading: false
             ));
           }),

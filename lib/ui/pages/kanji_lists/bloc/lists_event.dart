@@ -9,7 +9,7 @@ abstract class KanjiListEvent extends Equatable {
 
 class KanjiListEventLoading extends KanjiListEvent {
   /// Maintains the filter applied by the user for loading new lists
-  final String filter;
+  final KanListFilters filter;
   /// Maintains the order applied by the user for loading new lists
   final bool order;
   final int offset;
@@ -40,7 +40,7 @@ class KanjiListEventSearching extends KanjiListEvent {
 class KanjiListEventCreate extends KanjiListEvent {
   final String name;
   /// Maintains the filter applied by the user for loading new lists
-  final String filter;
+  final KanListFilters filter;
   /// Maintains the order applied by the user for loading new lists
   final bool order;
   final bool useLazyLoading;
@@ -54,7 +54,7 @@ class KanjiListEventCreate extends KanjiListEvent {
 class KanjiListEventDelete extends KanjiListEvent {
   final KanjiList list;
   /// Maintains the filter applied by the user for loading new lists
-  final String filter;
+  final KanListFilters filter;
   /// Maintains the order applied by the user for loading new lists
   final bool order;
 

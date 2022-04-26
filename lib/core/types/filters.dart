@@ -34,3 +34,19 @@ extension KanListFiltersExtensions on KanListFilters {
     }
   }
 }
+
+class KanListFiltersUtils {
+  static KanListFilters getFilterFrom(String f) {
+    if (f == KanListTableFields.lastUpdatedField) {
+      return KanListFilters.all;
+    } else if (f == KanListTableFields.totalWinRateWritingField) {
+      return KanListFilters.writing;
+    } else if (f == KanListTableFields.totalWinRateReadingField) {
+      return KanListFilters.reading;
+    } else if (f == KanListTableFields.totalWinRateRecognitionField) {
+      return KanListFilters.recognition;
+    } else {
+      return KanListFilters.listening;
+    }
+  }
+}

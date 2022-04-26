@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
+import 'package:kanpractice/core/types/filters.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 
 part 'lists_event.dart';
@@ -107,7 +108,7 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
   }
 
   Future<List<KanjiList>> _getNewAllListsAndUpdateLazyLoadingState(
-      String filter, bool order, {required int limit, required List<KanjiList> l}) async {
+      KanListFilters filter, bool order, {required int limit, required List<KanjiList> l}) async {
     /// When creating or removing a new list, reset any pagination offset
     /// to load up from the start
     final List<KanjiList> lists = await ListQueries.instance.getAllLists(

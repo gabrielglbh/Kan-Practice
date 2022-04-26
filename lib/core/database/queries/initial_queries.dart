@@ -6,7 +6,7 @@ import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
-import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/core/utils/general_utils.dart';
 import 'package:sqflite/sqflite.dart';
 
 class InitialQueries {
@@ -35,8 +35,12 @@ class InitialQueries {
         final List<Kanji> kanji = [];
 
         /// Cast the JSON to the proper type
-        listsNonCasted.forEach((item) => lists.add(KanjiList.fromJson(item)));
-        kanjiNonCasted.forEach((item) => kanji.add(Kanji.fromJson(item)));
+        for (var item in listsNonCasted) {
+          lists.add(KanjiList.fromJson(item));
+        }
+        for (var item in kanjiNonCasted) {
+          kanji.add(Kanji.fromJson(item));
+        }
 
         /// Order matters as kanji depends on lists.
         final batch = _database?.batch();
@@ -55,10 +59,12 @@ class InitialQueries {
         }
 
         final results = await batch?.commit();
-        return results?.length == 0 ? -3 : 0;
+        return results?.isEmpty == true ? -3 : 0;
       } catch (err) {
         return -2;
       }
-    } else return -1;
+    } else {
+      return -1;
+    }
   }
 }

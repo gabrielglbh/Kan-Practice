@@ -4,28 +4,33 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
-import 'package:kanpractice/core/utils/types/visualization_mode.dart';
+import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/theme/theme_manager.dart';
 import 'core/routing/routes.dart';
 
 Future<void> _initSharedPreferences() async {
   await StorageManager.getInstance();
-  if (StorageManager.readData(StorageManager.hasDoneTutorial) == null)
+  if (StorageManager.readData(StorageManager.hasDoneTutorial) == null) {
     StorageManager.saveData(StorageManager.hasDoneTutorial, false);
-  if (StorageManager.readData(StorageManager.affectOnPractice) == null)
+  }
+  if (StorageManager.readData(StorageManager.affectOnPractice) == null) {
     StorageManager.saveData(StorageManager.affectOnPractice, false);
-  if (StorageManager.readData(StorageManager.kanListGraphVisualization) == null)
+  }
+  if (StorageManager.readData(StorageManager.kanListGraphVisualization) == null) {
     StorageManager.saveData(StorageManager.kanListGraphVisualization, VisualizationMode.radialChart.name);
+  }
   /// Make the value the same as hasDoneTutorial. If the user has already seen
   /// the overall tutorial, do not show the coach mark tutorial
   // DEBUG ONLY
   //StorageManager.saveData(StorageManager.haveSeenKanListCoachMark, false);
   //StorageManager.saveData(StorageManager.haveSeenKanListDetailCoachMark, false);
   bool hasDoneTutorial = StorageManager.readData(StorageManager.hasDoneTutorial);
-  if (StorageManager.readData(StorageManager.haveSeenKanListCoachMark) == null)
+  if (StorageManager.readData(StorageManager.haveSeenKanListCoachMark) == null) {
     StorageManager.saveData(StorageManager.haveSeenKanListCoachMark, hasDoneTutorial);
-  if (StorageManager.readData(StorageManager.haveSeenKanListDetailCoachMark) == null)
+  }
+  if (StorageManager.readData(StorageManager.haveSeenKanListDetailCoachMark) == null) {
     StorageManager.saveData(StorageManager.haveSeenKanListDetailCoachMark, hasDoneTutorial);
+  }
 }
 
 void main() async {
@@ -34,29 +39,29 @@ void main() async {
   await CustomDatabase.instance.open();
   await Firebase.initializeApp();
   await EasyLocalization.ensureInitialized();
-  runApp(SetUpApp());
+  runApp(const SetUpApp());
 }
 
 class SetUpApp extends StatelessWidget {
-  const SetUpApp();
+  const SetUpApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return EasyLocalization(
-      supportedLocales: [
+      supportedLocales: const [
         Locale("en"),
         Locale("es"),
         Locale("de"),
       ],
       path: "lib/core/localization",
-      fallbackLocale: Locale("en"),
-      child: KanPractice(),
+      fallbackLocale: const Locale("en"),
+      child: const KanPractice(),
     );
   }
 }
 
 class KanPractice extends StatefulWidget {
-  const KanPractice();
+  const KanPractice({Key? key}) : super(key: key);
 
   @override
   _KanPracticeState createState() => _KanPracticeState();

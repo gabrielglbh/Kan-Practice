@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/routing/pages.dart';
-import 'package:kanpractice/core/utils/types/tutorial_view.dart';
+import 'package:kanpractice/core/types/tutorial_view.dart';
 import 'package:kanpractice/ui/pages/tutorial/bloc/tutorial_bloc.dart';
-import 'package:kanpractice/ui/pages/tutorial/widgets/BulletPageView.dart';
+import 'package:kanpractice/ui/pages/tutorial/widgets/bullet_page_view.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/ui/widgets/CustomCachedNetworkImage.dart';
-import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
+import 'package:kanpractice/ui/widgets/kp_cached_network_image.dart';
+import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
+import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 
 class TutorialPage extends StatefulWidget {
   final bool? alreadyShown;
-  TutorialPage({this.alreadyShown});
+  const TutorialPage({
+    Key? key,
+    this.alreadyShown
+  }) : super(key: key);
 
   @override
   _TutorialPageState createState() => _TutorialPageState();
@@ -22,9 +26,11 @@ class _TutorialPageState extends State<TutorialPage> {
   bool _showSkip = true;
 
   Future<void> _onEnd(BuildContext bloc) async {
-    if (widget.alreadyShown == null)
-      bloc.read<TutorialBloc>()..add(TutorialEventLoading(bloc));
-    else Navigator.of(bloc).pop();
+    if (widget.alreadyShown == null) {
+      bloc.read<TutorialBloc>().add(TutorialEventLoading(bloc));
+    } else {
+      Navigator.of(bloc).pop();
+    }
   }
 
   @override
@@ -46,22 +52,20 @@ class _TutorialPageState extends State<TutorialPage> {
         child: BlocBuilder<TutorialBloc, TutorialState>(
           builder: (context, state) {
             if (state is TutorialStateIdle) {
-              return Scaffold(
-                appBar: AppBar(
-                  toolbarHeight: CustomSizes.appBarHeight,
-                  actions: [
-                    TextButton(
-                      onPressed: () async => await _onEnd(context),
-                      style: ButtonStyle(
-                        overlayColor: MaterialStateProperty.all(Colors.transparent),
-                      ),
-                      child: Text(_showSkip ? "tutorial_skip".tr() : "tutorial_done".tr(),
-                        style: TextStyle(color: CustomColors.secondaryColor),
-                      )
+              return KPScaffold(
+                appBarActions: [
+                  TextButton(
+                    onPressed: () async => await _onEnd(context),
+                    style: ButtonStyle(
+                      overlayColor: MaterialStateProperty.all(Colors.transparent),
+                    ),
+                    child: Text(_showSkip ? "tutorial_skip".tr() : "tutorial_done".tr(),
+                      style: const TextStyle(color: CustomColors.secondaryColor),
                     )
-                  ],
-                ),
-                body: BulletPageView(
+                  )
+                ],
+                appBarTitle: null,
+                child: BulletPageView(
                   bullets: TutorialView.values.length,
                   onChanged: (newPage) => setState(() => _showSkip = newPage != TutorialView.values.length - 1),
                   pageViewChildren: List.generate(TutorialView.values.length, (view) =>
@@ -70,11 +74,12 @@ class _TutorialPageState extends State<TutorialPage> {
                 )
               );
             } else {
-              return Scaffold(
-                body: Center(
+              return const KPScaffold(
+                appBarTitle: null,
+                child: Center(
                   child: Padding(
                     padding: EdgeInsets.all(Margins.margin16),
-                    child: CustomProgressIndicator(),
+                    child: KPProgressIndicator(),
                   ),
                 ),
               );
@@ -90,7 +95,7 @@ class _TutorialPageState extends State<TutorialPage> {
       children: [
         Expanded(
           child: Container(
-            margin: EdgeInsets.all(Margins.margin8),
+            margin: const EdgeInsets.all(Margins.margin8),
             child: SingleChildScrollView(child: Text(view.tutorial, textAlign: TextAlign.center)),
           )
         ),
@@ -98,9 +103,9 @@ class _TutorialPageState extends State<TutorialPage> {
           flex: 3,
           child: Container(
             width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.all(Margins.margin8),
-            margin: EdgeInsets.symmetric(horizontal: Margins.margin8),
-            child: CustomCachedNetworkImage(
+            padding: const EdgeInsets.all(Margins.margin8),
+            margin: const EdgeInsets.symmetric(horizontal: Margins.margin8),
+            child: KPCachedNetworkImage(
               url: view.asset(lightMode: Theme.of(context).brightness == Brightness.light),
               errorMessage: "image_not_loaded".tr(),
             ),

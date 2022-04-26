@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kanpractice/core/firebase/firebase.dart';
 import 'package:kanpractice/core/firebase/queries/back_ups.dart';
-import 'package:kanpractice/ui/pages/firebase_login/login.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/core/types/sign_in_mode.dart';
 
 class AuthRecords {
   FirebaseAuth? _auth;
@@ -49,7 +49,9 @@ class AuthRecords {
         else {
           return "authentication_failed".tr();
         }
-      } else return "authentication_changePassword_log_out".tr();
+      } else {
+        return "authentication_changePassword_log_out".tr();
+      }
     } catch (err) {
       return err.toString();
     }
@@ -74,7 +76,9 @@ class AuthRecords {
         else {
           return "authentication_failed".tr();
         }
-      } else return "authentication_deleteAccount_wrong_provider".tr();
+      } else {
+        return "authentication_deleteAccount_wrong_provider".tr();
+      }
     } catch (err) {
       return err.toString();
     }
@@ -90,6 +94,8 @@ class AuthRecords {
       await _auth?.signOut();
       return 0;
     }
-    else return -1;
+    else {
+      return -1;
+    }
   }
 }

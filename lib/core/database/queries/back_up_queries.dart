@@ -45,10 +45,12 @@ class BackUpQueries {
           }
         }
         final results = await batch?.commit();
-        return results?.length == 0 ? "backup_queries_mergeBackUp_failed".tr() : "";
+        return results?.isEmpty == true ? "backup_queries_mergeBackUp_failed".tr() : "";
       } catch (err) {
         return err.toString();
       }
-    } else return "backup_queries_mergeBackUp_catch".tr();
+    } else {
+      return "backup_queries_mergeBackUp_catch".tr();
+    }
   }
 }

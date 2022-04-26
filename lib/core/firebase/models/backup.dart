@@ -12,10 +12,10 @@ class BackUp {
   final List<Test> test;
   final int lastUpdated;
 
-  static final String kanjiLabel = "kanji";
-  static final String listLabel = "lists";
-  static final String testLabel = "test";
-  static final String updatedLabel = "lastUpdated";
+  static const String kanjiLabel = "kanji";
+  static const String listLabel = "lists";
+  static const String testLabel = "test";
+  static const String updatedLabel = "lastUpdated";
 
   const BackUp({required this.lists, required this.kanji,
     required this.test, required this.lastUpdated});

@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/core/utils/general_utils.dart';
 
 part 'list.g.dart';
 
@@ -26,16 +26,16 @@ class KanjiList {
   Map<String, dynamic> toJson() => _$KanjiListToJson(this);
 
   KanjiList copyWithUpdatedDate({int? lastUpdated}) => KanjiList(
-    name: this.name,
-    totalWinRateWriting: this.totalWinRateWriting,
-    totalWinRateReading: this.totalWinRateReading,
-    totalWinRateRecognition: this.totalWinRateRecognition,
-    totalWinRateListening: this.totalWinRateListening,
+    name: name,
+    totalWinRateWriting: totalWinRateWriting,
+    totalWinRateReading: totalWinRateReading,
+    totalWinRateRecognition: totalWinRateRecognition,
+    totalWinRateListening: totalWinRateListening,
     lastUpdated: lastUpdated ?? this.lastUpdated
   );
 
   KanjiList copyWithReset() => KanjiList(
-      name: this.name,
+      name: name,
       totalWinRateWriting: DatabaseConstants.emptyWinRate,
       totalWinRateReading: DatabaseConstants.emptyWinRate,
       totalWinRateRecognition: DatabaseConstants.emptyWinRate,

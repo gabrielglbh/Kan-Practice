@@ -10,7 +10,7 @@ import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:kanpractice/core/database/queries/test_queries.dart';
 import 'package:kanpractice/core/firebase/firebase.dart';
 import 'package:kanpractice/core/firebase/models/backup.dart';
-import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/core/utils/general_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class BackUpRecords {
@@ -38,8 +38,9 @@ class BackUpRecords {
     if (max % 500 == 0) {
       await curr?.commit();
       return _ref?.batch();
-    } else
+    } else {
       return curr;
+    }
   }
 
   /// Gets the latest version of the app from Firebase to check against the current
@@ -150,15 +151,18 @@ class BackUpRecords {
       List<Test> backUpTests = [];
 
       if (kanjiSnapshot != null && listsSnapshot != null) {
-        for (int x = 0; x < kanjiSnapshot.size; x++)
+        for (int x = 0; x < kanjiSnapshot.size; x++) {
           backUpKanji.add(Kanji.fromJson(kanjiSnapshot.docs[x].data()));
-        for (int x = 0; x < listsSnapshot.size; x++)
+        }
+        for (int x = 0; x < listsSnapshot.size; x++) {
           backUpLists.add(KanjiList.fromJson(listsSnapshot.docs[x].data()));
+        }
       }
 
       if (testsSnapshot != null) {
-        for (int x = 0; x < testsSnapshot.size; x++)
+        for (int x = 0; x < testsSnapshot.size; x++) {
           backUpTests.add(Test.fromJson(testsSnapshot.docs[x].data()));
+        }
       }
 
       return await BackUpQueries.instance.mergeBackUp(backUpKanji, backUpLists, backUpTests);
@@ -222,7 +226,9 @@ class BackUpRecords {
         int date = snapshot.get("lastUpdated");
         return "${"backup_firebase_getLastUpdated_successful".tr()} "
             "${GeneralUtils.parseDateMilliseconds(context, date)}";
-      } else return "backup_firebase_getLastUpdated_noBackUp".tr();
+      } else {
+        return "backup_firebase_getLastUpdated_noBackUp".tr();
+      }
     } catch (err) {
       return "backup_firebase_getLastUpdated_noBackUp".tr();
     }

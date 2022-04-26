@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/models/test_result.dart';
-import 'package:kanpractice/core/utils/GeneralUtils.dart';
-import 'package:kanpractice/core/utils/types/study_modes.dart';
+import 'package:kanpractice/core/utils/general_utils.dart';
+import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/ui/pages/test_history/bloc/test_bloc.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
-import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
-import 'package:kanpractice/ui/widgets/EmptyList.dart';
-import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
-import 'package:kanpractice/ui/widgets/WinRateChart.dart';
+import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
+import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
+import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_win_rate_chart.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 
 class TestHistory extends StatefulWidget {
   const TestHistory({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class _TestHistoryState extends State<TestHistory> {
   _showRemoveTestsDialog() {
     showDialog(
       context: context,
-      builder: (context) => CustomDialog(
+      builder: (context) => KPDialog(
         title: Text("test_history_showRemoveTestsDialog_title".tr()),
         content: Text("test_history_showRemoveTestsDialog_content".tr()),
         positiveButtonText: "test_history_showRemoveTestsDialog_positive".tr(),
@@ -60,18 +61,15 @@ class _TestHistoryState extends State<TestHistory> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: CustomSizes.appBarHeight,
-        title: FittedBox(fit: BoxFit.fitWidth, child: Text("test_history_title".tr())),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.clear_all_rounded),
-            onPressed: () => _showRemoveTestsDialog(),
-          )
-        ],
-      ),
-      body: BlocProvider<TestListBloc>(
+    return KPScaffold(
+      appBarTitle: "test_history_title".tr(),
+      appBarActions: [
+        IconButton(
+          icon: const Icon(Icons.clear_all_rounded),
+          onPressed: () => _showRemoveTestsDialog(),
+        )
+      ],
+      child: BlocProvider<TestListBloc>(
         create: (_) => _addLoadingEvent(),
         child: BlocBuilder<TestListBloc, TestListState>(
           builder: (context, state) => _body(state)
@@ -81,38 +79,41 @@ class _TestHistoryState extends State<TestHistory> {
   }
 
   _body(TestListState state) {
-    if (state is TestListStateFailure)
-      return EmptyList(
+    if (state is TestListStateFailure) {
+      return KPEmptyList(
         showTryButton: true,
         onRefresh: () => _addLoadingEvent(),
         message: "test_history_load_failed".tr()
       );
-    else if (state is TestListStateLoading)
-      return CustomProgressIndicator();
-    else if (state is TestListStateLoaded) {
-      if (state.list.isEmpty)
-        return EmptyList(
+    } else if (state is TestListStateLoading) {
+      return const KPProgressIndicator();
+    } else if (state is TestListStateLoaded) {
+      if (state.list.isEmpty) {
+        return KPEmptyList(
           onRefresh: () => _addLoadingEvent(),
           message: "test_history_empty".tr()
         );
+      }
       return _testList(state);
     }
-    else return Container();
+    else {
+      return Container();
+    }
   }
 
   _testList(TestListStateLoaded state) {
     return ListView.builder(
-      key: PageStorageKey<String>('testListController'),
+      key: const PageStorageKey<String>('testListController'),
       controller: _scrollController,
       itemCount: state.list.length,
       itemBuilder: (context, k) {
         Test t = state.list[k];
         StudyModes mode = StudyModesUtil.mapStudyMode(t.studyMode);
         return Card(
-          margin: EdgeInsets.all(Margins.margin8),
+          margin: const EdgeInsets.symmetric(vertical: Margins.margin8),
           elevation: 8,
           child: ListTile(
-            contentPadding: EdgeInsets.symmetric(horizontal: Margins.margin8, vertical: Margins.margin8),
+            contentPadding: const EdgeInsets.symmetric(horizontal: Margins.margin8, vertical: Margins.margin8),
             onTap: () {},
             title: Text(t.kanjiLists, textAlign: TextAlign.end, overflow: TextOverflow.ellipsis),
             subtitle: Container(
@@ -121,7 +122,7 @@ class _TestHistoryState extends State<TestHistory> {
                 fit: BoxFit.contain,
                 child: Text("${mode.mode} • ${"test_history_testTaken".tr()} "
                     "${GeneralUtils.parseDateMilliseconds(context, t.takenDate)}",
-                    style: TextStyle(fontStyle: FontStyle.italic)),
+                    style: const TextStyle(fontStyle: FontStyle.italic)),
               ),
             ),
             leading: WinRateChart(winRate: t.testScore,

@@ -27,22 +27,22 @@ class MarketList {
   Map<String, dynamic> toJson() => _$MarketListToJson(this);
 
   MarketList copyWithUpdatedDate({int? lastUpdated}) => MarketList(
-      list: this.list,
-      rating: this.rating,
-      downloads: this.downloads,
-      description: this.description,
-      author: this.author,
-      updatedToMarket: lastUpdated ?? this.updatedToMarket
+      list: list,
+      rating: rating,
+      downloads: downloads,
+      description: description,
+      author: author,
+      updatedToMarket: lastUpdated ?? updatedToMarket
   );
 
   MarketList copyWithReset({
     required String author
   }) => MarketList(
-      list: this.list.copyWithReset(),
-      rating: this.rating,
-      downloads: this.downloads,
-      description: this.description,
+      list: list.copyWithReset(),
+      rating: rating,
+      downloads: downloads,
+      description: description,
       author: author,
-      updatedToMarket: this.updatedToMarket
+      updatedToMarket: updatedToMarket
   );
 }

@@ -1,8 +1,8 @@
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/list.dart';
-import 'package:kanpractice/core/utils/GeneralUtils.dart';
-import 'package:kanpractice/core/utils/types/study_modes.dart';
+import 'package:kanpractice/core/utils/general_utils.dart';
+import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ListQueries {
@@ -36,7 +36,9 @@ class ListQueries {
         print(err.toString());
         return -1;
       }
-    } else return -2;
+    } else {
+      return -2;
+    }
   }
 
   /// Query to get all [KanjiList] from the db with an optional [order] and [filter].
@@ -51,13 +53,18 @@ class ListQueries {
           limit: limit,
           offset: (offset != null && limit != null) ? offset * limit : null
         );
-        if (res != null) return List.generate(res.length, (i) => KanjiList.fromJson(res![i]));
-        else return [];
+        if (res != null) {
+          return List.generate(res.length, (i) => KanjiList.fromJson(res![i]));
+        } else {
+          return [];
+        }
       } catch (err) {
         print(err.toString());
         return [];
       }
-    } else return [];
+    } else {
+      return [];
+    }
   }
 
   /// Query to get all [KanjiList] from the db to return the count.
@@ -66,13 +73,18 @@ class ListQueries {
       try {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.query(KanListTableFields.listsTable);
-        if (res != null) return res.length;
-        else return 0;
+        if (res != null) {
+          return res.length;
+        } else {
+          return 0;
+        }
       } catch (err) {
         print(err.toString());
         return 0;
       }
-    } else return -1;
+    } else {
+      return -1;
+    }
   }
 
   /// Query the [KanjiList] with the best scoring overall and the worst one.
@@ -86,13 +98,13 @@ class ListQueries {
           final List<KanjiList> l = List.generate(res.length, (i) => KanjiList.fromJson(res![i]));
           List<String> listNames = [];
           List<double> listAcc = [];
-          l.forEach((list) {
+          for (var list in l) {
             listNames.add(list.name);
             final double acc = list.totalWinRateWriting + list.totalWinRateReading +
                 list.totalWinRateRecognition + list.totalWinRateListening;
             listAcc.add((acc <= 0 ? 0 : acc) / StudyModes.values.length);
             print(acc / 4);
-          });
+          }
           final double best = listAcc.reduce((curr, next)
             => curr > next ? curr : next);
           final double worst = listAcc.reduce((curr, next)
@@ -102,12 +114,16 @@ class ListQueries {
             listNames[listAcc.indexOf(worst)]
           ];
         }
-        else return ["", ""];
+        else {
+          return ["", ""];
+        }
       } catch (err) {
         print(err.toString());
         return ["", ""];
       }
-    } else return ["", ""];
+    } else {
+      return ["", ""];
+    }
   }
 
   /// Query to get all [KanjiList] from the db based on a [query] that will match:
@@ -132,13 +148,18 @@ class ListQueries {
           "ORDER BY ${KanListTableFields.lastUpdatedField} DESC "
           "LIMIT $limit OFFSET ${offset * limit}"
         );
-        if (res != null) return List.generate(res.length, (i) => KanjiList.fromJson(res![i]));
-        else return [];
+        if (res != null) {
+          return List.generate(res.length, (i) => KanjiList.fromJson(res![i]));
+        } else {
+          return [];
+        }
       } catch (err) {
         print(err.toString());
         return [];
       }
-    } else return [];
+    } else {
+      return [];
+    }
   }
 
   /// Query to get a [KanjiList] based on its [name].
@@ -149,13 +170,18 @@ class ListQueries {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.query(KanListTableFields.listsTable,
             where: "${KanjiTableFields.listNameField}=?", whereArgs: [name]);
-        if (res != null) return KanjiList.fromJson(res[0]);
-        else return KanjiList.empty;
+        if (res != null) {
+          return KanjiList.fromJson(res[0]);
+        } else {
+          return KanjiList.empty;
+        }
       } catch (err) {
         print(err.toString());
         return KanjiList.empty;
       }
-    } else return KanjiList.empty;
+    } else {
+      return KanjiList.empty;
+    }
   }
 
   /// Gets a [KanjiList] and removes it from the db.
@@ -176,7 +202,9 @@ class ListQueries {
         print(err.toString());
         return -1;
       }
-    } else return -2;
+    } else {
+      return -2;
+    }
   }
 
   /// Creates a [KanjiList] and updates it to the db.
@@ -197,6 +225,8 @@ class ListQueries {
         print(err.toString());
         return -1;
       }
-    } else return -2;
+    } else {
+      return -2;
+    }
   }
 }

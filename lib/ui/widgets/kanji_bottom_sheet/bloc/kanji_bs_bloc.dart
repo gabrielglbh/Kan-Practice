@@ -21,7 +21,7 @@ class KanjiBSBloc extends Bloc<KanjiBSEvent, KanjiBSState> {
         );
         emit(KanjiBSStateLoaded(kanji: kanji));
       } on Exception {
-        emit(KanjiBSStateFailure(error: ":("));
+        emit(const KanjiBSStateFailure(error: ":("));
       }
     });
 
@@ -87,14 +87,15 @@ class KanjiBSBloc extends Bloc<KanjiBSEvent, KanjiBSState> {
           }
           emit(KanjiBSStateRemoved());
         }
-        else if (code == 1)
+        else if (code == 1) {
           emit(KanjiBSStateFailure(
             error: "kanji_bottom_sheet_createDialogForDeletingKanji_removal_failed".tr()
           ));
-        else
+        } else {
           emit(KanjiBSStateFailure(
             error: "kanji_bottom_sheet_createDialogForDeletingKanji_failed".tr()
           ));
+        }
       } else {
         emit(KanjiBSStateFailure(
             error: "kanji_bottom_sheet_createDialogForDeletingKanji_removal_failed".tr()

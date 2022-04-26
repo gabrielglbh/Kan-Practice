@@ -1,36 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
-import 'package:kanpractice/core/utils/GeneralUtils.dart';
-import 'package:kanpractice/core/utils/types/study_modes.dart';
-import 'package:kanpractice/core/utils/types/visualization_mode.dart';
-import 'package:kanpractice/core/utils/types/test_modes.dart';
+import 'package:kanpractice/core/types/study_modes.dart';
+import 'package:kanpractice/core/utils/general_utils.dart';
+import 'package:kanpractice/core/types/visualization_mode.dart';
+import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/ui/pages/statistics/bloc/stats_bloc.dart';
 import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/ui/widgets/DependentGraph.dart';
-import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_dependent_graph.dart';
+import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
+import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 
 class StatisticsPage extends StatelessWidget {
-  StatisticsPage();
+  StatisticsPage({Key? key}) : super(key: key);
   final StatisticsBloc _bloc = StatisticsBloc();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: CustomSizes.appBarHeight,
-        title: FittedBox(fit: BoxFit.fitWidth, child: Text("settings_general_statistics".tr())),
-      ),
-      body: BlocProvider<StatisticsBloc>(
+    return KPScaffold(
+      appBarTitle: "settings_general_statistics".tr(),
+      child: BlocProvider<StatisticsBloc>(
         create: (_) => _bloc..add(StatisticsEventLoading()),
         child: BlocBuilder<StatisticsBloc, StatsState>(
           builder: (context, state) {
             if (state is StatisticsLoaded) {
               return _body(context, state);
             } else if (state is StatisticsLoading) {
-              return CustomProgressIndicator();
+              return const KPProgressIndicator();
             } else {
               return Container();
             }
@@ -50,8 +48,8 @@ class StatisticsPage extends StatelessWidget {
         _header(context, "${"stats_words".tr()} • ", "${s.totalLists} ${"stats_words_lists".tr()}"),
         _countLabel(s.totalKanji.toString()),
         Padding(
-          padding: EdgeInsets.only(top: Margins.margin16),
-          child: DependentGraph(
+          padding: const EdgeInsets.only(top: Margins.margin16),
+          child: KPDependentGraph(
             mode: mode,
             writing: s.totalWinRateWriting,
             reading: s.totalWinRateReading,
@@ -59,12 +57,12 @@ class StatisticsPage extends StatelessWidget {
             listening: s.totalWinRateListening
           )
         ),
-        Divider(),
+        const Divider(),
         Row(
           children: [
             Expanded(
               child: ListTile(
-                title: Text("stats_best_list".tr(), textAlign: TextAlign.center, style: TextStyle(
+                title: Text("stats_best_list".tr(), textAlign: TextAlign.center, style: const TextStyle(
                     fontWeight: FontWeight.bold
                 )),
                 subtitle: Text(s.bestList, textAlign: TextAlign.center),
@@ -72,7 +70,7 @@ class StatisticsPage extends StatelessWidget {
             ),
             Expanded(
               child: ListTile(
-                title: Text("stats_worst_list".tr(), textAlign: TextAlign.center, style: TextStyle(
+                title: Text("stats_worst_list".tr(), textAlign: TextAlign.center, style: const TextStyle(
                   fontWeight: FontWeight.bold
                 )),
                 subtitle: Text(s.worstList, textAlign: TextAlign.center),
@@ -80,7 +78,7 @@ class StatisticsPage extends StatelessWidget {
             )
           ],
         ),
-        Divider(),
+        const Divider(),
         _header(context, "${"stats_tests".tr()} • ", "${GeneralUtils.roundUpAsString(
             GeneralUtils.getFixedDouble(s.test.totalTestAccuracy * 100))}%"),
         Row(
@@ -119,15 +117,15 @@ class StatisticsPage extends StatelessWidget {
           }),
         ),
         Padding(
-          padding: EdgeInsets.only(top: Margins.margin16),
+          padding: const EdgeInsets.only(top: Margins.margin16),
           child: _countLabel(s.test.totalTests.toString()),
         ),
-        Divider(),
+        const Divider(),
         _expandedTestCount(s),
-        Divider(),
+        const Divider(),
         Padding(
-          padding: EdgeInsets.symmetric(vertical: Margins.margin8),
-          child: DependentGraph(
+          padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
+          child: KPDependentGraph(
             mode: mode,
             writing: s.test.testTotalWinRateWriting,
             reading: s.test.testTotalWinRateReading,
@@ -164,9 +162,9 @@ class StatisticsPage extends StatelessWidget {
 
   Widget _countLabel(String count) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
+      padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
       alignment: Alignment.center,
-      child: _fittedText(count, style: TextStyle(fontSize: FontSizes.fontSize64))
+      child: _fittedText(count, style: const TextStyle(fontSize: FontSizes.fontSize64))
     );
   }
 
@@ -177,7 +175,7 @@ class StatisticsPage extends StatelessWidget {
   Container _bullet(StudyModes mode) {
     return Container(
       width: Margins.margin8, height: Margins.margin8,
-      margin: EdgeInsets.only(
+      margin: const EdgeInsets.only(
         right: Margins.margin8, left: Margins.margin8,
         top: Margins.margin4, bottom: Margins.margin4
       ),
@@ -189,7 +187,7 @@ class StatisticsPage extends StatelessWidget {
 
   ListView _expandedTestCount(KanPracticeStats s) {
     return ListView(
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       children: List.generate(Tests.values.length, (index) {
         switch (Tests.values[index]) {
@@ -212,16 +210,16 @@ class StatisticsPage extends StatelessWidget {
 
   Widget _testModeCountContainer(Tests t, int count) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
+      padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
       child: Row(
         children: [
           Icon(t.icon, size: Margins.margin18),
           Padding(
-            padding: EdgeInsets.only(left: Margins.margin8),
-            child: Text(t.name, style: TextStyle(fontSize: FontSizes.fontSize14)),
+            padding: const EdgeInsets.only(left: Margins.margin8),
+            child: Text(t.name, style: const TextStyle(fontSize: FontSizes.fontSize14)),
           ),
           Expanded(child: Container()),
-          Text(count.toString(), style: TextStyle(
+          Text(count.toString(), style: const TextStyle(
               fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize16))
         ],
       ),

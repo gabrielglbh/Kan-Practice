@@ -1,5 +1,5 @@
 import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/utils/types/study_modes.dart';
+import 'package:kanpractice/core/types/study_modes.dart';
 
 class ModeArguments {
   final List<Kanji> studyList;

@@ -12,7 +12,7 @@ class TutorialEventIdle extends TutorialEvent {}
 class TutorialEventLoading extends TutorialEvent {
   final BuildContext context;
 
-  TutorialEventLoading(this.context);
+  const TutorialEventLoading(this.context);
 
   @override
   List<Object> get props => [context];

@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/core/utils/general_utils.dart';
 
 part 'kanji.g.dart';
 
@@ -39,28 +39,28 @@ class Kanji {
   Map<String, dynamic> toJson() => _$KanjiToJson(this);
 
   Kanji copyWithUpdatedDate({int? dateAdded, int? dateLastShown}) => Kanji(
-    kanji: this.kanji,
-    listName: this.listName,
-    meaning:  this.meaning,
-    pronunciation: this.pronunciation,
-    winRateWriting: this.winRateWriting,
-    winRateReading: this.winRateReading,
-    winRateRecognition: this.winRateRecognition,
-    winRateListening: this.winRateListening,
-    dateLastShownWriting: this.dateLastShownWriting,
-    dateLastShownReading: this.dateLastShownReading,
-    dateLastShownRecognition: this.dateLastShownRecognition,
-    dateLastShownListening: this.dateLastShownListening,
+    kanji: kanji,
+    listName: listName,
+    meaning:  meaning,
+    pronunciation: pronunciation,
+    winRateWriting: winRateWriting,
+    winRateReading: winRateReading,
+    winRateRecognition: winRateRecognition,
+    winRateListening: winRateListening,
+    dateLastShownWriting: dateLastShownWriting,
+    dateLastShownReading: dateLastShownReading,
+    dateLastShownRecognition: dateLastShownRecognition,
+    dateLastShownListening: dateLastShownListening,
     dateAdded: dateAdded ?? this.dateAdded,
     dateLastShown: dateLastShown ?? this.dateLastShown,
-    category: this.category
+    category: category
   );
 
   Kanji copyWithReset() => Kanji(
-      kanji: this.kanji,
-      listName: this.listName,
-      meaning:  this.meaning,
-      pronunciation: this.pronunciation,
+      kanji: kanji,
+      listName: listName,
+      meaning:  meaning,
+      pronunciation: pronunciation,
       winRateWriting: DatabaseConstants.emptyWinRate,
       winRateReading: DatabaseConstants.emptyWinRate,
       winRateRecognition: DatabaseConstants.emptyWinRate,
@@ -69,8 +69,8 @@ class Kanji {
       dateLastShownReading: GeneralUtils.getCurrentMilliseconds(),
       dateLastShownRecognition: GeneralUtils.getCurrentMilliseconds(),
       dateLastShownListening: GeneralUtils.getCurrentMilliseconds(),
-      dateAdded: this.dateAdded,
+      dateAdded: dateAdded,
       dateLastShown: GeneralUtils.getCurrentMilliseconds(),
-      category: this.category
+      category: category
   );
 }

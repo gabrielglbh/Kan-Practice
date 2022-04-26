@@ -11,17 +11,17 @@ import 'package:kanpractice/ui/pages/jisho/arguments.dart';
 import 'package:kanpractice/ui/pages/jisho/jisho.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/list_details.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/kanji_lists.dart';
-import 'package:kanpractice/ui/pages/listening/listening.dart';
+import 'package:kanpractice/ui/pages/study_modes/listening.dart';
 import 'package:kanpractice/ui/pages/market/market.dart';
-import 'package:kanpractice/ui/pages/reading/reading.dart';
-import 'package:kanpractice/ui/pages/recognition/recognition.dart';
+import 'package:kanpractice/ui/pages/study_modes/reading.dart';
+import 'package:kanpractice/ui/pages/study_modes/recognition.dart';
 import 'package:kanpractice/ui/pages/settings/settings.dart';
 import 'package:kanpractice/ui/pages/statistics/statistics.dart';
 import 'package:kanpractice/ui/pages/test_history/test_history.dart';
 import 'package:kanpractice/ui/pages/test_result/arguments.dart';
 import 'package:kanpractice/ui/pages/test_result/test_result.dart';
 import 'package:kanpractice/ui/pages/tutorial/tutorial.dart';
-import 'package:kanpractice/ui/pages/writing/writing.dart';
+import 'package:kanpractice/ui/pages/study_modes/writing.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -35,7 +35,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       KanjiList list = settings.arguments as KanjiList;
       return CupertinoPageRoute(builder: (_) => KanjiListDetails(list: list));
     case KanPracticePages.settingsPage:
-      return CupertinoPageRoute(builder: (_) => Settings());
+      return CupertinoPageRoute(builder: (_) => const Settings());
     case KanPracticePages.addKanjiPage:
       AddKanjiArgs args = settings.arguments as AddKanjiArgs;
       return CupertinoPageRoute(builder: (_) => AddKanjiPage(args: args));
@@ -55,9 +55,9 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       TestResultArguments args = settings.arguments as TestResultArguments;
       return CupertinoPageRoute(builder: (_) => TestResult(args: args));
     case KanPracticePages.testHistoryPage:
-      return CupertinoPageRoute(builder: (_) => TestHistory());
+      return CupertinoPageRoute(builder: (_) => const TestHistory());
     case KanPracticePages.loginPage:
-      return CupertinoPageRoute(builder: (_) => LoginPage());
+      return CupertinoPageRoute(builder: (_) => const LoginPage());
     case KanPracticePages.backUpPage:
       String args = settings.arguments as String;
       return CupertinoPageRoute(builder: (_) => BackUpPage(uid: args));
@@ -73,7 +73,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case KanPracticePages.statisticsPage:
       return CupertinoPageRoute(builder: (_) => StatisticsPage());
     case KanPracticePages.marketPlace:
-      return CupertinoPageRoute(builder: (_) => MarketPlace());
+      return CupertinoPageRoute(builder: (_) => const MarketPlace());
   }
   return null;
 }

@@ -4,8 +4,8 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
-import 'package:kanpractice/core/utils/types/learning_mode.dart';
-import 'package:kanpractice/core/utils/types/study_modes.dart';
+import 'package:kanpractice/core/types/learning_mode.dart';
+import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 
@@ -18,7 +18,7 @@ class KanjiListDetailBloc extends Bloc<KanjiListDetailEvent, KanjiListDetailStat
    List<Kanji> _list = [];
    /// Maintain the list for pagination purposes on search
    List<Kanji> _searchList = [];
-   final int _limit = LazyLoadingLimits.wordList;
+   const int _limit = LazyLoadingLimits.wordList;
 
    on<KanjiEventLoading>((event, emit) async {
      try {
@@ -36,7 +36,7 @@ class KanjiListDetailBloc extends Bloc<KanjiListDetailEvent, KanjiListDetailStat
        _list.addAll(pagination);
        emit(KanjiListDetailStateLoaded(fullList, event.list));
      } on Exception {
-       emit(KanjiListDetailStateFailure());
+       emit(const KanjiListDetailStateFailure());
      }
    });
 
@@ -56,7 +56,7 @@ class KanjiListDetailBloc extends Bloc<KanjiListDetailEvent, KanjiListDetailStat
        _searchList.addAll(pagination);
        emit(KanjiListDetailStateLoaded(fullList, event.list));
      } on Exception {
-       emit(KanjiListDetailStateFailure());
+       emit(const KanjiListDetailStateFailure());
      }
    });
 
@@ -77,13 +77,15 @@ class KanjiListDetailBloc extends Bloc<KanjiListDetailEvent, KanjiListDetailStat
        _list.addAll(lists);
        emit(KanjiListDetailStateLoaded(lists, event.name));
      }
-     else emit(KanjiListDetailStateFailure());
+     else {
+       emit(const KanjiListDetailStateFailure());
+     }
    });
 
    on<KanjiEventLoadUpPractice>((event, emit) async {
      try {
        final List<Kanji> allList = await KanjiQueries.instance.getAllKanjiFromList(event.list);
-       if (allList.length != 0) {
+       if (allList.isNotEmpty) {
          /// Enable spatial learning, first elements are the ones with less %
          List<Kanji> list = [];
          switch (event.mode) {
@@ -97,9 +99,11 @@ class KanjiListDetailBloc extends Bloc<KanjiListDetailEvent, KanjiListDetailStat
          }
          emit(KanjiListDetailStateLoadedPractice(event.studyMode, list));
        }
-       else emit(KanjiListDetailStateFailure(error: "list_details_loadUpPractice_failed".tr()));
+       else {
+         emit(KanjiListDetailStateFailure(error: "list_details_loadUpPractice_failed".tr()));
+       }
      } on Exception {
-       emit(KanjiListDetailStateFailure());
+       emit(const KanjiListDetailStateFailure());
      }
    });
   }

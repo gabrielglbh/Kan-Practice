@@ -1,4 +1,4 @@
-part of 'dial.dart';
+part of 'kp_dial.dart';
 
 class DialChild {
   /// A widget to display as the [DialChild].

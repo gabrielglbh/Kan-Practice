@@ -1,28 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/routing/pages.dart';
+import 'package:kanpractice/core/types/sign_in_mode.dart';
 import 'package:kanpractice/ui/pages/firebase_login/bloc/login_bloc.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
-import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
-import 'package:kanpractice/ui/widgets/CustomTextForm.dart';
-import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
+import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
+import 'package:kanpractice/ui/widgets/kp_text_form.dart';
+import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
-
-enum SignMode { login, signup }
-
-extension SignModeExt on SignMode {
-  String get name {
-    switch(this) {
-      case SignMode.login:
-        return "login_login_title".tr();
-      case SignMode.signup:
-        return "login_signUp_title".tr();
-    }
-  }
-}
+import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage();
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -61,17 +50,18 @@ class _LoginPageState extends State<LoginPage> {
     String? email = _emailController?.text;
     String? password = _passwordController?.text;
     if (email != null && password != null) {
-      _bloc..add(LoginSubmitting(_mode, email, password));
+      _bloc.add(LoginSubmitting(_mode, email, password));
     }
   }
 
   _changePassword(String prevPass, String newPass) {
-    if (prevPass.isNotEmpty && newPass.isNotEmpty)
-      _bloc..add(ChangePassword(prevPass, newPass));
+    if (prevPass.isNotEmpty && newPass.isNotEmpty) {
+      _bloc.add(ChangePassword(prevPass, newPass));
+    }
   }
 
   _removeAccount(String pass) {
-    if (pass.isNotEmpty) _bloc..add(RemoveAccount(pass));
+    if (pass.isNotEmpty) _bloc.add(RemoveAccount(pass));
   }
 
   _changePasswordDialog() {
@@ -80,11 +70,11 @@ class _LoginPageState extends State<LoginPage> {
     FocusNode _currPasswordFn = FocusNode();
     FocusNode _newPasswordFn = FocusNode();
     showDialog(context: context, builder: (context) {
-      return CustomDialog(
+      return KPDialog(
         title: Text("login_changePasswordDialog_title".tr()),
         content: Column(
           children: [
-            CustomTextForm(
+            KPTextForm(
               hint: 'login_changePasswordDialog_hint'.tr(),
               header: 'login_changePasswordDialog_old_header'.tr(),
               inputType: TextInputType.visiblePassword,
@@ -95,8 +85,8 @@ class _LoginPageState extends State<LoginPage> {
               onEditingComplete: () => _newPasswordFn.requestFocus(),
             ),
             Padding(
-              padding: EdgeInsets.only(top: Margins.margin16),
-              child: CustomTextForm(
+              padding: const EdgeInsets.only(top: Margins.margin16),
+              child: KPTextForm(
                 hint: 'login_changePasswordDialog_hint'.tr(),
                 header: 'login_changePasswordDialog_new_header'.tr(),
                 inputType: TextInputType.visiblePassword,
@@ -121,15 +111,15 @@ class _LoginPageState extends State<LoginPage> {
     TextEditingController _currPassword = TextEditingController();
     FocusNode _currPasswordFn = FocusNode();
     showDialog(context: context, builder: (context) {
-      return CustomDialog(
+      return KPDialog(
         title: Text("login_removeAccountDialog_title".tr()),
         content: Column(
           children: [
             Padding(
-              padding: EdgeInsets.only(bottom: Margins.margin16),
+              padding: const EdgeInsets.only(bottom: Margins.margin16),
               child: Text("login_removeAccountDialog_content".tr()),
             ),
-            CustomTextForm(
+            KPTextForm(
               hint: 'login_removeAccountDialog_hint'.tr(),
               header: 'login_removeAccountDialog_header'.tr(),
               inputType: TextInputType.visiblePassword,
@@ -151,28 +141,26 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: CustomSizes.appBarHeight,
-        title: BlocProvider<LoginBloc>(
-            create: (_) => _bloc..add(LoginIdle()),
-            child: BlocBuilder<LoginBloc, LoginState>(
-              builder: (context, state) {
-                if (state is LoginStateSuccessful)
-                  return FittedBox(fit: BoxFit.fitWidth,
-                      child: Text("settings_account_label".tr()));
-                else if (state is LoginStateIdle)
-                  return FittedBox(fit: BoxFit.fitWidth,
-                    child: Text(_mode == SignMode.login
-                        ? SignMode.login.name
-                        : SignMode.signup.name));
-                else
-                  return Container();
-              },
-            )
-        ),
+    return KPScaffold(
+      appBarTitle: BlocProvider<LoginBloc>(
+        create: (_) => _bloc..add(LoginIdle()),
+        child: BlocBuilder<LoginBloc, LoginState>(
+          builder: (context, state) {
+            if (state is LoginStateSuccessful) {
+              return FittedBox(fit: BoxFit.fitWidth,
+                  child: Text("settings_account_label".tr()));
+            } else if (state is LoginStateIdle) {
+              return FittedBox(fit: BoxFit.fitWidth,
+                  child: Text(_mode == SignMode.login
+                      ? SignMode.login.name
+                      : SignMode.signup.name));
+            } else {
+              return Container();
+            }
+          },
+        )
       ),
-      body: SingleChildScrollView(
+      child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -180,16 +168,17 @@ class _LoginPageState extends State<LoginPage> {
               create: (_) => _bloc..add(LoginIdle()),
               child: BlocBuilder<LoginBloc, LoginState>(
                 builder: (context, state) {
-                  if (state is LoginStateLoading)
-                    return CustomProgressIndicator();
-                  else if (state is LoginStateSuccessful)
+                  if (state is LoginStateLoading) {
+                    return const KPProgressIndicator();
+                  } else if (state is LoginStateSuccessful) {
                     return _successfulState(state);
-                  else if (state is LoginStateIdle)
+                  } else if (state is LoginStateIdle) {
                     return _idleState(state);
-                  else if (state is LoginStateLoggedOut)
+                  } else if (state is LoginStateLoggedOut) {
                     return _loggedOut(state);
-                  else
+                  } else {
                     return Container();
+                  }
                 },
               )
             ),
@@ -199,66 +188,66 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Padding _idleState(LoginStateIdle state) {
-    return Padding(
-      padding: EdgeInsets.only(right: Margins.margin16, left: Margins.margin16),
-      child: Column(
-        children: [
-          Icon(Icons.info_outline_rounded, color: CustomColors.getSecondaryColor(context)),
-          Padding(
-            padding: EdgeInsets.only(top: Margins.margin16, bottom: Margins.margin16),
-            child: Text("login_formDisclaimer".tr()),
+  Column _idleState(LoginStateIdle state) {
+    return Column(
+      children: [
+        Icon(Icons.info_outline_rounded, color: CustomColors.getSecondaryColor(context)),
+        Padding(
+          padding: const EdgeInsets.only(top: Margins.margin16, bottom: Margins.margin16),
+          child: Text("login_formDisclaimer".tr()),
+        ),
+        KPTextForm(
+          header: "login_email_header".tr(),
+          hint: "login_email_hint".tr(),
+          inputType: TextInputType.emailAddress,
+          controller: _emailController,
+          focusNode: _emailFocus,
+          onEditingComplete: () => _passwordFocus?.requestFocus()
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: Margins.margin32),
+          child: KPTextForm(
+            header: "login_password_header".tr(),
+            hint: "login_password_hint".tr(),
+            inputType: TextInputType.visiblePassword,
+            obscure: true,
+            controller: _passwordController,
+            focusNode: _passwordFocus,
+            action: TextInputAction.done,
+            onEditingComplete: () => _handleLogin()
           ),
-          CustomTextForm(
-            header: "login_email_header".tr(),
-            hint: "login_email_hint".tr(),
-            inputType: TextInputType.emailAddress,
-            controller: _emailController,
-            focusNode: _emailFocus,
-            onEditingComplete: () => _passwordFocus?.requestFocus()
+        ),
+        Visibility(
+          visible: state.error != "",
+          child: Padding(
+            padding: const EdgeInsets.all(Margins.margin16),
+            child: Text("${"login_authentication_failed".tr()} ${state.error}",
+                style: TextStyle(color: CustomColors.getSecondaryColor(context))),
           ),
-          Padding(
-            padding: EdgeInsets.only(top: Margins.margin32),
-            child: CustomTextForm(
-              header: "login_password_header".tr(),
-              hint: "login_password_hint".tr(),
-              inputType: TextInputType.visiblePassword,
-              obscure: true,
-              controller: _passwordController,
-              focusNode: _passwordFocus,
-              action: TextInputAction.done,
-              onEditingComplete: () => _handleLogin()
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: Margins.margin16),
+          child: ElevatedButton(
+            onPressed: () => _handleLogin(),
+            child: Text("login_form_positive".tr()),
+          ),
+        ),
+        GestureDetector(
+          onTap: () => setState(() {
+            if (_mode == SignMode.login) {
+              _mode = SignMode.signup;
+            } else if (_mode == SignMode.signup) {
+              _mode = SignMode.login;
+            }
+          }),
+          child: Padding(
+            padding: const EdgeInsets.all(Margins.margin16),
+            child: Text(_mode == SignMode.login ? SignMode.signup.name : SignMode.login.name,
+              style: const TextStyle(decoration: TextDecoration.underline),
             ),
           ),
-          Visibility(
-            visible: state.error != "",
-            child: Padding(
-              padding: EdgeInsets.all(Margins.margin16),
-              child: Text("${"login_authentication_failed".tr()} ${state.error}",
-                  style: TextStyle(color: CustomColors.getSecondaryColor(context))),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: Margins.margin16),
-            child: ElevatedButton(
-              onPressed: () => _handleLogin(),
-              child: Text("login_form_positive".tr()),
-            ),
-          ),
-          GestureDetector(
-            onTap: () => setState(() {
-              if (_mode == SignMode.login) _mode = SignMode.signup;
-              else if (_mode == SignMode.signup) _mode = SignMode.login;
-            }),
-            child: Padding(
-              padding: EdgeInsets.all(Margins.margin16),
-              child: Text(_mode == SignMode.login ? SignMode.signup.name : SignMode.login.name,
-                style: TextStyle(decoration: TextDecoration.underline),
-              ),
-            ),
-          )
-        ],
-      ),
+        )
+      ],
     );
   }
 
@@ -269,14 +258,14 @@ class _LoginPageState extends State<LoginPage> {
           Icon(Icons.check_circle_rounded, color: CustomColors.getSecondaryColor(context),
               size: CustomSizes.maxHeightValidationCircle),
           Padding(
-            padding: EdgeInsets.all(Margins.margin16),
+            padding: const EdgeInsets.all(Margins.margin16),
             child: Text("${"login_current_account_logged".tr()} ${state.user.email}.",
                 textAlign: TextAlign.center),
           ),
-          Container(
+          SizedBox(
             height: CustomSizes.appBarHeight,
             child: Padding(
-              padding: EdgeInsets.all(Margins.margin16),
+              padding: const EdgeInsets.all(Margins.margin16),
               child: ElevatedButton(
                 onPressed: () => Navigator.of(context).pushNamed(KanPracticePages.backUpPage,
                     arguments: state.user.uid),
@@ -286,7 +275,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           ListTile(
             title: Text("login_miscellaneous_title".tr(),
-                style: TextStyle(fontSize: FontSizes.fontSize26, fontWeight: FontWeight.bold)),
+                style: const TextStyle(fontSize: FontSizes.fontSize26, fontWeight: FontWeight.bold)),
           ),
           _loggedUserActions()
         ],
@@ -297,23 +286,23 @@ class _LoginPageState extends State<LoginPage> {
   Column _loggedUserActions() {
     return Column(
       children: [
-        Divider(),
+        const Divider(),
         ListTile(
-          leading: Icon(Icons.lock),
+          leading: const Icon(Icons.lock),
           title: Text("login_changePasswordDialog_title".tr()),
           onTap: () => _changePasswordDialog(),
         ),
-        Divider(),
+        const Divider(),
         ListTile(
-          leading: Icon(Icons.logout),
+          leading: const Icon(Icons.logout),
           title: Text("login_close_session_title".tr()),
           onTap: () => _bloc..add(CloseSession()),
         ),
-        Divider(),
+        const Divider(),
         Padding(
-          padding: EdgeInsets.only(bottom: Margins.margin32),
+          padding: const EdgeInsets.only(bottom: Margins.margin32),
           child: ListTile(
-            leading: Icon(Icons.delete),
+            leading: const Icon(Icons.delete),
             title: Text("login_removeAccountDialog_title".tr(),
                 style: TextStyle(color: CustomColors.getSecondaryColor(context))),
             onTap: () => _removeAccountDialog(),
@@ -330,7 +319,7 @@ class _LoginPageState extends State<LoginPage> {
           Icon(Icons.check_circle_rounded, color: CustomColors.getSecondaryColor(context),
               size: CustomSizes.maxHeightValidationCircle),
           Padding(
-            padding: EdgeInsets.all(Margins.margin16),
+            padding: const EdgeInsets.all(Margins.margin16),
             child: Text(state.message, textAlign: TextAlign.center),
           ),
         ],

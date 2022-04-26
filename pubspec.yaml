@@ -52,8 +52,7 @@ dev_dependencies:
   # flutter pub run build_runner build --delete-conflicting-outputs
   build_runner: ^2.1.8
   json_serializable: ^6.1.5
-  flutter_test:
-    sdk: flutter
+  flutter_lints: ^1.0.0
 
 flutter:
   uses-material-design: true

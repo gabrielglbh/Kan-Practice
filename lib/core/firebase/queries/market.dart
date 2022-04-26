@@ -5,7 +5,7 @@ import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/market_queries.dart';
 import 'package:kanpractice/core/firebase/firebase.dart';
 import 'package:kanpractice/core/firebase/models/market_list.dart';
-import 'package:kanpractice/core/utils/GeneralUtils.dart';
+import 'package:kanpractice/core/utils/general_utils.dart';
 
 class MarketRecords {
   FirebaseFirestore? _ref;
@@ -30,8 +30,9 @@ class MarketRecords {
     if (max % 500 == 0) {
       await curr?.commit();
       return _ref?.batch();
-    } else
+    } else {
       return curr;
+    }
   }
 
   /// Uploads a Kanlist to the market place. Every list and kanji will be
@@ -56,7 +57,9 @@ class MarketRecords {
         updatedToMarket: GeneralUtils.getCurrentMilliseconds()
       );
       final List<Kanji> resetKanji = [];
-      resetKanji.forEach((k) => resetKanji.add(k.copyWithReset()));
+      for (var k in resetKanji) {
+        resetKanji.add(k.copyWithReset());
+      }
 
       final DocumentReference doc = FirebaseFirestore.instance.collection(collection).doc();
 
@@ -93,8 +96,9 @@ class MarketRecords {
       if (kanjiSnapshot != null && listSnapshot != null && listData != null) {
         backUpList = MarketList.fromJson(listData).list;
 
-        for (int x = 0; x < kanjiSnapshot.size; x++)
+        for (int x = 0; x < kanjiSnapshot.size; x++) {
           backUpKanji.add(Kanji.fromJson(kanjiSnapshot.docs[x].data()));
+        }
       }
 
       return await MarketQueries.instance.mergeMarketListIntoDb(backUpList, backUpKanji);

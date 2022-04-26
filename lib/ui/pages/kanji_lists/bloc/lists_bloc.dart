@@ -14,7 +14,7 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
     List<KanjiList> _list = [];
     /// Maintain the list for pagination purposes on search
     List<KanjiList> _searchList = [];
-    final int _limit = LazyLoadingLimits.kanList;
+    const int _limit = LazyLoadingLimits.kanList;
 
     on<KanjiListEventLoading>((event, emit) async {
       try {
@@ -97,7 +97,9 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
                 event.filter, event.order, limit: _limit, l: _list
             );
           }
-          else newList = await ListQueries.instance.getAllLists();
+          else {
+            newList = await ListQueries.instance.getAllLists();
+          }
           emit(KanjiListStateLoaded(lists: newList));
         }
       }

@@ -1,14 +1,14 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageManager {
-  static final String themeMode = "themeMode";
-  static final String filtersOnList = "listFilters";
-  static final String orderOnList = "listOrder";
-  static final String hasDoneTutorial = "hasDoneTutorial";
-  static final String affectOnPractice = "affectOnPractice";
-  static final String kanListGraphVisualization = "kanListGraphVisualization";
-  static final String haveSeenKanListCoachMark = "haveSeenKanListCoachMark";
-  static final String haveSeenKanListDetailCoachMark = "haveSeenKanListDetailCoachMark";
+  static const String themeMode = "themeMode";
+  static const String filtersOnList = "listFilters";
+  static const String orderOnList = "listOrder";
+  static const String hasDoneTutorial = "hasDoneTutorial";
+  static const String affectOnPractice = "affectOnPractice";
+  static const String kanListGraphVisualization = "kanListGraphVisualization";
+  static const String haveSeenKanListCoachMark = "haveSeenKanListCoachMark";
+  static const String haveSeenKanListDetailCoachMark = "haveSeenKanListDetailCoachMark";
 
   static StorageManager? _storageUtils;
   static SharedPreferences? _preferences;

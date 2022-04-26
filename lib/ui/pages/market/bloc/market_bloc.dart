@@ -15,16 +15,17 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
     List<MarketList> _searchList = [];
 
     /// Maintain the offset of the documents from Firebase
-    String lastRetrievedDocumentId = "";
+    String _lastRetrievedDocumentId = "";
     /// Maintain the offset of the documents from Firebase when searching
-    String lastRetrievedDocumentIdWhenSearching = "";
+    String _lastRetrievedDocumentIdWhenSearching = "";
 
     on<MarketEventLoading>((event, emit) async {
       try {
-        lastRetrievedDocumentIdWhenSearching = "";
-        if (lastRetrievedDocumentId.isEmpty) {
+        _lastRetrievedDocumentIdWhenSearching = "";
+        if (event.reset) {
           emit(MarketStateLoading());
           _list.clear();
+          _lastRetrievedDocumentId = "";
         }
         /// For every time we want to retrieve data, we need to instantiate
         /// a new list in order for Equatable to trigger and perform a change
@@ -33,8 +34,8 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
         final List<MarketList> pagination = await MarketRecords.instance.getLists(
           filter: event.filter,
           descending: event.order,
-          offsetDocumentId: lastRetrievedDocumentId,
-          onLastQueriedDocument: (id) => lastRetrievedDocumentId = id
+          offsetDocumentId: _lastRetrievedDocumentId,
+          onLastQueriedDocument: (id) => _lastRetrievedDocumentId = id
         );
         fullList.addAll(pagination);
         _list.addAll(pagination);
@@ -46,10 +47,11 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
 
     on<MarketEventSearching>((event, emit) async {
       try {
-        lastRetrievedDocumentId = "";
-        if (lastRetrievedDocumentId.isEmpty) {
+        _lastRetrievedDocumentId = "";
+        if (event.reset) {
           emit(MarketStateLoading());
           _searchList.clear();
+          _lastRetrievedDocumentIdWhenSearching = "";
         }
         /// For every time we want to retrieve data, we need to instantiate
         /// a new list in order for Equatable to trigger and perform a change
@@ -57,8 +59,8 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
         List<MarketList> fullList = List.of(_searchList);
         final List<MarketList> pagination = await MarketRecords.instance.getListsBasedOnQuery(
             event.query,
-            offsetDocumentId: lastRetrievedDocumentIdWhenSearching,
-            onLastQueriedDocument: (id) => lastRetrievedDocumentIdWhenSearching = id
+            offsetDocumentId: _lastRetrievedDocumentIdWhenSearching,
+            onLastQueriedDocument: (id) => _lastRetrievedDocumentIdWhenSearching = id
         );
         fullList.addAll(pagination);
         _searchList.addAll(pagination);

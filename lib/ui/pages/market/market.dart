@@ -73,13 +73,13 @@ class _MarketPlaceState extends State<MarketPlace> {
     }
   }
 
-  _addLoadingEvent() {
+  _addLoadingEvent({bool reset = false}) {
     return _bloc..add(MarketEventLoading(filter: _currentAppliedFilter,
-        order: _currentAppliedOrder));
+        order: _currentAppliedOrder, reset: reset));
   }
 
-  _addSearchingEvent(String query) {
-    return _bloc..add(MarketEventSearching(query));
+  _addSearchingEvent(String query, {bool reset = false}) {
+    return _bloc..add(MarketEventSearching(query, reset: reset));
   }
 
   _onFilterSelected(int index) {
@@ -97,7 +97,7 @@ class _MarketPlaceState extends State<MarketPlace> {
     _currentAppliedFilter = MarketFilters.values[index];
 
     /// Adds the loading event to the bloc builder to load the new specified list
-    _addLoadingEvent();
+    _addLoadingEvent(reset: true);
     /// Stores the new filter and order applied to shared preferences
     StorageManager.saveData(StorageManager.filtersOnMarket, _currentAppliedFilter.filter);
     StorageManager.saveData(StorageManager.orderOnMarket, _currentAppliedOrder);
@@ -108,7 +108,7 @@ class _MarketPlaceState extends State<MarketPlace> {
     return KPScaffold(
       onWillPop: () async {
         if (_searchHasFocus) {
-          _addLoadingEvent();
+          _addLoadingEvent(reset: true);
           _searchBarFn?.unfocus();
           return false;
         } else {
@@ -135,12 +135,12 @@ class _MarketPlaceState extends State<MarketPlace> {
                 /// Everytime the user queries, reset the query itself and
                 /// the pagination index
                 _query = query;
-                _addSearchingEvent(query);
+                _addSearchingEvent(query, reset: true);
               },
               onExitSearch: () {
                 /// Empty the query
                 _query = "";
-                _addLoadingEvent();
+                _addLoadingEvent(reset: true);
               },
             ),
             _filterChips(),
@@ -186,7 +186,7 @@ class _MarketPlaceState extends State<MarketPlace> {
         if (state is MarketStateFailure) {
           return KPEmptyList(
             showTryButton: true,
-            onRefresh: () => _addLoadingEvent(),
+            onRefresh: () => _addLoadingEvent(reset: true),
             message: "kanji_lists_load_failed".tr()
           );
         } else if (state is MarketStateLoading || state is MarketStateSearching) {
@@ -195,13 +195,13 @@ class _MarketPlaceState extends State<MarketPlace> {
           return state.lists.isEmpty
               ? Expanded(child:
           KPEmptyList(
-              onRefresh: () => _addLoadingEvent(),
+              onRefresh: () => _addLoadingEvent(reset: true),
               showTryButton: true,
               message: "kanji_lists_empty".tr())
           )
               : Expanded(
             child: RefreshIndicator(
-              onRefresh: () => _addLoadingEvent(),
+              onRefresh: () => _addLoadingEvent(reset: true),
               child: ListView.builder(
                   key: const PageStorageKey<String>('marketListsController'),
                   controller: _scrollController,

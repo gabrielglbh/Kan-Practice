@@ -57,10 +57,6 @@ class _KanjiListsState extends State<KanjiLists> {
   bool _searchHasFocus = false;
   bool _onTutorial = false;
 
-  /// Loading offset for normal pagination
-  int _loadingTimes = 0;
-  /// Loading offset for search bar list pagination
-  int _loadingTimesForSearch = 0;
   /// Saves the last state of the query
   String _query = "";
 
@@ -115,37 +111,25 @@ class _KanjiListsState extends State<KanjiLists> {
     if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
       /// If the query is empty, use the pagination for search bar
       if (_query.isNotEmpty) {
-        _loadingTimesForSearch += 1;
-        _addSearchingEvent(_query, offset: _loadingTimesForSearch);
+        _addSearchingEvent(_query);
       }
       /// Else use the normal pagination
       else {
-        _loadingTimes += 1;
-        _addLoadingEvent(offset: _loadingTimes);
+        _addLoadingEvent();
       }
     }
   }
 
-  _addLoadingEvent({int offset = 0}) {
-    /// If the loading occurs with an offset of 0, it means it is another
-    /// fresh load, so we need to update the _loadingTimes offset to 0
-    if (offset == 0) _loadingTimes = 0;
+  _addLoadingEvent({bool reset = false}) {
     return _bloc..add(KanjiListEventLoading(
-        filter: _currentAppliedFilter, order: _currentAppliedOrder, offset: offset));
+        filter: _currentAppliedFilter, order: _currentAppliedOrder, reset: reset));
   }
 
-  _addSearchingEvent(String query, {int offset = 0}) {
-    /// If the loading occurs with an offset of 0, it means it is another
-    /// fresh load, so we need to update the _loadingTimes offset to 0
-    if (offset == 0) _loadingTimesForSearch = 0;
-    return _bloc..add(KanjiListEventSearching(query, offset: offset));
+  _addSearchingEvent(String query, {bool reset = false}) {
+    return _bloc..add(KanjiListEventSearching(query, reset: reset));
   }
 
-  _resetOffsets() {
-    /// When creating or removing a list, reset any pagination offset to load up,
-    /// from the start
-    _loadingTimes = 0;
-    _loadingTimesForSearch = 0;
+  _resetScroll() {
     /// And scroll to the top
     _scrollController.animateTo(0, duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
   }
@@ -165,7 +149,7 @@ class _KanjiListsState extends State<KanjiLists> {
     _currentAppliedFilter = KanListFilters.values[index];
 
     /// Adds the loading event to the bloc builder to load the new specified list
-    _addLoadingEvent();
+    _addLoadingEvent(reset: true);
     /// Stores the new filter and order applied to shared preferences
     StorageManager.saveData(StorageManager.filtersOnList, _currentAppliedFilter.filter);
     StorageManager.saveData(StorageManager.orderOnList, _currentAppliedOrder);
@@ -177,7 +161,7 @@ class _KanjiListsState extends State<KanjiLists> {
       onWillPop: () async {
         if (_onTutorial) return false;
         if (_searchHasFocus) {
-          _addLoadingEvent();
+          _addLoadingEvent(reset: true);
           _searchBarFn?.unfocus();
           return false;
         } else {
@@ -191,7 +175,7 @@ class _KanjiListsState extends State<KanjiLists> {
           icon: const Icon(Icons.shopping_bag_rounded),
           onPressed: () async {
             await Navigator.of(context).pushNamed(KanPracticePages.marketPlace).then((code) {
-              _addLoadingEvent(offset: _loadingTimes);
+              _addLoadingEvent();
             });
           },
         ),
@@ -206,7 +190,7 @@ class _KanjiListsState extends State<KanjiLists> {
         IconButton(
           onPressed: () async {
             await Navigator.of(context).pushNamed(KanPracticePages.settingsPage).then((code) {
-              _addLoadingEvent(offset: _loadingTimes);
+              _addLoadingEvent();
             });
           },
           icon: const Icon(Icons.settings),
@@ -214,7 +198,7 @@ class _KanjiListsState extends State<KanjiLists> {
       ],
       floatingActionButton: _searchHasFocus ? null : _fab(),
       child: BlocProvider<KanjiListBloc>(
-        create: (_) => _addLoadingEvent(),
+        create: (_) => _addLoadingEvent(reset: true),
         child: Column(
           children: [
             Visibility(
@@ -228,12 +212,12 @@ class _KanjiListsState extends State<KanjiLists> {
                 /// Everytime the user queries, reset the query itself and
                 /// the pagination index
                 _query = query;
-                _addSearchingEvent(query);
+                _addSearchingEvent(query, reset: true);
               },
               onExitSearch: () {
                 /// Empty the query
                 _query = "";
-                _addLoadingEvent();
+                _addLoadingEvent(reset: true);
               },
             ),
             _filterChips(),
@@ -261,7 +245,7 @@ class _KanjiListsState extends State<KanjiLists> {
             onSubmit: (String name) {
               _bloc.add(KanjiListEventCreate(
                   name, filter: _currentAppliedFilter, order: _currentAppliedOrder));
-              _resetOffsets();
+              _resetScroll();
             }),
         ),
       ]
@@ -314,7 +298,7 @@ class _KanjiListsState extends State<KanjiLists> {
           if (state is KanjiListStateFailure) {
             return KPEmptyList(
               showTryButton: true,
-              onRefresh: () => _addLoadingEvent(),
+              onRefresh: () => _addLoadingEvent(reset: true),
               message: "kanji_lists_load_failed".tr()
             );
           } else if (state is KanjiListStateLoading || state is KanjiListStateSearching) {
@@ -323,13 +307,13 @@ class _KanjiListsState extends State<KanjiLists> {
             return state.lists.isEmpty
                 ? Expanded(child:
               KPEmptyList(
-                onRefresh: () => _addLoadingEvent(),
+                onRefresh: () => _addLoadingEvent(reset: true),
                 showTryButton: true,
                 message: "kanji_lists_empty".tr())
             )
                 : Expanded(
               child: RefreshIndicator(
-                onRefresh: () => _addLoadingEvent(),
+                onRefresh: () => _addLoadingEvent(reset: true),
                 child: ListView.builder(
                   key: const PageStorageKey<String>('kanListListsController'),
                   controller: _scrollController,
@@ -350,9 +334,9 @@ class _KanjiListsState extends State<KanjiLists> {
                             filter: _currentAppliedFilter,
                             order: _currentAppliedOrder,
                           ));
-                          _resetOffsets();
+                          _resetScroll();
                         },
-                        onPopWhenTapped: () => _addLoadingEvent()
+                        onPopWhenTapped: () => _addLoadingEvent(reset: true)
                       ),
                     );
                   }

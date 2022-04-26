@@ -3,7 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class StorageManager {
   static const String themeMode = "themeMode";
   static const String filtersOnList = "listFilters";
+  static const String filtersOnMarket = "marketFilters";
   static const String orderOnList = "listOrder";
+  static const String orderOnMarket = "marketOrder";
   static const String hasDoneTutorial = "hasDoneTutorial";
   static const String affectOnPractice = "affectOnPractice";
   static const String kanListGraphVisualization = "kanListGraphVisualization";

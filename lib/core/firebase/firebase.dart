@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseUtils {
-  FirebaseFirestore? dbRef;
-  FirebaseAuth? authRef;
+  late FirebaseFirestore dbRef;
+  late FirebaseAuth authRef;
 
   FirebaseUtils._() {
     dbRef = FirebaseFirestore.instance;

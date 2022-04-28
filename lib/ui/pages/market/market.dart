@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
+import 'package:kanpractice/core/utils/general_utils.dart';
 import 'package:kanpractice/ui/pages/market/bloc/market_bloc.dart';
 import 'package:kanpractice/ui/pages/market/widgets/market_list_tile.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
@@ -127,26 +128,35 @@ class _MarketPlaceState extends State<MarketPlace> {
       ],
       child: BlocProvider<MarketBloc>(
         create: (_) => _addLoadingEvent(),
-        child: Column(
-          children: [
-            KPSearchBar(
-              hint: "market_lists_searchBar_hint".tr(),
-              focus: _searchBarFn,
-              onQuery: (String query) {
-                /// Everytime the user queries, reset the query itself and
-                /// the pagination index
-                _query = query;
-                _addSearchingEvent(query, reset: true);
-              },
-              onExitSearch: () {
-                /// Empty the query
-                _query = "";
-                _addLoadingEvent(reset: true);
-              },
-            ),
-            _filterChips(),
-            _lists()
-          ],
+        child: BlocListener<MarketBloc, MarketState>(
+          listener: (context, state) {
+            if (state is MarketStateDownloadSuccess) {
+              GeneralUtils.getSnackBar(context, state.message);
+            } else if (state is MarketStateDownloadFailure) {
+              GeneralUtils.getSnackBar(context, state.message);
+            }
+          },
+          child: Column(
+            children: [
+              KPSearchBar(
+                hint: "market_lists_searchBar_hint".tr(),
+                focus: _searchBarFn,
+                onQuery: (String query) {
+                  /// Everytime the user queries, reset the query itself and
+                  /// the pagination index
+                  _query = query;
+                  _addSearchingEvent(query, reset: true);
+                },
+                onExitSearch: () {
+                  /// Empty the query
+                  _query = "";
+                  _addLoadingEvent(reset: true);
+                },
+              ),
+              _filterChips(),
+              _lists()
+            ],
+          ),
         )
       )
     );
@@ -212,8 +222,8 @@ class _MarketPlaceState extends State<MarketPlace> {
                   itemBuilder: (context, k) {
                     return MarketListTile(
                       list: state.lists[k],
-                      onDownload: () {
-
+                      onDownload: (listId) {
+                        _bloc.add(MarketEventDownload(listId, _currentAppliedFilter, _currentAppliedOrder));
                       },
                       onRating: () {
 

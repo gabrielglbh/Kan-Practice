@@ -270,5 +270,7 @@
   "market_downloads_button_label": "Download",
   "market_filter_rating": "Rating",
   "market_filter_downloads": "Downloads",
-  "market_filter_words": "Words"
+  "market_filter_words": "Words",
+  "market_need_auth": "You need to be registered in KanPractice. Go to Settings > Account, and log in.",
+  "market_downloaded_successfully": "Successfully downloaded the list onto your device"
 }

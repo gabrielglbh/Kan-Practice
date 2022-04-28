@@ -199,6 +199,7 @@ class MarketRecords {
 
         if (kanjiSnapshot.size > 0 && listSnapshot.size > 0) {
           backUpList = KanjiList.fromJson(listSnapshot.docs[0].data());
+          backUpList = backUpList.copyWithReset();
 
           for (int x = 0; x < kanjiSnapshot.size; x++) {
             backUpKanji.add(Kanji.fromJson(kanjiSnapshot.docs[x].data()));

@@ -7,7 +7,7 @@ import 'package:kanpractice/ui/widgets/kp_button.dart';
 
 class MarketListTile extends StatelessWidget {
   final MarketList list;
-  final Function() onDownload;
+  final Function(String) onDownload;
   final Function() onRating;
   const MarketListTile({
     Key? key,
@@ -20,7 +20,6 @@ class MarketListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        onTap: () {},
         title: Padding(
           padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
           child: Row(
@@ -69,7 +68,12 @@ class MarketListTile extends StatelessWidget {
                 ],
               ),
             ),
-            KPButton(title2: "market_downloads_button_label".tr(), onTap: onDownload)
+            KPButton(
+              title2: "market_downloads_button_label".tr(),
+              onTap: () {
+                onDownload(list.id);
+              }
+            )
           ],
         )
       ),

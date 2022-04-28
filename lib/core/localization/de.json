@@ -270,5 +270,7 @@
   "market_downloads_button_label": "Herunterladen",
   "market_filter_rating": "Bewertung",
   "market_filter_downloads": "Downloads",
-  "market_filter_words": "Wörter"
+  "market_filter_words": "Wörter",
+  "market_need_auth": "Sie müssen in KanPractice registriert sein. Gehen Sie zu Einstellungen > Konto, und melden Sie sich an.",
+  "market_downloaded_successfully": "Sie haben die Liste erfolgreich auf Ihr Gerät heruntergeladen"
 }

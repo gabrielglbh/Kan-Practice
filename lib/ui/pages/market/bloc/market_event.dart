@@ -28,3 +28,16 @@ class MarketEventSearching extends MarketEvent {
   @override
   List<Object> get props => [query, reset];
 }
+
+class MarketEventDownload extends MarketEvent {
+  /// Maintains the filter applied by the user for loading new lists
+  final MarketFilters filter;
+  /// Whether to reset the counter for the offset on the lazy loading or not
+  final bool order;
+  final String id;
+
+  const MarketEventDownload(this.id, this.filter, this.order);
+
+  @override
+  List<Object> get props => [id, filter, order];
+}

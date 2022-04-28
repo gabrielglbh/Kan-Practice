@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
@@ -74,7 +75,7 @@ class MarketRecords {
         return [];
       }
     } catch (err) {
-      print (err);
+      print(err);
       return [];
     }
   }
@@ -114,7 +115,7 @@ class MarketRecords {
         return [];
       }
     } catch (err) {
-      print (err);
+      print(err);
       return [];
     }
   }
@@ -139,9 +140,11 @@ class MarketRecords {
 
         final MarketList resetList = MarketList(
             id: doc.id,
+            name: list.name,
+            words: kanji.length,
             author: _user.uid,
             description: description,
-            updatedToMarket: GeneralUtils.getCurrentMilliseconds()
+            uploadedToMarket: GeneralUtils.getCurrentMilliseconds()
         );
         final KanjiList raw = list.copyWithReset();
         final List<Kanji> resetKanji = [];
@@ -169,7 +172,7 @@ class MarketRecords {
         await batch.commit();
         return 0;
       } catch (err) {
-        print (err);
+        print(err);
         return -1;
       }
     }
@@ -179,24 +182,33 @@ class MarketRecords {
   ///
   /// The [id] comes from the Firebase document id when retrieving the lists.
   Future<String> downloadFromMarketPlace(String id) async {
-    try {
-      final listSnapshot = await _ref.collection(collection).doc(id).collection(listLabel).get();
-      final kanjiSnapshot = await _ref.collection(collection).doc(id).collection(kanjiLabel).get();
+    User? _user = _auth.currentUser;
+    await _user?.reload();
 
-      late KanjiList backUpList;
-      List<Kanji> backUpKanji = [];
+    if (_user == null) {
+      return "market_need_auth".tr();
+    } else {
+      try {
+        final listSnapshot = await _ref.collection(collection).doc(id)
+            .collection(listLabel).get();
+        final kanjiSnapshot = await _ref.collection(collection).doc(id)
+            .collection(kanjiLabel).get();
 
-      if (kanjiSnapshot.size > 0 && listSnapshot.size > 0) {
-        backUpList = KanjiList.fromJson(listSnapshot.docs[0].data());
+        late KanjiList backUpList;
+        List<Kanji> backUpKanji = [];
 
-        for (int x = 0; x < kanjiSnapshot.size; x++) {
-          backUpKanji.add(Kanji.fromJson(kanjiSnapshot.docs[x].data()));
+        if (kanjiSnapshot.size > 0 && listSnapshot.size > 0) {
+          backUpList = KanjiList.fromJson(listSnapshot.docs[0].data());
+
+          for (int x = 0; x < kanjiSnapshot.size; x++) {
+            backUpKanji.add(Kanji.fromJson(kanjiSnapshot.docs[x].data()));
+          }
         }
-      }
 
-      return await MarketQueries.instance.mergeMarketListIntoDb(backUpList, backUpKanji);
-    } catch (err) {
-      return err.toString();
+        return await MarketQueries.instance.mergeMarketListIntoDb(backUpList, backUpKanji);
+      } catch (err) {
+        return err.toString();
+      }
     }
   }
 }

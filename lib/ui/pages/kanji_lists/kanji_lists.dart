@@ -321,23 +321,21 @@ class _KanjiListsState extends State<KanjiLists> {
                   keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                   padding: const EdgeInsets.only(bottom: CustomSizes.extraPaddingForFAB),
                   itemBuilder: (context, k) {
-                    return Card(
-                      child: KanListTile(
-                        item: state.lists[k],
-                        onTap: () => _searchBarFn?.unfocus(),
-                        mode: VisualizationModeExt.mode(StorageManager.readData(
-                            StorageManager.kanListGraphVisualization)
-                              ?? VisualizationMode.radialChart),
-                        onRemoval: () {
-                          _bloc.add(KanjiListEventDelete(
-                            state.lists[k],
-                            filter: _currentAppliedFilter,
-                            order: _currentAppliedOrder,
-                          ));
-                          _resetScroll();
-                        },
-                        onPopWhenTapped: () => _addLoadingEvent(reset: true)
-                      ),
+                    return KanListTile(
+                      item: state.lists[k],
+                      onTap: () => _searchBarFn?.unfocus(),
+                      mode: VisualizationModeExt.mode(StorageManager.readData(
+                          StorageManager.kanListGraphVisualization)
+                            ?? VisualizationMode.radialChart),
+                      onRemoval: () {
+                        _bloc.add(KanjiListEventDelete(
+                          state.lists[k],
+                          filter: _currentAppliedFilter,
+                          order: _currentAppliedOrder,
+                        ));
+                        _resetScroll();
+                      },
+                      onPopWhenTapped: () => _addLoadingEvent(reset: true)
                     );
                   }
                 ),

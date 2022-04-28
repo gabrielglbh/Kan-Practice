@@ -262,5 +262,13 @@
   "test_mode_categories": "Test de Categoría",
   "categories_test_bottom_sheet_title": "Haz un test con la categoría de tu elección",
   "categories_test_bottom_sheet_label": "Categoría:",
-  "categories_test_bottom_sheet_error": "No hay palabras con esta categoría."
+  "categories_test_bottom_sheet_error": "No hay palabras con esta categoría.",
+  "market_place_title": "Marketplace",
+  "market_lists_searchBar_hint": "Busca por nombre",
+  "market_load_failed": "No se han podido encontrar listas en el marketplace.",
+  "market_empty": "No hay listas disponibles.\n\nPrueba otra vez con una mejor conexión a internet.",
+  "market_downloads_button_label": "Download",
+  "market_filter_rating": "Rating",
+  "market_filter_downloads": "Downloads",
+  "market_filter_words": "Words"
 }

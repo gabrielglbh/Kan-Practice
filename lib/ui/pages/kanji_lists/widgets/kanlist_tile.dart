@@ -30,35 +30,37 @@ class KanListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: () async {
-        onTap();
-        await Navigator.of(context).pushNamed(KanPracticePages.kanjiListDetailsPage, arguments: item)
-            .then((_) => onPopWhenTapped());
-      },
-      onLongPress: () => _createDialogForDeletingKanList(context, item),
-      title: Padding(
-        padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Text(item.name,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: FontSizes.fontSize24, fontWeight: FontWeight.bold)),
-            ),
-            Text("${"created_label".tr()} ${GeneralUtils.parseDateMilliseconds(context, item.lastUpdated)}",
-                style: const TextStyle(fontSize: FontSizes.fontSize12))
-          ],
+    return Card(
+      child: ListTile(
+        onTap: () async {
+          onTap();
+          await Navigator.of(context).pushNamed(KanPracticePages.kanjiListDetailsPage, arguments: item)
+              .then((_) => onPopWhenTapped());
+        },
+        onLongPress: () => _createDialogForDeletingKanList(context, item),
+        title: Padding(
+          padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(item.name,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: FontSizes.fontSize24, fontWeight: FontWeight.bold)),
+              ),
+              Text("${"created_label".tr()} ${GeneralUtils.parseDateMilliseconds(context, item.lastUpdated)}",
+                  style: const TextStyle(fontSize: FontSizes.fontSize12))
+            ],
+          ),
         ),
+        subtitle: KPDependentGraph(
+          mode: mode,
+          writing: item.totalWinRateWriting,
+          reading: item.totalWinRateReading,
+          recognition: item.totalWinRateRecognition,
+          listening: item.totalWinRateListening
+        )
       ),
-      subtitle: KPDependentGraph(
-        mode: mode,
-        writing: item.totalWinRateWriting,
-        reading: item.totalWinRateReading,
-        recognition: item.totalWinRateRecognition,
-        listening: item.totalWinRateListening
-      )
     );
   }
 

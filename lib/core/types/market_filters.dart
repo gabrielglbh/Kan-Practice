@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/core/firebase/models/market_list.dart';
 
-enum MarketFilters { all, downloads, rating }
+enum MarketFilters { all, downloads, rating, words }
 
 extension MarketFiltersExtensions on MarketFilters {
   String get label {
@@ -12,6 +12,8 @@ extension MarketFiltersExtensions on MarketFilters {
         return "market_filter_rating".tr();
       case MarketFilters.rating:
         return "market_filter_downloads".tr();
+      case MarketFilters.words:
+        return "market_filter_words".tr();
     }
   }
 
@@ -23,6 +25,8 @@ extension MarketFiltersExtensions on MarketFilters {
         return MarketList.downloadField;
       case MarketFilters.rating:
         return MarketList.ratingField;
+      case MarketFilters.words:
+        return MarketList.numberOfWordsField;
     }
   }
 }
@@ -33,8 +37,10 @@ class MarketFiltersUtils {
       return MarketFilters.all;
     } else if (f == MarketList.downloadField) {
       return MarketFilters.downloads;
-    } else {
+    } else if (f == MarketList.ratingField) {
       return MarketFilters.rating;
+    } else {
+      return MarketFilters.words;
     }
   }
 }

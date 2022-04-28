@@ -188,7 +188,7 @@ class _MarketPlaceState extends State<MarketPlace> {
           return KPEmptyList(
             showTryButton: true,
             onRefresh: () => _addLoadingEvent(reset: true),
-            message: "kanji_lists_load_failed".tr()
+            message: "market_load_failed".tr()
           );
         } else if (state is MarketStateLoading || state is MarketStateSearching) {
           return const Expanded(child: KPProgressIndicator());
@@ -198,7 +198,7 @@ class _MarketPlaceState extends State<MarketPlace> {
           KPEmptyList(
               onRefresh: () => _addLoadingEvent(reset: true),
               showTryButton: true,
-              message: "kanji_lists_empty".tr())
+              message: "market_empty".tr())
           )
               : Expanded(
             child: RefreshIndicator(
@@ -210,7 +210,15 @@ class _MarketPlaceState extends State<MarketPlace> {
                   keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                   padding: const EdgeInsets.only(bottom: CustomSizes.extraPaddingForFAB),
                   itemBuilder: (context, k) {
-                    return MarketListTile(list: state.lists[k]);
+                    return MarketListTile(
+                      list: state.lists[k],
+                      onDownload: () {
+
+                      },
+                      onRating: () {
+
+                      },
+                    );
                   }
               ),
             ),

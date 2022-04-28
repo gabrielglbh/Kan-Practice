@@ -122,6 +122,12 @@ class _MarketPlaceState extends State<MarketPlace> {
       appBarActions: [
         IconButton(
           onPressed: () async {
+            // TODO: My Lists - For deletion
+          },
+          icon: const Icon(Icons.my_library_books_rounded)
+        ),
+        IconButton(
+          onPressed: () async {
             await Navigator.of(context).pushNamed(KanPracticePages.marketAddListPage);
           },
           icon: const Icon(Icons.add)

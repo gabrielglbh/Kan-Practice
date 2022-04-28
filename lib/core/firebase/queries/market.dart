@@ -230,6 +230,11 @@ class MarketRecords {
           }
         }
 
+        /// Update downloads on the list
+        await _ref.collection(collection).doc(id).update(
+          {MarketList.downloadField: FieldValue.increment(1)}
+        );
+
         /// Merge it on the DB
         return await MarketQueries.instance.mergeMarketListIntoDb(backUpList, backUpKanji);
       } catch (err) {

@@ -79,6 +79,11 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
       } else {
         emit(MarketStateDownloadFailure(res));
       }
+      /// Reset lists for proper pagination
+      _list.clear();
+      _searchList.clear();
+      _lastRetrievedDocumentId = "";
+      _lastRetrievedDocumentIdWhenSearching = "";
       /// For every time we want to retrieve data, we need to instantiate
       /// a new list in order for Equatable to trigger and perform a change
       /// of state. After, add to _list the elements for the next iteration.

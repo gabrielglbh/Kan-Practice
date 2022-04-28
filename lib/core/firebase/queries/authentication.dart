@@ -87,6 +87,15 @@ class AuthRecords {
   /// Gets the actual user
   User? getUser() => _auth?.currentUser;
 
+  Future<bool> updateUserName(String name) async {
+    try {
+      await _auth?.currentUser?.updateDisplayName(name);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
   /// Logs out the current user
   Future<int> closeSession() async {
     User? user = getUser();

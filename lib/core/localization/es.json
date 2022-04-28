@@ -266,7 +266,7 @@
   "market_place_title": "Marketplace",
   "market_lists_searchBar_hint": "Busca por nombre",
   "market_load_failed": "No se han podido encontrar listas en el marketplace.",
-  "market_empty": "No hay listas disponibles.\n\nPrueba otra vez con una mejor conexión a internet.",
+  "market_empty": "No hay listas disponibles.",
   "market_downloads_button_label": "Download",
   "market_filter_rating": "Rating",
   "market_filter_downloads": "Downloads",
@@ -285,5 +285,9 @@
   "add_to_market_authentication_failed": "La autenticación de usuario ha fallado. Inténtalo de nuevo.",
   "add_to_market_already_uploaded": "La lista ya está subida. Prueba con otra lista.",
   "add_to_market_something_wrong": "Algo ha ocurrido mientras se subía la lista. Prueba otra vez más tarde.",
-  "market_download_already_installed": "La lista que has intentado descargar ya la tienes instalada."
+  "market_download_already_installed": "La lista que has intentado descargar ya la tienes instalada.",
+  "market_by_author": "Por",
+  "add_to_market_username_label": "Nombre de Usuario",
+  "add_to_market_username_hint": "SuperNombre7",
+  "add_to_market_author_validation_failed": "El nombre de usuario no se ha podido actualizar. Inténtalo de nuevo más tarde."
 }

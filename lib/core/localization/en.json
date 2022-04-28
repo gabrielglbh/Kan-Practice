@@ -266,7 +266,7 @@
   "market_place_title": "Marketplace",
   "market_lists_searchBar_hint": "Search by name",
   "market_load_failed": "No lists could be found in the marketplace.",
-  "market_empty": "No lists available.\n\nTry again with a better internet connection.",
+  "market_empty": "No lists available.",
   "market_downloads_button_label": "Download",
   "market_filter_rating": "Rating",
   "market_filter_downloads": "Downloads",
@@ -280,10 +280,14 @@
   "add_to_market_description_hint": "Describes the listing for other users.",
   "add_to_market_successfully_created": "The list was successfully uploaded.",
   "add_to_market_go_back_to_market_button_label": "Go to marketplace",
-  "add_to_market_validation_failed": "Filled in the fields correctly.",
+  "add_to_market_validation_failed": "Fill in the fields correctly.",
   "add_to_market_kanji_empty": "The list you selected has no words",
   "add_to_market_authentication_failed": "User authentication has failed. Try again.",
   "add_to_market_already_uploaded": "The list is already uploaded. Try another list.",
   "add_to_market_something_wrong": "Something happened while uploading the list. Try again later.",
-  "market_download_already_installed": "The list you tried to download is installed already."
+  "market_download_already_installed": "The list you tried to download is installed already.",
+  "market_by_author": "By",
+  "add_to_market_username_label": "Username",
+  "add_to_market_username_hint": "SuperName7",
+  "add_to_market_author_validation_failed": "The username could not be updated. Try again later."
 }

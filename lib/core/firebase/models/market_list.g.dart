@@ -7,7 +7,6 @@ part of 'market_list.dart';
 // **************************************************************************
 
 MarketList _$MarketListFromJson(Map<String, dynamic> json) => MarketList(
-      id: json['id'] as String? ?? "",
       words: json['words'] as int,
       name: json['name'] as String,
       rating: (json['rating'] as Map<String, dynamic>?)?.map(
@@ -22,7 +21,6 @@ MarketList _$MarketListFromJson(Map<String, dynamic> json) => MarketList(
 
 Map<String, dynamic> _$MarketListToJson(MarketList instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'name': instance.name,
       'words': instance.words,
       'rating': instance.rating,

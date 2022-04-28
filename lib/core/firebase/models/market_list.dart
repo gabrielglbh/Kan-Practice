@@ -4,7 +4,6 @@ part 'market_list.g.dart';
 
 @JsonSerializable()
 class MarketList {
-  static const idField = "id";
   static const listNameField = "name";
   static const numberOfWordsField = "words";
   static const ratingField = "rating";
@@ -12,7 +11,6 @@ class MarketList {
   static const authorField = "author";
   static const uploadedToMarketField = "uploadedToMarket";
 
-  final String id;
   final String name;
   final int words;
   /// Rating will hold a map of authenticated users IDs with their rating on a list.
@@ -25,7 +23,7 @@ class MarketList {
   final String author;
   final int uploadedToMarket;
 
-  MarketList({this.id = "", required this.words, required this.name, this.rating = const {},
+  MarketList({required this.words, required this.name, this.rating = const {},
     this.downloads = 0, required this.description, required this.author, this.uploadedToMarket = 0
   });
 
@@ -36,7 +34,6 @@ class MarketList {
   Map<String, dynamic> toJson() => _$MarketListToJson(this);
 
   MarketList copyWithUpdatedDate({int? lastUpdated}) => MarketList(
-      id: id,
       name: name,
       words: words,
       rating: rating,
@@ -49,7 +46,6 @@ class MarketList {
   MarketList copyWithReset({
     required String author
   }) => MarketList(
-      id: id,
       name: name,
       words: words,
       rating: rating,

@@ -161,10 +161,9 @@ class MarketRecords {
 
         /// Initialize MarketList, KanList and Kanjis
         final MarketList resetList = MarketList(
-            id: doc.id,
             name: list.name,
             words: kanji.length,
-            author: _user.uid,
+            author: _user.displayName ?? "",
             description: description,
             uploadedToMarket: GeneralUtils.getCurrentMilliseconds()
         );

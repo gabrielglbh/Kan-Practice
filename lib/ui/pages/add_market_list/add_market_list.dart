@@ -20,12 +20,16 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
   final _bloc = AddToMarketBloc();
   late TextEditingController _tc;
   late FocusNode _fn;
+  late TextEditingController _tcUser;
+  late FocusNode _fnUser;
   String _listSelection = "add_to_market_select_list".tr();
 
   @override
   void initState() {
     _tc = TextEditingController();
     _fn = FocusNode();
+    _tcUser = TextEditingController();
+    _fnUser = FocusNode();
     super.initState();
   }
 
@@ -33,6 +37,8 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
   void dispose() {
     _tc.dispose();
     _fn.dispose();
+    _tcUser.dispose();
+    _fnUser.dispose();
     _bloc.close();
     super.dispose();
   }
@@ -46,12 +52,12 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
         appBarActions: [
           BlocBuilder<AddToMarketBloc, AddToMarketState>(
             builder: (context, state) {
-              if (state is AddToMarketStateLoading) {
+              if (state is AddToMarketStateLoading || state is AddToMarketStateSuccess) {
                 return Container();
               } else {
                 return IconButton(
                   onPressed: () {
-                    _bloc.add(AddToMarketEventOnUpload(_listSelection, _tc.text));
+                    _bloc.add(AddToMarketEventOnUpload(_listSelection, _tc.text, _tcUser.text));
                   },
                   icon: const Icon(Icons.check)
                 );
@@ -65,10 +71,15 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
               if (state is AddToMarketStateFailure) {
                 GeneralUtils.getSnackBar(context, state.message);
               }
+              if (state is AddToMarketStateGetUser) {
+                _tcUser.text = state.name;
+              }
             },
             child: BlocBuilder<AddToMarketBloc, AddToMarketState>(
               builder: (context, state) {
-                if (state is AddToMarketStateInitial || state is AddToMarketStateFailure) {
+                if (state is AddToMarketStateInitial ||
+                    state is AddToMarketStateFailure ||
+                    state is AddToMarketStateGetUser) {
                   return Column(
                     children: [
                       Padding(
@@ -96,13 +107,22 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                         ),
                       ),
                       KPTextForm(
+                          header: "add_to_market_username_label".tr(),
+                          hint: "add_to_market_username_hint".tr(),
+                          controller: _tcUser,
+                          focusNode: _fnUser,
+                          maxLines: 1,
+                          maxLength: 32,
+                          onEditingComplete: () => _fn.requestFocus()
+                      ),
+                      KPTextForm(
                           header: "add_to_market_description_label".tr(),
                           hint: "add_to_market_description_hint".tr(),
                           controller: _tc,
                           focusNode: _fn,
                           action: TextInputAction.done,
-                          maxLines: 10,
-                          maxLength: 500,
+                          maxLines: 5,
+                          maxLength: 140,
                           onEditingComplete: () => _fn.unfocus()
                       )
                     ],

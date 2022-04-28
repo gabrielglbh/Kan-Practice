@@ -33,7 +33,7 @@ class MarketListTile extends StatelessWidget {
                     Text(list.name,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(fontSize: FontSizes.fontSize24, fontWeight: FontWeight.bold)),
-                    Text(list.author,
+                    if (list.author.isNotEmpty) Text("${"market_by_author".tr()}: ${list.author}",
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(fontSize: FontSizes.fontSize18)),
                   ],
@@ -48,31 +48,37 @@ class MarketListTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(list.description,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 5,
-                      style: const TextStyle(fontSize: FontSizes.fontSize14)
-                  ),
-                  Text("${"market_filter_words".tr()}: ${list.words}",
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: FontSizes.fontSize14)
-                  ),
-                  Text("${"market_filter_downloads".tr()}: ${list.downloads}",
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: FontSizes.fontSize14)
-                  ),
-                  // TODO: Rating
-                ],
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: Margins.margin8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(list.description,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 5,
+                        style: const TextStyle(fontSize: FontSizes.fontSize14)
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: Margins.margin8),
+                      child: Text("${"market_filter_words".tr()}: ${list.words}",
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: FontSizes.fontSize14)
+                      ),
+                    ),
+                    Text("${"market_filter_downloads".tr()}: ${list.downloads}",
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontSize: FontSizes.fontSize14)
+                    ),
+                    // TODO: Rating
+                  ],
+                ),
               ),
             ),
             KPButton(
               title2: "market_downloads_button_label".tr(),
               color: CustomColors.secondaryDarkerColor,
               onTap: () {
-                onDownload(list.id);
+                onDownload(list.name);
               }
             )
           ],

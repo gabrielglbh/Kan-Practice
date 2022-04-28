@@ -21,3 +21,12 @@ class AddToMarketStateFailure extends AddToMarketState {
 class AddToMarketStateLoading extends AddToMarketState {}
 
 class AddToMarketStateSuccess extends AddToMarketState {}
+
+class AddToMarketStateGetUser extends AddToMarketState {
+  final String name;
+
+  const AddToMarketStateGetUser(this.name);
+
+  @override
+  List<Object> get props => [name];
+}

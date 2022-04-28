@@ -32,6 +32,8 @@ class KPTextForm extends StatelessWidget {
   final bool obscure;
   /// Max length of this. Defaults to null
   final int? maxLength;
+  /// Max lines of this. Defaults to null
+  final int? maxLines;
   const KPTextForm({
     Key? key,
     required this.header,
@@ -48,7 +50,8 @@ class KPTextForm extends StatelessWidget {
     this.autofocus = false,
     this.obscure = false,
     this.additionalWidget,
-    this.maxLength
+    this.maxLength,
+    this.maxLines
   }) : super(key: key);
 
   @override
@@ -76,6 +79,7 @@ class KPTextForm extends StatelessWidget {
           textInputAction: action,
           keyboardType: inputType,
           maxLength: maxLength,
+          maxLines: maxLines,
           textCapitalization: TextCapitalization.sentences,
           autofocus: autofocus,
           obscureText: obscure,

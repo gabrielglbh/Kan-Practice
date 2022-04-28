@@ -174,7 +174,7 @@ class _KanjiListsState extends State<KanjiLists> {
           key: market,
           icon: const Icon(Icons.shopping_bag_rounded),
           onPressed: () async {
-            await Navigator.of(context).pushNamed(KanPracticePages.marketPlace).then((code) {
+            await Navigator.of(context).pushNamed(KanPracticePages.marketPlacePage).then((code) {
               _addLoadingEvent();
             });
           },

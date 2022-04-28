@@ -272,5 +272,18 @@
   "market_filter_downloads": "Downloads",
   "market_filter_words": "Wörter",
   "market_need_auth": "Sie müssen in KanPractice registriert sein. Gehen Sie zu Einstellungen > Konto, und melden Sie sich an.",
-  "market_downloaded_successfully": "Sie haben die Liste erfolgreich auf Ihr Gerät heruntergeladen"
+  "market_downloaded_successfully": "Sie haben die Liste erfolgreich auf Ihr Gerät heruntergeladen",
+  "add_to_market_select_list": "Wählen Sie eine Ihrer Listen aus",
+  "add_to_market_title": "Eine Liste hochladen",
+  "add_to_market_needs_registration": "Um eine Liste auf dem Marktplatz zu erstellen, müssen Sie bei KanPractice registriert sein.",
+  "add_to_market_description_label": "Beschreibung",
+  "add_to_market_description_hint": "Beschreibt die Liste für andere Nutzer",
+  "add_to_market_successfully_created": "Die Liste wurde erfolgreich hochgeladen.",
+  "add_to_market_go_back_to_market_button_label": "Zum Marktplatz gehen",
+  "add_to_market_validation_failed": "Die Felder wurden korrekt ausgefüllt",
+  "add_to_market_kanji_empty": "Die Liste, die Sie ausgewählt haben, enthält keine Wörter",
+  "add_to_market_authentication_failed": "Benutzerauthentifizierung fehlgeschlagen. Bitte versuchen Sie es erneut",
+  "add_to_market_already_uploaded": "Die Liste ist bereits hochgeladen. Versuchen Sie eine andere Liste",
+  "add_to_market_something_wrong": "Beim Hochladen der Liste ist etwas passiert. Versuchen Sie es später noch einmal.",
+  "market_download_already_installed": "Die Liste, die Sie herunterzuladen versucht haben, ist bereits installiert."
 }

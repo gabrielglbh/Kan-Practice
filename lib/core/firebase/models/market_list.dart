@@ -10,7 +10,7 @@ class MarketList {
   static const ratingField = "rating";
   static const downloadField = "downloads";
   static const authorField = "author";
-  static const updatedToMarketField = "updatedToMarket";
+  static const uploadedToMarketField = "uploadedToMarket";
 
   final String id;
   final String name;

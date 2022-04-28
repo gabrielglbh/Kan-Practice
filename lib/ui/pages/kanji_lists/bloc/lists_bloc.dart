@@ -8,7 +8,7 @@ import 'package:kanpractice/ui/theme/consts.dart';
 part 'lists_event.dart';
 part 'lists_state.dart';
 
-/// This bloc is used in kanji_lists.dart and jisho.dart
+/// This bloc is used in kanji_lists.dart, jisho.dart and add_market_list.dart.
 class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
   KanjiListBloc() : super(KanjiListStateLoading()) {
     /// Maintain the list for pagination purposes

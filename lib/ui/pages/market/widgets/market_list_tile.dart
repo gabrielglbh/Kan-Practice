@@ -45,7 +45,7 @@ class MarketListTile extends StatelessWidget {
           ),
         ),
         subtitle: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Expanded(
               child: Column(
@@ -70,6 +70,7 @@ class MarketListTile extends StatelessWidget {
             ),
             KPButton(
               title2: "market_downloads_button_label".tr(),
+              color: CustomColors.secondaryDarkerColor,
               onTap: () {
                 onDownload(list.id);
               }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
+import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
 import 'package:kanpractice/core/utils/general_utils.dart';
 import 'package:kanpractice/ui/pages/market/bloc/market_bloc.dart';
@@ -43,7 +44,7 @@ class _MarketPlaceState extends State<MarketPlace> {
     _scrollController.addListener(_scrollListener);
 
     final filterText = StorageManager.readData(StorageManager.filtersOnMarket)
-        ?? MarketList.updatedToMarketField;
+        ?? MarketList.uploadedToMarketField;
     _currentAppliedFilter = MarketFiltersUtils.getFilterFrom(filterText);
 
     _currentAppliedOrder = StorageManager.readData(StorageManager.orderOnMarket) ?? true;
@@ -120,8 +121,8 @@ class _MarketPlaceState extends State<MarketPlace> {
       appBarTitle: "market_place_title".tr(),
       appBarActions: [
         IconButton(
-          onPressed: () {
-            // TODO: Add list: Show BS of KanLists and select
+          onPressed: () async {
+            await Navigator.of(context).pushNamed(KanPracticePages.marketAddListPage);
           },
           icon: const Icon(Icons.add)
         )
@@ -136,26 +137,34 @@ class _MarketPlaceState extends State<MarketPlace> {
               GeneralUtils.getSnackBar(context, state.message);
             }
           },
-          child: Column(
-            children: [
-              KPSearchBar(
-                hint: "market_lists_searchBar_hint".tr(),
-                focus: _searchBarFn,
-                onQuery: (String query) {
-                  /// Everytime the user queries, reset the query itself and
-                  /// the pagination index
-                  _query = query;
-                  _addSearchingEvent(query, reset: true);
-                },
-                onExitSearch: () {
-                  /// Empty the query
-                  _query = "";
-                  _addLoadingEvent(reset: true);
-                },
-              ),
-              _filterChips(),
-              _lists()
-            ],
+          child: BlocBuilder<MarketBloc, MarketState>(
+            builder: (context, state) {
+              if (state is MarketStateLoading || state is MarketStateSearching) {
+                return const Expanded(child: KPProgressIndicator());
+              } else {
+                return Column(
+                  children: [
+                    KPSearchBar(
+                      hint: "market_lists_searchBar_hint".tr(),
+                      focus: _searchBarFn,
+                      onQuery: (String query) {
+                        /// Everytime the user queries, reset the query itself and
+                        /// the pagination index
+                        _query = query;
+                        _addSearchingEvent(query, reset: true);
+                      },
+                      onExitSearch: () {
+                        /// Empty the query
+                        _query = "";
+                        _addLoadingEvent(reset: true);
+                      },
+                    ),
+                    _filterChips(),
+                    _lists(state)
+                  ],
+                );
+              }
+            }
           ),
         )
       )
@@ -191,52 +200,46 @@ class _MarketPlaceState extends State<MarketPlace> {
     );
   }
 
-  Widget _lists() {
-    return BlocBuilder<MarketBloc, MarketState>(
-      builder: (context, state) {
-        if (state is MarketStateFailure) {
-          return KPEmptyList(
-            showTryButton: true,
-            onRefresh: () => _addLoadingEvent(reset: true),
-            message: "market_load_failed".tr()
-          );
-        } else if (state is MarketStateLoading || state is MarketStateSearching) {
-          return const Expanded(child: KPProgressIndicator());
-        } else if (state is MarketStateLoaded) {
-          return state.lists.isEmpty
-              ? Expanded(child:
-          KPEmptyList(
-              onRefresh: () => _addLoadingEvent(reset: true),
-              showTryButton: true,
-              message: "market_empty".tr())
-          )
-              : Expanded(
-            child: RefreshIndicator(
-              onRefresh: () => _addLoadingEvent(reset: true),
-              child: ListView.builder(
-                  key: const PageStorageKey<String>('marketListsController'),
-                  controller: _scrollController,
-                  itemCount: state.lists.length,
-                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                  padding: const EdgeInsets.only(bottom: CustomSizes.extraPaddingForFAB),
-                  itemBuilder: (context, k) {
-                    return MarketListTile(
-                      list: state.lists[k],
-                      onDownload: (listId) {
-                        _bloc.add(MarketEventDownload(listId, _currentAppliedFilter, _currentAppliedOrder));
-                      },
-                      onRating: () {
+  Widget _lists(MarketState state) {
+    if (state is MarketStateFailure) {
+      return KPEmptyList(
+          showTryButton: true,
+          onRefresh: () => _addLoadingEvent(reset: true),
+          message: "market_load_failed".tr()
+      );
+    } else if (state is MarketStateLoaded) {
+      return state.lists.isEmpty
+          ? Expanded(child:
+      KPEmptyList(
+          onRefresh: () => _addLoadingEvent(reset: true),
+          showTryButton: true,
+          message: "market_empty".tr())
+      )
+          : Expanded(
+        child: RefreshIndicator(
+          onRefresh: () => _addLoadingEvent(reset: true),
+          child: ListView.builder(
+              key: const PageStorageKey<String>('marketListsController'),
+              controller: _scrollController,
+              itemCount: state.lists.length,
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              padding: const EdgeInsets.only(bottom: Margins.margin16),
+              itemBuilder: (context, k) {
+                return MarketListTile(
+                  list: state.lists[k],
+                  onDownload: (listId) {
+                    _bloc.add(MarketEventDownload(listId, _currentAppliedFilter, _currentAppliedOrder));
+                  },
+                  onRating: () {
 
-                      },
-                    );
-                  }
-              ),
-            ),
-          );
-        } else {
-          return Container();
-        }
-      },
-    );
+                  },
+                );
+              }
+          ),
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
 }

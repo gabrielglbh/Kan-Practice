@@ -20,7 +20,7 @@ extension MarketFiltersExtensions on MarketFilters {
   String get filter {
     switch (this) {
       case MarketFilters.all:
-        return MarketList.updatedToMarketField;
+        return MarketList.uploadedToMarketField;
       case MarketFilters.downloads:
         return MarketList.downloadField;
       case MarketFilters.rating:
@@ -33,7 +33,7 @@ extension MarketFiltersExtensions on MarketFilters {
 
 class MarketFiltersUtils {
   static MarketFilters getFilterFrom(String f) {
-    if (f == MarketList.updatedToMarketField) {
+    if (f == MarketList.uploadedToMarketField) {
       return MarketFilters.all;
     } else if (f == MarketList.downloadField) {
       return MarketFilters.downloads;

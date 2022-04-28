@@ -272,5 +272,18 @@
   "market_filter_downloads": "Downloads",
   "market_filter_words": "Words",
   "market_need_auth": "Necesitas estar registrado en KanPractice. Ve a Ajustes > Cuenta, e inicia sesión.",
-  "market_downloaded_successfully": "Se ha descargado correctamente la lista en tu dispositivo"
+  "market_downloaded_successfully": "Se ha descargado correctamente la lista en tu dispositivo",
+  "add_to_market_select_list": "Selecciona una de tus listas",
+  "add_to_market_title": "Sube una lista",
+  "add_to_market_needs_registration": "Para crear una lista en el marketplace necesitas estar registrado en KanPractice.",
+  "add_to_market_description_label": "Descripción",
+  "add_to_market_description_hint": "Describe la lista para los demás usuarios",
+  "add_to_market_successfully_created": "La lista se ha subido correctamente.",
+  "add_to_market_go_back_to_market_button_label": "Ir al marketplace",
+  "add_to_market_validation_failed": "Rellena correctamente los campos",
+  "add_to_market_kanji_empty": "La lista que has seleccionado no tiene palabras",
+  "add_to_market_authentication_failed": "La autenticación de usuario ha fallado. Inténtalo de nuevo.",
+  "add_to_market_already_uploaded": "La lista ya está subida. Prueba con otra lista.",
+  "add_to_market_something_wrong": "Algo ha ocurrido mientras se subía la lista. Prueba otra vez más tarde.",
+  "market_download_already_installed": "La lista que has intentado descargar ya la tienes instalada."
 }

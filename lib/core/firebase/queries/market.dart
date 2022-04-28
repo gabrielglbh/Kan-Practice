@@ -53,19 +53,26 @@ class MarketRecords {
   }) async {
     try {
       final List<MarketList> lists = [];
+      /// Apply filter, order and limit for Lazy loading purposes
       final Query<Map<String, dynamic>> listsSnapshot = _ref.collection(collection)
           .orderBy(filter.filter, descending: descending)
           .limit(LazyLoadingLimits.kanList);
 
+      /// If there is an offset, apply it to the query
       if (offsetDocumentId.isNotEmpty) {
         final DocumentSnapshot startFrom = await _ref.collection(collection)
             .doc(offsetDocumentId).get();
-        listsSnapshot.startAtDocument(startFrom);
+        listsSnapshot.startAfterDocument(startFrom);
       }
 
       final snapshot = await listsSnapshot.get();
 
       if (snapshot.size > 0) {
+        /// Assures that the Lazy Loading is correct
+        if (offsetDocumentId == snapshot.docs[snapshot.size - 1].id) {
+          return [];
+        }
+
         for (int x = 0; x < snapshot.size; x++) {
           lists.add(MarketList.fromJson(snapshot.docs[x].data()));
           if (x == snapshot.size - 1) onLastQueriedDocument(snapshot.docs[x].id);
@@ -94,18 +101,25 @@ class MarketRecords {
   }) async {
     try {
       final List<MarketList> lists = [];
+      /// Apply filter, order and limit for Lazy loading purposes
       final Query<Map<String, dynamic>> listsSnapshot = _ref.collection(collection)
           .limit(LazyLoadingLimits.kanList);
 
+      /// If there is an offset, apply it to the query
       if (offsetDocumentId.isNotEmpty) {
         final DocumentSnapshot startFrom = await _ref.collection(collection)
             .doc(offsetDocumentId).get();
-        listsSnapshot.startAtDocument(startFrom);
+        listsSnapshot.startAfterDocument(startFrom);
       }
 
       final snapshot = await listsSnapshot.get();
 
       if (snapshot.size > 0) {
+        /// Assures that the Lazy Loading is correct
+        if (offsetDocumentId == snapshot.docs[snapshot.size - 1].id) {
+          return [];
+        }
+
         for (int x = 0; x < snapshot.size; x++) {
           lists.add(MarketList.fromJson(snapshot.docs[x].data()));
           if (x == snapshot.size - 1) onLastQueriedDocument(snapshot.docs[x].id);
@@ -130,14 +144,22 @@ class MarketRecords {
     User? _user = _auth.currentUser;
     await _user?.reload();
 
+    /// If the user is not authenticated, exit
     if (_user == null) {
       return -2;
     } else {
       try {
         var batch = _ref.batch();
 
-        final DocumentReference doc = _ref.collection(collection).doc();
+        /// Initialize the document with ID as list.name
+        final DocumentReference doc = _ref.collection(collection).doc(list.name);
 
+        /// If the doc already exists, abort
+        if ((await doc.get()).exists) {
+          return -3;
+        }
+
+        /// Initialize MarketList, KanList and Kanjis
         final MarketList resetList = MarketList(
             id: doc.id,
             name: list.name,
@@ -185,10 +207,12 @@ class MarketRecords {
     User? _user = _auth.currentUser;
     await _user?.reload();
 
+    /// If the user is not authenticated, exit
     if (_user == null) {
       return "market_need_auth".tr();
     } else {
       try {
+        /// Get sub collections for KanList and Kanji
         final listSnapshot = await _ref.collection(collection).doc(id)
             .collection(listLabel).get();
         final kanjiSnapshot = await _ref.collection(collection).doc(id)
@@ -197,6 +221,7 @@ class MarketRecords {
         late KanjiList backUpList;
         List<Kanji> backUpKanji = [];
 
+        /// Apply the transform to the POJO
         if (kanjiSnapshot.size > 0 && listSnapshot.size > 0) {
           backUpList = KanjiList.fromJson(listSnapshot.docs[0].data());
           backUpList = backUpList.copyWithReset();
@@ -206,6 +231,7 @@ class MarketRecords {
           }
         }
 
+        /// Merge it on the DB
         return await MarketQueries.instance.mergeMarketListIntoDb(backUpList, backUpKanji);
       } catch (err) {
         return err.toString();

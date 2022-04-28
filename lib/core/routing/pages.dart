@@ -15,5 +15,6 @@ class KanPracticePages {
   static const String jishoPage = "/jishoPage";
   static const String dictionaryPage = "/dictionaryPage";
   static const String statisticsPage = "/statisticsPage";
-  static const String marketPlace = "/marketPlace";
+  static const String marketPlacePage = "/marketPlacePage";
+  static const String marketAddListPage = "/marketAddListPage";
 }

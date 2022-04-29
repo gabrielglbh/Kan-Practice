@@ -20,20 +20,28 @@ class KanjiListDetailBloc extends Bloc<KanjiListDetailEvent, KanjiListDetailStat
    List<Kanji> _searchList = [];
    const int _limit = LazyLoadingLimits.wordList;
 
+   /// Loading offset for normal pagination
+   int _loadingTimes = 0;
+   /// Loading offset for search bar list pagination
+   int _loadingTimesForSearch = 0;
+
    on<KanjiEventLoading>((event, emit) async {
      try {
-       if (event.offset == 0) {
+       _loadingTimesForSearch = 0;
+       if (event.reset) {
          emit(KanjiListDetailStateLoading());
          _list.clear();
+         _loadingTimes = 0;
        }
        /// For every time we want to retrieve data, we need to instantiate
        /// a new list in order for Equatable to trigger and perform a change
        /// of state. After, add to _list the elements for the next iteration.
        List<Kanji> fullList = List.of(_list);
        final List<Kanji> pagination = await KanjiQueries.instance.getAllKanjiFromList(
-           event.list, offset: event.offset, limit: _limit);
+           event.list, offset: _loadingTimes, limit: _limit);
        fullList.addAll(pagination);
        _list.addAll(pagination);
+       _loadingTimes += 1;
        emit(KanjiListDetailStateLoaded(fullList, event.list));
      } on Exception {
        emit(const KanjiListDetailStateFailure());
@@ -42,18 +50,21 @@ class KanjiListDetailBloc extends Bloc<KanjiListDetailEvent, KanjiListDetailStat
 
    on<KanjiEventSearching>((event, emit) async {
      try {
-       if (event.offset == 0) {
+       _loadingTimes = 0;
+       if (event.reset) {
          emit(KanjiListDetailStateLoading());
          _searchList.clear();
+         _loadingTimesForSearch = 0;
        }
        /// For every time we want to retrieve data, we need to instantiate
        /// a new list in order for Equatable to trigger and perform a change
        /// of state. After, add to _list the elements for the next iteration.
        List<Kanji> fullList = List.of(_searchList);
        final List<Kanji> pagination = await KanjiQueries.instance.getKanjiMatchingQuery(
-           event.query, event.list, offset: event.offset, limit: _limit);
+           event.query, event.list, offset: _loadingTimesForSearch, limit: _limit);
        fullList.addAll(pagination);
        _searchList.addAll(pagination);
+       _loadingTimesForSearch += 1;
        emit(KanjiListDetailStateLoaded(fullList, event.list));
      } on Exception {
        emit(const KanjiListDetailStateFailure());
@@ -75,6 +86,9 @@ class KanjiListDetailBloc extends Bloc<KanjiListDetailEvent, KanjiListDetailStat
        /// to work properly for the next offset
        _list.clear();
        _list.addAll(lists);
+       /// Reset offsets
+       _loadingTimes = 0;
+       _loadingTimesForSearch = 0;
        emit(KanjiListDetailStateLoaded(lists, event.name));
      }
      else {

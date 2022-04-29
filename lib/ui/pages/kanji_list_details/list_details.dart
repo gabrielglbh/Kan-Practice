@@ -50,10 +50,6 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
   StudyModes _selectedMode = StudyModes.writing;
   LearningMode _learningMode = LearningMode.spatial;
 
-  /// Loading offset for normal pagination
-  int _loadingTimes = 0;
-  /// Loading offset for search bar list pagination
-  int _loadingTimesForSearch = 0;
   /// Saves the last state of the query
   String _query = "";
   /// Saves the last name of the current visited list
@@ -89,13 +85,11 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
     if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
       /// If the query is empty, use the pagination for search bar
       if (_query.isNotEmpty) {
-        _loadingTimesForSearch += 1;
-        _addSearchingEvent(_query, offset: _loadingTimesForSearch);
+        _addSearchingEvent(_query);
       }
       /// Else use the normal pagination
       else {
-        _loadingTimes += 1;
-        _addLoadingEvent(offset: _loadingTimes);
+        _addLoadingEvent();
       }
     }
   }
@@ -153,27 +147,17 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
     }
   }
 
-  _addLoadingEvent({int offset = 0}) {
-    /// If the loading occurs with an offset of 0, it means it is another
-    /// fresh load, so we need to update the _loadingTimes offset to 0
-    if (offset == 0) _loadingTimes = 0;
-    return _bloc..add(KanjiEventLoading(_listName, offset: offset));
+  _addLoadingEvent({bool reset = false}) {
+    return _bloc..add(KanjiEventLoading(_listName, reset: reset));
   }
 
-  _addSearchingEvent(String query, {int offset = 0}) {
-    /// If the loading occurs with an offset of 0, it means it is another
-    /// fresh load, so we need to update the _loadingTimes offset to 0
-    if (offset == 0) _loadingTimesForSearch = 0;
-    return _bloc..add(KanjiEventSearching(query, _listName, offset));
+  _addSearchingEvent(String query, {bool reset = false}) {
+    return _bloc..add(KanjiEventSearching(query, _listName, reset: reset));
   }
 
   _updateName(String name) {
     if (name.isNotEmpty) {
       _bloc.add(UpdateKanList(name, _listName));
-      /// Resets offsets when updating list's name to make proper pagination
-      /// with new name
-      _loadingTimes = 0;
-      _loadingTimesForSearch = 0;
     }
   }
 
@@ -207,25 +191,25 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
         await Navigator.of(context).pushNamed(KanPracticePages.writingStudyPage,
             arguments: ModeArguments(studyList: state.list, isTest: false,
                 mode: StudyModes.writing, display: widget.list.name))
-            .then((value) => _addLoadingEvent());
+            .then((value) => _addLoadingEvent(reset: true));
         break;
       case StudyModes.reading:
         await Navigator.of(context).pushNamed(KanPracticePages.readingStudyPage,
             arguments: ModeArguments(studyList: state.list, isTest: false,
                 mode: StudyModes.reading, display: widget.list.name))
-            .then((value) => _addLoadingEvent());
+            .then((value) => _addLoadingEvent(reset: true));
         break;
       case StudyModes.recognition:
         await Navigator.of(context).pushNamed(KanPracticePages.recognitionStudyPage,
             arguments: ModeArguments(studyList: state.list, isTest: false,
                 mode: StudyModes.recognition, display: widget.list.name))
-            .then((value) => _addLoadingEvent());
+            .then((value) => _addLoadingEvent(reset: true));
         break;
       case StudyModes.listening:
         await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
             arguments: ModeArguments(studyList: state.list, isTest: false,
                 mode: StudyModes.listening, display: widget.list.name))
-            .then((value) => _addLoadingEvent());
+            .then((value) => _addLoadingEvent(reset: true));
         break;
     }
   }
@@ -238,7 +222,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
         onWillPop: () async {
           if (_onTutorial) return false;
           if (_searchHasFocus) {
-            _addLoadingEvent();
+            _addLoadingEvent(reset: true);
             _searchBarFn?.unfocus();
             return false;
           } else {
@@ -292,13 +276,13 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
             onPressed: () async {
               await Navigator.of(context).pushNamed(KanPracticePages.addKanjiPage,
                   arguments: AddKanjiArgs(listName: _listName))
-                  .then((code) => _addLoadingEvent(offset: _loadingTimes));
+                  .then((code) => _addLoadingEvent(reset: true));
             },
             icon: const Icon(Icons.add),
           ),
         ],
         child: BlocProvider<KanjiListDetailBloc>(
-          create: (_) => _addLoadingEvent(),
+          create: (_) => _addLoadingEvent(reset: true),
           child: Column(
             children: [
               KPSearchBar(
@@ -308,12 +292,12 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
                   /// Everytime the user queries, reset the query itself and
                   /// the pagination index
                   _query = query;
-                  _addSearchingEvent(query);
+                  _addSearchingEvent(query, reset: true);
                 },
                 onExitSearch: () {
                   /// Empty the query
                   _query = "";
-                  _addLoadingEvent();
+                  _addLoadingEvent(reset: true);
                 },
               ),
               Expanded(
@@ -348,7 +332,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
                       } else if (state is KanjiListDetailStateFailure) {
                         return KPEmptyList(
                             showTryButton: true,
-                            onRefresh: () => _addLoadingEvent(),
+                            onRefresh: () => _addLoadingEvent(reset: true),
                             message: "list_details_load_failed".tr()
                         );
                       } else {
@@ -429,7 +413,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
     if (state.list.isEmpty) {
       return KPEmptyList(
         showTryButton: true,
-        onRefresh: () => _addLoadingEvent(),
+        onRefresh: () => _addLoadingEvent(reset: true),
         message: "list_details_empty".tr()
       );
     }
@@ -455,10 +439,10 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
             await Navigator.of(context).pushNamed(KanPracticePages.addKanjiPage,
                 arguments: AddKanjiArgs(listName: _listName, kanji: kanji))
                 .then((code) {
-              if (code == 0) _addLoadingEvent();
+              if (code == 0) _addLoadingEvent(reset: true);
             });
           },
-          onRemoval: () => _addLoadingEvent(),
+          onRemoval: () => _addLoadingEvent(reset: true),
         );
       },
     );

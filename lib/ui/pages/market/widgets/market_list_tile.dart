@@ -60,10 +60,7 @@ class MarketListTile extends StatelessWidget {
                   children: [
                     Text(list.description,
                         overflow: TextOverflow.ellipsis,
-                        maxLines: 5,
-                        style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                          color: Colors.grey.shade600
-                        )
+                        maxLines: 5
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: Margins.margin8),

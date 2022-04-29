@@ -32,15 +32,15 @@ class MarketListTile extends StatelessWidget {
                   children: [
                     Text(list.name,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: FontSizes.fontSize24, fontWeight: FontWeight.bold)),
+                      style: Theme.of(context).textTheme.headline5),
                     if (list.author.isNotEmpty) Text("${"market_by_author".tr()}: ${list.author}",
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: FontSizes.fontSize18)),
+                      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w500)),
                   ],
                 )
               ),
               Text("${"created_label".tr()} ${GeneralUtils.parseDateMilliseconds(context, list.uploadedToMarket)}",
-                  style: const TextStyle(fontSize: FontSizes.fontSize12))
+                  style: Theme.of(context).textTheme.subtitle2)
             ],
           ),
         ),
@@ -56,18 +56,20 @@ class MarketListTile extends StatelessWidget {
                     Text(list.description,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 5,
-                        style: const TextStyle(fontSize: FontSizes.fontSize14)
+                        style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                          color: Colors.grey.shade600
+                        )
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: Margins.margin8),
                       child: Text("${"market_filter_words".tr()}: ${list.words}",
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontSize: FontSizes.fontSize14)
+                          style: Theme.of(context).textTheme.bodyText2
                       ),
                     ),
                     Text("${"market_filter_downloads".tr()}: ${list.downloads}",
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: FontSizes.fontSize14)
+                        style: Theme.of(context).textTheme.bodyText2
                     ),
                     // TODO: Rating
                   ],

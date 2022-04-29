@@ -52,7 +52,7 @@ class KPBlitzBottomSheet extends StatelessWidget {
                       : lessPctTest
                       ? "less_pct_bottom_sheet_title".tr()
                       : "blitz_bottom_sheet_title".tr(), textAlign: TextAlign.center,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize18)),
+                      style: Theme.of(context).textTheme.headline6),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin32),
@@ -64,7 +64,7 @@ class KPBlitzBottomSheet extends StatelessWidget {
                           : "blitz_bottom_sheet_content".tr()
                   }",
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize16)),
+                      style: Theme.of(context).textTheme.bodyText1),
                 ),
                 KPTestStudyMode(
                   practiceList: practiceList,

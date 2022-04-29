@@ -33,9 +33,9 @@ class KPKanjiCategoryList extends StatelessWidget {
             ),
             margin: const EdgeInsets.symmetric(horizontal: Margins.margin4, vertical: Margins.margin2),
             alignment: Alignment.center,
-            child: Text(KanjiCategory.values[index].category, style: const TextStyle(
-              color: Colors.white, fontSize: FontSizes.fontSize14
-            ))
+            child: Text(KanjiCategory.values[index].category, style:
+              Theme.of(context).textTheme.bodyText2?.copyWith(color: Colors.white)
+            )
           ),
         );
       }),

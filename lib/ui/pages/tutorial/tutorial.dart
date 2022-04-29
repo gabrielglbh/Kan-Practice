@@ -96,7 +96,11 @@ class _TutorialPageState extends State<TutorialPage> {
         Expanded(
           child: Container(
             margin: const EdgeInsets.all(Margins.margin8),
-            child: SingleChildScrollView(child: Text(view.tutorial, textAlign: TextAlign.center)),
+            child: SingleChildScrollView(
+                child: Text(
+                    view.tutorial, textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyText2
+                )),
           )
         ),
         Expanded(

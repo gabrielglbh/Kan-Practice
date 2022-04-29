@@ -46,7 +46,7 @@ class SingleKanjiResult extends StatelessWidget {
             ),
           ),
         ),
-        _displayMeaning("jisho_resultData_meaning_label".tr(), data?.meaning),
+        _displayMeaning(context, "jisho_resultData_meaning_label".tr(), data?.meaning),
         _displayComposed("jisho_resultData_composed_label".tr(), data?.parts),
         _displayInfoWithExample(context, "jisho_resultData_kunyomi".tr(),
             data?.kunyomi,
@@ -86,14 +86,15 @@ class SingleKanjiResult extends StatelessWidget {
     );
   }
 
-  Widget _displayMeaning(String header, String? data) {
+  Widget _displayMeaning(BuildContext context, String header, String? data) {
     return Visibility(
       visible: data != null,
       child: JishoInfoTile(
         needsHeight: false,
         children: [
           JishoHeader(header: header),
-          ScrollableText(label: data, paddingTop: true, italic: false, rawText: true),
+          ScrollableText(label: data, paddingTop: true, rawText: true,
+              style: Theme.of(context).textTheme.bodyText2),
         ],
       ),
     );
@@ -123,7 +124,7 @@ class SingleKanjiResult extends StatelessWidget {
           ScrollableText(
             label: data?.toSet().toList().join(_separator),
             paddingTop: true,
-            italic: false,
+            style: Theme.of(context).textTheme.bodyText1,
             rawText: true,
           ),
           Visibility(
@@ -141,11 +142,11 @@ class SingleKanjiResult extends StatelessWidget {
   Widget _exampleExpansionTile(BuildContext context, List<YomiExample>? example) {
     return CustomExpansionTile(
       label: "${"jisho_resultData_examples_label".tr()} (${example?.length})",
-      children: _listViewWithExamples(example)
+      children: _listViewWithExamples(context, example)
     );
   }
 
-  List<Widget> _listViewWithExamples(List<YomiExample>? example) {
+  List<Widget> _listViewWithExamples(BuildContext context, List<YomiExample>? example) {
     List<Widget> res = [];
     for (int i = 0; i < (example?.length ?? 0); i++) {
       res.add(Padding(
@@ -156,12 +157,11 @@ class SingleKanjiResult extends StatelessWidget {
             ScrollableText(
               label: "${example?[i].example} (${example?[i].reading})",
               initial: true,
-              italic: false,
-              fontSize: FontSizes.fontSize18,
+              style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w500)
             ),
             ScrollableText(
               label: example?[i].meaning,
-              italic: false,
+              style: Theme.of(context).textTheme.bodyText2
             ),
           ],
         ),

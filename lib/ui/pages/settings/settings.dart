@@ -108,7 +108,9 @@ class _SettingsState extends State<Settings> {
               title: Text("settings_general_toggle".tr()),
               subtitle: Padding(
                 padding: const EdgeInsets.only(top: Margins.margin8),
-                child: Text("settings_general_toggle_sub".tr())
+                child: Text("settings_general_toggle_sub".tr(), style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                    color: Colors.grey.shade500
+                ))
               ),
               trailing: Switch(
                 activeColor: Colors.blueAccent,
@@ -227,8 +229,12 @@ class _SettingsState extends State<Settings> {
 
   ListTile _header(String title, {String? subtitle}) {
     return ListTile(
-      title: Text(title, style: const TextStyle(fontSize: FontSizes.fontSize20, fontWeight: FontWeight.bold)),
-      subtitle: subtitle != null ? Text(subtitle) : null,
+      title: Text(title, style: Theme.of(context).textTheme.bodyText2?.copyWith(
+        fontWeight: FontWeight.bold
+      )),
+      subtitle: subtitle != null ? Text(subtitle, style: Theme.of(context).textTheme.bodyText2?.copyWith(
+        color: Colors.grey.shade500
+      )) : null,
     );
   }
 }

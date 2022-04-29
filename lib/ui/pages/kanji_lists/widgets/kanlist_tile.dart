@@ -46,10 +46,10 @@ class KanListTile extends StatelessWidget {
               Expanded(
                 child: Text(item.name,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: FontSizes.fontSize24, fontWeight: FontWeight.bold)),
+                    style: Theme.of(context).textTheme.headline5),
               ),
               Text("${"created_label".tr()} ${GeneralUtils.parseDateMilliseconds(context, item.lastUpdated)}",
-                  style: const TextStyle(fontSize: FontSizes.fontSize12))
+                  style: Theme.of(context).textTheme.subtitle2)
             ],
           ),
         ),

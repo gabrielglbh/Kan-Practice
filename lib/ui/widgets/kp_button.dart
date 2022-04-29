@@ -52,7 +52,10 @@ class KPButton extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: Margins.margin8),
                     child: Text(title1 ?? "", textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: FontSizes.fontSize18, color: Colors.white)),
+                        style: Theme.of(context).textTheme.headline6?.copyWith(
+                          fontWeight: FontWeight.w400, color: Colors.white
+                        )
+                    ),
                   ),
                 ),
                 Visibility(
@@ -66,7 +69,8 @@ class KPButton extends StatelessWidget {
                   fit: BoxFit.fitWidth,
                   child: Text(title2, textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: FontSizes.fontSize16, fontWeight: FontWeight.bold, color: Colors.white)),
+                      style: Theme.of(context).textTheme.button
+                  ),
                 )
               ],
             ),

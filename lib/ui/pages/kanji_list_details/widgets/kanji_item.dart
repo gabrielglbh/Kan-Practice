@@ -100,7 +100,9 @@ class _KanjiItemState extends State<KanjiItem> {
             child: FittedBox(
               fit: BoxFit.contain,
               child: Text(widget.kanji.kanji, textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: FontSizes.fontSize20, color: Colors.black)),
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                    color: Colors.black
+                  )),
             )
           ),
         ),

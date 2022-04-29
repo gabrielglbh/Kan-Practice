@@ -117,7 +117,8 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: Margins.margin16),
-              child: Text("login_removeAccountDialog_content".tr()),
+              child: Text("login_removeAccountDialog_content".tr(), style:
+                Theme.of(context).textTheme.bodyText1),
             ),
             KPTextForm(
               hint: 'login_removeAccountDialog_hint'.tr(),
@@ -153,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
               return FittedBox(fit: BoxFit.fitWidth,
                   child: Text(_mode == SignMode.login
                       ? SignMode.login.name
-                      : SignMode.signup.name));
+                      : SignMode.signup.name, style: Theme.of(context).appBarTheme.titleTextStyle));
             } else {
               return Container();
             }
@@ -194,7 +195,7 @@ class _LoginPageState extends State<LoginPage> {
         Icon(Icons.info_outline_rounded, color: CustomColors.getSecondaryColor(context)),
         Padding(
           padding: const EdgeInsets.only(top: Margins.margin16, bottom: Margins.margin16),
-          child: Text("login_formDisclaimer".tr()),
+          child: Text("login_formDisclaimer".tr(), style: Theme.of(context).textTheme.bodyText1),
         ),
         KPTextForm(
           header: "login_email_header".tr(),
@@ -222,14 +223,15 @@ class _LoginPageState extends State<LoginPage> {
           child: Padding(
             padding: const EdgeInsets.all(Margins.margin16),
             child: Text("${"login_authentication_failed".tr()} ${state.error}",
-                style: TextStyle(color: CustomColors.getSecondaryColor(context))),
+                style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                    color: CustomColors.getSecondaryColor(context))),
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(top: Margins.margin16),
           child: ElevatedButton(
             onPressed: () => _handleLogin(),
-            child: Text("login_form_positive".tr()),
+            child: Text("login_form_positive".tr(), style: Theme.of(context).textTheme.button),
           ),
         ),
         GestureDetector(
@@ -243,7 +245,9 @@ class _LoginPageState extends State<LoginPage> {
           child: Padding(
             padding: const EdgeInsets.all(Margins.margin16),
             child: Text(_mode == SignMode.login ? SignMode.signup.name : SignMode.login.name,
-              style: const TextStyle(decoration: TextDecoration.underline),
+              style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                decoration: TextDecoration.underline
+              ),
             ),
           ),
         )
@@ -260,7 +264,7 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
             padding: const EdgeInsets.all(Margins.margin16),
             child: Text("${"login_current_account_logged".tr()} ${state.user.email}.",
-                textAlign: TextAlign.center),
+                textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyText1),
           ),
           SizedBox(
             height: CustomSizes.appBarHeight,
@@ -269,13 +273,13 @@ class _LoginPageState extends State<LoginPage> {
               child: ElevatedButton(
                 onPressed: () => Navigator.of(context).pushNamed(KanPracticePages.backUpPage,
                     arguments: state.user.uid),
-                child: Text("login_manage_backup_title".tr()),
+                child: Text("login_manage_backup_title".tr(), style: Theme.of(context).textTheme.button),
               ),
             ),
           ),
           ListTile(
             title: Text("login_miscellaneous_title".tr(),
-                style: const TextStyle(fontSize: FontSizes.fontSize26, fontWeight: FontWeight.bold)),
+                style: Theme.of(context).textTheme.headline5),
           ),
           _loggedUserActions()
         ],
@@ -320,7 +324,7 @@ class _LoginPageState extends State<LoginPage> {
               size: CustomSizes.maxHeightValidationCircle),
           Padding(
             padding: const EdgeInsets.all(Margins.margin16),
-            child: Text(state.message, textAlign: TextAlign.center),
+            child: Text(state.message, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyText1),
           ),
         ],
       )

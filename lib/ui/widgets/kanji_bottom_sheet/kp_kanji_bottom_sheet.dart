@@ -119,7 +119,9 @@ class KPKanjiBottomSheet extends StatelessWidget {
               fit: BoxFit.contain,
               child: Text(KanjiCategory.values[updatedKanji.category].category,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: FontSizes.fontSize14, fontStyle: FontStyle.italic))
+                style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                    fontStyle: FontStyle.italic
+                ))
             ),
           ),
           Padding(
@@ -127,7 +129,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.contain,
               child: Text(updatedKanji.kanji, textAlign: TextAlign.center,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize32)),
+                style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
             ),
           ),
           Padding(
@@ -135,7 +137,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.contain,
               child: Text(updatedKanji.meaning, textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: FontSizes.fontSize16))
+                style: Theme.of(context).textTheme.bodyText2)
             ),
           ),
           Card(
@@ -185,7 +187,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.contain,
               child: Text(updatedKanji.pronunciation, textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: FontSizes.fontSize16)),
+                  style: Theme.of(context).textTheme.bodyText1),
             ),
           ),
           TTSIconButton(kanji: updatedKanji.pronunciation)
@@ -206,7 +208,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
             "${GeneralUtils.parseDateMilliseconds(context, updatedKanji.dateAdded)} • "
             "${"last_seen_label".tr()} "
             "${GeneralUtils.parseDateMilliseconds(context, updatedKanji.dateLastShown)}",
-            textAlign: TextAlign.center, style: const TextStyle(fontSize: FontSizes.fontSize14))
+            textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyText2)
         ),
         children: [
           SizedBox(
@@ -256,7 +258,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
           Expanded(
             child: Text(" • ${(mode.mode).capitalized}:",
               overflow: TextOverflow.ellipsis, textAlign: TextAlign.left,
-                style: const TextStyle(fontSize: FontSizes.fontSize14)),
+                style: Theme.of(context).textTheme.subtitle2),
           ),
           Expanded(
             child: Container(
@@ -264,7 +266,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
               child: FittedBox(
                 fit: BoxFit.contain,
                 child: Text(parsedDate, overflow: TextOverflow.ellipsis, textAlign: TextAlign.right,
-                  style: const TextStyle(fontSize: FontSizes.fontSize14)),
+                  style: Theme.of(context).textTheme.subtitle2),
               ),
             )
           )

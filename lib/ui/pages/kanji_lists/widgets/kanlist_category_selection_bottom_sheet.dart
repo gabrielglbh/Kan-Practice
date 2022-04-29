@@ -61,13 +61,13 @@ class _KanListCategorySelectionBottomSheetState extends State<KanListCategorySel
                   padding: const EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin32),
                   child: Text("categories_test_bottom_sheet_title".tr(),
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize18)),
+                      style: Theme.of(context).textTheme.headline6),
                 ),
                 Visibility(
                   visible: _onListEmpty,
                   child: Text("categories_test_bottom_sheet_error".tr(),
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: FontSizes.fontSize18)),
+                      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w400)),
                 ),
                 Visibility(
                   visible: _selectionMode,

@@ -253,7 +253,8 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
                   fit: BoxFit.fitWidth,
                   child: GestureDetector(
                     onTap: () async => await _updateKanListName(),
-                    child: Text(state.name, key: changeName, overflow: TextOverflow.ellipsis),
+                    child: Text(state.name, key: changeName, overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).appBarTheme.titleTextStyle),
                   )
               );
             }
@@ -417,7 +418,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
       alignment: Alignment.center,
       child: FittedBox(
         fit: BoxFit.fitWidth,
-        child: Text(mode, textAlign: TextAlign.center),
+        child: Text(mode, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyText1),
       ),
     );
   }

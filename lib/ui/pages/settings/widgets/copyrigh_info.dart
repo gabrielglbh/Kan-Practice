@@ -48,7 +48,7 @@ class CopyrightInfo extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: Margins.margin8),
                         child: Text("settings_information_about_label".tr(), textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: FontSizes.fontSize24, fontWeight: FontWeight.bold)),
+                          style: Theme.of(context).textTheme.headline5),
                       )
                     ),
                     Padding(
@@ -64,9 +64,7 @@ class CopyrightInfo extends StatelessWidget {
                                 "reorganized as the ", style: Theme.of(context).textTheme.bodyText2),
                             TextSpan(
                               text: "National Institute of Advanced Industrial Science and Technology (AIST)",
-                              style: TextStyle(color: CustomColors.getSecondaryColor(context),
-                                  decoration: TextDecoration.underline, fontSize: FontSizes.fontSize14
-                              ),
+                              style: Theme.of(context).textTheme.overline,
                               recognizer: TapGestureRecognizer()..onTap = () async {
                                 await _launchUrl(context, "https://www.aist.go.jp/index_e.html");
                               },
@@ -76,9 +74,7 @@ class CopyrightInfo extends StatelessWidget {
                               style: Theme.of(context).textTheme.bodyText2),
                             TextSpan(
                               text: "Japan Electronics and Information Technology Industries Association",
-                              style: TextStyle(color: CustomColors.getSecondaryColor(context),
-                                decoration: TextDecoration.underline, fontSize: FontSizes.fontSize14
-                              ),
+                              style: Theme.of(context).textTheme.overline,
                               recognizer: TapGestureRecognizer()..onTap = () async {
                                 await _launchUrl(context, "https://www.jeita.or.jp/english/");
                               },
@@ -98,9 +94,7 @@ class CopyrightInfo extends StatelessWidget {
                           children: [
                             TextSpan(
                               text: "About the ETL Character Database",
-                              style: TextStyle(color: CustomColors.getSecondaryColor(context),
-                                  decoration: TextDecoration.underline, fontSize: FontSizes.fontSize14
-                              ),
+                              style: Theme.of(context).textTheme.overline,
                               recognizer: TapGestureRecognizer()..onTap = () async {
                                 await _launchUrl(context, "http://etlcdb.db.aist.go.jp/");
                               },
@@ -110,9 +104,7 @@ class CopyrightInfo extends StatelessWidget {
                                 style: Theme.of(context).textTheme.bodyText2),
                             TextSpan(
                               text: "ETL-9.",
-                              style: TextStyle(color: CustomColors.getSecondaryColor(context),
-                                  decoration: TextDecoration.underline, fontSize: FontSizes.fontSize14
-                              ),
+                              style: Theme.of(context).textTheme.overline,
                               recognizer: TapGestureRecognizer()..onTap = () async {
                                 await _launchUrl(context, "http://etlcdb.db.aist.go.jp/specification-of-etl-9");
                               },

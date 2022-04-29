@@ -20,10 +20,6 @@ class KPTextForm extends StatelessWidget {
   final TextInputType? inputType;
   /// [TextInputAction] of the Soft Keyboard, defaults to [TextInputAction.next]
   final TextInputAction? action;
-  /// Font size of the text being inputted by the user, defaults to 18
-  final double? fontSize;
-  /// [FontWeight] of the text of the [TextField]
-  final FontWeight? bold;
   /// [TextAlign] to define the behaviour of the text
   final TextAlign centerText;
   /// Whether to autofocus the [TextField] or not
@@ -34,6 +30,8 @@ class KPTextForm extends StatelessWidget {
   final int? maxLength;
   /// Max lines of this. Defaults to null
   final int? maxLines;
+  /// Text Style of the input. Defaults to headline5
+  final TextStyle? style;
   const KPTextForm({
     Key? key,
     required this.header,
@@ -44,14 +42,13 @@ class KPTextForm extends StatelessWidget {
     this.onSubmitted,
     this.inputType = TextInputType.text,
     this.action = TextInputAction.next,
-    this.fontSize = FontSizes.fontSize18,
-    this.bold,
     this.centerText = TextAlign.start,
     this.autofocus = false,
     this.obscure = false,
     this.additionalWidget,
     this.maxLength,
-    this.maxLines
+    this.maxLines,
+    this.style
   }) : super(key: key);
 
   @override
@@ -65,7 +62,7 @@ class KPTextForm extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(child: Text(header, overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: FontSizes.fontSize18, fontWeight: FontWeight.bold)
+                  style: Theme.of(context).textTheme.headline6
               )),
               additionalWidget ?? Container()
             ],
@@ -75,11 +72,11 @@ class KPTextForm extends StatelessWidget {
           controller: controller,
           focusNode: focusNode,
           textAlign: centerText,
-          style: TextStyle(fontWeight: bold, fontSize: fontSize),
+          style: style ?? Theme.of(context).textTheme.bodyText1,
           textInputAction: action,
           keyboardType: inputType,
           maxLength: maxLength,
-          maxLines: maxLines,
+          maxLines: obscure ? 1 : maxLines,
           textCapitalization: TextCapitalization.sentences,
           autofocus: autofocus,
           obscureText: obscure,

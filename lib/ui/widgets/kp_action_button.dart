@@ -45,7 +45,7 @@ class KPActionButton extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.contain,
               child: Text(label, textAlign: TextAlign.center, overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: FontSizes.fontSize16, fontWeight: FontWeight.bold, color: textColor)
+                  style: Theme.of(context).textTheme.button?.copyWith(color: textColor)
               ),
             )
           ),

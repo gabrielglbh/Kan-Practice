@@ -65,14 +65,14 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin32),
                   child: Text("number_bottom_sheet_title".tr(), textAlign: TextAlign.center,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize18)),
+                    style: Theme.of(context).textTheme.headline6),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin32),
                   child: Text("${CustomSizes.numberOfKanjiInTest.toString()} "
                     "${"number_bottom_sheet_content".tr()}",
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize16)),
+                    style: Theme.of(context).textTheme.bodyText1),
                 ),
                 GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -137,7 +137,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
         Padding(
           padding: const EdgeInsets.only(top: Margins.margin16, bottom: Margins.margin16),
           child: Text("study_modes_good_luck".tr(),
-              style: const TextStyle(fontSize: FontSizes.fontSize24, fontWeight: FontWeight.bold)),
+              style: Theme.of(context).textTheme.headline5),
         )
       ],
     );

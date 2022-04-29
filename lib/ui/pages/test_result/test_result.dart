@@ -51,7 +51,7 @@ class _TestResultState extends State<TestResult> {
         children: [
           Text("test_result_title".tr(),
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: FontSizes.fontSize32),
+            style: Theme.of(context).textTheme.headline4,
           ),
           WinRateChart(
             winRate: widget.args.score,
@@ -63,7 +63,7 @@ class _TestResultState extends State<TestResult> {
             padding: const EdgeInsets.only(bottom: Margins.margin8),
             child: Text("test_result_disclaimer".tr(),
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: FontSizes.fontSize16),
+              style: Theme.of(context).textTheme.bodyText1
             ),
           ),
           Visibility(
@@ -79,10 +79,10 @@ class _TestResultState extends State<TestResult> {
                     Icon(Icons.track_changes_rounded, color: CustomColors.getSecondaryColor(context)),
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: Margins.margin8),
+                        padding: const EdgeInsets.only(left: Margins.margin16),
                         child: Text("test_result_do_test_button_label".tr(),
                             maxLines: 2,
-                            style: const TextStyle(fontSize: FontSizes.fontSize16)
+                            style: Theme.of(context).textTheme.bodyText1
                         ),
                       ),
                     ),
@@ -123,7 +123,9 @@ class _TestResultState extends State<TestResult> {
               child: Text(
                 "$listName (${widget.args.studyList?[listName]?.length}):",
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize16)
+                style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                  fontWeight: FontWeight.bold
+                )
               ),
             ),
             Expanded(
@@ -174,7 +176,9 @@ class _TestResultState extends State<TestResult> {
             child: FittedBox(
               fit: BoxFit.contain,
               child: Text((kanji?.kanji ?? ""), textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: FontSizes.fontSize20, color: Colors.black)),
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                    color: Colors.black
+                  )),
             )
           )
         ),

@@ -54,7 +54,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
       builder: (context) {
         return KPDialog(
           title: const Center(child: Icon(Icons.warning_amber_rounded)),
-          content: Text("dict_predictions_disclaimer".tr()),
+          content: Text("dict_predictions_disclaimer".tr(), style: Theme.of(context).textTheme.bodyText1),
           positiveButtonText: "Ok",
           negativeButton: false,
           onPositive: () {}
@@ -145,7 +145,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
                   } else if (state is DictStateFailure) {
                     return Center(child: Padding(
                       padding: const EdgeInsets.all(Margins.margin16),
-                      child: Text("dict_model_not_loaded".tr()),
+                      child: Text("dict_model_not_loaded".tr(), style: Theme.of(context).textTheme.bodyText2),
                     ));
                   } else if (state is DictStateLoaded) {
                     return Column(
@@ -154,10 +154,12 @@ class _DictionaryPageState extends State<DictionaryPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(child: Text("< ${"dict_predictions_most_likely".tr()}",
-                                maxLines: 1, overflow: TextOverflow.ellipsis
+                                maxLines: 1, overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.bodyText2
                             )),
                             Expanded(child: Text("${"dict_predictions_less_likely".tr()} >",
                               maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.end,
+                                style: Theme.of(context).textTheme.bodyText2
                             ))
                           ],
                         ),

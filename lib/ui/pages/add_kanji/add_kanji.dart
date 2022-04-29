@@ -204,14 +204,13 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
               width: MediaQuery.of(context).size.width / 4,
               child: FittedBox(
                 fit: BoxFit.fitWidth,
-                child: Text("add_kanji_copy".tr()),
+                child: Text("add_kanji_copy".tr(), style: Theme.of(context).textTheme.button),
               ),
             ),
           ),
           centerText: TextAlign.center,
-          fontSize: FontSizes.fontSize64,
+          style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.bold),
           autofocus: widget.args.kanji == null,
-          bold: FontWeight.bold,
           hint: "add_kanji_textForm_kanji_ext".tr(),
           onEditingComplete: () => _pronunciationFocus?.requestFocus(),
         ),
@@ -263,7 +262,7 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
         Padding(
           padding: const EdgeInsets.only(bottom: Margins.margin16, left: Margins.margin8),
           child: Text("kanji_category_label".tr(), overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: FontSizes.fontSize18, fontWeight: FontWeight.bold)),
+              style: Theme.of(context).textTheme.headline6),
         ),
         KPKanjiCategoryList(
           selected: (index) => index == _currentCategory.index,

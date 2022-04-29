@@ -29,28 +29,28 @@ class WordResult extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _completePhraseData(),
+        _completePhraseData(context),
         Visibility(
           visible: data == null && (phrase.length - 1) != 0,
           child: CustomExpansionTile(
             label: "${"jisho_phraseData_show_meanings".tr()} (${phrase.length - 1})",
             paddingHorizontal: const EdgeInsets.symmetric(horizontal: Margins.margin16),
-            children: _listViewMoreMeanings()
+            children: _listViewMoreMeanings(context)
           ),
         ),
       ],
     );
   }
 
-  List<Widget> _listViewMoreMeanings() {
+  List<Widget> _listViewMoreMeanings(BuildContext context) {
     List<Widget> res = [];
     for (int i = 0; i < phrase.length - 1; i++) {
-      res.add(_completePhraseData(index: i, expanded: true));
+      res.add(_completePhraseData(context, index: i, expanded: true));
     }
     return res;
   }
 
-  Widget _completePhraseData({int index = 0, bool expanded = false}) {
+  Widget _completePhraseData(BuildContext context, {int index = 0, bool expanded = false}) {
     if (expanded) index++;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,8 +76,8 @@ class WordResult extends StatelessWidget {
             ),
           )
         ),
-        _displayInfo("jisho_resultData_meaning_label".tr(), phrase[index].senses),
-        _displayInfo("jisho_phraseData_readings".tr(), phrase[index].japanese, guideline: true),
+        _displayInfo(context, "jisho_resultData_meaning_label".tr(), phrase[index].senses),
+        _displayInfo(context, "jisho_phraseData_readings".tr(), phrase[index].japanese, guideline: true),
       ],
     );
   }
@@ -108,7 +108,7 @@ class WordResult extends StatelessWidget {
     );
   }
 
-  Widget _displayInfo(String header, List<dynamic> d, {bool guideline = false}) {
+  Widget _displayInfo(BuildContext context, String header, List<dynamic> d, {bool guideline = false}) {
     return Visibility(
       visible: data == null && d.isNotEmpty,
       child: JishoInfoTile(
@@ -121,7 +121,7 @@ class WordResult extends StatelessWidget {
                 : "",
             paddingTop: true,
             rawText: true,
-            italic: false,
+            style: Theme.of(context).textTheme.bodyText2,
           )
         ],
       ),

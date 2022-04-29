@@ -45,7 +45,7 @@ class _TestBottomSheetState extends State<TestBottomSheet> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin32),
                   child: Text("test_selection_label".tr(), textAlign: TextAlign.center,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize18)),
+                    style: Theme.of(context).textTheme.headline6),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),

@@ -21,8 +21,7 @@ class JishoHeader extends StatelessWidget {
             child: Icon(Icons.subdirectory_arrow_right_rounded),
           ),
         ),
-        Text(header, style: const TextStyle(
-          fontSize: FontSizes.fontSize20,
+        Text(header, style: Theme.of(context).textTheme.bodyText1?.copyWith(
           fontWeight: FontWeight.bold
         ))
       ],

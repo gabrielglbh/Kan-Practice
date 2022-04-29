@@ -179,7 +179,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
         text: _getProperAlphabet()
       ),
       KPLearningHeaderContainer(
-        height: CustomSizes.largeSizeLearningExtContainer,
+        height: CustomSizes.defaultResultKanjiListOnTest,
         fontWeight: FontWeight.bold,
         text: _getProperPronunciation()
       ),

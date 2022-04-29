@@ -35,7 +35,9 @@ class KPDialog extends StatelessWidget {
         Visibility(
           visible: negativeButton,
           child: ElevatedButton(
-            child: Text("back_button_label".tr()),
+            child: Text("back_button_label".tr(), style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                color: Colors.white
+            )),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(Colors.grey),
               shape: MaterialStateProperty.all<OutlinedBorder>(
@@ -45,7 +47,9 @@ class KPDialog extends StatelessWidget {
           ),
         ),
         ElevatedButton(
-          child: Text(positiveButtonText),
+          child: Text(positiveButtonText, style: Theme.of(context).textTheme.bodyText2?.copyWith(
+            color: Colors.white
+          )),
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
             shape: MaterialStateProperty.all<OutlinedBorder>(

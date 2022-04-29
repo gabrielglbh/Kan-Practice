@@ -7,18 +7,15 @@ class ScrollableText extends StatelessWidget {
   final bool rawText;
   /// Whether to put a bullet point on the beginning of the text or not
   final bool initial;
-  /// Whether to use italic style on the text or not
-  final bool italic;
-  final double fontSize;
+  final TextStyle? style;
   final bool paddingTop;
   const ScrollableText({
     Key? key,
     required this.label,
     this.initial = false,
-    this.italic = true,
     this.paddingTop = false,
     this.rawText = false,
-    this.fontSize = FontSizes.fontSize16
+    this.style
   }) : super(key: key);
 
   @override
@@ -29,7 +26,7 @@ class ScrollableText extends StatelessWidget {
       child: Text(rawText ? label ?? ""
           : "${initial ? "• " : "  "}${label ?? ""}",
         maxLines: 10, textAlign: TextAlign.justify, overflow: TextOverflow.ellipsis,
-        style: TextStyle(fontSize: fontSize, fontStyle: italic ? FontStyle.italic : null)
+        style: style ?? Theme.of(context).textTheme.bodyText1?.copyWith(fontStyle: FontStyle.italic)
       ),
     );
   }

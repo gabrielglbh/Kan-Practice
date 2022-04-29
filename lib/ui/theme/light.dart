@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'consts.dart';
 
 const Color _primary = Colors.white;
-final Color _cardColor = Colors.grey[200]!;
-final Color _chipColor = Colors.grey[500]!;
+final Color _cardColor = Colors.grey.shade200;
+final Color _chipColor = Colors.grey.shade500;
 const Color _accent = Colors.black;
-final Color _subtle = Colors.grey[600]!;
+final Color _subtle = Colors.grey.shade600;
 
 final ThemeData light = ThemeData(
     brightness: Brightness.light,
@@ -25,17 +25,17 @@ final ThemeData light = ThemeData(
     textTheme: TextTheme(
         headline1: const TextStyle(color: _accent),
         headline2: const TextStyle(color: _accent),
-        headline3: const TextStyle(color: _accent),
-        headline4: const TextStyle(color: _accent),
-        headline5: const TextStyle(color: _accent),
-        headline6: const TextStyle(color: _accent),
+        headline3: const TextStyle(color: _accent, fontSize: FontSizes.fontSize64),
+        headline4: const TextStyle(color: _accent, fontSize: FontSizes.fontSize32),
+        headline5: const TextStyle(color: _accent, fontSize: FontSizes.fontSize24, fontWeight: FontWeight.bold),
+        headline6: const TextStyle(color: _accent, fontSize: FontSizes.fontSize18, fontWeight: FontWeight.bold),
         subtitle1: const TextStyle(color: _accent),
-        subtitle2: const TextStyle(color: _accent),
-        bodyText1: const TextStyle(color: _accent),
-        bodyText2: const TextStyle(color: _accent),
+        subtitle2: const TextStyle(color: _accent, fontSize: FontSizes.fontSize12, fontWeight: FontWeight.w400),
+        bodyText1: const TextStyle(color: _accent, fontSize: FontSizes.fontSize16, fontWeight: FontWeight.w400),
+        bodyText2: const TextStyle(color: _accent, fontSize: FontSizes.fontSize14),
         caption: TextStyle(color: _subtle),
-        button: const TextStyle(color: _accent),
-        overline: const TextStyle(color: _accent)
+        button: const TextStyle(color: _primary, fontSize: FontSizes.fontSize16, fontWeight: FontWeight.bold),
+        overline: const TextStyle(color: CustomColors.secondaryDarkerColor, decoration: TextDecoration.underline, fontSize: FontSizes.fontSize14)
     ),
     cardTheme: CardTheme(
         color: _cardColor,

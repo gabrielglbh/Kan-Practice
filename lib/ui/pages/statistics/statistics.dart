@@ -46,7 +46,7 @@ class StatisticsPage extends StatelessWidget {
     return ListView(
       children: [
         _header(context, "${"stats_words".tr()} • ", "${s.totalLists} ${"stats_words_lists".tr()}"),
-        _countLabel(s.totalKanji.toString()),
+        _countLabel(context, s.totalKanji.toString()),
         Padding(
           padding: const EdgeInsets.only(top: Margins.margin16),
           child: KPDependentGraph(
@@ -62,17 +62,15 @@ class StatisticsPage extends StatelessWidget {
           children: [
             Expanded(
               child: ListTile(
-                title: Text("stats_best_list".tr(), textAlign: TextAlign.center, style: const TextStyle(
-                    fontWeight: FontWeight.bold
-                )),
+                title: Text("stats_best_list".tr(), textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyText1?.copyWith(fontWeight: FontWeight.bold)),
                 subtitle: Text(s.bestList, textAlign: TextAlign.center),
               ),
             ),
             Expanded(
               child: ListTile(
-                title: Text("stats_worst_list".tr(), textAlign: TextAlign.center, style: const TextStyle(
-                  fontWeight: FontWeight.bold
-                )),
+                title: Text("stats_worst_list".tr(), textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(fontWeight: FontWeight.bold)),
                 subtitle: Text(s.worstList, textAlign: TextAlign.center),
               ),
             )
@@ -89,28 +87,28 @@ class StatisticsPage extends StatelessWidget {
                 return Row(
                   children: [
                     _bullet(StudyModes.values[index]),
-                    _fittedText(s.test.testTotalCountWriting.toString())
+                    _fittedText(context, s.test.testTotalCountWriting.toString())
                   ],
                 );
               case StudyModes.reading:
                 return Row(
                   children: [
                     _bullet(StudyModes.values[index]),
-                    _fittedText(s.test.testTotalCountReading.toString())
+                    _fittedText(context, s.test.testTotalCountReading.toString())
                   ],
                 );
               case StudyModes.recognition:
                 return Row(
                   children: [
                     _bullet(StudyModes.values[index]),
-                    _fittedText(s.test.testTotalCountRecognition.toString())
+                    _fittedText(context, s.test.testTotalCountRecognition.toString())
                   ],
                 );
               case StudyModes.listening:
                 return Row(
                   children: [
                     _bullet(StudyModes.values[index]),
-                    _fittedText(s.test.testTotalCountListening.toString())
+                    _fittedText(context, s.test.testTotalCountListening.toString())
                   ],
                 );
             }
@@ -118,10 +116,10 @@ class StatisticsPage extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(top: Margins.margin16),
-          child: _countLabel(s.test.totalTests.toString()),
+          child: _countLabel(context, s.test.totalTests.toString()),
         ),
         const Divider(),
-        _expandedTestCount(s),
+        _expandedTestCount(context, s),
         const Divider(),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
@@ -146,14 +144,12 @@ class StatisticsPage extends StatelessWidget {
             TextSpan(
               text: title,
               style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                  fontSize: FontSizes.fontSize20, fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold
               )
             ),
             TextSpan(
               text: value,
-              style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                  fontSize: FontSizes.fontSize20
-              )
+              style: Theme.of(context).textTheme.bodyText2
             )
           ]
         ),
@@ -161,16 +157,17 @@ class StatisticsPage extends StatelessWidget {
     );
   }
 
-  Widget _countLabel(String count) {
+  Widget _countLabel(BuildContext context, String count) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
       alignment: Alignment.center,
-      child: _fittedText(count, style: const TextStyle(fontSize: FontSizes.fontSize64))
+      child: _fittedText(context, count, style: Theme.of(context).textTheme.headline3)
     );
   }
 
-  FittedBox _fittedText(String t, {TextStyle? style}) {
-    return FittedBox(fit: BoxFit.contain, child: Text(t, style: style));
+  FittedBox _fittedText(BuildContext context, String t, {TextStyle? style}) {
+    return FittedBox(fit: BoxFit.contain, child: Text(t,
+        style: style ?? Theme.of(context).textTheme.bodyText1));
   }
 
   Container _bullet(StudyModes mode) {
@@ -186,30 +183,30 @@ class StatisticsPage extends StatelessWidget {
     );
   }
 
-  ListView _expandedTestCount(KanPracticeStats s) {
+  ListView _expandedTestCount(BuildContext context, KanPracticeStats s) {
     return ListView(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       children: List.generate(Tests.values.length, (index) {
         switch (Tests.values[index]) {
           case Tests.lists:
-            return _testModeCountContainer(Tests.lists, s.test.selectionTests);
+            return _testModeCountContainer(context, Tests.lists, s.test.selectionTests);
           case Tests.blitz:
-            return _testModeCountContainer(Tests.blitz, s.test.blitzTests);
+            return _testModeCountContainer(context, Tests.blitz, s.test.blitzTests);
           case Tests.time:
-            return _testModeCountContainer(Tests.time, s.test.remembranceTests);
+            return _testModeCountContainer(context, Tests.time, s.test.remembranceTests);
           case Tests.numbers:
-            return _testModeCountContainer(Tests.numbers, s.test.numberTests);
+            return _testModeCountContainer(context, Tests.numbers, s.test.numberTests);
           case Tests.less:
-            return _testModeCountContainer(Tests.less, s.test.lessPctTests);
+            return _testModeCountContainer(context, Tests.less, s.test.lessPctTests);
           case Tests.categories:
-            return _testModeCountContainer(Tests.categories, s.test.categoryTests);
+            return _testModeCountContainer(context, Tests.categories, s.test.categoryTests);
         }
       })
     );
   }
 
-  Widget _testModeCountContainer(Tests t, int count) {
+  Widget _testModeCountContainer(BuildContext context, Tests t, int count) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
       child: Row(
@@ -217,11 +214,10 @@ class StatisticsPage extends StatelessWidget {
           Icon(t.icon, size: Margins.margin18),
           Padding(
             padding: const EdgeInsets.only(left: Margins.margin8),
-            child: Text(t.name, style: const TextStyle(fontSize: FontSizes.fontSize14)),
+            child: Text(t.name, style: Theme.of(context).textTheme.bodyText2),
           ),
           Expanded(child: Container()),
-          Text(count.toString(), style: const TextStyle(
-              fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize16))
+          Text(count.toString(), style: Theme.of(context).textTheme.button)
         ],
       ),
     );

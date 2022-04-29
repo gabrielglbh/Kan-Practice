@@ -39,7 +39,7 @@ class DevInfo extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: Margins.margin8),
                       child: Text("developer_info_label".tr(), textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: FontSizes.fontSize24, fontWeight: FontWeight.bold)),
+                        style: Theme.of(context).textTheme.headline5),
                     )
                   ),
                   _developer(context)

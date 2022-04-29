@@ -90,7 +90,8 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                               padding: EdgeInsets.only(right: Margins.margin8),
                               child: Icon(Icons.info_outline_rounded),
                             ),
-                            Expanded(child: Text("add_to_market_needs_registration".tr()))
+                            Expanded(child: Text("add_to_market_needs_registration".tr(),
+                                style: Theme.of(context).textTheme.bodyText1))
                           ],
                         ),
                       ),
@@ -137,7 +138,8 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                               size: CustomSizes.maxHeightValidationCircle),
                           Padding(
                             padding: const EdgeInsets.all(Margins.margin16),
-                            child: Text("add_to_market_successfully_created".tr(), textAlign: TextAlign.center),
+                            child: Text("add_to_market_successfully_created".tr(), textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.bodyText1),
                           ),
                           SizedBox(
                             height: CustomSizes.appBarHeight,
@@ -145,7 +147,8 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                               padding: const EdgeInsets.all(Margins.margin16),
                               child: ElevatedButton(
                                 onPressed: () => Navigator.of(context).pop(),
-                                child: Text("add_to_market_go_back_to_market_button_label".tr()),
+                                child: Text("add_to_market_go_back_to_market_button_label".tr(),
+                                    style: Theme.of(context).textTheme.bodyText1),
                               ),
                             ),
                           ),

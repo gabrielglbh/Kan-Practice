@@ -19,8 +19,9 @@ class CustomExpansionTile extends StatelessWidget {
       tilePadding: paddingHorizontal,
       iconColor: CustomColors.secondaryColor,
       textColor: CustomColors.secondaryColor,
-      title: Text(label, style: const TextStyle(fontSize: FontSizes.fontSize18,
-          fontWeight: FontWeight.bold, fontStyle: FontStyle.italic
+      title: Text(label, style: Theme.of(context).textTheme.bodyText1?.copyWith(
+          fontWeight: FontWeight.bold,
+          fontStyle: FontStyle.italic
       )),
       children: children,
     );

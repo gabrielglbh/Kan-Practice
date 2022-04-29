@@ -72,7 +72,9 @@ class KPTestStudyMode extends StatelessWidget {
                     child: Icon(Icons.auto_graph_rounded, color: Colors.lightBlueAccent),
                   ),
                   Expanded(
-                    child: Text("settings_general_toggle".tr(), textAlign: TextAlign.center)
+                    child: Text("settings_general_toggle".tr(), textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )
                   ),
                   const Padding(
                     padding: EdgeInsets.only(left: Margins.margin16),
@@ -107,8 +109,7 @@ class KPTestStudyMode extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(top: Margins.margin16, bottom: Margins.margin16),
-            child: Text("study_modes_good_luck".tr(),
-                style: const TextStyle(fontSize: FontSizes.fontSize24, fontWeight: FontWeight.bold)),
+            child: Text("study_modes_good_luck".tr(), style: Theme.of(context).textTheme.headline5),
           )
         ],
       )

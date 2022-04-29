@@ -64,13 +64,13 @@ class _KanListSelectionBottomSheetState extends State<KanListSelectionBottomShee
                   padding: const EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin32),
                   child: Text("study_bottom_sheet_title".tr(),
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize18)),
+                      style: Theme.of(context).textTheme.headline6),
                 ),
                 Visibility(
                   visible: _onListEmpty,
                   child: Text("study_bottom_sheet_load_failed".tr(),
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: FontSizes.fontSize18)),
+                      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w400)),
                 ),
                 Visibility(
                   visible: _selectionMode,
@@ -149,7 +149,9 @@ class _KanListSelectionBottomSheetState extends State<KanListSelectionBottomShee
                     ),
                     child: FittedBox(
                       fit: BoxFit.contain,
-                      child: Text(name, style: const TextStyle(color: Colors.white))
+                      child: Text(name, style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        color: Colors.white
+                      ))
                     )
                   ),
                 ),

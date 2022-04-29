@@ -46,7 +46,7 @@ class _AddToMarketBottomSheetState extends State<AddToMarketBottomSheet> {
                   padding: const EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin32),
                   child: Text("add_to_market_select_list".tr(),
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize18)),
+                      style: Theme.of(context).textTheme.headline6),
                 ),
                 BlocProvider<KanjiListBloc>(
                   create: (_) => _bloc..add(const KanjiListForTestEventLoading()),

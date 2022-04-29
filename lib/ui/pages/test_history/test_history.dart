@@ -29,7 +29,8 @@ class _TestHistoryState extends State<TestHistory> {
       context: context,
       builder: (context) => KPDialog(
         title: Text("test_history_showRemoveTestsDialog_title".tr()),
-        content: Text("test_history_showRemoveTestsDialog_content".tr()),
+        content: Text("test_history_showRemoveTestsDialog_content".tr(),
+          style: Theme.of(context).textTheme.bodyText1),
         positiveButtonText: "test_history_showRemoveTestsDialog_positive".tr(),
         onPositive: () => _bloc..add(TestListEventRemoving()),
       )
@@ -122,7 +123,11 @@ class _TestHistoryState extends State<TestHistory> {
                 fit: BoxFit.contain,
                 child: Text("${mode.mode} • ${"test_history_testTaken".tr()} "
                     "${GeneralUtils.parseDateMilliseconds(context, t.takenDate)}",
-                    style: const TextStyle(fontStyle: FontStyle.italic)),
+                    style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                      color: Colors.grey.shade600,
+                      fontStyle: FontStyle.italic
+                    )
+                ),
               ),
             ),
             leading: WinRateChart(winRate: t.testScore,

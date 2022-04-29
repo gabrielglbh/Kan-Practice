@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
 
 class StudyModeAppBar extends StatelessWidget {
   final String title;
@@ -14,8 +13,8 @@ class StudyModeAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return FittedBox(fit: BoxFit.fitWidth, child: Column(
       children: [
-        Text(title, style: const TextStyle(fontSize: FontSizes.fontSize24, fontWeight: FontWeight.bold)),
-        Text(studyMode, style: const TextStyle(fontSize: FontSizes.fontSize14))
+        Text(title, style: Theme.of(context).textTheme.headline5),
+        Text(studyMode, style: Theme.of(context).textTheme.bodyText2)
       ],
     ));
   }

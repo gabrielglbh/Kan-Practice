@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image/image.dart' as im;
 import 'package:kanpractice/core/routing/pages.dart';
-import 'package:kanpractice/core/utils/general_utils.dart';
+import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
 import 'package:kanpractice/ui/pages/dictionary/bloc/dict_bloc.dart';
 import 'package:kanpractice/ui/pages/dictionary/widgets/kanji_search_bar.dart';

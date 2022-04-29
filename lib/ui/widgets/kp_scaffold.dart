@@ -11,6 +11,7 @@ class KPScaffold extends StatelessWidget {
   final bool? centerTitle;
   final double toolbarHeight;
   final bool automaticallyImplyLeading;
+  final bool resizeToAvoidBottomInset;
   const KPScaffold({
     Key? key,
     required this.appBarTitle,
@@ -20,7 +21,8 @@ class KPScaffold extends StatelessWidget {
     this.floatingActionButton,
     this.centerTitle = false,
     this.toolbarHeight = CustomSizes.appBarHeight,
-    this.automaticallyImplyLeading = true
+    this.automaticallyImplyLeading = true,
+    this.resizeToAvoidBottomInset = false
   }) : super(key: key);
 
   @override
@@ -28,6 +30,7 @@ class KPScaffold extends StatelessWidget {
     return WillPopScope(
       onWillPop: onWillPop,
       child: Scaffold(
+        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
         appBar: AppBar(
           toolbarHeight: toolbarHeight,
           automaticallyImplyLeading: automaticallyImplyLeading,
@@ -42,6 +45,14 @@ class KPScaffold extends StatelessWidget {
           child: GestureDetector(
             /// Remove keyboard on touch anywhere else
             onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            /// Dismiss keyboard if possible whenever a vertical or horizontal
+            /// drag down occurs on screen
+            onVerticalDragStart: (details) {
+              FocusManager.instance.primaryFocus?.unfocus();
+            },
+            onHorizontalDragStart: (details) {
+              FocusManager.instance.primaryFocus?.unfocus();
+            },
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
               child: child

@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/firebase/models/market_list.dart';
-import 'package:kanpractice/core/utils/general_utils.dart';
+import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_button.dart';
 

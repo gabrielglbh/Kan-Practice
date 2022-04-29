@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/core/utils/general_utils.dart';
+import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/pages/add_market_list/bloc/add_to_market_bloc.dart';
 import 'package:kanpractice/ui/pages/add_market_list/widgets/add_to_market_bottom_sheet.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
@@ -48,6 +48,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
     return BlocProvider(
       create: (_) => _bloc..add(AddToMarketEventIdle()),
       child: KPScaffold(
+        resizeToAvoidBottomInset: true,
         appBarTitle: "add_to_market_title".tr(),
         appBarActions: [
           BlocBuilder<AddToMarketBloc, AddToMarketState>(

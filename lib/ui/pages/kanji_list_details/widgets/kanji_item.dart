@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
-import 'package:kanpractice/core/utils/general_utils.dart';
+import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/ui/widgets/kanji_bottom_sheet/kp_kanji_bottom_sheet.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
@@ -32,7 +32,7 @@ class KanjiItem extends StatefulWidget {
 }
 
 class _KanjiItemState extends State<KanjiItem> {
-  double _itemOpacity = 0.4;
+  //double _itemOpacity = 0.4;
 
   double _getProperKanjiWinRate(Kanji kanji) {
     switch (widget.selectedMode) {
@@ -49,15 +49,16 @@ class _KanjiItemState extends State<KanjiItem> {
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    /*WidgetsBinding.instance?.addPostFrameCallback((_) {
       setState(() => _itemOpacity = 1);
-    });
+    });*/
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return TweenAnimationBuilder(
+    return _item(context);
+    /*return TweenAnimationBuilder(
       tween: Tween<Offset>(begin: const Offset(0, 0.4), end: const Offset(0, 0)),
       duration: Duration(milliseconds: CustomAnimations.kanjiItemDuration * widget.index),
       curve: Curves.linear,
@@ -70,7 +71,7 @@ class _KanjiItemState extends State<KanjiItem> {
         duration: Duration(milliseconds: CustomAnimations.kanjiItemDuration * widget.index),
         child: _item(context),
       ),
-    );
+    );*/
   }
 
   AnimatedContainer _item(BuildContext context) {
@@ -94,7 +95,6 @@ class _KanjiItemState extends State<KanjiItem> {
             await KPKanjiBottomSheet.show(context,
                 widget.listName, widget.kanji, onTap: widget.onTap, onRemove: widget.onRemoval);
           },
-          // _createDialogForDeletingKanji(context, kanji.kanji),,
           child: Container(
             decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(CustomRadius.radius8))),
             child: FittedBox(

@@ -5,7 +5,7 @@ import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
-import 'package:kanpractice/core/utils/general_utils.dart';
+import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/pages/market/bloc/market_bloc.dart';
 import 'package:kanpractice/ui/pages/market/widgets/market_list_tile.dart';
 import 'package:kanpractice/ui/theme/consts.dart';

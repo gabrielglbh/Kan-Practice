@@ -8,7 +8,7 @@ import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/pages/add_kanji/bloc/add_kanji_bloc.dart';
 import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
-import 'package:kanpractice/core/utils/general_utils.dart';
+import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/widgets/kp_text_form.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/widgets/kp_kanji_category_list.dart';
@@ -112,6 +112,7 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
     return BlocProvider<AddKanjiBloc>(
       create: (_) => _bloc..add(AddKanjiEventIdle()),
       child: KPScaffold(
+        resizeToAvoidBottomInset: true,
         appBarTitle: widget.args.kanji != null
             ? "add_kanji_update_title".tr() : "add_kanji_new_title".tr(),
         appBarActions: [

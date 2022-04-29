@@ -8,6 +8,7 @@ import 'package:kanpractice/core/types/market_filters.dart';
 part 'market_event.dart';
 part 'market_state.dart';
 
+/// Used on market.dart and manage_market_list.dart.
 class MarketBloc extends Bloc<MarketEvent, MarketState> {
   MarketBloc() : super(MarketStateLoading()) {
     /// Maintain the list for pagination purposes
@@ -36,7 +37,8 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
           filter: event.filter,
           descending: event.order,
           offsetDocumentId: _lastRetrievedDocumentId,
-          onLastQueriedDocument: (id) => _lastRetrievedDocumentId = id
+          onLastQueriedDocument: (id) => _lastRetrievedDocumentId = id,
+          filterByMine: event.filter == MarketFilters.mine
         );
         fullList.addAll(pagination);
         _list.addAll(pagination);
@@ -60,8 +62,11 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
         List<MarketList> fullList = List.of(_searchList);
         final List<MarketList> pagination = await MarketRecords.instance.getListsBasedOnQuery(
             event.query,
+            filter: event.filter,
+            descending: event.order,
             offsetDocumentId: _lastRetrievedDocumentIdWhenSearching,
-            onLastQueriedDocument: (id) => _lastRetrievedDocumentIdWhenSearching = id
+            onLastQueriedDocument: (id) => _lastRetrievedDocumentIdWhenSearching = id,
+            filterByMine: event.filter == MarketFilters.mine
         );
         fullList.addAll(pagination);
         _searchList.addAll(pagination);
@@ -92,7 +97,37 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
           filter: event.filter,
           descending: event.order,
           offsetDocumentId: _lastRetrievedDocumentId,
-          onLastQueriedDocument: (id) => _lastRetrievedDocumentId = id
+          onLastQueriedDocument: (id) => _lastRetrievedDocumentId = id,
+          filterByMine: event.filter == MarketFilters.mine
+      );
+      fullList.addAll(pagination);
+      _list.addAll(pagination);
+      emit(MarketStateLoaded(lists: fullList));
+    });
+
+    on<MarketEventRemove>((event, emit) async {
+      emit(MarketStateLoading());
+      final res = await MarketRecords.instance.removeFromMarketPlace(event.id);
+      if (res.isEmpty) {
+        emit(MarketStateDownloadSuccess("market_removed_successfully".tr()));
+      } else {
+        emit(MarketStateDownloadFailure(res));
+      }
+      /// Reset lists for proper pagination
+      _list.clear();
+      _searchList.clear();
+      _lastRetrievedDocumentId = "";
+      _lastRetrievedDocumentIdWhenSearching = "";
+      /// For every time we want to retrieve data, we need to instantiate
+      /// a new list in order for Equatable to trigger and perform a change
+      /// of state. After, add to _list the elements for the next iteration.
+      List<MarketList> fullList = List.of(_list);
+      final List<MarketList> pagination = await MarketRecords.instance.getLists(
+          filter: event.filter,
+          descending: event.order,
+          offsetDocumentId: _lastRetrievedDocumentId,
+          onLastQueriedDocument: (id) => _lastRetrievedDocumentId = id,
+          filterByMine: event.filter == MarketFilters.mine
       );
       fullList.addAll(pagination);
       _list.addAll(pagination);

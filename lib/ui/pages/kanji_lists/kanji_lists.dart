@@ -252,15 +252,14 @@ class _KanjiListsState extends State<KanjiLists> {
     );
   }
 
-  Container _filterChips() {
+  SizedBox _filterChips() {
     Icon icon = Icon(_currentAppliedOrder
         ? Icons.arrow_downward_rounded
         : Icons.arrow_upward_rounded,
         color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black);
 
-    return Container(
+    return SizedBox(
       height: CustomSizes.defaultSizeFiltersList,
-      padding: const EdgeInsets.all(Margins.margin8),
       child: ListView.builder(
         itemCount: KanListFilters.values.length,
         scrollDirection: Axis.horizontal,

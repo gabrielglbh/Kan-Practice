@@ -82,10 +82,15 @@ class _MarketPlaceState extends State<MarketPlace> {
   }
 
   _addSearchingEvent(String query, {bool reset = false}) {
-    return _bloc..add(MarketEventSearching(query, reset: reset));
+    return _bloc..add(MarketEventSearching(query, filter: _currentAppliedFilter,
+        order: _currentAppliedOrder, reset: reset));
   }
 
   _onFilterSelected(int index) {
+    /// If the filter is exactly the same "MINE", do not update the list
+    if (MarketFilters.mine == MarketFilters.values[index] && _currentAppliedFilter == MarketFilters.mine) {
+      return;
+    }
     /// If the user taps on the same filter twice, just change back and forth the
     /// order value.
     /// Else, means the user has changed the filter, therefore default the order to DESC
@@ -122,12 +127,6 @@ class _MarketPlaceState extends State<MarketPlace> {
       appBarActions: [
         IconButton(
           onPressed: () async {
-            // TODO: My Lists - For deletion
-          },
-          icon: const Icon(Icons.my_library_books_rounded)
-        ),
-        IconButton(
-          onPressed: () async {
             await Navigator.of(context).pushNamed(KanPracticePages.marketAddListPage);
           },
           icon: const Icon(Icons.add)
@@ -146,7 +145,7 @@ class _MarketPlaceState extends State<MarketPlace> {
           child: BlocBuilder<MarketBloc, MarketState>(
             builder: (context, state) {
               if (state is MarketStateLoading || state is MarketStateSearching) {
-                return const Expanded(child: KPProgressIndicator());
+                return const KPProgressIndicator();
               } else {
                 return Column(
                   children: [
@@ -165,7 +164,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                         _addLoadingEvent(reset: true);
                       },
                     ),
-                    _filterChips(),
+                    _filterChips(state),
                     _lists(state)
                   ],
                 );
@@ -177,15 +176,14 @@ class _MarketPlaceState extends State<MarketPlace> {
     );
   }
 
-  Container _filterChips() {
+  SizedBox _filterChips(MarketState state) {
     Icon icon = Icon(_currentAppliedOrder
         ? Icons.arrow_downward_rounded
         : Icons.arrow_upward_rounded,
         color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black);
 
-    return Container(
+    return SizedBox(
       height: CustomSizes.defaultSizeFiltersList,
-      padding: const EdgeInsets.all(Margins.margin8),
       child: ListView.builder(
         itemCount: MarketFilters.values.length,
         scrollDirection: Axis.horizontal,
@@ -194,7 +192,8 @@ class _MarketPlaceState extends State<MarketPlace> {
             padding: const EdgeInsets.symmetric(horizontal: Margins.margin2),
             child: ChoiceChip(
               label: Text(MarketFilters.values[index].label),
-              avatar: _currentAppliedFilter.index != index ? null : icon,
+              avatar: _currentAppliedFilter == MarketFilters.mine
+                  ? null : _currentAppliedFilter.index != index ? null : icon,
               pressElevation: Margins.margin4,
               padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
               onSelected: (bool selected) => _onFilterSelected(index),
@@ -233,8 +232,12 @@ class _MarketPlaceState extends State<MarketPlace> {
               itemBuilder: (context, k) {
                 return MarketListTile(
                   list: state.lists[k],
+                  isManaging: _currentAppliedFilter == MarketFilters.mine,
                   onDownload: (listId) {
                     _bloc.add(MarketEventDownload(listId, _currentAppliedFilter, _currentAppliedOrder));
+                  },
+                  onRemove: (listId) {
+                    _bloc.add(MarketEventRemove(listId, _currentAppliedFilter, _currentAppliedOrder));
                   },
                   onRating: () {
 

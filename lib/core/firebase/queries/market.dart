@@ -49,7 +49,8 @@ class MarketRecords {
     MarketFilters filter = MarketFilters.all,
     bool descending = true,
     required String offsetDocumentId,
-    required Function(String) onLastQueriedDocument
+    required Function(String) onLastQueriedDocument,
+    bool filterByMine = false
   }) async {
     try {
       final List<MarketList> lists = [];
@@ -63,6 +64,11 @@ class MarketRecords {
         final DocumentSnapshot startFrom = await _ref.collection(collection)
             .doc(offsetDocumentId).get();
         listsSnapshot.startAfterDocument(startFrom);
+      }
+
+      /// If the user wants to retrieve only his or her lists
+      if (filterByMine) {
+        listsSnapshot.where(MarketList.uidField, isEqualTo: _auth.currentUser?.uid);
       }
 
       final snapshot = await listsSnapshot.get();
@@ -96,8 +102,11 @@ class MarketRecords {
   /// 
   /// TODO: Set keywords on MarketList for matching queries
   Future<List<MarketList>> getListsBasedOnQuery(String query, {
+    MarketFilters filter = MarketFilters.all,
+    bool descending = true,
     required String offsetDocumentId,
-    required Function(String) onLastQueriedDocument
+    required Function(String) onLastQueriedDocument,
+    bool filterByMine = false
   }) async {
     try {
       final List<MarketList> lists = [];
@@ -110,6 +119,11 @@ class MarketRecords {
         final DocumentSnapshot startFrom = await _ref.collection(collection)
             .doc(offsetDocumentId).get();
         listsSnapshot.startAfterDocument(startFrom);
+      }
+
+      /// If the user wants to retrieve only his or her lists
+      if (filterByMine) {
+        listsSnapshot.where(MarketList.uidField, isEqualTo: _auth.currentUser?.uid);
       }
 
       final snapshot = await listsSnapshot.get();
@@ -163,6 +177,7 @@ class MarketRecords {
         final MarketList resetList = MarketList(
             name: list.name,
             words: kanji.length,
+            uid: _user.uid,
             author: _user.displayName ?? "",
             description: description,
             uploadedToMarket: GeneralUtils.getCurrentMilliseconds()
@@ -230,14 +245,56 @@ class MarketRecords {
           }
         }
 
-        /// Update downloads on the list
-        await _ref.collection(collection).doc(id).update(
-          {MarketList.downloadField: FieldValue.increment(1)}
-        );
+        /// Update downloads on the list with a transaction
+        final ref = _ref.collection(collection).doc(id);
+        await _ref.runTransaction((transaction) async {
+          transaction.update(ref, { MarketList.downloadField: FieldValue.increment(1) });
+        });
 
         /// Merge it on the DB
         return await MarketQueries.instance.mergeMarketListIntoDb(backUpList, backUpKanji);
       } catch (err) {
+        return err.toString();
+      }
+    }
+  }
+
+  /// Remove a Kanlist from the market place to the user's device.
+  ///
+  /// The [id] comes from the Firebase document id when retrieving the lists.
+  Future<String> removeFromMarketPlace(String id) async {
+    User? _user = _auth.currentUser;
+    await _user?.reload();
+
+    /// If the user is not authenticated, exit
+    if (_user == null) {
+      return "market_need_auth".tr();
+    } else {
+      try {
+        /// Get all sub collections from the Market List
+        final marketList = _ref.collection(collection).doc(id);
+
+        /// If the user is not the author of the list, exit
+        if (_auth.currentUser?.uid != (await marketList.get()).get(MarketList.uidField)) {
+          return "market_need_to_be_author".tr();
+        }
+
+        final listSnapshot = await _ref.collection(collection).doc(id).collection(listLabel).get();
+        final kanjiSnapshot = await _ref.collection(collection).doc(id).collection(kanjiLabel).get();
+
+        /// Use transaction to avoid race errors
+        await _ref.runTransaction((transaction) async {
+          for (var x = 0; x < listSnapshot.size; x++) {
+            transaction.delete((listSnapshot.docs[x].reference));
+          }
+          for (var x = 0; x < kanjiSnapshot.size; x++) {
+            transaction.delete((kanjiSnapshot.docs[x].reference));
+          }
+          transaction.delete(marketList);
+        });
+        return "";
+      } catch (err) {
+        print(err);
         return err.toString();
       }
     }

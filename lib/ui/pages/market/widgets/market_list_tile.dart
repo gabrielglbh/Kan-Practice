@@ -3,17 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/ui/widgets/kp_button.dart';
 
 class MarketListTile extends StatelessWidget {
   final MarketList list;
   final Function(String) onDownload;
+  final Function(String) onRemove;
   final Function() onRating;
+  final bool isManaging;
   const MarketListTile({
     Key? key,
     required this.list,
     required this.onDownload,
-    required this.onRating
+    required this.onRating,
+    required this.onRemove,
+    this.isManaging = false
   }) : super(key: key);
 
   @override
@@ -76,13 +81,26 @@ class MarketListTile extends StatelessWidget {
                 ),
               ),
             ),
-            KPButton(
-              title2: "market_downloads_button_label".tr(),
-              color: CustomColors.secondaryDarkerColor,
-              onTap: () {
-                onDownload(list.name);
-              }
-            )
+            IconButton(
+              onPressed: () => onDownload(list.name),
+              icon: const Icon(Icons.download_rounded)
+            ),
+            if (isManaging) IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return KPDialog(
+                      title: Text("market_remove_dialog_label".tr()),
+                      content: Text("market_remove_sure_label".tr()),
+                      positiveButtonText: "Ok",
+                      onPositive: () => onRemove(list.name)
+                    );
+                  }
+                );
+              },
+              icon: const Icon(Icons.remove_circle_rounded, color: CustomColors.secondaryDarkerColor)
+            ),
           ],
         )
       ),

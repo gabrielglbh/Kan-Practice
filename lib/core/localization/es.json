@@ -289,5 +289,10 @@
   "market_by_author": "Por",
   "add_to_market_username_label": "Nombre de Usuario",
   "add_to_market_username_hint": "SuperNombre7",
-  "add_to_market_author_validation_failed": "El nombre de usuario no se ha podido actualizar. Inténtalo de nuevo más tarde."
+  "add_to_market_author_validation_failed": "El nombre de usuario no se ha podido actualizar. Inténtalo de nuevo más tarde.",
+  "market_remove_dialog_label": "Eliminar lista",
+  "market_remove_sure_label": "La lista se eliminará del marketplace y nadie podrá descargársela. ¿Quieres continuar?",
+  "market_removed_successfully": "La lista se ha eliminado correctamente",
+  "market_filter_mine": "Mis Listas",
+  "market_need_to_be_author": "Para eliminar la lista debes ser el autor de la misma"
 }

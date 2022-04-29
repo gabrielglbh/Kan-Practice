@@ -289,5 +289,10 @@
   "market_by_author": "By",
   "add_to_market_username_label": "Username",
   "add_to_market_username_hint": "SuperName7",
-  "add_to_market_author_validation_failed": "The username could not be updated. Try again later."
+  "add_to_market_author_validation_failed": "The username could not be updated. Try again later.",
+  "market_remove_dialog_label": "Remove list",
+  "market_remove_sure_label": "The list will be removed from the marketplace and nobody will be able to download it. Do you want to continue?",
+  "market_removed_successfully": "The list was successfully removed.",
+  "market_filter_mine": "My Lists",
+  "market_need_to_be_author": "To delete the list you must be the author of the list."
 }

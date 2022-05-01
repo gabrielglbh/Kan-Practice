@@ -14,6 +14,7 @@ class KPSearchBar extends StatefulWidget {
   final FocusNode? focus;
   /// Padding to apply to the search bar, defaults to 8
   final double top, bottom, right, left;
+  final TextEditingController? controller;
   const KPSearchBar({
     Key? key,
     required this.onQuery,
@@ -24,6 +25,7 @@ class KPSearchBar extends StatefulWidget {
     this.bottom = 0,
     this.left = Margins.margin8,
     this.right = Margins.margin8,
+    this.controller
   }) : super(key: key);
 
   @override
@@ -39,13 +41,13 @@ class _KPSearchBarState extends State<KPSearchBar> {
 
   @override
   void initState() {
-    _controller = TextEditingController();
+    _controller = widget.controller ?? TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    _controller?.dispose();
+    if (widget.controller == null) _controller?.dispose();
     super.dispose();
   }
 

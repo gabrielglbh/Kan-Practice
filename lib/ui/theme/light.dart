@@ -7,6 +7,7 @@ final Color _cardColor = Colors.grey.shade200;
 final Color _chipColor = Colors.grey.shade500;
 const Color _accent = Colors.black;
 final Color _subtle = Colors.grey.shade600;
+final Color _nav = Colors.grey.shade700;
 
 final ThemeData light = ThemeData(
     brightness: Brightness.light,
@@ -20,6 +21,15 @@ final ThemeData light = ThemeData(
         elevation: 0,
         titleTextStyle: TextStyle(fontSize: FontSizes.fontSize32, color: _accent),
         iconTheme: IconThemeData(color: _accent),
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: _primary,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        selectedItemColor: CustomColors.secondaryDarkerColor,
+        selectedIconTheme: const IconThemeData(color: CustomColors.secondaryDarkerColor),
+        unselectedIconTheme: IconThemeData(color: _nav),
+        unselectedLabelStyle: TextStyle(color: _nav)
     ),
     iconTheme: const IconThemeData(color: _accent),
     textTheme: TextTheme(

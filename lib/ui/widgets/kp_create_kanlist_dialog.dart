@@ -4,18 +4,20 @@ import 'package:kanpractice/ui/widgets/kp_text_form.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class KPCreateKanListDialog extends StatelessWidget {
-  final Function(String) onSubmit;
-  KPCreateKanListDialog({Key? key, required this.onSubmit}) : super(key: key);
+  final Function(String)? onSubmit;
+  KPCreateKanListDialog({Key? key, this.onSubmit}) : super(key: key);
 
   final TextEditingController controller = TextEditingController();
   final FocusNode focusNode = FocusNode();
 
-  static showCreateKanListDialog(BuildContext context,
-      {required Function(String) onSubmit}) {
-    showDialog(
+  /// Returns, if needed, the name of the KanList created
+  static Future<String?> show(BuildContext context, {Function(String)? onSubmit}) async {
+    String? name;
+    await showDialog(
       context: context,
       builder: (context) => KPCreateKanListDialog(onSubmit: onSubmit)
-    );
+    ).then((value) => name = value);
+    return name;
   }
 
   @override
@@ -30,14 +32,22 @@ class KPCreateKanListDialog extends StatelessWidget {
         hint: "kanji_lists_createDialogForAddingKanList_hint".tr(),
         autofocus: true,
         onSubmitted: (name) {
-          onSubmit(name);
-          Navigator.of(context).pop();
+          if (onSubmit != null) onSubmit!(name);
+          Navigator.of(context).pop(name);
         },
         focusNode: focusNode,
         onEditingComplete: () => focusNode.unfocus(),
       ),
+      /// Manage the state of the KPDialog from here to pass the name
+      popDialog: onSubmit != null,
       positiveButtonText: "kanji_lists_createDialogForAddingKanList_positive".tr(),
-      onPositive: () => onSubmit(controller.text),
+      onPositive: () {
+        if (onSubmit != null) {
+          onSubmit!(controller.text);
+        } else {
+          Navigator.of(context).pop(controller.text);
+        }
+      },
     );
   }
 }

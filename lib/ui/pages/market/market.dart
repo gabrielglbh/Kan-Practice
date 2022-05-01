@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
-import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/pages/market/bloc/market_bloc.dart';
@@ -11,20 +10,17 @@ import 'package:kanpractice/ui/pages/market/widgets/market_list_tile.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
-import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
-import 'package:kanpractice/ui/widgets/kp_search_bar.dart';
 
 class MarketPlace extends StatefulWidget {
-  const MarketPlace({Key? key}) : super(key: key);
+  final Function() onScrolledToBottom;
+  const MarketPlace({Key? key, required this.onScrolledToBottom}) : super(key: key);
 
   @override
   State<MarketPlace> createState() => _MarketPlaceState();
 }
 
 class _MarketPlaceState extends State<MarketPlace> {
-  final MarketBloc _bloc = MarketBloc();
   final ScrollController _scrollController = ScrollController();
-  FocusNode? _searchBarFn;
 
   MarketFilters _currentAppliedFilter = MarketFilters.all;
 
@@ -32,15 +28,9 @@ class _MarketPlaceState extends State<MarketPlace> {
   /// true --> DESC or false --> ASC. The value is saved into the shared preferences when a filter
   /// is applied. This value is then restored upon new session.
   bool _currentAppliedOrder = true;
-  bool _searchHasFocus = false;
-
-  /// Saves the last state of the query
-  String _query = "";
 
   @override
   void initState() {
-    _searchBarFn = FocusNode();
-    _searchBarFn?.addListener(_focusListener);
     _scrollController.addListener(_scrollListener);
 
     final filterText = StorageManager.readData(StorageManager.filtersOnMarket)
@@ -53,36 +43,25 @@ class _MarketPlaceState extends State<MarketPlace> {
 
   @override
   void dispose() {
-    _searchBarFn?.removeListener(_focusListener);
-    _searchBarFn?.dispose();
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
     super.dispose();
   }
 
-  _focusListener() => setState(() => _searchHasFocus = (_searchBarFn?.hasFocus ?? false));
-
   _scrollListener() {
     /// When reaching last pixel of the list
     if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
-      /// If the query is empty, use the pagination for search bar
-      if (_query.isNotEmpty) {
-        _addSearchingEvent(_query);
-      }
-      /// Else use the normal pagination
-      else {
-        _addLoadingEvent();
-      }
+      widget.onScrolledToBottom();
     }
   }
 
-  _addLoadingEvent({bool reset = false}) {
-    return _bloc..add(MarketEventLoading(filter: _currentAppliedFilter,
-        order: _currentAppliedOrder, reset: reset));
+  _resetScroll() {
+    /// Scroll to the top
+    _scrollController.animateTo(0, duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
   }
 
-  _addSearchingEvent(String query, {bool reset = false}) {
-    return _bloc..add(MarketEventSearching(query, filter: _currentAppliedFilter,
+  _addLoadingEvent({bool reset = false}) {
+    return BlocProvider.of<MarketBloc>(context)..add(MarketEventLoading(filter: _currentAppliedFilter,
         order: _currentAppliedOrder, reset: reset));
   }
 
@@ -91,6 +70,8 @@ class _MarketPlaceState extends State<MarketPlace> {
     if (MarketFilters.mine == MarketFilters.values[index] && _currentAppliedFilter == MarketFilters.mine) {
       return;
     }
+
+    _resetScroll();
     /// If the user taps on the same filter twice, just change back and forth the
     /// order value.
     /// Else, means the user has changed the filter, therefore default the order to DESC
@@ -113,66 +94,28 @@ class _MarketPlaceState extends State<MarketPlace> {
 
   @override
   Widget build(BuildContext context) {
-    return KPScaffold(
-      onWillPop: () async {
-        if (_searchHasFocus) {
-          _addLoadingEvent(reset: true);
-          _searchBarFn?.unfocus();
-          return false;
-        } else {
-          return true;
+    return BlocListener<MarketBloc, MarketState>(
+      listener: (context, state) {
+        if (state is MarketStateDownloadSuccess) {
+          GeneralUtils.getSnackBar(context, state.message);
+        } else if (state is MarketStateDownloadFailure) {
+          GeneralUtils.getSnackBar(context, state.message);
         }
       },
-      appBarTitle: "market_place_title".tr(),
-      appBarActions: [
-        IconButton(
-          onPressed: () async {
-            await Navigator.of(context).pushNamed(KanPracticePages.marketAddListPage);
-          },
-          icon: const Icon(Icons.add)
-        )
-      ],
-      child: BlocProvider<MarketBloc>(
-        create: (_) => _addLoadingEvent(),
-        child: BlocListener<MarketBloc, MarketState>(
-          listener: (context, state) {
-            if (state is MarketStateDownloadSuccess) {
-              GeneralUtils.getSnackBar(context, state.message);
-            } else if (state is MarketStateDownloadFailure) {
-              GeneralUtils.getSnackBar(context, state.message);
-            }
-          },
-          child: BlocBuilder<MarketBloc, MarketState>(
-            builder: (context, state) {
-              if (state is MarketStateLoading || state is MarketStateSearching) {
-                return const KPProgressIndicator();
-              } else {
-                return Column(
-                  children: [
-                    KPSearchBar(
-                      hint: "market_lists_searchBar_hint".tr(),
-                      focus: _searchBarFn,
-                      onQuery: (String query) {
-                        /// Everytime the user queries, reset the query itself and
-                        /// the pagination index
-                        _query = query;
-                        _addSearchingEvent(query, reset: true);
-                      },
-                      onExitSearch: () {
-                        /// Empty the query
-                        _query = "";
-                        _addLoadingEvent(reset: true);
-                      },
-                    ),
-                    _filterChips(state),
-                    _lists(state)
-                  ],
-                );
-              }
-            }
-          ),
-        )
-      )
+      child: BlocBuilder<MarketBloc, MarketState>(
+        builder: (context, state) {
+          if (state is MarketStateLoading || state is MarketStateSearching) {
+            return const KPProgressIndicator();
+          } else {
+            return Column(
+              children: [
+                _filterChips(state),
+                _lists(state)
+              ],
+            );
+          }
+        }
+      ),
     );
   }
 
@@ -228,16 +171,20 @@ class _MarketPlaceState extends State<MarketPlace> {
               controller: _scrollController,
               itemCount: state.lists.length,
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              padding: const EdgeInsets.only(bottom: Margins.margin16),
+              padding: const EdgeInsets.only(bottom: Margins.margin24),
               itemBuilder: (context, k) {
                 return MarketListTile(
                   list: state.lists[k],
                   isManaging: _currentAppliedFilter == MarketFilters.mine,
                   onDownload: (listId) {
-                    _bloc.add(MarketEventDownload(listId, _currentAppliedFilter, _currentAppliedOrder));
+                    BlocProvider.of<MarketBloc>(context).add(
+                        MarketEventDownload(listId, _currentAppliedFilter, _currentAppliedOrder)
+                    );
                   },
                   onRemove: (listId) {
-                    _bloc.add(MarketEventRemove(listId, _currentAppliedFilter, _currentAppliedOrder));
+                    BlocProvider.of<MarketBloc>(context).add(
+                        MarketEventRemove(listId, _currentAppliedFilter, _currentAppliedOrder)
+                    );
                   },
                   onRating: () {
 

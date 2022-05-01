@@ -46,7 +46,7 @@ class _TutorialPageState extends State<TutorialPage> {
       child: BlocListener<TutorialBloc, TutorialState>(
         listener: (context, state) {
           if (state is TutorialStateLoaded || state is TutorialStateFailure) {
-            Navigator.of(context).pushReplacementNamed(KanPracticePages.kanjiListPage);
+            Navigator.of(context).pushReplacementNamed(KanPracticePages.homePage);
           }
         },
         child: BlocBuilder<TutorialBloc, TutorialState>(

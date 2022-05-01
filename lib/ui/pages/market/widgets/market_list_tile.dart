@@ -4,7 +4,6 @@ import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
-import 'package:kanpractice/ui/widgets/kp_button.dart';
 
 class MarketListTile extends StatelessWidget {
   final MarketList list;
@@ -96,7 +95,7 @@ class MarketListTile extends StatelessWidget {
                   }
                 );
               },
-              icon: const Icon(Icons.remove_circle_rounded, color: CustomColors.secondaryDarkerColor)
+              icon: const Icon(Icons.remove_circle_rounded, color: CustomColors.secondaryColor)
             ),
           ],
         )

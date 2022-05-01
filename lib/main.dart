@@ -93,7 +93,7 @@ class _KanPracticeState extends State<KanPractice> {
       darkTheme: ThemeManager.instance.currentDarkThemeData,
       themeMode: ThemeManager.instance.themeMode,
       initialRoute: StorageManager.readData(StorageManager.hasDoneTutorial)
-          ? KanPracticePages.kanjiListPage : KanPracticePages.tutorialPage,
+          ? KanPracticePages.homePage : KanPracticePages.tutorialPage,
       onGenerateRoute: onGenerateRoute,
     );
   }

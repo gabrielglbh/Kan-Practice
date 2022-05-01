@@ -12,6 +12,7 @@ class KPScaffold extends StatelessWidget {
   final double toolbarHeight;
   final bool automaticallyImplyLeading;
   final bool resizeToAvoidBottomInset;
+  final Widget? bottomNavigationWidget;
   const KPScaffold({
     Key? key,
     required this.appBarTitle,
@@ -22,7 +23,8 @@ class KPScaffold extends StatelessWidget {
     this.centerTitle = false,
     this.toolbarHeight = CustomSizes.appBarHeight,
     this.automaticallyImplyLeading = true,
-    this.resizeToAvoidBottomInset = false
+    this.resizeToAvoidBottomInset = false,
+    this.bottomNavigationWidget
   }) : super(key: key);
 
   @override
@@ -56,9 +58,10 @@ class KPScaffold extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
               child: child
-    ),
+            ),
           ),
         ),
+        bottomNavigationBar: bottomNavigationWidget,
         floatingActionButton: floatingActionButton,
       ),
     );

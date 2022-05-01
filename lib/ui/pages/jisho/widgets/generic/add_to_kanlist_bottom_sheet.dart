@@ -145,7 +145,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
           ),
         ),
         ListTile(
-          onTap: () => KPCreateKanListDialog.showCreateKanListDialog(context, onSubmit: (String name) {
+          onTap: () => KPCreateKanListDialog.show(context, onSubmit: (String name) {
             _bloc.add(KanjiListEventCreate(name,
                 filter: KanListFilters.all,
                 order: false, useLazyLoading: false

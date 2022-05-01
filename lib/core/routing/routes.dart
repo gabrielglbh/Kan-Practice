@@ -8,12 +8,11 @@ import 'package:kanpractice/ui/pages/backup/backup.dart';
 import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
 import 'package:kanpractice/ui/pages/dictionary/dictionary.dart';
 import 'package:kanpractice/ui/pages/firebase_login/login.dart';
+import 'package:kanpractice/ui/pages/home/home.dart';
 import 'package:kanpractice/ui/pages/jisho/arguments.dart';
 import 'package:kanpractice/ui/pages/jisho/jisho.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/list_details.dart';
-import 'package:kanpractice/ui/pages/kanji_lists/kanji_lists.dart';
 import 'package:kanpractice/ui/pages/study_modes/listening.dart';
-import 'package:kanpractice/ui/pages/market/market.dart';
 import 'package:kanpractice/ui/pages/study_modes/reading.dart';
 import 'package:kanpractice/ui/pages/study_modes/recognition.dart';
 import 'package:kanpractice/ui/pages/settings/settings.dart';
@@ -29,9 +28,9 @@ import 'package:page_transition/page_transition.dart';
 /// Router generator in which all pages and their transitions are made.
 Route<dynamic>? onGenerateRoute(RouteSettings settings) {
   switch (settings.name) {
-    case KanPracticePages.kanjiListPage:
+    case KanPracticePages.homePage:
       bool? showTestBottomSheet = settings.arguments as bool?;
-      return CupertinoPageRoute(builder: (_) => KanjiLists(showTestBottomSheet: showTestBottomSheet));
+      return CupertinoPageRoute(builder: (_) => HomePage(showTestBottomSheet: showTestBottomSheet));
     case KanPracticePages.kanjiListDetailsPage:
       KanjiList list = settings.arguments as KanjiList;
       return CupertinoPageRoute(builder: (_) => KanjiListDetails(list: list));
@@ -73,8 +72,6 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return CupertinoPageRoute(builder: (_) => DictionaryPage(args: args));
     case KanPracticePages.statisticsPage:
       return CupertinoPageRoute(builder: (_) => StatisticsPage());
-    case KanPracticePages.marketPlacePage:
-      return CupertinoPageRoute(builder: (_) => const MarketPlace());
     case KanPracticePages.marketAddListPage:
       return CupertinoPageRoute(builder: (_) => const AddMarketListPage());
   }

@@ -101,7 +101,7 @@ class _TestResultState extends State<TestResult> {
             onTap: () {
               /// Remove all navigation stack and push kanList
               Navigator.of(context).pushNamedAndRemoveUntil(
-                  KanPracticePages.kanjiListPage, (route) => false,
+                  KanPracticePages.homePage, (route) => false,
                   arguments: _performAnotherTest
               );
             }

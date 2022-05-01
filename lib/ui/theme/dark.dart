@@ -21,6 +21,15 @@ final ThemeData dark = ThemeData(
         titleTextStyle: const TextStyle(fontSize: FontSizes.fontSize32, color: _accent),
         iconTheme: const IconThemeData(color: _accent),
     ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: _primary,
+      showSelectedLabels: true,
+      showUnselectedLabels: true,
+      selectedItemColor: CustomColors.secondaryColor,
+      selectedIconTheme: const IconThemeData(color: CustomColors.secondaryColor),
+      unselectedIconTheme: IconThemeData(color: _subtle),
+      unselectedLabelStyle: TextStyle(color: _subtle)
+    ),
     iconTheme: const IconThemeData(color: _accent),
     textTheme: TextTheme(
         headline1: const TextStyle(color: _accent),

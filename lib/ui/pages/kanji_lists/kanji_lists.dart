@@ -1,33 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/firebase/queries/back_ups.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
-import 'package:kanpractice/core/routing/pages.dart';
-import 'package:kanpractice/core/tutorial/tutorial_manager.dart';
-import 'package:kanpractice/ui/general_utils.dart';
-import 'package:kanpractice/core/types/coach_tutorial_parts.dart';
 import 'package:kanpractice/core/types/visualization_mode.dart';
-import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/test_bottom_sheet.dart';
-import 'package:kanpractice/ui/widgets/kp_create_kanlist_dialog.dart';
-import 'package:kanpractice/ui/widgets/kp_search_bar.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/kanlist_tile.dart';
 import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
-import 'package:kanpractice/ui/widgets/fab_dial/kp_dial.dart';
-import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class KanjiLists extends StatefulWidget {
   final bool? showTestBottomSheet;
+  final Function() onTapKanList;
+  final Function() onScrolledToBottom;
   const KanjiLists({
     Key? key,
-    this.showTestBottomSheet = false
+    this.showTestBottomSheet = false,
+    required this.onTapKanList,
+    required this.onScrolledToBottom
   }) : super(key: key);
 
   @override
@@ -35,15 +28,7 @@ class KanjiLists extends StatefulWidget {
 }
 
 class _KanjiListsState extends State<KanjiLists> {
-  final KanjiListBloc _bloc = KanjiListBloc();
   final ScrollController _scrollController = ScrollController();
-  FocusNode? _searchBarFn;
-
-  /// Tutorial Global Keys
-  final GlobalKey lists = GlobalKey();
-  final GlobalKey addLists = GlobalKey();
-  final GlobalKey actions = GlobalKey();
-  final GlobalKey market = GlobalKey();
 
   /// This variable keeps track of the actual filter applied. The value is
   /// saved into the shared preferences when a filter is applied.
@@ -54,18 +39,9 @@ class _KanjiListsState extends State<KanjiLists> {
   /// true --> DESC or false --> ASC. The value is saved into the shared preferences when a filter
   /// is applied. This value is then restored upon new session.
   bool _currentAppliedOrder = true;
-  bool _searchHasFocus = false;
-  bool _onTutorial = false;
-
-  /// Saves the last state of the query
-  String _query = "";
-
-  String _newVersion = "";
 
   @override
   void initState() {
-    _searchBarFn = FocusNode();
-    _searchBarFn?.addListener(_focusListener);
     _scrollController.addListener(_scrollListener);
 
     final filterText = StorageManager.readData(StorageManager.filtersOnList)
@@ -74,7 +50,6 @@ class _KanjiListsState extends State<KanjiLists> {
 
     _currentAppliedOrder = StorageManager.readData(StorageManager.orderOnList)
         ?? true;
-    _getVersionNotice();
 
     /// If showTestBottomSheet is true, show directly the test bottom sheet
     /// when launching the page. Only true when coming back from the TestResultPage.
@@ -88,53 +63,32 @@ class _KanjiListsState extends State<KanjiLists> {
 
   @override
   void dispose() {
-    _searchBarFn?.removeListener(_focusListener);
-    _searchBarFn?.dispose();
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
-    _bloc.close();
     super.dispose();
-  }
-
-  Future<void> _getVersionNotice() async {
-    String v = await BackUpRecords.instance.getVersion();
-    PackageInfo pi = await PackageInfo.fromPlatform();
-    if (v != pi.version && v != "") setState(() => _newVersion = v);
   }
 
   Future<void> _loadTests() async => await TestBottomSheet.show(context);
 
-  _focusListener() => setState(() => _searchHasFocus = (_searchBarFn?.hasFocus ?? false));
-
   _scrollListener() {
     /// When reaching last pixel of the list
     if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
-      /// If the query is empty, use the pagination for search bar
-      if (_query.isNotEmpty) {
-        _addSearchingEvent(_query);
-      }
-      /// Else use the normal pagination
-      else {
-        _addLoadingEvent();
-      }
+      widget.onScrolledToBottom();
     }
   }
 
   _addLoadingEvent({bool reset = false}) {
-    return _bloc..add(KanjiListEventLoading(
+    return BlocProvider.of<KanjiListBloc>(context)..add(KanjiListEventLoading(
         filter: _currentAppliedFilter, order: _currentAppliedOrder, reset: reset));
   }
 
-  _addSearchingEvent(String query, {bool reset = false}) {
-    return _bloc..add(KanjiListEventSearching(query, reset: reset));
-  }
-
   _resetScroll() {
-    /// And scroll to the top
+    /// Scroll to the top
     _scrollController.animateTo(0, duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
   }
 
   _onFilterSelected(int index) {
+    _resetScroll();
     /// If the user taps on the same filter twice, just change back and forth the
     /// order value.
     /// Else, means the user has changed the filter, therefore default the order to DESC
@@ -157,98 +111,11 @@ class _KanjiListsState extends State<KanjiLists> {
 
   @override
   Widget build(BuildContext context) {
-    return KPScaffold(
-      onWillPop: () async {
-        if (_onTutorial) return false;
-        if (_searchHasFocus) {
-          _addLoadingEvent(reset: true);
-          _searchBarFn?.unfocus();
-          return false;
-        } else {
-          return true;
-        }
-      },
-      appBarTitle: "KanPractice",
-      appBarActions: [
-        IconButton(
-          key: market,
-          icon: const Icon(Icons.shopping_bag_rounded),
-          onPressed: () async {
-            await Navigator.of(context).pushNamed(KanPracticePages.marketPlacePage).then((code) {
-              _addLoadingEvent();
-            });
-          },
-        ),
-        IconButton(
-          key: actions,
-          icon: const Icon(Icons.menu_book_rounded),
-          onPressed: () {
-            Navigator.of(context).pushNamed(KanPracticePages.dictionaryPage, arguments:
-                  const DictionaryArguments(searchInJisho: true));
-          },
-        ),
-        IconButton(
-          onPressed: () async {
-            await Navigator.of(context).pushNamed(KanPracticePages.settingsPage).then((code) {
-              _addLoadingEvent();
-            });
-          },
-          icon: const Icon(Icons.settings),
-        )
+    return Column(
+      children: [
+        _filterChips(),
+        _lists()
       ],
-      floatingActionButton: _searchHasFocus ? null : _fab(),
-      child: BlocProvider<KanjiListBloc>(
-        create: (_) => _addLoadingEvent(reset: true),
-        child: Column(
-          children: [
-            Visibility(
-              visible: _newVersion.isNotEmpty,
-              child: _updateContainer()
-            ),
-            KPSearchBar(
-              hint: "kanji_lists_searchBar_hint".tr(),
-              focus: _searchBarFn,
-              onQuery: (String query) {
-                /// Everytime the user queries, reset the query itself and
-                /// the pagination index
-                _query = query;
-                _addSearchingEvent(query, reset: true);
-              },
-              onExitSearch: () {
-                /// Empty the query
-                _query = "";
-                _addLoadingEvent(reset: true);
-              },
-            ),
-            _filterChips(),
-            _lists()
-          ],
-        )
-      ),
-    );
-  }
-
-  Widget _fab() {
-    return Dial(
-      key: addLists,
-      icon: AnimatedIcons.menu_close,
-      color: Theme.of(context).brightness == Brightness.light
-          ? Colors.white : Colors.black,
-      dialChildren: [
-        DialChild(
-          child: const Icon(Icons.track_changes_rounded, color: Colors.white),
-          onPressed: () async => await _loadTests()
-        ),
-        DialChild(
-          child: const Icon(Icons.add, color: Colors.white),
-          onPressed: () => KPCreateKanListDialog.showCreateKanListDialog(context,
-            onSubmit: (String name) {
-              _bloc.add(KanjiListEventCreate(
-                  name, filter: _currentAppliedFilter, order: _currentAppliedOrder));
-              _resetScroll();
-            }),
-        ),
-      ]
     );
   }
 
@@ -280,101 +147,59 @@ class _KanjiListsState extends State<KanjiLists> {
     );
   }
 
-  BlocListener _lists() {
-    return BlocListener<KanjiListBloc, KanjiListState>(
-      listener: (context, state) async {
-        if (state is KanjiListStateLoaded) {
-          if (StorageManager.readData(StorageManager.haveSeenKanListCoachMark) == false) {
-            _onTutorial = true;
-            await TutorialCoach([lists, addLists, actions, market], CoachTutorialParts.kanList)
-                .showTutorial(context, onEnd: () => _onTutorial = false);
-          }
+  BlocBuilder _lists() {
+    return BlocBuilder<KanjiListBloc, KanjiListState>(
+      builder: (context, state) {
+        if (state is KanjiListStateFailure) {
+          return KPEmptyList(
+            showTryButton: true,
+            onRefresh: () => _addLoadingEvent(reset: true),
+            message: "kanji_lists_load_failed".tr()
+          );
+        } else if (state is KanjiListStateLoading || state is KanjiListStateSearching) {
+          return const Expanded(child: KPProgressIndicator());
+        } else if (state is KanjiListStateLoaded) {
+          return state.lists.isEmpty
+              ? Expanded(child:
+            KPEmptyList(
+              onRefresh: () => _addLoadingEvent(reset: true),
+              showTryButton: true,
+              message: "kanji_lists_empty".tr())
+          )
+              : Expanded(
+            child: RefreshIndicator(
+              onRefresh: () => _addLoadingEvent(reset: true),
+              child: ListView.builder(
+                key: const PageStorageKey<String>('kanListListsController'),
+                controller: _scrollController,
+                itemCount: state.lists.length,
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                padding: const EdgeInsets.only(bottom: Margins.margin24),
+                itemBuilder: (context, k) {
+                  return KanListTile(
+                    item: state.lists[k],
+                    onTap: widget.onTapKanList,
+                    mode: VisualizationModeExt.mode(StorageManager.readData(
+                        StorageManager.kanListGraphVisualization)
+                          ?? VisualizationMode.radialChart),
+                    onRemoval: () {
+                      BlocProvider.of<KanjiListBloc>(context).add(KanjiListEventDelete(
+                        state.lists[k],
+                        filter: _currentAppliedFilter,
+                        order: _currentAppliedOrder,
+                      ));
+                      _resetScroll();
+                    },
+                    onPopWhenTapped: () => _addLoadingEvent(reset: true)
+                  );
+                }
+              ),
+            ),
+          );
+        } else {
+          return Container();
         }
       },
-      child: BlocBuilder<KanjiListBloc, KanjiListState>(
-        key: lists,
-        builder: (context, state) {
-          if (state is KanjiListStateFailure) {
-            return KPEmptyList(
-              showTryButton: true,
-              onRefresh: () => _addLoadingEvent(reset: true),
-              message: "kanji_lists_load_failed".tr()
-            );
-          } else if (state is KanjiListStateLoading || state is KanjiListStateSearching) {
-            return const Expanded(child: KPProgressIndicator());
-          } else if (state is KanjiListStateLoaded) {
-            return state.lists.isEmpty
-                ? Expanded(child:
-              KPEmptyList(
-                onRefresh: () => _addLoadingEvent(reset: true),
-                showTryButton: true,
-                message: "kanji_lists_empty".tr())
-            )
-                : Expanded(
-              child: RefreshIndicator(
-                onRefresh: () => _addLoadingEvent(reset: true),
-                child: ListView.builder(
-                  key: const PageStorageKey<String>('kanListListsController'),
-                  controller: _scrollController,
-                  itemCount: state.lists.length,
-                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                  padding: const EdgeInsets.only(bottom: CustomSizes.extraPaddingForFAB),
-                  itemBuilder: (context, k) {
-                    return KanListTile(
-                      item: state.lists[k],
-                      onTap: () => _searchBarFn?.unfocus(),
-                      mode: VisualizationModeExt.mode(StorageManager.readData(
-                          StorageManager.kanListGraphVisualization)
-                            ?? VisualizationMode.radialChart),
-                      onRemoval: () {
-                        _bloc.add(KanjiListEventDelete(
-                          state.lists[k],
-                          filter: _currentAppliedFilter,
-                          order: _currentAppliedOrder,
-                        ));
-                        _resetScroll();
-                      },
-                      onPopWhenTapped: () => _addLoadingEvent(reset: true)
-                    );
-                  }
-                ),
-              ),
-            );
-          } else {
-            return Container();
-          }
-        },
-      ),
-    );
-  }
-
-  Widget _updateContainer() {
-    return GestureDetector(
-      onTap: () async => await GeneralUtils.showVersionNotes(context, version: _newVersion),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(CustomRadius.radius16),
-          color: CustomColors.getSecondaryColor(context)
-        ),
-        padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
-        margin: const EdgeInsets.only(bottom: Margins.margin8, right: Margins.margin8, left: Margins.margin8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
-              child: Text("kanji_lists_newUpdateAvailable_label".tr(), style: Theme.of(context)
-                .textTheme.headline5?.copyWith(
-                  fontWeight: FontWeight.bold, color: Colors.white
-              )),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
-              child: Icon(Icons.system_update, color: Colors.white)
-            )
-          ],
-        ),
-      )
     );
   }
 }

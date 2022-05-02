@@ -3,7 +3,6 @@ import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/coach_tutorial_parts.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class TutorialCoach {
   final CoachTutorialParts _part;
@@ -12,23 +11,7 @@ class TutorialCoach {
   List<String> _tutorialText = [];
 
   TutorialCoach(this.markers, this._part) {
-    switch (_part) {
-      case CoachTutorialParts.kanList:
-        _tutorialText = [
-          "coach_tutorial_kanlists_1".tr(),
-          "coach_tutorial_kanlists_2".tr(),
-          "coach_tutorial_kanlists_3".tr()
-        ];
-        break;
-      case CoachTutorialParts.details:
-        _tutorialText = [
-          "coach_tutorial_detail_1".tr(),
-          "coach_tutorial_detail_2".tr(),
-          "coach_tutorial_detail_3".tr(),
-          "coach_tutorial_detail_4".tr()
-        ];
-        break;
-    }
+    _tutorialText = _part.texts;
     _initTargets(markers, _part);
   }
 
@@ -40,6 +23,7 @@ class TutorialCoach {
       switch (_part) {
         case CoachTutorialParts.kanList:
           if (y == markers.length - 1) align = ContentAlign.bottom;
+          if (y == 0) offset = const Offset(0, Margins.margin32);
           break;
         case CoachTutorialParts.details:
           if (y != 0) align = ContentAlign.bottom;
@@ -50,7 +34,7 @@ class TutorialCoach {
       _targets.add(TargetFocus(
         identify: markers[y].currentWidget?.toString(),
         keyTarget: markers[y],
-        shape: y == 0 ? ShapeLightFocus.RRect : ShapeLightFocus.Circle,
+        shape: _part.shape[y],
         paddingFocus: Margins.margin8,
         contents: [
           TargetContent(
@@ -85,6 +69,7 @@ class TutorialCoach {
         focusAnimationDuration: const Duration(milliseconds: 200),
         opacityShadow: 0.9,
         hideSkip: true,
+        pulseEnable: false,
         onFinish: () {
           switch (_part) {
             case CoachTutorialParts.kanList:

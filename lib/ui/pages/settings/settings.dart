@@ -160,12 +160,6 @@ class _SettingsState extends State<Settings> {
             _header("settings_information_section".tr()),
             const Divider(),
             ListTile(
-              leading: const Icon(Icons.school_rounded),
-              title: Text("settings_tutorial_label".tr()),
-              onTap: () async => Navigator.of(context).pushNamed(KanPracticePages.tutorialPage, arguments: true),
-            ),
-            const Divider(),
-            ListTile(
               leading: const Icon(Icons.star, color: Colors.green),
               title: Text("settings_general_versionNotes".tr()),
               onTap: () async => await GeneralUtils.showVersionNotes(context),

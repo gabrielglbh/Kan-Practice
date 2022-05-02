@@ -1,9 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 
 enum TutorialView {
-  kanList, dictionary, list, details, jisho, practicing, options
+  kanList, market, dictionary, list, details, jisho, practicing, options
 }
 
+/// TODO: UPDATE IMAGES
 extension TestPagesExt on TutorialView {
   String get tutorial {
     switch (this) {
@@ -11,6 +12,8 @@ extension TestPagesExt on TutorialView {
         return "tutorial_kanlist".tr();
       case TutorialView.dictionary:
         return "tutorial_dictionary".tr();
+      case TutorialView.market:
+        return "tutorial_market".tr();
       case TutorialView.list:
         return "tutorial_lists".tr();
       case TutorialView.details:
@@ -38,6 +41,12 @@ extension TestPagesExt on TutorialView {
           return "$_baseUri/tutorial%2Flight%2Fdictionary.png?alt=media";
         } else {
           return "$_baseUri/tutorial%2Fdark%2Fdictionary.png?alt=media";
+        }
+      case TutorialView.market:
+        if (lightMode) {
+          return "$_baseUri/tutorial%2Flight%2Fmarket.png?alt=media";
+        } else {
+          return "$_baseUri/tutorial%2Fdark%2Fmarket.png?alt=media";
         }
       case TutorialView.list:
         if (lightMode) {

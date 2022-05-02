@@ -153,6 +153,7 @@ class _HomePageState extends State<HomePage> {
           appBarTitle: _currentPage.appBarTitle,
           appBarActions: [
             IconButton(
+              key: dictionary,
               icon: const Icon(Icons.menu_book_rounded),
               onPressed: () {
                 Navigator.of(context).pushNamed(KanPracticePages.dictionaryPage, arguments:

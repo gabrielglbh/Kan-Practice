@@ -9,6 +9,7 @@ import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:collection/collection.dart';
 
 class MarketRecords {
   late FirebaseFirestore _ref;
@@ -300,8 +301,52 @@ class MarketRecords {
     }
   }
 
-  /// TODO: Code
-  Future<String> rateList(String id) async {
-    return "";
+  Future<String> rateList(String id, double rate) async {
+    User? _user = _auth.currentUser;
+    await _user?.reload();
+
+    /// If the user is not authenticated, exit
+    if (_user == null) {
+      return "market_need_auth".tr();
+    } else {
+      try {
+        /// Get MarketList document
+        final marketListDoc = _ref.collection(collection).doc(id);
+        final marketListData = await marketListDoc.get();
+
+        if (marketListData.exists) {
+          /// Use transaction to avoid race errors
+          /// We use nested access to properly update the rating system
+          await _ref.runTransaction((transaction) async {
+            final doc = await transaction.get(marketListDoc);
+            if (doc.exists) {
+              /// Update the current rating map with the new or already rated user score
+              transaction.update(marketListDoc, {
+                "${MarketList.ratingMapField}.${_user.uid}": rate
+              });
+              /// Get the number of entries in the map and calculate the average
+              final ratings = doc.get(MarketList.ratingMapField) as Map<String, dynamic>;
+              ratings[_user.uid] = rate;
+              final ratingsValues = ratings.values.toList().cast<double>();
+              /// If ratingValues is empty, mean will be equal to the first value: rate.
+              /// Else, the average of the list will be calculated and stored.
+              double mean = rate;
+              if (ratingsValues.isNotEmpty || ratingsValues.length > 1) {
+                mean = ratingsValues.average;
+              }
+              /// Update the rating double field
+              transaction.update(marketListDoc, {
+                MarketList.ratingField: mean
+              });
+            }
+          });
+        } else {
+          return "market_rating_not_found".tr();
+        }
+        return "";
+      } catch (err) {
+        return "$id: ${err.toString()}";
+      }
+    }
   }
 }

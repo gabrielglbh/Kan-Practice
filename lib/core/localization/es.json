@@ -300,5 +300,6 @@
   "bottom_nav_market": "Mercado",
   "bottom_actions_create_test": "Realizar un nuevo test",
   "bottom_actions_create_kanlist": "Crear una nueva lista",
-  "bottom_actions_upload_list": "Subir una nueva lista"
+  "bottom_actions_upload_list": "Subir una nueva lista",
+  "market_rating_not_found": "La lista que has calificado no se ha podido encontrar."
 }

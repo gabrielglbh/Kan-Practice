@@ -41,6 +41,7 @@ dependencies:
   tflite_flutter_helper: ^0.3.1
   device_info_plus: ^3.2.2
   tutorial_coach_mark: ^1.2.1
+  flutter_rating_bar: ^4.0.0
 
 flutter_icons:
   android: "launcher_icon"

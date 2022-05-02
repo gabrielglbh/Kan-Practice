@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/firebase/models/market_list.dart';
+import 'package:kanpractice/core/firebase/queries/authentication.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/pages/market/widgets/market_list_rating.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
@@ -10,13 +11,11 @@ class MarketListTile extends StatelessWidget {
   final MarketList list;
   final Function(String) onDownload;
   final Function(String) onRemove;
-  final Function(String) onRating;
   final bool isManaging;
   const MarketListTile({
     Key? key,
     required this.list,
     required this.onDownload,
-    required this.onRating,
     required this.onRemove,
     this.isManaging = false
   }) : super(key: key);
@@ -27,27 +26,7 @@ class MarketListTile extends StatelessWidget {
       child: ListTile(
         title: Padding(
           padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(list.name,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.headline5),
-                    if (list.author.isNotEmpty) Text("${"market_by_author".tr()}: ${list.author}",
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w500)),
-                  ],
-                )
-              ),
-              Text("${"created_label".tr()} ${GeneralUtils.parseDateMilliseconds(context, list.uploadedToMarket)}",
-                  style: Theme.of(context).textTheme.subtitle2)
-            ],
-          ),
+          child: _header(context),
         ),
         subtitle: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -55,31 +34,94 @@ class MarketListTile extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(bottom: Margins.margin8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(list.description,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 5
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: Margins.margin8),
-                      child: Text("${"market_filter_words".tr()}: ${list.words}",
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodyText2
-                      ),
-                    ),
-                    Text("${"market_filter_downloads".tr()}: ${list.downloads}",
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyText2
-                    ),
-                    const MarketListRating()
-                  ],
+                child: _subtitle(context),
+              ),
+            ),
+          ],
+        )
+      ),
+    );
+  }
+
+  Widget _header(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(list.name,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.headline5),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: Margins.margin8),
+              child: Text("${"created_label".tr()} ${GeneralUtils.parseDateMilliseconds(context, list.uploadedToMarket)}",
+                  style: Theme.of(context).textTheme.subtitle2),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            if (list.author.isNotEmpty) Expanded(
+              child: Text(
+                  "${"market_by_author".tr()} ${list.author}",
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w500)
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                    list.rating.toString(),
+                    style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w500)
                 ),
+                const Padding(
+                    padding: EdgeInsets.only(left: Margins.margin4),
+                    child: Icon(Icons.star_rounded, color: CustomColors.secondaryColor)
+                ),
+              ],
+            )
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget _subtitle(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(list.description,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 5
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: Margins.margin8),
+          child: Text("${"market_filter_words".tr()}: ${list.words}",
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.bodyText2
+          ),
+        ),
+        Text("${"market_filter_downloads".tr()}: ${list.downloads}",
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.bodyText2
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Transform.translate(
+                offset: const Offset(-Margins.margin4, 0),
+                child: MarketListRating(
+                  listId: list.name,
+                  initialRating: list.ratingMap[AuthRecords.instance.getUser()?.uid],
+                )
               ),
             ),
             IconButton(
               onPressed: () => onDownload(list.name),
+              splashRadius: CustomRadius.radius24,
               icon: const Icon(Icons.download_rounded)
             ),
             if (isManaging) IconButton(
@@ -96,11 +138,12 @@ class MarketListTile extends StatelessWidget {
                   }
                 );
               },
-              icon: const Icon(Icons.remove_circle_rounded, color: CustomColors.secondaryColor)
+              splashRadius: CustomRadius.radius24,
+              icon: const Icon(Icons.highlight_remove)
             ),
           ],
-        )
-      ),
+        ),
+      ],
     );
   }
 }

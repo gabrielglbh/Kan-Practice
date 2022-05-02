@@ -221,6 +221,7 @@ class _HomePageState extends State<HomePage> {
           setState(() => _currentPage = HomeType.values[page]);
         }
       },
+      physics: const NeverScrollableScrollPhysics(),
       children: [
         BlocBuilder<KanjiListBloc, KanjiListState>(
           builder: (context, state) => KanjiLists(

@@ -120,15 +120,5 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
       final fullList = await _resetCache(event.filter, event.order);
       emit(MarketStateLoaded(lists: fullList));
     });
-
-    on<MarketEventRate>((event, emit) async {
-      emit(MarketStateLoading());
-      final res = await MarketRecords.instance.rateList(event.id);
-      if (res.isNotEmpty) {
-        emit(MarketStateFailure(res));
-      }
-      final fullList = await _resetCache(event.filter, event.order);
-      emit(MarketStateLoaded(lists: fullList));
-    });
   }
 }

@@ -186,11 +186,6 @@ class _MarketPlaceState extends State<MarketPlace> {
                         MarketEventRemove(listId, _currentAppliedFilter, _currentAppliedOrder)
                     );
                   },
-                  onRating: (listId) {
-                    BlocProvider.of<MarketBloc>(context).add(
-                        MarketEventRate(listId, _currentAppliedFilter, _currentAppliedOrder)
-                    );
-                  },
                 );
               }
           ),

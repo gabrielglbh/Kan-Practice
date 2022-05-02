@@ -43,49 +43,47 @@ class _TutorialPageState extends State<TutorialPage> {
   Widget build(BuildContext context) {
     return BlocProvider<TutorialBloc>(
       create: (context) => _bloc..add(TutorialEventIdle()),
-      child: BlocListener<TutorialBloc, TutorialState>(
+      child: BlocConsumer<TutorialBloc, TutorialState>(
         listener: (context, state) {
           if (state is TutorialStateLoaded || state is TutorialStateFailure) {
             Navigator.of(context).pushReplacementNamed(KanPracticePages.homePage);
           }
         },
-        child: BlocBuilder<TutorialBloc, TutorialState>(
-          builder: (context, state) {
-            if (state is TutorialStateIdle) {
-              return KPScaffold(
-                appBarActions: [
-                  TextButton(
-                    onPressed: () async => await _onEnd(context),
-                    style: ButtonStyle(
-                      overlayColor: MaterialStateProperty.all(Colors.transparent),
-                    ),
-                    child: Text(_showSkip ? "tutorial_skip".tr() : "tutorial_done".tr(),
-                      style: const TextStyle(color: CustomColors.secondaryColor),
-                    )
+        builder: (context, state) {
+          if (state is TutorialStateIdle) {
+            return KPScaffold(
+              appBarActions: [
+                TextButton(
+                  onPressed: () async => await _onEnd(context),
+                  style: ButtonStyle(
+                    overlayColor: MaterialStateProperty.all(Colors.transparent),
+                  ),
+                  child: Text(_showSkip ? "tutorial_skip".tr() : "tutorial_done".tr(),
+                    style: const TextStyle(color: CustomColors.secondaryColor),
                   )
-                ],
-                appBarTitle: null,
-                child: BulletPageView(
-                  bullets: TutorialView.values.length,
-                  onChanged: (newPage) => setState(() => _showSkip = newPage != TutorialView.values.length - 1),
-                  pageViewChildren: List.generate(TutorialView.values.length, (view) =>
-                      _tutorialPage(context, TutorialView.values[view])
-                  ),
                 )
-              );
-            } else {
-              return const KPScaffold(
-                appBarTitle: null,
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(Margins.margin16),
-                    child: KPProgressIndicator(),
-                  ),
+              ],
+              appBarTitle: null,
+              child: BulletPageView(
+                bullets: TutorialView.values.length,
+                onChanged: (newPage) => setState(() => _showSkip = newPage != TutorialView.values.length - 1),
+                pageViewChildren: List.generate(TutorialView.values.length, (view) =>
+                    _tutorialPage(context, TutorialView.values[view])
                 ),
-              );
-            }
-          },
-        ),
+              )
+            );
+          } else {
+            return const KPScaffold(
+              appBarTitle: null,
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(Margins.margin16),
+                  child: KPProgressIndicator(),
+                ),
+              ),
+            );
+          }
+        },
       ),
     );
   }

@@ -301,6 +301,10 @@ class MarketRecords {
     }
   }
 
+  /// Rates a list with [rate]. A user can only rate once a certain list.
+  /// If the user updates the rate, its previous rate will be updated.
+  ///
+  /// The whole mean of the list is affected by this change.
   Future<String> rateList(String id, double rate) async {
     User? _user = _auth.currentUser;
     await _user?.reload();

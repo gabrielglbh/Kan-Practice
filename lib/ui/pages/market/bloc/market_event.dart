@@ -2,7 +2,12 @@ part of 'market_bloc.dart';
 
 abstract class MarketEvent extends Equatable {
   const MarketEvent();
+
+  @override
+  List<Object> get props => [];
 }
+
+class MarketEventIdle extends MarketEvent {}
 
 class MarketEventLoading extends MarketEvent {
   /// Maintains the filter applied by the user for loading new lists

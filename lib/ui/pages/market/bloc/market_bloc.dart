@@ -42,6 +42,8 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
       return fullList;
     }
 
+    on<MarketEventIdle>((event, emit) {});
+
     on<MarketEventLoading>((event, emit) async {
       try {
         _lastRetrievedDocumentIdWhenSearching = "";

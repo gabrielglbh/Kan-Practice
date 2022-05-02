@@ -67,7 +67,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
           )
         ],
         child: SingleChildScrollView(
-          child: BlocListener<AddToMarketBloc, AddToMarketState>(
+          child: BlocConsumer<AddToMarketBloc, AddToMarketState>(
             listener: (context, state) {
               if (state is AddToMarketStateFailure) {
                 GeneralUtils.getSnackBar(context, state.message);
@@ -76,92 +76,90 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                 _tcUser.text = state.name;
               }
             },
-            child: BlocBuilder<AddToMarketBloc, AddToMarketState>(
-              builder: (context, state) {
-                if (state is AddToMarketStateInitial ||
-                    state is AddToMarketStateFailure ||
-                    state is AddToMarketStateGetUser) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: Margins.margin16),
-                        child: Row(
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(right: Margins.margin8),
-                              child: Icon(Icons.info_outline_rounded),
-                            ),
-                            Expanded(child: Text("add_to_market_needs_registration".tr(),
-                                style: Theme.of(context).textTheme.bodyText1))
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: Margins.margin16),
-                        child: Card(
-                          child: ListTile(
-                            title: Text(_listSelection),
-                            onTap: () async {
-                              String? list = await AddToMarketBottomSheet.callAddToMarketBottomSheet(context);
-                              if (list != null && list.isNotEmpty) setState(() => _listSelection = list);
-                            },
-                          ),
-                        ),
-                      ),
-                      KPTextForm(
-                          header: "add_to_market_username_label".tr(),
-                          hint: "add_to_market_username_hint".tr(),
-                          controller: _tcUser,
-                          focusNode: _fnUser,
-                          maxLines: 1,
-                          maxLength: 32,
-                          onEditingComplete: () => _fn.requestFocus()
-                      ),
-                      KPTextForm(
-                          header: "add_to_market_description_label".tr(),
-                          hint: "add_to_market_description_hint".tr(),
-                          controller: _tc,
-                          focusNode: _fn,
-                          action: TextInputAction.done,
-                          maxLines: 5,
-                          maxLength: 140,
-                          onEditingComplete: () => _fn.unfocus()
-                      )
-                    ],
-                  );
-                } else if (state is AddToMarketStateLoading) {
-                  return const KPProgressIndicator();
-                } else {
-                  return Center(
-                      child: Column(
+            builder: (context, state) {
+              if (state is AddToMarketStateInitial ||
+                  state is AddToMarketStateFailure ||
+                  state is AddToMarketStateGetUser) {
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: Margins.margin16),
+                      child: Row(
                         children: [
-                          Icon(Icons.check_circle_rounded, color: CustomColors.getSecondaryColor(context),
-                              size: CustomSizes.maxHeightValidationCircle),
-                          Padding(
-                            padding: const EdgeInsets.all(Margins.margin16),
-                            child: Text("add_to_market_successfully_created".tr(), textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.bodyText1),
+                          const Padding(
+                            padding: EdgeInsets.only(right: Margins.margin8),
+                            child: Icon(Icons.info_outline_rounded),
                           ),
-                          SizedBox(
-                            height: CustomSizes.appBarHeight,
-                            child: Padding(
-                              padding: const EdgeInsets.all(Margins.margin16),
-                              child: ElevatedButton(
-                                onPressed: () => Navigator.of(context).pop(),
-                                child: Text("add_to_market_go_back_to_market_button_label".tr(),
-                                    style: Theme.of(context).textTheme.button),
-                              ),
+                          Expanded(child: Text("add_to_market_needs_registration".tr(),
+                              style: Theme.of(context).textTheme.bodyText1))
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: Margins.margin16),
+                      child: Card(
+                        child: ListTile(
+                          title: Text(_listSelection),
+                          onTap: () async {
+                            String? list = await AddToMarketBottomSheet.callAddToMarketBottomSheet(context);
+                            if (list != null && list.isNotEmpty) setState(() => _listSelection = list);
+                          },
+                        ),
+                      ),
+                    ),
+                    KPTextForm(
+                        header: "add_to_market_username_label".tr(),
+                        hint: "add_to_market_username_hint".tr(),
+                        controller: _tcUser,
+                        focusNode: _fnUser,
+                        maxLines: 1,
+                        maxLength: 32,
+                        onEditingComplete: () => _fn.requestFocus()
+                    ),
+                    KPTextForm(
+                        header: "add_to_market_description_label".tr(),
+                        hint: "add_to_market_description_hint".tr(),
+                        controller: _tc,
+                        focusNode: _fn,
+                        action: TextInputAction.done,
+                        maxLines: 5,
+                        maxLength: 140,
+                        onEditingComplete: () => _fn.unfocus()
+                    )
+                  ],
+                );
+              } else if (state is AddToMarketStateLoading) {
+                return const KPProgressIndicator();
+              } else {
+                return Center(
+                    child: Column(
+                      children: [
+                        Icon(Icons.check_circle_rounded, color: CustomColors.getSecondaryColor(context),
+                            size: CustomSizes.maxHeightValidationCircle),
+                        Padding(
+                          padding: const EdgeInsets.all(Margins.margin16),
+                          child: Text("add_to_market_successfully_created".tr(), textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.bodyText1),
+                        ),
+                        SizedBox(
+                          height: CustomSizes.appBarHeight,
+                          child: Padding(
+                            padding: const EdgeInsets.all(Margins.margin16),
+                            child: ElevatedButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: Text("add_to_market_go_back_to_market_button_label".tr(),
+                                  style: Theme.of(context).textTheme.button),
                             ),
                           ),
-                        ],
-                      )
-                  );
-                }
-              },
-            ),
+                        ),
+                      ],
+                    )
+                );
+              }
+            },
           ),
-        )
-      ),
+        ),
+      )
     );
   }
 }

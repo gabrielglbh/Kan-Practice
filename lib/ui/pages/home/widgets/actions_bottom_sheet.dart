@@ -55,7 +55,7 @@ class ActionsBottomSheet extends StatelessWidget {
                     children: [
                       ListTile(
                         title: Text("bottom_actions_create_test".tr()),
-                        leading: const Icon(Icons.track_changes_rounded),
+                        leading: const Icon(Icons.track_changes_rounded, color: CustomColors.secondaryColor),
                         onTap: () async {
                           Navigator.of(context).pop();
                           await TestBottomSheet.show(context);

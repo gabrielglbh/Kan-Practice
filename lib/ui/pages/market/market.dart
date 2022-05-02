@@ -94,7 +94,7 @@ class _MarketPlaceState extends State<MarketPlace> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<MarketBloc, MarketState>(
+    return BlocConsumer<MarketBloc, MarketState>(
       listener: (context, state) {
         if (state is MarketStateSuccess) {
           GeneralUtils.getSnackBar(context, state.message);
@@ -102,20 +102,18 @@ class _MarketPlaceState extends State<MarketPlace> {
           GeneralUtils.getSnackBar(context, state.message);
         }
       },
-      child: BlocBuilder<MarketBloc, MarketState>(
-        builder: (context, state) {
-          if (state is MarketStateLoading || state is MarketStateSearching) {
-            return const KPProgressIndicator();
-          } else {
-            return Column(
-              children: [
-                _filterChips(state),
-                _lists(state)
-              ],
-            );
-          }
+      builder: (context, state) {
+        if (state is MarketStateLoading || state is MarketStateSearching) {
+          return const KPProgressIndicator();
+        } else {
+          return Column(
+            children: [
+              _filterChips(state),
+              _lists(state)
+            ],
+          );
         }
-      ),
+      }
     );
   }
 

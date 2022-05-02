@@ -143,9 +143,7 @@ class StatisticsPage extends StatelessWidget {
           children: [
             TextSpan(
               text: title,
-              style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                  fontWeight: FontWeight.bold
-              )
+              style: Theme.of(context).textTheme.headline6
             ),
             TextSpan(
               text: value,

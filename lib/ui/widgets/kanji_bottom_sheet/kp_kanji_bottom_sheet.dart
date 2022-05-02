@@ -67,7 +67,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
                   const KPDragContainer(),
                   BlocProvider<KanjiBSBloc>(
                     create: (_) => KanjiBSBloc()..add(KanjiBSEventLoading(kanji ?? Kanji.empty)),
-                    child: BlocListener<KanjiBSBloc, KanjiBSState>(
+                    child: BlocConsumer<KanjiBSBloc, KanjiBSState>(
                       listener: (context, state) {
                         if (state is KanjiBSStateFailure) {
                           GeneralUtils.getSnackBar(context, state.error);
@@ -76,27 +76,25 @@ class KPKanjiBottomSheet extends StatelessWidget {
                           if (onRemove != null) onRemove!();
                         }
                       },
-                      child: BlocBuilder<KanjiBSBloc, KanjiBSState>(
-                        builder: (context, state) {
-                          if (state is KanjiBSStateLoading) {
-                            return Center(child: SizedBox(
-                                height: MediaQuery.of(context).size.height / 2,
-                                child: const KPProgressIndicator())
-                            );
-                          } else if (state is KanjiBSStateFailure) {
-                            return Container(
-                                height: MediaQuery.of(context).size.height / 2,
-                                alignment: Alignment.center,
-                                margin: const EdgeInsets.symmetric(horizontal: Margins.margin16),
-                                child: Text(state.error));
-                          } else if (state is KanjiBSStateLoaded) {
-                            return _body(context, state.kanji);
-                          }
-                          else {
-                            return Container();
-                          }
-                        },
-                      ),
+                      builder: (context, state) {
+                        if (state is KanjiBSStateLoading) {
+                          return Center(child: SizedBox(
+                              height: MediaQuery.of(context).size.height / 2,
+                              child: const KPProgressIndicator())
+                          );
+                        } else if (state is KanjiBSStateFailure) {
+                          return Container(
+                              height: MediaQuery.of(context).size.height / 2,
+                              alignment: Alignment.center,
+                              margin: const EdgeInsets.symmetric(horizontal: Margins.margin16),
+                              child: Text(state.error));
+                        } else if (state is KanjiBSStateLoaded) {
+                          return _body(context, state.kanji);
+                        }
+                        else {
+                          return Container();
+                        }
+                      },
                     ),
                   ),
                 ],

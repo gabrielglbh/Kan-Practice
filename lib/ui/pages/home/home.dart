@@ -125,8 +125,9 @@ class _HomePageState extends State<HomePage> {
         BlocProvider<KanjiListBloc>(
           create: (_) => KanjiListBloc()..add(_addKanjiListLoadingEvent())
         ),
+        /// Do not retrieve lists from Firebase until the user taps on Market.
         BlocProvider<MarketBloc>(
-          create: (_) => MarketBloc()..add(_addMarketLoadingEvent())
+          create: (_) => MarketBloc()..add(MarketEventIdle())
         ),
       ],
       child: BlocListener<KanjiListBloc, KanjiListState>(
@@ -268,24 +269,27 @@ class _HomePageState extends State<HomePage> {
             boxShadow: <BoxShadow>[BoxShadow(color: Theme.of(context).brightness == Brightness.light
                 ? Colors.grey : Colors.black, blurRadius: 10)],
           ),
-          child: BottomNavigationBar(
-            key: bottomActions,
-            currentIndex: _currentPage.index,
-            onTap: (page) {
-              _searchBarFn.unfocus();
-              _searchTextController.text = "";
-              _controller.jumpToPage(page);
-            },
-            items: [
-              BottomNavigationBarItem(
-                  icon: const Icon(Icons.table_rows_rounded),
-                  label: "bottom_nav_kanlists".tr()
-              ),
-              BottomNavigationBarItem(
-                  icon: const Icon(Icons.shopping_bag_rounded),
-                  label: "bottom_nav_market".tr()
-              ),
-            ],
+          child: BlocBuilder<MarketBloc, MarketState>(
+            builder: (context, state) => BottomNavigationBar(
+              key: bottomActions,
+              currentIndex: _currentPage.index,
+              onTap: (page) {
+                _searchBarFn.unfocus();
+                _searchTextController.text = "";
+                _controller.jumpToPage(page);
+                BlocProvider.of<MarketBloc>(context).add(_addMarketLoadingEvent());
+              },
+              items: [
+                BottomNavigationBarItem(
+                    icon: const Icon(Icons.table_rows_rounded),
+                    label: "bottom_nav_kanlists".tr()
+                ),
+                BottomNavigationBarItem(
+                    icon: const Icon(Icons.shopping_bag_rounded),
+                    label: "bottom_nav_market".tr()
+                ),
+              ],
+            ),
           ),
         ),
         _actionsButton(),

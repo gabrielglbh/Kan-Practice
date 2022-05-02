@@ -57,22 +57,18 @@ class KanjiQueries {
             switch (mode) {
               case StudyModes.writing:
                 query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "WHERE ${KanjiTableFields.winRateWritingField} != ${DatabaseConstants.emptyWinRate}"
                     "ORDER BY ${KanjiTableFields.dateLastShownWriting} ASC";
                 break;
               case StudyModes.reading:
                 query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "WHERE ${KanjiTableFields.winRateReadingField} != ${DatabaseConstants.emptyWinRate}"
                     "ORDER BY ${KanjiTableFields.dateLastShownReading} ASC";
                 break;
               case StudyModes.recognition:
                 query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "WHERE ${KanjiTableFields.winRateRecognitionField} != ${DatabaseConstants.emptyWinRate}"
                     "ORDER BY ${KanjiTableFields.dateLastShownRecognition} ASC";
                 break;
               case StudyModes.listening:
                 query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "WHERE ${KanjiTableFields.winRateListeningField} != ${DatabaseConstants.emptyWinRate}"
                     "ORDER BY ${KanjiTableFields.dateLastShownListening} ASC";
                 break;
             }
@@ -84,53 +80,25 @@ class KanjiQueries {
             switch (mode) {
               case StudyModes.writing:
                 query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "WHERE ${KanjiTableFields.winRateWritingField} != ${DatabaseConstants.emptyWinRate}"
                     "ORDER BY ${KanjiTableFields.winRateWritingField} ASC";
                 break;
               case StudyModes.reading:
                 query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "WHERE ${KanjiTableFields.winRateReadingField} != ${DatabaseConstants.emptyWinRate}"
                     "ORDER BY ${KanjiTableFields.winRateReadingField} ASC";
                 break;
               case StudyModes.recognition:
                 query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "WHERE ${KanjiTableFields.winRateRecognitionField} != ${DatabaseConstants.emptyWinRate}"
                     "ORDER BY ${KanjiTableFields.winRateRecognitionField} ASC";
                 break;
               case StudyModes.listening:
                 query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "WHERE ${KanjiTableFields.winRateListeningField} != ${DatabaseConstants.emptyWinRate}"
                     "ORDER BY ${KanjiTableFields.winRateListeningField} ASC";
                 break;
             }
           } else {
             return [];
           }
-        } else if (type == Tests.blitz) {
-          if (mode != null) {
-            switch (mode) {
-              case StudyModes.writing:
-                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "WHERE ${KanjiTableFields.winRateWritingField} != ${DatabaseConstants.emptyWinRate}";
-                break;
-              case StudyModes.reading:
-                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "WHERE ${KanjiTableFields.winRateReadingField} != ${DatabaseConstants.emptyWinRate}";
-                break;
-              case StudyModes.recognition:
-                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "WHERE ${KanjiTableFields.winRateRecognitionField} != ${DatabaseConstants.emptyWinRate}";
-                break;
-              case StudyModes.listening:
-                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "WHERE ${KanjiTableFields.winRateListeningField} != ${DatabaseConstants.emptyWinRate}";
-                break;
-            }
-          } else {
-            return [];
-          }
-        }
-        else {
+        } else {
           query = "SELECT * FROM ${KanjiTableFields.kanjiTable}";
         }
 

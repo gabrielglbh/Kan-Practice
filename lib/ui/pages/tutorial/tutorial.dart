@@ -22,7 +22,6 @@ class TutorialPage extends StatefulWidget {
 }
 
 class _TutorialPageState extends State<TutorialPage> {
-  final TutorialBloc _bloc = TutorialBloc();
   bool _showSkip = true;
 
   Future<void> _onEnd(BuildContext bloc) async {
@@ -34,15 +33,9 @@ class _TutorialPageState extends State<TutorialPage> {
   }
 
   @override
-  void dispose() {
-    _bloc.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocProvider<TutorialBloc>(
-      create: (context) => _bloc..add(TutorialEventIdle()),
+      create: (context) => TutorialBloc()..add(TutorialEventIdle()),
       child: BlocConsumer<TutorialBloc, TutorialState>(
         listener: (context, state) {
           if (state is TutorialStateLoaded || state is TutorialStateFailure) {

@@ -274,10 +274,15 @@ class _HomePageState extends State<HomePage> {
               key: bottomActions,
               currentIndex: _currentPage.index,
               onTap: (page) {
-                _searchBarFn.unfocus();
-                _searchTextController.text = "";
-                _controller.jumpToPage(page);
-                BlocProvider.of<MarketBloc>(context).add(_addMarketLoadingEvent());
+                /// Avoid extra loading when tapping the same item
+                if (_currentPage.index != page) {
+                  _searchBarFn.unfocus();
+                  _searchTextController.text = "";
+                  _controller.jumpToPage(page);
+                  if (_currentPage == HomeType.market) {
+                    BlocProvider.of<MarketBloc>(context).add(_addMarketLoadingEvent());
+                  }
+                }
               },
               items: [
                 BottomNavigationBarItem(

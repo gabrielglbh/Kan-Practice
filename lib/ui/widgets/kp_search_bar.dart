@@ -21,7 +21,7 @@ class KPSearchBar extends StatefulWidget {
     required this.onExitSearch,
     required this.hint,
     required this.focus,
-    this.top = Margins.margin8,
+    this.top = 0,
     this.bottom = 0,
     this.left = Margins.margin8,
     this.right = Margins.margin8,

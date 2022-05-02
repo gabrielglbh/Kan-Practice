@@ -181,7 +181,6 @@ class _HomePageState extends State<HomePage> {
                     controller: _searchTextController,
                     hint: _currentPage.searchBarHint,
                     focus: _searchBarFn,
-                    top: 0,
                     onQuery: (String query) {
                       /// Everytime the user queries, reset the query itself and
                       /// the pagination index
@@ -222,34 +221,36 @@ class _HomePageState extends State<HomePage> {
         }
       },
       children: [
-        KanjiLists(
-          key: lists,
-          showTestBottomSheet: widget.showTestBottomSheet,
-          onTapKanList: () => _searchBarFn.unfocus(),
-          onScrolledToBottom: () {
-            // TODO: BLOC not working
-            /// If the query is empty, use the pagination for search bar
-            if (_query.isNotEmpty) {
-              BlocProvider.of<KanjiListBloc>(context).add(_addKanjiListSearchingEvent(_query, reset: false));
-            }
-            /// Else use the normal pagination
-            else {
-              BlocProvider.of<KanjiListBloc>(context).add(_addKanjiListLoadingEvent(reset: false));
-            }
-          },
+        BlocBuilder<KanjiListBloc, KanjiListState>(
+          builder: (context, state) => KanjiLists(
+            key: lists,
+            showTestBottomSheet: widget.showTestBottomSheet,
+            onTapKanList: () => _searchBarFn.unfocus(),
+            onScrolledToBottom: () {
+              /// If the query is empty, use the pagination for search bar
+              if (_query.isNotEmpty) {
+                BlocProvider.of<KanjiListBloc>(context).add(_addKanjiListSearchingEvent(_query, reset: false));
+              }
+              /// Else use the normal pagination
+              else {
+                BlocProvider.of<KanjiListBloc>(context).add(_addKanjiListLoadingEvent(reset: false));
+              }
+            },
+          ),
         ),
-        MarketPlace(
-          onScrolledToBottom: () {
-            // TODO: BLOC not working
-            /// If the query is empty, use the pagination for search bar
-            if (_query.isNotEmpty) {
-              BlocProvider.of<MarketBloc>(context).add(_addMarketSearchingEvent(_query, reset: false));
-            }
-            /// Else use the normal pagination
-            else {
-              BlocProvider.of<MarketBloc>(context).add(_addMarketLoadingEvent(reset: false));
-            }
-          },
+        BlocBuilder<MarketBloc, MarketState>(
+          builder: (context, state) => MarketPlace(
+            onScrolledToBottom: () {
+              /// If the query is empty, use the pagination for search bar
+              if (_query.isNotEmpty) {
+                BlocProvider.of<MarketBloc>(context).add(_addMarketSearchingEvent(_query, reset: false));
+              }
+              /// Else use the normal pagination
+              else {
+                BlocProvider.of<MarketBloc>(context).add(_addMarketLoadingEvent(reset: false));
+              }
+            },
+          ),
         )
       ],
     );

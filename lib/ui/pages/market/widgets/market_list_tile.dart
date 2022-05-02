@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/ui/general_utils.dart';
+import 'package:kanpractice/ui/pages/market/widgets/market_list_rating.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
 
@@ -9,7 +10,7 @@ class MarketListTile extends StatelessWidget {
   final MarketList list;
   final Function(String) onDownload;
   final Function(String) onRemove;
-  final Function() onRating;
+  final Function(String) onRating;
   final bool isManaging;
   const MarketListTile({
     Key? key,
@@ -72,7 +73,7 @@ class MarketListTile extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.bodyText2
                     ),
-                    // TODO: Rating
+                    const MarketListRating()
                   ],
                 ),
               ),

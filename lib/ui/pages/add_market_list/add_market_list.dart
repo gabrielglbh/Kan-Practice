@@ -130,7 +130,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                     ],
                   );
                 } else if (state is AddToMarketStateLoading) {
-                  return const Expanded(child: KPProgressIndicator());
+                  return const KPProgressIndicator();
                 } else {
                   return Center(
                       child: Column(
@@ -149,7 +149,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                               child: ElevatedButton(
                                 onPressed: () => Navigator.of(context).pop(),
                                 child: Text("add_to_market_go_back_to_market_button_label".tr(),
-                                    style: Theme.of(context).textTheme.bodyText1),
+                                    style: Theme.of(context).textTheme.button),
                               ),
                             ),
                           ),

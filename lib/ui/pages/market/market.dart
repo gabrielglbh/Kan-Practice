@@ -96,9 +96,9 @@ class _MarketPlaceState extends State<MarketPlace> {
   Widget build(BuildContext context) {
     return BlocListener<MarketBloc, MarketState>(
       listener: (context, state) {
-        if (state is MarketStateDownloadSuccess) {
+        if (state is MarketStateSuccess) {
           GeneralUtils.getSnackBar(context, state.message);
-        } else if (state is MarketStateDownloadFailure) {
+        } else if (state is MarketStateFailure) {
           GeneralUtils.getSnackBar(context, state.message);
         }
       },
@@ -186,8 +186,10 @@ class _MarketPlaceState extends State<MarketPlace> {
                         MarketEventRemove(listId, _currentAppliedFilter, _currentAppliedOrder)
                     );
                   },
-                  onRating: () {
-
+                  onRating: (listId) {
+                    BlocProvider.of<MarketBloc>(context).add(
+                        MarketEventRate(listId, _currentAppliedFilter, _currentAppliedOrder)
+                    );
                   },
                 );
               }

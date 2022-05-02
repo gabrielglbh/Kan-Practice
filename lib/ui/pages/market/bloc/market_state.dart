@@ -20,22 +20,20 @@ class MarketStateLoaded extends MarketState {
   List<Object> get props => [lists];
 }
 
-class MarketStateDownloadSuccess extends MarketState {
+class MarketStateSuccess extends MarketState {
   final String message;
 
-  const MarketStateDownloadSuccess(this.message);
+  const MarketStateSuccess(this.message);
 
   @override
   List<Object> get props => [message];
 }
 
-class MarketStateDownloadFailure extends MarketState {
+class MarketStateFailure extends MarketState {
   final String message;
 
-  const MarketStateDownloadFailure(this.message);
+  const MarketStateFailure(this.message);
 
   @override
   List<Object> get props => [message];
 }
-
-class MarketStateFailure extends MarketState {}

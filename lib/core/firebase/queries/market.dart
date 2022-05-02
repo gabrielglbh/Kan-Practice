@@ -299,4 +299,9 @@ class MarketRecords {
       }
     }
   }
+
+  /// TODO: Code
+  Future<String> rateList(String id) async {
+    return "";
+  }
 }

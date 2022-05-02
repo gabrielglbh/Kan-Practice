@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
   MarketEventSearching _addMarketSearchingEvent(String query, {bool reset = true}) => MarketEventSearching(
       query, reset: reset, order: _currentAppliedMarketOrder, filter: _currentAppliedMarketFilter);
 
-  _focusListener() => setState(() => _searchHasFocus = _searchBarFn.hasFocus);
+  _focusListener() => _searchHasFocus = _searchBarFn.hasFocus;
 
   _resetLists(BuildContext c1, BuildContext c2) {
     if (_currentPage == HomeType.kanlist) {

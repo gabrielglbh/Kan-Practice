@@ -53,7 +53,6 @@ class ActionsBottomSheet extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
                   child: Column(
                     children: [
-                      const Divider(),
                       ListTile(
                         title: Text("bottom_actions_create_test".tr()),
                         leading: const Icon(Icons.track_changes_rounded),
@@ -80,12 +79,10 @@ class ActionsBottomSheet extends StatelessWidget {
                           Navigator.of(context).pop();
                         },
                       ),
-                      const Divider(),
-                      const SizedBox(height: Margins.margin16)
+                      const SizedBox(height: Margins.margin24)
                     ],
                   )
                 ),
-                Container(height: Margins.margin16)
               ],
             ),
           ]

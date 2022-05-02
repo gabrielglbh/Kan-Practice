@@ -229,9 +229,7 @@ class _SettingsState extends State<Settings> {
 
   ListTile _header(String title, {String? subtitle}) {
     return ListTile(
-      title: Text(title, style: Theme.of(context).textTheme.bodyText2?.copyWith(
-        fontWeight: FontWeight.bold
-      )),
+      title: Text(title, style: Theme.of(context).textTheme.headline6),
       subtitle: subtitle != null ? Text(subtitle, style: Theme.of(context).textTheme.bodyText2?.copyWith(
         color: Colors.grey.shade500
       )) : null,

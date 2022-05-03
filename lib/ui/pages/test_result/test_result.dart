@@ -5,7 +5,7 @@ import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/ui/pages/test_result/arguments.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_action_button.dart';
 import 'package:kanpractice/ui/widgets/kanji_bottom_sheet/kp_kanji_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_win_rate_chart.dart';

@@ -18,7 +18,7 @@ import 'package:kanpractice/ui/pages/kanji_lists/kanji_lists.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/test_bottom_sheet.dart';
 import 'package:kanpractice/ui/pages/market/bloc/market_bloc.dart';
 import 'package:kanpractice/ui/pages/market/market.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 import 'package:kanpractice/ui/widgets/kp_search_bar.dart';
 

@@ -4,7 +4,7 @@ import 'package:kanpractice/core/database/models/test_result.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/ui/pages/test_history/bloc/test_bloc.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';

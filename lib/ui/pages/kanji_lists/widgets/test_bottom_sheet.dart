@@ -4,7 +4,7 @@ import 'package:kanpractice/ui/pages/kanji_lists/widgets/kanlist_category_select
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/kanlist_selection_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/blitz/kp_blitz_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/widgets/blitz/kp_number_test_bottom_sheet.dart';

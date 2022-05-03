@@ -5,7 +5,7 @@ import 'package:kanpractice/core/firebase/models/test_data.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:sqflite/sqflite.dart';
 
 class TestQueries {

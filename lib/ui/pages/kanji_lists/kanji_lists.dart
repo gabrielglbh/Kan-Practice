@@ -8,7 +8,7 @@ import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/test_bottom_sheet.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/kanlist_tile.dart';
 import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 

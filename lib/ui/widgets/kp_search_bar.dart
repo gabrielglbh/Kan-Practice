@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kanpractice/core/database/models/list.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 
 class KPSearchBar extends StatefulWidget {
   /// Action to perform when the query is ready to be searched on the db

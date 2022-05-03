@@ -9,7 +9,7 @@ import 'package:kanpractice/core/types/kanji_categories.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
 import 'package:kanpractice/ui/widgets/kp_create_kanlist_dialog.dart';
 import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
 import 'package:kanpractice/ui/widgets/kp_kanji_category_list.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 
 class KPDragContainer extends StatelessWidget {
   const KPDragContainer({Key? key}) : super(key: key);

@@ -7,7 +7,7 @@ import 'package:kanpractice/core/types/kanji_categories.dart';
 import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/pages/add_kanji/bloc/add_kanji_bloc.dart';
 import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/widgets/kp_text_form.dart';
 import 'package:easy_localization/easy_localization.dart';

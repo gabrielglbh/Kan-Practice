@@ -8,7 +8,7 @@ import 'package:kanpractice/core/firebase/firebase.dart';
 import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
 import 'package:kanpractice/ui/general_utils.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:collection/collection.dart';
 
 class MarketRecords {

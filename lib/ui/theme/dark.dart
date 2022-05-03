@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'consts.dart';
+import '../consts.dart';
 
 final Color _primary = Colors.grey.shade700;
 final Color _cardColor = Colors.grey.shade600;

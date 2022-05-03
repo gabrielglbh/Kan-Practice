@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/types/kanji_categories.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 
 class KPKanjiCategoryList extends StatelessWidget {
   /// Function called when a certain category is tapped. Index is provided

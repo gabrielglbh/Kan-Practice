@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/jisho/models/jisho_data.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/generic/custom_expansion_tile.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/generic/scrollable_text.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class ExamplePhrases extends StatelessWidget {

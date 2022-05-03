@@ -6,7 +6,7 @@ import 'package:kanpractice/ui/pages/jisho/widgets/generic/jisho_header.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/generic/jisho_info_tile.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/generic/scrollable_text.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/generic/single_kanji_look_up_list.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:unofficial_jisho_api/api.dart' as jisho;
 import 'package:easy_localization/easy_localization.dart';
 

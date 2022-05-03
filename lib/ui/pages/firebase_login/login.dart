@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/sign_in_mode.dart';
 import 'package:kanpractice/ui/pages/firebase_login/bloc/login_bloc.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/ui/widgets/kp_text_form.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';

@@ -7,7 +7,7 @@ import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:kanpractice/core/types/learning_mode.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 
 part 'details_event.dart';
 part 'details_state.dart';

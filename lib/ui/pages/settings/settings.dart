@@ -9,7 +9,7 @@ import 'package:kanpractice/ui/pages/settings/bloc/settings_bloc.dart';
 import 'package:kanpractice/ui/pages/settings/widgets/copyrigh_info.dart';
 import 'package:kanpractice/ui/pages/settings/widgets/dev_info.dart';
 import 'package:kanpractice/ui/theme/theme_manager.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';

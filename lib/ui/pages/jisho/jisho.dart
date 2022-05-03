@@ -6,7 +6,7 @@ import 'package:kanpractice/ui/pages/jisho/widgets/example_phrases.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/single_kanji_result.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/word_result.dart';
 import 'package:kanpractice/ui/pages/jisho/widgets/generic/add_to_kanlist_bottom_sheet.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_button.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';

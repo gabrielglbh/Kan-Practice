@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 
 class KanjiSearchBar extends StatelessWidget {
   /// Hint text to show on the search bar when not used

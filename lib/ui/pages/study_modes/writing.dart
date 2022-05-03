@@ -7,7 +7,7 @@ import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/ui/pages/study_modes/widgets/writing_buttons_animation.dart';
 import 'package:kanpractice/ui/widgets/kp_study_mode_app_bar.dart';
 import 'package:kanpractice/ui/widgets/canvas/kp_custom_canvas.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';

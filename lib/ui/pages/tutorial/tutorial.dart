@@ -4,7 +4,7 @@ import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/tutorial_view.dart';
 import 'package:kanpractice/ui/pages/tutorial/bloc/tutorial_bloc.dart';
 import 'package:kanpractice/ui/pages/tutorial/widgets/bullet_page_view.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/widgets/kp_cached_network_image.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';

@@ -112,39 +112,41 @@ class _TestResultState extends State<TestResult> {
   }
 
   Widget _kanjiOnTest() {
-    return ListView.builder(
-      itemCount: widget.args.studyList?.keys.toList().length,
-      itemBuilder: (context, index) {
-        String? listName = widget.args.studyList?.keys.toList()[index];
-        return Row(
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 3.5,
-              child: Text(
-                "$listName (${widget.args.studyList?[listName]?.length}):",
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                  fontWeight: FontWeight.bold
-                )
-              ),
-            ),
-            Expanded(
-              child: SizedBox(
-                height: CustomSizes.defaultResultKanjiListOnTest,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: widget.args.studyList?[listName]?.length,
-                  itemBuilder: (context, inner) {
-                    Kanji? kanji = widget.args.studyList?[listName]?[inner].keys.first;
-                    double? testScore = widget.args.studyList?[listName]?[inner].values.first;
-                    return _kanjiElement(context, kanji, testScore);
-                  },
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
+      child: ListView.builder(
+        itemCount: widget.args.studyList?.keys.toList().length,
+        itemBuilder: (context, index) {
+          String? listName = widget.args.studyList?.keys.toList()[index];
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
+                child: Text(
+                  "$listName (${widget.args.studyList?[listName]?.length}):",
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                    fontWeight: FontWeight.bold
+                  )
                 ),
               ),
-            )
-          ],
-        );
-      },
+              GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 5, childAspectRatio: 2
+                ),
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: widget.args.studyList?[listName]?.length,
+                itemBuilder: (context, inner) {
+                  Kanji? kanji = widget.args.studyList?[listName]?[inner].keys.first;
+                  double? testScore = widget.args.studyList?[listName]?[inner].values.first;
+                  return _kanjiElement(context, kanji, testScore);
+                },
+              )
+            ],
+          );
+        },
+      ),
     );
   }
 

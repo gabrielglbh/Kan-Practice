@@ -22,6 +22,7 @@ class CustomSizes {
   static const double alertDialogHeight = 100;
   static const double customButtonWidth = 110;
   static const double defaultJishoGIF = 124;
+  static const double defaultTestResultHeight = 128;
   static const double studyGuideHeight = listStudyHeight + 44;
   static const double appIcon = 150;
   static const double defaultSizeStudyModeSelection = 165;

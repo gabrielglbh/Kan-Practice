@@ -228,7 +228,7 @@ class _HomePageState extends State<HomePage> {
           builder: (context, state) => KanjiLists(
             key: lists,
             showTestBottomSheet: widget.showTestBottomSheet,
-            onTapKanList: () => _searchBarFn.unfocus(),
+            removeFocus: () => _searchBarFn.unfocus(),
             onScrolledToBottom: () {
               /// If the query is empty, use the pagination for search bar
               if (_query.isNotEmpty) {
@@ -243,6 +243,7 @@ class _HomePageState extends State<HomePage> {
         ),
         BlocBuilder<MarketBloc, MarketState>(
           builder: (context, state) => MarketPlace(
+            removeFocus: () => _searchBarFn.unfocus(),
             onScrolledToBottom: () {
               /// If the query is empty, use the pagination for search bar
               if (_query.isNotEmpty) {

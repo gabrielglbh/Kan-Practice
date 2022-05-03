@@ -13,7 +13,12 @@ import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 
 class MarketPlace extends StatefulWidget {
   final Function() onScrolledToBottom;
-  const MarketPlace({Key? key, required this.onScrolledToBottom}) : super(key: key);
+  final Function() removeFocus;
+  const MarketPlace({
+    Key? key,
+    required this.removeFocus,
+    required this.onScrolledToBottom
+  }) : super(key: key);
 
   @override
   State<MarketPlace> createState() => _MarketPlaceState();
@@ -72,6 +77,7 @@ class _MarketPlaceState extends State<MarketPlace> {
     }
 
     _resetScroll();
+    widget.removeFocus();
     /// If the user taps on the same filter twice, just change back and forth the
     /// order value.
     /// Else, means the user has changed the filter, therefore default the order to DESC

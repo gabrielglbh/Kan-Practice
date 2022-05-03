@@ -14,12 +14,12 @@ import 'package:easy_localization/easy_localization.dart';
 
 class KanjiLists extends StatefulWidget {
   final bool? showTestBottomSheet;
-  final Function() onTapKanList;
+  final Function() removeFocus;
   final Function() onScrolledToBottom;
   const KanjiLists({
     Key? key,
     this.showTestBottomSheet = false,
-    required this.onTapKanList,
+    required this.removeFocus,
     required this.onScrolledToBottom
   }) : super(key: key);
 
@@ -89,6 +89,7 @@ class _KanjiListsState extends State<KanjiLists> {
 
   _onFilterSelected(int index) {
     _resetScroll();
+    widget.removeFocus();
     /// If the user taps on the same filter twice, just change back and forth the
     /// order value.
     /// Else, means the user has changed the filter, therefore default the order to DESC
@@ -178,7 +179,7 @@ class _KanjiListsState extends State<KanjiLists> {
                 itemBuilder: (context, k) {
                   return KanListTile(
                     item: state.lists[k],
-                    onTap: widget.onTapKanList,
+                    onTap: widget.removeFocus,
                     mode: VisualizationModeExt.mode(StorageManager.readData(
                         StorageManager.kanListGraphVisualization)
                           ?? VisualizationMode.radialChart),

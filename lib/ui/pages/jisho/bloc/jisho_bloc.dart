@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kanpractice/core/jisho/JishoAPI.dart';
+import 'package:kanpractice/core/jisho/jisho_api.dart';
 import 'package:kanpractice/core/jisho/models/jisho_data.dart';
 import 'package:unofficial_jisho_api/api.dart' as jisho;
 

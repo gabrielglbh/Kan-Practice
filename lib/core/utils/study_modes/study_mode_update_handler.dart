@@ -5,10 +5,10 @@ import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
-import 'package:kanpractice/core/utils/types/study_modes.dart';
+import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/ui/pages/test_result/arguments.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
-import 'package:kanpractice/ui/widgets/CustomAlertDialog.dart';
+import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 /// Handler class to help evade boiler plate code when managing the calculation
@@ -24,15 +24,20 @@ class StudyModeUpdateHandler {
     bool isPracticeFinished = !onPop && !args.isTest;
 
     String content = "";
-    if (isTestPopped) content = "study_mode_update_handler_poppedTest_content".tr();
-    else if (isTestFinished) content = "study_mode_update_handler_finishedTest_content".tr();
-    else if (isPracticePopped) content = "study_mode_update_handler_poppedPractice_content".tr();
-    else content = "study_mode_update_handler_finishedPractice_content".tr();
+    if (isTestPopped) {
+      content = "study_mode_update_handler_poppedTest_content".tr();
+    } else if (isTestFinished) {
+      content = "study_mode_update_handler_finishedTest_content".tr();
+    } else if (isPracticePopped) {
+      content = "study_mode_update_handler_poppedPractice_content".tr();
+    } else {
+      content = "study_mode_update_handler_finishedPractice_content".tr();
+    }
 
     showDialog(
       context: context,
       builder: (context) {
-        return CustomDialog(
+        return KPDialog(
           title: Text(isTestFinished || isPracticeFinished
               ? "study_mode_update_handler_finished_title".tr()
               : "study_mode_update_handler_popped_title".tr()),
@@ -43,16 +48,16 @@ class StudyModeUpdateHandler {
           popDialog: !isTestFinished,
           onPositive: () async {
             /// If user went back in mid test, just pop
-            if (isTestPopped) Navigator.of(context).pop();
-            /// If the user went through all the test, get the testScore (no-context score)
-            /// and go to the test page.
-            else if (isTestFinished) {
+            if (isTestPopped) {
+              Navigator.of(context).pop();
+            } else if (isTestFinished) {
               Map<String, List<Map<Kanji, double>>>? _studyList;
               /// If the test was a number test, just go to the result page with
               /// a null study list to not show anything.
               if (!args.isNumberTest) {
-                if (StorageManager.readData(StorageManager.affectOnPractice) ?? false)
+                if (StorageManager.readData(StorageManager.affectOnPractice) ?? false) {
                   await _updateScoreForTestsAffectingPractice(args);
+                }
                 _studyList = _getMapOfKanjiInTest(args.studyList, testScores);
               }
               Navigator.of(context).pushReplacementNamed(KanPracticePages.testResultPage, arguments:
@@ -64,8 +69,9 @@ class StudyModeUpdateHandler {
             /// keeping in mind that the score of the last kanji should be 0.5.
             else if (isPracticePopped) {
               /// If I am in the first kanji, just pop, no need to penalize
-              if (lastIndex == 0) Navigator.of(context).pop();
-              else {
+              if (lastIndex == 0) {
+                Navigator.of(context).pop();
+              } else {
                 await calculateScore(args, 0.5, lastIndex);
                 final double score = await _getScore(args) / args.studyList.length;
                 await _updateList(score, args);
@@ -95,23 +101,35 @@ class StudyModeUpdateHandler {
     /// and then, a mean is calculated between the upcoming score and the previous one.
     switch (args.mode) {
       case StudyModes.writing:
-        if (args.studyList[index].winRateWriting == DatabaseConstants.emptyWinRate) actualScore = score;
-        else actualScore =  (score + args.studyList[index].winRateWriting) / 2;
+        if (args.studyList[index].winRateWriting == DatabaseConstants.emptyWinRate) {
+          actualScore = score;
+        } else {
+          actualScore =  (score + args.studyList[index].winRateWriting) / 2;
+        }
         toUpdate = { KanjiTableFields.winRateWritingField: actualScore };
         break;
       case StudyModes.reading:
-        if (args.studyList[index].winRateReading == DatabaseConstants.emptyWinRate) actualScore = score;
-        else actualScore =  (score + args.studyList[index].winRateReading) / 2;
+        if (args.studyList[index].winRateReading == DatabaseConstants.emptyWinRate) {
+          actualScore = score;
+        } else {
+          actualScore =  (score + args.studyList[index].winRateReading) / 2;
+        }
         toUpdate = { KanjiTableFields.winRateReadingField: actualScore };
         break;
       case StudyModes.recognition:
-        if (args.studyList[index].winRateRecognition == DatabaseConstants.emptyWinRate) actualScore = score;
-        else actualScore =  (score + args.studyList[index].winRateRecognition) / 2;
+        if (args.studyList[index].winRateRecognition == DatabaseConstants.emptyWinRate) {
+          actualScore = score;
+        } else {
+          actualScore =  (score + args.studyList[index].winRateRecognition) / 2;
+        }
         toUpdate = { KanjiTableFields.winRateRecognitionField: actualScore };
         break;
       case StudyModes.listening:
-        if (args.studyList[index].winRateListening == DatabaseConstants.emptyWinRate) actualScore = score;
-        else actualScore =  (score + args.studyList[index].winRateListening) / 2;
+        if (args.studyList[index].winRateListening == DatabaseConstants.emptyWinRate) {
+          actualScore = score;
+        } else {
+          actualScore =  (score + args.studyList[index].winRateListening) / 2;
+        }
         toUpdate = { KanjiTableFields.winRateListeningField: actualScore };
         break;
     }
@@ -122,7 +140,9 @@ class StudyModeUpdateHandler {
   static Map<String, List<Map<Kanji, double>>> _getMapOfKanjiInTest(
       List<Kanji> studyList, List<double> testScores) {
     Map<String, List<Map<Kanji, double>>> orderedMap = {};
-    studyList.forEach((kanji) => orderedMap[kanji.listName] = []);
+    for (var kanji in studyList) {
+      orderedMap[kanji.listName] = [];
+    }
     for (int x = 0; x < studyList.length; x++) {
       orderedMap[studyList[x].listName]?.add({ studyList[x]: testScores[x] });
     }
@@ -141,10 +161,10 @@ class StudyModeUpdateHandler {
     ///   listN: [...]
     /// }
     /// The map is only populated with the empty lists that appears on the test.
-    args.studyList.forEach((kanji) {
+    for (var kanji in args.studyList) {
       orderedMap[kanji.listName] = [];
       overallScore[kanji.listName] = 0;
-    });
+    }
     /// For every entry, populate the list with all of the kanji of each list
     /// that appeared on the test
     for (int x = 0; x < orderedMap.keys.toList().length; x++) {
@@ -157,20 +177,24 @@ class StudyModeUpdateHandler {
       orderedMap[kanListName]?.forEach((k) {
         switch (args.mode) {
           case StudyModes.writing:
-            if (k.winRateWriting != DatabaseConstants.emptyWinRate)
+            if (k.winRateWriting != DatabaseConstants.emptyWinRate) {
               overallScore[kanListName] = (overallScore[kanListName] ?? 0) + k.winRateWriting;
+            }
             break;
           case StudyModes.reading:
-            if (k.winRateReading != DatabaseConstants.emptyWinRate)
+            if (k.winRateReading != DatabaseConstants.emptyWinRate) {
               overallScore[kanListName] = (overallScore[kanListName] ?? 0) + k.winRateReading;
+            }
             break;
           case StudyModes.recognition:
-            if (k.winRateRecognition != DatabaseConstants.emptyWinRate)
+            if (k.winRateRecognition != DatabaseConstants.emptyWinRate) {
               overallScore[kanListName] = (overallScore[kanListName] ?? 0) + k.winRateRecognition;
+            }
             break;
           case StudyModes.listening:
-            if (k.winRateListening != DatabaseConstants.emptyWinRate)
+            if (k.winRateListening != DatabaseConstants.emptyWinRate) {
               overallScore[kanListName] = (overallScore[kanListName] ?? 0) + k.winRateListening;
+            }
             break;
         }
       });
@@ -185,26 +209,30 @@ class StudyModeUpdateHandler {
     /// Get the kanji from the DB rather than the args instance as the args
     /// instance does not have the updated values
     List<Kanji> kanji = await KanjiQueries.instance.getAllKanjiFromList(args.studyList[0].listName);
-    kanji.forEach((k) {
+    for (var k in kanji) {
       switch (args.mode) {
         case StudyModes.writing:
-          if (k.winRateWriting != DatabaseConstants.emptyWinRate)
+          if (k.winRateWriting != DatabaseConstants.emptyWinRate) {
             overallScore += k.winRateWriting;
+          }
           break;
         case StudyModes.reading:
-          if (k.winRateReading != DatabaseConstants.emptyWinRate)
+          if (k.winRateReading != DatabaseConstants.emptyWinRate) {
             overallScore += k.winRateReading;
+          }
           break;
         case StudyModes.recognition:
-          if (k.winRateRecognition != DatabaseConstants.emptyWinRate)
+          if (k.winRateRecognition != DatabaseConstants.emptyWinRate) {
             overallScore += k.winRateRecognition;
+          }
           break;
         case StudyModes.listening:
-          if (k.winRateListening != DatabaseConstants.emptyWinRate)
+          if (k.winRateListening != DatabaseConstants.emptyWinRate) {
             overallScore += k.winRateListening;
+          }
           break;
       }
-    });
+    }
     return overallScore;
   }
 
@@ -226,7 +254,6 @@ class StudyModeUpdateHandler {
         toUpdate = { KanListTableFields.totalWinRateListeningField: overall };
         break;
     }
-    await ListQueries.instance.updateList(
-        kanListName != null ? kanListName : args.studyList[0].listName, toUpdate);
+    await ListQueries.instance.updateList(kanListName ?? args.studyList[0].listName, toUpdate);
   }
 }

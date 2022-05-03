@@ -11,10 +11,9 @@ class CustomSizes {
   static const double defaultSizeFiltersList = 60;
   static const double defaultSizeActionButton = 60;
   static const double defaultSizeKanjiItemOnResultTest = 60;
-  static const double actionButtonsKanjiDetail = 65;
+  static const double actionButtonsKanjiDetail = 55;
   static const double appBarHeight = 80;
   static const double defaultSizeWinRateChart = 80;
-  static const double extraPaddingForFAB = 82;
   static const double listStudyHeight = 85;
   static const double defaultSizeDragContainerWidth = 90;
   static const double defaultSizeButtonHeight = 90;

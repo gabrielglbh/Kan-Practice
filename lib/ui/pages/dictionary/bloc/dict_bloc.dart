@@ -15,10 +15,10 @@ class DictBloc extends Bloc<DictEvent,DictState> {
       try {
         emit(DictStateLoading());
         /// Instantiate the classifier once the page has been animated in
-        await Future.delayed(Duration(milliseconds: 500), () {
+        await Future.delayed(const Duration(milliseconds: 500), () {
           model = Classifier();
         });
-        emit(DictStateLoaded());
+        emit(const DictStateLoaded());
       } on Exception {
         emit(DictStateFailure());
       }

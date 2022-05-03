@@ -13,7 +13,7 @@ class StatisticsLoaded extends StatsState {
   const StatisticsLoaded({required this.stats});
 
   @override
-  List<Object?> get props => [this.stats];
+  List<Object?> get props => [stats];
 }
 
 class StatisticsLoading extends StatsState {}

@@ -9,15 +9,16 @@ abstract class KanjiListEvent extends Equatable {
 
 class KanjiListEventLoading extends KanjiListEvent {
   /// Maintains the filter applied by the user for loading new lists
-  final String filter;
+  final KanListFilters filter;
   /// Maintains the order applied by the user for loading new lists
   final bool order;
-  final int offset;
+  /// Whether to reset the counter for the offset on the lazy loading or not
+  final bool reset;
 
-  const KanjiListEventLoading({required this.filter, required this.order, this.offset = 0});
+  const KanjiListEventLoading({required this.filter, required this.order, this.reset = false});
 
   @override
-  List<Object> get props => [filter, order, offset];
+  List<Object> get props => [filter, order, reset];
 }
 
 class KanjiListForTestEventLoading extends KanjiListEvent {
@@ -29,18 +30,19 @@ class KanjiListForTestEventLoading extends KanjiListEvent {
 
 class KanjiListEventSearching extends KanjiListEvent {
   final String query;
-  final int offset;
+  /// Whether to reset the counter for the offset on the lazy loading or not
+  final bool reset;
 
-  const KanjiListEventSearching(this.query, {this.offset = 0});
+  const KanjiListEventSearching(this.query, {this.reset = false});
 
   @override
-  List<Object> get props => [query, offset];
+  List<Object> get props => [query, reset];
 }
 
 class KanjiListEventCreate extends KanjiListEvent {
   final String name;
   /// Maintains the filter applied by the user for loading new lists
-  final String filter;
+  final KanListFilters filter;
   /// Maintains the order applied by the user for loading new lists
   final bool order;
   final bool useLazyLoading;
@@ -54,7 +56,7 @@ class KanjiListEventCreate extends KanjiListEvent {
 class KanjiListEventDelete extends KanjiListEvent {
   final KanjiList list;
   /// Maintains the filter applied by the user for loading new lists
-  final String filter;
+  final KanListFilters filter;
   /// Maintains the order applied by the user for loading new lists
   final bool order;
 

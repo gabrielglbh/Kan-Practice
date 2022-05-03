@@ -34,9 +34,11 @@ class ThemeNotifier with ChangeNotifier {
   late bool isDarkTheme;
 
   ThemeNotifier([bool isDarkTheme = false]) {
-    this.isDarkTheme = isDarkTheme;
+    setIsDarkTheme(isDarkTheme);
     _getCurrentTheme();
   }
+
+  setIsDarkTheme(bool d) => isDarkTheme = d;
 
   _getCurrentTheme() async {
     bool? mode = await StorageManager.readData(StorageManager.themeMode);

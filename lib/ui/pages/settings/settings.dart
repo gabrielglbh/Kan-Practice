@@ -3,26 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
-import 'package:kanpractice/core/utils/GeneralUtils.dart';
-import 'package:kanpractice/core/utils/types/visualization_mode.dart';
+import 'package:kanpractice/ui/general_utils.dart';
+import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/pages/settings/bloc/settings_bloc.dart';
-import 'package:kanpractice/ui/pages/settings/widgets/CopyrightInfo.dart';
-import 'package:kanpractice/ui/pages/settings/widgets/DevInfo.dart';
+import 'package:kanpractice/ui/pages/settings/widgets/copyrigh_info.dart';
+import 'package:kanpractice/ui/pages/settings/widgets/dev_info.dart';
 import 'package:kanpractice/ui/theme/theme_manager.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class Settings extends StatefulWidget {
-  const Settings();
+  const Settings({Key? key}) : super(key: key);
 
   @override
   _SettingsState createState() => _SettingsState();
 }
 
 class _SettingsState extends State<Settings> {
-  final SettingsBloc _bloc = SettingsBloc();
   ThemeMode _mode = ThemeMode.light;
   VisualizationMode _graphMode = VisualizationMode.radialChart;
   bool _toggleAffect = false;
@@ -38,18 +38,12 @@ class _SettingsState extends State<Settings> {
   }
 
   @override
-  void dispose() {
-    _bloc.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: CustomSizes.appBarHeight,
-        title: FittedBox(fit: BoxFit.fitWidth, child: Text("settings_title".tr())),
-        actions: [
+    return BlocProvider<SettingsBloc>(
+      create: (_) => SettingsBloc()..add(SettingsLoadingBackUpDate(context)),
+      child: KPScaffold(
+        appBarTitle: "settings_title".tr(),
+        appBarActions: [
           IconButton(
             onPressed: () {
               _mode = ThemeManager.instance.themeMode;
@@ -58,20 +52,19 @@ class _SettingsState extends State<Settings> {
             icon: Icon(Theme.of(context).brightness == Brightness.light
                 ? Icons.mode_night_rounded : Icons.light_mode_rounded),
           ),
-          IconButton(
-            onPressed: () => _bloc..add(SettingsLoadingBackUpDate(context)),
-            icon: Icon(Icons.sync),
+          BlocBuilder<SettingsBloc, SettingsState>(
+            builder: (context, state) => IconButton(
+              onPressed: () => context.read<SettingsBloc>().add(SettingsLoadingBackUpDate(context)),
+              icon: const Icon(Icons.sync),
+            ),
           )
         ],
-      ),
-      body: BlocProvider<SettingsBloc>(
-        create: (_) => _bloc..add(SettingsLoadingBackUpDate(context)),
         child: ListView(
           children: [
             ListTile(
-              leading: Icon(Icons.local_florist_rounded, color: Colors.orangeAccent),
+              leading: const Icon(Icons.local_florist_rounded, color: Colors.orangeAccent),
               title: Text("settings_information_rating".tr()),
-              trailing: Icon(Icons.link),
+              trailing: const Icon(Icons.link),
               onTap: () async {
                 try {
                   await launch("google_play_link".tr());
@@ -91,26 +84,28 @@ class _SettingsState extends State<Settings> {
                 }
               },
             ),
-            Divider(),
+            const Divider(),
             ListTile(
-                leading: Icon(Icons.whatshot_rounded),
+                leading: const Icon(Icons.whatshot_rounded),
                 title: Text("settings_account_label".tr()),
                 onTap: () => Navigator.of(context).pushNamed(KanPracticePages.loginPage)
             ),
             _header("settings_general".tr()),
-            Divider(),
+            const Divider(),
             ListTile(
-              leading: Icon(Icons.insert_chart_outlined_rounded, color: Colors.teal),
+              leading: const Icon(Icons.insert_chart_outlined_rounded, color: Colors.teal),
               title: Text("settings_general_statistics".tr()),
               onTap: () => Navigator.of(context).pushNamed(KanPracticePages.statisticsPage),
             ),
-            Divider(),
+            const Divider(),
             ListTile(
-              leading: Icon(Icons.auto_graph_rounded, color: Colors.lightBlueAccent),
+              leading: const Icon(Icons.auto_graph_rounded, color: Colors.lightBlueAccent),
               title: Text("settings_general_toggle".tr()),
               subtitle: Padding(
-                padding: EdgeInsets.only(top: Margins.margin8),
-                child: Text("settings_general_toggle_sub".tr())
+                padding: const EdgeInsets.only(top: Margins.margin8),
+                child: Text("settings_general_toggle_sub".tr(), style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                    color: Colors.grey.shade500
+                ))
               ),
               trailing: Switch(
                 activeColor: Colors.blueAccent,
@@ -129,13 +124,13 @@ class _SettingsState extends State<Settings> {
                 setState(() => _toggleAffect = !_toggleAffect);
               },
             ),
-            Divider(),
+            const Divider(),
             ListTile(
               leading: Icon(Icons.track_changes_rounded, color: CustomColors.getSecondaryColor(context)),
               title: Text("settings_general_testHistory".tr()),
               onTap: () async => Navigator.of(context).pushNamed(KanPracticePages.testHistoryPage),
             ),
-            Divider(),
+            const Divider(),
             ListTile(
               leading: _graphMode.icon,
               title: Text("settings_general_graphs".tr()),
@@ -144,11 +139,11 @@ class _SettingsState extends State<Settings> {
                 StorageManager.saveData(StorageManager.kanListGraphVisualization, _graphMode.name);
               }
             ),
-            Divider(),
+            const Divider(),
             ListTile(
-              leading: Icon(Icons.device_hub_rounded),
+              leading: const Icon(Icons.device_hub_rounded),
               title: Text("settings_information_contribute".tr()),
-              trailing: Icon(Icons.link),
+              trailing: const Icon(Icons.link),
               onTap: () async {
                 try {
                   await launch("https://github.com/gabrielglbh/Kan-Practice");
@@ -158,33 +153,27 @@ class _SettingsState extends State<Settings> {
               }
             ),
             _header("settings_information_section".tr()),
-            Divider(),
+            const Divider(),
             ListTile(
-              leading: Icon(Icons.school_rounded),
-              title: Text("settings_tutorial_label".tr()),
-              onTap: () async => Navigator.of(context).pushNamed(KanPracticePages.tutorialPage, arguments: true),
-            ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.star, color: Colors.green),
+              leading: const Icon(Icons.star, color: Colors.green),
               title: Text("settings_general_versionNotes".tr()),
               onTap: () async => await GeneralUtils.showVersionNotes(context),
             ),
-            Divider(),
+            const Divider(),
             ListTile(
-              leading: Icon(Icons.handyman),
+              leading: const Icon(Icons.handyman),
               title: Text("settings_information_developer_label".tr()),
               onTap: () => DevInfo.callModalSheet(context)
             ),
-            Divider(),
+            const Divider(),
             ListTile(
-              leading: Icon(Icons.copyright_rounded),
+              leading: const Icon(Icons.copyright_rounded),
               title: Text("settings_information_about_label".tr()),
               onTap: () => CopyrightInfo.callModalSheet(context)
             ),
-            Divider(),
+            const Divider(),
             ListTile(
-              leading: Icon(Icons.apps),
+              leading: const Icon(Icons.apps),
               title: Text("settings_information_license_label".tr()),
               onTap: () {
                 Navigator.of(context).push(
@@ -195,7 +184,7 @@ class _SettingsState extends State<Settings> {
                         return LicensePage(
                           applicationName: "KanPractice",
                           applicationVersion: snapshot.data?.version,
-                          applicationIcon: Container(
+                          applicationIcon: SizedBox(
                             width: CustomSizes.appIcon, height: CustomSizes.appIcon,
                             child: Image.asset("assets/icon/icon.png")
                           ),
@@ -205,13 +194,13 @@ class _SettingsState extends State<Settings> {
                 );
               }
             ),
-            Divider(),
+            const Divider(),
             Padding(
-              padding: EdgeInsets.only(bottom: Margins.margin48),
+              padding: const EdgeInsets.only(bottom: Margins.margin48),
               child: ListTile(
-                leading: Icon(Icons.privacy_tip),
+                leading: const Icon(Icons.privacy_tip),
                 title: Text("settings_information_terms_label".tr()),
-                trailing: Icon(Icons.link),
+                trailing: const Icon(Icons.link),
                 onTap: () async {
                   try {
                     await launch("https://kanpractice.web.app");
@@ -222,15 +211,17 @@ class _SettingsState extends State<Settings> {
               ),
             ),
           ],
-        ),
-      )
+        )
+      ),
     );
   }
 
   ListTile _header(String title, {String? subtitle}) {
     return ListTile(
-      title: Text(title, style: TextStyle(fontSize: FontSizes.fontSize20, fontWeight: FontWeight.bold)),
-      subtitle: subtitle != null ? Text(subtitle) : null,
+      title: Text(title, style: Theme.of(context).textTheme.headline6),
+      subtitle: subtitle != null ? Text(subtitle, style: Theme.of(context).textTheme.bodyText2?.copyWith(
+        color: Colors.grey.shade500
+      )) : null,
     );
   }
 }

@@ -1,36 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
-import 'package:kanpractice/core/utils/GeneralUtils.dart';
-import 'package:kanpractice/core/utils/types/study_modes.dart';
-import 'package:kanpractice/core/utils/types/visualization_mode.dart';
-import 'package:kanpractice/core/utils/types/test_modes.dart';
+import 'package:kanpractice/core/types/study_modes.dart';
+import 'package:kanpractice/ui/general_utils.dart';
+import 'package:kanpractice/core/types/visualization_mode.dart';
+import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/ui/pages/statistics/bloc/stats_bloc.dart';
 import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
 import 'package:kanpractice/ui/theme/consts.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/ui/widgets/DependentGraph.dart';
-import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_dependent_graph.dart';
+import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
+import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 
 class StatisticsPage extends StatelessWidget {
-  StatisticsPage();
-  final StatisticsBloc _bloc = StatisticsBloc();
+  const StatisticsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: CustomSizes.appBarHeight,
-        title: FittedBox(fit: BoxFit.fitWidth, child: Text("settings_general_statistics".tr())),
-      ),
-      body: BlocProvider<StatisticsBloc>(
-        create: (_) => _bloc..add(StatisticsEventLoading()),
+    return KPScaffold(
+      appBarTitle: "settings_general_statistics".tr(),
+      child: BlocProvider<StatisticsBloc>(
+        create: (_) => StatisticsBloc()..add(StatisticsEventLoading()),
         child: BlocBuilder<StatisticsBloc, StatsState>(
           builder: (context, state) {
             if (state is StatisticsLoaded) {
               return _body(context, state);
             } else if (state is StatisticsLoading) {
-              return CustomProgressIndicator();
+              return const KPProgressIndicator();
             } else {
               return Container();
             }
@@ -48,10 +45,10 @@ class StatisticsPage extends StatelessWidget {
     return ListView(
       children: [
         _header(context, "${"stats_words".tr()} • ", "${s.totalLists} ${"stats_words_lists".tr()}"),
-        _countLabel(s.totalKanji.toString()),
+        _countLabel(context, s.totalKanji.toString()),
         Padding(
-          padding: EdgeInsets.only(top: Margins.margin16),
-          child: DependentGraph(
+          padding: const EdgeInsets.only(top: Margins.margin16),
+          child: KPDependentGraph(
             mode: mode,
             writing: s.totalWinRateWriting,
             reading: s.totalWinRateReading,
@@ -59,28 +56,26 @@ class StatisticsPage extends StatelessWidget {
             listening: s.totalWinRateListening
           )
         ),
-        Divider(),
+        const Divider(),
         Row(
           children: [
             Expanded(
               child: ListTile(
-                title: Text("stats_best_list".tr(), textAlign: TextAlign.center, style: TextStyle(
-                    fontWeight: FontWeight.bold
-                )),
+                title: Text("stats_best_list".tr(), textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyText1?.copyWith(fontWeight: FontWeight.bold)),
                 subtitle: Text(s.bestList, textAlign: TextAlign.center),
               ),
             ),
             Expanded(
               child: ListTile(
-                title: Text("stats_worst_list".tr(), textAlign: TextAlign.center, style: TextStyle(
-                  fontWeight: FontWeight.bold
-                )),
+                title: Text("stats_worst_list".tr(), textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(fontWeight: FontWeight.bold)),
                 subtitle: Text(s.worstList, textAlign: TextAlign.center),
               ),
             )
           ],
         ),
-        Divider(),
+        const Divider(),
         _header(context, "${"stats_tests".tr()} • ", "${GeneralUtils.roundUpAsString(
             GeneralUtils.getFixedDouble(s.test.totalTestAccuracy * 100))}%"),
         Row(
@@ -91,50 +86,51 @@ class StatisticsPage extends StatelessWidget {
                 return Row(
                   children: [
                     _bullet(StudyModes.values[index]),
-                    _fittedText(s.test.testTotalCountWriting.toString())
+                    _fittedText(context, s.test.testTotalCountWriting.toString())
                   ],
                 );
               case StudyModes.reading:
                 return Row(
                   children: [
                     _bullet(StudyModes.values[index]),
-                    _fittedText(s.test.testTotalCountReading.toString())
+                    _fittedText(context, s.test.testTotalCountReading.toString())
                   ],
                 );
               case StudyModes.recognition:
                 return Row(
                   children: [
                     _bullet(StudyModes.values[index]),
-                    _fittedText(s.test.testTotalCountRecognition.toString())
+                    _fittedText(context, s.test.testTotalCountRecognition.toString())
                   ],
                 );
               case StudyModes.listening:
                 return Row(
                   children: [
                     _bullet(StudyModes.values[index]),
-                    _fittedText(s.test.testTotalCountListening.toString())
+                    _fittedText(context, s.test.testTotalCountListening.toString())
                   ],
                 );
             }
           }),
         ),
         Padding(
-          padding: EdgeInsets.only(top: Margins.margin16),
-          child: _countLabel(s.test.totalTests.toString()),
+          padding: const EdgeInsets.only(top: Margins.margin16),
+          child: _countLabel(context, s.test.totalTests.toString()),
         ),
-        Divider(),
-        _expandedTestCount(s),
-        Divider(),
+        const Divider(),
+        _expandedTestCount(context, s),
+        const Divider(),
         Padding(
-          padding: EdgeInsets.symmetric(vertical: Margins.margin8),
-          child: DependentGraph(
+          padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
+          child: KPDependentGraph(
             mode: mode,
             writing: s.test.testTotalWinRateWriting,
             reading: s.test.testTotalWinRateReading,
             recognition: s.test.testTotalWinRateRecognition,
             listening: s.test.testTotalWinRateListening
           )
-        )
+        ),
+        const SizedBox(height: Margins.margin64)
       ],
     );
   }
@@ -146,15 +142,11 @@ class StatisticsPage extends StatelessWidget {
           children: [
             TextSpan(
               text: title,
-              style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                  fontSize: FontSizes.fontSize20, fontWeight: FontWeight.bold
-              )
+              style: Theme.of(context).textTheme.headline6
             ),
             TextSpan(
               text: value,
-              style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                  fontSize: FontSizes.fontSize20
-              )
+              style: Theme.of(context).textTheme.bodyText2
             )
           ]
         ),
@@ -162,22 +154,23 @@ class StatisticsPage extends StatelessWidget {
     );
   }
 
-  Widget _countLabel(String count) {
+  Widget _countLabel(BuildContext context, String count) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
+      padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
       alignment: Alignment.center,
-      child: _fittedText(count, style: TextStyle(fontSize: FontSizes.fontSize64))
+      child: _fittedText(context, count, style: Theme.of(context).textTheme.headline3)
     );
   }
 
-  FittedBox _fittedText(String t, {TextStyle? style}) {
-    return FittedBox(fit: BoxFit.contain, child: Text(t, style: style));
+  FittedBox _fittedText(BuildContext context, String t, {TextStyle? style}) {
+    return FittedBox(fit: BoxFit.contain, child: Text(t,
+        style: style ?? Theme.of(context).textTheme.bodyText1));
   }
 
   Container _bullet(StudyModes mode) {
     return Container(
       width: Margins.margin8, height: Margins.margin8,
-      margin: EdgeInsets.only(
+      margin: const EdgeInsets.only(
         right: Margins.margin8, left: Margins.margin8,
         top: Margins.margin4, bottom: Margins.margin4
       ),
@@ -187,42 +180,41 @@ class StatisticsPage extends StatelessWidget {
     );
   }
 
-  ListView _expandedTestCount(KanPracticeStats s) {
+  ListView _expandedTestCount(BuildContext context, KanPracticeStats s) {
     return ListView(
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       children: List.generate(Tests.values.length, (index) {
         switch (Tests.values[index]) {
           case Tests.lists:
-            return _testModeCountContainer(Tests.lists, s.test.selectionTests);
+            return _testModeCountContainer(context, Tests.lists, s.test.selectionTests);
           case Tests.blitz:
-            return _testModeCountContainer(Tests.blitz, s.test.blitzTests);
+            return _testModeCountContainer(context, Tests.blitz, s.test.blitzTests);
           case Tests.time:
-            return _testModeCountContainer(Tests.time, s.test.remembranceTests);
+            return _testModeCountContainer(context, Tests.time, s.test.remembranceTests);
           case Tests.numbers:
-            return _testModeCountContainer(Tests.numbers, s.test.numberTests);
+            return _testModeCountContainer(context, Tests.numbers, s.test.numberTests);
           case Tests.less:
-            return _testModeCountContainer(Tests.less, s.test.lessPctTests);
+            return _testModeCountContainer(context, Tests.less, s.test.lessPctTests);
           case Tests.categories:
-            return _testModeCountContainer(Tests.categories, s.test.categoryTests);
+            return _testModeCountContainer(context, Tests.categories, s.test.categoryTests);
         }
       })
     );
   }
 
-  Widget _testModeCountContainer(Tests t, int count) {
+  Widget _testModeCountContainer(BuildContext context, Tests t, int count) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
+      padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
       child: Row(
         children: [
           Icon(t.icon, size: Margins.margin18),
           Padding(
-            padding: EdgeInsets.only(left: Margins.margin8),
-            child: Text(t.name, style: TextStyle(fontSize: FontSizes.fontSize14)),
+            padding: const EdgeInsets.only(left: Margins.margin8),
+            child: Text(t.name, style: Theme.of(context).textTheme.bodyText2),
           ),
           Expanded(child: Container()),
-          Text(count.toString(), style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: FontSizes.fontSize16))
+          Text(count.toString(), style: Theme.of(context).textTheme.button)
         ],
       ),
     );

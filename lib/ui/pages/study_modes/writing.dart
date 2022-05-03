@@ -200,33 +200,41 @@ class _WritingStudyState extends State<WritingStudy> {
           },
         )
       ],
-      child: Column(
+      child: Stack(
         children: [
-          KPListPercentageIndicator(value: (_macro + 1) / _studyList.length),
-          KPLearningHeaderAnimation(id: _macro, children: _header()),
-          KPCustomCanvas(line: _line, allowEdit: !_showActualKanji),
-          WritingButtonsAnimations(
-            id: _macro,
-            /// Whenever a new kanji is shown, _inner will be 0. That's
-            /// the key to toggle the slide animation on the button.
-            triggerSlide: _inner == 0,
-            trigger: _showActualKanji,
-            submitLabel: _goNextKanji ? "writing_next_kanji_label".tr() : "done_button_label".tr(),
-            wrongAction: (score) async => await _updateUIOnSubmit(score),
-            midWrongAction: (score) async => await _updateUIOnSubmit(score),
-            midPerfectAction: (score) async => await _updateUIOnSubmit(score),
-            perfectAction: (score) async => await _updateUIOnSubmit(score),
-            onSubmit: () {
-              if (_macro <= _studyList.length - 1) {
-                _resetKanji();
-              } else {
-                if (_line.isNotEmpty) {
+          Column(
+            children: [
+              KPListPercentageIndicator(value: (_macro + 1) / _studyList.length),
+              KPLearningHeaderAnimation(id: _macro, children: _header()),
+              KPCustomCanvas(line: _line, allowEdit: !_showActualKanji),
+            ],
+          ),
+          Positioned(
+            bottom: Margins.margin16,
+            right: 0, left: 0,
+            child: WritingButtonsAnimations(
+              id: _macro,
+              /// Whenever a new kanji is shown, _inner will be 0. That's
+              /// the key to toggle the slide animation on the button.
+              triggerSlide: _inner == 0,
+              trigger: _showActualKanji,
+              submitLabel: _goNextKanji ? "writing_next_kanji_label".tr() : "done_button_label".tr(),
+              wrongAction: (score) async => await _updateUIOnSubmit(score),
+              midWrongAction: (score) async => await _updateUIOnSubmit(score),
+              midPerfectAction: (score) async => await _updateUIOnSubmit(score),
+              perfectAction: (score) async => await _updateUIOnSubmit(score),
+              onSubmit: () {
+                if (_macro <= _studyList.length - 1) {
                   _resetKanji();
                 } else {
-                  GeneralUtils.getSnackBar(context, "writing_validation_failed".tr());
+                  if (_line.isNotEmpty) {
+                    _resetKanji();
+                  } else {
+                    GeneralUtils.getSnackBar(context, "writing_validation_failed".tr());
+                  }
                 }
-              }
-            },
+              },
+            )
           )
         ],
       )

@@ -130,21 +130,29 @@ class _ListeningStudyState extends State<ListeningStudy> {
           child: TTSIconButton(kanji: widget.args.studyList[_macro].pronunciation),
         )
       ],
-      child: Column(
+      child: Stack(
         children: [
-          KPListPercentageIndicator(value: (_macro + 1) / _studyList.length),
-          KPLearningHeaderAnimation(id: _macro, children: _header()),
-          KPValidationButtons(
-            trigger: _showWord,
-            submitLabel: "done_button_label".tr(),
-            wrongAction: (score) async => await _updateUIOnSubmit(score),
-            midWrongAction: (score) async => await _updateUIOnSubmit(score),
-            midPerfectAction: (score) async => await _updateUIOnSubmit(score),
-            perfectAction: (score) async => await _updateUIOnSubmit(score),
-            onSubmit: () => setState(() => _showWord = true),
+          Column(
+            children: [
+              KPListPercentageIndicator(value: (_macro + 1) / _studyList.length),
+              KPLearningHeaderAnimation(id: _macro, children: _header()),
+            ],
+          ),
+          Positioned(
+            bottom: Margins.margin16,
+            right: 0, left: 0,
+            child: KPValidationButtons(
+              trigger: _showWord,
+              submitLabel: "done_button_label".tr(),
+              wrongAction: (score) async => await _updateUIOnSubmit(score),
+              midWrongAction: (score) async => await _updateUIOnSubmit(score),
+              midPerfectAction: (score) async => await _updateUIOnSubmit(score),
+              perfectAction: (score) async => await _updateUIOnSubmit(score),
+              onSubmit: () => setState(() => _showWord = true),
+            )
           )
         ],
-      ),
+      )
     );
   }
 

@@ -83,8 +83,8 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
         /// a new list in order for Equatable to trigger and perform a change
         /// of state. After, add to _list the elements for the next iteration.
         List<MarketList> fullList = List.of(_searchList);
-        final List<MarketList> pagination = await MarketRecords.instance.getListsBasedOnQuery(
-            event.query,
+        final List<MarketList> pagination = await MarketRecords.instance.getLists(
+            query: event.query,
             filter: event.filter,
             descending: event.order,
             offsetDocumentId: _lastRetrievedDocumentIdWhenSearching,

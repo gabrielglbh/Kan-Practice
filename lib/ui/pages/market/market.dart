@@ -94,30 +94,30 @@ class _MarketPlaceState extends State<MarketPlace> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<MarketBloc, MarketState>(
-      listener: (context, state) {
-        if (state is MarketStateSuccess) {
-          GeneralUtils.getSnackBar(context, state.message);
-        } else if (state is MarketStateFailure) {
-          GeneralUtils.getSnackBar(context, state.message);
-        }
-      },
-      builder: (context, state) {
-        if (state is MarketStateLoading || state is MarketStateSearching) {
-          return const KPProgressIndicator();
-        } else {
-          return Column(
-            children: [
-              _filterChips(state),
-              _lists(state)
-            ],
-          );
-        }
-      }
+    return Column(
+      children: [
+        _filterChips(),
+        BlocConsumer<MarketBloc, MarketState>(
+          listener: (context, state) {
+            if (state is MarketStateSuccess) {
+              GeneralUtils.getSnackBar(context, state.message);
+            } else if (state is MarketStateFailure) {
+              GeneralUtils.getSnackBar(context, state.message);
+            }
+          },
+          builder: (context, state) {
+            if (state is MarketStateLoading || state is MarketStateSearching) {
+              return const KPProgressIndicator();
+            } else {
+              return _lists(state);
+            }
+          }
+        ),
+      ],
     );
   }
 
-  SizedBox _filterChips(MarketState state) {
+  SizedBox _filterChips() {
     Icon icon = Icon(_currentAppliedOrder
         ? Icons.arrow_downward_rounded
         : Icons.arrow_upward_rounded,

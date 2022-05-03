@@ -18,6 +18,10 @@ MarketList _$MarketListFromJson(Map<String, dynamic> json) => MarketList(
       downloads: json['downloads'] as int? ?? 0,
       description: json['description'] as String,
       author: json['author'] as String,
+      keywords: (json['keywords'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
       uploadedToMarket: json['uploadedToMarket'] as int? ?? 0,
     );
 
@@ -28,6 +32,7 @@ Map<String, dynamic> _$MarketListToJson(MarketList instance) =>
       'uid': instance.uid,
       'ratingMap': instance.ratingMap,
       'rating': instance.rating,
+      'keywords': instance.keywords,
       'downloads': instance.downloads,
       'description': instance.description,
       'author': instance.author,

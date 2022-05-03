@@ -264,7 +264,7 @@
   "categories_test_bottom_sheet_label": "Category:",
   "categories_test_bottom_sheet_error": "There are no words with this category.",
   "market_place_title": "Market",
-  "market_lists_searchBar_hint": "Search by name",
+  "market_lists_searchBar_hint": "Search by name or author",
   "market_load_failed": "No lists could be found in the market.",
   "market_empty": "No lists available.",
   "market_downloads_button_label": "Download",

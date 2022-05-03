@@ -46,88 +46,91 @@ class MarketRecords {
   /// The offset is the last document id retrieved from Firebase. This is kept
   /// on the MarketBloc for the whole instance of the page instead of this singleton.
   /// The string of the last retrieved document is updated via [onLastQueriedDocument].
+  ///
+  /// If [query] is not null, the user is searching for lists, thus appending a
+  /// where clause to the retrieval method is performed.
   Future<List<MarketList>> getLists({
     MarketFilters filter = MarketFilters.all,
     bool descending = true,
     required String offsetDocumentId,
     required Function(String) onLastQueriedDocument,
+    String? query,
     bool filterByMine = false
   }) async {
     try {
       final List<MarketList> lists = [];
-      /// Apply filter, order and limit for Lazy loading purposes
-      final Query<Map<String, dynamic>> listsSnapshot = _ref.collection(collection)
-          .orderBy(filter.filter, descending: descending)
-          .limit(LazyLoadingLimits.kanList);
+      late QuerySnapshot<Map<String, dynamic>> snapshot;
 
-      /// If there is an offset, apply it to the query
-      if (offsetDocumentId.isNotEmpty) {
-        final DocumentSnapshot startFrom = await _ref.collection(collection)
-            .doc(offsetDocumentId).get();
-        listsSnapshot.startAfterDocument(startFrom);
-      }
+      /// QuerySnapshot instances must be completed within itself, thus this conditional
+      /// block.
+      if (query == null) {
+        /// Lazy loading
+        if (offsetDocumentId.isNotEmpty) {
+          final DocumentSnapshot startFrom = await _ref.collection(collection)
+              .doc(offsetDocumentId).get();
 
-      /// If the user wants to retrieve only his or her lists
-      if (filterByMine) {
-        listsSnapshot.where(MarketList.uidField, isEqualTo: _auth.currentUser?.uid);
-      }
-
-      final snapshot = await listsSnapshot.get();
-
-      if (snapshot.size > 0) {
-        /// Assures that the Lazy Loading is correct
-        if (offsetDocumentId == snapshot.docs[snapshot.size - 1].id) {
-          return [];
+          if (!filterByMine) {
+            snapshot = await _ref.collection(collection)
+                .orderBy(filter.filter, descending: descending)
+                .startAfterDocument(startFrom)
+                .limit(LazyLoadingLimits.kanList).get();
+          }
+          else {
+            snapshot = await _ref.collection(collection)
+                .startAfterDocument(startFrom)
+                .where(MarketList.uidField, isEqualTo: _auth.currentUser?.uid)
+                .limit(LazyLoadingLimits.kanList).get();
+          }
         }
-
-        for (int x = 0; x < snapshot.size; x++) {
-          lists.add(MarketList.fromJson(snapshot.docs[x].data()));
-          if (x == snapshot.size - 1) onLastQueriedDocument(snapshot.docs[x].id);
+        /// Initial loading
+        else {
+          if (!filterByMine) {
+            snapshot = await _ref.collection(collection)
+                .orderBy(filter.filter, descending: descending)
+                .limit(LazyLoadingLimits.kanList).get();
+          }
+          else {
+            snapshot = await _ref.collection(collection)
+                .where(MarketList.uidField, isEqualTo: _auth.currentUser?.uid)
+                .limit(LazyLoadingLimits.kanList).get();
+          }
         }
-        return lists;
-      } else {
-        return [];
       }
-    } catch (err) {
-      print(err);
-      return [];
-    }
-  }
+      /// Searching queries WITHOUT filter nor order
+      else {
+        /// Lazy Loading
+        if (offsetDocumentId.isNotEmpty) {
+          final DocumentSnapshot startFrom = await _ref.collection(collection)
+              .doc(offsetDocumentId).get();
 
-  /// Query to get all [MarketList] from Firebase matching [query].
-  /// If anything goes wrong, an empty list will be returned.
-  ///
-  /// The offset is the last document id retrieved from Firebase. This is kept
-  /// on the MarketBloc for the whole instance of the page instead of this singleton.
-  /// The string of the last retrieved document is updated via [onLastQueriedDocument].
-  /// 
-  /// TODO: Set keywords on MarketList for matching queries
-  Future<List<MarketList>> getListsBasedOnQuery(String query, {
-    MarketFilters filter = MarketFilters.all,
-    bool descending = true,
-    required String offsetDocumentId,
-    required Function(String) onLastQueriedDocument,
-    bool filterByMine = false
-  }) async {
-    try {
-      final List<MarketList> lists = [];
-      /// Apply filter, order and limit for Lazy loading purposes
-      final Query<Map<String, dynamic>> listsSnapshot = _ref.collection(collection)
-          .limit(LazyLoadingLimits.kanList);
-
-      /// If there is an offset, apply it to the query
-      if (offsetDocumentId.isNotEmpty) {
-        final DocumentSnapshot startFrom = await _ref.collection(collection)
-            .doc(offsetDocumentId).get();
-        listsSnapshot.startAfterDocument(startFrom);
+          if (!filterByMine) {
+            snapshot = await _ref.collection(collection)
+                .where(MarketList.keywordsField, arrayContains: query.toLowerCase())
+                .startAfterDocument(startFrom)
+                .limit(LazyLoadingLimits.kanList).get();
+          }
+          else {
+            snapshot = await _ref.collection(collection)
+                .startAfterDocument(startFrom)
+                .where(MarketList.keywordsField, arrayContains: query.toLowerCase())
+                .where(MarketList.uidField, isEqualTo: _auth.currentUser?.uid)
+                .limit(LazyLoadingLimits.kanList).get();
+          }
+        }
+        else {
+          if (!filterByMine) {
+            snapshot = await _ref.collection(collection)
+                .where(MarketList.keywordsField, arrayContains: query.toLowerCase())
+                .limit(LazyLoadingLimits.kanList).get();
+          }
+          else {
+            snapshot = await _ref.collection(collection)
+                .where(MarketList.uidField, isEqualTo: _auth.currentUser?.uid)
+                .where(MarketList.keywordsField, arrayContains: query.toLowerCase())
+                .limit(LazyLoadingLimits.kanList).get();
+          }
+        }
       }
-
-      /// If the user wants to retrieve only his or her lists
-      if (filterByMine) {
-        listsSnapshot.where(MarketList.uidField, isEqualTo: _auth.currentUser?.uid);
-      }
-
-      final snapshot = await listsSnapshot.get();
 
       if (snapshot.size > 0) {
         /// Assures that the Lazy Loading is correct
@@ -182,7 +185,8 @@ class MarketRecords {
             author: _user.displayName ?? "",
             description: description,
             uploadedToMarket: GeneralUtils.getCurrentMilliseconds()
-        );
+        ).copyWithKeywords();
+
         final KanjiList raw = list.copyWithReset();
         final List<Kanji> resetKanji = [];
         for (var k in kanji) {

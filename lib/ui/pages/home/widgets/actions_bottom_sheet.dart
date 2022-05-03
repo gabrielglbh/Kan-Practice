@@ -8,11 +8,7 @@ import 'package:kanpractice/ui/widgets/kp_create_kanlist_dialog.dart';
 import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
 
 class ActionsBottomSheet extends StatelessWidget {
-  final HomeType type;
-  const ActionsBottomSheet({
-    Key? key,
-    required this.type
-  }) : super(key: key);
+  const ActionsBottomSheet({Key? key}) : super(key: key);
 
   /// Returns the name of the KanList being created to use the parents
   /// bloc to create it properly
@@ -22,7 +18,7 @@ class ActionsBottomSheet extends StatelessWidget {
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
-        builder: (context) => ActionsBottomSheet(type: type)
+        builder: (context) => const ActionsBottomSheet()
     ).then((value) {
       name = value;
     });
@@ -62,7 +58,7 @@ class ActionsBottomSheet extends StatelessWidget {
                         },
                       ),
                       const Divider(),
-                      if (type == HomeType.kanlist) ListTile(
+                      ListTile(
                         title: Text("bottom_actions_create_kanlist".tr()),
                         leading: const Icon(Icons.add),
                         onTap: () async {
@@ -71,7 +67,8 @@ class ActionsBottomSheet extends StatelessWidget {
                           Navigator.of(context).pop(name);
                         },
                       ),
-                      if (type == HomeType.market) ListTile(
+                      const Divider(),
+                      ListTile(
                         title: Text("bottom_actions_upload_list".tr()),
                         leading: const Icon(Icons.upload_rounded),
                         onTap: () async {

@@ -157,18 +157,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                           padding: const EdgeInsets.all(Margins.margin16),
                           child: Text("add_to_market_successfully_created".tr(), textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.bodyText1),
-                        ),
-                        SizedBox(
-                          height: CustomSizes.appBarHeight,
-                          child: Padding(
-                            padding: const EdgeInsets.all(Margins.margin16),
-                            child: ElevatedButton(
-                              onPressed: () => Navigator.of(context).pop(),
-                              child: Text("add_to_market_go_back_to_market_button_label".tr(),
-                                  style: Theme.of(context).textTheme.button),
-                            ),
-                          ),
-                        ),
+                        )
                       ],
                     )
                 );

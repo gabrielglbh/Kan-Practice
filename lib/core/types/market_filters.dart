@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/core/firebase/models/market_list.dart';
 
-enum MarketFilters { all, mine, downloads, rating, words }
+enum MarketFilters { mine, all, downloads, rating, words }
 
 extension MarketFiltersExtensions on MarketFilters {
   String get label {

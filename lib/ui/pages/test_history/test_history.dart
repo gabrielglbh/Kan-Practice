@@ -20,24 +20,25 @@ class TestHistory extends StatefulWidget {
 }
 
 class _TestHistoryState extends State<TestHistory> {
-  final TestListBloc _bloc = TestListBloc();
   final ScrollController _scrollController = ScrollController();
   int _loadingTimes = 0;
 
-  _showRemoveTestsDialog() {
+  _showRemoveTestsDialog(BuildContext bloc) {
     showDialog(
-      context: context,
+      context: bloc,
       builder: (context) => KPDialog(
         title: Text("test_history_showRemoveTestsDialog_title".tr()),
         content: Text("test_history_showRemoveTestsDialog_content".tr(),
           style: Theme.of(context).textTheme.bodyText1),
         positiveButtonText: "test_history_showRemoveTestsDialog_positive".tr(),
-        onPositive: () => _bloc..add(TestListEventRemoving()),
+        onPositive: () => bloc.read<TestListBloc>().add(TestListEventRemoving()),
       )
     );
   }
 
-  _addLoadingEvent({int offset = 0}) => _bloc..add(TestListEventLoading(offset: offset));
+  _addLoadingEvent({int offset = 0}) => BlocProvider.of<TestListBloc>(context)
+      .add(TestListEventLoading(offset: offset)
+  );
 
   _scrollListener() {
     if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
@@ -56,25 +57,25 @@ class _TestHistoryState extends State<TestHistory> {
   void dispose() {
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
-    _bloc.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    /// BlocProvider is defined at route level in order for the whole context of the
+    /// class to be accessible to the provider
     return KPScaffold(
       appBarTitle: "test_history_title".tr(),
       appBarActions: [
-        IconButton(
-          icon: const Icon(Icons.clear_all_rounded),
-          onPressed: () => _showRemoveTestsDialog(),
+        BlocBuilder<TestListBloc, TestListState>(
+          builder: (context, state) => IconButton(
+            icon: const Icon(Icons.clear_all_rounded),
+            onPressed: () => _showRemoveTestsDialog(context),
+          ),
         )
       ],
-      child: BlocProvider<TestListBloc>(
-        create: (_) => _addLoadingEvent(),
-        child: BlocBuilder<TestListBloc, TestListState>(
-          builder: (context, state) => _body(state)
-        )
+      child: BlocBuilder<TestListBloc, TestListState>(
+        builder: (context, state) => _body(state)
       ),
     );
   }

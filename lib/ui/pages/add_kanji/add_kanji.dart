@@ -26,8 +26,6 @@ class AddKanjiPage extends StatefulWidget {
 }
 
 class _AddKanjiPageState extends State<AddKanjiPage> {
-  final AddKanjiBloc _bloc = AddKanjiBloc();
-
   TextEditingController? _kanjiController;
   FocusNode? _kanjiFocus;
   TextEditingController? _pronunciationController;
@@ -66,8 +64,8 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
     super.dispose();
   }
 
-  Future<void> _createKanji({bool exit = true}) async {
-    _bloc.add(AddKanjiEventCreate(exitMode: exit, kanji: Kanji(
+  Future<void> _createKanji(BuildContext bloc, {bool exit = true}) async {
+    BlocProvider.of<AddKanjiBloc>(bloc).add(AddKanjiEventCreate(exitMode: exit, kanji: Kanji(
         kanji: _kanjiController?.text ?? "",
         pronunciation: _pronunciationController?.text ?? "",
         meaning: _meaningController?.text ?? "",
@@ -78,10 +76,10 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
     )));
   }
 
-  Future<void> _updateKanji() async {
+  Future<void> _updateKanji(BuildContext bloc) async {
     Kanji? k = widget.args.kanji;
     if (k != null) {
-      _bloc.add(AddKanjiEventUpdate(widget.args.listName, k.kanji,
+      BlocProvider.of<AddKanjiBloc>(bloc).add(AddKanjiEventUpdate(widget.args.listName, k.kanji,
           parameters: {
             KanjiTableFields.kanjiField: _kanjiController?.text ?? "",
             KanjiTableFields.pronunciationField: _pronunciationController?.text ?? "",
@@ -110,7 +108,7 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AddKanjiBloc>(
-      create: (_) => _bloc..add(AddKanjiEventIdle()),
+      create: (_) => AddKanjiBloc()..add(AddKanjiEventIdle()),
       child: KPScaffold(
         resizeToAvoidBottomInset: true,
         appBarTitle: widget.args.kanji != null
@@ -135,26 +133,30 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
               if (word != null && word.isNotEmpty) _kanjiController?.text = word;
             },
           ),
-          Visibility(
-            visible: widget.args.kanji == null,
-            child: IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () {
-                _validateKanji(() => _createKanji(exit: false));
-              },
+          BlocBuilder<AddKanjiBloc, AddKanjiState>(
+            builder: (context, state) => Visibility(
+              visible: widget.args.kanji == null,
+              child: IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () {
+                  _validateKanji(() => _createKanji(context, exit: false));
+                },
+              ),
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.check_rounded),
-            onPressed: () {
-              _validateKanji(() {
-                if (widget.args.kanji != null) {
-                  _updateKanji();
-                } else {
-                  _createKanji();
-                }
-              });
-            },
+          BlocBuilder<AddKanjiBloc, AddKanjiState>(
+            builder: (context, state) => IconButton(
+              icon: const Icon(Icons.check_rounded),
+              onPressed: () {
+                _validateKanji(() {
+                  if (widget.args.kanji != null) {
+                    _updateKanji(context);
+                  } else {
+                    _createKanji(context);
+                  }
+                });
+              },
+            )
           )
         ],
         child: SingleChildScrollView(
@@ -231,25 +233,27 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
         ),
         Padding(
           padding: const EdgeInsets.only(top: Margins.margin16),
-          child: KPTextForm(
-            controller: _meaningController,
-            focusNode: _meaningFocus,
-            header: "add_kanji_textForm_meaning".tr(),
-            hint: "add_kanji_textForm_meaning_ext".tr(),
-            action: TextInputAction.done,
-            onEditingComplete: () {
-              _meaningFocus?.unfocus();
-              /// By default, if the user is updating a word, and presses the IME action,
-              /// update it. Else, create the word, empty the fields and continue adding
-              /// more words
-              _validateKanji(() {
-                if (widget.args.kanji == null) {
-                  _createKanji(exit: false);
-                } else {
-                  _updateKanji();
-                }
-              });
-            },
+          child: BlocBuilder<AddKanjiBloc, AddKanjiState>(
+            builder: (context, state) => KPTextForm(
+              controller: _meaningController,
+              focusNode: _meaningFocus,
+              header: "add_kanji_textForm_meaning".tr(),
+              hint: "add_kanji_textForm_meaning_ext".tr(),
+              action: TextInputAction.done,
+              onEditingComplete: () {
+                _meaningFocus?.unfocus();
+                /// By default, if the user is updating a word, and presses the IME action,
+                /// update it. Else, create the word, empty the fields and continue adding
+                /// more words
+                _validateKanji(() {
+                  if (widget.args.kanji == null) {
+                    _createKanji(context, exit: false);
+                  } else {
+                    _updateKanji(context);
+                  }
+                });
+              },
+            ),
           ),
         ),
       ],

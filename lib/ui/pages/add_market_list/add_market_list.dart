@@ -17,7 +17,6 @@ class AddMarketListPage extends StatefulWidget {
 }
 
 class _AddMarketListPageState extends State<AddMarketListPage> {
-  final _bloc = AddToMarketBloc();
   late TextEditingController _tc;
   late FocusNode _fn;
   late TextEditingController _tcUser;
@@ -39,14 +38,13 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
     _fn.dispose();
     _tcUser.dispose();
     _fnUser.dispose();
-    _bloc.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => _bloc..add(AddToMarketEventIdle()),
+      create: (_) => AddToMarketBloc()..add(AddToMarketEventIdle()),
       child: KPScaffold(
         resizeToAvoidBottomInset: true,
         appBarTitle: "add_to_market_title".tr(),
@@ -58,7 +56,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
               } else {
                 return IconButton(
                   onPressed: () {
-                    _bloc.add(AddToMarketEventOnUpload(_listSelection, _tc.text, _tcUser.text));
+                    context.read<AddToMarketBloc>().add(AddToMarketEventOnUpload(_listSelection, _tc.text, _tcUser.text));
                   },
                   icon: const Icon(Icons.check)
                 );

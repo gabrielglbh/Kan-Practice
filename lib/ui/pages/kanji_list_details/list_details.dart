@@ -36,7 +36,6 @@ class KanjiListDetails extends StatefulWidget {
 }
 
 class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerProviderStateMixin {
-  final KanjiListDetailBloc _bloc = KanjiListDetailBloc();
   final ScrollController _scrollController = ScrollController();
 
   /// Tutorial Global Keys
@@ -76,7 +75,6 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
     _tabController?.dispose();
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
-    _bloc.close();
     super.dispose();
   }
 
@@ -148,23 +146,25 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
   }
 
   _addLoadingEvent({bool reset = false}) {
-    return _bloc..add(KanjiEventLoading(_listName, reset: reset));
+    return BlocProvider.of<KanjiListDetailBloc>(context)
+        .add(KanjiEventLoading(_listName, reset: reset));
   }
 
   _addSearchingEvent(String query, {bool reset = false}) {
-    return _bloc..add(KanjiEventSearching(query, _listName, reset: reset));
+    return BlocProvider.of<KanjiListDetailBloc>(context)
+        .add(KanjiEventSearching(query, _listName, reset: reset));
   }
 
-  _updateName(String name) {
+  _updateName(BuildContext bloc, String name) {
     if (name.isNotEmpty) {
-      _bloc.add(UpdateKanList(name, _listName));
+      BlocProvider.of<KanjiListDetailBloc>(bloc).add(UpdateKanList(name, _listName));
     }
   }
 
-  _updateKanListName() {
+  _updateKanListName(BuildContext bloc) {
     TextEditingController _nameController = TextEditingController();
     FocusNode _nameControllerFn = FocusNode();
-    showDialog(context: context, builder: (context) {
+    showDialog(context: bloc, builder: (context) {
       return KPDialog(
         title: Text("list_details_updateKanListName_title".tr()),
         content: KPTextForm(
@@ -176,11 +176,11 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
           autofocus: true,
           onEditingComplete: () {
             Navigator.of(context).pop();
-            _updateName(_nameController.text);
+            _updateName(bloc, _nameController.text);
           },
         ),
         positiveButtonText: "list_details_updateKanListName_positive".tr(),
-        onPositive: () => _updateName(_nameController.text)
+        onPositive: () => _updateName(bloc, _nameController.text)
       );
     });
   }
@@ -216,140 +216,136 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<KanjiListDetailBloc>(
-      create: (_) => _bloc..add(KanjiEventLoading(_listName)),
-      child: KPScaffold(
-        onWillPop: () async {
-          if (_onTutorial) return false;
-          if (_searchHasFocus) {
-            _addLoadingEvent(reset: true);
-            _searchBarFn?.unfocus();
-            return false;
-          } else {
-            return true;
+    /// BlocProvider is defined at route level in order for the whole context of the
+    /// class to be accessible to the provider
+    return KPScaffold(
+      onWillPop: () async {
+        if (_onTutorial) return false;
+        if (_searchHasFocus) {
+          _addLoadingEvent(reset: true);
+          _searchBarFn?.unfocus();
+          return false;
+        } else {
+          return true;
+        }
+      },
+      appBarTitle: BlocBuilder<KanjiListDetailBloc, KanjiListDetailState>(
+        builder: (context, state) {
+          if (state is KanjiListDetailStateLoaded) {
+            _listName = state.name;
+            return FittedBox(
+                fit: BoxFit.fitWidth,
+                child: GestureDetector(
+                  onTap: () async => await _updateKanListName(context),
+                  child: Text(state.name, key: changeName, overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).appBarTheme.titleTextStyle),
+                )
+            );
+          }
+          else {
+            return Container();
           }
         },
-        appBarTitle: BlocBuilder<KanjiListDetailBloc, KanjiListDetailState>(
-          builder: (context, state) {
-            if (state is KanjiListDetailStateLoaded) {
-              _listName = state.name;
-              return FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: GestureDetector(
-                    onTap: () async => await _updateKanListName(),
-                    child: Text(state.name, key: changeName, overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).appBarTheme.titleTextStyle),
-                  )
-              );
-            }
-            else {
-              return Container();
-            }
-          },
+      ),
+      appBarActions: [
+        Row(
+          key: actions,
+          children: [
+            IconButton(
+              icon: Icon(_learningMode == LearningMode.spatial
+                  ? LearningMode.spatial.icon
+                  : LearningMode.random.icon),
+              onPressed: () => setState(() {
+                if (_learningMode == LearningMode.spatial) {
+                  _learningMode = LearningMode.random;
+                } else {
+                  _learningMode = LearningMode.spatial;
+                }
+              }),
+            ),
+            IconButton(
+              onPressed: () async => await KPBlitzBottomSheet.show(
+                  context, practiceList: _listName
+              ),
+              icon: const Icon(Icons.flash_on_rounded),
+            ),
+          ],
         ),
-        appBarActions: [
-          Row(
-            key: actions,
-            children: [
-              IconButton(
-                icon: Icon(_learningMode == LearningMode.spatial
-                    ? LearningMode.spatial.icon
-                    : LearningMode.random.icon),
-                onPressed: () => setState(() {
-                  if (_learningMode == LearningMode.spatial) {
-                    _learningMode = LearningMode.random;
-                  } else {
-                    _learningMode = LearningMode.spatial;
-                  }
-                }),
-              ),
-              IconButton(
-                onPressed: () async => await KPBlitzBottomSheet.show(
-                    context, practiceList: _listName
-                ),
-                icon: const Icon(Icons.flash_on_rounded),
-              ),
-            ],
-          ),
-          IconButton(
-            key: addVocabulary,
-            onPressed: () async {
-              await Navigator.of(context).pushNamed(KanPracticePages.addKanjiPage,
-                  arguments: AddKanjiArgs(listName: _listName))
-                  .then((code) => _addLoadingEvent(reset: true));
+        IconButton(
+          key: addVocabulary,
+          onPressed: () async {
+            await Navigator.of(context).pushNamed(KanPracticePages.addKanjiPage,
+                arguments: AddKanjiArgs(listName: _listName))
+                .then((code) => _addLoadingEvent(reset: true));
+          },
+          icon: const Icon(Icons.add),
+        ),
+      ],
+      child: Column(
+        children: [
+          KPSearchBar(
+            hint: "list_details_searchBar_hint".tr(),
+            focus: _searchBarFn,
+            onQuery: (String query) {
+              /// Everytime the user queries, reset the query itself and
+              /// the pagination index
+              _query = query;
+              _addSearchingEvent(query, reset: true);
             },
-            icon: const Icon(Icons.add),
+            onExitSearch: () {
+              /// Empty the query
+              _query = "";
+              _addLoadingEvent(reset: true);
+            },
+          ),
+          Expanded(
+            child: BlocListener<KanjiListDetailBloc, KanjiListDetailState>(
+              listener: (context, state) async {
+                if (state is KanjiListDetailStateLoadedPractice) {
+                  await _goToPractice(state);
+                } else if (state is KanjiListDetailStateFailure) {
+                  if (state.error.isNotEmpty) {
+                    GeneralUtils.getSnackBar(context, state.error);
+                  }
+                } else if (state is KanjiListDetailStateLoaded) {
+                  if (StorageManager.readData(StorageManager.haveSeenKanListDetailCoachMark) == false) {
+                    _onTutorial = true;
+                    await TutorialCoach([vocabulary, addVocabulary, actions, changeName],
+                        CoachTutorialParts.details).showTutorial(context,
+                        onEnd: () => _onTutorial = false);
+                  }
+                }
+              },
+              child: BlocBuilder<KanjiListDetailBloc, KanjiListDetailState>(
+                key: vocabulary,
+                builder: (context, state) {
+                  if (state is KanjiListDetailStateLoaded) {
+                    _listName = state.name;
+                    return _body(context, state);
+                  }
+                  else if (state is KanjiListDetailStateLoading ||
+                      state is KanjiListDetailStateSearching ||
+                      state is KanjiListDetailStateLoadedPractice) {
+                    return const KPProgressIndicator();
+                  } else if (state is KanjiListDetailStateFailure) {
+                    return KPEmptyList(
+                        showTryButton: true,
+                        onRefresh: () => _addLoadingEvent(reset: true),
+                        message: "list_details_load_failed".tr()
+                    );
+                  } else {
+                    return Container();
+                  }
+                },
+              ),
+            ),
           ),
         ],
-        child: BlocProvider<KanjiListDetailBloc>(
-          create: (_) => _addLoadingEvent(reset: true),
-          child: Column(
-            children: [
-              KPSearchBar(
-                hint: "list_details_searchBar_hint".tr(),
-                focus: _searchBarFn,
-                onQuery: (String query) {
-                  /// Everytime the user queries, reset the query itself and
-                  /// the pagination index
-                  _query = query;
-                  _addSearchingEvent(query, reset: true);
-                },
-                onExitSearch: () {
-                  /// Empty the query
-                  _query = "";
-                  _addLoadingEvent(reset: true);
-                },
-              ),
-              Expanded(
-                child: BlocListener<KanjiListDetailBloc, KanjiListDetailState>(
-                  listener: (context, state) async {
-                    if (state is KanjiListDetailStateLoadedPractice) {
-                      await _goToPractice(state);
-                    } else if (state is KanjiListDetailStateFailure) {
-                      if (state.error.isNotEmpty) {
-                        GeneralUtils.getSnackBar(context, state.error);
-                      }
-                    } else if (state is KanjiListDetailStateLoaded) {
-                      if (StorageManager.readData(StorageManager.haveSeenKanListDetailCoachMark) == false) {
-                        _onTutorial = true;
-                        await TutorialCoach([vocabulary, addVocabulary, actions, changeName],
-                            CoachTutorialParts.details).showTutorial(context,
-                            onEnd: () => _onTutorial = false);
-                      }
-                    }
-                  },
-                  child: BlocBuilder<KanjiListDetailBloc, KanjiListDetailState>(
-                    key: vocabulary,
-                    builder: (context, state) {
-                      if (state is KanjiListDetailStateLoaded) {
-                        _listName = state.name;
-                        return _body(state);
-                      }
-                      else if (state is KanjiListDetailStateLoading ||
-                          state is KanjiListDetailStateSearching ||
-                          state is KanjiListDetailStateLoadedPractice) {
-                        return const KPProgressIndicator();
-                      } else if (state is KanjiListDetailStateFailure) {
-                        return KPEmptyList(
-                            showTryButton: true,
-                            onRefresh: () => _addLoadingEvent(reset: true),
-                            message: "list_details_load_failed".tr()
-                        );
-                      } else {
-                        return Container();
-                      }
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
 
-  Column _body(KanjiListDetailStateLoaded state) {
+  Column _body(BuildContext bloc, KanjiListDetailStateLoaded state) {
     return Column(
       children: [
         Padding(
@@ -392,7 +388,8 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
           title2: "${"list_details_practice_button_label".tr()} • ${
               _learningMode == LearningMode.spatial
                   ? LearningMode.spatial.name : LearningMode.random.name}",
-          onTap: () => _bloc..add(KanjiEventLoadUpPractice(_learningMode, _listName, _selectedMode))
+          onTap: () => BlocProvider.of<KanjiListDetailBloc>(bloc)
+              .add(KanjiEventLoadUpPractice(_learningMode, _listName, _selectedMode))
         ),
       ],
     );

@@ -18,8 +18,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final LoginBloc _bloc = LoginBloc();
-
   TextEditingController? _emailController;
   TextEditingController? _passwordController;
   FocusNode? _emailFocus;
@@ -42,34 +40,33 @@ class _LoginPageState extends State<LoginPage> {
     _passwordController?.dispose();
     _emailFocus?.dispose();
     _passwordFocus?.dispose();
-    _bloc.close();
     super.dispose();
   }
 
-  _handleLogin() {
+  _handleLogin(BuildContext bloc) {
     String? email = _emailController?.text;
     String? password = _passwordController?.text;
     if (email != null && password != null) {
-      _bloc.add(LoginSubmitting(_mode, email, password));
+      BlocProvider.of<LoginBloc>(bloc).add(LoginSubmitting(_mode, email, password));
     }
   }
 
-  _changePassword(String prevPass, String newPass) {
+  _changePassword(BuildContext bloc, String prevPass, String newPass) {
     if (prevPass.isNotEmpty && newPass.isNotEmpty) {
-      _bloc.add(ChangePassword(prevPass, newPass));
+      BlocProvider.of<LoginBloc>(bloc).add(ChangePassword(prevPass, newPass));
     }
   }
 
-  _removeAccount(String pass) {
-    if (pass.isNotEmpty) _bloc.add(RemoveAccount(pass));
+  _removeAccount(BuildContext bloc, String pass) {
+    if (pass.isNotEmpty) BlocProvider.of<LoginBloc>(bloc).add(RemoveAccount(pass));
   }
 
-  _changePasswordDialog() {
+  _changePasswordDialog(BuildContext bloc) {
     TextEditingController _currPassword = TextEditingController();
     TextEditingController _newPassword = TextEditingController();
     FocusNode _currPasswordFn = FocusNode();
     FocusNode _newPasswordFn = FocusNode();
-    showDialog(context: context, builder: (context) {
+    showDialog(context: bloc, builder: (context) {
       return KPDialog(
         title: Text("login_changePasswordDialog_title".tr()),
         content: Column(
@@ -95,22 +92,22 @@ class _LoginPageState extends State<LoginPage> {
                 obscure: true,
                 onEditingComplete: () {
                   Navigator.of(context).pop();
-                  _changePassword(_currPassword.text, _newPassword.text);
+                  _changePassword(bloc, _currPassword.text, _newPassword.text);
                 },
               ),
             )
           ],
         ),
         positiveButtonText: "login_changePasswordDialog_positive".tr(),
-        onPositive: () => _changePassword(_currPassword.text, _newPassword.text)
+        onPositive: () => _changePassword(bloc, _currPassword.text, _newPassword.text)
       );
     });
   }
 
-  _removeAccountDialog() {
+  _removeAccountDialog(BuildContext bloc) {
     TextEditingController _currPassword = TextEditingController();
     FocusNode _currPasswordFn = FocusNode();
-    showDialog(context: context, builder: (context) {
+    showDialog(context: bloc, builder: (context) {
       return KPDialog(
         title: Text("login_removeAccountDialog_title".tr()),
         content: Column(
@@ -129,23 +126,23 @@ class _LoginPageState extends State<LoginPage> {
               obscure: true,
               onEditingComplete: () {
                 Navigator.of(context).pop();
-                _removeAccount(_currPassword.text);
+                _removeAccount(bloc, _currPassword.text);
               },
             ),
           ],
         ),
         positiveButtonText: "login_removeAccountDialog_positive".tr(),
-        onPositive: () => _removeAccount(_currPassword.text)
+        onPositive: () => _removeAccount(bloc, _currPassword.text)
       );
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return KPScaffold(
-      appBarTitle: BlocProvider<LoginBloc>(
-        create: (_) => _bloc..add(LoginIdle()),
-        child: BlocBuilder<LoginBloc, LoginState>(
+    return BlocProvider<LoginBloc>(
+      create: (_) => LoginBloc()..add(LoginIdle()),
+      child: KPScaffold(
+        appBarTitle: BlocBuilder<LoginBloc, LoginState>(
           builder: (context, state) {
             if (state is LoginStateSuccessful) {
               return FittedBox(fit: BoxFit.fitWidth,
@@ -159,37 +156,42 @@ class _LoginPageState extends State<LoginPage> {
               return Container();
             }
           },
-        )
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            BlocProvider<LoginBloc>(
-              create: (_) => _bloc..add(LoginIdle()),
-              child: BlocBuilder<LoginBloc, LoginState>(
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              BlocConsumer<LoginBloc, LoginState>(
+                listener: (context, state) {
+                  /// Only pop automatically when closing session
+                  if (state is LoginStateLoggedOut) {
+                    if (state.message == "login_bloc_close_session_successful".tr()) {
+                      Navigator.of(context).pop();
+                    }
+                  }
+                },
                 builder: (context, state) {
                   if (state is LoginStateLoading) {
                     return const KPProgressIndicator();
                   } else if (state is LoginStateSuccessful) {
-                    return _successfulState(state);
+                    return _successfulState(context, state);
                   } else if (state is LoginStateIdle) {
-                    return _idleState(state);
+                    return _idleState(context, state);
                   } else if (state is LoginStateLoggedOut) {
                     return _loggedOut(state);
                   } else {
                     return Container();
                   }
                 },
-              )
-            ),
-          ],
-        ),
-      )
+              ),
+            ],
+          ),
+        )
+      ),
     );
   }
 
-  Column _idleState(LoginStateIdle state) {
+  Column _idleState(BuildContext bloc, LoginStateIdle state) {
     return Column(
       children: [
         Icon(Icons.info_outline_rounded, color: CustomColors.getSecondaryColor(context)),
@@ -215,7 +217,7 @@ class _LoginPageState extends State<LoginPage> {
             controller: _passwordController,
             focusNode: _passwordFocus,
             action: TextInputAction.done,
-            onEditingComplete: () => _handleLogin()
+            onEditingComplete: () => _handleLogin(bloc)
           ),
         ),
         Visibility(
@@ -230,7 +232,7 @@ class _LoginPageState extends State<LoginPage> {
         Padding(
           padding: const EdgeInsets.only(top: Margins.margin16),
           child: ElevatedButton(
-            onPressed: () => _handleLogin(),
+            onPressed: () => _handleLogin(bloc),
             child: Text("login_form_positive".tr(), style: Theme.of(context).textTheme.button),
           ),
         ),
@@ -255,7 +257,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Center _successfulState(LoginStateSuccessful state) {
+  Center _successfulState(BuildContext bloc, LoginStateSuccessful state) {
     return Center(
       child: Column(
         children: [
@@ -281,26 +283,26 @@ class _LoginPageState extends State<LoginPage> {
             title: Text("login_miscellaneous_title".tr(),
                 style: Theme.of(context).textTheme.headline5),
           ),
-          _loggedUserActions()
+          _loggedUserActions(bloc)
         ],
       )
     );
   }
 
-  Column _loggedUserActions() {
+  Column _loggedUserActions(BuildContext bloc) {
     return Column(
       children: [
         const Divider(),
         ListTile(
           leading: const Icon(Icons.lock),
           title: Text("login_changePasswordDialog_title".tr()),
-          onTap: () => _changePasswordDialog(),
+          onTap: () => _changePasswordDialog(bloc),
         ),
         const Divider(),
         ListTile(
           leading: const Icon(Icons.logout),
           title: Text("login_close_session_title".tr()),
-          onTap: () => _bloc..add(CloseSession()),
+          onTap: () => bloc.read<LoginBloc>().add(CloseSession()),
         ),
         const Divider(),
         Padding(
@@ -309,7 +311,7 @@ class _LoginPageState extends State<LoginPage> {
             leading: const Icon(Icons.delete),
             title: Text("login_removeAccountDialog_title".tr(),
                 style: TextStyle(color: CustomColors.getSecondaryColor(context))),
-            onTap: () => _removeAccountDialog(),
+            onTap: () => _removeAccountDialog(bloc),
           ),
         ),
       ],

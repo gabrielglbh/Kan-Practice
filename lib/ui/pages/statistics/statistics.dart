@@ -14,15 +14,14 @@ import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 
 class StatisticsPage extends StatelessWidget {
-  StatisticsPage({Key? key}) : super(key: key);
-  final StatisticsBloc _bloc = StatisticsBloc();
+  const StatisticsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return KPScaffold(
       appBarTitle: "settings_general_statistics".tr(),
       child: BlocProvider<StatisticsBloc>(
-        create: (_) => _bloc..add(StatisticsEventLoading()),
+        create: (_) => StatisticsBloc()..add(StatisticsEventLoading()),
         child: BlocBuilder<StatisticsBloc, StatsState>(
           builder: (context, state) {
             if (state is StatisticsLoaded) {

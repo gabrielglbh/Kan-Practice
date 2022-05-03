@@ -23,7 +23,6 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  final SettingsBloc _bloc = SettingsBloc();
   ThemeMode _mode = ThemeMode.light;
   VisualizationMode _graphMode = VisualizationMode.radialChart;
   bool _toggleAffect = false;
@@ -39,31 +38,27 @@ class _SettingsState extends State<Settings> {
   }
 
   @override
-  void dispose() {
-    _bloc.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return KPScaffold(
-      appBarTitle: "settings_title".tr(),
-      appBarActions: [
-        IconButton(
-          onPressed: () {
-            _mode = ThemeManager.instance.themeMode;
-            ThemeManager.instance.switchMode(_mode == ThemeMode.light);
-          },
-          icon: Icon(Theme.of(context).brightness == Brightness.light
-              ? Icons.mode_night_rounded : Icons.light_mode_rounded),
-        ),
-        IconButton(
-          onPressed: () => _bloc..add(SettingsLoadingBackUpDate(context)),
-          icon: const Icon(Icons.sync),
-        )
-      ],
-      child: BlocProvider<SettingsBloc>(
-        create: (_) => _bloc..add(SettingsLoadingBackUpDate(context)),
+    return BlocProvider<SettingsBloc>(
+      create: (_) => SettingsBloc()..add(SettingsLoadingBackUpDate(context)),
+      child: KPScaffold(
+        appBarTitle: "settings_title".tr(),
+        appBarActions: [
+          IconButton(
+            onPressed: () {
+              _mode = ThemeManager.instance.themeMode;
+              ThemeManager.instance.switchMode(_mode == ThemeMode.light);
+            },
+            icon: Icon(Theme.of(context).brightness == Brightness.light
+                ? Icons.mode_night_rounded : Icons.light_mode_rounded),
+          ),
+          BlocBuilder<SettingsBloc, SettingsState>(
+            builder: (context, state) => IconButton(
+              onPressed: () => context.read<SettingsBloc>().add(SettingsLoadingBackUpDate(context)),
+              icon: const Icon(Icons.sync),
+            ),
+          )
+        ],
         child: ListView(
           children: [
             ListTile(
@@ -216,8 +211,8 @@ class _SettingsState extends State<Settings> {
               ),
             ),
           ],
-        ),
-      )
+        )
+      ),
     );
   }
 

@@ -4,7 +4,6 @@ enum TutorialView {
   kanList, market, dictionary, list, details, jisho, practicing, options
 }
 
-/// TODO: UPDATE IMAGES
 extension TestPagesExt on TutorialView {
   String get tutorial {
     switch (this) {

@@ -162,7 +162,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
             ],
           ),
           Positioned(
-            bottom: Margins.margin16,
+            bottom: Margins.margin64,
             right: 0, left: 0,
             child: KPValidationButtons(
               trigger: _showPronunciation,

@@ -63,6 +63,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
   @override
   Widget build(BuildContext context) {
     return KPScaffold(
+      setGestureDetector: false,
       appBarTitle: widget.args.searchInJisho ? "dict_title".tr() : 'dict_add_kanji_title'.tr(),
       appBarActions: [
         IconButton(

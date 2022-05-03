@@ -13,6 +13,12 @@ class KPScaffold extends StatelessWidget {
   final bool automaticallyImplyLeading;
   final bool resizeToAvoidBottomInset;
   final Widget? bottomNavigationWidget;
+  /// For the KPCanvas. Defaults to true to properly dismiss keyboard instances
+  /// across the app.
+  ///
+  /// Can be set to false when KPCanvas is used as it uses GestureDetector to function
+  /// and this one overrides it.
+  final bool setGestureDetector;
   const KPScaffold({
     Key? key,
     required this.appBarTitle,
@@ -24,7 +30,8 @@ class KPScaffold extends StatelessWidget {
     this.toolbarHeight = CustomSizes.appBarHeight,
     this.automaticallyImplyLeading = true,
     this.resizeToAvoidBottomInset = false,
-    this.bottomNavigationWidget
+    this.bottomNavigationWidget,
+    this.setGestureDetector = true
   }) : super(key: key);
 
   @override
@@ -44,7 +51,7 @@ class KPScaffold extends StatelessWidget {
           centerTitle: centerTitle,
         ),
         body: SafeArea(
-          child: GestureDetector(
+          child: setGestureDetector ? GestureDetector(
             /// Remove keyboard on touch anywhere else
             onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
             /// Dismiss keyboard if possible whenever a vertical or horizontal
@@ -55,15 +62,17 @@ class KPScaffold extends StatelessWidget {
             onHorizontalDragStart: (details) {
               FocusManager.instance.primaryFocus?.unfocus();
             },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
-              child: child
-            ),
-          ),
+            child: _child(),
+          ) : _child(),
         ),
         bottomNavigationBar: bottomNavigationWidget,
         floatingActionButton: floatingActionButton,
       ),
     );
   }
+
+  Widget _child() => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
+      child: child
+  );
 }

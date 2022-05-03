@@ -6,7 +6,6 @@ class CustomSizes {
   static const double defaultSizeLearningModeBar = 32;
   static const double defaultResultKanjiListOnTest = 40;
   static const double defaultSizeSearchBarIcons = 50;
-  static const double largeSizeLearningExtContainer = 50;
   static const double defaultJishoAPIContainer = 52;
   static const double defaultSizeFiltersList = 60;
   static const double defaultSizeActionButton = 60;
@@ -16,17 +15,10 @@ class CustomSizes {
   static const double defaultSizeWinRateChart = 80;
   static const double listStudyHeight = 85;
   static const double defaultSizeDragContainerWidth = 90;
-  static const double defaultSizeButtonHeight = 90;
-  static const double defaultSizeRangesHeight = 90;
   static const double defaultSizeWinRateBarChart = 90;
-  static const double alertDialogHeight = 100;
   static const double customButtonWidth = 110;
   static const double defaultJishoGIF = 124;
-  static const double defaultTestResultHeight = 128;
-  static const double studyGuideHeight = listStudyHeight + 44;
   static const double appIcon = 150;
-  static const double defaultSizeStudyModeSelection = 165;
-  static const double maxHeightForListsTest = 240;
   static const double maxHeightForLastSeenDates = 256;
   static const double maxHeightValidationCircle = 256;
 

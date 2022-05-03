@@ -148,7 +148,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
             ],
           ),
           Positioned(
-            bottom: Margins.margin16,
+            bottom: Margins.margin64,
             right: 0, left: 0,
             child: KPValidationButtons(
               trigger: _showMeaning,

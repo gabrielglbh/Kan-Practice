@@ -40,7 +40,8 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
               emit(AddToMarketStateFailure("add_to_market_author_validation_failed".tr()));
             }
             else {
-              final res = await MarketRecords.instance.uploadToMarketPlace(list, kanji, event.description);
+              final res = await MarketRecords.instance.uploadToMarketPlace(
+                  event.listNameForMarket, list, kanji, event.description);
               if (res == 0) {
                 emit(AddToMarketStateSuccess());
               } else if (res == -2) {

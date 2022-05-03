@@ -158,7 +158,7 @@ class MarketRecords {
   ///
   /// In order to be able to upload to the market place, AN USER MUST BE AUTHENTICATED,
   /// else, -2 will be returned
-  Future<int> uploadToMarketPlace(KanjiList list, List<Kanji> kanji, String description) async {
+  Future<int> uploadToMarketPlace(String name, KanjiList list, List<Kanji> kanji, String description) async {
     User? _user = _auth.currentUser;
     await _user?.reload();
 
@@ -170,7 +170,7 @@ class MarketRecords {
         var batch = _ref.batch();
 
         /// Initialize the document with ID as list.name
-        final DocumentReference doc = _ref.collection(collection).doc(list.name);
+        final DocumentReference doc = _ref.collection(collection).doc(name);
 
         /// If the doc already exists, abort
         if ((await doc.get()).exists) {
@@ -179,7 +179,7 @@ class MarketRecords {
 
         /// Initialize MarketList, KanList and Kanjis
         final MarketList resetList = MarketList(
-            name: list.name,
+            name: name,
             words: kanji.length,
             uid: _user.uid,
             author: _user.displayName ?? "",

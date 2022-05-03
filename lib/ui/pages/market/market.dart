@@ -24,7 +24,7 @@ class MarketPlace extends StatefulWidget {
   State<MarketPlace> createState() => _MarketPlaceState();
 }
 
-class _MarketPlaceState extends State<MarketPlace> {
+class _MarketPlaceState extends State<MarketPlace> with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
 
   MarketFilters _currentAppliedFilter = MarketFilters.all;
@@ -100,6 +100,7 @@ class _MarketPlaceState extends State<MarketPlace> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Column(
       children: [
         _filterChips(),
@@ -199,4 +200,7 @@ class _MarketPlaceState extends State<MarketPlace> {
       return Container();
     }
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

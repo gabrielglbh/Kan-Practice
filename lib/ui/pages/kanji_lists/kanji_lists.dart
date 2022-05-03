@@ -27,7 +27,7 @@ class KanjiLists extends StatefulWidget {
   _KanjiListsState createState() => _KanjiListsState();
 }
 
-class _KanjiListsState extends State<KanjiLists> {
+class _KanjiListsState extends State<KanjiLists> with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
 
   /// This variable keeps track of the actual filter applied. The value is
@@ -112,6 +112,7 @@ class _KanjiListsState extends State<KanjiLists> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Column(
       children: [
         _filterChips(),
@@ -203,4 +204,7 @@ class _KanjiListsState extends State<KanjiLists> {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

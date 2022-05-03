@@ -21,6 +21,8 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
   late FocusNode _fn;
   late TextEditingController _tcUser;
   late FocusNode _fnUser;
+  late TextEditingController _tcList;
+  late FocusNode _fnList;
   String _listSelection = "add_to_market_select_list".tr();
 
   @override
@@ -29,6 +31,8 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
     _fn = FocusNode();
     _tcUser = TextEditingController();
     _fnUser = FocusNode();
+    _tcList = TextEditingController();
+    _fnList = FocusNode();
     super.initState();
   }
 
@@ -38,6 +42,8 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
     _fn.dispose();
     _tcUser.dispose();
     _fnUser.dispose();
+    _tcList.dispose();
+    _fnList.dispose();
     super.dispose();
   }
 
@@ -56,7 +62,8 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
               } else {
                 return IconButton(
                   onPressed: () {
-                    context.read<AddToMarketBloc>().add(AddToMarketEventOnUpload(_listSelection, _tc.text, _tcUser.text));
+                    context.read<AddToMarketBloc>().add(AddToMarketEventOnUpload(
+                        _listSelection, _tc.text, _tcUser.text, _tcList.text));
                   },
                   icon: const Icon(Icons.check)
                 );
@@ -100,10 +107,22 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                           title: Text(_listSelection),
                           onTap: () async {
                             String? list = await AddToMarketBottomSheet.callAddToMarketBottomSheet(context);
-                            if (list != null && list.isNotEmpty) setState(() => _listSelection = list);
+                            if (list != null && list.isNotEmpty) {
+                              setState(() => _listSelection = list);
+                              _tcList.text = _listSelection;
+                            }
                           },
                         ),
                       ),
+                    ),
+                    KPTextForm(
+                        header: "add_to_market_list_name_label".tr(),
+                        hint: "add_to_market_list_name_hint".tr(),
+                        controller: _tcList,
+                        focusNode: _fnList,
+                        maxLines: 1,
+                        maxLength: 32,
+                        onEditingComplete: () => _fnUser.requestFocus()
                     ),
                     KPTextForm(
                         header: "add_to_market_username_label".tr(),

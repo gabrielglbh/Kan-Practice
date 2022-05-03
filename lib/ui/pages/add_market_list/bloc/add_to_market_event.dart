@@ -13,9 +13,10 @@ class AddToMarketEventOnUpload extends AddToMarketEvent {
   final String listName;
   final String description;
   final String author;
+  final String listNameForMarket;
 
-  const AddToMarketEventOnUpload(this.listName, this.description, this.author);
+  const AddToMarketEventOnUpload(this.listName, this.description, this.author, this.listNameForMarket);
 
   @override
-  List<Object> get props => [listName, description, author];
+  List<Object> get props => [listName, description, author, listNameForMarket];
 }

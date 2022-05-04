@@ -29,7 +29,7 @@ class CustomDatabase {
 
     _database = await openDatabase(
       path,
-      version: 5,
+      version: 6,
       singleInstance: true,
       onConfigure: (db) async {
         await db.execute('PRAGMA foreign_keys = ON');
@@ -73,17 +73,20 @@ class CustomDatabase {
             "${TestTableFields.testScoreField} INTEGER NOT NULL DEFAULT 0, "
             "${TestTableFields.kanjiInTestField} INTEGER NOT NULL DEFAULT 0, "
             "${TestTableFields.kanjiListsField} TEXT NOT NULL, "
-            "${TestTableFields.studyModeField} INTEGER NOT NULL DEFAULT 0)");
+            "${TestTableFields.studyModeField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestTableFields.testModeField} INTEGER NOT NULL DEFAULT -1)");
       });
   }
 
   /// Function to manage migrations on whenever an update is needed.
   /// Whenever the update to the DB, automatically put it on the onCreate DB
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    if (oldVersion <= 1) Migrations.version1to2(db);
-    if (oldVersion <= 2) Migrations.version2to3(db);
-    if (oldVersion <= 3) Migrations.version3to4(db);
-    if (oldVersion <= 4) Migrations.version4to5(db);
+    final c = Migrations();
+    if (oldVersion <= 1) c.version1to2(db);
+    if (oldVersion <= 2) c.version2to3(db);
+    if (oldVersion <= 3) c.version3to4(db);
+    if (oldVersion <= 4) c.version4to5(db);
+    if (oldVersion <= 5) c.version5to6(db);
   }
 
   /// Closes up the current database.

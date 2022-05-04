@@ -2,10 +2,10 @@ import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/test_result.dart';
 import 'package:kanpractice/core/firebase/models/test_data.dart';
-import 'package:kanpractice/core/utils/GeneralUtils.dart';
-import 'package:kanpractice/core/utils/types/study_modes.dart';
-import 'package:kanpractice/core/utils/types/test_modes.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/general_utils.dart';
+import 'package:kanpractice/core/types/study_modes.dart';
+import 'package:kanpractice/core/types/test_modes.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:sqflite/sqflite.dart';
 
 class TestQueries {
@@ -28,12 +28,13 @@ class TestQueries {
   /// 1: Error during insertion.
   ///
   /// 2: Database is not created.
-  Future<int> createTest(double score, int kanji, int mode, String lists) async {
+  Future<int> createTest(double score, int kanji, int mode, int testMode, String lists) async {
     if (_database != null) {
       try {
         await _database?.insert(TestTableFields.testTable, Test(
           testScore: score, kanjiInTest: kanji,
           studyMode: mode,
+          testMode: testMode,
           kanjiLists: lists,
           takenDate: GeneralUtils.getCurrentMilliseconds()).toJson());
         return 0;
@@ -41,7 +42,9 @@ class TestQueries {
         print(err.toString());
         return -1;
       }
-    } else return -2;
+    } else {
+      return -2;
+    }
   }
 
   /// Removes all tests from the db.
@@ -61,7 +64,9 @@ class TestQueries {
         print(err.toString());
         return -1;
       }
-    } else return -2;
+    } else {
+      return -2;
+    }
   }
 
   /// Query to get all [Test] from the db using lazy loading. Each time, helper
@@ -74,13 +79,18 @@ class TestQueries {
         res = await _database?.rawQuery("SELECT * FROM ${TestTableFields.testTable} "
             "ORDER BY ${TestTableFields.takenDateField} DESC "
             "LIMIT $limit OFFSET ${offset * limit}");
-        if (res != null) return List.generate(res.length, (i) => Test.fromJson(res![i]));
-        else return [];
+        if (res != null) {
+          return List.generate(res.length, (i) => Test.fromJson(res![i]));
+        } else {
+          return [];
+        }
       } catch (err) {
         print(err.toString());
         return [];
       }
-    } else return [];
+    } else {
+      return [];
+    }
   }
 
   /// Query to get all [Test] from the db.
@@ -89,13 +99,18 @@ class TestQueries {
       try {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.query(TestTableFields.testTable);
-        if (res != null) return List.generate(res.length, (i) => Test.fromJson(res![i]));
-        else return [];
+        if (res != null) {
+          return List.generate(res.length, (i) => Test.fromJson(res![i]));
+        } else {
+          return [];
+        }
       } catch (err) {
         print(err.toString());
         return [];
       }
-    } else return [];
+    } else {
+      return [];
+    }
   }
 
   /// Gets all [TestData]
@@ -103,21 +118,21 @@ class TestQueries {
     final int totalTests = await _getTotalTestCount();
     final double totalTestAccuracy = await _getTotalTestAccuracy();
     final int testTotalCountWriting = await _getTestCountBasedOnStudyMode(
-        StudyModes.writing.map);
+        StudyModes.writing.index);
     final int testTotalCountReading = await _getTestCountBasedOnStudyMode(
-        StudyModes.reading.map);
+        StudyModes.reading.index);
     final int testTotalCountRecognition = await _getTestCountBasedOnStudyMode(
-        StudyModes.recognition.map);
+        StudyModes.recognition.index);
     final int testTotalCountListening = await _getTestCountBasedOnStudyMode(
-        StudyModes.listening.map);
+        StudyModes.listening.index);
     final double testTotalWinRateWriting = await _getTestAccuracyBasedOnStudyMode(
-        StudyModes.writing.map);
+        StudyModes.writing.index);
     final double testTotalWinRateReading = await _getTestAccuracyBasedOnStudyMode(
-        StudyModes.reading.map);
+        StudyModes.reading.index);
     final double testTotalWinRateRecognition = await _getTestAccuracyBasedOnStudyMode(
-        StudyModes.recognition.map);
+        StudyModes.recognition.index);
     final double testTotalWinRateListening = await _getTestAccuracyBasedOnStudyMode(
-        StudyModes.listening.map);
+        StudyModes.listening.index);
     final List<int> testModesCount = await _getAllTestsBasedOnTestMode();
 
     return TestData(
@@ -146,13 +161,18 @@ class TestQueries {
       try {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.query(TestTableFields.testTable);
-        if (res != null) return res.length;
-        else return 0;
+        if (res != null) {
+          return res.length;
+        } else {
+          return 0;
+        }
       } catch (err) {
         print(err.toString());
         return 0;
       }
-    } else return -1;
+    } else {
+      return -1;
+    }
   }
 
   /// Retrieves the total test accuracy saved locally in the device.
@@ -164,15 +184,21 @@ class TestQueries {
         if (res != null) {
           List<Test> l = List.generate(res.length, (i) => Test.fromJson(res![i]));
           double acc = 0;
-          l.forEach((test) => acc += test.testScore);
+          for (var test in l) {
+            acc += test.testScore;
+          }
           return acc / l.length;
         }
-        else return 0;
+        else {
+          return 0;
+        }
       } catch (err) {
         print(err.toString());
         return 0;
       }
-    } else return -1;
+    } else {
+      return -1;
+    }
   }
 
   /// Retrieves the test count saved locally in the device based on the [StudyModes].
@@ -184,13 +210,18 @@ class TestQueries {
           where: "${TestTableFields.studyModeField}=?",
           whereArgs: [mode]
         );
-        if (res != null) return res.length;
-        else return 0;
+        if (res != null) {
+          return res.length;
+        } else {
+          return 0;
+        }
       } catch (err) {
         print(err.toString());
         return 0;
       }
-    } else return -1;
+    } else {
+      return -1;
+    }
   }
 
   /// Retrieves the test accuracy saved locally in the device based on the [StudyModes].
@@ -205,15 +236,21 @@ class TestQueries {
         if (res != null) {
           List<Test> l = List.generate(res.length, (i) => Test.fromJson(res![i]));
           double acc = 0;
-          l.forEach((test) => acc += test.testScore);
+          for (var test in l) {
+            acc += test.testScore;
+          }
           return acc == 0 ? 0 : acc / l.length;
         }
-        else return 0;
+        else {
+          return 0;
+        }
       } catch (err) {
         print(err.toString());
         return 0;
       }
-    } else return -1;
+    } else {
+      return -1;
+    }
   }
 
   /// Returns a list of counters of all the performed tests based on their test mode.
@@ -229,8 +266,8 @@ class TestQueries {
         res = await _database?.query(TestTableFields.testTable);
         if (res != null) {
           final List<Test> tests = List.generate(res.length, (i) => Test.fromJson(res![i]));
-          tests.forEach((t) {
-            switch (TestsUtils.mapTestMode(t.kanjiLists)) {
+          for (var t in tests) {
+            switch (TestsUtils.mapTestMode(t.testMode ?? -1)) {
               case Tests.lists: counters[0] += 1; break;
               case Tests.blitz: counters[1] += 1; break;
               case Tests.time: counters[2] += 1; break;
@@ -238,14 +275,18 @@ class TestQueries {
               case Tests.less: counters[4] += 1; break;
               case Tests.categories: counters[5] += 1; break;
             }
-          });
+          }
           return counters;
         }
-        else return counters;
+        else {
+          return counters;
+        }
       } catch (err) {
         print(err.toString());
         return counters;
       }
-    } else return counters;
+    } else {
+      return counters;
+    }
   }
 }

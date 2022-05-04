@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:image/image.dart' as i;
 import 'package:collection/collection.dart';
-import 'package:kanpractice/ui/widgets/canvas/CustomCanvas.dart';
+import 'package:kanpractice/ui/widgets/canvas/kp_custom_canvas.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 
@@ -13,8 +13,8 @@ class Classifier {
   final String _modelFileName = 'model/etlcb_9b_model.tflite';
   final int _labelsLength = 3036;
 
-  static final int width = 64;
-  static final int height = 64;
+  static const int width = 64;
+  static const int height = 64;
 
   late List<String> labels;
 
@@ -36,13 +36,16 @@ class Classifier {
     try{
       if(androidInfo.isPhysicalDevice ?? true){
         // use NNAPI on android if android API >= 27
-        if ((androidInfo.version.sdkInt ?? 27) >= 27)
+        if ((androidInfo.version.sdkInt ?? 27) >= 27) {
           interpreter = await _nnapiInterpreter();
-        // otherwise fallback to GPU delegate
-        else interpreter = await _gpuInterpreterAndroid();
+        } else {
+          interpreter = await _gpuInterpreterAndroid();
+        }
       }
       // use CPU inference on emulators
-      else interpreter = await _cpuInterpreter();
+      else {
+        interpreter = await _cpuInterpreter();
+      }
     }
     catch (e) {
       interpreter = await _cpuInterpreter();
@@ -60,7 +63,7 @@ class Classifier {
     }
   }
 
-  /// Takes an image from [CustomCanvas] to fit in to the interpreter's model
+  /// Takes an image from [KPCustomCanvas] to fit in to the interpreter's model
   /// See the implementation to understand it better.
   List<Category> predict(i.Image image) {
     /// Resizes the image to its actual size to fit model's input shape
@@ -95,11 +98,12 @@ class Classifier {
         labels, probabilityProcessor.process(outputBuffer))
         .getMapWithFloatValue();
 
-    final pred = _getProbability(labeledProb).toList();
+    final predictions = _getProbability(labeledProb).toList();
     List<Category> categories = [];
 
-    for (int x = 0; x < pred.length; x++)
-      categories.add(Category(pred[x].key, pred[x].value));
+    for (int x = 0; x < predictions.length; x++) {
+      categories.add(Category(predictions[x].key, predictions[x].value));
+    }
 
     return categories;
   }
@@ -133,9 +137,13 @@ class Classifier {
   }
 
   int _compare(MapEntry<String, double> e1, MapEntry<String, double> e2) {
-    if (e1.value > e2.value) return -1;
-    else if (e1.value == e2.value) return 0;
-    else return 1;
+    if (e1.value > e2.value) {
+      return -1;
+    } else if (e1.value == e2.value) {
+      return 0;
+    } else {
+      return 1;
+    }
   }
 
   close() => interpreter.close();

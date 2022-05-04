@@ -35,6 +35,7 @@ class TestTableFields {
   static const String kanjiInTestField = "totalKanji";
   static const String kanjiListsField = "kanjiLists";
   static const String studyModeField = "studyMode";
+  static const String testModeField = "testMode";
 }
 
 class DatabaseConstants {

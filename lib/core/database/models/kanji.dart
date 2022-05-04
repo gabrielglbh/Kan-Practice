@@ -1,39 +1,26 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
+import 'package:kanpractice/ui/general_utils.dart';
 
 part 'kanji.g.dart';
 
 @JsonSerializable()
 class Kanji {
-  @JsonKey(name: KanjiTableFields.kanjiField)
   final String kanji;
   @JsonKey(name: KanjiTableFields.listNameField)
   final String listName;
-  @JsonKey(name: KanjiTableFields.meaningField)
   final String meaning;
-  @JsonKey(name: KanjiTableFields.pronunciationField)
   final String pronunciation;
-  @JsonKey(name: KanjiTableFields.winRateWritingField)
   final double winRateWriting;
-  @JsonKey(name: KanjiTableFields.winRateReadingField)
   final double winRateReading;
-  @JsonKey(name: KanjiTableFields.winRateRecognitionField)
   final double winRateRecognition;
-  @JsonKey(name: KanjiTableFields.winRateListeningField)
   final double winRateListening;
-  @JsonKey(name: KanjiTableFields.dateAddedField)
   final int dateAdded;
-  @JsonKey(name: KanjiTableFields.dateLastShown)
   final int dateLastShown;
-  @JsonKey(name: KanjiTableFields.dateLastShownWriting)
   final int dateLastShownWriting;
-  @JsonKey(name: KanjiTableFields.dateLastShownReading)
   final int dateLastShownReading;
-  @JsonKey(name: KanjiTableFields.dateLastShownRecognition)
   final int dateLastShownRecognition;
-  @JsonKey(name: KanjiTableFields.dateLastShownListening)
   final int dateLastShownListening;
-  @JsonKey(name: KanjiTableFields.categoryField)
   final int category;
 
   const Kanji({required this.kanji, required this.listName, required this.meaning,
@@ -52,20 +39,38 @@ class Kanji {
   Map<String, dynamic> toJson() => _$KanjiToJson(this);
 
   Kanji copyWithUpdatedDate({int? dateAdded, int? dateLastShown}) => Kanji(
-    kanji: this.kanji,
-    listName: this.listName,
-    meaning:  this.meaning,
-    pronunciation: this.pronunciation,
-    winRateWriting: this.winRateWriting,
-    winRateReading: this.winRateReading,
-    winRateRecognition: this.winRateRecognition,
-    winRateListening: this.winRateListening,
-    dateLastShownWriting: this.dateLastShownWriting,
-    dateLastShownReading: this.dateLastShownReading,
-    dateLastShownRecognition: this.dateLastShownRecognition,
-    dateLastShownListening: this.dateLastShownListening,
+    kanji: kanji,
+    listName: listName,
+    meaning:  meaning,
+    pronunciation: pronunciation,
+    winRateWriting: winRateWriting,
+    winRateReading: winRateReading,
+    winRateRecognition: winRateRecognition,
+    winRateListening: winRateListening,
+    dateLastShownWriting: dateLastShownWriting,
+    dateLastShownReading: dateLastShownReading,
+    dateLastShownRecognition: dateLastShownRecognition,
+    dateLastShownListening: dateLastShownListening,
     dateAdded: dateAdded ?? this.dateAdded,
     dateLastShown: dateLastShown ?? this.dateLastShown,
-    category: this.category
+    category: category
+  );
+
+  Kanji copyWithReset() => Kanji(
+      kanji: kanji,
+      listName: listName,
+      meaning:  meaning,
+      pronunciation: pronunciation,
+      winRateWriting: DatabaseConstants.emptyWinRate,
+      winRateReading: DatabaseConstants.emptyWinRate,
+      winRateRecognition: DatabaseConstants.emptyWinRate,
+      winRateListening: DatabaseConstants.emptyWinRate,
+      dateLastShownWriting: GeneralUtils.getCurrentMilliseconds(),
+      dateLastShownReading: GeneralUtils.getCurrentMilliseconds(),
+      dateLastShownRecognition: GeneralUtils.getCurrentMilliseconds(),
+      dateLastShownListening: GeneralUtils.getCurrentMilliseconds(),
+      dateAdded: dateAdded,
+      dateLastShown: GeneralUtils.getCurrentMilliseconds(),
+      category: category
   );
 }

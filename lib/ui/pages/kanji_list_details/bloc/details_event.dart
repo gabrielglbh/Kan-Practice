@@ -9,23 +9,23 @@ abstract class KanjiListDetailEvent extends Equatable {
 
 class KanjiEventLoading extends KanjiListDetailEvent {
   final String list;
-  final int offset;
+  final bool reset;
 
-  const KanjiEventLoading(this.list, {this.offset = 0});
+  const KanjiEventLoading(this.list, {this.reset = false});
 
   @override
-  List<Object> get props => [list, offset];
+  List<Object> get props => [list, reset];
 }
 
 class KanjiEventSearching extends KanjiListDetailEvent {
   final String query;
   final String list;
-  final int offset;
+  final bool reset;
 
-  const KanjiEventSearching(this.query, this.list, this.offset);
+  const KanjiEventSearching(this.query, this.list, {this.reset = false});
 
   @override
-  List<Object> get props => [query, list, offset];
+  List<Object> get props => [query, list, reset];
 }
 
 class KanjiEventLoadUpPractice extends KanjiListDetailEvent {

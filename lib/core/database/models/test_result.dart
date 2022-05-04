@@ -5,22 +5,21 @@ part 'test_result.g.dart';
 
 @JsonSerializable()
 class Test {
-  @JsonKey(name: TestTableFields.takenDateField)
   final int takenDate;
   @JsonKey(name: TestTableFields.testScoreField)
   final double testScore;
   @JsonKey(name: TestTableFields.kanjiInTestField)
   final int kanjiInTest;
-  @JsonKey(name: TestTableFields.kanjiListsField)
   final String kanjiLists;
-  @JsonKey(name: TestTableFields.studyModeField)
+  final int? testMode;
   final int studyMode;
 
   Test({required this.takenDate, required this.testScore, required this.kanjiLists,
-    required this.kanjiInTest, required this.studyMode});
+    required this.kanjiInTest, required this.studyMode, this.testMode = -1});
 
   /// Empty [Test]
-  static final Test empty = Test(testScore: 0, kanjiInTest: 0, kanjiLists: "", takenDate: 0, studyMode: 0);
+  static final Test empty = Test(testScore: 0, kanjiInTest: 0, kanjiLists: "",
+      takenDate: 0, studyMode: 0, testMode: 0);
 
   factory Test.fromJson(Map<String, dynamic> json) => _$TestFromJson(json);
   Map<String, dynamic> toJson() => _$TestToJson(this);

@@ -2,7 +2,7 @@ import 'package:image/image.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kanpractice/core/tflite/classifier.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 
 part 'dict_event.dart';
@@ -15,10 +15,10 @@ class DictBloc extends Bloc<DictEvent,DictState> {
       try {
         emit(DictStateLoading());
         /// Instantiate the classifier once the page has been animated in
-        await Future.delayed(Duration(milliseconds: 500), () {
+        await Future.delayed(const Duration(milliseconds: 500), () {
           model = Classifier();
         });
-        emit(DictStateLoaded());
+        emit(const DictStateLoaded());
       } on Exception {
         emit(DictStateFailure());
       }

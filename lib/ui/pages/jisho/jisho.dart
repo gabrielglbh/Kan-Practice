@@ -2,44 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/ui/pages/jisho/arguments.dart';
 import 'package:kanpractice/ui/pages/jisho/bloc/jisho_bloc.dart';
-import 'package:kanpractice/ui/pages/jisho/widgets/ExamplePhrases.dart';
-import 'package:kanpractice/ui/pages/jisho/widgets/SingleKanjiResult.dart';
-import 'package:kanpractice/ui/pages/jisho/widgets/WordResult.dart';
-import 'package:kanpractice/ui/pages/jisho/widgets/generic/AddToKanListBottomSheet.dart';
-import 'package:kanpractice/ui/theme/consts.dart';
-import 'package:kanpractice/ui/widgets/CustomButton.dart';
-import 'package:kanpractice/ui/widgets/ProgressIndicator.dart';
+import 'package:kanpractice/ui/pages/jisho/widgets/example_phrases.dart';
+import 'package:kanpractice/ui/pages/jisho/widgets/single_kanji_result.dart';
+import 'package:kanpractice/ui/pages/jisho/widgets/word_result.dart';
+import 'package:kanpractice/ui/pages/jisho/widgets/generic/add_to_kanlist_bottom_sheet.dart';
+import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/ui/widgets/kp_button.dart';
+import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/ui/widgets/TTSIconButton.dart';
+import 'package:kanpractice/ui/widgets/kp_tts_icon_button.dart';
+import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 
 class JishoPage extends StatelessWidget {
   final JishoArguments args;
 
-  const JishoPage({required this.args});
+  const JishoPage({
+    Key? key,
+    required this.args
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: CustomSizes.appBarHeight,
-        title: FittedBox(fit: BoxFit.fitWidth, child: Text(args.kanji ?? "?")),
-        centerTitle: true,
-        actions: [
-          TTSIconButton(kanji: args.kanji)
-        ],
-      ),
-      body: Column(
+    return KPScaffold(
+      appBarTitle: args.kanji ?? "?",
+      centerTitle: true,
+      appBarActions: [
+        TTSIconButton(kanji: args.kanji)
+      ],
+      child: Column(
         children: [
           Expanded(
             child: BlocProvider<JishoBloc>(
               create: (_) => JishoBloc()..add(JishoLoadingEvent(kanji: args.kanji ?? "")),
               child: BlocBuilder<JishoBloc, JishoState>(
                 builder: (context, state) {
-                  if (state is JishoStateLoading)
-                    return CustomProgressIndicator();
-                  else if (state is JishoStateFailure)
+                  if (state is JishoStateLoading) {
+                    return const KPProgressIndicator();
+                  } else if (state is JishoStateFailure) {
                     return _nothingFound();
-                  else if (state is JishoStateLoaded) {
+                  } else if (state is JishoStateLoaded) {
                     return _content(context, state);
                   } else {
                     return Container();
@@ -65,7 +66,7 @@ class JishoPage extends StatelessWidget {
             children: [
               Visibility(
                 visible: args.fromDictionary,
-                child: CustomButton(
+                child: KPButton(
                   title2: "dict_jisho_add_kanji_label".tr(),
                   onTap: () {
                     AddToKanListBottomSheet.callAddToKanListBottomSheet(context, args.kanji, state.data);
@@ -112,17 +113,17 @@ class JishoPage extends StatelessWidget {
   Widget _nothingFound() {
     return Center(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
+        padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
         child: Text("jisho_no_match".tr(), textAlign: TextAlign.center)
       ));
   }
 
   Widget _poweredByJisho() {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: Margins.margin8),
+      padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
       child: Chip(
         backgroundColor: Colors.green[200],
-        label: Text("jisho_resultData_powered_by".tr(), style: TextStyle(color: Colors.black)),
+        label: Text("jisho_resultData_powered_by".tr(), style: const TextStyle(color: Colors.black)),
       ),
     );
   }

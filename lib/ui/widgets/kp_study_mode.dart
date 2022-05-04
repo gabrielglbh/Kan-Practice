@@ -153,22 +153,22 @@ class KPTestStudyMode extends StatelessWidget {
       case StudyModes.writing:
         await Navigator.of(context).pushNamed(KanPracticePages.writingStudyPage,
             arguments: ModeArguments(studyList: sortedList, isTest: true,
-                display: displayTestName, mode: mode, listsNames: testName));
+                testMode: type, display: displayTestName, mode: mode, listsNames: testName));
         break;
       case StudyModes.reading:
         await Navigator.of(context).pushNamed(KanPracticePages.readingStudyPage,
             arguments: ModeArguments(studyList: sortedList, isTest: true,
-                display: displayTestName, mode: mode, listsNames: testName));
+                testMode: type, display: displayTestName, mode: mode, listsNames: testName));
         break;
       case StudyModes.recognition:
         await Navigator.of(context).pushNamed(KanPracticePages.recognitionStudyPage,
             arguments: ModeArguments(studyList: sortedList, isTest: true,
-                display: displayTestName, mode: mode, listsNames: testName));
+                testMode: type, display: displayTestName, mode: mode, listsNames: testName));
         break;
       case StudyModes.listening:
         await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
             arguments: ModeArguments(studyList: sortedList, isTest: true,
-                display: displayTestName, mode: mode, listsNames: testName));
+                testMode: type, display: displayTestName, mode: mode, listsNames: testName));
         break;
     }
   }

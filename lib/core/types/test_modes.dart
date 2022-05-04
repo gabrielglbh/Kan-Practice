@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/types/kanji_categories.dart';
 
 enum Tests {
   lists, blitz, time, numbers, less, categories
@@ -43,30 +42,22 @@ extension TestsExt on Tests {
 }
 
 class TestsUtils {
-  /// Maps the String received from the source to a Tests. Based on [map]
-  static Tests mapTestMode(String map) {
-    if (map == 'blitz_bottom_sheet_label'.tr()) {
-      return Tests.blitz;
-    } else if (map == 'remembrance_bottom_sheet_label'.tr()) {
-      return Tests.time;
-    } else if (map == 'number_bottom_sheet_label'.tr()) {
-      return Tests.numbers;
-    } else if (map == 'less_pct_bottom_sheet_label'.tr()) {
-      return Tests.less;
-    } else if (map.contains('categories_test_bottom_sheet_label'.tr(), 0)) {
-      bool containsCategory = false;
-      for (var c in KanjiCategory.values) {
-        if (map.endsWith(c.category)) containsCategory = true;
-      }
-      if (containsCategory) {
+  /// Maps the int received from the source to a Tests. Based on [map]
+  static Tests mapTestMode(int map) {
+    switch(map) {
+      case 1:
+        return Tests.blitz;
+      case 2:
+        return Tests.time;
+      case 3:
+        return Tests.numbers;
+      case 4:
+        return Tests.less;
+      case 5:
         return Tests.categories;
-      } else {
+      case 0:
+      default:
         return Tests.lists;
-      }
-    }
-    /// If the map consists of various lessons, just return lists.
-    else {
-      return Tests.lists;
     }
   }
 }

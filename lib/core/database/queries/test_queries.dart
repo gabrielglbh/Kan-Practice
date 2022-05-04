@@ -28,12 +28,13 @@ class TestQueries {
   /// 1: Error during insertion.
   ///
   /// 2: Database is not created.
-  Future<int> createTest(double score, int kanji, int mode, String lists) async {
+  Future<int> createTest(double score, int kanji, int mode, int testMode, String lists) async {
     if (_database != null) {
       try {
         await _database?.insert(TestTableFields.testTable, Test(
           testScore: score, kanjiInTest: kanji,
           studyMode: mode,
+          testMode: testMode,
           kanjiLists: lists,
           takenDate: GeneralUtils.getCurrentMilliseconds()).toJson());
         return 0;
@@ -117,21 +118,21 @@ class TestQueries {
     final int totalTests = await _getTotalTestCount();
     final double totalTestAccuracy = await _getTotalTestAccuracy();
     final int testTotalCountWriting = await _getTestCountBasedOnStudyMode(
-        StudyModes.writing.map);
+        StudyModes.writing.index);
     final int testTotalCountReading = await _getTestCountBasedOnStudyMode(
-        StudyModes.reading.map);
+        StudyModes.reading.index);
     final int testTotalCountRecognition = await _getTestCountBasedOnStudyMode(
-        StudyModes.recognition.map);
+        StudyModes.recognition.index);
     final int testTotalCountListening = await _getTestCountBasedOnStudyMode(
-        StudyModes.listening.map);
+        StudyModes.listening.index);
     final double testTotalWinRateWriting = await _getTestAccuracyBasedOnStudyMode(
-        StudyModes.writing.map);
+        StudyModes.writing.index);
     final double testTotalWinRateReading = await _getTestAccuracyBasedOnStudyMode(
-        StudyModes.reading.map);
+        StudyModes.reading.index);
     final double testTotalWinRateRecognition = await _getTestAccuracyBasedOnStudyMode(
-        StudyModes.recognition.map);
+        StudyModes.recognition.index);
     final double testTotalWinRateListening = await _getTestAccuracyBasedOnStudyMode(
-        StudyModes.listening.map);
+        StudyModes.listening.index);
     final List<int> testModesCount = await _getAllTestsBasedOnTestMode();
 
     return TestData(
@@ -266,7 +267,7 @@ class TestQueries {
         if (res != null) {
           final List<Test> tests = List.generate(res.length, (i) => Test.fromJson(res![i]));
           for (var t in tests) {
-            switch (TestsUtils.mapTestMode(t.kanjiLists)) {
+            switch (TestsUtils.mapTestMode(t.testMode ?? -1)) {
               case Tests.lists: counters[0] += 1; break;
               case Tests.blitz: counters[1] += 1; break;
               case Tests.time: counters[2] += 1; break;

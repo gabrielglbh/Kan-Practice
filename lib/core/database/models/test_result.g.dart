@@ -12,6 +12,7 @@ Test _$TestFromJson(Map<String, dynamic> json) => Test(
       kanjiLists: json['kanjiLists'] as String,
       kanjiInTest: json['totalKanji'] as int,
       studyMode: json['studyMode'] as int,
+      testMode: json['testMode'] as int? ?? -1,
     );
 
 Map<String, dynamic> _$TestToJson(Test instance) => <String, dynamic>{
@@ -19,5 +20,6 @@ Map<String, dynamic> _$TestToJson(Test instance) => <String, dynamic>{
       'score': instance.testScore,
       'totalKanji': instance.kanjiInTest,
       'kanjiLists': instance.kanjiLists,
+      'testMode': instance.testMode,
       'studyMode': instance.studyMode,
     };

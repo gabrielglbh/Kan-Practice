@@ -171,6 +171,7 @@ class _MarketPlaceState extends State<MarketPlace> with AutomaticKeepAliveClient
           : Expanded(
         child: RefreshIndicator(
           onRefresh: () => _addLoadingEvent(reset: true),
+          color: CustomColors.secondaryColor,
           child: ListView.builder(
               key: const PageStorageKey<String>('marketListsController'),
               controller: _scrollController,

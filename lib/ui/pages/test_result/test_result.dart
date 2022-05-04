@@ -29,8 +29,13 @@ class _TestResultState extends State<TestResult> {
   /// Saves the current test on the database on the initialization of the current
   /// page to avoid unusual behaviors.
   Future<void> _saveTest() async {
-    await TestQueries.instance.createTest(widget.args.score,
-        widget.args.kanji, widget.args.studyMode, widget.args.listsName);
+    await TestQueries.instance.createTest(
+        widget.args.score,
+        widget.args.kanji,
+        widget.args.studyMode,
+        widget.args.testMode,
+        widget.args.listsName
+    );
   }
 
   @override

@@ -171,6 +171,7 @@ class _KanjiListsState extends State<KanjiLists> with AutomaticKeepAliveClientMi
               : Expanded(
             child: RefreshIndicator(
               onRefresh: () => _addLoadingEvent(reset: true),
+              color: CustomColors.secondaryColor,
               child: ListView.builder(
                 key: const PageStorageKey<String>('kanListListsController'),
                 controller: _scrollController,
@@ -192,7 +193,6 @@ class _KanjiListsState extends State<KanjiLists> with AutomaticKeepAliveClientMi
                       ));
                       _resetScroll();
                     },
-                    onPopWhenTapped: () => _addLoadingEvent(reset: true)
                   );
                 }
               ),

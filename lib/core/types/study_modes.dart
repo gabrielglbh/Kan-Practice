@@ -42,19 +42,6 @@ extension StudyModesExt on StudyModes {
         return Colors.green.shade300;
     }
   }
-
-  int get map {
-    switch(this) {
-      case StudyModes.writing:
-        return 0;
-      case StudyModes.reading:
-        return 1;
-      case StudyModes.recognition:
-        return 2;
-      case StudyModes.listening:
-        return 3;
-    }
-  }
 }
 
 class StudyModesUtil {

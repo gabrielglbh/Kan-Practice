@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/number_ranges.dart';
+import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
@@ -129,7 +130,9 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
               Navigator.of(context).pop(); // Dismiss bottom sheet
               await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
                 arguments: ModeArguments(studyList: list, isTest: true,
-                  mode: StudyModes.listening, display: "test_mode_number".tr(),
+                  mode: StudyModes.listening,
+                  testMode: Tests.numbers,
+                  display: "test_mode_number".tr(),
                   listsNames: listsNames, isNumberTest: true));
             }
           }

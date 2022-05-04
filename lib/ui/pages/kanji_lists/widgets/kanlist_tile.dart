@@ -11,8 +11,6 @@ import 'package:easy_localization/easy_localization.dart';
 class KanListTile extends StatelessWidget {
   /// [KanjiList] item to paint as a Tile
   final KanjiList item;
-  /// Action to perform when returning from the kanji_list_details
-  final Function onPopWhenTapped;
   /// Action to perform when tapping on a [KanjiList], in addition to navigating to kanji_list_details
   final Function onTap;
   /// Action to perform when removing a [KanjiList]
@@ -23,7 +21,6 @@ class KanListTile extends StatelessWidget {
     Key? key,
     required this.item,
     required this.onTap,
-    required this.onPopWhenTapped,
     required this.onRemoval,
     this.mode = VisualizationMode.radialChart
   }) : super(key: key);
@@ -32,10 +29,9 @@ class KanListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        onTap: () async {
+        onTap: () {
           onTap();
-          await Navigator.of(context).pushNamed(KanPracticePages.kanjiListDetailsPage, arguments: item)
-              .then((_) => onPopWhenTapped());
+          Navigator.of(context).pushNamed(KanPracticePages.kanjiListDetailsPage, arguments: item);
         },
         onLongPress: () => _createDialogForDeletingKanList(context, item),
         title: Padding(

@@ -62,8 +62,8 @@ class StudyModeUpdateHandler {
               }
               Navigator.of(context).pushReplacementNamed(KanPracticePages.testResultPage, arguments:
               TestResultArguments(score: testScore, kanji: args.studyList.length,
-                  studyMode: args.mode.map, listsName: args.listsNames,
-                  studyList: _studyList));
+                  studyMode: args.mode.index, testMode: args.testMode.index,
+                  listsName: args.listsNames, studyList: _studyList));
             }
             /// If the user went back in mid list, update the list accordingly
             /// keeping in mind that the score of the last kanji should be 0.5.

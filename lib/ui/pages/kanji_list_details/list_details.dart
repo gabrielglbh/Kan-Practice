@@ -5,6 +5,7 @@ import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/tutorial/tutorial_manager.dart';
+import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/coach_tutorial_parts.dart';
 import 'package:kanpractice/core/types/learning_mode.dart';
@@ -190,25 +191,25 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
       case StudyModes.writing:
         await Navigator.of(context).pushNamed(KanPracticePages.writingStudyPage,
             arguments: ModeArguments(studyList: state.list, isTest: false,
-                mode: StudyModes.writing, display: widget.list.name))
+                mode: StudyModes.writing, testMode: Tests.blitz, display: widget.list.name))
             .then((value) => _addLoadingEvent(reset: true));
         break;
       case StudyModes.reading:
         await Navigator.of(context).pushNamed(KanPracticePages.readingStudyPage,
             arguments: ModeArguments(studyList: state.list, isTest: false,
-                mode: StudyModes.reading, display: widget.list.name))
+                mode: StudyModes.reading, testMode: Tests.blitz, display: widget.list.name))
             .then((value) => _addLoadingEvent(reset: true));
         break;
       case StudyModes.recognition:
         await Navigator.of(context).pushNamed(KanPracticePages.recognitionStudyPage,
             arguments: ModeArguments(studyList: state.list, isTest: false,
-                mode: StudyModes.recognition, display: widget.list.name))
+                mode: StudyModes.recognition, testMode: Tests.blitz, display: widget.list.name))
             .then((value) => _addLoadingEvent(reset: true));
         break;
       case StudyModes.listening:
         await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
             arguments: ModeArguments(studyList: state.list, isTest: false,
-                mode: StudyModes.listening, display: widget.list.name))
+                mode: StudyModes.listening, testMode: Tests.blitz, display: widget.list.name))
             .then((value) => _addLoadingEvent(reset: true));
         break;
     }
@@ -299,7 +300,8 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
             },
           ),
           Expanded(
-            child: BlocListener<KanjiListDetailBloc, KanjiListDetailState>(
+            child: BlocConsumer<KanjiListDetailBloc, KanjiListDetailState>(
+              key: vocabulary,
               listener: (context, state) async {
                 if (state is KanjiListDetailStateLoadedPractice) {
                   await _goToPractice(state);
@@ -316,28 +318,25 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
                   }
                 }
               },
-              child: BlocBuilder<KanjiListDetailBloc, KanjiListDetailState>(
-                key: vocabulary,
-                builder: (context, state) {
-                  if (state is KanjiListDetailStateLoaded) {
-                    _listName = state.name;
-                    return _body(context, state);
-                  }
-                  else if (state is KanjiListDetailStateLoading ||
-                      state is KanjiListDetailStateSearching ||
-                      state is KanjiListDetailStateLoadedPractice) {
-                    return const KPProgressIndicator();
-                  } else if (state is KanjiListDetailStateFailure) {
-                    return KPEmptyList(
-                        showTryButton: true,
-                        onRefresh: () => _addLoadingEvent(reset: true),
-                        message: "list_details_load_failed".tr()
-                    );
-                  } else {
-                    return Container();
-                  }
-                },
-              ),
+              builder: (context, state) {
+                if (state is KanjiListDetailStateLoaded) {
+                  _listName = state.name;
+                  return _body(context, state);
+                }
+                else if (state is KanjiListDetailStateLoading ||
+                    state is KanjiListDetailStateSearching ||
+                    state is KanjiListDetailStateLoadedPractice) {
+                  return const KPProgressIndicator();
+                } else if (state is KanjiListDetailStateFailure) {
+                  return KPEmptyList(
+                      showTryButton: true,
+                      onRefresh: () => _addLoadingEvent(reset: true),
+                      message: "list_details_load_failed".tr()
+                  );
+                } else {
+                  return Container();
+                }
+              },
             ),
           ),
         ],

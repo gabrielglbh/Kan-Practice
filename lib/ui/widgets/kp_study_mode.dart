@@ -147,7 +147,8 @@ class KPTestStudyMode extends StatelessWidget {
     String displayTestName = type.name;
     List<Kanji> sortedList = l.sublist(0, l.length < CustomSizes.numberOfKanjiInTest
         ? l.length : CustomSizes.numberOfKanjiInTest);
-    Navigator.of(context).pop(); // Dismiss bottom sheet
+    Navigator.of(context).pop(); // Dismiss this bottom sheet
+    Navigator.of(context).pop(); // Dismiss the tests bottom sheet
 
     switch (mode) {
       case StudyModes.writing:

@@ -127,7 +127,8 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
               GeneralUtils.getSnackBar(context, "study_modes_empty".tr());
             }
             else {
-              Navigator.of(context).pop(); // Dismiss bottom sheet
+              Navigator.of(context).pop(); // Dismiss this bottom sheet
+              Navigator.of(context).pop(); // Dismiss the tests bottom sheet
               await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
                 arguments: ModeArguments(studyList: list, isTest: true,
                   mode: StudyModes.listening,

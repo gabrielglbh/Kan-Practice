@@ -125,7 +125,7 @@ class _TestHistoryState extends State<TestHistory> {
                 child: Text("${mode.mode} • ${"test_history_testTaken".tr()} "
                     "${GeneralUtils.parseDateMilliseconds(context, t.takenDate)}",
                     style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                      color: Colors.grey.shade600,
+                      color: Colors.grey.shade500,
                       fontStyle: FontStyle.italic
                     )
                 ),

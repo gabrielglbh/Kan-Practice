@@ -6,6 +6,7 @@ import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/pages/settings/bloc/settings_bloc.dart';
+import 'package:kanpractice/ui/pages/settings/widgets/change_kanji_test.dart';
 import 'package:kanpractice/ui/pages/settings/widgets/copyrigh_info.dart';
 import 'package:kanpractice/ui/pages/settings/widgets/dev_info.dart';
 import 'package:kanpractice/ui/theme/theme_manager.dart';
@@ -26,6 +27,7 @@ class _SettingsState extends State<Settings> {
   ThemeMode _mode = ThemeMode.light;
   VisualizationMode _graphMode = VisualizationMode.radialChart;
   bool _toggleAffect = false;
+  int _kanjiInTest = CustomSizes.numberOfKanjiInTest;
 
   @override
   void initState() {
@@ -34,6 +36,8 @@ class _SettingsState extends State<Settings> {
     _graphMode = VisualizationModeExt.mode(StorageManager.readData(
         StorageManager.kanListGraphVisualization)
           ?? VisualizationMode.radialChart);
+    _kanjiInTest = StorageManager.readData(StorageManager.numberOfKanjiInTest)
+        ?? CustomSizes.numberOfKanjiInTest;
     super.initState();
   }
 
@@ -99,6 +103,12 @@ class _SettingsState extends State<Settings> {
             ),
             const Divider(),
             ListTile(
+              leading: Icon(Icons.track_changes_rounded, color: CustomColors.getSecondaryColor(context)),
+              title: Text("settings_general_testHistory".tr()),
+              onTap: () async => Navigator.of(context).pushNamed(KanPracticePages.testHistoryPage),
+            ),
+            const Divider(),
+            ListTile(
               leading: const Icon(Icons.auto_graph_rounded, color: Colors.lightBlueAccent),
               title: Text("settings_general_toggle".tr()),
               subtitle: Padding(
@@ -126,9 +136,16 @@ class _SettingsState extends State<Settings> {
             ),
             const Divider(),
             ListTile(
-              leading: Icon(Icons.track_changes_rounded, color: CustomColors.getSecondaryColor(context)),
-              title: Text("settings_general_testHistory".tr()),
-              onTap: () async => Navigator.of(context).pushNamed(KanPracticePages.testHistoryPage),
+              leading: const Icon(Icons.adjust_rounded),
+              title: Text("settings_number_of_kanji_in_test".tr()),
+              trailing: Text("$_kanjiInTest", style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                  color: Colors.grey.shade500
+              )),
+              onTap: () async {
+                final newValue = await ChangeKanjiInTest.show(context);
+                setState(() => _kanjiInTest = newValue ?? CustomSizes.numberOfKanjiInTest);
+                StorageManager.saveData(StorageManager.numberOfKanjiInTest, _kanjiInTest);
+              },
             ),
             const Divider(),
             ListTile(

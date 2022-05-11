@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
+import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/number_ranges.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
@@ -31,6 +32,7 @@ class KPNumberTestBottomSheet extends StatefulWidget {
 
 class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
   final List<Ranges> _selectedLists = [];
+  int _kanjiInTest = CustomSizes.numberOfKanjiInTest;
 
   List<Kanji> _loadBlitzTest() {
     /// If no range is selected, 0 to 10K will be taken
@@ -45,10 +47,17 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
       max = _selectedLists[_selectedLists.length - 1].max;
     }
 
-    return List.generate(CustomSizes.numberOfKanjiInTest, (n) {
+    return List.generate(_kanjiInTest, (n) {
       String num = (min + _random.nextInt((max + 1) - min)).toString();
       return Kanji(kanji: num, pronunciation: num, meaning: num, listName: "Numbers");
     });
+  }
+
+  @override
+  void initState() {
+    _kanjiInTest = StorageManager.readData(StorageManager.numberOfKanjiInTest)
+        ?? CustomSizes.numberOfKanjiInTest;
+    super.initState();
   }
 
   @override
@@ -70,7 +79,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin32),
-                  child: Text("${CustomSizes.numberOfKanjiInTest.toString()} "
+                  child: Text("$_kanjiInTest "
                     "${"number_bottom_sheet_content".tr()}",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyText1),

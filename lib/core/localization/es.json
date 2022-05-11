@@ -157,6 +157,8 @@
   "settings_information_license_label": "Licencias",
   "settings_information_terms_label": "Legal",
   "settings_information_about_label": "Copyright",
+  "settings_number_of_kanji_in_test": "Número de Palabras en los Tests",
+  "change_kanji_in_test_selection": "Selecciona un Valor",
   "test_history_showRemoveTestsDialog_title": "Eliminar todas los tests",
   "test_history_showRemoveTestsDialog_content": "Se eliminarán todas las pruebas guardadas en este dispositivo. Esta acción no se puede deshacer. ¿Quieres continuar?",
   "test_history_showRemoveTestsDialog_positive": "Eliminar",

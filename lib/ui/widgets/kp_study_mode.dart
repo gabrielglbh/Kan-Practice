@@ -144,9 +144,10 @@ class KPTestStudyMode extends StatelessWidget {
   }
 
   Future<void> _decideOnMode(BuildContext context, List<Kanji> l, StudyModes mode) async {
-    String displayTestName = type.name;
-    List<Kanji> sortedList = l.sublist(0, l.length < CustomSizes.numberOfKanjiInTest
-        ? l.length : CustomSizes.numberOfKanjiInTest);
+    final displayTestName = type.name;
+    final kanjiInTest = StorageManager.readData(StorageManager.numberOfKanjiInTest)
+        ?? CustomSizes.numberOfKanjiInTest;
+    List<Kanji> sortedList = l.sublist(0, l.length < kanjiInTest ? l.length : kanjiInTest);
     Navigator.of(context).pop(); // Dismiss this bottom sheet
     Navigator.of(context).pop(); // Dismiss the tests bottom sheet
 

@@ -118,18 +118,36 @@ class _TestHistoryState extends State<TestHistory> {
             contentPadding: const EdgeInsets.symmetric(horizontal: Margins.margin8, vertical: Margins.margin8),
             onTap: () {},
             title: Text(t.kanjiLists, textAlign: TextAlign.end, overflow: TextOverflow.ellipsis),
-            subtitle: Container(
-              alignment: Alignment.centerRight,
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: Text("${mode.mode} • ${"test_history_testTaken".tr()} "
-                    "${GeneralUtils.parseDateMilliseconds(context, t.takenDate)}",
-                    style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                      color: Colors.grey.shade500,
-                      fontStyle: FontStyle.italic
-                    )
+            subtitle: Column(
+              children: [
+                Container(
+                  alignment: Alignment.centerRight,
+                  margin: const EdgeInsets.only(top: Margins.margin4),
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: Text("${mode.mode} • ${"test_history_testTaken".tr()} "
+                      "${GeneralUtils.parseDateMilliseconds(context, t.takenDate)}",
+                      style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                          color: Colors.grey.shade500,
+                          fontStyle: FontStyle.italic
+                      )
+                    ),
+                  ),
                 ),
-              ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  margin: const EdgeInsets.only(top: Margins.margin4),
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: Text("${"market_filter_words".tr()}: ${t.kanjiInTest}",
+                      style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                        color: Colors.grey.shade500,
+                        fontStyle: FontStyle.italic
+                      )
+                    ),
+                  ),
+                )
+              ],
             ),
             leading: WinRateChart(winRate: t.testScore,
                 padding: EdgeInsets.zero, rateSize: ChartSize.medium,

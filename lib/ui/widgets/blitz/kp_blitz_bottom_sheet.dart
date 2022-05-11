@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
 import 'package:kanpractice/ui/widgets/kp_study_mode.dart';
@@ -35,6 +36,8 @@ class KPBlitzBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final kanjiInTest = StorageManager.readData(StorageManager.numberOfKanjiInTest)
+      ?? CustomSizes.numberOfKanjiInTest;
     return BottomSheet(
       enableDrag: false,
       onClosing: () {},
@@ -56,7 +59,7 @@ class KPBlitzBottomSheet extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin32),
-                  child: Text("${CustomSizes.numberOfKanjiInTest.toString()} ${
+                  child: Text("$kanjiInTest ${
                       remembranceTest
                           ? "remembrance_bottom_sheet_content".tr()
                           : lessPctTest

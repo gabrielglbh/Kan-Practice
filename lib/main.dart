@@ -5,6 +5,7 @@ import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/visualization_mode.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/theme/theme_manager.dart';
 import 'core/routing/routes.dart';
 
@@ -18,6 +19,9 @@ Future<void> _initSharedPreferences() async {
   }
   if (StorageManager.readData(StorageManager.kanListGraphVisualization) == null) {
     StorageManager.saveData(StorageManager.kanListGraphVisualization, VisualizationMode.radialChart.name);
+  }
+  if (StorageManager.readData(StorageManager.numberOfKanjiInTest) == null) {
+    StorageManager.saveData(StorageManager.numberOfKanjiInTest, CustomSizes.numberOfKanjiInTest);
   }
   /// Make the value the same as hasDoneTutorial. If the user has already seen
   /// the overall tutorial, do not show the coach mark tutorial

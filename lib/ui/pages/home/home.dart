@@ -227,7 +227,6 @@ class _HomePageState extends State<HomePage> {
         BlocBuilder<KanjiListBloc, KanjiListState>(
           builder: (context, state) => KanjiLists(
             key: lists,
-            showTestBottomSheet: widget.showTestBottomSheet,
             removeFocus: () => _searchBarFn.unfocus(),
             onScrolledToBottom: () {
               /// If the query is empty, use the pagination for search bar

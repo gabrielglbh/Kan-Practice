@@ -5,7 +5,6 @@ import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
-import 'package:kanpractice/ui/pages/kanji_lists/widgets/test_bottom_sheet.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/widgets/kanlist_tile.dart';
 import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
 import 'package:kanpractice/ui/consts.dart';
@@ -13,12 +12,10 @@ import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class KanjiLists extends StatefulWidget {
-  final bool? showTestBottomSheet;
   final Function() removeFocus;
   final Function() onScrolledToBottom;
   const KanjiLists({
     Key? key,
-    this.showTestBottomSheet = false,
     required this.removeFocus,
     required this.onScrolledToBottom
   }) : super(key: key);
@@ -50,14 +47,6 @@ class _KanjiListsState extends State<KanjiLists> with AutomaticKeepAliveClientMi
 
     _currentAppliedOrder = StorageManager.readData(StorageManager.orderOnList)
         ?? true;
-
-    /// If showTestBottomSheet is true, show directly the test bottom sheet
-    /// when launching the page. Only true when coming back from the TestResultPage.
-    WidgetsBinding.instance?.addPostFrameCallback((_) async {
-      if (widget.showTestBottomSheet != null && widget.showTestBottomSheet!) {
-        await _loadTests();
-      }
-    });
     super.initState();
   }
 
@@ -67,8 +56,6 @@ class _KanjiListsState extends State<KanjiLists> with AutomaticKeepAliveClientMi
     _scrollController.dispose();
     super.dispose();
   }
-
-  Future<void> _loadTests() async => await TestBottomSheet.show(context);
 
   _scrollListener() {
     /// When reaching last pixel of the list

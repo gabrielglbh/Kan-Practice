@@ -121,19 +121,23 @@ class KanjiQueries {
   /// Query to get all kanji available in the current db based on a chain of [listNames]
   /// that the user has previously selected.
   /// If anything goes wrong, an empty list will be returned.
-  Future<List<Kanji>> getKanjiBasedOnSelectedLists(List<String> listNames) async {
+  Future<List<Kanji>> getKanjiBasedOnSelectedLists(
+      List<String> listNames) async {
     if (_database != null) {
       try {
         String whereClause = "";
+
         /// Build up the where clauses from the listName
         for (var _ in listNames) {
           whereClause += "${KanjiTableFields.listNameField}=? OR ";
         }
+
         /// Clean up the String
         whereClause = whereClause.substring(0, whereClause.length - 4);
         List<Map<String, dynamic>>? res = [];
 
-        res = await _database?.query(KanjiTableFields.kanjiTable, where: whereClause, whereArgs: listNames);
+        res = await _database?.query(KanjiTableFields.kanjiTable,
+            where: whereClause, whereArgs: listNames);
         if (res != null) {
           return List.generate(res.length, (i) => Kanji.fromJson(res![i]));
         } else {
@@ -156,7 +160,8 @@ class KanjiQueries {
       try {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.query(KanjiTableFields.kanjiTable,
-            where: "${KanjiTableFields.categoryField}=?", whereArgs: [category]);
+            where: "${KanjiTableFields.categoryField}=?",
+            whereArgs: [category]);
         if (res != null) {
           return List.generate(res.length, (i) => Kanji.fromJson(res![i]));
         } else {
@@ -173,16 +178,18 @@ class KanjiQueries {
 
   /// Query to get all kanji available in the current db within a list with the name [listName].
   /// If anything goes wrong, an empty list will be returned.
-  Future<List<Kanji>> getAllKanjiFromList(String listName, {int? offset, int? limit}) async {
+  Future<List<Kanji>> getAllKanjiFromList(String listName,
+      {int? offset, int? limit}) async {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.query(KanjiTableFields.kanjiTable,
-          where: "${KanjiTableFields.listNameField}=?", whereArgs: [listName],
-          orderBy: "${KanjiTableFields.dateAddedField} ASC",
-          limit: limit,
-          offset: (offset != null && limit != null) ? (offset * limit) : null
-        );
+            where: "${KanjiTableFields.listNameField}=?",
+            whereArgs: [listName],
+            orderBy: "${KanjiTableFields.dateAddedField} ASC",
+            limit: limit,
+            offset:
+                (offset != null && limit != null) ? (offset * limit) : null);
         if (res != null) {
           return List.generate(res.length, (i) => Kanji.fromJson(res![i]));
         } else {
@@ -205,16 +212,14 @@ class KanjiQueries {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
-        res = await _database?.rawQuery(
-            "SELECT * "
-                "FROM ${KanjiTableFields.kanjiTable} "
-                "WHERE ${KanjiTableFields.listNameField} = '$listName' "
-                "AND (${KanjiTableFields.meaningField} LIKE '%$query%' "
-                "OR ${KanjiTableFields.kanjiField} LIKE '%$query%' "
-                "OR ${KanjiTableFields.pronunciationField} LIKE '%$query%') "
-                "ORDER BY ${KanjiTableFields.dateAddedField} ASC "
-                "LIMIT $limit OFFSET ${offset * limit}"
-        );
+        res = await _database?.rawQuery("SELECT * "
+            "FROM ${KanjiTableFields.kanjiTable} "
+            "WHERE ${KanjiTableFields.listNameField} = '$listName' "
+            "AND (${KanjiTableFields.meaningField} LIKE '%$query%' "
+            "OR ${KanjiTableFields.kanjiField} LIKE '%$query%' "
+            "OR ${KanjiTableFields.pronunciationField} LIKE '%$query%') "
+            "ORDER BY ${KanjiTableFields.dateAddedField} ASC "
+            "LIMIT $limit OFFSET ${offset * limit}");
         if (res != null) {
           return List.generate(res.length, (i) => Kanji.fromJson(res![i]));
         } else {
@@ -232,26 +237,35 @@ class KanjiQueries {
   /// Query to get all kanji available in the current db within a list with the name [listName]
   /// that enables Spatial Learning: ordering in ASC order the [Kanji] with less winRate.
   /// If anything goes wrong, an empty list will be returned.
-  Future<List<Kanji>> getAllKanjiForPractice(String listName, StudyModes mode) async {
+  Future<List<Kanji>> getAllKanjiForPractice(
+      String listName, StudyModes mode) async {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
         switch (mode) {
           case StudyModes.writing:
-            res = await _database?.query(KanjiTableFields.kanjiTable, where: "${KanjiTableFields.listNameField}=?",
-                whereArgs: [listName], orderBy: "${KanjiTableFields.winRateWritingField} ASC");
+            res = await _database?.query(KanjiTableFields.kanjiTable,
+                where: "${KanjiTableFields.listNameField}=?",
+                whereArgs: [listName],
+                orderBy: "${KanjiTableFields.winRateWritingField} ASC");
             break;
           case StudyModes.reading:
-            res = await _database?.query(KanjiTableFields.kanjiTable, where: "${KanjiTableFields.listNameField}=?",
-                whereArgs: [listName], orderBy: "${KanjiTableFields.winRateReadingField} ASC");
+            res = await _database?.query(KanjiTableFields.kanjiTable,
+                where: "${KanjiTableFields.listNameField}=?",
+                whereArgs: [listName],
+                orderBy: "${KanjiTableFields.winRateReadingField} ASC");
             break;
           case StudyModes.recognition:
-            res = await _database?.query(KanjiTableFields.kanjiTable, where: "${KanjiTableFields.listNameField}=?",
-                whereArgs: [listName], orderBy: "${KanjiTableFields.winRateRecognitionField} ASC");
+            res = await _database?.query(KanjiTableFields.kanjiTable,
+                where: "${KanjiTableFields.listNameField}=?",
+                whereArgs: [listName],
+                orderBy: "${KanjiTableFields.winRateRecognitionField} ASC");
             break;
           case StudyModes.listening:
-            res = await _database?.query(KanjiTableFields.kanjiTable, where: "${KanjiTableFields.listNameField}=?",
-                whereArgs: [listName], orderBy: "${KanjiTableFields.winRateListeningField} ASC");
+            res = await _database?.query(KanjiTableFields.kanjiTable,
+                where: "${KanjiTableFields.listNameField}=?",
+                whereArgs: [listName],
+                orderBy: "${KanjiTableFields.winRateListeningField} ASC");
             break;
         }
         if (res != null) {
@@ -298,7 +312,8 @@ class KanjiQueries {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.query(KanjiTableFields.kanjiTable);
         if (res != null) {
-          List<Kanji> l = List.generate(res.length, (i) => Kanji.fromJson(res![i]));
+          List<Kanji> l =
+              List.generate(res.length, (i) => Kanji.fromJson(res![i]));
           final int total = l.length;
           double writing = 0;
           double reading = 0;
@@ -306,23 +321,30 @@ class KanjiQueries {
           double listening = 0;
           for (var kanji in l) {
             writing += (kanji.winRateWriting == DatabaseConstants.emptyWinRate
-                ? 0 : kanji.winRateWriting);
+                ? 0
+                : kanji.winRateWriting);
             reading += (kanji.winRateReading == DatabaseConstants.emptyWinRate
-                ? 0 : kanji.winRateReading);
-            recognition += (kanji.winRateRecognition == DatabaseConstants.emptyWinRate
-                ? 0 : kanji.winRateRecognition);
-            listening += (kanji.winRateListening == DatabaseConstants.emptyWinRate
-                ? 0 : kanji.winRateListening);
+                ? 0
+                : kanji.winRateReading);
+            recognition +=
+                (kanji.winRateRecognition == DatabaseConstants.emptyWinRate
+                    ? 0
+                    : kanji.winRateRecognition);
+            listening +=
+                (kanji.winRateListening == DatabaseConstants.emptyWinRate
+                    ? 0
+                    : kanji.winRateListening);
           }
           return Kanji(
-              meaning: '', pronunciation: '', listName: '', kanji: '',
+              meaning: '',
+              pronunciation: '',
+              listName: '',
+              kanji: '',
               winRateWriting: writing == 0 ? 0 : writing / total,
               winRateReading: reading == 0 ? 0 : reading / total,
               winRateRecognition: recognition == 0 ? 0 : recognition / total,
-              winRateListening: listening == 0 ? 0 : listening / total
-          );
-        }
-        else {
+              winRateListening: listening == 0 ? 0 : listening / total);
+        } else {
           return Kanji.empty;
         }
       } catch (err) {
@@ -341,7 +363,8 @@ class KanjiQueries {
       try {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.query(KanjiTableFields.kanjiTable,
-            where: "${KanjiTableFields.listNameField}=? AND ${KanjiTableFields.kanjiField}=?",
+            where:
+                "${KanjiTableFields.listNameField}=? AND ${KanjiTableFields.kanjiField}=?",
             whereArgs: [listName, kanji]);
         if (res != null) {
           return Kanji.fromJson(res[0]);
@@ -369,7 +392,8 @@ class KanjiQueries {
     if (_database != null) {
       try {
         await _database?.delete(KanjiTableFields.kanjiTable,
-            where: "${KanjiTableFields.listNameField}=? AND ${KanjiTableFields.kanjiField}=?",
+            where:
+                "${KanjiTableFields.listNameField}=? AND ${KanjiTableFields.kanjiField}=?",
             whereArgs: [listName, kanji]);
         return 0;
       } catch (err) {
@@ -389,11 +413,13 @@ class KanjiQueries {
   /// 1: Error during update.
   ///
   /// 2: Database is not created.
-  Future<int> updateKanji(String listName, String kanji, Map<String, dynamic> fields) async {
+  Future<int> updateKanji(
+      String listName, String kanji, Map<String, dynamic> fields) async {
     if (_database != null) {
       try {
         await _database?.update(KanjiTableFields.kanjiTable, fields,
-            where: "${KanjiTableFields.listNameField}=? AND ${KanjiTableFields.kanjiField}=?",
+            where:
+                "${KanjiTableFields.listNameField}=? AND ${KanjiTableFields.kanjiField}=?",
             whereArgs: [listName, kanji]);
         return 0;
       } catch (err) {

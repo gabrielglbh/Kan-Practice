@@ -4,7 +4,7 @@ enum SignMode { login, signup }
 
 extension SignModeExt on SignMode {
   String get name {
-    switch(this) {
+    switch (this) {
       case SignMode.login:
         return "login_login_title".tr();
       case SignMode.signup:

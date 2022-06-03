@@ -30,8 +30,7 @@ class JishoAPI {
           kanji: example.kanji,
           kana: example.kana,
           english: example.english,
-          jishoUri: res.uri
-      ));
+          jishoUri: res.uri));
     }
     return examples;
   }

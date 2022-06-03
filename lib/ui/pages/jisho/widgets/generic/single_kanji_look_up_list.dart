@@ -6,11 +6,9 @@ import 'package:kanpractice/ui/consts.dart';
 class SingleKanjiLookUpList extends StatelessWidget {
   final List<String>? kanjiList;
   final bool fromDictionary;
-  const SingleKanjiLookUpList({
-    Key? key,
-    required this.kanjiList,
-    required this.fromDictionary
-  }) : super(key: key);
+  const SingleKanjiLookUpList(
+      {Key? key, required this.kanjiList, required this.fromDictionary})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +24,9 @@ class SingleKanjiLookUpList extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
               onPressed: () {
                 Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
-                    arguments: JishoArguments(kanji: kanjiList?[index], fromDictionary: fromDictionary));
+                    arguments: JishoArguments(
+                        kanji: kanjiList?[index],
+                        fromDictionary: fromDictionary));
               },
               label: Text(kanjiList?[index] ?? ""),
             ),

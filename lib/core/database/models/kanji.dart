@@ -23,43 +23,51 @@ class Kanji {
   final int dateLastShownListening;
   final int category;
 
-  const Kanji({required this.kanji, required this.listName, required this.meaning,
-    required this.pronunciation, this.winRateReading = DatabaseConstants.emptyWinRate,
-    this.winRateRecognition = DatabaseConstants.emptyWinRate,
-    this.winRateWriting = DatabaseConstants.emptyWinRate,
-    this.winRateListening = DatabaseConstants.emptyWinRate, this.dateAdded = 0,
-    this.dateLastShown = 0, this.dateLastShownWriting = 0, this.dateLastShownReading = 0,
-    this.dateLastShownRecognition = 0, this.dateLastShownListening = 0, this.category = 0
-  });
+  const Kanji(
+      {required this.kanji,
+      required this.listName,
+      required this.meaning,
+      required this.pronunciation,
+      this.winRateReading = DatabaseConstants.emptyWinRate,
+      this.winRateRecognition = DatabaseConstants.emptyWinRate,
+      this.winRateWriting = DatabaseConstants.emptyWinRate,
+      this.winRateListening = DatabaseConstants.emptyWinRate,
+      this.dateAdded = 0,
+      this.dateLastShown = 0,
+      this.dateLastShownWriting = 0,
+      this.dateLastShownReading = 0,
+      this.dateLastShownRecognition = 0,
+      this.dateLastShownListening = 0,
+      this.category = 0});
 
   /// Empty [Kanji]
-  static const Kanji empty = Kanji(kanji: "", listName: "", meaning: "", pronunciation: "");
+  static const Kanji empty =
+      Kanji(kanji: "", listName: "", meaning: "", pronunciation: "");
 
   factory Kanji.fromJson(Map<String, dynamic> json) => _$KanjiFromJson(json);
   Map<String, dynamic> toJson() => _$KanjiToJson(this);
 
   Kanji copyWithUpdatedDate({int? dateAdded, int? dateLastShown}) => Kanji(
-    kanji: kanji,
-    listName: listName,
-    meaning:  meaning,
-    pronunciation: pronunciation,
-    winRateWriting: winRateWriting,
-    winRateReading: winRateReading,
-    winRateRecognition: winRateRecognition,
-    winRateListening: winRateListening,
-    dateLastShownWriting: dateLastShownWriting,
-    dateLastShownReading: dateLastShownReading,
-    dateLastShownRecognition: dateLastShownRecognition,
-    dateLastShownListening: dateLastShownListening,
-    dateAdded: dateAdded ?? this.dateAdded,
-    dateLastShown: dateLastShown ?? this.dateLastShown,
-    category: category
-  );
+      kanji: kanji,
+      listName: listName,
+      meaning: meaning,
+      pronunciation: pronunciation,
+      winRateWriting: winRateWriting,
+      winRateReading: winRateReading,
+      winRateRecognition: winRateRecognition,
+      winRateListening: winRateListening,
+      dateLastShownWriting: dateLastShownWriting,
+      dateLastShownReading: dateLastShownReading,
+      dateLastShownRecognition: dateLastShownRecognition,
+      dateLastShownListening: dateLastShownListening,
+      dateAdded: dateAdded ?? this.dateAdded,
+      dateLastShown: dateLastShown ?? this.dateLastShown,
+      category: category);
 
   Kanji copyWithReset() => Kanji(
       kanji: kanji,
       listName: listName,
-      meaning:  meaning,
+      meaning: meaning,
       pronunciation: pronunciation,
       winRateWriting: DatabaseConstants.emptyWinRate,
       winRateReading: DatabaseConstants.emptyWinRate,
@@ -71,6 +79,5 @@ class Kanji {
       dateLastShownListening: GeneralUtils.getCurrentMilliseconds(),
       dateAdded: dateAdded,
       dateLastShown: GeneralUtils.getCurrentMilliseconds(),
-      category: category
-  );
+      category: category);
 }

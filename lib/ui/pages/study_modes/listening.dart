@@ -20,10 +20,7 @@ import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 
 class ListeningStudy extends StatefulWidget {
   final ModeArguments args;
-  const ListeningStudy({
-    Key? key,
-    required this.args
-  }) : super(key: key);
+  const ListeningStudy({Key? key, required this.args}) : super(key: key);
 
   @override
   _ListeningStudyState createState() => _ListeningStudyState();
@@ -38,12 +35,14 @@ class _ListeningStudyState extends State<ListeningStudy> {
 
   /// Array that saves all scores without any previous context for the test result
   final List<double> _testScores = [];
+
   /// Widget auxiliary variable
   List<Kanji> _studyList = [];
 
   @override
   void initState() {
     _studyList = widget.args.studyList;
+
     /// Execute the TTS when passing to the next kanji
     TextToSpeech.instance.speakKanji(_studyList[_macro].pronunciation);
     super.initState();
@@ -64,9 +63,12 @@ class _ListeningStudyState extends State<ListeningStudy> {
             _macro++;
             _showWord = false;
           });
+
           /// Execute the TTS when passing to the next kanji
-          await TextToSpeech.instance.speakKanji(_studyList[_macro].pronunciation);
+          await TextToSpeech.instance
+              .speakKanji(_studyList[_macro].pronunciation);
         }
+
         /// If we ended the list, update the statistics to DB and exit
         else {
           await _handleFinishedPractice();
@@ -77,6 +79,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
 
   Future<void> _handleFinishedPractice() async {
     _hasFinished = true;
+
     /// If the user is in a test, explicitly pass the _testScores to the handler
     if (widget.args.isTest) {
       double testScore = 0;
@@ -99,19 +102,22 @@ class _ListeningStudyState extends State<ListeningStudy> {
     } else {
       /// Updates the dateLastShown attribute of the finished word AND
       /// the current specific last shown mode attribute
-      await KanjiQueries.instance.updateKanji(widget.args.studyList[_macro].listName,
+      await KanjiQueries.instance.updateKanji(
+          widget.args.studyList[_macro].listName,
           widget.args.studyList[_macro].kanji, {
-            KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds(),
-            KanjiTableFields.dateLastShownListening: GeneralUtils.getCurrentMilliseconds()
-          });
+        KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds(),
+        KanjiTableFields.dateLastShownListening:
+            GeneralUtils.getCurrentMilliseconds()
+      });
+
       /// Add the current virgin score to the test scores...
       if (widget.args.isTest) {
         if (StorageManager.readData(StorageManager.affectOnPractice) ?? false) {
-          await StudyModeUpdateHandler.calculateScore(widget.args, score, _macro);
+          await StudyModeUpdateHandler.calculateScore(
+              widget.args, score, _macro);
         }
         _testScores.add(score);
-      }
-      else {
+      } else {
         await StudyModeUpdateHandler.calculateScore(widget.args, score, _macro);
       }
     }
@@ -121,39 +127,45 @@ class _ListeningStudyState extends State<ListeningStudy> {
   @override
   Widget build(BuildContext context) {
     return KPScaffold(
-      onWillPop: () async => StudyModeUpdateHandler.handle(context, widget.args, onPop: true, lastIndex: _macro),
-      appBarTitle: StudyModeAppBar(title: widget.args.display, studyMode: widget.args.mode.mode),
-      centerTitle: true,
-      appBarActions: [
-        Visibility(
-          visible: _showWord,
-          child: TTSIconButton(kanji: widget.args.studyList[_macro].pronunciation),
-        )
-      ],
-      child: Stack(
-        children: [
-          Column(
-            children: [
-              KPListPercentageIndicator(value: (_macro + 1) / _studyList.length),
-              KPLearningHeaderAnimation(id: _macro, children: _header()),
-            ],
-          ),
-          Positioned(
-            bottom: Margins.margin64,
-            right: 0, left: 0,
-            child: KPValidationButtons(
-              trigger: _showWord,
-              submitLabel: "done_button_label".tr(),
-              wrongAction: (score) async => await _updateUIOnSubmit(score),
-              midWrongAction: (score) async => await _updateUIOnSubmit(score),
-              midPerfectAction: (score) async => await _updateUIOnSubmit(score),
-              perfectAction: (score) async => await _updateUIOnSubmit(score),
-              onSubmit: () => setState(() => _showWord = true),
-            )
+        onWillPop: () async => StudyModeUpdateHandler.handle(
+            context, widget.args, onPop: true, lastIndex: _macro),
+        appBarTitle: StudyModeAppBar(
+            title: widget.args.display, studyMode: widget.args.mode.mode),
+        centerTitle: true,
+        appBarActions: [
+          Visibility(
+            visible: _showWord,
+            child: TTSIconButton(
+                kanji: widget.args.studyList[_macro].pronunciation),
           )
         ],
-      )
-    );
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                KPListPercentageIndicator(
+                    value: (_macro + 1) / _studyList.length),
+                KPLearningHeaderAnimation(id: _macro, children: _header()),
+              ],
+            ),
+            Positioned(
+                bottom: Margins.margin64,
+                right: 0,
+                left: 0,
+                child: KPValidationButtons(
+                  trigger: _showWord,
+                  submitLabel: "done_button_label".tr(),
+                  wrongAction: (score) async => await _updateUIOnSubmit(score),
+                  midWrongAction: (score) async =>
+                      await _updateUIOnSubmit(score),
+                  midPerfectAction: (score) async =>
+                      await _updateUIOnSubmit(score),
+                  perfectAction: (score) async =>
+                      await _updateUIOnSubmit(score),
+                  onSubmit: () => setState(() => _showWord = true),
+                ))
+          ],
+        ));
   }
 
   List<Widget> _header() {
@@ -172,9 +184,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
           visible: !_showWord,
           child: TTSIconButton(
               kanji: _studyList[_macro].pronunciation,
-              iconSize: Margins.margin64 + Margins.margin4
-          )
-      ),
+              iconSize: Margins.margin64 + Margins.margin4)),
       Visibility(
         visible: _showWord,
         child: KPLearningHeaderContainer(
@@ -189,9 +199,9 @@ class _ListeningStudyState extends State<ListeningStudy> {
         maintainAnimation: true,
         maintainState: true,
         child: KPLearningHeaderContainer(
-            height: CustomSizes.defaultSizeLearningExtContainer,
-            text: _studyList[_macro].meaning,
-            top: Margins.margin8,
+          height: CustomSizes.defaultSizeLearningExtContainer,
+          text: _studyList[_macro].meaning,
+          top: Margins.margin8,
         ),
       )
     ];

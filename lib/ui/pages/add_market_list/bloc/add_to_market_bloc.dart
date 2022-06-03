@@ -13,21 +13,22 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
   AddToMarketBloc() : super(AddToMarketStateInitial()) {
     on<AddToMarketEventIdle>((event, emit) {
       final user = AuthRecords.instance.getUser();
-      emit(AddToMarketStateGetUser(user?.displayName ?? user?.email?.split("@")[0] ?? ""));
+      emit(AddToMarketStateGetUser(
+          user?.displayName ?? user?.email?.split("@")[0] ?? ""));
     });
 
     on<AddToMarketEventOnUpload>((event, emit) async {
       emit(AddToMarketStateLoading());
-      if (event.listName == "add_to_market_select_list".tr() || event.description.trim().isEmpty) {
+      if (event.listName == "add_to_market_select_list".tr() ||
+          event.description.trim().isEmpty) {
         emit(AddToMarketStateFailure("add_to_market_validation_failed".tr()));
-      }
-      else {
+      } else {
         final list = await ListQueries.instance.getList(event.listName);
-        final kanji = await KanjiQueries.instance.getAllKanjiFromList(event.listName);
+        final kanji =
+            await KanjiQueries.instance.getAllKanjiFromList(event.listName);
         if (event.author.isEmpty) {
           emit(AddToMarketStateFailure("add_to_market_validation_failed".tr()));
-        }
-        else {
+        } else {
           if (kanji.isEmpty) {
             emit(AddToMarketStateFailure("add_to_market_kanji_empty".tr()));
           } else {
@@ -37,19 +38,22 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
             }
 
             if (!updated) {
-              emit(AddToMarketStateFailure("add_to_market_author_validation_failed".tr()));
-            }
-            else {
+              emit(AddToMarketStateFailure(
+                  "add_to_market_author_validation_failed".tr()));
+            } else {
               final res = await MarketRecords.instance.uploadToMarketPlace(
                   event.listNameForMarket, list, kanji, event.description);
               if (res == 0) {
                 emit(AddToMarketStateSuccess());
               } else if (res == -2) {
-                emit(AddToMarketStateFailure("add_to_market_authentication_failed".tr()));
+                emit(AddToMarketStateFailure(
+                    "add_to_market_authentication_failed".tr()));
               } else if (res == -3) {
-                emit(AddToMarketStateFailure("add_to_market_already_uploaded".tr()));
+                emit(AddToMarketStateFailure(
+                    "add_to_market_already_uploaded".tr()));
               } else {
-                emit(AddToMarketStateFailure("add_to_market_something_wrong".tr()));
+                emit(AddToMarketStateFailure(
+                    "add_to_market_something_wrong".tr()));
               }
             }
           }

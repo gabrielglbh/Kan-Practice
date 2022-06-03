@@ -18,7 +18,8 @@ class KanListCategorySelectionBottomSheet extends StatefulWidget {
   const KanListCategorySelectionBottomSheet({Key? key}) : super(key: key);
 
   @override
-  _KanListCategorySelectionBottomSheetState createState() => _KanListCategorySelectionBottomSheetState();
+  _KanListCategorySelectionBottomSheetState createState() =>
+      _KanListCategorySelectionBottomSheetState();
 
   /// Creates and calls the [BottomSheet] with the content for a regular test
   static Future<String?> show(BuildContext context) async {
@@ -26,12 +27,12 @@ class KanListCategorySelectionBottomSheet extends StatefulWidget {
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
-        builder: (context) => const KanListCategorySelectionBottomSheet()
-    );
+        builder: (context) => const KanListCategorySelectionBottomSheet());
   }
 }
 
-class _KanListCategorySelectionBottomSheetState extends State<KanListCategorySelectionBottomSheet> {
+class _KanListCategorySelectionBottomSheetState
+    extends State<KanListCategorySelectionBottomSheet> {
   final KanjiListBloc _bloc = KanjiListBloc();
   List<Kanji> _kanji = [];
   KanjiCategory _selectedCategory = KanjiCategory.noun;
@@ -39,8 +40,10 @@ class _KanListCategorySelectionBottomSheetState extends State<KanListCategorySel
   bool _selectionMode = false;
   bool _onListEmpty = false;
 
-  Future<List<Kanji>> _loadKanjiFromListSelection(KanjiCategory category) async {
-    final k = await KanjiQueries.instance.getKanjiBasedOnCategory(category.index);
+  Future<List<Kanji>> _loadKanjiFromListSelection(
+      KanjiCategory category) async {
+    final k =
+        await KanjiQueries.instance.getKanjiBasedOnCategory(category.index);
     k.shuffle();
     return k;
   }
@@ -51,62 +54,64 @@ class _KanListCategorySelectionBottomSheetState extends State<KanListCategorySel
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        return Wrap(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const KPDragContainer(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin32),
-                  child: Text("categories_test_bottom_sheet_title".tr(),
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headline6),
-                ),
-                Visibility(
-                  visible: _onListEmpty,
-                  child: Text("categories_test_bottom_sheet_error".tr(),
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w400)),
-                ),
-                Visibility(
-                  visible: _selectionMode,
-                  child: KPTestStudyMode(
+        return Wrap(children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const KPDragContainer(),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: Margins.margin8, horizontal: Margins.margin32),
+                child: Text("categories_test_bottom_sheet_title".tr(),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headline6),
+              ),
+              Visibility(
+                visible: _onListEmpty,
+                child: Text("categories_test_bottom_sheet_error".tr(),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline6
+                        ?.copyWith(fontWeight: FontWeight.w400)),
+              ),
+              Visibility(
+                visible: _selectionMode,
+                child: KPTestStudyMode(
                     list: _kanji,
                     type: Tests.categories,
-                    testName: "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category}"
+                    testName:
+                        "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category}"),
+              ),
+              Visibility(
+                visible: !_selectionMode,
+                child: BlocProvider(
+                  create: (_) =>
+                      _bloc..add(const KanjiListForTestEventLoading()),
+                  child: BlocBuilder<KanjiListBloc, KanjiListState>(
+                    builder: (context, state) {
+                      if (state is KanjiListStateFailure) {
+                        return KPEmptyList(
+                            showTryButton: true,
+                            onRefresh: () => _bloc
+                              ..add(const KanjiListForTestEventLoading()),
+                            message: "study_bottom_sheet_load_failed".tr());
+                      } else if (state is KanjiListStateLoading) {
+                        return const KPProgressIndicator();
+                      } else if (state is KanjiListStateLoaded) {
+                        return Container(
+                            margin: const EdgeInsets.all(Margins.margin8),
+                            child: _listSelection(state));
+                      } else {
+                        return Container();
+                      }
+                    },
                   ),
                 ),
-                Visibility(
-                  visible: !_selectionMode,
-                  child: BlocProvider(
-                    create: (_) => _bloc..add(const KanjiListForTestEventLoading()),
-                    child: BlocBuilder<KanjiListBloc, KanjiListState>(
-                      builder: (context, state) {
-                        if (state is KanjiListStateFailure) {
-                          return KPEmptyList(
-                              showTryButton: true,
-                              onRefresh: () => _bloc..add(const KanjiListForTestEventLoading()),
-                              message: "study_bottom_sheet_load_failed".tr()
-                          );
-                        } else if (state is KanjiListStateLoading) {
-                          return const KPProgressIndicator();
-                        } else if (state is KanjiListStateLoaded) {
-                          return Container(
-                              margin: const EdgeInsets.all(Margins.margin8),
-                              child: _listSelection(state)
-                          );
-                        } else {
-                          return Container();
-                        }
-                      },
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ]
-        );
+              )
+            ],
+          ),
+        ]);
       },
     );
   }
@@ -115,26 +120,25 @@ class _KanListCategorySelectionBottomSheetState extends State<KanListCategorySel
     return Column(
       children: [
         KPKanjiCategoryList(
-          selected: (index) => index == _selectedCategory.index,
-          onSelected: (index) => setState(() {
-            _selectedCategory = KanjiCategory.values[index];
-            _onListEmpty = false;
-          })
-        ),
+            selected: (index) => index == _selectedCategory.index,
+            onSelected: (index) => setState(() {
+                  _selectedCategory = KanjiCategory.values[index];
+                  _onListEmpty = false;
+                })),
         KPButton(
-          width: true,
-          title1: "study_bottom_sheet_button_label_ext".tr(),
-          title2: "study_bottom_sheet_button_label".tr(),
-          onTap: () async {
-            final List<Kanji> k = await _loadKanjiFromListSelection(_selectedCategory);
-            if (k.isNotEmpty) {
-              _kanji = k;
-              setState(() => _selectionMode = true);
-            } else {
-              setState(() => _onListEmpty = true);
-            }
-          }
-        )
+            width: true,
+            title1: "study_bottom_sheet_button_label_ext".tr(),
+            title2: "study_bottom_sheet_button_label".tr(),
+            onTap: () async {
+              final List<Kanji> k =
+                  await _loadKanjiFromListSelection(_selectedCategory);
+              if (k.isNotEmpty) {
+                _kanji = k;
+                setState(() => _selectionMode = true);
+              } else {
+                setState(() => _onListEmpty = true);
+              }
+            })
       ],
     );
   }

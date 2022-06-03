@@ -5,19 +5,18 @@ class BulletPageView extends StatefulWidget {
   final List<Widget> pageViewChildren;
   final int bullets;
   final Function(int) onChanged;
-  const BulletPageView({
-    Key? key,
-    required this.pageViewChildren,
-    required this.bullets,
-    required this.onChanged
-  }) : super(key: key);
+  const BulletPageView(
+      {Key? key,
+      required this.pageViewChildren,
+      required this.bullets,
+      required this.onChanged})
+      : super(key: key);
 
   @override
   _BulletPageViewState createState() => _BulletPageViewState();
 }
 
 class _BulletPageViewState extends State<BulletPageView> {
-
   int _selectedPage = 0;
 
   @override
@@ -36,17 +35,16 @@ class _BulletPageViewState extends State<BulletPageView> {
           ),
         ),
         Container(
-          height: Margins.margin16,
-          alignment: Alignment.center,
-          margin: const EdgeInsets.only(bottom: Margins.margin8),
-          child: ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            itemCount: widget.bullets,
-            itemBuilder: (context, i) => _bullet(i),
-          )
-        ),
+            height: Margins.margin16,
+            alignment: Alignment.center,
+            margin: const EdgeInsets.only(bottom: Margins.margin8),
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              itemCount: widget.bullets,
+              itemBuilder: (context, i) => _bullet(i),
+            )),
       ],
     );
   }
@@ -55,11 +53,13 @@ class _BulletPageViewState extends State<BulletPageView> {
     return Padding(
       padding: const EdgeInsets.all(2),
       child: Container(
-        width: Margins.margin16, height: Margins.margin16,
+        width: Margins.margin16,
+        height: Margins.margin16,
         decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: _selectedPage == i ? CustomColors.secondaryDarkerColor : CustomColors.secondaryColor
-        ),
+            shape: BoxShape.circle,
+            color: _selectedPage == i
+                ? CustomColors.secondaryDarkerColor
+                : CustomColors.secondaryColor),
       ),
     );
   }

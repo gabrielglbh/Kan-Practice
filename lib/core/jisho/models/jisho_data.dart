@@ -5,8 +5,10 @@ class KanjiData {
   final List<jisho.JishoResult> resultPhrase;
   final List<KanjiExample> example;
 
-  const KanjiData({required this.resultData, required this.resultPhrase,
-    required this.example});
+  const KanjiData(
+      {required this.resultData,
+      required this.resultPhrase,
+      required this.example});
 }
 
 class KanjiExample {

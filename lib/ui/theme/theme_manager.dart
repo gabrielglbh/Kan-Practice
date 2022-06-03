@@ -19,7 +19,8 @@ class ThemeManager {
   /// Singleton instance of [ThemeManager]
   static ThemeManager get instance => _instance;
 
-  ThemeMode get themeMode => _notifier?.isDarkTheme == true ? ThemeMode.dark : ThemeMode.light;
+  ThemeMode get themeMode =>
+      _notifier?.isDarkTheme == true ? ThemeMode.dark : ThemeMode.light;
   ThemeData? get currentLightThemeData => light;
   ThemeData? get currentDarkThemeData => dark;
 

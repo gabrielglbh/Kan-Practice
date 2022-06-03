@@ -17,23 +17,32 @@ Future<void> _initSharedPreferences() async {
   if (StorageManager.readData(StorageManager.affectOnPractice) == null) {
     StorageManager.saveData(StorageManager.affectOnPractice, false);
   }
-  if (StorageManager.readData(StorageManager.kanListGraphVisualization) == null) {
-    StorageManager.saveData(StorageManager.kanListGraphVisualization, VisualizationMode.radialChart.name);
+  if (StorageManager.readData(StorageManager.kanListGraphVisualization) ==
+      null) {
+    StorageManager.saveData(StorageManager.kanListGraphVisualization,
+        VisualizationMode.radialChart.name);
   }
   if (StorageManager.readData(StorageManager.numberOfKanjiInTest) == null) {
-    StorageManager.saveData(StorageManager.numberOfKanjiInTest, CustomSizes.numberOfKanjiInTest);
+    StorageManager.saveData(
+        StorageManager.numberOfKanjiInTest, CustomSizes.numberOfKanjiInTest);
   }
+
   /// Make the value the same as hasDoneTutorial. If the user has already seen
   /// the overall tutorial, do not show the coach mark tutorial
   // DEBUG ONLY
   //StorageManager.saveData(StorageManager.haveSeenKanListCoachMark, false);
   //StorageManager.saveData(StorageManager.haveSeenKanListDetailCoachMark, false);
-  bool hasDoneTutorial = StorageManager.readData(StorageManager.hasDoneTutorial);
-  if (StorageManager.readData(StorageManager.haveSeenKanListCoachMark) == null) {
-    StorageManager.saveData(StorageManager.haveSeenKanListCoachMark, hasDoneTutorial);
+  bool hasDoneTutorial =
+      StorageManager.readData(StorageManager.hasDoneTutorial);
+  if (StorageManager.readData(StorageManager.haveSeenKanListCoachMark) ==
+      null) {
+    StorageManager.saveData(
+        StorageManager.haveSeenKanListCoachMark, hasDoneTutorial);
   }
-  if (StorageManager.readData(StorageManager.haveSeenKanListDetailCoachMark) == null) {
-    StorageManager.saveData(StorageManager.haveSeenKanListDetailCoachMark, hasDoneTutorial);
+  if (StorageManager.readData(StorageManager.haveSeenKanListDetailCoachMark) ==
+      null) {
+    StorageManager.saveData(
+        StorageManager.haveSeenKanListDetailCoachMark, hasDoneTutorial);
   }
 }
 
@@ -72,7 +81,6 @@ class KanPractice extends StatefulWidget {
 }
 
 class _KanPracticeState extends State<KanPractice> {
-
   @override
   void initState() {
     ThemeManager.instance.addListenerTo(() => setState(() {}));
@@ -97,7 +105,8 @@ class _KanPracticeState extends State<KanPractice> {
       darkTheme: ThemeManager.instance.currentDarkThemeData,
       themeMode: ThemeManager.instance.themeMode,
       initialRoute: StorageManager.readData(StorageManager.hasDoneTutorial)
-          ? KanPracticePages.homePage : KanPracticePages.tutorialPage,
+          ? KanPracticePages.homePage
+          : KanPracticePages.tutorialPage,
       onGenerateRoute: onGenerateRoute,
     );
   }

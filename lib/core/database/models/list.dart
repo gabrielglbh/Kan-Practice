@@ -13,26 +13,28 @@ class KanjiList {
   double totalWinRateListening;
   final int lastUpdated;
 
-  KanjiList({required this.name, this.totalWinRateWriting =DatabaseConstants.emptyWinRate,
-    this.totalWinRateReading = DatabaseConstants.emptyWinRate,
-    this.totalWinRateRecognition = DatabaseConstants.emptyWinRate,
-    this.totalWinRateListening = DatabaseConstants.emptyWinRate, required this.lastUpdated
-  });
+  KanjiList(
+      {required this.name,
+      this.totalWinRateWriting = DatabaseConstants.emptyWinRate,
+      this.totalWinRateReading = DatabaseConstants.emptyWinRate,
+      this.totalWinRateRecognition = DatabaseConstants.emptyWinRate,
+      this.totalWinRateListening = DatabaseConstants.emptyWinRate,
+      required this.lastUpdated});
 
   /// Empty [KanjiList]
   static final KanjiList empty = KanjiList(name: "", lastUpdated: 0);
 
-  factory KanjiList.fromJson(Map<String, dynamic> json) => _$KanjiListFromJson(json);
+  factory KanjiList.fromJson(Map<String, dynamic> json) =>
+      _$KanjiListFromJson(json);
   Map<String, dynamic> toJson() => _$KanjiListToJson(this);
 
   KanjiList copyWithUpdatedDate({int? lastUpdated}) => KanjiList(
-    name: name,
-    totalWinRateWriting: totalWinRateWriting,
-    totalWinRateReading: totalWinRateReading,
-    totalWinRateRecognition: totalWinRateRecognition,
-    totalWinRateListening: totalWinRateListening,
-    lastUpdated: lastUpdated ?? this.lastUpdated
-  );
+      name: name,
+      totalWinRateWriting: totalWinRateWriting,
+      totalWinRateReading: totalWinRateReading,
+      totalWinRateRecognition: totalWinRateRecognition,
+      totalWinRateListening: totalWinRateListening,
+      lastUpdated: lastUpdated ?? this.lastUpdated);
 
   KanjiList copyWithReset() => KanjiList(
       name: name,
@@ -40,6 +42,5 @@ class KanjiList {
       totalWinRateReading: DatabaseConstants.emptyWinRate,
       totalWinRateRecognition: DatabaseConstants.emptyWinRate,
       totalWinRateListening: DatabaseConstants.emptyWinRate,
-      lastUpdated: GeneralUtils.getCurrentMilliseconds()
-  );
+      lastUpdated: GeneralUtils.getCurrentMilliseconds());
 }

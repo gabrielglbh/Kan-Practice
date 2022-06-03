@@ -8,11 +8,8 @@ import 'package:kanpractice/ui/consts.dart';
 class MarketListRating extends StatelessWidget {
   final String listId;
   final double? initialRating;
-  const MarketListRating({
-    Key? key,
-    required this.listId,
-    this.initialRating
-  }) : super(key: key);
+  const MarketListRating({Key? key, required this.listId, this.initialRating})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +37,8 @@ class MarketListRating extends StatelessWidget {
       itemCount: 5,
       itemSize: Margins.margin32,
       glow: false,
-      itemBuilder: (context, _) => const Icon(Icons.star_rounded, color: CustomColors.secondaryColor),
+      itemBuilder: (context, _) =>
+          const Icon(Icons.star_rounded, color: CustomColors.secondaryColor),
       onRatingUpdate: (rate) {
         BlocProvider.of<RateBloc>(context).add(RateEventUpdate(listId, rate));
       },

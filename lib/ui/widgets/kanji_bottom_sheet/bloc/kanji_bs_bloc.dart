@@ -16,9 +16,8 @@ class KanjiBSBloc extends Bloc<KanjiBSEvent, KanjiBSState> {
     on<KanjiBSEventLoading>((event, emit) async {
       try {
         emit(KanjiBSStateLoading());
-        final kanji = await KanjiQueries.instance.getKanji(
-          event.kanji.listName, event.kanji.kanji
-        );
+        final kanji = await KanjiQueries.instance
+            .getKanji(event.kanji.listName, event.kanji.kanji);
         emit(KanjiBSStateLoaded(kanji: kanji));
       } on Exception {
         emit(const KanjiBSStateFailure(error: ":("));
@@ -28,10 +27,13 @@ class KanjiBSBloc extends Bloc<KanjiBSEvent, KanjiBSState> {
     on<KanjiBSEventDelete>((event, emit) async {
       final k = event.kanji;
       if (state is KanjiBSStateLoaded && k != null) {
-        final int code = await KanjiQueries.instance.removeKanji(k.listName, k.kanji);
+        final int code =
+            await KanjiQueries.instance.removeKanji(k.listName, k.kanji);
         if (code == 0) {
           KanjiList kanList = await ListQueries.instance.getList(k.listName);
-          List<Kanji> list = await KanjiQueries.instance.getAllKanjiFromList(k.listName);
+          List<Kanji> list =
+              await KanjiQueries.instance.getAllKanjiFromList(k.listName);
+
           /// Update for each mode the overall score again. Issue: #10
           ///
           /// For each mode, recalculate the overall score based on the
@@ -41,10 +43,14 @@ class KanjiBSBloc extends Bloc<KanjiBSEvent, KanjiBSState> {
           /// If list is empty, update all values to -1.
           if (list.isEmpty) {
             await ListQueries.instance.updateList(k.listName, {
-              KanListTableFields.totalWinRateWritingField: DatabaseConstants.emptyWinRate,
-              KanListTableFields.totalWinRateReadingField: DatabaseConstants.emptyWinRate,
-              KanListTableFields.totalWinRateRecognitionField: DatabaseConstants.emptyWinRate,
-              KanListTableFields.totalWinRateListeningField: DatabaseConstants.emptyWinRate
+              KanListTableFields.totalWinRateWritingField:
+                  DatabaseConstants.emptyWinRate,
+              KanListTableFields.totalWinRateReadingField:
+                  DatabaseConstants.emptyWinRate,
+              KanListTableFields.totalWinRateRecognitionField:
+                  DatabaseConstants.emptyWinRate,
+              KanListTableFields.totalWinRateListeningField:
+                  DatabaseConstants.emptyWinRate
             });
           } else {
             double wNewScore = kanList.totalWinRateWriting;
@@ -56,8 +62,10 @@ class KanjiBSBloc extends Bloc<KanjiBSEvent, KanjiBSState> {
               /// Get the y value: total length of list prior to removal of
               /// kanji multiplied by the overall win rate
               double y = (list.length + 1) * kanList.totalWinRateWriting;
+
               /// Subtract the winRate of the removed kanji to y
               double partialScore = y - k.winRateWriting;
+
               /// Calculate the new overall score with the partialScore divided
               /// by the list without the kanji
               wNewScore = partialScore / list.length;
@@ -86,20 +94,21 @@ class KanjiBSBloc extends Bloc<KanjiBSEvent, KanjiBSState> {
             });
           }
           emit(KanjiBSStateRemoved());
-        }
-        else if (code == 1) {
+        } else if (code == 1) {
           emit(KanjiBSStateFailure(
-            error: "kanji_bottom_sheet_createDialogForDeletingKanji_removal_failed".tr()
-          ));
+              error:
+                  "kanji_bottom_sheet_createDialogForDeletingKanji_removal_failed"
+                      .tr()));
         } else {
           emit(KanjiBSStateFailure(
-            error: "kanji_bottom_sheet_createDialogForDeletingKanji_failed".tr()
-          ));
+              error: "kanji_bottom_sheet_createDialogForDeletingKanji_failed"
+                  .tr()));
         }
       } else {
         emit(KanjiBSStateFailure(
-            error: "kanji_bottom_sheet_createDialogForDeletingKanji_removal_failed".tr()
-        ));
+            error:
+                "kanji_bottom_sheet_createDialogForDeletingKanji_removal_failed"
+                    .tr()));
       }
     });
   }

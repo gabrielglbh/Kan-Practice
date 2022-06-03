@@ -20,10 +20,7 @@ import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 
 class ReadingStudy extends StatefulWidget {
   final ModeArguments args;
-  const ReadingStudy({
-    Key? key,
-    required this.args
-  }) : super(key: key);
+  const ReadingStudy({Key? key, required this.args}) : super(key: key);
 
   @override
   _ReadingStudyState createState() => _ReadingStudyState();
@@ -38,8 +35,10 @@ class _ReadingStudyState extends State<ReadingStudy> {
 
   /// Array that saves all scores without any previous context for the test result
   final List<double> _testScores = [];
+
   /// Widget auxiliary variable
   List<Kanji> _studyList = [];
+
   /// For translating the hiragana
   KanaKit? _kanaKit;
 
@@ -68,6 +67,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
             _showPronunciation = false;
           });
         }
+
         /// If we ended the list, update the statistics to DB and exit
         else {
           await _handleFinishedPractice();
@@ -78,6 +78,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
 
   Future<void> _handleFinishedPractice() async {
     _hasFinished = true;
+
     /// If the user is in a test, explicitly pass the _testScores to the handler
     if (widget.args.isTest) {
       double testScore = 0;
@@ -95,19 +96,21 @@ class _ReadingStudyState extends State<ReadingStudy> {
   Future<int> _calculateKanjiScore(double score) async {
     /// Updates the dateLastShown attribute of the finished word AND
     /// the current specific last shown mode attribute
-    await KanjiQueries.instance.updateKanji(widget.args.studyList[_macro].listName,
+    await KanjiQueries.instance.updateKanji(
+        widget.args.studyList[_macro].listName,
         widget.args.studyList[_macro].kanji, {
-          KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds(),
-          KanjiTableFields.dateLastShownReading: GeneralUtils.getCurrentMilliseconds()
-        });
+      KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds(),
+      KanjiTableFields.dateLastShownReading:
+          GeneralUtils.getCurrentMilliseconds()
+    });
+
     /// Add the current virgin score to the test scores...
     if (widget.args.isTest) {
       if (StorageManager.readData(StorageManager.affectOnPractice) ?? false) {
         await StudyModeUpdateHandler.calculateScore(widget.args, score, _macro);
       }
       _testScores.add(score);
-    }
-    else {
+    } else {
       await StudyModeUpdateHandler.calculateScore(widget.args, score, _macro);
     }
     return 0;
@@ -144,26 +147,31 @@ class _ReadingStudyState extends State<ReadingStudy> {
   @override
   Widget build(BuildContext context) {
     return KPScaffold(
-      onWillPop: () async => StudyModeUpdateHandler.handle(context, widget.args, onPop: true, lastIndex: _macro),
-      appBarTitle: StudyModeAppBar(title: widget.args.display, studyMode: widget.args.mode.mode),
+      onWillPop: () async => StudyModeUpdateHandler.handle(context, widget.args,
+          onPop: true, lastIndex: _macro),
+      appBarTitle: StudyModeAppBar(
+          title: widget.args.display, studyMode: widget.args.mode.mode),
       centerTitle: true,
       appBarActions: [
         Visibility(
           visible: _showPronunciation,
-          child: TTSIconButton(kanji: widget.args.studyList[_macro].pronunciation),
+          child:
+              TTSIconButton(kanji: widget.args.studyList[_macro].pronunciation),
         )
       ],
       child: Stack(
         children: [
           Column(
             children: [
-              KPListPercentageIndicator(value: (_macro + 1) / _studyList.length),
+              KPListPercentageIndicator(
+                  value: (_macro + 1) / _studyList.length),
               KPLearningHeaderAnimation(id: _macro, children: _header()),
             ],
           ),
           Positioned(
             bottom: Margins.margin64,
-            right: 0, left: 0,
+            right: 0,
+            left: 0,
             child: KPValidationButtons(
               trigger: _showPronunciation,
               submitLabel: "done_button_label".tr(),
@@ -182,25 +190,21 @@ class _ReadingStudyState extends State<ReadingStudy> {
   List<Widget> _header() {
     return [
       KPLearningHeaderContainer(
-        color: CustomColors.secondaryColor,
-        height: CustomSizes.defaultSizeLearningExtContainer,
-        text: _getProperAlphabet()
-      ),
+          color: CustomColors.secondaryColor,
+          height: CustomSizes.defaultSizeLearningExtContainer,
+          text: _getProperAlphabet()),
       KPLearningHeaderContainer(
-        height: CustomSizes.defaultResultKanjiListOnTest,
-        fontWeight: FontWeight.bold,
-        text: _getProperPronunciation()
-      ),
+          height: CustomSizes.defaultResultKanjiListOnTest,
+          fontWeight: FontWeight.bold,
+          text: _getProperPronunciation()),
       KPLearningHeaderContainer(
-        fontSize: FontSizes.fontSize64,
-        height: CustomSizes.listStudyHeight,
-        text: _studyList[_macro].kanji
-      ),
+          fontSize: FontSizes.fontSize64,
+          height: CustomSizes.listStudyHeight,
+          text: _studyList[_macro].kanji),
       KPLearningHeaderContainer(
-        height: CustomSizes.defaultSizeLearningExtContainer,
-        text: _getProperMeaning(),
-        top: Margins.margin8
-      )
+          height: CustomSizes.defaultSizeLearningExtContainer,
+          text: _getProperMeaning(),
+          top: Margins.margin8)
     ];
   }
 }

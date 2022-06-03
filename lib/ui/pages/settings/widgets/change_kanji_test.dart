@@ -9,12 +9,13 @@ class ChangeKanjiInTest extends StatefulWidget {
 
   static Future<int?> show(BuildContext context) async {
     int? _value;
-    await showModalBottomSheet(context: context,
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        isDismissible: true,
-        builder: (context) => const ChangeKanjiInTest()
-    ).then((value) => _value = value);
+    await showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            isDismissible: true,
+            builder: (context) => const ChangeKanjiInTest())
+        .then((value) => _value = value);
     return _value;
   }
 
@@ -23,13 +24,13 @@ class ChangeKanjiInTest extends StatefulWidget {
 }
 
 class _ChangeKanjiInTestState extends State<ChangeKanjiInTest> {
-
   int _kanjiInTest = CustomSizes.numberOfKanjiInTest;
 
   @override
   void initState() {
-    _kanjiInTest = StorageManager.readData(StorageManager.numberOfKanjiInTest)
-        ?? CustomSizes.numberOfKanjiInTest;
+    _kanjiInTest =
+        StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
+            CustomSizes.numberOfKanjiInTest;
     super.initState();
   }
 
@@ -38,10 +39,10 @@ class _ChangeKanjiInTestState extends State<ChangeKanjiInTest> {
     return BottomSheet(
         enableDrag: false,
         onClosing: () => {},
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.only(
-            topRight: Radius.circular(CustomRadius.radius16),
-            topLeft: Radius.circular(CustomRadius.radius16)
-        )),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(CustomRadius.radius16),
+                topLeft: Radius.circular(CustomRadius.radius16))),
         builder: (context) {
           return Wrap(
             children: [
@@ -53,19 +54,19 @@ class _ChangeKanjiInTestState extends State<ChangeKanjiInTest> {
                     Align(
                         alignment: Alignment.center,
                         child: Padding(
-                          padding: const EdgeInsets.only(bottom: Margins.margin8),
-                          child: Text("change_kanji_in_test_selection".tr(), textAlign: TextAlign.center,
+                          padding:
+                              const EdgeInsets.only(bottom: Margins.margin8),
+                          child: Text("change_kanji_in_test_selection".tr(),
+                              textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.headline5),
-                        )
-                    ),
+                        )),
                     _selection(context)
                   ],
                 ),
               ),
             ],
           );
-        }
-    );
+        });
   }
 
   _onTileSelected(int? val) {
@@ -81,29 +82,25 @@ class _ChangeKanjiInTestState extends State<ChangeKanjiInTest> {
             value: 30,
             groupValue: _kanjiInTest,
             activeColor: CustomColors.secondaryColor,
-            onChanged: _onTileSelected
-        ),
+            onChanged: _onTileSelected),
         RadioListTile<int>(
             title: const Text("40"),
             value: 40,
             groupValue: _kanjiInTest,
             activeColor: CustomColors.secondaryColor,
-            onChanged: _onTileSelected
-        ),
+            onChanged: _onTileSelected),
         RadioListTile<int>(
             title: const Text("50"),
             value: 50,
             groupValue: _kanjiInTest,
             activeColor: CustomColors.secondaryColor,
-            onChanged: _onTileSelected
-        ),
+            onChanged: _onTileSelected),
         RadioListTile<int>(
             title: const Text("60"),
             value: 60,
             groupValue: _kanjiInTest,
             activeColor: CustomColors.secondaryColor,
-            onChanged: _onTileSelected
-        ),
+            onChanged: _onTileSelected),
       ],
     );
   }

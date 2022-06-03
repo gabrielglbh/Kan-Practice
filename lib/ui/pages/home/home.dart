@@ -57,17 +57,19 @@ class _HomePageState extends State<HomePage> {
     _searchBarFn.addListener(_focusListener);
     _controller = PageController();
 
-    final filterText = StorageManager.readData(StorageManager.filtersOnList)
-        ?? KanListTableFields.lastUpdatedField;
+    final filterText = StorageManager.readData(StorageManager.filtersOnList) ??
+        KanListTableFields.lastUpdatedField;
     _currentAppliedFilter = KanListFiltersUtils.getFilterFrom(filterText);
-    _currentAppliedOrder = StorageManager.readData(StorageManager.orderOnList)
-        ?? true;
+    _currentAppliedOrder =
+        StorageManager.readData(StorageManager.orderOnList) ?? true;
 
-    final filterMarketText = StorageManager.readData(StorageManager.filtersOnMarket)
-        ?? MarketList.uploadedToMarketField;
-    _currentAppliedMarketFilter = MarketFiltersUtils.getFilterFrom(filterMarketText);
-    _currentAppliedMarketOrder = StorageManager.readData(StorageManager.orderOnMarket)
-        ?? true;
+    final filterMarketText =
+        StorageManager.readData(StorageManager.filtersOnMarket) ??
+            MarketList.uploadedToMarketField;
+    _currentAppliedMarketFilter =
+        MarketFiltersUtils.getFilterFrom(filterMarketText);
+    _currentAppliedMarketOrder =
+        StorageManager.readData(StorageManager.orderOnMarket) ?? true;
 
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       if (widget.showTestBottomSheet == true) {
@@ -77,21 +79,28 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  KanjiListEventLoading _addKanjiListLoadingEvent({bool reset = true}) => KanjiListEventLoading(
-        filter: _currentAppliedFilter,
-        order: _currentAppliedOrder,
-        reset: reset);
+  KanjiListEventLoading _addKanjiListLoadingEvent({bool reset = true}) =>
+      KanjiListEventLoading(
+          filter: _currentAppliedFilter,
+          order: _currentAppliedOrder,
+          reset: reset);
 
-  KanjiListEventSearching _addKanjiListSearchingEvent(String query, {bool reset = true}) => KanjiListEventSearching(
-      query, reset: reset);
+  KanjiListEventSearching _addKanjiListSearchingEvent(String query,
+          {bool reset = true}) =>
+      KanjiListEventSearching(query, reset: reset);
 
-  MarketEventLoading _addMarketLoadingEvent({bool reset = true}) => MarketEventLoading(
-        filter: _currentAppliedMarketFilter,
-        order: _currentAppliedMarketOrder,
-        reset: reset);
+  MarketEventLoading _addMarketLoadingEvent({bool reset = true}) =>
+      MarketEventLoading(
+          filter: _currentAppliedMarketFilter,
+          order: _currentAppliedMarketOrder,
+          reset: reset);
 
-  MarketEventSearching _addMarketSearchingEvent(String query, {bool reset = true}) => MarketEventSearching(
-      query, reset: reset, order: _currentAppliedMarketOrder, filter: _currentAppliedMarketFilter);
+  MarketEventSearching _addMarketSearchingEvent(String query,
+          {bool reset = true}) =>
+      MarketEventSearching(query,
+          reset: reset,
+          order: _currentAppliedMarketOrder,
+          filter: _currentAppliedMarketFilter);
 
   _focusListener() => _searchHasFocus = _searchBarFn.hasFocus;
 
@@ -123,19 +132,21 @@ class _HomePageState extends State<HomePage> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<KanjiListBloc>(
-          create: (_) => KanjiListBloc()..add(_addKanjiListLoadingEvent())
-        ),
+            create: (_) => KanjiListBloc()..add(_addKanjiListLoadingEvent())),
+
         /// Do not retrieve lists from Firebase until the user taps on Market.
         BlocProvider<MarketBloc>(
-          create: (_) => MarketBloc()..add(MarketEventIdle())
-        ),
+            create: (_) => MarketBloc()..add(MarketEventIdle())),
       ],
       child: BlocListener<KanjiListBloc, KanjiListState>(
         listener: (context, state) async {
           if (state is KanjiListStateLoaded) {
-            if (StorageManager.readData(StorageManager.haveSeenKanListCoachMark) == false) {
+            if (StorageManager.readData(
+                    StorageManager.haveSeenKanListCoachMark) ==
+                false) {
               _onTutorial = true;
-              await TutorialCoach([lists, bottomActions, dictionary], CoachTutorialParts.kanList)
+              await TutorialCoach([lists, bottomActions, dictionary],
+                      CoachTutorialParts.kanList)
                   .showTutorial(context, onEnd: () => _onTutorial = false);
             }
           }
@@ -157,16 +168,19 @@ class _HomePageState extends State<HomePage> {
               key: dictionary,
               icon: const Icon(Icons.menu_book_rounded),
               onPressed: () {
-                Navigator.of(context).pushNamed(KanPracticePages.dictionaryPage, arguments:
-                const DictionaryArguments(searchInJisho: true));
+                Navigator.of(context).pushNamed(KanPracticePages.dictionaryPage,
+                    arguments: const DictionaryArguments(searchInJisho: true));
               },
             ),
             BlocBuilder<KanjiListBloc, KanjiListState>(
               builder: (context, state) => IconButton(
                 onPressed: () async {
-                  await Navigator.of(context).pushNamed(KanPracticePages.settingsPage).then((code) {
+                  await Navigator.of(context)
+                      .pushNamed(KanPracticePages.settingsPage)
+                      .then((code) {
                     if (_currentPage == HomeType.kanlist) {
-                      BlocProvider.of<KanjiListBloc>(context).add(_addKanjiListLoadingEvent());
+                      BlocProvider.of<KanjiListBloc>(context)
+                          .add(_addKanjiListLoadingEvent());
                     }
                   });
                 },
@@ -178,7 +192,8 @@ class _HomePageState extends State<HomePage> {
             children: [
               const UpdateContainer(),
               BlocBuilder<KanjiListBloc, KanjiListState>(
-                builder: (context1, state1) => BlocBuilder<MarketBloc, MarketState>(
+                builder: (context1, state1) =>
+                    BlocBuilder<MarketBloc, MarketState>(
                   builder: (context2, state2) => KPSearchBar(
                     controller: _searchTextController,
                     hint: _currentPage.searchBarHint,
@@ -188,13 +203,11 @@ class _HomePageState extends State<HomePage> {
                       /// the pagination index
                       _query = query;
                       if (_currentPage == HomeType.kanlist) {
-                        BlocProvider.of<KanjiListBloc>(context1).add(
-                            _addKanjiListSearchingEvent(query)
-                        );
+                        BlocProvider.of<KanjiListBloc>(context1)
+                            .add(_addKanjiListSearchingEvent(query));
                       } else {
-                        BlocProvider.of<MarketBloc>(context2).add(
-                            _addMarketSearchingEvent(query)
-                        );
+                        BlocProvider.of<MarketBloc>(context2)
+                            .add(_addMarketSearchingEvent(query));
                       }
                     },
                     onExitSearch: () {
@@ -231,11 +244,14 @@ class _HomePageState extends State<HomePage> {
             onScrolledToBottom: () {
               /// If the query is empty, use the pagination for search bar
               if (_query.isNotEmpty) {
-                BlocProvider.of<KanjiListBloc>(context).add(_addKanjiListSearchingEvent(_query, reset: false));
+                BlocProvider.of<KanjiListBloc>(context)
+                    .add(_addKanjiListSearchingEvent(_query, reset: false));
               }
+
               /// Else use the normal pagination
               else {
-                BlocProvider.of<KanjiListBloc>(context).add(_addKanjiListLoadingEvent(reset: false));
+                BlocProvider.of<KanjiListBloc>(context)
+                    .add(_addKanjiListLoadingEvent(reset: false));
               }
             },
           ),
@@ -246,11 +262,14 @@ class _HomePageState extends State<HomePage> {
             onScrolledToBottom: () {
               /// If the query is empty, use the pagination for search bar
               if (_query.isNotEmpty) {
-                BlocProvider.of<MarketBloc>(context).add(_addMarketSearchingEvent(_query, reset: false));
+                BlocProvider.of<MarketBloc>(context)
+                    .add(_addMarketSearchingEvent(_query, reset: false));
               }
+
               /// Else use the normal pagination
               else {
-                BlocProvider.of<MarketBloc>(context).add(_addMarketLoadingEvent(reset: false));
+                BlocProvider.of<MarketBloc>(context)
+                    .add(_addMarketLoadingEvent(reset: false));
               }
             },
           ),
@@ -261,56 +280,61 @@ class _HomePageState extends State<HomePage> {
 
   Widget _bottomNavigationBar() {
     return Stack(
-      clipBehavior: Clip.none,
-      alignment: const FractionalOffset(.5, 1.0),
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            boxShadow: <BoxShadow>[BoxShadow(color: Theme.of(context).brightness == Brightness.light
-                ? Colors.grey : Colors.black, blurRadius: 10)],
-          ),
-          child: BlocBuilder<MarketBloc, MarketState>(
-            builder: (context, state) => BottomNavigationBar(
-              key: bottomActions,
-              currentIndex: _currentPage.index,
-              onTap: (page) {
-                /// Avoid extra loading when tapping the same item
-                if (_currentPage.index != page) {
-                  _searchBarFn.unfocus();
-                  _searchTextController.text = "";
-                  _controller.jumpToPage(page);
-                  if (_currentPage == HomeType.market) {
-                    BlocProvider.of<MarketBloc>(context).add(_addMarketLoadingEvent());
-                  }
-                }
-              },
-              items: [
-                BottomNavigationBarItem(
-                    icon: const Icon(Icons.table_rows_rounded),
-                    label: "bottom_nav_kanlists".tr()
-                ),
-                BottomNavigationBarItem(
-                    icon: const Icon(Icons.shopping_bag_rounded),
-                    label: "bottom_nav_market".tr()
-                ),
+        clipBehavior: Clip.none,
+        alignment: const FractionalOffset(.5, 1.0),
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.grey
+                        : Colors.black,
+                    blurRadius: 10)
               ],
             ),
+            child: BlocBuilder<MarketBloc, MarketState>(
+              builder: (context, state) => BottomNavigationBar(
+                key: bottomActions,
+                currentIndex: _currentPage.index,
+                onTap: (page) {
+                  /// Avoid extra loading when tapping the same item
+                  if (_currentPage.index != page) {
+                    _searchBarFn.unfocus();
+                    _searchTextController.text = "";
+                    _controller.jumpToPage(page);
+                    if (_currentPage == HomeType.market) {
+                      BlocProvider.of<MarketBloc>(context)
+                          .add(_addMarketLoadingEvent());
+                    }
+                  }
+                },
+                items: [
+                  BottomNavigationBarItem(
+                      icon: const Icon(Icons.table_rows_rounded),
+                      label: "bottom_nav_kanlists".tr()),
+                  BottomNavigationBarItem(
+                      icon: const Icon(Icons.shopping_bag_rounded),
+                      label: "bottom_nav_market".tr()),
+                ],
+              ),
+            ),
           ),
-        ),
-        _actionsButton(),
-      ]
-    );
+          _actionsButton(),
+        ]);
   }
 
   Widget _actionsButton() {
     return BlocBuilder<KanjiListBloc, KanjiListState>(
       builder: (context, state) => GestureDetector(
         onTap: () async {
-          final kanListName = await ActionsBottomSheet.show(context, _currentPage);
+          final kanListName =
+              await ActionsBottomSheet.show(context, _currentPage);
           if (kanListName != null) {
             BlocProvider.of<KanjiListBloc>(context).add(KanjiListEventCreate(
-                kanListName, filter: _currentAppliedFilter, order: _currentAppliedOrder
-            ));
+                kanListName,
+                filter: _currentAppliedFilter,
+                order: _currentAppliedOrder));
           }
         },
         child: Padding(
@@ -320,13 +344,15 @@ class _HomePageState extends State<HomePage> {
             children: [
               Padding(
                   padding: const EdgeInsets.only(bottom: Margins.margin4),
-                  child: Icon(Icons.add, color: Theme.of(context).brightness == Brightness.light
-                      ? Colors.grey.shade700 : Colors.grey.shade400)
-              ),
-              Text("bottom_nav_actions".tr(), style: Theme.of(context).textTheme.subtitle2?.copyWith(
-                  color: Theme.of(context).brightness == Brightness.light
-                      ? Colors.grey.shade700 : Colors.grey.shade400
-              ))
+                  child: Icon(Icons.add,
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.grey.shade700
+                          : Colors.grey.shade400)),
+              Text("bottom_nav_actions".tr(),
+                  style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.grey.shade700
+                          : Colors.grey.shade400))
             ],
           ),
         ),

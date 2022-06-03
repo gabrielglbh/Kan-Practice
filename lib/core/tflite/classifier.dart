@@ -33,8 +33,8 @@ class Classifier {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
 
-    try{
-      if(androidInfo.isPhysicalDevice ?? true){
+    try {
+      if (androidInfo.isPhysicalDevice ?? true) {
         // use NNAPI on android if android API >= 27
         if ((androidInfo.version.sdkInt ?? 27) >= 27) {
           interpreter = await _nnapiInterpreter();
@@ -46,8 +46,7 @@ class Classifier {
       else {
         interpreter = await _cpuInterpreter();
       }
-    }
-    catch (e) {
+    } catch (e) {
       interpreter = await _cpuInterpreter();
     }
     this.interpreter = interpreter;
@@ -69,8 +68,9 @@ class Classifier {
     /// Resizes the image to its actual size to fit model's input shape
     final resizedImage = i.copyResize(image, width: width, height: height);
 
-    var _inputImage = List<List<double>>.generate(height, (i) =>
-        List.generate(width, (j) => 0.0)).reshape<double>([1, height, width, 1]);
+    var _inputImage = List<List<double>>.generate(
+            height, (i) => List.generate(width, (j) => 0.0))
+        .reshape<double>([1, height, width, 1]);
 
     /// Reshape the input image from [64, 64, 3] to [1, 64, 64, 1] with normalization.
     /// That is, get only 1 batch of a 64x64 image in gray scale to feed to the model
@@ -83,20 +83,20 @@ class Classifier {
     }
 
     TensorBuffer outputBuffer = TensorBuffer.createFixedSize(
-      interpreter.getOutputTensor(0).shape,
-      interpreter.getOutputTensor(0).type);
+        interpreter.getOutputTensor(0).shape,
+        interpreter.getOutputTensor(0).type);
 
     /// Run the interpreter on the given image
     interpreter.run(_inputImage, outputBuffer.getBuffer());
 
     /// Normalize the output to go from 0 to 1 only
-    final probabilityProcessor = TensorProcessorBuilder()
-        .add(NormalizeOp(0, 1)).build();
+    final probabilityProcessor =
+        TensorProcessorBuilder().add(NormalizeOp(0, 1)).build();
 
     /// And get the probabilities and parse them to a List<Category>
-    Map<String, double> labeledProb = TensorLabel.fromList(
-        labels, probabilityProcessor.process(outputBuffer))
-        .getMapWithFloatValue();
+    Map<String, double> labeledProb =
+        TensorLabel.fromList(labels, probabilityProcessor.process(outputBuffer))
+            .getMapWithFloatValue();
 
     final predictions = _getProbability(labeledProb).toList();
     List<Category> categories = [];
@@ -111,7 +111,8 @@ class Classifier {
   /// Initializes the interpreter with NPU acceleration for Android.
   Future<Interpreter> _nnapiInterpreter() async {
     final options = InterpreterOptions()..useNnApiForAndroid = true;
-    Interpreter i = await Interpreter.fromAsset(_modelFileName, options: options);
+    Interpreter i =
+        await Interpreter.fromAsset(_modelFileName, options: options);
     return i;
   }
 
@@ -119,18 +120,22 @@ class Classifier {
   Future<Interpreter> _gpuInterpreterAndroid() async {
     final gpuDelegateV2 = GpuDelegateV2();
     final options = InterpreterOptions()..addDelegate(gpuDelegateV2);
-    Interpreter i = await Interpreter.fromAsset(_modelFileName, options: options);
+    Interpreter i =
+        await Interpreter.fromAsset(_modelFileName, options: options);
     return i;
   }
 
   /// Initializes the interpreter with CPU mode set.
   Future<Interpreter> _cpuInterpreter() async {
-    final options = InterpreterOptions()..threads = Platform.numberOfProcessors - 1;
-    Interpreter i = await Interpreter.fromAsset(_modelFileName, options: options);
+    final options = InterpreterOptions()
+      ..threads = Platform.numberOfProcessors - 1;
+    Interpreter i =
+        await Interpreter.fromAsset(_modelFileName, options: options);
     return i;
   }
 
-  PriorityQueue<MapEntry<String, double>> _getProbability(Map<String, double> labeledProb) {
+  PriorityQueue<MapEntry<String, double>> _getProbability(
+      Map<String, double> labeledProb) {
     var pq = PriorityQueue<MapEntry<String, double>>(_compare);
     pq.addAll(labeledProb.entries);
     return pq;

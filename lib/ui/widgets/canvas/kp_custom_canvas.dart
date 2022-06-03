@@ -9,19 +9,22 @@ import 'kanji_painter.dart';
 class KPCustomCanvas extends StatefulWidget {
   /// List of [Offset] points to draw over the canvas
   final List<Offset?> line;
+
   /// Whether to allow the user to paint or not
   final bool allowEdit;
+
   /// Whether the canvas allow to predict the drawn kanji or not
   final bool allowPrediction;
+
   /// Function to perform when the [im.Image] has been extracted
   final Function(im.Image)? handleImage;
-  const KPCustomCanvas({
-    Key? key,
-    required this.line,
-    this.allowEdit = true,
-    this.allowPrediction = false,
-    this.handleImage
-  }) : super(key: key);
+  const KPCustomCanvas(
+      {Key? key,
+      required this.line,
+      this.allowEdit = true,
+      this.allowPrediction = false,
+      this.handleImage})
+      : super(key: key);
 
   @override
   _KPCustomCanvasState createState() => _KPCustomCanvasState();
@@ -34,8 +37,8 @@ class _KPCustomCanvasState extends State<KPCustomCanvas> {
   Future<void> _convertCanvasToImage(List<Offset?> points) async {
     final canvasSize = MediaQuery.of(context).size.width;
     final ui.PictureRecorder recorder = ui.PictureRecorder();
-    final Canvas canvas = Canvas(recorder, Rect.fromPoints(
-      const Offset(0, 0), Offset(canvasSize, canvasSize)));
+    final Canvas canvas = Canvas(recorder,
+        Rect.fromPoints(const Offset(0, 0), Offset(canvasSize, canvasSize)));
     final Paint paint = KanjiPainter.kanjiPaint;
 
     /// Repaints again the _line of Offsets in a new Canvas to get the proper
@@ -48,8 +51,10 @@ class _KPCustomCanvasState extends State<KPCustomCanvas> {
 
     /// Transforms the ui.Image to a im.Image to feed to the tflite model
     final ui.Picture picture = recorder.endRecording();
-    final ui.Image img = await picture.toImage(canvasSize.toInt(), canvasSize.toInt());
-    final ByteData? byteData = await img.toByteData(format: ui.ImageByteFormat.png);
+    final ui.Image img =
+        await picture.toImage(canvasSize.toInt(), canvasSize.toInt());
+    final ByteData? byteData =
+        await img.toByteData(format: ui.ImageByteFormat.png);
     if (byteData != null) {
       im.Image? image = im.decodeImage(byteData.buffer.asUint8List());
       if (image != null) {
@@ -58,12 +63,10 @@ class _KPCustomCanvasState extends State<KPCustomCanvas> {
         } else {
           print('Function handleImage is null');
         }
-      }
-      else {
+      } else {
         print('Image is null');
       }
-    }
-    else {
+    } else {
       print('ByteData is null');
     }
   }
@@ -83,56 +86,60 @@ class _KPCustomCanvasState extends State<KPCustomCanvas> {
             onPanUpdate: _onPanUpdate,
             onPanEnd: _onPanEnd,
             child: RepaintBoundary(
-              /// To contain the CustomPaint inside the Container
-              child: ClipRect(
-                child: Container(
+
+                /// To contain the CustomPaint inside the Container
+                child: ClipRect(
+              child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(CustomRadius.radius16),
                     color: Theme.of(context).brightness == Brightness.light
-                        ? Colors.grey[300] : Colors.grey[600],
+                        ? Colors.grey[300]
+                        : Colors.grey[600],
                   ),
                   child: CustomPaint(
-                    painter: KanjiPainter(
-                      points: widget.line,
-                      size: size
-                    ),
+                    painter: KanjiPainter(points: widget.line, size: size),
                     size: Size.square(MediaQuery.of(context).size.width),
-                  )
-                ),
-              )
-            ),
+                  )),
+            )),
           ),
-          _actionIcon(action: () => _undoLine(), icon: Icons.undo_rounded, right: null),
-          _actionIcon(action: () => _clear(), icon: Icons.redo_rounded, left: null),
+          _actionIcon(
+              action: () => _undoLine(), icon: Icons.undo_rounded, right: null),
+          _actionIcon(
+              action: () => _clear(), icon: Icons.redo_rounded, left: null),
         ],
       ),
     );
   }
 
-  _actionIcon({required Function() action, required IconData icon,
-    double? left = Margins.margin16, double? right = Margins.margin16}) {
+  _actionIcon(
+      {required Function() action,
+      required IconData icon,
+      double? left = Margins.margin16,
+      double? right = Margins.margin16}) {
     return Visibility(
       visible: widget.allowEdit,
       child: Positioned(
-        top: Margins.margin8, left: left, right: right,
-        child: GestureDetector(
-          onTap: action,
-          child: Container(
-            height: CustomSizes.defaultSizeSearchBarIcons,
-            width: CustomSizes.defaultSizeSearchBarIcons,
-            decoration: BoxDecoration(
-              color: Theme.of(context).brightness == Brightness.light
-                  ? Colors.white : Colors.black,
-              borderRadius: BorderRadius.circular(CustomRadius.radius16)
-            ),
-            child: Icon(icon, size: FontSizes.fontSize32,
-              color: Theme.of(context).brightness == Brightness.light
-                  ? Colors.black : Colors.white),
-          )
-        )
-      ),
+          top: Margins.margin8,
+          left: left,
+          right: right,
+          child: GestureDetector(
+              onTap: action,
+              child: Container(
+                height: CustomSizes.defaultSizeSearchBarIcons,
+                width: CustomSizes.defaultSizeSearchBarIcons,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.white
+                        : Colors.black,
+                    borderRadius: BorderRadius.circular(CustomRadius.radius16)),
+                child: Icon(icon,
+                    size: FontSizes.fontSize32,
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.black
+                        : Colors.white),
+              ))),
     );
   }
 

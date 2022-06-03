@@ -18,14 +18,17 @@ class AuthRecords {
 
   /// Handles the log in with Firebase based on an [email] and [password]. The [mode]
   /// just indicates if we have to perform a sign in or a create user.
-  Future<String> handleLogIn(SignMode mode, String email, String password) async {
+  Future<String> handleLogIn(
+      SignMode mode, String email, String password) async {
     try {
       if (mode == SignMode.signup) {
-        await _auth?.createUserWithEmailAndPassword(email: email, password: password);
+        await _auth?.createUserWithEmailAndPassword(
+            email: email, password: password);
       } else if (mode == SignMode.login) {
-        await _auth?.signInWithEmailAndPassword(email: email, password: password);
+        await _auth?.signInWithEmailAndPassword(
+            email: email, password: password);
       }
-    } catch(err) {
+    } catch (err) {
       return err.toString();
     }
     return "";
@@ -33,20 +36,24 @@ class AuthRecords {
 
   /// Handles the change of password of an account. User must log in again inputting
   /// the current [previousPassword] and new password [newPassword] for user validation.
-  Future<String> changePassword(String previousPassword, String newPassword) async {
+  Future<String> changePassword(
+      String previousPassword, String newPassword) async {
     try {
       User? user = _auth?.currentUser;
 
       if (user != null) {
         // Signs In again before operation ONLY WITH EMAIL
-        AuthCredential credential = EmailAuthProvider.credential(email: user.email!, password: previousPassword);
-        User? reUser = (await user.reauthenticateWithCredential(credential)).user;
+        AuthCredential credential = EmailAuthProvider.credential(
+            email: user.email!, password: previousPassword);
+        User? reUser =
+            (await user.reauthenticateWithCredential(credential)).user;
 
-        if (reUser != null && reUser.uid == user.uid && reUser.email == user.email){
+        if (reUser != null &&
+            reUser.uid == user.uid &&
+            reUser.email == user.email) {
           await user.updatePassword(newPassword);
           return "";
-        }
-        else {
+        } else {
           return "authentication_failed".tr();
         }
       } else {
@@ -65,15 +72,18 @@ class AuthRecords {
 
       if (user != null && user.providerData[0].providerId == "password") {
         // Signs In again before operation
-        AuthCredential credential = EmailAuthProvider.credential(email: user.email!, password: password);
-        User? reUser = (await user.reauthenticateWithCredential(credential)).user;
+        AuthCredential credential = EmailAuthProvider.credential(
+            email: user.email!, password: password);
+        User? reUser =
+            (await user.reauthenticateWithCredential(credential)).user;
 
-        if (reUser != null && reUser.uid == user.uid && reUser.email == user.email) {
+        if (reUser != null &&
+            reUser.uid == user.uid &&
+            reUser.email == user.email) {
           await BackUpRecords.instance.removeBackUp();
           await user.delete();
           return "";
-        }
-        else {
+        } else {
           return "authentication_failed".tr();
         }
       } else {
@@ -102,8 +112,7 @@ class AuthRecords {
     if (user != null) {
       await _auth?.signOut();
       return 0;
-    }
-    else {
+    } else {
       return -1;
     }
   }

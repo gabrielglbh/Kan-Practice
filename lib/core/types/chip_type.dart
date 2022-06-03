@@ -2,9 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/ui/consts.dart';
 
-enum ChipType {
-  common, uncommon, unknown, jlpt, stroke
-}
+enum ChipType { common, uncommon, unknown, jlpt, stroke }
 
 extension ChipTypeExt on ChipType {
   String get label {

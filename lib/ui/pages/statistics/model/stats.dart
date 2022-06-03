@@ -11,15 +11,14 @@ class KanPracticeStats {
   final String worstList;
   final TestData test;
 
-  KanPracticeStats({
-    required this.totalLists,
-    required this.totalKanji,
-    required this.totalWinRateWriting,
-    required this.totalWinRateReading,
-    required this.totalWinRateRecognition,
-    required this.totalWinRateListening,
-    required this.bestList,
-    required this.worstList,
-    required this.test
-  });
+  KanPracticeStats(
+      {required this.totalLists,
+      required this.totalKanji,
+      required this.totalWinRateWriting,
+      required this.totalWinRateReading,
+      required this.totalWinRateRecognition,
+      required this.totalWinRateListening,
+      required this.bestList,
+      required this.worstList,
+      required this.test});
 }

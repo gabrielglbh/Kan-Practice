@@ -5,38 +5,42 @@ import 'package:kanpractice/ui/consts.dart';
 class KPKanjiCategoryList extends StatelessWidget {
   /// Function called when a certain category is tapped. Index is provided
   final Function(int) onSelected;
+
   /// Function that should return [bool] to change style of the selected category
   final Function(int) selected;
   final bool hasScrollablePhysics;
-  const KPKanjiCategoryList({
-    Key? key,
-    required this.onSelected,
-    required this.selected,
-    this.hasScrollablePhysics = false
-  }) : super(key: key);
+  const KPKanjiCategoryList(
+      {Key? key,
+      required this.onSelected,
+      required this.selected,
+      this.hasScrollablePhysics = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GridView(
-      physics: hasScrollablePhysics ? null : const NeverScrollableScrollPhysics(),
+      physics:
+          hasScrollablePhysics ? null : const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3, childAspectRatio: 2.8
-      ),
+          crossAxisCount: 3, childAspectRatio: 2.8),
       children: List.generate(KanjiCategory.values.length, (index) {
         return GestureDetector(
           onTap: () => onSelected(index),
           child: Container(
-            decoration: BoxDecoration(
-              color: selected(index) ? CustomColors.secondaryDarkerColor : CustomColors.secondaryColor,
-              borderRadius: BorderRadius.circular(CustomRadius.radius16)
-            ),
-            margin: const EdgeInsets.symmetric(horizontal: Margins.margin4, vertical: Margins.margin2),
-            alignment: Alignment.center,
-            child: Text(KanjiCategory.values[index].category, style:
-              Theme.of(context).textTheme.bodyText2?.copyWith(color: Colors.white)
-            )
-          ),
+              decoration: BoxDecoration(
+                  color: selected(index)
+                      ? CustomColors.secondaryDarkerColor
+                      : CustomColors.secondaryColor,
+                  borderRadius: BorderRadius.circular(CustomRadius.radius16)),
+              margin: const EdgeInsets.symmetric(
+                  horizontal: Margins.margin4, vertical: Margins.margin2),
+              alignment: Alignment.center,
+              child: Text(KanjiCategory.values[index].category,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2
+                      ?.copyWith(color: Colors.white))),
         );
       }),
     );

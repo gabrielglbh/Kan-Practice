@@ -10,11 +10,14 @@ class BackUpBloc extends Bloc<BackUpEvent, BackUpState> {
   BackUpBloc() : super(const BackUpStateLoaded()) {
     on<BackUpLoadingCreateBackUp>((event, emit) async {
       emit(BackUpStateLoading());
-      final error = await BackUpRecords.instance.createBackUp(backUpTests: event.backUpTests);
+      final error = await BackUpRecords.instance
+          .createBackUp(backUpTests: event.backUpTests);
       if (error == "") {
-        emit(BackUpStateLoaded(message: "backup_bloc_creation_successful".tr()));
+        emit(
+            BackUpStateLoaded(message: "backup_bloc_creation_successful".tr()));
       } else {
-        emit(BackUpStateLoaded(message: "${"backup_bloc_creation_failed".tr()} $error"));
+        emit(BackUpStateLoaded(
+            message: "${"backup_bloc_creation_failed".tr()} $error"));
       }
     });
 
@@ -24,7 +27,8 @@ class BackUpBloc extends Bloc<BackUpEvent, BackUpState> {
       if (error == "") {
         emit(BackUpStateLoaded(message: "backup_bloc_merge_successful".tr()));
       } else {
-        emit(BackUpStateLoaded(message: "${"backup_bloc_merge_failed".tr()} $error"));
+        emit(BackUpStateLoaded(
+            message: "${"backup_bloc_merge_failed".tr()} $error"));
       }
     });
 
@@ -34,7 +38,8 @@ class BackUpBloc extends Bloc<BackUpEvent, BackUpState> {
       if (error == "") {
         emit(BackUpStateLoaded(message: "backup_bloc_removal_successful".tr()));
       } else {
-        emit(BackUpStateLoaded(message: "${"backup_bloc_removal_failed".tr()} $error"));
+        emit(BackUpStateLoaded(
+            message: "${"backup_bloc_removal_failed".tr()} $error"));
       }
     });
 

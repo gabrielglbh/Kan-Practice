@@ -22,12 +22,12 @@ class KPNumberTestBottomSheet extends StatefulWidget {
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
-        builder: (context) => const KPNumberTestBottomSheet()
-    );
+        builder: (context) => const KPNumberTestBottomSheet());
   }
 
   @override
-  _KPNumberTestBottomSheetState createState() => _KPNumberTestBottomSheetState();
+  _KPNumberTestBottomSheetState createState() =>
+      _KPNumberTestBottomSheetState();
 }
 
 class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
@@ -49,14 +49,16 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
 
     return List.generate(_kanjiInTest, (n) {
       String num = (min + _random.nextInt((max + 1) - min)).toString();
-      return Kanji(kanji: num, pronunciation: num, meaning: num, listName: "Numbers");
+      return Kanji(
+          kanji: num, pronunciation: num, meaning: num, listName: "Numbers");
     });
   }
 
   @override
   void initState() {
-    _kanjiInTest = StorageManager.readData(StorageManager.numberOfKanjiInTest)
-        ?? CustomSizes.numberOfKanjiInTest;
+    _kanjiInTest =
+        StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
+            CustomSizes.numberOfKanjiInTest;
     super.initState();
   }
 
@@ -66,58 +68,59 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        return Wrap(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const KPDragContainer(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin32),
-                  child: Text("number_bottom_sheet_title".tr(), textAlign: TextAlign.center,
+        return Wrap(children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const KPDragContainer(),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: Margins.margin8, horizontal: Margins.margin32),
+                child: Text("number_bottom_sheet_title".tr(),
+                    textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin32),
-                  child: Text("$_kanjiInTest "
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: Margins.margin8, horizontal: Margins.margin32),
+                child: Text(
+                    "$_kanjiInTest "
                     "${"number_bottom_sheet_content".tr()}",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyText1),
-                ),
-                GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, childAspectRatio: 4.5
-                  ),
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: Ranges.values.length,
-                  itemBuilder: (context, index) {
-                    Ranges range = Ranges.values[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(right: Margins.margin8),
-                      child: ActionChip(
-                          label: Text(range.label),
-                          pressElevation: Margins.margin4,
-                          backgroundColor: _selectedLists.contains(range)
-                              ? CustomColors.secondaryDarkerColor : CustomColors.secondaryColor,
-                          onPressed: () {
-                            setState(() {
-                              if (_selectedLists.contains(range)) {
-                                _selectedLists.remove(range);
-                              } else {
-                                _selectedLists.add(range);
-                              }
-                            });
-                          }
-                      ),
-                    );
-                  },
-                ),
-                _numberButton(context, "number_bottom_sheet_label".tr())
-              ],
-            ),
-          ]
-        );
+              ),
+              GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, childAspectRatio: 4.5),
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: Ranges.values.length,
+                itemBuilder: (context, index) {
+                  Ranges range = Ranges.values[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(right: Margins.margin8),
+                    child: ActionChip(
+                        label: Text(range.label),
+                        pressElevation: Margins.margin4,
+                        backgroundColor: _selectedLists.contains(range)
+                            ? CustomColors.secondaryDarkerColor
+                            : CustomColors.secondaryColor,
+                        onPressed: () {
+                          setState(() {
+                            if (_selectedLists.contains(range)) {
+                              _selectedLists.remove(range);
+                            } else {
+                              _selectedLists.add(range);
+                            }
+                          });
+                        }),
+                  );
+                },
+              ),
+              _numberButton(context, "number_bottom_sheet_label".tr())
+            ],
+          ),
+        ]);
       },
     );
   }
@@ -126,29 +129,32 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
     return Column(
       children: [
         KPButton(
-          title1: "number_bottom_sheet_begin_ext".tr(),
-          title2: "number_bottom_sheet_begin".tr(),
-          width: true,
-          onTap: () async {
-            List<Kanji> list = _loadBlitzTest();
-            if (list.isEmpty) {
-              Navigator.of(context).pop();
-              GeneralUtils.getSnackBar(context, "study_modes_empty".tr());
-            }
-            else {
-              Navigator.of(context).pop(); // Dismiss this bottom sheet
-              Navigator.of(context).pop(); // Dismiss the tests bottom sheet
-              await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
-                arguments: ModeArguments(studyList: list, isTest: true,
-                  mode: StudyModes.listening,
-                  testMode: Tests.numbers,
-                  display: "test_mode_number".tr(),
-                  listsNames: listsNames, isNumberTest: true));
-            }
-          }
-        ),
+            title1: "number_bottom_sheet_begin_ext".tr(),
+            title2: "number_bottom_sheet_begin".tr(),
+            width: true,
+            onTap: () async {
+              List<Kanji> list = _loadBlitzTest();
+              if (list.isEmpty) {
+                Navigator.of(context).pop();
+                GeneralUtils.getSnackBar(context, "study_modes_empty".tr());
+              } else {
+                Navigator.of(context).pop(); // Dismiss this bottom sheet
+                Navigator.of(context).pop(); // Dismiss the tests bottom sheet
+                await Navigator.of(context).pushNamed(
+                    KanPracticePages.listeningStudyPage,
+                    arguments: ModeArguments(
+                        studyList: list,
+                        isTest: true,
+                        mode: StudyModes.listening,
+                        testMode: Tests.numbers,
+                        display: "test_mode_number".tr(),
+                        listsNames: listsNames,
+                        isNumberTest: true));
+              }
+            }),
         Padding(
-          padding: const EdgeInsets.only(top: Margins.margin16, bottom: Margins.margin16),
+          padding: const EdgeInsets.only(
+              top: Margins.margin16, bottom: Margins.margin16),
           child: Text("study_modes_good_luck".tr(),
               style: Theme.of(context).textTheme.headline5),
         )

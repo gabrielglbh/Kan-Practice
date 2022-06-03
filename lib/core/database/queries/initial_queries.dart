@@ -26,8 +26,10 @@ class InitialQueries {
   Future<int> setInitialDataForReference(BuildContext context) async {
     if (_database != null) {
       try {
-        final String currentLocale = EasyLocalization.of(context)?.locale.languageCode ?? "en";
-        final String initialKanLists = await rootBundle.loadString("assets/initialData/$currentLocale.json");
+        final String currentLocale =
+            EasyLocalization.of(context)?.locale.languageCode ?? "en";
+        final String initialKanLists = await rootBundle
+            .loadString("assets/initialData/$currentLocale.json");
         final Map<String, dynamic> kanLists = jsonDecode(initialKanLists);
         final List<dynamic> listsNonCasted = kanLists["Lists"];
         final List<dynamic> kanjiNonCasted = kanLists["Kanji"];
@@ -47,15 +49,17 @@ class InitialQueries {
 
         /// For all KanLists and Kanji, set the last updated field to current time
         for (int x = 0; x < lists.length; x++) {
-          final KanjiList k = lists[x].copyWithUpdatedDate(lastUpdated: GeneralUtils.getCurrentMilliseconds());
-          batch?.insert(KanListTableFields.listsTable, k.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
+          final KanjiList k = lists[x].copyWithUpdatedDate(
+              lastUpdated: GeneralUtils.getCurrentMilliseconds());
+          batch?.insert(KanListTableFields.listsTable, k.toJson(),
+              conflictAlgorithm: ConflictAlgorithm.replace);
         }
         for (int x = 0; x < kanji.length; x++) {
           final Kanji k = kanji[x].copyWithUpdatedDate(
-            dateAdded: GeneralUtils.getCurrentMilliseconds(),
-            dateLastShown: GeneralUtils.getCurrentMilliseconds()
-          );
-          batch?.insert(KanjiTableFields.kanjiTable, k.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
+              dateAdded: GeneralUtils.getCurrentMilliseconds(),
+              dateLastShown: GeneralUtils.getCurrentMilliseconds());
+          batch?.insert(KanjiTableFields.kanjiTable, k.toJson(),
+              conflictAlgorithm: ConflictAlgorithm.replace);
         }
 
         final results = await batch?.commit();

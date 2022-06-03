@@ -10,7 +10,8 @@ class StorageManager {
   static const String affectOnPractice = "affectOnPractice";
   static const String kanListGraphVisualization = "kanListGraphVisualization";
   static const String haveSeenKanListCoachMark = "haveSeenKanListCoachMark";
-  static const String haveSeenKanListDetailCoachMark = "haveSeenKanListDetailCoachMark";
+  static const String haveSeenKanListDetailCoachMark =
+      "haveSeenKanListDetailCoachMark";
   static const String numberOfKanjiInTest = "numberOfKanjiInTest";
 
   static StorageManager? _storageUtils;

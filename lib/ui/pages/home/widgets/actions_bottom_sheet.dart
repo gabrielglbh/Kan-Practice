@@ -18,8 +18,7 @@ class ActionsBottomSheet extends StatelessWidget {
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
-        builder: (context) => const ActionsBottomSheet()
-    ).then((value) {
+        builder: (context) => const ActionsBottomSheet()).then((value) {
       name = value;
     });
     return name;
@@ -30,28 +29,30 @@ class ActionsBottomSheet extends StatelessWidget {
     return BottomSheet(
       enableDrag: false,
       onClosing: () {},
-      constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height / 1.2
-      ),
+      constraints:
+          BoxConstraints(maxHeight: MediaQuery.of(context).size.height / 1.2),
       builder: (context) {
-        return Wrap(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const KPDragContainer(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: Margins.margin8, horizontal: Margins.margin32),
-                  child: Text("bottom_nav_actions".tr(), textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headline6),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
+        return Wrap(children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const KPDragContainer(),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: Margins.margin8, horizontal: Margins.margin32),
+                child: Text("bottom_nav_actions".tr(),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headline6),
+              ),
+              Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: Margins.margin16),
                   child: Column(
                     children: [
                       ListTile(
                         title: Text("bottom_actions_create_test".tr()),
-                        leading: const Icon(Icons.track_changes_rounded, color: CustomColors.secondaryColor),
+                        leading: const Icon(Icons.track_changes_rounded,
+                            color: CustomColors.secondaryColor),
                         onTap: () async {
                           Navigator.of(context).pop();
                           await TestBottomSheet.show(context);
@@ -63,7 +64,8 @@ class ActionsBottomSheet extends StatelessWidget {
                         leading: const Icon(Icons.add),
                         onTap: () async {
                           /// Pass through the parent the name being input
-                          final name = await KPCreateKanListDialog.show(context);
+                          final name =
+                              await KPCreateKanListDialog.show(context);
                           Navigator.of(context).pop(name);
                         },
                       ),
@@ -72,18 +74,17 @@ class ActionsBottomSheet extends StatelessWidget {
                         title: Text("bottom_actions_upload_list".tr()),
                         leading: const Icon(Icons.upload_rounded),
                         onTap: () async {
-                          await Navigator.of(context).pushNamed(KanPracticePages.marketAddListPage);
+                          await Navigator.of(context)
+                              .pushNamed(KanPracticePages.marketAddListPage);
                           Navigator.of(context).pop();
                         },
                       ),
                       const SizedBox(height: Margins.margin24)
                     ],
-                  )
-                ),
-              ],
-            ),
-          ]
-        );
+                  )),
+            ],
+          ),
+        ]);
       },
     );
   }

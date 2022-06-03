@@ -1,8 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 
-enum HomeType {
-  kanlist, market
-}
+enum HomeType { kanlist, market }
 
 extension HomeTypeExt on HomeType {
   String get appBarTitle {

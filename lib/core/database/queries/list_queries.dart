@@ -30,8 +30,12 @@ class ListQueries {
     if (_database != null) {
       try {
         if (name.trim().isEmpty) return -1;
-        await _database?.insert(KanListTableFields.listsTable,
-            KanjiList(name: name, lastUpdated: GeneralUtils.getCurrentMilliseconds()).toJson());
+        await _database?.insert(
+            KanListTableFields.listsTable,
+            KanjiList(
+                    name: name,
+                    lastUpdated: GeneralUtils.getCurrentMilliseconds())
+                .toJson());
         return 0;
       } catch (err) {
         print(err.toString());
@@ -44,16 +48,18 @@ class ListQueries {
 
   /// Query to get all [KanjiList] from the db with an optional [order] and [filter].
   /// If anything goes wrong, an empty list will be returned.
-  Future<List<KanjiList>> getAllLists({KanListFilters filter = KanListFilters.all,
-    String order = "DESC", int? limit, int? offset}) async {
+  Future<List<KanjiList>> getAllLists(
+      {KanListFilters filter = KanListFilters.all,
+      String order = "DESC",
+      int? limit,
+      int? offset}) async {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.query(KanListTableFields.listsTable,
-          orderBy: "${filter.filter} $order",
-          limit: limit,
-          offset: (offset != null && limit != null) ? offset * limit : null
-        );
+            orderBy: "${filter.filter} $order",
+            limit: limit,
+            offset: (offset != null && limit != null) ? offset * limit : null);
         if (res != null) {
           return List.generate(res.length, (i) => KanjiList.fromJson(res![i]));
         } else {
@@ -96,26 +102,28 @@ class ListQueries {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.query(KanListTableFields.listsTable);
         if (res != null) {
-          final List<KanjiList> l = List.generate(res.length, (i) => KanjiList.fromJson(res![i]));
+          final List<KanjiList> l =
+              List.generate(res.length, (i) => KanjiList.fromJson(res![i]));
           List<String> listNames = [];
           List<double> listAcc = [];
           for (var list in l) {
             listNames.add(list.name);
-            final double acc = list.totalWinRateWriting + list.totalWinRateReading +
-                list.totalWinRateRecognition + list.totalWinRateListening;
+            final double acc = list.totalWinRateWriting +
+                list.totalWinRateReading +
+                list.totalWinRateRecognition +
+                list.totalWinRateListening;
             listAcc.add((acc <= 0 ? 0 : acc) / StudyModes.values.length);
             print(acc / 4);
           }
-          final double best = listAcc.reduce((curr, next)
-            => curr > next ? curr : next);
-          final double worst = listAcc.reduce((curr, next)
-            => curr < next ? curr : next);
+          final double best =
+              listAcc.reduce((curr, next) => curr > next ? curr : next);
+          final double worst =
+              listAcc.reduce((curr, next) => curr < next ? curr : next);
           return [
             listNames[listAcc.indexOf(best)],
             listNames[listAcc.indexOf(worst)]
           ];
-        }
-        else {
+        } else {
           return ["", ""];
         }
       } catch (err) {
@@ -136,19 +144,18 @@ class ListQueries {
       try {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.rawQuery(
-          "SELECT DISTINCT L.${KanListTableFields.nameField}, "
-          "L.${KanListTableFields.totalWinRateWritingField}, "
-          "L.${KanListTableFields.totalWinRateReadingField}, "
-          "L.${KanListTableFields.totalWinRateRecognitionField}, "
-          "L.${KanListTableFields.totalWinRateListeningField}, "
-          "L.${KanListTableFields.lastUpdatedField} "
-          "FROM ${KanListTableFields.listsTable} L JOIN ${KanjiTableFields.kanjiTable} K "
-          "ON K.${KanjiTableFields.listNameField}=L.${KanListTableFields.nameField} "
-          "WHERE L.${KanListTableFields.nameField} LIKE '%$query%' OR K.${KanjiTableFields.meaningField} LIKE '%$query%' "
-          "OR K.${KanjiTableFields.kanjiField} LIKE '%$query%' OR K.${KanjiTableFields.pronunciationField} LIKE '%$query%' "
-          "ORDER BY ${KanListTableFields.lastUpdatedField} DESC "
-          "LIMIT $limit OFFSET ${offset * limit}"
-        );
+            "SELECT DISTINCT L.${KanListTableFields.nameField}, "
+            "L.${KanListTableFields.totalWinRateWritingField}, "
+            "L.${KanListTableFields.totalWinRateReadingField}, "
+            "L.${KanListTableFields.totalWinRateRecognitionField}, "
+            "L.${KanListTableFields.totalWinRateListeningField}, "
+            "L.${KanListTableFields.lastUpdatedField} "
+            "FROM ${KanListTableFields.listsTable} L JOIN ${KanjiTableFields.kanjiTable} K "
+            "ON K.${KanjiTableFields.listNameField}=L.${KanListTableFields.nameField} "
+            "WHERE L.${KanListTableFields.nameField} LIKE '%$query%' OR K.${KanjiTableFields.meaningField} LIKE '%$query%' "
+            "OR K.${KanjiTableFields.kanjiField} LIKE '%$query%' OR K.${KanjiTableFields.pronunciationField} LIKE '%$query%' "
+            "ORDER BY ${KanListTableFields.lastUpdatedField} DESC "
+            "LIMIT $limit OFFSET ${offset * limit}");
         if (res != null) {
           return List.generate(res.length, (i) => KanjiList.fromJson(res![i]));
         } else {

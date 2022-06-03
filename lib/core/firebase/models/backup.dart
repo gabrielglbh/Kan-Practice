@@ -17,11 +17,15 @@ class BackUp {
   static const String testLabel = "test";
   static const String updatedLabel = "lastUpdated";
 
-  const BackUp({required this.lists, required this.kanji,
-    required this.test, required this.lastUpdated});
+  const BackUp(
+      {required this.lists,
+      required this.kanji,
+      required this.test,
+      required this.lastUpdated});
 
   /// Empty instance of [BackUp]
-  static const BackUp empty = BackUp(lists: [], kanji: [], test: [], lastUpdated: 0);
+  static const BackUp empty =
+      BackUp(lists: [], kanji: [], test: [], lastUpdated: 0);
 
   factory BackUp.fromJson(Map<String, dynamic> json) => _$BackUpFromJson(json);
   Map<String, dynamic> toJson() => _$BackUpToJson(this);

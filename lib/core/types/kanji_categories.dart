@@ -1,7 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
 
 enum KanjiCategory {
-  noun, pronoun, verb, adjective, adverb, expression, counter, preposition, conjunction, interjection
+  noun,
+  pronoun,
+  verb,
+  adjective,
+  adverb,
+  expression,
+  counter,
+  preposition,
+  conjunction,
+  interjection
 }
 
 extension KanjiCategoryExt on KanjiCategory {

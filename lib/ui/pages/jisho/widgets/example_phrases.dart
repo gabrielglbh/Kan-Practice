@@ -7,10 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 class ExamplePhrases extends StatelessWidget {
   final List<KanjiExample> data;
-  const ExamplePhrases({
-    Key? key,
-    required this.data
-  }) : super(key: key);
+  const ExamplePhrases({Key? key, required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,15 +24,14 @@ class ExamplePhrases extends StatelessWidget {
 
   Widget _displayExamplePhrases(BuildContext context, List<KanjiExample> data) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
-      child: CustomExpansionTile(
-        label: "${"jisho_resultData_phrases_label".tr()} (${data.length})",
-        children: _listViewOfExamples(context, data)
-      )
-    );
+        padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
+        child: CustomExpansionTile(
+            label: "${"jisho_resultData_phrases_label".tr()} (${data.length})",
+            children: _listViewOfExamples(context, data)));
   }
 
-  List<Widget> _listViewOfExamples(BuildContext context, List<KanjiExample> data) {
+  List<Widget> _listViewOfExamples(
+      BuildContext context, List<KanjiExample> data) {
     List<Widget> res = [];
     for (int i = 0; i < data.length; i++) {
       res.add(Padding(
@@ -43,20 +39,27 @@ class ExamplePhrases extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ScrollableText(label: data[i].kanji, initial: true,
-              style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w500)
-            ),
+            ScrollableText(
+                label: data[i].kanji,
+                initial: true,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    ?.copyWith(fontWeight: FontWeight.w500)),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: Margins.margin4),
-              child: ScrollableText(label: "(${data[i].kana})",
+              child: ScrollableText(
+                  label: "(${data[i].kana})",
                   style: Theme.of(context).textTheme.bodyText2),
             ),
-            ScrollableText(label: data[i].english, style: Theme.of(context).textTheme.bodyText2),
+            ScrollableText(
+                label: data[i].english,
+                style: Theme.of(context).textTheme.bodyText2),
             const Padding(
               padding: EdgeInsets.only(
-                  right: Margins.margin64, left: Margins.margin64,
-                  top: Margins.margin8
-              ),
+                  right: Margins.margin64,
+                  left: Margins.margin64,
+                  top: Margins.margin8),
               child: Divider(thickness: 2),
             )
           ],

@@ -27,16 +27,14 @@ import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 
 class KanjiListDetails extends StatefulWidget {
   final KanjiList list;
-  const KanjiListDetails({
-    Key? key,
-    required this.list
-  }) : super(key: key);
+  const KanjiListDetails({Key? key, required this.list}) : super(key: key);
 
   @override
   _KanjiListDetailsState createState() => _KanjiListDetailsState();
 }
 
-class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerProviderStateMixin {
+class _KanjiListDetailsState extends State<KanjiListDetails>
+    with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
 
   /// Tutorial Global Keys
@@ -52,6 +50,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
 
   /// Saves the last state of the query
   String _query = "";
+
   /// Saves the last name of the current visited list
   String _listName = "";
 
@@ -61,7 +60,8 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
   @override
   void initState() {
     _searchBarFn = FocusNode();
-    _tabController = TabController(length: StudyModes.values.length, vsync: this);
+    _tabController =
+        TabController(length: StudyModes.values.length, vsync: this);
     _tabController?.addListener(_tabControllerManagement);
     _searchBarFn?.addListener(_focusListener);
     _scrollController.addListener(_scrollListener);
@@ -81,11 +81,13 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
 
   _scrollListener() {
     /// When reaching last pixel of the list
-    if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
+    if (_scrollController.offset ==
+        _scrollController.position.maxScrollExtent) {
       /// If the query is empty, use the pagination for search bar
       if (_query.isNotEmpty) {
         _addSearchingEvent(_query);
       }
+
       /// Else use the normal pagination
       else {
         _addLoadingEvent();
@@ -100,20 +102,25 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
     });
   }
 
-  _focusListener() => setState(() => _searchHasFocus = (_searchBarFn?.hasFocus ?? false));
+  _focusListener() =>
+      setState(() => _searchHasFocus = (_searchBarFn?.hasFocus ?? false));
 
   _onModeChange(StudyModes newMode) {
     _searchBarFn?.unfocus();
     setState(() {
       switch (newMode) {
         case StudyModes.writing:
-          _selectedMode = StudyModes.writing; break;
+          _selectedMode = StudyModes.writing;
+          break;
         case StudyModes.reading:
-          _selectedMode = StudyModes.reading; break;
+          _selectedMode = StudyModes.reading;
+          break;
         case StudyModes.recognition:
-          _selectedMode = StudyModes.recognition; break;
+          _selectedMode = StudyModes.recognition;
+          break;
         case StudyModes.listening:
-          _selectedMode = StudyModes.listening; break;
+          _selectedMode = StudyModes.listening;
+          break;
       }
     });
     _tabController?.animateTo(newMode.index,
@@ -158,58 +165,81 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
 
   _updateName(BuildContext bloc, String name) {
     if (name.isNotEmpty) {
-      BlocProvider.of<KanjiListDetailBloc>(bloc).add(UpdateKanList(name, _listName));
+      BlocProvider.of<KanjiListDetailBloc>(bloc)
+          .add(UpdateKanList(name, _listName));
     }
   }
 
   _updateKanListName(BuildContext bloc) {
     TextEditingController _nameController = TextEditingController();
     FocusNode _nameControllerFn = FocusNode();
-    showDialog(context: bloc, builder: (context) {
-      return KPDialog(
-        title: Text("list_details_updateKanListName_title".tr()),
-        content: KPTextForm(
-          hint: _listName,
-          maxLength: 32,
-          header: 'list_details_updateKanListName_header'.tr(),
-          controller: _nameController,
-          focusNode: _nameControllerFn,
-          autofocus: true,
-          onEditingComplete: () {
-            Navigator.of(context).pop();
-            _updateName(bloc, _nameController.text);
-          },
-        ),
-        positiveButtonText: "list_details_updateKanListName_positive".tr(),
-        onPositive: () => _updateName(bloc, _nameController.text)
-      );
-    });
+    showDialog(
+        context: bloc,
+        builder: (context) {
+          return KPDialog(
+              title: Text("list_details_updateKanListName_title".tr()),
+              content: KPTextForm(
+                hint: _listName,
+                maxLength: 32,
+                header: 'list_details_updateKanListName_header'.tr(),
+                controller: _nameController,
+                focusNode: _nameControllerFn,
+                autofocus: true,
+                onEditingComplete: () {
+                  Navigator.of(context).pop();
+                  _updateName(bloc, _nameController.text);
+                },
+              ),
+              positiveButtonText:
+                  "list_details_updateKanListName_positive".tr(),
+              onPositive: () => _updateName(bloc, _nameController.text));
+        });
   }
 
   Future<void> _goToPractice(KanjiListDetailStateLoadedPractice state) async {
     switch (state.mode) {
       case StudyModes.writing:
-        await Navigator.of(context).pushNamed(KanPracticePages.writingStudyPage,
-            arguments: ModeArguments(studyList: state.list, isTest: false,
-                mode: StudyModes.writing, testMode: Tests.blitz, display: widget.list.name))
+        await Navigator.of(context)
+            .pushNamed(KanPracticePages.writingStudyPage,
+                arguments: ModeArguments(
+                    studyList: state.list,
+                    isTest: false,
+                    mode: StudyModes.writing,
+                    testMode: Tests.blitz,
+                    display: widget.list.name))
             .then((value) => _addLoadingEvent(reset: true));
         break;
       case StudyModes.reading:
-        await Navigator.of(context).pushNamed(KanPracticePages.readingStudyPage,
-            arguments: ModeArguments(studyList: state.list, isTest: false,
-                mode: StudyModes.reading, testMode: Tests.blitz, display: widget.list.name))
+        await Navigator.of(context)
+            .pushNamed(KanPracticePages.readingStudyPage,
+                arguments: ModeArguments(
+                    studyList: state.list,
+                    isTest: false,
+                    mode: StudyModes.reading,
+                    testMode: Tests.blitz,
+                    display: widget.list.name))
             .then((value) => _addLoadingEvent(reset: true));
         break;
       case StudyModes.recognition:
-        await Navigator.of(context).pushNamed(KanPracticePages.recognitionStudyPage,
-            arguments: ModeArguments(studyList: state.list, isTest: false,
-                mode: StudyModes.recognition, testMode: Tests.blitz, display: widget.list.name))
+        await Navigator.of(context)
+            .pushNamed(KanPracticePages.recognitionStudyPage,
+                arguments: ModeArguments(
+                    studyList: state.list,
+                    isTest: false,
+                    mode: StudyModes.recognition,
+                    testMode: Tests.blitz,
+                    display: widget.list.name))
             .then((value) => _addLoadingEvent(reset: true));
         break;
       case StudyModes.listening:
-        await Navigator.of(context).pushNamed(KanPracticePages.listeningStudyPage,
-            arguments: ModeArguments(studyList: state.list, isTest: false,
-                mode: StudyModes.listening, testMode: Tests.blitz, display: widget.list.name))
+        await Navigator.of(context)
+            .pushNamed(KanPracticePages.listeningStudyPage,
+                arguments: ModeArguments(
+                    studyList: state.list,
+                    isTest: false,
+                    mode: StudyModes.listening,
+                    testMode: Tests.blitz,
+                    display: widget.list.name))
             .then((value) => _addLoadingEvent(reset: true));
         break;
     }
@@ -238,12 +268,12 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
                 fit: BoxFit.fitWidth,
                 child: GestureDetector(
                   onTap: () async => await _updateKanListName(context),
-                  child: Text(state.name, key: changeName, overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).appBarTheme.titleTextStyle),
-                )
-            );
-          }
-          else {
+                  child: Text(state.name,
+                      key: changeName,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).appBarTheme.titleTextStyle),
+                ));
+          } else {
             return Container();
           }
         },
@@ -265,9 +295,8 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
               }),
             ),
             IconButton(
-              onPressed: () async => await KPBlitzBottomSheet.show(
-                  context, practiceList: _listName
-              ),
+              onPressed: () async => await KPBlitzBottomSheet.show(context,
+                  practiceList: _listName),
               icon: const Icon(Icons.flash_on_rounded),
             ),
           ],
@@ -275,8 +304,9 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
         IconButton(
           key: addVocabulary,
           onPressed: () async {
-            await Navigator.of(context).pushNamed(KanPracticePages.addKanjiPage,
-                arguments: AddKanjiArgs(listName: _listName))
+            await Navigator.of(context)
+                .pushNamed(KanPracticePages.addKanjiPage,
+                    arguments: AddKanjiArgs(listName: _listName))
                 .then((code) => _addLoadingEvent(reset: true));
           },
           icon: const Icon(Icons.add),
@@ -310,11 +340,15 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
                     GeneralUtils.getSnackBar(context, state.error);
                   }
                 } else if (state is KanjiListDetailStateLoaded) {
-                  if (StorageManager.readData(StorageManager.haveSeenKanListDetailCoachMark) == false) {
+                  if (StorageManager.readData(
+                          StorageManager.haveSeenKanListDetailCoachMark) ==
+                      false) {
                     _onTutorial = true;
-                    await TutorialCoach([vocabulary, addVocabulary, actions, changeName],
-                        CoachTutorialParts.details).showTutorial(context,
-                        onEnd: () => _onTutorial = false);
+                    await TutorialCoach(
+                            [vocabulary, addVocabulary, actions, changeName],
+                            CoachTutorialParts.details)
+                        .showTutorial(context,
+                            onEnd: () => _onTutorial = false);
                   }
                 }
               },
@@ -322,8 +356,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
                 if (state is KanjiListDetailStateLoaded) {
                   _listName = state.name;
                   return _body(context, state);
-                }
-                else if (state is KanjiListDetailStateLoading ||
+                } else if (state is KanjiListDetailStateLoading ||
                     state is KanjiListDetailStateSearching ||
                     state is KanjiListDetailStateLoadedPractice) {
                   return const KPProgressIndicator();
@@ -331,8 +364,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
                   return KPEmptyList(
                       showTryButton: true,
                       onRefresh: () => _addLoadingEvent(reset: true),
-                      message: "list_details_load_failed".tr()
-                  );
+                      message: "list_details_load_failed".tr());
                 } else {
                   return Container();
                 }
@@ -350,46 +382,43 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
         Padding(
           padding: const EdgeInsets.only(bottom: Margins.margin8),
           child: TabBar(
-            controller: _tabController,
-            tabs: List.generate(StudyModes.values.length, (index) {
-              switch (StudyModes.values[index]) {
-                case StudyModes.writing:
-                  return _tabBarElement(StudyModes.writing.mode);
-                case StudyModes.reading:
-                  return _tabBarElement(StudyModes.reading.mode);
-                case StudyModes.recognition:
-                  return _tabBarElement(StudyModes.recognition.mode);
-                case StudyModes.listening:
-                  return _tabBarElement(StudyModes.listening.mode);
-              }
-            })
-          ),
+              controller: _tabController,
+              tabs: List.generate(StudyModes.values.length, (index) {
+                switch (StudyModes.values[index]) {
+                  case StudyModes.writing:
+                    return _tabBarElement(StudyModes.writing.mode);
+                  case StudyModes.reading:
+                    return _tabBarElement(StudyModes.reading.mode);
+                  case StudyModes.recognition:
+                    return _tabBarElement(StudyModes.recognition.mode);
+                  case StudyModes.listening:
+                    return _tabBarElement(StudyModes.listening.mode);
+                }
+              })),
         ),
         Expanded(
-          child: GestureDetector(
-            /// Dismiss keyboard if possible whenever a vertical or horizontal
-            /// drag down occurs on screen
-            onVerticalDragStart: (details) {
-              FocusManager.instance.primaryFocus?.unfocus();
-            },
-            onHorizontalDragStart: (details) {
-              FocusManager.instance.primaryFocus?.unfocus();
-            },
-            onHorizontalDragEnd: (details) {
-              double? pv = details.primaryVelocity;
-              if (pv != null) _updateSelectedModePageView(pv);
-            },
-            child: _kanjiList(state),
-          )
-        ),
+            child: GestureDetector(
+          /// Dismiss keyboard if possible whenever a vertical or horizontal
+          /// drag down occurs on screen
+          onVerticalDragStart: (details) {
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
+          onHorizontalDragStart: (details) {
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
+          onHorizontalDragEnd: (details) {
+            double? pv = details.primaryVelocity;
+            if (pv != null) _updateSelectedModePageView(pv);
+          },
+          child: _kanjiList(state),
+        )),
         KPButton(
-          title1: "list_details_practice_button_label_ext".tr(),
-          title2: "${"list_details_practice_button_label".tr()} • ${
-              _learningMode == LearningMode.spatial
-                  ? LearningMode.spatial.name : LearningMode.random.name}",
-          onTap: () => BlocProvider.of<KanjiListDetailBloc>(bloc)
-              .add(KanjiEventLoadUpPractice(_learningMode, _listName, _selectedMode))
-        ),
+            title1: "list_details_practice_button_label_ext".tr(),
+            title2:
+                "${"list_details_practice_button_label".tr()} • ${_learningMode == LearningMode.spatial ? LearningMode.spatial.name : LearningMode.random.name}",
+            onTap: () => BlocProvider.of<KanjiListDetailBloc>(bloc).add(
+                KanjiEventLoadUpPractice(
+                    _learningMode, _listName, _selectedMode))),
       ],
     );
   }
@@ -400,7 +429,9 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
       alignment: Alignment.center,
       child: FittedBox(
         fit: BoxFit.fitWidth,
-        child: Text(mode, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyText1),
+        child: Text(mode,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyText1),
       ),
     );
   }
@@ -408,10 +439,9 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
   Widget _kanjiList(KanjiListDetailStateLoaded state) {
     if (state.list.isEmpty) {
       return KPEmptyList(
-        showTryButton: true,
-        onRefresh: () => _addLoadingEvent(reset: true),
-        message: "list_details_empty".tr()
-      );
+          showTryButton: true,
+          onRefresh: () => _addLoadingEvent(reset: true),
+          message: "list_details_empty".tr());
     }
     return GridView.builder(
       key: const PageStorageKey<String>('kanjiListController'),
@@ -419,9 +449,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
       controller: _scrollController,
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 5,
-        childAspectRatio: 2
-      ),
+          crossAxisCount: 5, childAspectRatio: 2),
       itemBuilder: (context, k) {
         Kanji? kanji = state.list[k];
         return KanjiItem(
@@ -432,8 +460,9 @@ class _KanjiListDetailsState extends State<KanjiListDetails> with SingleTickerPr
           selectedMode: _selectedMode,
           onShowModal: () => _searchBarFn?.unfocus(),
           onTap: () async {
-            await Navigator.of(context).pushNamed(KanPracticePages.addKanjiPage,
-                arguments: AddKanjiArgs(listName: _listName, kanji: kanji))
+            await Navigator.of(context)
+                .pushNamed(KanPracticePages.addKanjiPage,
+                    arguments: AddKanjiArgs(listName: _listName, kanji: kanji))
                 .then((code) {
               if (code == 0) _addLoadingEvent(reset: true);
             });

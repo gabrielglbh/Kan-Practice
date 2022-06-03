@@ -21,10 +21,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 class WritingStudy extends StatefulWidget {
   final ModeArguments args;
-  const WritingStudy({
-    Key? key,
-    required this.args
-  }) : super(key: key);
+  const WritingStudy({Key? key, required this.args}) : super(key: key);
 
   @override
   _WritingStudyState createState() => _WritingStudyState();
@@ -33,18 +30,22 @@ class WritingStudy extends StatefulWidget {
 class _WritingStudyState extends State<WritingStudy> {
   /// Current drawn line in the canvas
   List<Offset?> _line = [];
+
   /// Matrix for displaying each individual kanji once validated
   final List<List<String>> _currentKanji = [];
 
   /// Array that saves all scores without any previous context for the test result
   final List<double> _testScores = [];
+
   /// Score granted for each individual kanji of the word
   final List<double> _score = [];
+
   /// Maximum score the user can achieve on a certain word
   final List<double> _maxScore = [];
 
   /// Current word index
   int _macro = 0;
+
   /// Current kanji within word index
   int _inner = 0;
 
@@ -113,6 +114,7 @@ class _WritingStudyState extends State<WritingStudy> {
       } else {
         /// Empty the current canvas
         _clear();
+
         /// Calculate the current score
         final int code = await _calculateKanjiScore();
 
@@ -126,6 +128,7 @@ class _WritingStudyState extends State<WritingStudy> {
               _goNextKanji = false;
             });
           }
+
           /// If we ended the list, update the statistics to DB and exit
           else {
             await _handleFinishedPractice();
@@ -133,6 +136,7 @@ class _WritingStudyState extends State<WritingStudy> {
         }
       }
     }
+
     /// If we are within a word with various kanji, show the current one.
     else {
       setState(() {
@@ -144,6 +148,7 @@ class _WritingStudyState extends State<WritingStudy> {
 
   Future<void> _handleFinishedPractice() async {
     _hasFinished = true;
+
     /// If the user is in a test, explicitly pass the _testScores to the handler
     if (widget.args.isTest) {
       double testScore = 0;
@@ -161,21 +166,25 @@ class _WritingStudyState extends State<WritingStudy> {
   Future<int> _calculateKanjiScore() async {
     /// Updates the dateLastShown attribute of the finished word AND
     /// the current specific last shown mode attribute
-    await KanjiQueries.instance.updateKanji(widget.args.studyList[_macro].listName,
+    await KanjiQueries.instance.updateKanji(
+        widget.args.studyList[_macro].listName,
         widget.args.studyList[_macro].kanji, {
-          KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds(),
-          KanjiTableFields.dateLastShownWriting: GeneralUtils.getCurrentMilliseconds()
-        });
+      KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds(),
+      KanjiTableFields.dateLastShownWriting:
+          GeneralUtils.getCurrentMilliseconds()
+    });
     final double currentScore = _score[_macro] / _maxScore[_macro];
+
     /// Add the current virgin score to the test scores...
     if (widget.args.isTest) {
       if (StorageManager.readData(StorageManager.affectOnPractice) ?? false) {
-        await StudyModeUpdateHandler.calculateScore(widget.args, currentScore, _macro);
+        await StudyModeUpdateHandler.calculateScore(
+            widget.args, currentScore, _macro);
       }
       _testScores.add(currentScore);
-    }
-    else {
-      await StudyModeUpdateHandler.calculateScore(widget.args, currentScore, _macro);
+    } else {
+      await StudyModeUpdateHandler.calculateScore(
+          widget.args, currentScore, _macro);
     }
     return 0;
   }
@@ -183,19 +192,23 @@ class _WritingStudyState extends State<WritingStudy> {
   @override
   Widget build(BuildContext context) {
     return KPScaffold(
-      onWillPop: () async => StudyModeUpdateHandler.handle(context, widget.args, onPop: true, lastIndex: _macro),
+      onWillPop: () async => StudyModeUpdateHandler.handle(context, widget.args,
+          onPop: true, lastIndex: _macro),
       setGestureDetector: false,
-      appBarTitle: StudyModeAppBar(title: widget.args.display, studyMode: widget.args.mode.mode),
+      appBarTitle: StudyModeAppBar(
+          title: widget.args.display, studyMode: widget.args.mode.mode),
       centerTitle: true,
       appBarActions: [
         Visibility(
           visible: _goNextKanji,
-          child: TTSIconButton(kanji: widget.args.studyList[_macro].pronunciation),
+          child:
+              TTSIconButton(kanji: widget.args.studyList[_macro].pronunciation),
         ),
         IconButton(
           icon: const Icon(Icons.info_outline_rounded),
           onPressed: () async {
-            if (await canLaunch("https://www.sljfaq.org/afaq/stroke-order.html")) {
+            if (await canLaunch(
+                "https://www.sljfaq.org/afaq/stroke-order.html")) {
               launch("https://www.sljfaq.org/afaq/stroke-order.html");
             }
           },
@@ -208,11 +221,14 @@ class _WritingStudyState extends State<WritingStudy> {
           KPCustomCanvas(line: _line, allowEdit: !_showActualKanji),
           WritingButtonsAnimations(
             id: _macro,
+
             /// Whenever a new kanji is shown, _inner will be 0. That's
             /// the key to toggle the slide animation on the button.
             triggerSlide: _inner == 0,
             trigger: _showActualKanji,
-            submitLabel: _goNextKanji ? "writing_next_kanji_label".tr() : "done_button_label".tr(),
+            submitLabel: _goNextKanji
+                ? "writing_next_kanji_label".tr()
+                : "done_button_label".tr(),
             wrongAction: (score) async => await _updateUIOnSubmit(score),
             midWrongAction: (score) async => await _updateUIOnSubmit(score),
             midPerfectAction: (score) async => await _updateUIOnSubmit(score),
@@ -224,7 +240,8 @@ class _WritingStudyState extends State<WritingStudy> {
                 if (_line.isNotEmpty) {
                   _resetKanji();
                 } else {
-                  GeneralUtils.getSnackBar(context, "writing_validation_failed".tr());
+                  GeneralUtils.getSnackBar(
+                      context, "writing_validation_failed".tr());
                 }
               }
             },
@@ -235,14 +252,14 @@ class _WritingStudyState extends State<WritingStudy> {
   }
 
   List<Widget> _header() {
-    double finalHeight = MediaQuery.of(context).size.height < CustomSizes.minimumHeight
-        ? CustomSizes.listStudyHeight / 3 : CustomSizes.listStudyHeight;
+    double finalHeight =
+        MediaQuery.of(context).size.height < CustomSizes.minimumHeight
+            ? CustomSizes.listStudyHeight / 3
+            : CustomSizes.listStudyHeight;
     return [
       KPLearningHeaderContainer(
-        height: CustomSizes.defaultSizeLearningExtContainer + Margins.margin8,
-        text: _goNextKanji
-            ? _studyList[_macro].pronunciation : ""
-      ),
+          height: CustomSizes.defaultSizeLearningExtContainer + Margins.margin8,
+          text: _goNextKanji ? _studyList[_macro].pronunciation : ""),
       SizedBox(
         height: finalHeight,
         child: ListView.builder(
@@ -252,12 +269,15 @@ class _WritingStudyState extends State<WritingStudy> {
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
             String? kanji = _studyList[_macro].kanji;
-            return Text(_currentKanji[_macro][index] == _none ? _none : kanji[index],
-                style: TextStyle(fontSize:
-                MediaQuery.of(context).size.height < CustomSizes.minimumHeight
-                    ? FontSizes.fontSize24 : FontSizes.fontSize64,
-                    color: index == _inner ? CustomColors.secondaryColor : null)
-            );
+            return Text(
+                _currentKanji[_macro][index] == _none ? _none : kanji[index],
+                style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.height <
+                            CustomSizes.minimumHeight
+                        ? FontSizes.fontSize24
+                        : FontSizes.fontSize64,
+                    color:
+                        index == _inner ? CustomColors.secondaryColor : null));
           },
         ),
       ),

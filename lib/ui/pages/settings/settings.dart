@@ -7,9 +7,9 @@ import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/pages/settings/bloc/settings_bloc.dart';
 import 'package:kanpractice/ui/pages/settings/widgets/change_kanji_test.dart';
+import 'package:kanpractice/ui/pages/settings/widgets/change_theme.dart';
 import 'package:kanpractice/ui/pages/settings/widgets/copyrigh_info.dart';
 import 'package:kanpractice/ui/pages/settings/widgets/dev_info.dart';
-import 'package:kanpractice/ui/theme/theme_manager.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -24,14 +24,12 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  ThemeMode _mode = ThemeMode.light;
   VisualizationMode _graphMode = VisualizationMode.radialChart;
   bool _toggleAffect = false;
   int _kanjiInTest = CustomSizes.numberOfKanjiInTest;
 
   @override
   void initState() {
-    _mode = ThemeManager.instance.themeMode;
     _toggleAffect = StorageManager.readData(StorageManager.affectOnPractice);
     _graphMode = VisualizationModeExt.mode(
         StorageManager.readData(StorageManager.kanListGraphVisualization) ??
@@ -49,15 +47,6 @@ class _SettingsState extends State<Settings> {
       child: KPScaffold(
           appBarTitle: "settings_title".tr(),
           appBarActions: [
-            IconButton(
-              onPressed: () {
-                _mode = ThemeManager.instance.themeMode;
-                ThemeManager.instance.switchMode(_mode == ThemeMode.light);
-              },
-              icon: Icon(Theme.of(context).brightness == Brightness.light
-                  ? Icons.mode_night_rounded
-                  : Icons.light_mode_rounded),
-            ),
             BlocBuilder<SettingsBloc, SettingsState>(
               builder: (context, state) => IconButton(
                 onPressed: () => context
@@ -70,37 +59,42 @@ class _SettingsState extends State<Settings> {
           child: ListView(
             children: [
               ListTile(
-                  leading: const Icon(Icons.local_florist_rounded,
-                      color: Colors.orangeAccent),
-                  title: Text("settings_information_rating".tr()),
-                  trailing: const Icon(Icons.link),
-                  onTap: () async {
-                    try {
-                      await launch("google_play_link".tr());
-                    } catch (err) {
-                      GeneralUtils.getSnackBar(
-                          context, "settings_information_rating_failed".tr());
-                    }
-                  }),
-              BlocBuilder<SettingsBloc, SettingsState>(
-                builder: (context, state) {
-                  if (state is SettingsStateBackUpDateLoaded) {
-                    return _header("settings_account_section".tr(),
-                        subtitle: state.date);
-                  } else if (state is SettingsStateBackUpDateLoading) {
-                    return _header("settings_account_section".tr());
-                  } else {
-                    return Container();
+                leading: const Icon(Icons.local_florist_rounded,
+                    color: Colors.orangeAccent),
+                title: Text("settings_information_rating".tr()),
+                trailing: const Icon(Icons.link),
+                onTap: () async {
+                  try {
+                    await launch("google_play_link".tr());
+                  } catch (err) {
+                    GeneralUtils.getSnackBar(
+                        context, "settings_information_rating_failed".tr());
                   }
                 },
               ),
               const Divider(),
               ListTile(
-                  leading: const Icon(Icons.whatshot_rounded),
-                  title: Text("settings_account_label".tr()),
-                  onTap: () => Navigator.of(context)
-                      .pushNamed(KanPracticePages.loginPage)),
+                leading: const Icon(Icons.device_hub_rounded),
+                title: Text("settings_information_contribute".tr()),
+                trailing: const Icon(Icons.link),
+                onTap: () async {
+                  try {
+                    await launch("https://github.com/gabrielglbh/Kan-Practice");
+                  } catch (err) {
+                    GeneralUtils.getSnackBar(
+                        context, "settings_information_rating_failed".tr());
+                  }
+                },
+              ),
               _header("settings_general".tr()),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.lightbulb, color: Colors.lime),
+                title: Text('settings_toggle_theme'.tr()),
+                onTap: () {
+                  ChangeAppTheme.show(context);
+                },
+              ),
               const Divider(),
               ListTile(
                 leading: const Icon(Icons.insert_chart_outlined_rounded,
@@ -179,19 +173,24 @@ class _SettingsState extends State<Settings> {
                         _graphMode.name);
                   }),
               const Divider(),
+              BlocBuilder<SettingsBloc, SettingsState>(
+                builder: (context, state) {
+                  if (state is SettingsStateBackUpDateLoaded) {
+                    return _header("settings_account_section".tr(),
+                        subtitle: state.date);
+                  } else if (state is SettingsStateBackUpDateLoading) {
+                    return _header("settings_account_section".tr());
+                  } else {
+                    return Container();
+                  }
+                },
+              ),
+              const Divider(),
               ListTile(
-                  leading: const Icon(Icons.device_hub_rounded),
-                  title: Text("settings_information_contribute".tr()),
-                  trailing: const Icon(Icons.link),
-                  onTap: () async {
-                    try {
-                      await launch(
-                          "https://github.com/gabrielglbh/Kan-Practice");
-                    } catch (err) {
-                      GeneralUtils.getSnackBar(
-                          context, "settings_information_rating_failed".tr());
-                    }
-                  }),
+                  leading: const Icon(Icons.whatshot_rounded),
+                  title: Text("settings_account_label".tr()),
+                  onTap: () => Navigator.of(context)
+                      .pushNamed(KanPracticePages.loginPage)),
               _header("settings_information_section".tr()),
               const Divider(),
               ListTile(

@@ -27,6 +27,15 @@ Future<void> _initSharedPreferences() async {
         StorageManager.numberOfKanjiInTest, CustomSizes.numberOfKanjiInTest);
   }
 
+  /// Breaking change with 2.1.0: if themeMode in shared preferences is bool
+  /// then change it to the actual name of [ThemeMode], as [ThemeMode.system]
+  /// is introduced
+  var theme = StorageManager.readData(StorageManager.themeMode);
+  if (theme is bool) {
+    StorageManager.saveData(StorageManager.themeMode,
+        theme ? ThemeMode.dark.name : ThemeMode.light.name);
+  }
+
   /// Make the value the same as hasDoneTutorial. If the user has already seen
   /// the overall tutorial, do not show the coach mark tutorial
   // DEBUG ONLY

@@ -12,14 +12,16 @@ class AddKanjiBloc extends Bloc<AddKanjiEvent, AddKanjiState> {
     on<AddKanjiEventIdle>((event, emit) {});
 
     on<AddKanjiEventUpdate>((event, emit) async {
-      final code = await KanjiQueries.instance.updateKanji(
-          event.listName, event.kanjiPk, event.parameters);
+      final code = await KanjiQueries.instance
+          .updateKanji(event.listName, event.kanjiPk, event.parameters);
       if (code == 0) {
         emit(AddKanjiStateDoneUpdating());
       } else if (code == -1) {
-        emit(AddKanjiStateFailure(message: "add_kanji_updateKanji_failed_update".tr()));
+        emit(AddKanjiStateFailure(
+            message: "add_kanji_updateKanji_failed_update".tr()));
       } else {
-        emit(AddKanjiStateFailure(message: "add_kanji_updateKanji_failed".tr()));
+        emit(
+            AddKanjiStateFailure(message: "add_kanji_updateKanji_failed".tr()));
       }
     });
 
@@ -29,9 +31,11 @@ class AddKanjiBloc extends Bloc<AddKanjiEvent, AddKanjiState> {
       if (code == 0) {
         emit(AddKanjiStateDoneCreating(exitMode: event.exitMode));
       } else if (code == -1) {
-        emit(AddKanjiStateFailure(message: "add_kanji_createKanji_failed_insertion".tr()));
+        emit(AddKanjiStateFailure(
+            message: "add_kanji_createKanji_failed_insertion".tr()));
       } else {
-        emit(AddKanjiStateFailure(message: "add_kanji_createKanji_failed".tr()));
+        emit(
+            AddKanjiStateFailure(message: "add_kanji_createKanji_failed".tr()));
       }
     });
   }

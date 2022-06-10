@@ -47,7 +47,8 @@ class _LoginPageState extends State<LoginPage> {
     String? email = _emailController?.text;
     String? password = _passwordController?.text;
     if (email != null && password != null) {
-      BlocProvider.of<LoginBloc>(bloc).add(LoginSubmitting(_mode, email, password));
+      BlocProvider.of<LoginBloc>(bloc)
+          .add(LoginSubmitting(_mode, email, password));
     }
   }
 
@@ -58,7 +59,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _removeAccount(BuildContext bloc, String pass) {
-    if (pass.isNotEmpty) BlocProvider.of<LoginBloc>(bloc).add(RemoveAccount(pass));
+    if (pass.isNotEmpty) {
+      BlocProvider.of<LoginBloc>(bloc).add(RemoveAccount(pass));
+    }
   }
 
   _changePasswordDialog(BuildContext bloc) {
@@ -66,75 +69,79 @@ class _LoginPageState extends State<LoginPage> {
     TextEditingController _newPassword = TextEditingController();
     FocusNode _currPasswordFn = FocusNode();
     FocusNode _newPasswordFn = FocusNode();
-    showDialog(context: bloc, builder: (context) {
-      return KPDialog(
-        title: Text("login_changePasswordDialog_title".tr()),
-        content: Column(
-          children: [
-            KPTextForm(
-              hint: 'login_changePasswordDialog_hint'.tr(),
-              header: 'login_changePasswordDialog_old_header'.tr(),
-              inputType: TextInputType.visiblePassword,
-              controller: _currPassword,
-              focusNode: _currPasswordFn,
-              autofocus: true,
-              obscure: true,
-              onEditingComplete: () => _newPasswordFn.requestFocus(),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: Margins.margin16),
-              child: KPTextForm(
-                hint: 'login_changePasswordDialog_hint'.tr(),
-                header: 'login_changePasswordDialog_new_header'.tr(),
-                inputType: TextInputType.visiblePassword,
-                controller: _newPassword,
-                focusNode: _newPasswordFn,
-                obscure: true,
-                onEditingComplete: () {
-                  Navigator.of(context).pop();
-                  _changePassword(bloc, _currPassword.text, _newPassword.text);
-                },
+    showDialog(
+        context: bloc,
+        builder: (context) {
+          return KPDialog(
+              title: Text("login_changePasswordDialog_title".tr()),
+              content: Column(
+                children: [
+                  KPTextForm(
+                    hint: 'login_changePasswordDialog_hint'.tr(),
+                    header: 'login_changePasswordDialog_old_header'.tr(),
+                    inputType: TextInputType.visiblePassword,
+                    controller: _currPassword,
+                    focusNode: _currPasswordFn,
+                    autofocus: true,
+                    obscure: true,
+                    onEditingComplete: () => _newPasswordFn.requestFocus(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: Margins.margin16),
+                    child: KPTextForm(
+                      hint: 'login_changePasswordDialog_hint'.tr(),
+                      header: 'login_changePasswordDialog_new_header'.tr(),
+                      inputType: TextInputType.visiblePassword,
+                      controller: _newPassword,
+                      focusNode: _newPasswordFn,
+                      obscure: true,
+                      onEditingComplete: () {
+                        Navigator.of(context).pop();
+                        _changePassword(
+                            bloc, _currPassword.text, _newPassword.text);
+                      },
+                    ),
+                  )
+                ],
               ),
-            )
-          ],
-        ),
-        positiveButtonText: "login_changePasswordDialog_positive".tr(),
-        onPositive: () => _changePassword(bloc, _currPassword.text, _newPassword.text)
-      );
-    });
+              positiveButtonText: "login_changePasswordDialog_positive".tr(),
+              onPositive: () =>
+                  _changePassword(bloc, _currPassword.text, _newPassword.text));
+        });
   }
 
   _removeAccountDialog(BuildContext bloc) {
     TextEditingController _currPassword = TextEditingController();
     FocusNode _currPasswordFn = FocusNode();
-    showDialog(context: bloc, builder: (context) {
-      return KPDialog(
-        title: Text("login_removeAccountDialog_title".tr()),
-        content: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: Margins.margin16),
-              child: Text("login_removeAccountDialog_content".tr(), style:
-                Theme.of(context).textTheme.bodyText1),
-            ),
-            KPTextForm(
-              hint: 'login_removeAccountDialog_hint'.tr(),
-              header: 'login_removeAccountDialog_header'.tr(),
-              inputType: TextInputType.visiblePassword,
-              controller: _currPassword,
-              focusNode: _currPasswordFn,
-              obscure: true,
-              onEditingComplete: () {
-                Navigator.of(context).pop();
-                _removeAccount(bloc, _currPassword.text);
-              },
-            ),
-          ],
-        ),
-        positiveButtonText: "login_removeAccountDialog_positive".tr(),
-        onPositive: () => _removeAccount(bloc, _currPassword.text)
-      );
-    });
+    showDialog(
+        context: bloc,
+        builder: (context) {
+          return KPDialog(
+              title: Text("login_removeAccountDialog_title".tr()),
+              content: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: Margins.margin16),
+                    child: Text("login_removeAccountDialog_content".tr(),
+                        style: Theme.of(context).textTheme.bodyText1),
+                  ),
+                  KPTextForm(
+                    hint: 'login_removeAccountDialog_hint'.tr(),
+                    header: 'login_removeAccountDialog_header'.tr(),
+                    inputType: TextInputType.visiblePassword,
+                    controller: _currPassword,
+                    focusNode: _currPasswordFn,
+                    obscure: true,
+                    onEditingComplete: () {
+                      Navigator.of(context).pop();
+                      _removeAccount(bloc, _currPassword.text);
+                    },
+                  ),
+                ],
+              ),
+              positiveButtonText: "login_removeAccountDialog_positive".tr(),
+              onPositive: () => _removeAccount(bloc, _currPassword.text));
+        });
   }
 
   @override
@@ -142,98 +149,106 @@ class _LoginPageState extends State<LoginPage> {
     return BlocProvider<LoginBloc>(
       create: (_) => LoginBloc()..add(LoginIdle()),
       child: KPScaffold(
-        appBarTitle: BlocBuilder<LoginBloc, LoginState>(
-          builder: (context, state) {
-            if (state is LoginStateSuccessful) {
-              return FittedBox(fit: BoxFit.fitWidth,
-                  child: Text("settings_account_label".tr()));
-            } else if (state is LoginStateIdle) {
-              return FittedBox(fit: BoxFit.fitWidth,
-                  child: Text(_mode == SignMode.login
-                      ? SignMode.login.name
-                      : SignMode.signup.name, style: Theme.of(context).appBarTheme.titleTextStyle));
-            } else {
-              return Container();
-            }
-          },
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              BlocConsumer<LoginBloc, LoginState>(
-                listener: (context, state) {
-                  /// Only pop automatically when closing session
-                  if (state is LoginStateLoggedOut) {
-                    if (state.message == "login_bloc_close_session_successful".tr()) {
-                      Navigator.of(context).pop();
-                    }
-                  }
-                },
-                builder: (context, state) {
-                  if (state is LoginStateLoading) {
-                    return const KPProgressIndicator();
-                  } else if (state is LoginStateSuccessful) {
-                    return _successfulState(context, state);
-                  } else if (state is LoginStateIdle) {
-                    return _idleState(context, state);
-                  } else if (state is LoginStateLoggedOut) {
-                    return _loggedOut(state);
-                  } else {
-                    return Container();
-                  }
-                },
-              ),
-            ],
+          appBarTitle: BlocBuilder<LoginBloc, LoginState>(
+            builder: (context, state) {
+              if (state is LoginStateSuccessful) {
+                return FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Text("settings_account_label".tr()));
+              } else if (state is LoginStateIdle) {
+                return FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Text(
+                        _mode == SignMode.login
+                            ? SignMode.login.name
+                            : SignMode.signup.name,
+                        style: Theme.of(context).appBarTheme.titleTextStyle));
+              } else {
+                return Container();
+              }
+            },
           ),
-        )
-      ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                BlocConsumer<LoginBloc, LoginState>(
+                  listener: (context, state) {
+                    /// Only pop automatically when closing session
+                    if (state is LoginStateLoggedOut) {
+                      if (state.message ==
+                          "login_bloc_close_session_successful".tr()) {
+                        Navigator.of(context).pop();
+                      }
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is LoginStateLoading) {
+                      return const KPProgressIndicator();
+                    } else if (state is LoginStateSuccessful) {
+                      return _successfulState(context, state);
+                    } else if (state is LoginStateIdle) {
+                      return _idleState(context, state);
+                    } else if (state is LoginStateLoggedOut) {
+                      return _loggedOut(state);
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
+              ],
+            ),
+          )),
     );
   }
 
   Column _idleState(BuildContext bloc, LoginStateIdle state) {
     return Column(
       children: [
-        Icon(Icons.info_outline_rounded, color: CustomColors.getSecondaryColor(context)),
+        Icon(Icons.info_outline_rounded,
+            color: CustomColors.getSecondaryColor(context)),
         Padding(
-          padding: const EdgeInsets.only(top: Margins.margin16, bottom: Margins.margin16),
-          child: Text("login_formDisclaimer".tr(), style: Theme.of(context).textTheme.bodyText1),
+          padding: const EdgeInsets.only(
+              top: Margins.margin16, bottom: Margins.margin16),
+          child: Text("login_formDisclaimer".tr(),
+              style: Theme.of(context).textTheme.bodyText1),
         ),
         KPTextForm(
-          header: "login_email_header".tr(),
-          hint: "login_email_hint".tr(),
-          inputType: TextInputType.emailAddress,
-          controller: _emailController,
-          focusNode: _emailFocus,
-          onEditingComplete: () => _passwordFocus?.requestFocus()
-        ),
+            header: "login_email_header".tr(),
+            hint: "login_email_hint".tr(),
+            inputType: TextInputType.emailAddress,
+            controller: _emailController,
+            focusNode: _emailFocus,
+            onEditingComplete: () => _passwordFocus?.requestFocus()),
         Padding(
           padding: const EdgeInsets.only(top: Margins.margin32),
           child: KPTextForm(
-            header: "login_password_header".tr(),
-            hint: "login_password_hint".tr(),
-            inputType: TextInputType.visiblePassword,
-            obscure: true,
-            controller: _passwordController,
-            focusNode: _passwordFocus,
-            action: TextInputAction.done,
-            onEditingComplete: () => _handleLogin(bloc)
-          ),
+              header: "login_password_header".tr(),
+              hint: "login_password_hint".tr(),
+              inputType: TextInputType.visiblePassword,
+              obscure: true,
+              controller: _passwordController,
+              focusNode: _passwordFocus,
+              action: TextInputAction.done,
+              onEditingComplete: () => _handleLogin(bloc)),
         ),
         Visibility(
           visible: state.error != "",
           child: Padding(
             padding: const EdgeInsets.all(Margins.margin16),
             child: Text("${"login_authentication_failed".tr()} ${state.error}",
-                style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                    color: CustomColors.getSecondaryColor(context))),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    ?.copyWith(color: CustomColors.getSecondaryColor(context))),
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(top: Margins.margin16),
           child: ElevatedButton(
             onPressed: () => _handleLogin(bloc),
-            child: Text("login_form_positive".tr(), style: Theme.of(context).textTheme.button),
+            child: Text("login_form_positive".tr(),
+                style: Theme.of(context).textTheme.button),
           ),
         ),
         GestureDetector(
@@ -246,10 +261,14 @@ class _LoginPageState extends State<LoginPage> {
           }),
           child: Padding(
             padding: const EdgeInsets.all(Margins.margin16),
-            child: Text(_mode == SignMode.login ? SignMode.signup.name : SignMode.login.name,
-              style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                decoration: TextDecoration.underline
-              ),
+            child: Text(
+              _mode == SignMode.login
+                  ? SignMode.signup.name
+                  : SignMode.login.name,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  ?.copyWith(decoration: TextDecoration.underline),
             ),
           ),
         )
@@ -259,34 +278,38 @@ class _LoginPageState extends State<LoginPage> {
 
   Center _successfulState(BuildContext bloc, LoginStateSuccessful state) {
     return Center(
-      child: Column(
-        children: [
-          Icon(Icons.check_circle_rounded, color: CustomColors.getSecondaryColor(context),
-              size: CustomSizes.maxHeightValidationCircle),
-          Padding(
+        child: Column(
+      children: [
+        Icon(Icons.check_circle_rounded,
+            color: CustomColors.getSecondaryColor(context),
+            size: CustomSizes.maxHeightValidationCircle),
+        Padding(
+          padding: const EdgeInsets.all(Margins.margin16),
+          child: Text(
+              "${"login_current_account_logged".tr()} ${state.user.email}.",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyText1),
+        ),
+        SizedBox(
+          height: CustomSizes.appBarHeight,
+          child: Padding(
             padding: const EdgeInsets.all(Margins.margin16),
-            child: Text("${"login_current_account_logged".tr()} ${state.user.email}.",
-                textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyText1),
-          ),
-          SizedBox(
-            height: CustomSizes.appBarHeight,
-            child: Padding(
-              padding: const EdgeInsets.all(Margins.margin16),
-              child: ElevatedButton(
-                onPressed: () => Navigator.of(context).pushNamed(KanPracticePages.backUpPage,
-                    arguments: state.user.uid),
-                child: Text("login_manage_backup_title".tr(), style: Theme.of(context).textTheme.button),
-              ),
+            child: ElevatedButton(
+              onPressed: () => Navigator.of(context).pushNamed(
+                  KanPracticePages.backUpPage,
+                  arguments: state.user.uid),
+              child: Text("login_manage_backup_title".tr(),
+                  style: Theme.of(context).textTheme.button),
             ),
           ),
-          ListTile(
-            title: Text("login_miscellaneous_title".tr(),
-                style: Theme.of(context).textTheme.headline5),
-          ),
-          _loggedUserActions(bloc)
-        ],
-      )
-    );
+        ),
+        ListTile(
+          title: Text("login_miscellaneous_title".tr(),
+              style: Theme.of(context).textTheme.headline5),
+        ),
+        _loggedUserActions(bloc)
+      ],
+    ));
   }
 
   Column _loggedUserActions(BuildContext bloc) {
@@ -310,7 +333,8 @@ class _LoginPageState extends State<LoginPage> {
           child: ListTile(
             leading: const Icon(Icons.delete),
             title: Text("login_removeAccountDialog_title".tr(),
-                style: TextStyle(color: CustomColors.getSecondaryColor(context))),
+                style:
+                    TextStyle(color: CustomColors.getSecondaryColor(context))),
             onTap: () => _removeAccountDialog(bloc),
           ),
         ),
@@ -320,16 +344,18 @@ class _LoginPageState extends State<LoginPage> {
 
   Center _loggedOut(LoginStateLoggedOut state) {
     return Center(
-      child: Column(
-        children: [
-          Icon(Icons.check_circle_rounded, color: CustomColors.getSecondaryColor(context),
-              size: CustomSizes.maxHeightValidationCircle),
-          Padding(
-            padding: const EdgeInsets.all(Margins.margin16),
-            child: Text(state.message, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyText1),
-          ),
-        ],
-      )
-    );
+        child: Column(
+      children: [
+        Icon(Icons.check_circle_rounded,
+            color: CustomColors.getSecondaryColor(context),
+            size: CustomSizes.maxHeightValidationCircle),
+        Padding(
+          padding: const EdgeInsets.all(Margins.margin16),
+          child: Text(state.message,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyText1),
+        ),
+      ],
+    ));
   }
 }

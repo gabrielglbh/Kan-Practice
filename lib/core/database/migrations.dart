@@ -13,7 +13,8 @@ class Migrations extends MigrationUtils {
     /// If the user has already a database set up, fill tests with correct TestMode
     List<Map<String, dynamic>>? res = await db.query(TestTableFields.testTable);
     if (res.isNotEmpty) {
-      List<Test> tests = List.generate(res.length, (i) => Test.fromJson(res[i]));
+      List<Test> tests =
+          List.generate(res.length, (i) => Test.fromJson(res[i]));
       final batch = db.batch();
       for (int x = 0; x < tests.length; x++) {
         batchUpdateTestMode(batch, tests[x]);
@@ -57,9 +58,11 @@ class Migrations extends MigrationUtils {
         "ADD COLUMN ${KanjiTableFields.dateLastShown} INTEGER NOT NULL DEFAULT 0");
 
     /// If the user has already a database set up, fill dateLastShown with dateAdded
-    List<Map<String, dynamic>>? res = await db.query(KanjiTableFields.kanjiTable);
+    List<Map<String, dynamic>>? res =
+        await db.query(KanjiTableFields.kanjiTable);
     if (res.isNotEmpty) {
-      List<Kanji> kanji = List.generate(res.length, (i) => Kanji.fromJson(res[i]));
+      List<Kanji> kanji =
+          List.generate(res.length, (i) => Kanji.fromJson(res[i]));
       final batch = db.batch();
       for (int x = 0; x < kanji.length; x++) {
         batchUpdateDateLastShown(batch, kanji[x]);

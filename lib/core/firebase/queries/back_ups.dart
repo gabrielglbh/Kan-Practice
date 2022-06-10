@@ -17,7 +17,7 @@ class BackUpRecords {
   late FirebaseFirestore _ref;
   late FirebaseAuth _auth;
   final String collection = "BackUps";
-  final String kanjiLabel= "Kanji";
+  final String kanjiLabel = "Kanji";
   final String listsLabel = "Lists";
   final String testsLabel = "Tests";
 
@@ -47,7 +47,8 @@ class BackUpRecords {
   /// built version.
   Future<String> getVersion() async {
     try {
-      final DocumentSnapshot? ref = await _ref.collection("Versioning").doc("version").get();
+      final DocumentSnapshot? ref =
+          await _ref.collection("Versioning").doc("version").get();
       return await ref?.get("version");
     } catch (err) {
       print(err.toString());
@@ -60,9 +61,12 @@ class BackUpRecords {
     List<String> notes = [];
 
     try {
-      final Future<DocumentSnapshot>? ref = _ref.collection("Versioning").doc("version_notes").get();
+      final Future<DocumentSnapshot>? ref =
+          _ref.collection("Versioning").doc("version_notes").get();
       await ref?.then((snapshot) {
-        notes = snapshot.get(Localizations.localeOf(context).languageCode).cast<String>();
+        notes = snapshot
+            .get(Localizations.localeOf(context).languageCode)
+            .cast<String>();
       });
     } catch (err) {
       notes = [];
@@ -82,13 +86,15 @@ class BackUpRecords {
 
     List<Kanji> kanji = await KanjiQueries.instance.getAllKanji();
     List<KanjiList> lists = await ListQueries.instance.getAllLists();
-    List<Test> test = backUpTests ? await TestQueries.instance.getAllTests() : [];
+    List<Test> test =
+        backUpTests ? await TestQueries.instance.getAllTests() : [];
     int date = GeneralUtils.getCurrentMilliseconds();
 
     if (lists.isEmpty) {
       return "backup_firebase_createBackUp_listEmpty".tr();
     } else {
-      BackUp backUpObject = BackUp(lists: lists, kanji: kanji, test: test, lastUpdated: date);
+      BackUp backUpObject =
+          BackUp(lists: lists, kanji: kanji, test: test, lastUpdated: date);
       WriteBatch? batch = _ref.batch();
       try {
         /// Making sure the back up only contains the actual data of the device
@@ -96,8 +102,11 @@ class BackUpRecords {
 
         /// Kanji list
         for (int x = 0; x < kanji.length; x++) {
-          final DocumentReference doc = _ref.collection(collection).doc(_user?.uid)
-              .collection(kanjiLabel).doc(kanji[x].kanji);
+          final DocumentReference doc = _ref
+              .collection(collection)
+              .doc(_user?.uid)
+              .collection(kanjiLabel)
+              .doc(kanji[x].kanji);
           batch?.set(doc, backUpObject.kanji[x].toJson());
           batch = await _reinitializeBatch(batch, x);
         }
@@ -107,8 +116,11 @@ class BackUpRecords {
 
         /// Lists
         for (int x = 0; x < lists.length; x++) {
-          final DocumentReference doc = _ref.collection(collection).doc(_user?.uid)
-              .collection(listsLabel).doc(lists[x].name);
+          final DocumentReference doc = _ref
+              .collection(collection)
+              .doc(_user?.uid)
+              .collection(listsLabel)
+              .doc(lists[x].name);
           batch?.set(doc, backUpObject.lists[x].toJson());
           batch = await _reinitializeBatch(batch, x);
         }
@@ -119,8 +131,11 @@ class BackUpRecords {
         /// Tests
         if (backUpTests && test.isNotEmpty) {
           for (int x = 0; x < test.length; x++) {
-            final DocumentReference doc = _ref.collection(collection).doc(_user?.uid)
-                .collection(testsLabel).doc(test[x].takenDate.toString());
+            final DocumentReference doc = _ref
+                .collection(collection)
+                .doc(_user?.uid)
+                .collection(testsLabel)
+                .doc(test[x].takenDate.toString());
             batch?.set(doc, backUpObject.test[x].toJson());
             batch = await _reinitializeBatch(batch, x);
           }
@@ -130,9 +145,8 @@ class BackUpRecords {
         batch = _ref.batch();
 
         /// Last updated
-        batch.set(_ref.collection(collection).doc(_user?.uid), {
-          BackUp.updatedLabel: backUpObject.lastUpdated
-        });
+        batch.set(_ref.collection(collection).doc(_user?.uid),
+            {BackUp.updatedLabel: backUpObject.lastUpdated});
 
         await batch.commit();
         return "";
@@ -150,12 +164,25 @@ class BackUpRecords {
     await _user?.reload();
 
     try {
-      final kanjiSnapshot = await _ref.collection(collection).doc(_user?.uid).collection(kanjiLabel).get();
-      final listsSnapshot = await _ref.collection(collection).doc(_user?.uid).collection(listsLabel).get();
-      final testsSnapshot = await _ref.collection(collection).doc(_user?.uid).collection(testsLabel).get();
+      final kanjiSnapshot = await _ref
+          .collection(collection)
+          .doc(_user?.uid)
+          .collection(kanjiLabel)
+          .get();
+      final listsSnapshot = await _ref
+          .collection(collection)
+          .doc(_user?.uid)
+          .collection(listsLabel)
+          .get();
+      final testsSnapshot = await _ref
+          .collection(collection)
+          .doc(_user?.uid)
+          .collection(testsLabel)
+          .get();
 
       List<Kanji> backUpKanji = [];
       List<KanjiList> backUpLists = [];
+
       /// If snapshot is null, backUpTests will be empty
       List<Test> backUpTests = [];
 
@@ -174,7 +201,8 @@ class BackUpRecords {
         }
       }
 
-      return await BackUpQueries.instance.mergeBackUp(backUpKanji, backUpLists, backUpTests);
+      return await BackUpQueries.instance
+          .mergeBackUp(backUpKanji, backUpLists, backUpTests);
     } catch (err) {
       return err.toString();
     }
@@ -187,20 +215,38 @@ class BackUpRecords {
     await _user?.reload();
 
     try {
-      final kanjiSnapshot = await _ref.collection(collection).doc(_user?.uid).collection(kanjiLabel).get();
-      final listsSnapshot = await _ref.collection(collection).doc(_user?.uid).collection(listsLabel).get();
-      final testsSnapshot = await _ref.collection(collection).doc(_user?.uid).collection(testsLabel).get();
+      final kanjiSnapshot = await _ref
+          .collection(collection)
+          .doc(_user?.uid)
+          .collection(kanjiLabel)
+          .get();
+      final listsSnapshot = await _ref
+          .collection(collection)
+          .doc(_user?.uid)
+          .collection(listsLabel)
+          .get();
+      final testsSnapshot = await _ref
+          .collection(collection)
+          .doc(_user?.uid)
+          .collection(testsLabel)
+          .get();
 
       WriteBatch? batch = _ref.batch();
 
       if (kanjiSnapshot.size > 0 && listsSnapshot.size > 0) {
         for (int x = 0; x < kanjiSnapshot.size; x++) {
-          batch?.delete(_ref.collection(collection).doc(_user?.uid).collection(kanjiLabel)
+          batch?.delete(_ref
+              .collection(collection)
+              .doc(_user?.uid)
+              .collection(kanjiLabel)
               .doc(Kanji.fromJson(kanjiSnapshot.docs[x].data()).kanji));
           batch = await _reinitializeBatch(batch, x);
         }
         for (int x = 0; x < listsSnapshot.size; x++) {
-          batch?.delete(_ref.collection(collection).doc(_user?.uid).collection(listsLabel)
+          batch?.delete(_ref
+              .collection(collection)
+              .doc(_user?.uid)
+              .collection(listsLabel)
               .doc(KanjiList.fromJson(listsSnapshot.docs[x].data()).name));
           batch = await _reinitializeBatch(batch, x);
         }
@@ -208,8 +254,13 @@ class BackUpRecords {
 
       if (testsSnapshot.size > 0) {
         for (int x = 0; x < testsSnapshot.size; x++) {
-          batch?.delete(_ref.collection(collection).doc(_user?.uid).collection(testsLabel)
-              .doc(Test.fromJson(testsSnapshot.docs[x].data()).takenDate.toString()));
+          batch?.delete(_ref
+              .collection(collection)
+              .doc(_user?.uid)
+              .collection(testsLabel)
+              .doc(Test.fromJson(testsSnapshot.docs[x].data())
+                  .takenDate
+                  .toString()));
           batch = await _reinitializeBatch(batch, x);
         }
       }

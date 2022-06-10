@@ -12,10 +12,7 @@ import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 
 class TutorialPage extends StatefulWidget {
   final bool? alreadyShown;
-  const TutorialPage({
-    Key? key,
-    this.alreadyShown
-  }) : super(key: key);
+  const TutorialPage({Key? key, this.alreadyShown}) : super(key: key);
 
   @override
   _TutorialPageState createState() => _TutorialPageState();
@@ -39,32 +36,36 @@ class _TutorialPageState extends State<TutorialPage> {
       child: BlocConsumer<TutorialBloc, TutorialState>(
         listener: (context, state) {
           if (state is TutorialStateLoaded || state is TutorialStateFailure) {
-            Navigator.of(context).pushReplacementNamed(KanPracticePages.homePage);
+            Navigator.of(context)
+                .pushReplacementNamed(KanPracticePages.homePage);
           }
         },
         builder: (context, state) {
           if (state is TutorialStateIdle) {
             return KPScaffold(
-              appBarActions: [
-                TextButton(
-                  onPressed: () async => await _onEnd(context),
-                  style: ButtonStyle(
-                    overlayColor: MaterialStateProperty.all(Colors.transparent),
-                  ),
-                  child: Text(_showSkip ? "tutorial_skip".tr() : "tutorial_done".tr(),
-                    style: const TextStyle(color: CustomColors.secondaryColor),
-                  )
-                )
-              ],
-              appBarTitle: null,
-              child: BulletPageView(
-                bullets: TutorialView.values.length,
-                onChanged: (newPage) => setState(() => _showSkip = newPage != TutorialView.values.length - 1),
-                pageViewChildren: List.generate(TutorialView.values.length, (view) =>
-                    _tutorialPage(context, TutorialView.values[view])
-                ),
-              )
-            );
+                appBarActions: [
+                  TextButton(
+                      onPressed: () async => await _onEnd(context),
+                      style: ButtonStyle(
+                        overlayColor:
+                            MaterialStateProperty.all(Colors.transparent),
+                      ),
+                      child: Text(
+                        _showSkip ? "tutorial_skip".tr() : "tutorial_done".tr(),
+                        style:
+                            const TextStyle(color: CustomColors.secondaryColor),
+                      ))
+                ],
+                appBarTitle: null,
+                child: BulletPageView(
+                  bullets: TutorialView.values.length,
+                  onChanged: (newPage) => setState(() =>
+                      _showSkip = newPage != TutorialView.values.length - 1),
+                  pageViewChildren: List.generate(
+                      TutorialView.values.length,
+                      (view) =>
+                          _tutorialPage(context, TutorialView.values[view])),
+                ));
           } else {
             return const KPScaffold(
               appBarTitle: null,
@@ -85,15 +86,13 @@ class _TutorialPageState extends State<TutorialPage> {
     return Column(
       children: [
         Expanded(
-          child: Container(
-            margin: const EdgeInsets.all(Margins.margin8),
-            child: SingleChildScrollView(
-                child: Text(
-                    view.tutorial, textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyText2
-                )),
-          )
-        ),
+            child: Container(
+          margin: const EdgeInsets.all(Margins.margin8),
+          child: SingleChildScrollView(
+              child: Text(view.tutorial,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyText2)),
+        )),
         Expanded(
           flex: 3,
           child: Container(
@@ -101,7 +100,8 @@ class _TutorialPageState extends State<TutorialPage> {
             padding: const EdgeInsets.all(Margins.margin8),
             margin: const EdgeInsets.symmetric(horizontal: Margins.margin8),
             child: KPCachedNetworkImage(
-              url: view.asset(lightMode: Theme.of(context).brightness == Brightness.light),
+              url: view.asset(
+                  lightMode: Theme.of(context).brightness == Brightness.light),
               errorMessage: "image_not_loaded".tr(),
             ),
           ),

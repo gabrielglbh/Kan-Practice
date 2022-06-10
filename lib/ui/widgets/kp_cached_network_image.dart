@@ -6,11 +6,9 @@ import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 class KPCachedNetworkImage extends StatelessWidget {
   final String url;
   final String errorMessage;
-  const KPCachedNetworkImage({
-    Key? key,
-    required this.url,
-    required this.errorMessage
-  }) : super(key: key);
+  const KPCachedNetworkImage(
+      {Key? key, required this.url, required this.errorMessage})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +18,10 @@ class KPCachedNetworkImage extends StatelessWidget {
         fadeInDuration: const Duration(milliseconds: 200),
         fadeOutDuration: const Duration(milliseconds: 200),
         errorWidget: (context, error, _) => Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
-            child: Text(errorMessage)
-          ),
-        )
-    );
+              child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: Margins.margin8),
+                  child: Text(errorMessage)),
+            ));
   }
 }

@@ -24,7 +24,8 @@ class AddKanjiEventUpdate extends AddKanjiEvent {
   final String kanjiPk;
   final Map<String, dynamic> parameters;
 
-  const AddKanjiEventUpdate(this.listName, this.kanjiPk, {required this.parameters});
+  const AddKanjiEventUpdate(this.listName, this.kanjiPk,
+      {required this.parameters});
 
   @override
   List<Object> get props => [listName, kanjiPk, parameters];

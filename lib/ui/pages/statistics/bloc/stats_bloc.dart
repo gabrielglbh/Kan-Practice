@@ -17,20 +17,23 @@ class StatisticsBloc extends Bloc<StatsEvent, StatsState> {
 
       final int totalLists = await ListQueries.instance.getTotalListCount();
       final int totalKanji = await KanjiQueries.instance.getTotalKanjiCount();
-      final Kanji winRates = await KanjiQueries.instance.getTotalKanjiWinRates();
-      final List<String> lists = await ListQueries.instance.getBestAndWorstList();
+      final Kanji winRates =
+          await KanjiQueries.instance.getTotalKanjiWinRates();
+      final List<String> lists =
+          await ListQueries.instance.getBestAndWorstList();
       final TestData test = await TestQueries.instance.getTestData();
 
-      emit(StatisticsLoaded(stats: KanPracticeStats(
-          totalLists: totalLists,
-          totalKanji: totalKanji,
-          totalWinRateWriting: winRates.winRateWriting,
-          totalWinRateReading: winRates.winRateReading,
-          totalWinRateRecognition: winRates.winRateRecognition,
-          totalWinRateListening: winRates.winRateListening,
-          bestList: lists[0],
-          worstList: lists[1],
-          test: test,
+      emit(StatisticsLoaded(
+          stats: KanPracticeStats(
+        totalLists: totalLists,
+        totalKanji: totalKanji,
+        totalWinRateWriting: winRates.winRateWriting,
+        totalWinRateReading: winRates.winRateReading,
+        totalWinRateRecognition: winRates.winRateRecognition,
+        totalWinRateListening: winRates.winRateListening,
+        bestList: lists[0],
+        worstList: lists[1],
+        test: test,
       )));
     });
   }

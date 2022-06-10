@@ -72,8 +72,10 @@ class GeneralUtils {
   static String roundUpAsString(String num) {
     if (num == "NaN") return "0";
     bool isRounded = num.substring(3) == "00" // XX.00%
-        || num.substring(2) == "00" // X.00%
-        || num.substring(4) == "00"; // XXX.00%
+        ||
+        num.substring(2) == "00" // X.00%
+        ||
+        num.substring(4) == "00"; // XXX.00%
     return isRounded ? num.substring(0, num.length - 3) : num;
   }
 
@@ -81,9 +83,8 @@ class GeneralUtils {
   static getSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(content: Text(message), duration: const Duration(seconds: 2))
-      );
+      ..showSnackBar(SnackBar(
+          content: Text(message), duration: const Duration(seconds: 2)));
   }
 
   /// Transforms the current time to milliseconds
@@ -96,10 +97,13 @@ class GeneralUtils {
   static String parseDateMilliseconds(BuildContext context, int date) {
     final _d = DateTime.fromMillisecondsSinceEpoch(date);
     Duration e = DateTime.now().difference(_d);
-    return t.format(DateTime.now().subtract(e), locale: (EasyLocalization.of(context)?.currentLocale?.languageCode ?? "en"));
+    return t.format(DateTime.now().subtract(e),
+        locale: (EasyLocalization.of(context)?.currentLocale?.languageCode ??
+            "en"));
   }
 
-  static Future<void> showVersionNotes(BuildContext context, {String? version}) async {
+  static Future<void> showVersionNotes(BuildContext context,
+      {String? version}) async {
     PackageInfo pi = await PackageInfo.fromPlatform();
     List<String> notes = await BackUpRecords.instance.getVersionNotes(context);
     Text child = const Text("");
@@ -116,18 +120,21 @@ class GeneralUtils {
       barrierDismissible: true,
       builder: (context) {
         return KPDialog(
-          title: Text(
-            version != null
+          title: Text(version != null
               ? "kanji_lists_versionDialog_title".tr()
-              : "${"kanji_lists_versionDialog_notes".tr()} ${pi.version}"
-          ),
-          content: version != null ? Wrap(
-            children: [
-              Text("${"kanji_lists_versionDialog_notes".tr()} $version\n"),
-              child
-            ],
-          ) : child,
-          positiveButtonText: version != null ? 'kanji_lists_versionDialog_button_label'.tr() : 'Ok',
+              : "${"kanji_lists_versionDialog_notes".tr()} ${pi.version}"),
+          content: version != null
+              ? Wrap(
+                  children: [
+                    Text(
+                        "${"kanji_lists_versionDialog_notes".tr()} $version\n"),
+                    child
+                  ],
+                )
+              : child,
+          positiveButtonText: version != null
+              ? 'kanji_lists_versionDialog_button_label'.tr()
+              : 'Ok',
           onPositive: () async {
             if (version != null) {
               if (await canLaunch("google_play_link".tr())) {

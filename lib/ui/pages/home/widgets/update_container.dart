@@ -34,32 +34,33 @@ class _UpdateContainerState extends State<UpdateContainer> {
     return Visibility(
       visible: _newVersion.isNotEmpty,
       child: GestureDetector(
-        onTap: () async => await GeneralUtils.showVersionNotes(context, version: _newVersion),
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(CustomRadius.radius16),
-              color: CustomColors.getSecondaryColor(context)
-          ),
-          padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
-          margin: const EdgeInsets.only(bottom: Margins.margin8, right: Margins.margin8, left: Margins.margin8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
-                child: Text("kanji_lists_newUpdateAvailable_label".tr(), style: Theme.of(context)
-                    .textTheme.headline5?.copyWith(
-                    fontWeight: FontWeight.bold, color: Colors.white
-                )),
-              ),
-              const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
-                  child: Icon(Icons.system_update, color: Colors.white)
-              )
-            ],
-          ),
-        )
-      ),
+          onTap: () async => await GeneralUtils.showVersionNotes(context,
+              version: _newVersion),
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(CustomRadius.radius16),
+                color: CustomColors.getSecondaryColor(context)),
+            padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
+            margin: const EdgeInsets.only(
+                bottom: Margins.margin8,
+                right: Margins.margin8,
+                left: Margins.margin8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: Margins.margin16),
+                  child: Text("kanji_lists_newUpdateAvailable_label".tr(),
+                      style: Theme.of(context).textTheme.headline5?.copyWith(
+                          fontWeight: FontWeight.bold, color: Colors.white)),
+                ),
+                const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: Margins.margin16),
+                    child: Icon(Icons.system_update, color: Colors.white))
+              ],
+            ),
+          )),
     );
   }
 }

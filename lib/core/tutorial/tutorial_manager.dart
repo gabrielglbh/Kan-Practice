@@ -32,34 +32,39 @@ class TutorialCoach {
       }
 
       _targets.add(TargetFocus(
-        identify: markers[y].currentWidget?.toString(),
-        keyTarget: markers[y],
-        shape: _part.shape[y],
-        paddingFocus: Margins.margin8,
-        contents: [
-          TargetContent(
-            align: align,
-            child: Transform.translate(
-              offset: offset,
-              child: Container(
-                margin: part == CoachTutorialParts.details && y == markers.length - 1
-                    ? const EdgeInsets.only(top: Margins.margin64 + Margins.margin32) : null,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(_tutorialText[y], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                  ],
-                ),
-              ),
-            )
-          )
-        ]
-      ));
+          identify: markers[y].currentWidget?.toString(),
+          keyTarget: markers[y],
+          shape: _part.shape[y],
+          paddingFocus: Margins.margin8,
+          contents: [
+            TargetContent(
+                align: align,
+                child: Transform.translate(
+                  offset: offset,
+                  child: Container(
+                    margin: part == CoachTutorialParts.details &&
+                            y == markers.length - 1
+                        ? const EdgeInsets.only(
+                            top: Margins.margin64 + Margins.margin32)
+                        : null,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(_tutorialText[y],
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  ),
+                ))
+          ]));
     }
   }
 
-  Future<void> showTutorial(BuildContext context, {required Function() onEnd}) async {
+  Future<void> showTutorial(BuildContext context,
+      {required Function() onEnd}) async {
     /// Added a few delay in order for the coach to load up properly
     await Future.delayed(const Duration(seconds: 1), () {
       TutorialCoachMark(
@@ -73,10 +78,12 @@ class TutorialCoach {
         onFinish: () {
           switch (_part) {
             case CoachTutorialParts.kanList:
-              StorageManager.saveData(StorageManager.haveSeenKanListCoachMark, true);
+              StorageManager.saveData(
+                  StorageManager.haveSeenKanListCoachMark, true);
               break;
             case CoachTutorialParts.details:
-              StorageManager.saveData(StorageManager.haveSeenKanListDetailCoachMark, true);
+              StorageManager.saveData(
+                  StorageManager.haveSeenKanListDetailCoachMark, true);
               break;
           }
           onEnd();

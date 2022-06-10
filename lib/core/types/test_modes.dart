@@ -1,9 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-enum Tests {
-  lists, blitz, time, numbers, less, categories
-}
+enum Tests { lists, blitz, time, numbers, less, categories }
 
 extension TestsExt on Tests {
   String get name {
@@ -44,7 +42,7 @@ extension TestsExt on Tests {
 class TestsUtils {
   /// Maps the int received from the source to a Tests. Based on [map]
   static Tests mapTestMode(int map) {
-    switch(map) {
+    switch (map) {
       case 1:
         return Tests.blitz;
       case 2:

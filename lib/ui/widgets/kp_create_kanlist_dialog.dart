@@ -11,12 +11,13 @@ class KPCreateKanListDialog extends StatelessWidget {
   final FocusNode focusNode = FocusNode();
 
   /// Returns, if needed, the name of the KanList created
-  static Future<String?> show(BuildContext context, {Function(String)? onSubmit}) async {
+  static Future<String?> show(BuildContext context,
+      {Function(String)? onSubmit}) async {
     String? name;
     await showDialog(
-      context: context,
-      builder: (context) => KPCreateKanListDialog(onSubmit: onSubmit)
-    ).then((value) => name = value);
+            context: context,
+            builder: (context) => KPCreateKanListDialog(onSubmit: onSubmit))
+        .then((value) => name = value);
     return name;
   }
 
@@ -38,9 +39,11 @@ class KPCreateKanListDialog extends StatelessWidget {
         focusNode: focusNode,
         onEditingComplete: () => focusNode.unfocus(),
       ),
+
       /// Manage the state of the KPDialog from here to pass the name
       popDialog: onSubmit != null,
-      positiveButtonText: "kanji_lists_createDialogForAddingKanList_positive".tr(),
+      positiveButtonText:
+          "kanji_lists_createDialogForAddingKanList_positive".tr(),
       onPositive: () {
         if (onSubmit != null) {
           onSubmit!(controller.text);

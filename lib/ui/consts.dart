@@ -87,7 +87,8 @@ class CustomAnimations {
 class CustomColors {
   static Color getSecondaryColor(BuildContext context) =>
       Theme.of(context).brightness == Brightness.light
-          ? secondaryDarkerColor : secondaryColor;
+          ? secondaryDarkerColor
+          : secondaryColor;
 
   static const Color secondaryDarkerColor = Color(0xFFD32F2F);
   static const Color secondaryColor = Color(0xFFE57373);

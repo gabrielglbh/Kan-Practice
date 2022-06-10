@@ -28,15 +28,20 @@ class TestQueries {
   /// 1: Error during insertion.
   ///
   /// 2: Database is not created.
-  Future<int> createTest(double score, int kanji, int mode, int testMode, String lists) async {
+  Future<int> createTest(
+      double score, int kanji, int mode, int testMode, String lists) async {
     if (_database != null) {
       try {
-        await _database?.insert(TestTableFields.testTable, Test(
-          testScore: score, kanjiInTest: kanji,
-          studyMode: mode,
-          testMode: testMode,
-          kanjiLists: lists,
-          takenDate: GeneralUtils.getCurrentMilliseconds()).toJson());
+        await _database?.insert(
+            TestTableFields.testTable,
+            Test(
+                    testScore: score,
+                    kanjiInTest: kanji,
+                    studyMode: mode,
+                    testMode: testMode,
+                    kanjiLists: lists,
+                    takenDate: GeneralUtils.getCurrentMilliseconds())
+                .toJson());
         return 0;
       } catch (err) {
         print(err.toString());
@@ -72,13 +77,15 @@ class TestQueries {
   /// Query to get all [Test] from the db using lazy loading. Each time, helper
   /// will get 10 tests. When user gets to the end of list, another 10 will be retrieved.
   /// If anything goes wrong, an empty list will be returned.
-  Future<List<Test>> getTests(int offset, {int limit = LazyLoadingLimits.testHistory}) async {
+  Future<List<Test>> getTests(int offset,
+      {int limit = LazyLoadingLimits.testHistory}) async {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
-        res = await _database?.rawQuery("SELECT * FROM ${TestTableFields.testTable} "
-            "ORDER BY ${TestTableFields.takenDateField} DESC "
-            "LIMIT $limit OFFSET ${offset * limit}");
+        res = await _database
+            ?.rawQuery("SELECT * FROM ${TestTableFields.testTable} "
+                "ORDER BY ${TestTableFields.takenDateField} DESC "
+                "LIMIT $limit OFFSET ${offset * limit}");
         if (res != null) {
           return List.generate(res.length, (i) => Test.fromJson(res![i]));
         } else {
@@ -117,42 +124,41 @@ class TestQueries {
   Future<TestData> getTestData() async {
     final int totalTests = await _getTotalTestCount();
     final double totalTestAccuracy = await _getTotalTestAccuracy();
-    final int testTotalCountWriting = await _getTestCountBasedOnStudyMode(
-        StudyModes.writing.index);
-    final int testTotalCountReading = await _getTestCountBasedOnStudyMode(
-        StudyModes.reading.index);
-    final int testTotalCountRecognition = await _getTestCountBasedOnStudyMode(
-        StudyModes.recognition.index);
-    final int testTotalCountListening = await _getTestCountBasedOnStudyMode(
-        StudyModes.listening.index);
-    final double testTotalWinRateWriting = await _getTestAccuracyBasedOnStudyMode(
-        StudyModes.writing.index);
-    final double testTotalWinRateReading = await _getTestAccuracyBasedOnStudyMode(
-        StudyModes.reading.index);
-    final double testTotalWinRateRecognition = await _getTestAccuracyBasedOnStudyMode(
-        StudyModes.recognition.index);
-    final double testTotalWinRateListening = await _getTestAccuracyBasedOnStudyMode(
-        StudyModes.listening.index);
+    final int testTotalCountWriting =
+        await _getTestCountBasedOnStudyMode(StudyModes.writing.index);
+    final int testTotalCountReading =
+        await _getTestCountBasedOnStudyMode(StudyModes.reading.index);
+    final int testTotalCountRecognition =
+        await _getTestCountBasedOnStudyMode(StudyModes.recognition.index);
+    final int testTotalCountListening =
+        await _getTestCountBasedOnStudyMode(StudyModes.listening.index);
+    final double testTotalWinRateWriting =
+        await _getTestAccuracyBasedOnStudyMode(StudyModes.writing.index);
+    final double testTotalWinRateReading =
+        await _getTestAccuracyBasedOnStudyMode(StudyModes.reading.index);
+    final double testTotalWinRateRecognition =
+        await _getTestAccuracyBasedOnStudyMode(StudyModes.recognition.index);
+    final double testTotalWinRateListening =
+        await _getTestAccuracyBasedOnStudyMode(StudyModes.listening.index);
     final List<int> testModesCount = await _getAllTestsBasedOnTestMode();
 
     return TestData(
-      totalTests: totalTests,
-      totalTestAccuracy: totalTestAccuracy,
-      testTotalCountWriting: testTotalCountWriting,
-      testTotalCountReading: testTotalCountReading,
-      testTotalCountRecognition: testTotalCountRecognition,
-      testTotalCountListening: testTotalCountListening,
-      testTotalWinRateWriting: testTotalWinRateWriting,
-      testTotalWinRateReading: testTotalWinRateReading,
-      testTotalWinRateRecognition: testTotalWinRateRecognition,
-      testTotalWinRateListening: testTotalWinRateListening,
-      selectionTests: testModesCount[0],
-      blitzTests: testModesCount[1],
-      remembranceTests: testModesCount[2],
-      numberTests: testModesCount[3],
-      lessPctTests: testModesCount[4],
-      categoryTests: testModesCount[5]
-    );
+        totalTests: totalTests,
+        totalTestAccuracy: totalTestAccuracy,
+        testTotalCountWriting: testTotalCountWriting,
+        testTotalCountReading: testTotalCountReading,
+        testTotalCountRecognition: testTotalCountRecognition,
+        testTotalCountListening: testTotalCountListening,
+        testTotalWinRateWriting: testTotalWinRateWriting,
+        testTotalWinRateReading: testTotalWinRateReading,
+        testTotalWinRateRecognition: testTotalWinRateRecognition,
+        testTotalWinRateListening: testTotalWinRateListening,
+        selectionTests: testModesCount[0],
+        blitzTests: testModesCount[1],
+        remembranceTests: testModesCount[2],
+        numberTests: testModesCount[3],
+        lessPctTests: testModesCount[4],
+        categoryTests: testModesCount[5]);
   }
 
   /// Retrieves the total test count saved locally in the device.
@@ -182,14 +188,14 @@ class TestQueries {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.query(TestTableFields.testTable);
         if (res != null) {
-          List<Test> l = List.generate(res.length, (i) => Test.fromJson(res![i]));
+          List<Test> l =
+              List.generate(res.length, (i) => Test.fromJson(res![i]));
           double acc = 0;
           for (var test in l) {
             acc += test.testScore;
           }
           return acc / l.length;
-        }
-        else {
+        } else {
           return 0;
         }
       } catch (err) {
@@ -207,9 +213,7 @@ class TestQueries {
       try {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.query(TestTableFields.testTable,
-          where: "${TestTableFields.studyModeField}=?",
-          whereArgs: [mode]
-        );
+            where: "${TestTableFields.studyModeField}=?", whereArgs: [mode]);
         if (res != null) {
           return res.length;
         } else {
@@ -230,18 +234,16 @@ class TestQueries {
       try {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.query(TestTableFields.testTable,
-            where: "${TestTableFields.studyModeField}=?",
-            whereArgs: [mode]
-        );
+            where: "${TestTableFields.studyModeField}=?", whereArgs: [mode]);
         if (res != null) {
-          List<Test> l = List.generate(res.length, (i) => Test.fromJson(res![i]));
+          List<Test> l =
+              List.generate(res.length, (i) => Test.fromJson(res![i]));
           double acc = 0;
           for (var test in l) {
             acc += test.testScore;
           }
           return acc == 0 ? 0 : acc / l.length;
-        }
-        else {
+        } else {
           return 0;
         }
       } catch (err) {
@@ -265,20 +267,32 @@ class TestQueries {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.query(TestTableFields.testTable);
         if (res != null) {
-          final List<Test> tests = List.generate(res.length, (i) => Test.fromJson(res![i]));
+          final List<Test> tests =
+              List.generate(res.length, (i) => Test.fromJson(res![i]));
           for (var t in tests) {
             switch (TestsUtils.mapTestMode(t.testMode ?? -1)) {
-              case Tests.lists: counters[0] += 1; break;
-              case Tests.blitz: counters[1] += 1; break;
-              case Tests.time: counters[2] += 1; break;
-              case Tests.numbers: counters[3] += 1; break;
-              case Tests.less: counters[4] += 1; break;
-              case Tests.categories: counters[5] += 1; break;
+              case Tests.lists:
+                counters[0] += 1;
+                break;
+              case Tests.blitz:
+                counters[1] += 1;
+                break;
+              case Tests.time:
+                counters[2] += 1;
+                break;
+              case Tests.numbers:
+                counters[3] += 1;
+                break;
+              case Tests.less:
+                counters[4] += 1;
+                break;
+              case Tests.categories:
+                counters[5] += 1;
+                break;
             }
           }
           return counters;
-        }
-        else {
+        } else {
           return counters;
         }
       } catch (err) {

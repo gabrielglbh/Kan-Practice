@@ -5,7 +5,7 @@ enum StudyModes { writing, reading, recognition, listening }
 
 extension StudyModesExt on StudyModes {
   String get mode {
-    switch(this) {
+    switch (this) {
       case StudyModes.writing:
         return "study_modes_writing".tr();
       case StudyModes.reading:
@@ -18,7 +18,7 @@ extension StudyModesExt on StudyModes {
   }
 
   String get japMode {
-    switch(this) {
+    switch (this) {
       case StudyModes.writing:
         return "study_modes_writing_ext".tr();
       case StudyModes.reading:
@@ -31,7 +31,7 @@ extension StudyModesExt on StudyModes {
   }
 
   Color get color {
-    switch(this) {
+    switch (this) {
       case StudyModes.writing:
         return Colors.blue.shade300;
       case StudyModes.reading:
@@ -47,7 +47,7 @@ extension StudyModesExt on StudyModes {
 class StudyModesUtil {
   /// Maps the integer received from the source to a StudyModes. Based on [map]
   static StudyModes mapStudyMode(int map) {
-    switch(map) {
+    switch (map) {
       case 0:
         return StudyModes.writing;
       case 1:

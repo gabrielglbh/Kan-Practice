@@ -12,10 +12,16 @@ class JishoBloc extends Bloc<JishoEvent, JishoState> {
     on<JishoLoadingEvent>((event, emit) async {
       emit(JishoStateLoading());
       try {
-        jisho.KanjiResultData? resultData = await JishoAPI.instance.searchKanji(event.kanji);
-        List<jisho.JishoResult> resultPhrase = await JishoAPI.instance.searchPhrase(event.kanji);
-        List<KanjiExample> example = await JishoAPI.instance.searchForExample(event.kanji);
-        KanjiData data = KanjiData(resultData: resultData, resultPhrase: resultPhrase, example: example);
+        jisho.KanjiResultData? resultData =
+            await JishoAPI.instance.searchKanji(event.kanji);
+        List<jisho.JishoResult> resultPhrase =
+            await JishoAPI.instance.searchPhrase(event.kanji);
+        List<KanjiExample> example =
+            await JishoAPI.instance.searchForExample(event.kanji);
+        KanjiData data = KanjiData(
+            resultData: resultData,
+            resultPhrase: resultPhrase,
+            example: example);
         emit(JishoStateLoaded(data: data));
       } on Exception {
         emit(JishoStateFailure());

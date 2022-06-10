@@ -14,17 +14,16 @@ import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 class MarketPlace extends StatefulWidget {
   final Function() onScrolledToBottom;
   final Function() removeFocus;
-  const MarketPlace({
-    Key? key,
-    required this.removeFocus,
-    required this.onScrolledToBottom
-  }) : super(key: key);
+  const MarketPlace(
+      {Key? key, required this.removeFocus, required this.onScrolledToBottom})
+      : super(key: key);
 
   @override
   State<MarketPlace> createState() => _MarketPlaceState();
 }
 
-class _MarketPlaceState extends State<MarketPlace> with AutomaticKeepAliveClientMixin {
+class _MarketPlaceState extends State<MarketPlace>
+    with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
 
   MarketFilters _currentAppliedFilter = MarketFilters.all;
@@ -38,11 +37,13 @@ class _MarketPlaceState extends State<MarketPlace> with AutomaticKeepAliveClient
   void initState() {
     _scrollController.addListener(_scrollListener);
 
-    final filterText = StorageManager.readData(StorageManager.filtersOnMarket)
-        ?? MarketList.uploadedToMarketField;
+    final filterText =
+        StorageManager.readData(StorageManager.filtersOnMarket) ??
+            MarketList.uploadedToMarketField;
     _currentAppliedFilter = MarketFiltersUtils.getFilterFrom(filterText);
 
-    _currentAppliedOrder = StorageManager.readData(StorageManager.orderOnMarket) ?? true;
+    _currentAppliedOrder =
+        StorageManager.readData(StorageManager.orderOnMarket) ?? true;
     super.initState();
   }
 
@@ -55,29 +56,36 @@ class _MarketPlaceState extends State<MarketPlace> with AutomaticKeepAliveClient
 
   _scrollListener() {
     /// When reaching last pixel of the list
-    if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
+    if (_scrollController.offset ==
+        _scrollController.position.maxScrollExtent) {
       widget.onScrolledToBottom();
     }
   }
 
   _resetScroll() {
     /// Scroll to the top
-    _scrollController.animateTo(0, duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
+    _scrollController.animateTo(0,
+        duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
   }
 
   _addLoadingEvent({bool reset = false}) {
-    return BlocProvider.of<MarketBloc>(context)..add(MarketEventLoading(filter: _currentAppliedFilter,
-        order: _currentAppliedOrder, reset: reset));
+    return BlocProvider.of<MarketBloc>(context)
+      ..add(MarketEventLoading(
+          filter: _currentAppliedFilter,
+          order: _currentAppliedOrder,
+          reset: reset));
   }
 
   _onFilterSelected(int index) {
     /// If the filter is exactly the same "MINE", do not update the list
-    if (MarketFilters.mine == MarketFilters.values[index] && _currentAppliedFilter == MarketFilters.mine) {
+    if (MarketFilters.mine == MarketFilters.values[index] &&
+        _currentAppliedFilter == MarketFilters.mine) {
       return;
     }
 
     _resetScroll();
     widget.removeFocus();
+
     /// If the user taps on the same filter twice, just change back and forth the
     /// order value.
     /// Else, means the user has changed the filter, therefore default the order to DESC
@@ -93,8 +101,10 @@ class _MarketPlaceState extends State<MarketPlace> with AutomaticKeepAliveClient
 
     /// Adds the loading event to the bloc builder to load the new specified list
     _addLoadingEvent(reset: true);
+
     /// Stores the new filter and order applied to shared preferences
-    StorageManager.saveData(StorageManager.filtersOnMarket, _currentAppliedFilter.filter);
+    StorageManager.saveData(
+        StorageManager.filtersOnMarket, _currentAppliedFilter.filter);
     StorageManager.saveData(StorageManager.orderOnMarket, _currentAppliedOrder);
   }
 
@@ -104,53 +114,56 @@ class _MarketPlaceState extends State<MarketPlace> with AutomaticKeepAliveClient
     return Column(
       children: [
         _filterChips(),
-        BlocConsumer<MarketBloc, MarketState>(
-          listener: (context, state) {
-            if (state is MarketStateSuccess) {
-              GeneralUtils.getSnackBar(context, state.message);
-            } else if (state is MarketStateFailure) {
-              GeneralUtils.getSnackBar(context, state.message);
-            }
-          },
-          builder: (context, state) {
-            if (state is MarketStateLoading || state is MarketStateSearching) {
-              return const KPProgressIndicator();
-            } else {
-              return _lists(state);
-            }
+        BlocConsumer<MarketBloc, MarketState>(listener: (context, state) {
+          if (state is MarketStateSuccess) {
+            GeneralUtils.getSnackBar(context, state.message);
+          } else if (state is MarketStateFailure) {
+            GeneralUtils.getSnackBar(context, state.message);
           }
-        ),
+        }, builder: (context, state) {
+          if (state is MarketStateLoading || state is MarketStateSearching) {
+            return const KPProgressIndicator();
+          } else {
+            return _lists(state);
+          }
+        }),
       ],
     );
   }
 
   SizedBox _filterChips() {
-    Icon icon = Icon(_currentAppliedOrder
-        ? Icons.arrow_downward_rounded
-        : Icons.arrow_upward_rounded,
-        color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black);
+    Icon icon = Icon(
+        _currentAppliedOrder
+            ? Icons.arrow_downward_rounded
+            : Icons.arrow_upward_rounded,
+        color: Theme.of(context).brightness == Brightness.light
+            ? Colors.white
+            : Colors.black);
 
     return SizedBox(
-      height: CustomSizes.defaultSizeFiltersList,
-      child: ListView.builder(
-        itemCount: MarketFilters.values.length,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Margins.margin2),
-            child: ChoiceChip(
-              label: Text(MarketFilters.values[index].label),
-              avatar: _currentAppliedFilter == MarketFilters.mine
-                  ? null : _currentAppliedFilter.index != index ? null : icon,
-              pressElevation: Margins.margin4,
-              padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
-              onSelected: (bool selected) => _onFilterSelected(index),
-              selected: _currentAppliedFilter.index == index,
-            ),
-          );
-        }
-      )
-    );
+        height: CustomSizes.defaultSizeFiltersList,
+        child: ListView.builder(
+            itemCount: MarketFilters.values.length,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: Margins.margin2),
+                child: ChoiceChip(
+                  label: Text(MarketFilters.values[index].label),
+                  avatar: _currentAppliedFilter == MarketFilters.mine
+                      ? null
+                      : _currentAppliedFilter.index != index
+                          ? null
+                          : icon,
+                  pressElevation: Margins.margin4,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: Margins.margin8),
+                  onSelected: (bool selected) => _onFilterSelected(index),
+                  selected: _currentAppliedFilter.index == index,
+                ),
+              );
+            }));
   }
 
   Widget _lists(MarketState state) {
@@ -158,45 +171,43 @@ class _MarketPlaceState extends State<MarketPlace> with AutomaticKeepAliveClient
       return KPEmptyList(
           showTryButton: true,
           onRefresh: () => _addLoadingEvent(reset: true),
-          message: "market_load_failed".tr()
-      );
+          message: "market_load_failed".tr());
     } else if (state is MarketStateLoaded) {
       return state.lists.isEmpty
-          ? Expanded(child:
-      KPEmptyList(
-          onRefresh: () => _addLoadingEvent(reset: true),
-          showTryButton: true,
-          message: "market_empty".tr())
-      )
+          ? Expanded(
+              child: KPEmptyList(
+                  onRefresh: () => _addLoadingEvent(reset: true),
+                  showTryButton: true,
+                  message: "market_empty".tr()))
           : Expanded(
-        child: RefreshIndicator(
-          onRefresh: () => _addLoadingEvent(reset: true),
-          color: CustomColors.secondaryColor,
-          child: ListView.builder(
-              key: const PageStorageKey<String>('marketListsController'),
-              controller: _scrollController,
-              itemCount: state.lists.length,
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              padding: const EdgeInsets.only(bottom: Margins.margin24),
-              itemBuilder: (context, k) {
-                return MarketListTile(
-                  list: state.lists[k],
-                  isManaging: _currentAppliedFilter == MarketFilters.mine,
-                  onDownload: (listId) {
-                    BlocProvider.of<MarketBloc>(context).add(
-                        MarketEventDownload(listId, _currentAppliedFilter, _currentAppliedOrder)
-                    );
-                  },
-                  onRemove: (listId) {
-                    BlocProvider.of<MarketBloc>(context).add(
-                        MarketEventRemove(listId, _currentAppliedFilter, _currentAppliedOrder)
-                    );
-                  },
-                );
-              }
-          ),
-        ),
-      );
+              child: RefreshIndicator(
+                onRefresh: () => _addLoadingEvent(reset: true),
+                color: CustomColors.secondaryColor,
+                child: ListView.builder(
+                    key: const PageStorageKey<String>('marketListsController'),
+                    controller: _scrollController,
+                    itemCount: state.lists.length,
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    padding: const EdgeInsets.only(bottom: Margins.margin24),
+                    itemBuilder: (context, k) {
+                      return MarketListTile(
+                        list: state.lists[k],
+                        isManaging: _currentAppliedFilter == MarketFilters.mine,
+                        onDownload: (listId) {
+                          BlocProvider.of<MarketBloc>(context).add(
+                              MarketEventDownload(listId, _currentAppliedFilter,
+                                  _currentAppliedOrder));
+                        },
+                        onRemove: (listId) {
+                          BlocProvider.of<MarketBloc>(context).add(
+                              MarketEventRemove(listId, _currentAppliedFilter,
+                                  _currentAppliedOrder));
+                        },
+                      );
+                    }),
+              ),
+            );
     } else {
       return Container();
     }

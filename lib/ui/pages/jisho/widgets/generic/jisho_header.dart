@@ -4,11 +4,8 @@ import 'package:kanpractice/ui/consts.dart';
 class JishoHeader extends StatelessWidget {
   final String header;
   final bool guideline;
-  const JishoHeader({
-    Key? key,
-    required this.header,
-    this.guideline = false
-  }) : super(key: key);
+  const JishoHeader({Key? key, required this.header, this.guideline = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +18,11 @@ class JishoHeader extends StatelessWidget {
             child: Icon(Icons.subdirectory_arrow_right_rounded),
           ),
         ),
-        Text(header, style: Theme.of(context).textTheme.bodyText1?.copyWith(
-          fontWeight: FontWeight.bold
-        ))
+        Text(header,
+            style: Theme.of(context)
+                .textTheme
+                .bodyText1
+                ?.copyWith(fontWeight: FontWeight.bold))
       ],
     );
   }

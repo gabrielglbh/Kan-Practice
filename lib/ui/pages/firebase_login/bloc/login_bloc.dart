@@ -12,7 +12,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(const LoginStateIdle()) {
     on<LoginSubmitting>((event, emit) async {
       emit(LoginStateLoading());
-      final error = await AuthRecords.instance.handleLogIn(event.mode, event.email, event.password);
+      final error = await AuthRecords.instance
+          .handleLogIn(event.mode, event.email, event.password);
       if (error == "") {
         final user = AuthRecords.instance.getUser();
         if (user != null) {
@@ -20,8 +21,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         } else {
           emit(LoginStateIdle(error: error));
         }
-      }
-      else {
+      } else {
         emit(LoginStateIdle(error: error));
       }
     });
@@ -39,7 +39,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginStateLoading());
       final error = await AuthRecords.instance.closeSession();
       if (error == 0) {
-        emit(LoginStateLoggedOut(message: "login_bloc_close_session_successful".tr()));
+        emit(LoginStateLoggedOut(
+            message: "login_bloc_close_session_successful".tr()));
       } else {
         final user = AuthRecords.instance.getUser();
         if (user != null) {
@@ -54,7 +55,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginStateLoading());
       final error = await AuthRecords.instance.deleteAccount(event.password);
       if (error == "") {
-        emit(LoginStateLoggedOut(message: "login_bloc_remove_account_successful".tr()));
+        emit(LoginStateLoggedOut(
+            message: "login_bloc_remove_account_successful".tr()));
       } else {
         final user = AuthRecords.instance.getUser();
         if (user != null) {
@@ -67,7 +69,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     on<ChangePassword>((event, emit) async {
       emit(LoginStateLoading());
-      final error = await AuthRecords.instance.changePassword(event.oldPassword, event.newPassword);
+      final error = await AuthRecords.instance
+          .changePassword(event.oldPassword, event.newPassword);
       if (error == "") {
         final user = AuthRecords.instance.getUser();
         if (user != null) {
@@ -75,8 +78,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         } else {
           emit(LoginStateIdle(error: error));
         }
-      }
-      else {
+      } else {
         emit(LoginStateIdle(error: error));
       }
     });

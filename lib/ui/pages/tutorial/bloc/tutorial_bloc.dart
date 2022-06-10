@@ -13,7 +13,8 @@ class TutorialBloc extends Bloc<TutorialEvent, TutorialState> {
       try {
         emit(TutorialStateLoading());
         StorageManager.saveData(StorageManager.hasDoneTutorial, true);
-        final code = await InitialQueries.instance.setInitialDataForReference(event.context);
+        final code = await InitialQueries.instance
+            .setInitialDataForReference(event.context);
         if (code == 0) {
           emit(TutorialStateLoaded());
         } else {

@@ -1,13 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
-enum CoachTutorialParts {
-  kanList, details
-}
+enum CoachTutorialParts { kanList, details }
 
 extension CoachTutorialPartsExt on CoachTutorialParts {
   List<String> get texts {
-    switch(this) {
+    switch (this) {
       case CoachTutorialParts.kanList:
         return [
           "coach_tutorial_kanlists_1".tr(),
@@ -25,7 +23,7 @@ extension CoachTutorialPartsExt on CoachTutorialParts {
   }
 
   List<ShapeLightFocus> get shape {
-    switch(this) {
+    switch (this) {
       case CoachTutorialParts.kanList:
         return [
           ShapeLightFocus.RRect,

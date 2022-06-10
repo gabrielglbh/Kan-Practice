@@ -10,14 +10,14 @@ class KPRadialGraph extends StatelessWidget {
   /// [KanjiList] item to paint as a Tile
   final double rateWriting, rateReading, rateRecognition, rateListening;
   final double height;
-  const KPRadialGraph({
-    Key? key,
-    required this.rateWriting,
-    required this.rateReading,
-    required this.rateRecognition,
-    required this.rateListening,
-    this.height = CustomSizes.defaultSizeWinRateChart + Margins.margin32
-  }) : super(key: key);
+  const KPRadialGraph(
+      {Key? key,
+      required this.rateWriting,
+      required this.rateReading,
+      required this.rateRecognition,
+      required this.rateListening,
+      this.height = CustomSizes.defaultSizeWinRateChart + Margins.margin32})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,39 +27,45 @@ class KPRadialGraph extends StatelessWidget {
       children: [
         _radialChart(height),
         Container(
-          width: MediaQuery.of(context).size.width / 2, height: height,
+          width: MediaQuery.of(context).size.width / 2,
+          height: height,
           alignment: Alignment.center,
           child: GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             itemCount: StudyModes.values.length,
             shrinkWrap: true,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, childAspectRatio: 2.5
-            ),
+                crossAxisCount: 2, childAspectRatio: 2.5),
             itemBuilder: (context, index) {
               double rate = 0;
               switch (StudyModes.values[index]) {
                 case StudyModes.writing:
-                  rate = rateWriting; break;
+                  rate = rateWriting;
+                  break;
                 case StudyModes.reading:
-                  rate = rateReading; break;
+                  rate = rateReading;
+                  break;
                 case StudyModes.recognition:
-                  rate = rateRecognition; break;
+                  rate = rateRecognition;
+                  break;
                 case StudyModes.listening:
-                  rate = rateListening; break;
+                  rate = rateListening;
+                  break;
               }
 
               return Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: Margins.margin8, height: Margins.margin8,
+                    width: Margins.margin8,
+                    height: Margins.margin8,
                     margin: const EdgeInsets.only(
-                      right: Margins.margin8, left: Margins.margin8, top: Margins.margin4
-                    ),
+                        right: Margins.margin8,
+                        left: Margins.margin8,
+                        top: Margins.margin4),
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle, color: StudyModes.values[index].color
-                    ),
+                        shape: BoxShape.circle,
+                        color: StudyModes.values[index].color),
                   ),
                   Expanded(
                     child: Column(
@@ -70,7 +76,8 @@ class KPRadialGraph extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           child: FittedBox(
                             fit: BoxFit.contain,
-                            child: Text("${StudyModes.values[index].mode}:",
+                            child: Text(
+                              "${StudyModes.values[index].mode}:",
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -81,14 +88,16 @@ class KPRadialGraph extends StatelessWidget {
                           margin: const EdgeInsets.only(left: Margins.margin16),
                           child: FittedBox(
                             fit: BoxFit.contain,
-                            child: Text(rate != DatabaseConstants.emptyWinRate
-                                ? "${GeneralUtils.roundUpAsString(
-                                  GeneralUtils.getFixedDouble(rate*100))}%"
-                                : "0%",
-                              style: TextStyle(fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).brightness == Brightness.light
-                                      ? Colors.black87 : Colors.white
-                              ),
+                            child: Text(
+                              rate != DatabaseConstants.emptyWinRate
+                                  ? "${GeneralUtils.roundUpAsString(GeneralUtils.getFixedDouble(rate * 100))}%"
+                                  : "0%",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? Colors.black87
+                                      : Colors.white),
                             ),
                           ),
                         )
@@ -106,47 +115,68 @@ class KPRadialGraph extends StatelessWidget {
 
   Widget _radialChart(double height) {
     return SizedBox(
-      width: height, height: height,
+      width: height,
+      height: height,
       child: Stack(
         children: [
           Positioned(
-            left: 0, right: 0, top: Margins.margin26, bottom: Margins.margin26,
+            left: 0,
+            right: 0,
+            top: Margins.margin26,
+            bottom: Margins.margin26,
             child: WinRateChart(
               winRate: rateListening,
               backgroundColor: Colors.transparent,
               chartColor: StudyModes.listening.color,
-              showGaugeAnnotation: false, padding: EdgeInsets.zero,
-              widthLine: 0.15, pointerOffset: 0,
+              showGaugeAnnotation: false,
+              padding: EdgeInsets.zero,
+              widthLine: 0.15,
+              pointerOffset: 0,
             ),
           ),
           Positioned(
-            left: 0, right: 0, top: Margins.margin18, bottom: Margins.margin18,
+            left: 0,
+            right: 0,
+            top: Margins.margin18,
+            bottom: Margins.margin18,
             child: WinRateChart(
               winRate: rateRecognition,
               backgroundColor: Colors.transparent,
               chartColor: StudyModes.recognition.color,
-              showGaugeAnnotation: false, padding: EdgeInsets.zero,
-              widthLine: 0.15, pointerOffset: 0,
+              showGaugeAnnotation: false,
+              padding: EdgeInsets.zero,
+              widthLine: 0.15,
+              pointerOffset: 0,
             ),
           ),
           Positioned(
-            left: 0, right: 0, top: Margins.margin10, bottom: Margins.margin10,
+            left: 0,
+            right: 0,
+            top: Margins.margin10,
+            bottom: Margins.margin10,
             child: WinRateChart(
               winRate: rateReading,
               backgroundColor: Colors.transparent,
               chartColor: StudyModes.reading.color,
-              showGaugeAnnotation: false, padding: EdgeInsets.zero,
-              widthLine: 0.15, pointerOffset: 0,
+              showGaugeAnnotation: false,
+              padding: EdgeInsets.zero,
+              widthLine: 0.15,
+              pointerOffset: 0,
             ),
           ),
           Positioned(
-            left: 0, right: 0, top: 0, bottom: 0,
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
             child: WinRateChart(
               winRate: rateWriting,
               backgroundColor: Colors.transparent,
               chartColor: StudyModes.writing.color,
-              showGaugeAnnotation: false, padding: EdgeInsets.zero,
-              widthLine: 0.15, pointerOffset: 0,
+              showGaugeAnnotation: false,
+              padding: EdgeInsets.zero,
+              widthLine: 0.15,
+              pointerOffset: 0,
             ),
           ),
         ],

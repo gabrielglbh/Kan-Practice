@@ -16,43 +16,38 @@ import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 class JishoPage extends StatelessWidget {
   final JishoArguments args;
 
-  const JishoPage({
-    Key? key,
-    required this.args
-  }) : super(key: key);
+  const JishoPage({Key? key, required this.args}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return KPScaffold(
-      appBarTitle: args.kanji ?? "?",
-      centerTitle: true,
-      appBarActions: [
-        TTSIconButton(kanji: args.kanji)
-      ],
-      child: Column(
-        children: [
-          Expanded(
-            child: BlocProvider<JishoBloc>(
-              create: (_) => JishoBloc()..add(JishoLoadingEvent(kanji: args.kanji ?? "")),
-              child: BlocBuilder<JishoBloc, JishoState>(
-                builder: (context, state) {
-                  if (state is JishoStateLoading) {
-                    return const KPProgressIndicator();
-                  } else if (state is JishoStateFailure) {
-                    return _nothingFound();
-                  } else if (state is JishoStateLoaded) {
-                    return _content(context, state);
-                  } else {
-                    return Container();
-                  }
-                },
+        appBarTitle: args.kanji ?? "?",
+        centerTitle: true,
+        appBarActions: [TTSIconButton(kanji: args.kanji)],
+        child: Column(
+          children: [
+            Expanded(
+              child: BlocProvider<JishoBloc>(
+                create: (_) => JishoBloc()
+                  ..add(JishoLoadingEvent(kanji: args.kanji ?? "")),
+                child: BlocBuilder<JishoBloc, JishoState>(
+                  builder: (context, state) {
+                    if (state is JishoStateLoading) {
+                      return const KPProgressIndicator();
+                    } else if (state is JishoStateFailure) {
+                      return _nothingFound();
+                    } else if (state is JishoStateLoaded) {
+                      return _content(context, state);
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
               ),
             ),
-          ),
-          _poweredByJisho(),
-        ],
-      )
-    );
+            _poweredByJisho(),
+          ],
+        ));
   }
 
   Widget _content(BuildContext context, JishoStateLoaded state) {
@@ -69,36 +64,35 @@ class JishoPage extends StatelessWidget {
                 child: KPButton(
                   title2: "dict_jisho_add_kanji_label".tr(),
                   onTap: () {
-                    AddToKanListBottomSheet.callAddToKanListBottomSheet(context, args.kanji, state.data);
+                    AddToKanListBottomSheet.callAddToKanListBottomSheet(
+                        context, args.kanji, state.data);
                   },
                 ),
               ),
+
               /// All info is based on the value of state.data.
               /// If resultData is null, it means that the kanji searched is actually a
               /// compound one.
               /// Example, in the other hand, will be visible for single or compound
               /// kanji.
               Visibility(
-                visible: state.data.resultData != null,
-                child: SingleKanjiResult(
-                  data: state.data.resultData,
-                  phrase: state.data.resultPhrase,
-                  fromDictionary: args.fromDictionary,
-                )
-              ),
+                  visible: state.data.resultData != null,
+                  child: SingleKanjiResult(
+                    data: state.data.resultData,
+                    phrase: state.data.resultPhrase,
+                    fromDictionary: args.fromDictionary,
+                  )),
               Visibility(
-                visible: state.data.resultPhrase.isNotEmpty,
-                child: WordResult(
-                  kanji: args.kanji,
-                  data: state.data.resultData,
-                  phrase: state.data.resultPhrase,
-                  fromDictionary: args.fromDictionary,
-                )
-              ),
+                  visible: state.data.resultPhrase.isNotEmpty,
+                  child: WordResult(
+                    kanji: args.kanji,
+                    data: state.data.resultData,
+                    phrase: state.data.resultPhrase,
+                    fromDictionary: args.fromDictionary,
+                  )),
               Visibility(
-                visible: state.data.example.isNotEmpty,
-                child: ExamplePhrases(data: state.data.example)
-              ),
+                  visible: state.data.example.isNotEmpty,
+                  child: ExamplePhrases(data: state.data.example)),
               Container(
                 height: Margins.margin32,
                 color: Colors.transparent,
@@ -112,10 +106,9 @@ class JishoPage extends StatelessWidget {
 
   Widget _nothingFound() {
     return Center(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
-        child: Text("jisho_no_match".tr(), textAlign: TextAlign.center)
-      ));
+        child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
+            child: Text("jisho_no_match".tr(), textAlign: TextAlign.center)));
   }
 
   Widget _poweredByJisho() {
@@ -123,7 +116,8 @@ class JishoPage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
       child: Chip(
         backgroundColor: Colors.green[200],
-        label: Text("jisho_resultData_powered_by".tr(), style: const TextStyle(color: Colors.black)),
+        label: Text("jisho_resultData_powered_by".tr(),
+            style: const TextStyle(color: Colors.black)),
       ),
     );
   }

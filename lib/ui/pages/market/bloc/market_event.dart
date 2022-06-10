@@ -12,12 +12,15 @@ class MarketEventIdle extends MarketEvent {}
 class MarketEventLoading extends MarketEvent {
   /// Maintains the filter applied by the user for loading new lists
   final MarketFilters filter;
+
   /// Maintains the order applied by the user for loading new lists
   final bool order;
+
   /// Whether to reset the counter for the offset on the lazy loading or not
   final bool reset;
 
-  const MarketEventLoading({required this.filter, required this.order, this.reset = false});
+  const MarketEventLoading(
+      {required this.filter, required this.order, this.reset = false});
 
   @override
   List<Object> get props => [filter, order, reset];
@@ -27,10 +30,12 @@ class MarketEventSearching extends MarketEvent {
   final String query;
   final MarketFilters filter;
   final bool order;
+
   /// Whether to reset the counter for the offset on the lazy loading or not
   final bool reset;
 
-  const MarketEventSearching(this.query, {required this.filter, required this.order, this.reset = false});
+  const MarketEventSearching(this.query,
+      {required this.filter, required this.order, this.reset = false});
 
   @override
   List<Object> get props => [query, reset];
@@ -39,6 +44,7 @@ class MarketEventSearching extends MarketEvent {
 class MarketEventDownload extends MarketEvent {
   /// Maintains the filter applied by the user for loading new lists
   final MarketFilters filter;
+
   /// Whether to reset the counter for the offset on the lazy loading or not
   final bool order;
   final String id;
@@ -52,6 +58,7 @@ class MarketEventDownload extends MarketEvent {
 class MarketEventRemove extends MarketEvent {
   /// Maintains the filter applied by the user for loading new lists
   final MarketFilters filter;
+
   /// Whether to reset the counter for the offset on the lazy loading or not
   final bool order;
   final String id;

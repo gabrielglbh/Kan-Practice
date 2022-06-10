@@ -5,6 +5,7 @@ import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/visualization_mode.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/theme/theme_manager.dart';
 import 'core/routing/routes.dart';
 
@@ -16,20 +17,41 @@ Future<void> _initSharedPreferences() async {
   if (StorageManager.readData(StorageManager.affectOnPractice) == null) {
     StorageManager.saveData(StorageManager.affectOnPractice, false);
   }
-  if (StorageManager.readData(StorageManager.kanListGraphVisualization) == null) {
-    StorageManager.saveData(StorageManager.kanListGraphVisualization, VisualizationMode.radialChart.name);
+  if (StorageManager.readData(StorageManager.kanListGraphVisualization) ==
+      null) {
+    StorageManager.saveData(StorageManager.kanListGraphVisualization,
+        VisualizationMode.radialChart.name);
   }
+  if (StorageManager.readData(StorageManager.numberOfKanjiInTest) == null) {
+    StorageManager.saveData(
+        StorageManager.numberOfKanjiInTest, CustomSizes.numberOfKanjiInTest);
+  }
+
+  /// Breaking change with 2.1.0: if themeMode in shared preferences is bool
+  /// then change it to the actual name of [ThemeMode], as [ThemeMode.system]
+  /// is introduced
+  var theme = StorageManager.readData(StorageManager.themeMode);
+  if (theme is bool) {
+    StorageManager.saveData(StorageManager.themeMode,
+        theme ? ThemeMode.dark.name : ThemeMode.light.name);
+  }
+
   /// Make the value the same as hasDoneTutorial. If the user has already seen
   /// the overall tutorial, do not show the coach mark tutorial
   // DEBUG ONLY
   //StorageManager.saveData(StorageManager.haveSeenKanListCoachMark, false);
   //StorageManager.saveData(StorageManager.haveSeenKanListDetailCoachMark, false);
-  bool hasDoneTutorial = StorageManager.readData(StorageManager.hasDoneTutorial);
-  if (StorageManager.readData(StorageManager.haveSeenKanListCoachMark) == null) {
-    StorageManager.saveData(StorageManager.haveSeenKanListCoachMark, hasDoneTutorial);
+  bool hasDoneTutorial =
+      StorageManager.readData(StorageManager.hasDoneTutorial);
+  if (StorageManager.readData(StorageManager.haveSeenKanListCoachMark) ==
+      null) {
+    StorageManager.saveData(
+        StorageManager.haveSeenKanListCoachMark, hasDoneTutorial);
   }
-  if (StorageManager.readData(StorageManager.haveSeenKanListDetailCoachMark) == null) {
-    StorageManager.saveData(StorageManager.haveSeenKanListDetailCoachMark, hasDoneTutorial);
+  if (StorageManager.readData(StorageManager.haveSeenKanListDetailCoachMark) ==
+      null) {
+    StorageManager.saveData(
+        StorageManager.haveSeenKanListDetailCoachMark, hasDoneTutorial);
   }
 }
 
@@ -68,7 +90,6 @@ class KanPractice extends StatefulWidget {
 }
 
 class _KanPracticeState extends State<KanPractice> {
-
   @override
   void initState() {
     ThemeManager.instance.addListenerTo(() => setState(() {}));
@@ -93,7 +114,8 @@ class _KanPracticeState extends State<KanPractice> {
       darkTheme: ThemeManager.instance.currentDarkThemeData,
       themeMode: ThemeManager.instance.themeMode,
       initialRoute: StorageManager.readData(StorageManager.hasDoneTutorial)
-          ? KanPracticePages.homePage : KanPracticePages.tutorialPage,
+          ? KanPracticePages.homePage
+          : KanPracticePages.tutorialPage,
       onGenerateRoute: onGenerateRoute,
     );
   }

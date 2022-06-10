@@ -33,13 +33,15 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
   switch (settings.name) {
     case KanPracticePages.homePage:
       bool? showTestBottomSheet = settings.arguments as bool?;
-      return CupertinoPageRoute(builder: (_) => HomePage(showTestBottomSheet: showTestBottomSheet));
+      return CupertinoPageRoute(
+          builder: (_) => HomePage(showTestBottomSheet: showTestBottomSheet));
     case KanPracticePages.kanjiListDetailsPage:
       KanjiList list = settings.arguments as KanjiList;
-      return CupertinoPageRoute(builder: (_) => BlocProvider<KanjiListDetailBloc>(
-        create: (_) => KanjiListDetailBloc()..add(KanjiEventLoading(list.name)),
-        child: KanjiListDetails(list: list))
-      );
+      return CupertinoPageRoute(
+          builder: (_) => BlocProvider<KanjiListDetailBloc>(
+              create: (_) =>
+                  KanjiListDetailBloc()..add(KanjiEventLoading(list.name)),
+              child: KanjiListDetails(list: list)));
     case KanPracticePages.settingsPage:
       return CupertinoPageRoute(builder: (_) => const Settings());
     case KanPracticePages.addKanjiPage:
@@ -61,10 +63,10 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       TestResultArguments args = settings.arguments as TestResultArguments;
       return CupertinoPageRoute(builder: (_) => TestResult(args: args));
     case KanPracticePages.testHistoryPage:
-      return CupertinoPageRoute(builder: (_) => BlocProvider<TestListBloc>(
-        create: (_) => TestListBloc()..add(const TestListEventLoading()),
-        child: const TestHistory())
-      );
+      return CupertinoPageRoute(
+          builder: (_) => BlocProvider<TestListBloc>(
+              create: (_) => TestListBloc()..add(const TestListEventLoading()),
+              child: const TestHistory()));
     case KanPracticePages.loginPage:
       return CupertinoPageRoute(builder: (_) => const LoginPage());
     case KanPracticePages.backUpPage:
@@ -72,10 +74,12 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return CupertinoPageRoute(builder: (_) => BackUpPage(uid: args));
     case KanPracticePages.tutorialPage:
       bool? args = settings.arguments as bool?;
-      return CupertinoPageRoute(builder: (_) => TutorialPage(alreadyShown: args));
+      return CupertinoPageRoute(
+          builder: (_) => TutorialPage(alreadyShown: args));
     case KanPracticePages.jishoPage:
       JishoArguments args = settings.arguments as JishoArguments;
-      return PageTransition(type: PageTransitionType.bottomToTop, child: JishoPage(args: args));
+      return PageTransition(
+          type: PageTransitionType.bottomToTop, child: JishoPage(args: args));
     case KanPracticePages.dictionaryPage:
       DictionaryArguments args = settings.arguments as DictionaryArguments;
       return CupertinoPageRoute(builder: (_) => DictionaryPage(args: args));

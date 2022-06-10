@@ -22,7 +22,8 @@ class BackUpQueries {
   /// Merges the back up from Firebase to the local database.
   /// It takes as parameter [kanji], [lists] and [tests] to be MERGED into the
   /// local db.
-  Future<String> mergeBackUp(List<Kanji> kanji, List<KanjiList> lists, List<Test> tests) async {
+  Future<String> mergeBackUp(
+      List<Kanji> kanji, List<KanjiList> lists, List<Test> tests) async {
     if (_database != null) {
       try {
         /// Order matters as kanji depends on lists.
@@ -31,26 +32,33 @@ class BackUpQueries {
         final utils = MigrationUtils();
 
         for (int x = 0; x < lists.length; x++) {
-          batch?.insert(KanListTableFields.listsTable, lists[x].toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
+          batch?.insert(KanListTableFields.listsTable, lists[x].toJson(),
+              conflictAlgorithm: ConflictAlgorithm.replace);
         }
         for (int x = 0; x < kanji.length; x++) {
-          batch?.insert(KanjiTableFields.kanjiTable, kanji[x].toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
+          batch?.insert(KanjiTableFields.kanjiTable, kanji[x].toJson(),
+              conflictAlgorithm: ConflictAlgorithm.replace);
+
           /// If the backup has no dateLastShown set up, fill dateLastShown with dateAdded
           if (kanji[x].dateLastShown == 0) {
             utils.batchUpdateDateLastShown(batch, kanji[x]);
           }
         }
+
         /// Tests can be dismissed, checking if the test array has something
         if (tests.isNotEmpty) {
           for (int x = 0; x < tests.length; x++) {
-            batch?.insert(TestTableFields.testTable, tests[x].toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
+            batch?.insert(TestTableFields.testTable, tests[x].toJson(),
+                conflictAlgorithm: ConflictAlgorithm.replace);
             if (tests[x].testMode == -1) {
               utils.batchUpdateTestMode(batch, tests[x]);
             }
           }
         }
         final results = await batch?.commit();
-        return results?.isEmpty == true ? "backup_queries_mergeBackUp_failed".tr() : "";
+        return results?.isEmpty == true
+            ? "backup_queries_mergeBackUp_failed".tr()
+            : "";
       } catch (err) {
         return err.toString();
       }

@@ -8,6 +8,7 @@ class KanjiPainter extends CustomPainter {
   KanjiPainter({required this.points, required this.size});
 
   List<Offset> offsetPoints = [];
+
   /// Actual brush to paint the kanji with
   static final Paint kanjiPaint = Paint()
     ..color = Colors.black
@@ -23,8 +24,10 @@ class KanjiPainter extends CustomPainter {
       ..strokeWidth = 1
       ..isAntiAlias = true
       ..strokeCap = StrokeCap.round;
-    canvas.drawLine(Offset(this.size/2, 0), Offset(this.size/2, 900), paint);
-    canvas.drawLine(Offset(0, this.size/2), Offset(900, this.size/2), paint);
+    canvas.drawLine(
+        Offset(this.size / 2, 0), Offset(this.size / 2, 900), paint);
+    canvas.drawLine(
+        Offset(0, this.size / 2), Offset(900, this.size / 2), paint);
 
     for (int i = 0; i < points.length - 1; i++) {
       if (points[i] != null && points[i + 1] != null) {

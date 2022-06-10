@@ -17,12 +17,12 @@ class SingleKanjiResult extends StatelessWidget {
   final List<jisho.JishoResult> phrase;
   final String _separator = " • ";
   final bool fromDictionary;
-  const SingleKanjiResult({
-    Key? key,
-    required this.data,
-    required this.phrase,
-    required this.fromDictionary
-  }) : super(key: key);
+  const SingleKanjiResult(
+      {Key? key,
+      required this.data,
+      required this.phrase,
+      required this.fromDictionary})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +30,9 @@ class SingleKanjiResult extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          height: Margins.margin32,
-          margin: const EdgeInsets.all(Margins.margin8),
-          child: _chips()
-        ),
+            height: Margins.margin32,
+            margin: const EdgeInsets.all(Margins.margin8),
+            child: _chips()),
         Visibility(
           visible: data?.strokeOrderGifUri != null,
           child: Container(
@@ -46,14 +45,13 @@ class SingleKanjiResult extends StatelessWidget {
             ),
           ),
         ),
-        _displayMeaning(context, "jisho_resultData_meaning_label".tr(), data?.meaning),
+        _displayMeaning(
+            context, "jisho_resultData_meaning_label".tr(), data?.meaning),
         _displayComposed("jisho_resultData_composed_label".tr(), data?.parts),
         _displayInfoWithExample(context, "jisho_resultData_kunyomi".tr(),
-            data?.kunyomi,
-            data?.kunyomiExamples),
+            data?.kunyomi, data?.kunyomiExamples),
         _displayInfoWithExample(context, "jisho_resultData_onyomi".tr(),
-            data?.onyomi,
-            data?.onyomiExamples),
+            data?.onyomi, data?.onyomiExamples),
       ],
     );
   }
@@ -68,19 +66,24 @@ class SingleKanjiResult extends StatelessWidget {
         ),
         Visibility(
           visible: data?.strokeCount != null,
-          child: InfoChip(label: data?.strokeCount.toString(), type: ChipType.stroke),
+          child: InfoChip(
+              label: data?.strokeCount.toString(), type: ChipType.stroke),
         ),
         Visibility(
           visible: phrase.isNotEmpty && phrase[0].isCommon != null,
-          child: InfoChip(label: phrase[0].isCommon == true
-              ? "jisho_phraseData_common".tr()
-              : "jisho_phraseData_uncommon".tr(),
-            type: phrase[0].isCommon == true ? ChipType.common : ChipType.uncommon,
+          child: InfoChip(
+            label: phrase[0].isCommon == true
+                ? "jisho_phraseData_common".tr()
+                : "jisho_phraseData_uncommon".tr(),
+            type: phrase[0].isCommon == true
+                ? ChipType.common
+                : ChipType.uncommon,
           ),
         ),
         Visibility(
           visible: phrase.isNotEmpty && phrase[0].isCommon == null,
-          child: InfoChip(label: "jisho_phraseData_unknown".tr(), type: ChipType.unknown),
+          child: InfoChip(
+              label: "jisho_phraseData_unknown".tr(), type: ChipType.unknown),
         )
       ],
     );
@@ -93,7 +96,10 @@ class SingleKanjiResult extends StatelessWidget {
         needsHeight: false,
         children: [
           JishoHeader(header: header),
-          ScrollableText(label: data, paddingTop: true, rawText: true,
+          ScrollableText(
+              label: data,
+              paddingTop: true,
+              rawText: true,
               style: Theme.of(context).textTheme.bodyText2),
         ],
       ),
@@ -128,25 +134,24 @@ class SingleKanjiResult extends StatelessWidget {
             rawText: true,
           ),
           Visibility(
-            visible: example != null && example.isNotEmpty,
-            child: Padding(
-              padding: const EdgeInsets.only(top: Margins.margin8),
-              child: _exampleExpansionTile(context, example)
-            )
-          ),
+              visible: example != null && example.isNotEmpty,
+              child: Padding(
+                  padding: const EdgeInsets.only(top: Margins.margin8),
+                  child: _exampleExpansionTile(context, example))),
         ],
       ),
     );
   }
 
-  Widget _exampleExpansionTile(BuildContext context, List<YomiExample>? example) {
+  Widget _exampleExpansionTile(
+      BuildContext context, List<YomiExample>? example) {
     return CustomExpansionTile(
-      label: "${"jisho_resultData_examples_label".tr()} (${example?.length})",
-      children: _listViewWithExamples(context, example)
-    );
+        label: "${"jisho_resultData_examples_label".tr()} (${example?.length})",
+        children: _listViewWithExamples(context, example));
   }
 
-  List<Widget> _listViewWithExamples(BuildContext context, List<YomiExample>? example) {
+  List<Widget> _listViewWithExamples(
+      BuildContext context, List<YomiExample>? example) {
     List<Widget> res = [];
     for (int i = 0; i < (example?.length ?? 0); i++) {
       res.add(Padding(
@@ -155,14 +160,15 @@ class SingleKanjiResult extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ScrollableText(
-              label: "${example?[i].example} (${example?[i].reading})",
-              initial: true,
-              style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w500)
-            ),
+                label: "${example?[i].example} (${example?[i].reading})",
+                initial: true,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    ?.copyWith(fontWeight: FontWeight.w500)),
             ScrollableText(
-              label: example?[i].meaning,
-              style: Theme.of(context).textTheme.bodyText2
-            ),
+                label: example?[i].meaning,
+                style: Theme.of(context).textTheme.bodyText2),
           ],
         ),
       ));

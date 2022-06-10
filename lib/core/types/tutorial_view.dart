@@ -1,7 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 
 enum TutorialView {
-  kanList, market, dictionary, list, details, jisho, practicing, options
+  kanList,
+  market,
+  dictionary,
+  list,
+  details,
+  jisho,
+  practicing,
+  options
 }
 
 extension TestPagesExt on TutorialView {
@@ -27,7 +34,8 @@ extension TestPagesExt on TutorialView {
   }
 
   String asset({bool lightMode = true}) {
-    String _baseUri = "https://firebasestorage.googleapis.com/v0/b/kanpractice.appspot.com/o";
+    String _baseUri =
+        "https://firebasestorage.googleapis.com/v0/b/kanpractice.appspot.com/o";
     switch (this) {
       case TutorialView.kanList:
         if (lightMode) {

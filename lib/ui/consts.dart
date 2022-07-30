@@ -29,6 +29,7 @@ class CustomSizes {
 }
 
 class LazyLoadingLimits {
+  static const int folderList = 12;
   static const int kanList = 12;
   static const int wordList = 100;
   static const int testHistory = 20;

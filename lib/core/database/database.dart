@@ -56,7 +56,6 @@ class CustomDatabase {
 
       await db.execute("CREATE TABLE ${KanListTableFields.listsTable}("
           "${KanListTableFields.nameField} TEXT PRIMARY KEY NOT NULL, "
-          "${KanListTableFields.folderName} TEXT, "
           "${KanListTableFields.totalWinRateWritingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
           "${KanListTableFields.totalWinRateReadingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
           "${KanListTableFields.totalWinRateRecognitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
@@ -72,9 +71,17 @@ class CustomDatabase {
           "${TestTableFields.studyModeField} INTEGER NOT NULL DEFAULT 0, "
           "${TestTableFields.testModeField} INTEGER NOT NULL DEFAULT -1)");
 
-      await db.execute("CREATE TABLE ${KanListFolderTableFields.folderTable}("
-          "${KanListFolderTableFields.folderName} TEXT NOT NULL PRIMARY KEY, "
-          "${KanListFolderTableFields.kanListName} TEXT NOT NULL)");
+      await db.execute("CREATE TABLE ${FolderTableFields.folderTable}("
+          "${FolderTableFields.nameField} TEXT NOT NULL PRIMARY KEY, "
+          "${FolderTableFields.lastUpdatedField} INTEGER NOT NULL DEFAULT 0)");
+
+      await db.execute(
+          "CREATE TABLE ${KanListFolderRelationTableFields.relTable}("
+          "${KanListFolderRelationTableFields.relIdField} INTEGER PRIMARY KEY AUTOINCREMENT, "
+          "${KanListFolderRelationTableFields.nameField} TEXT NOT NULL, "
+          "${KanListFolderRelationTableFields.kanListNameField} TEXT NOT NULL, "
+          "FOREIGN KEY (${KanListFolderRelationTableFields.nameField}) REFERENCES ${FolderTableFields.folderTable}(${FolderTableFields.nameField}) ON DELETE CASCADE ON UPDATE CASCADE, "
+          "FOREIGN KEY (${KanListFolderRelationTableFields.kanListNameField}) REFERENCES ${KanListTableFields.listsTable}(${KanListTableFields.nameField}))");
     });
   }
 

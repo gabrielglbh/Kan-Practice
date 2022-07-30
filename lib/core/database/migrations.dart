@@ -6,12 +6,17 @@ import 'package:sqflite/sqflite.dart';
 
 class Migrations extends MigrationUtils {
   Future<void> version6to7(Database db) async {
-    await db.rawQuery("ALTER TABLE ${KanListTableFields.listsTable} "
-        "ADD COLUMN ${KanListTableFields.folderName} TEXT");
+    await db.rawQuery(
+        "CREATE TABLE ${KanListFolderRelationTableFields.relTable}("
+        "${KanListFolderRelationTableFields.relIdField} INTEGER PRIMARY KEY AUTOINCREMENT, "
+        "${KanListFolderRelationTableFields.nameField} TEXT NOT NULL, "
+        "${KanListFolderRelationTableFields.kanListNameField} TEXT NOT NULL, "
+        "FOREIGN KEY (${KanListFolderRelationTableFields.nameField}) REFERENCES ${FolderTableFields.folderTable}(${FolderTableFields.nameField}) ON DELETE CASCADE ON UPDATE CASCADE, "
+        "FOREIGN KEY (${KanListFolderRelationTableFields.kanListNameField}) REFERENCES ${KanListTableFields.listsTable}(${KanListTableFields.nameField}))");
 
-    await db.rawQuery("CREATE TABLE ${KanListFolderTableFields.folderTable}("
-        "${KanListFolderTableFields.folderName} TEXT NOT NULL PRIMARY KEY, "
-        "${KanListFolderTableFields.kanListName} TEXT NOT NULL)");
+    await db.rawQuery("CREATE TABLE ${FolderTableFields.folderTable}("
+        "${FolderTableFields.nameField} TEXT NOT NULL PRIMARY KEY, "
+        "${FolderTableFields.lastUpdatedField} INTEGER NOT NULL DEFAULT 0)");
   }
 
   Future<void> version5to6(Database db) async {

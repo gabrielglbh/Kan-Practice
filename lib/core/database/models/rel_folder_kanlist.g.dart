@@ -1,17 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'folder.dart';
+part of 'rel_folder_kanlist.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Folder _$FolderFromJson(Map<String, dynamic> json) => Folder(
+RelFolderKanList _$RelFolderKanListFromJson(Map<String, dynamic> json) =>
+    RelFolderKanList(
       folder: json['folder'] as String,
-      lastUpdated: json['lastUpdated'] as int,
+      kanList: json['kanList'] as String,
     );
 
-Map<String, dynamic> _$FolderToJson(Folder instance) => <String, dynamic>{
+Map<String, dynamic> _$RelFolderKanListToJson(RelFolderKanList instance) =>
+    <String, dynamic>{
       'folder': instance.folder,
-      'lastUpdated': instance.lastUpdated,
+      'kanList': instance.kanList,
     };

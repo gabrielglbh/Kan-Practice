@@ -1,10 +1,10 @@
 name: kanpractice
 description: A Flutter project to learn and study the different kanjis.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 2.1.0+19
+version: 2.2.0+20
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
   flutter:

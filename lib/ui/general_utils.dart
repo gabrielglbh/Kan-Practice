@@ -137,8 +137,8 @@ class GeneralUtils {
               : 'Ok',
           onPositive: () async {
             if (version != null) {
-              if (await canLaunch("google_play_link".tr())) {
-                await launch("google_play_link".tr());
+              if (await canLaunchUrl(Uri.parse("google_play_link".tr()))) {
+                await launchUrl(Uri.parse("google_play_link".tr()));
               }
             }
           },

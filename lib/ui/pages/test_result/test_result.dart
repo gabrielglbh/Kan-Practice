@@ -33,7 +33,7 @@ class _TestResultState extends State<TestResult> {
   @override
   void initState() {
     WidgetsBinding.instance
-        ?.addPostFrameCallback((_) async => await _saveTest());
+        .addPostFrameCallback((_) async => await _saveTest());
     super.initState();
   }
 

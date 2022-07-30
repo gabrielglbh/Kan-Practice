@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> {
     _currentAppliedMarketOrder =
         StorageManager.readData(StorageManager.orderOnMarket) ?? true;
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (widget.showTestBottomSheet == true) {
         await TestBottomSheet.show(context);
       }

@@ -19,8 +19,8 @@ class CopyrightInfo extends StatelessWidget {
   }
 
   Future<void> _launchUrl(BuildContext context, String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
     } else {
       GeneralUtils.getSnackBar(context, "launch_url_failed".tr());
     }

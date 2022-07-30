@@ -207,9 +207,10 @@ class _WritingStudyState extends State<WritingStudy> {
         IconButton(
           icon: const Icon(Icons.info_outline_rounded),
           onPressed: () async {
-            if (await canLaunch(
-                "https://www.sljfaq.org/afaq/stroke-order.html")) {
-              launch("https://www.sljfaq.org/afaq/stroke-order.html");
+            if (await canLaunchUrl(
+                Uri.parse("https://www.sljfaq.org/afaq/stroke-order.html"))) {
+              launchUrl(
+                  Uri.parse("https://www.sljfaq.org/afaq/stroke-order.html"));
             }
           },
         )

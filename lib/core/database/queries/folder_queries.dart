@@ -2,6 +2,7 @@ import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/folder.dart';
 import 'package:kanpractice/core/database/models/list.dart';
+import 'package:kanpractice/core/database/models/rel_folder_kanlist.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -143,6 +144,26 @@ class FolderQueries {
       }
     } else {
       return -2;
+    }
+  }
+
+  /// Get all available relations [Folder]-[RelFolderKanList] for backup purposes
+  Future<List<RelFolderKanList>> getFolderRelation() async {
+    if (_database != null) {
+      try {
+        final res =
+            await _database?.query(KanListFolderRelationTableFields.relTable);
+        if (res != null) {
+          return List.generate(
+              res.length, (i) => RelFolderKanList.fromJson(res[i]));
+        }
+        return [];
+      } catch (err) {
+        print(err.toString());
+        return [];
+      }
+    } else {
+      return [];
     }
   }
 

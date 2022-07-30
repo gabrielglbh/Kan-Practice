@@ -5,6 +5,15 @@ import 'package:kanpractice/core/database/models/test_result.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Migrations extends MigrationUtils {
+  Future<void> version6to7(Database db) async {
+    await db.rawQuery("ALTER TABLE ${KanListTableFields.listsTable} "
+        "ADD COLUMN ${KanListTableFields.folderName} TEXT");
+
+    await db.rawQuery("CREATE TABLE ${KanListFolderTableFields.folderTable}("
+        "${KanListFolderTableFields.folderName} TEXT NOT NULL PRIMARY KEY, "
+        "${KanListFolderTableFields.kanListName} TEXT NOT NULL)");
+  }
+
   Future<void> version5to6(Database db) async {
     await db.rawQuery("ALTER TABLE ${TestTableFields.testTable} "
         "ADD COLUMN ${TestTableFields.testModeField} INTEGER NOT NULL "

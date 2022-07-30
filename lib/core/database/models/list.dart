@@ -7,6 +7,7 @@ part 'list.g.dart';
 @JsonSerializable()
 class KanjiList {
   final String name;
+  String? folder;
   double totalWinRateWriting;
   double totalWinRateReading;
   double totalWinRateRecognition;
@@ -15,6 +16,7 @@ class KanjiList {
 
   KanjiList(
       {required this.name,
+      this.folder,
       this.totalWinRateWriting = DatabaseConstants.emptyWinRate,
       this.totalWinRateReading = DatabaseConstants.emptyWinRate,
       this.totalWinRateRecognition = DatabaseConstants.emptyWinRate,
@@ -30,6 +32,7 @@ class KanjiList {
 
   KanjiList copyWithUpdatedDate({int? lastUpdated}) => KanjiList(
       name: name,
+      folder: folder,
       totalWinRateWriting: totalWinRateWriting,
       totalWinRateReading: totalWinRateReading,
       totalWinRateRecognition: totalWinRateRecognition,
@@ -38,6 +41,7 @@ class KanjiList {
 
   KanjiList copyWithReset() => KanjiList(
       name: name,
+      folder: folder,
       totalWinRateWriting: DatabaseConstants.emptyWinRate,
       totalWinRateReading: DatabaseConstants.emptyWinRate,
       totalWinRateRecognition: DatabaseConstants.emptyWinRate,

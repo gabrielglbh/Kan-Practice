@@ -20,6 +20,7 @@ class KanjiTableFields {
 class KanListTableFields {
   static const String listsTable = "LISTS_TABLE";
   static const String nameField = "name";
+  static const String folderName = "folder";
   static const String totalWinRateWritingField = "totalWinRateWriting";
   static const String totalWinRateReadingField = "totalWinRateReading";
   static const String totalWinRateRecognitionField = "totalWinRateRecognition";
@@ -36,6 +37,12 @@ class TestTableFields {
   static const String kanjiListsField = "kanjiLists";
   static const String studyModeField = "studyMode";
   static const String testModeField = "testMode";
+}
+
+class KanListFolderTableFields {
+  static const String folderTable = "FOLDER_TABLE";
+  static const String folderName = "folder";
+  static const String kanListName = "kanListName";
 }
 
 class DatabaseConstants {

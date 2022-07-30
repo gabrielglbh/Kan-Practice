@@ -27,7 +27,7 @@ class CustomDatabase {
       await Directory(databasesPath).create(recursive: true);
     } catch (_) {}
 
-    _database = await openDatabase(path, version: 6, singleInstance: true,
+    _database = await openDatabase(path, version: 7, singleInstance: true,
         onConfigure: (db) async {
       await db.execute('PRAGMA foreign_keys = ON');
     }, onUpgrade: (Database db, int oldVersion, int newVersion) async {
@@ -56,6 +56,7 @@ class CustomDatabase {
 
       await db.execute("CREATE TABLE ${KanListTableFields.listsTable}("
           "${KanListTableFields.nameField} TEXT PRIMARY KEY NOT NULL, "
+          "${KanListTableFields.folderName} TEXT, "
           "${KanListTableFields.totalWinRateWritingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
           "${KanListTableFields.totalWinRateReadingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
           "${KanListTableFields.totalWinRateRecognitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
@@ -70,6 +71,10 @@ class CustomDatabase {
           "${TestTableFields.kanjiListsField} TEXT NOT NULL, "
           "${TestTableFields.studyModeField} INTEGER NOT NULL DEFAULT 0, "
           "${TestTableFields.testModeField} INTEGER NOT NULL DEFAULT -1)");
+
+      await db.execute("CREATE TABLE ${KanListFolderTableFields.folderTable}("
+          "${KanListFolderTableFields.folderName} TEXT NOT NULL PRIMARY KEY, "
+          "${KanListFolderTableFields.kanListName} TEXT NOT NULL)");
     });
   }
 
@@ -82,6 +87,7 @@ class CustomDatabase {
     if (oldVersion <= 3) c.version3to4(db);
     if (oldVersion <= 4) c.version4to5(db);
     if (oldVersion <= 5) c.version5to6(db);
+    if (oldVersion <= 6) c.version6to7(db);
   }
 
   /// Closes up the current database.

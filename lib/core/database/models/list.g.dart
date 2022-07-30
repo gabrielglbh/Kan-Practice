@@ -8,6 +8,7 @@ part of 'list.dart';
 
 KanjiList _$KanjiListFromJson(Map<String, dynamic> json) => KanjiList(
       name: json['name'] as String,
+      folder: json['folder'] as String?,
       totalWinRateWriting: (json['totalWinRateWriting'] as num?)?.toDouble() ??
           DatabaseConstants.emptyWinRate,
       totalWinRateReading: (json['totalWinRateReading'] as num?)?.toDouble() ??
@@ -23,6 +24,7 @@ KanjiList _$KanjiListFromJson(Map<String, dynamic> json) => KanjiList(
 
 Map<String, dynamic> _$KanjiListToJson(KanjiList instance) => <String, dynamic>{
       'name': instance.name,
+      'folder': instance.folder,
       'totalWinRateWriting': instance.totalWinRateWriting,
       'totalWinRateReading': instance.totalWinRateReading,
       'totalWinRateRecognition': instance.totalWinRateRecognition,

@@ -19,7 +19,7 @@ class DictionaryPage extends StatefulWidget {
   const DictionaryPage({Key? key, required this.args}) : super(key: key);
 
   @override
-  _DictionaryPageState createState() => _DictionaryPageState();
+  State<DictionaryPage> createState() => _DictionaryPageState();
 }
 
 class _DictionaryPageState extends State<DictionaryPage> {

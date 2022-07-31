@@ -34,7 +34,7 @@ class AddToKanListBottomSheet extends StatefulWidget {
   }
 
   @override
-  _AddToKanListBottomSheetState createState() =>
+  State<AddToKanListBottomSheet> createState() =>
       _AddToKanListBottomSheetState();
 }
 
@@ -64,6 +64,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
         dateAdded: GeneralUtils.getCurrentMilliseconds(),
         dateLastShown: GeneralUtils.getCurrentMilliseconds()));
     if (code == 0) {
+      if (!mounted) return;
       Navigator.of(context).pop();
       GeneralUtils.getSnackBar(
           context, "add_kanji_createKanji_successful".tr());

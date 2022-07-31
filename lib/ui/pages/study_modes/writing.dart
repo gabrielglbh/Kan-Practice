@@ -24,7 +24,7 @@ class WritingStudy extends StatefulWidget {
   const WritingStudy({Key? key, required this.args}) : super(key: key);
 
   @override
-  _WritingStudyState createState() => _WritingStudyState();
+  State<WritingStudy> createState() => _WritingStudyState();
 }
 
 class _WritingStudyState extends State<WritingStudy> {

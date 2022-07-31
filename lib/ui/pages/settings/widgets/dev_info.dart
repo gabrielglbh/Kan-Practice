@@ -77,13 +77,13 @@ class DevInfo extends StatelessWidget {
           title: Text("${"developer_info_report".tr()} devgglop@gmail.com"),
           leading: const Icon(Icons.bug_report_rounded),
           onTap: () async {
-            final Uri _emailLaunchUri = Uri(
+            final Uri emailLaunchUri = Uri(
                 scheme: 'mailto',
                 path: 'devgglop@gmail.com',
                 queryParameters: {
                   'subject': "Found a bug on KanPractice!",
                 });
-            String url = _emailLaunchUri.toString().replaceAll("+", "%20");
+            String url = emailLaunchUri.toString().replaceAll("+", "%20");
             if (await canLaunchUrl(Uri.parse(url))) {
               await launchUrl(Uri.parse(url));
             } else {

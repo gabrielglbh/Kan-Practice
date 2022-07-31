@@ -13,7 +13,7 @@ class TestBottomSheet extends StatefulWidget {
   const TestBottomSheet({Key? key}) : super(key: key);
 
   @override
-  _TestBottomSheetState createState() => _TestBottomSheetState();
+  State<TestBottomSheet> createState() => _TestBottomSheetState();
 
   /// Creates and calls the [BottomSheet] with the content for a regular test
   static Future<String?> show(BuildContext context) async {

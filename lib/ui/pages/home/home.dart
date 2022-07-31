@@ -355,6 +355,7 @@ class _HomePageState extends State<HomePage> {
           final kanListName =
               await ActionsBottomSheet.show(context, _currentPage);
           if (kanListName != null) {
+            if (!mounted) return;
             context.read<KanjiListBloc>().add(KanjiListEventCreate(kanListName,
                 filter: _currentAppliedFilter, order: _currentAppliedOrder));
           }

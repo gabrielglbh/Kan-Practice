@@ -52,9 +52,9 @@ class BackUpRecords {
   /// built version.
   Future<String> getVersion() async {
     try {
-      final DocumentSnapshot? ref =
+      final DocumentSnapshot ref =
           await _ref.collection("Versioning").doc("version").get();
-      return await ref?.get("version");
+      return await ref.get("version");
     } catch (err) {
       print(err.toString());
     }
@@ -64,14 +64,12 @@ class BackUpRecords {
   /// Gets the version notes and changelogs of the current version.
   Future<List<String>> getVersionNotes(BuildContext context) async {
     List<String> notes = [];
-
+    final locale = Localizations.localeOf(context).languageCode;
     try {
-      final Future<DocumentSnapshot>? ref =
+      final Future<DocumentSnapshot> ref =
           _ref.collection("Versioning").doc("version_notes").get();
-      await ref?.then((snapshot) {
-        notes = snapshot
-            .get(Localizations.localeOf(context).languageCode)
-            .cast<String>();
+      await ref.then((snapshot) {
+        notes = snapshot.get(locale).cast<String>();
       });
     } catch (err) {
       notes = [];
@@ -86,8 +84,8 @@ class BackUpRecords {
   ///
   /// Returns an empty String if nothing happened, else, the error is returned.
   Future<String> createBackUp({bool backUpTests = false}) async {
-    User? _user = _auth.currentUser;
-    await _user?.reload();
+    User? user = _auth.currentUser;
+    await user?.reload();
 
     List<Kanji> kanji = await KanjiQueries.instance.getAllKanji();
     List<KanjiList> lists = await ListQueries.instance.getAllLists();
@@ -118,7 +116,7 @@ class BackUpRecords {
         for (int x = 0; x < kanji.length; x++) {
           final DocumentReference doc = _ref
               .collection(collection)
-              .doc(_user?.uid)
+              .doc(user?.uid)
               .collection(kanjiLabel)
               .doc(kanji[x].kanji);
           batch?.set(doc, backUpObject.kanji[x].toJson());
@@ -132,7 +130,7 @@ class BackUpRecords {
         for (int x = 0; x < lists.length; x++) {
           final DocumentReference doc = _ref
               .collection(collection)
-              .doc(_user?.uid)
+              .doc(user?.uid)
               .collection(listsLabel)
               .doc(lists[x].name);
           batch?.set(doc, backUpObject.lists[x].toJson());
@@ -146,7 +144,7 @@ class BackUpRecords {
         for (int x = 0; x < folders.length; x++) {
           final DocumentReference doc = _ref
               .collection(collection)
-              .doc(_user?.uid)
+              .doc(user?.uid)
               .collection(foldersLabel)
               .doc(folders[x].folder);
           batch?.set(doc, backUpObject.folders[x].toJson());
@@ -161,7 +159,7 @@ class BackUpRecords {
           for (int x = 0; x < test.length; x++) {
             final DocumentReference doc = _ref
                 .collection(collection)
-                .doc(_user?.uid)
+                .doc(user?.uid)
                 .collection(testsLabel)
                 .doc(test[x].takenDate.toString());
             batch?.set(doc, backUpObject.test[x].toJson());
@@ -176,7 +174,7 @@ class BackUpRecords {
         for (int x = 0; x < relFolderKanList.length; x++) {
           final DocumentReference doc = _ref
               .collection(collection)
-              .doc(_user?.uid)
+              .doc(user?.uid)
               .collection(relFolderKanListLabel)
               .doc(x.toString());
           batch?.set(doc, backUpObject.relFolderKanList[x].toJson());
@@ -187,7 +185,7 @@ class BackUpRecords {
         batch = _ref.batch();
 
         /// Last updated
-        batch.set(_ref.collection(collection).doc(_user?.uid),
+        batch.set(_ref.collection(collection).doc(user?.uid),
             {BackUp.updatedLabel: backUpObject.lastUpdated});
 
         await batch.commit();
@@ -202,33 +200,33 @@ class BackUpRecords {
   /// from the local db.
   /// Returns an empty String if nothing happened, else, the error is returned.
   Future<String> restoreBackUp() async {
-    User? _user = _auth.currentUser;
-    await _user?.reload();
+    User? user = _auth.currentUser;
+    await user?.reload();
 
     try {
       final kanjiSnapshot = await _ref
           .collection(collection)
-          .doc(_user?.uid)
+          .doc(user?.uid)
           .collection(kanjiLabel)
           .get();
       final listsSnapshot = await _ref
           .collection(collection)
-          .doc(_user?.uid)
+          .doc(user?.uid)
           .collection(listsLabel)
           .get();
       final foldersSnapshot = await _ref
           .collection(collection)
-          .doc(_user?.uid)
+          .doc(user?.uid)
           .collection(foldersLabel)
           .get();
       final testsSnapshot = await _ref
           .collection(collection)
-          .doc(_user?.uid)
+          .doc(user?.uid)
           .collection(testsLabel)
           .get();
       final relFolderKanListSnapshot = await _ref
           .collection(collection)
-          .doc(_user?.uid)
+          .doc(user?.uid)
           .collection(relFolderKanListLabel)
           .get();
 
@@ -283,33 +281,33 @@ class BackUpRecords {
   /// Removes the [BackUp] object from Firebase.
   /// Returns an empty String if nothing happened, else, the error is returned.
   Future<String> removeBackUp() async {
-    User? _user = _auth.currentUser;
-    await _user?.reload();
+    User? user = _auth.currentUser;
+    await user?.reload();
 
     try {
       final kanjiSnapshot = await _ref
           .collection(collection)
-          .doc(_user?.uid)
+          .doc(user?.uid)
           .collection(kanjiLabel)
           .get();
       final listsSnapshot = await _ref
           .collection(collection)
-          .doc(_user?.uid)
+          .doc(user?.uid)
           .collection(listsLabel)
           .get();
       final foldersSnapshot = await _ref
           .collection(collection)
-          .doc(_user?.uid)
+          .doc(user?.uid)
           .collection(foldersLabel)
           .get();
       final testsSnapshot = await _ref
           .collection(collection)
-          .doc(_user?.uid)
+          .doc(user?.uid)
           .collection(testsLabel)
           .get();
       final relFolderKanListSnapshot = await _ref
           .collection(collection)
-          .doc(_user?.uid)
+          .doc(user?.uid)
           .collection(relFolderKanListLabel)
           .get();
 
@@ -319,7 +317,7 @@ class BackUpRecords {
         for (int x = 0; x < kanjiSnapshot.size; x++) {
           batch?.delete(_ref
               .collection(collection)
-              .doc(_user?.uid)
+              .doc(user?.uid)
               .collection(kanjiLabel)
               .doc(Kanji.fromJson(kanjiSnapshot.docs[x].data()).kanji));
           batch = await _reinitializeBatch(batch, x);
@@ -327,7 +325,7 @@ class BackUpRecords {
         for (int x = 0; x < listsSnapshot.size; x++) {
           batch?.delete(_ref
               .collection(collection)
-              .doc(_user?.uid)
+              .doc(user?.uid)
               .collection(listsLabel)
               .doc(KanjiList.fromJson(listsSnapshot.docs[x].data()).name));
           batch = await _reinitializeBatch(batch, x);
@@ -338,7 +336,7 @@ class BackUpRecords {
         for (int x = 0; x < foldersSnapshot.size; x++) {
           batch?.delete(_ref
               .collection(collection)
-              .doc(_user?.uid)
+              .doc(user?.uid)
               .collection(foldersLabel)
               .doc(Folder.fromJson(foldersSnapshot.docs[x].data()).folder));
           batch = await _reinitializeBatch(batch, x);
@@ -349,7 +347,7 @@ class BackUpRecords {
         for (int x = 0; x < testsSnapshot.size; x++) {
           batch?.delete(_ref
               .collection(collection)
-              .doc(_user?.uid)
+              .doc(user?.uid)
               .collection(testsLabel)
               .doc(Test.fromJson(testsSnapshot.docs[x].data())
                   .takenDate
@@ -362,14 +360,14 @@ class BackUpRecords {
         for (int x = 0; x < relFolderKanListSnapshot.size; x++) {
           batch?.delete(_ref
               .collection(collection)
-              .doc(_user?.uid)
+              .doc(user?.uid)
               .collection(relFolderKanListLabel)
               .doc(x.toString()));
           batch = await _reinitializeBatch(batch, x);
         }
       }
 
-      batch?.delete(_ref.collection(collection).doc(_user?.uid));
+      batch?.delete(_ref.collection(collection).doc(user?.uid));
       await batch?.commit();
       return "";
     } catch (err) {
@@ -381,14 +379,15 @@ class BackUpRecords {
   /// Returns the actual parsed date as a String if nothing happened, else,
   /// the error is returned.
   Future<String> getLastUpdated(BuildContext context) async {
-    User? _user = _auth.currentUser;
-    await _user?.reload();
+    User? user = _auth.currentUser;
+    await user?.reload();
 
     try {
-      final snapshot = await _ref.collection(collection).doc(_user?.uid).get();
+      final snapshot = await _ref.collection(collection).doc(user?.uid).get();
       if (snapshot.exists) {
         int date = snapshot.get("lastUpdated");
         return "${"backup_firebase_getLastUpdated_successful".tr()} "
+            // ignore: use_build_context_synchronously
             "${GeneralUtils.parseDateMilliseconds(context, date)}";
       } else {
         return "backup_firebase_getLastUpdated_noBackUp".tr();

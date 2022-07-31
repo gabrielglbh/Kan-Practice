@@ -23,7 +23,7 @@ class ReadingStudy extends StatefulWidget {
   const ReadingStudy({Key? key, required this.args}) : super(key: key);
 
   @override
-  _ReadingStudyState createState() => _ReadingStudyState();
+  State<ReadingStudy> createState() => _ReadingStudyState();
 }
 
 class _ReadingStudyState extends State<ReadingStudy> {

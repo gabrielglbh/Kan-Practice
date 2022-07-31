@@ -20,7 +20,7 @@ class KanjiLists extends StatefulWidget {
       : super(key: key);
 
   @override
-  _KanjiListsState createState() => _KanjiListsState();
+  State<KanjiLists> createState() => _KanjiListsState();
 }
 
 class _KanjiListsState extends State<KanjiLists>

@@ -63,10 +63,12 @@ class ActionsBottomSheet extends StatelessWidget {
                         title: Text("bottom_actions_create_kanlist".tr()),
                         leading: const Icon(Icons.add),
                         onTap: () async {
+                          final navigator = Navigator.of(context);
+
                           /// Pass through the parent the name being input
                           final name =
                               await KPCreateKanListDialog.show(context);
-                          Navigator.of(context).pop(name);
+                          navigator.pop(name);
                         },
                       ),
                       const Divider(),
@@ -74,9 +76,10 @@ class ActionsBottomSheet extends StatelessWidget {
                         title: Text("bottom_actions_upload_list".tr()),
                         leading: const Icon(Icons.upload_rounded),
                         onTap: () async {
+                          final navigator = Navigator.of(context);
                           await Navigator.of(context)
                               .pushNamed(KanPracticePages.marketAddListPage);
-                          Navigator.of(context).pop();
+                          navigator.pop();
                         },
                       ),
                       const SizedBox(height: Margins.margin24)

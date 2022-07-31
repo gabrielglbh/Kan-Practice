@@ -16,7 +16,7 @@ class KanListSelectionBottomSheet extends StatefulWidget {
   const KanListSelectionBottomSheet({Key? key}) : super(key: key);
 
   @override
-  _KanListSelectionBottomSheetState createState() =>
+  State<KanListSelectionBottomSheet> createState() =>
       _KanListSelectionBottomSheetState();
 
   /// Creates and calls the [BottomSheet] with the content for a regular test

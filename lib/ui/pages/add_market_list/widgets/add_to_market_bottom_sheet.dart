@@ -24,7 +24,7 @@ class AddToMarketBottomSheet extends StatefulWidget {
   }
 
   @override
-  _AddToMarketBottomSheetState createState() => _AddToMarketBottomSheetState();
+  State<AddToMarketBottomSheet> createState() => _AddToMarketBottomSheetState();
 }
 
 class _AddToMarketBottomSheetState extends State<AddToMarketBottomSheet> {

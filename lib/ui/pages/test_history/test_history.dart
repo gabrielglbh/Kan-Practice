@@ -16,7 +16,7 @@ class TestHistory extends StatefulWidget {
   const TestHistory({Key? key}) : super(key: key);
 
   @override
-  _TestHistoryState createState() => _TestHistoryState();
+  State<TestHistory> createState() => _TestHistoryState();
 }
 
 class _TestHistoryState extends State<TestHistory> {

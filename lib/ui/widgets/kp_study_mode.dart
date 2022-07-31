@@ -136,39 +136,44 @@ class KPTestStudyMode extends StatelessWidget {
         color: mode.color,
         onTap: () async {
           List<Kanji>? l = list;
+          final navigator = Navigator.of(context);
           if (l != null) {
             if (l.isEmpty) {
               Navigator.of(context).pop();
               GeneralUtils.getSnackBar(context, "study_modes_empty".tr());
             } else {
-              await _decideOnMode(context, l, mode);
+              await _decideOnMode(navigator, l, mode);
             }
           } else {
             List<Kanji> l = await _loadBlitzTest(mode);
             if (l.isEmpty) {
-              Navigator.of(context).pop();
+              navigator.pop();
+              // ignore: use_build_context_synchronously
               GeneralUtils.getSnackBar(context, "study_modes_empty".tr());
             } else {
-              await _decideOnMode(context, l, mode);
+              await _decideOnMode(navigator, l, mode);
             }
           }
         });
   }
 
   Future<void> _decideOnMode(
-      BuildContext context, List<Kanji> l, StudyModes mode) async {
+    NavigatorState navigator,
+    List<Kanji> l,
+    StudyModes mode,
+  ) async {
     final displayTestName = type.name;
     final kanjiInTest =
         StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
             CustomSizes.numberOfKanjiInTest;
     List<Kanji> sortedList =
         l.sublist(0, l.length < kanjiInTest ? l.length : kanjiInTest);
-    Navigator.of(context).pop(); // Dismiss this bottom sheet
-    Navigator.of(context).pop(); // Dismiss the tests bottom sheet
+    navigator.pop(); // Dismiss this bottom sheet
+    navigator.pop(); // Dismiss the tests bottom sheet
 
     switch (mode) {
       case StudyModes.writing:
-        await Navigator.of(context).pushNamed(KanPracticePages.writingStudyPage,
+        await navigator.pushNamed(KanPracticePages.writingStudyPage,
             arguments: ModeArguments(
                 studyList: sortedList,
                 isTest: true,
@@ -178,7 +183,7 @@ class KPTestStudyMode extends StatelessWidget {
                 listsNames: testName));
         break;
       case StudyModes.reading:
-        await Navigator.of(context).pushNamed(KanPracticePages.readingStudyPage,
+        await navigator.pushNamed(KanPracticePages.readingStudyPage,
             arguments: ModeArguments(
                 studyList: sortedList,
                 isTest: true,
@@ -188,8 +193,7 @@ class KPTestStudyMode extends StatelessWidget {
                 listsNames: testName));
         break;
       case StudyModes.recognition:
-        await Navigator.of(context).pushNamed(
-            KanPracticePages.recognitionStudyPage,
+        await navigator.pushNamed(KanPracticePages.recognitionStudyPage,
             arguments: ModeArguments(
                 studyList: sortedList,
                 isTest: true,
@@ -199,8 +203,7 @@ class KPTestStudyMode extends StatelessWidget {
                 listsNames: testName));
         break;
       case StudyModes.listening:
-        await Navigator.of(context).pushNamed(
-            KanPracticePages.listeningStudyPage,
+        await navigator.pushNamed(KanPracticePages.listeningStudyPage,
             arguments: ModeArguments(
                 studyList: sortedList,
                 isTest: true,

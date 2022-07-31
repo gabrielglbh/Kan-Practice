@@ -33,7 +33,7 @@ class KPSearchBar extends StatefulWidget {
       : super(key: key);
 
   @override
-  _KPSearchBarState createState() => _KPSearchBarState();
+  State<KPSearchBar> createState() => _KPSearchBarState();
 }
 
 class _KPSearchBarState extends State<KPSearchBar> {

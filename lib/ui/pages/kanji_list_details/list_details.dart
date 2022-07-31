@@ -30,7 +30,7 @@ class KanjiListDetails extends StatefulWidget {
   const KanjiListDetails({Key? key, required this.list}) : super(key: key);
 
   @override
-  _KanjiListDetailsState createState() => _KanjiListDetailsState();
+  State<KanjiListDetails> createState() => _KanjiListDetailsState();
 }
 
 class _KanjiListDetailsState extends State<KanjiListDetails>
@@ -171,8 +171,8 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
   }
 
   _updateKanListName(BuildContext bloc) {
-    TextEditingController _nameController = TextEditingController();
-    FocusNode _nameControllerFn = FocusNode();
+    TextEditingController nameController = TextEditingController();
+    FocusNode nameControllerFn = FocusNode();
     showDialog(
         context: bloc,
         builder: (context) {
@@ -182,17 +182,17 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
                 hint: _listName,
                 maxLength: 32,
                 header: 'list_details_updateKanListName_header'.tr(),
-                controller: _nameController,
-                focusNode: _nameControllerFn,
+                controller: nameController,
+                focusNode: nameControllerFn,
                 autofocus: true,
                 onEditingComplete: () {
                   Navigator.of(context).pop();
-                  _updateName(bloc, _nameController.text);
+                  _updateName(bloc, nameController.text);
                 },
               ),
               positiveButtonText:
                   "list_details_updateKanListName_positive".tr(),
-              onPositive: () => _updateName(bloc, _nameController.text));
+              onPositive: () => _updateName(bloc, nameController.text));
         });
   }
 

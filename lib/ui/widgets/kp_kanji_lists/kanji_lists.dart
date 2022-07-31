@@ -4,7 +4,8 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/visualization_mode.dart';
-import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
+import 'package:kanpractice/ui/pages/kanji_list_on_folder/bloc/kl_folder_bloc.dart';
+import 'package:kanpractice/ui/widgets/kp_kanji_lists/bloc/lists_bloc.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/ui/widgets/kp_data_tile.dart';
 import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
@@ -12,18 +13,22 @@ import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class KanjiLists extends StatefulWidget {
+class KPKanjiLists extends StatefulWidget {
   final Function() removeFocus;
   final Function() onScrolledToBottom;
-  const KanjiLists(
-      {Key? key, required this.removeFocus, required this.onScrolledToBottom})
-      : super(key: key);
+  final String? folder;
+  const KPKanjiLists({
+    Key? key,
+    required this.removeFocus,
+    required this.onScrolledToBottom,
+    this.folder,
+  }) : super(key: key);
 
   @override
-  State<KanjiLists> createState() => _KanjiListsState();
+  State<KPKanjiLists> createState() => _KPKanjiListsState();
 }
 
-class _KanjiListsState extends State<KanjiLists>
+class _KPKanjiListsState extends State<KPKanjiLists>
     with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
 
@@ -41,12 +46,15 @@ class _KanjiListsState extends State<KanjiLists>
   void initState() {
     _scrollController.addListener(_scrollListener);
 
-    final filterText = StorageManager.readData(StorageManager.filtersOnList) ??
-        KanListTableFields.lastUpdatedField;
-    _currentAppliedFilter = KanListFiltersUtils.getFilterFrom(filterText);
+    if (widget.folder == null) {
+      final filterText =
+          StorageManager.readData(StorageManager.filtersOnList) ??
+              KanListTableFields.lastUpdatedField;
+      _currentAppliedFilter = KanListFiltersUtils.getFilterFrom(filterText);
 
-    _currentAppliedOrder =
-        StorageManager.readData(StorageManager.orderOnList) ?? true;
+      _currentAppliedOrder =
+          StorageManager.readData(StorageManager.orderOnList) ?? true;
+    }
     super.initState();
   }
 
@@ -66,8 +74,16 @@ class _KanjiListsState extends State<KanjiLists>
   }
 
   _addLoadingEvent({bool reset = false}) {
-    return BlocProvider.of<KanjiListBloc>(context)
-      ..add(KanjiListEventLoading(
+    if (widget.folder == null) {
+      return BlocProvider.of<KanjiListBloc>(context)
+        ..add(KanjiListEventLoading(
+            filter: _currentAppliedFilter,
+            order: _currentAppliedOrder,
+            reset: reset));
+    }
+    return BlocProvider.of<KLFolderBloc>(context)
+      ..add(KLFolderEventLoading(
+          folder: widget.folder!,
           filter: _currentAppliedFilter,
           order: _currentAppliedOrder,
           reset: reset));
@@ -100,9 +116,11 @@ class _KanjiListsState extends State<KanjiLists>
     _addLoadingEvent(reset: true);
 
     /// Stores the new filter and order applied to shared preferences
-    StorageManager.saveData(
-        StorageManager.filtersOnList, _currentAppliedFilter.filter);
-    StorageManager.saveData(StorageManager.orderOnList, _currentAppliedOrder);
+    if (widget.folder == null) {
+      StorageManager.saveData(
+          StorageManager.filtersOnList, _currentAppliedFilter.filter);
+      StorageManager.saveData(StorageManager.orderOnList, _currentAppliedOrder);
+    }
   }
 
   @override
@@ -145,61 +163,87 @@ class _KanjiListsState extends State<KanjiLists>
   }
 
   BlocBuilder _lists() {
-    return BlocBuilder<KanjiListBloc, KanjiListState>(
+    if (widget.folder == null) {
+      return BlocBuilder<KanjiListBloc, KanjiListState>(
+        builder: (context, state) {
+          if (state is KanjiListStateFailure) {
+            return KPEmptyList(
+                showTryButton: true,
+                onRefresh: () => _addLoadingEvent(reset: true),
+                message: "kanji_lists_load_failed".tr());
+          } else if (state is KanjiListStateLoading ||
+              state is KanjiListStateSearching) {
+            return const Expanded(child: KPProgressIndicator());
+          } else if (state is KanjiListStateLoaded) {
+            return state.lists.isEmpty
+                ? Expanded(
+                    child: KPEmptyList(
+                        onRefresh: () => _addLoadingEvent(reset: true),
+                        showTryButton: true,
+                        message: "kanji_lists_empty".tr()))
+                : _content(state.lists);
+          } else {
+            return Container();
+          }
+        },
+      );
+    }
+    return BlocBuilder<KLFolderBloc, KLFolderState>(
       builder: (context, state) {
-        if (state is KanjiListStateFailure) {
+        if (state is KLFolderStateFailure) {
           return KPEmptyList(
               showTryButton: true,
               onRefresh: () => _addLoadingEvent(reset: true),
               message: "kanji_lists_load_failed".tr());
-        } else if (state is KanjiListStateLoading ||
-            state is KanjiListStateSearching) {
+        } else if (state is KLFolderEventLoading ||
+            state is KLFolderStateSearching) {
           return const Expanded(child: KPProgressIndicator());
-        } else if (state is KanjiListStateLoaded) {
+        } else if (state is KLFolderStateLoaded) {
           return state.lists.isEmpty
               ? Expanded(
                   child: KPEmptyList(
                       onRefresh: () => _addLoadingEvent(reset: true),
                       showTryButton: true,
                       message: "kanji_lists_empty".tr()))
-              : Expanded(
-                  child: RefreshIndicator(
-                    onRefresh: () => _addLoadingEvent(reset: true),
-                    color: CustomColors.secondaryColor,
-                    child: ListView.builder(
-                        key: const PageStorageKey<String>(
-                            'kanListListsController'),
-                        controller: _scrollController,
-                        itemCount: state.lists.length,
-                        keyboardDismissBehavior:
-                            ScrollViewKeyboardDismissBehavior.onDrag,
-                        padding:
-                            const EdgeInsets.only(bottom: Margins.margin24),
-                        itemBuilder: (context, k) {
-                          return KPDataTile<KanjiList>(
-                            item: state.lists[k],
-                            onTap: widget.removeFocus,
-                            mode: VisualizationModeExt.mode(
-                                StorageManager.readData(StorageManager
-                                        .kanListGraphVisualization) ??
-                                    VisualizationMode.radialChart),
-                            onRemoval: () {
-                              BlocProvider.of<KanjiListBloc>(context)
-                                  .add(KanjiListEventDelete(
-                                state.lists[k],
-                                filter: _currentAppliedFilter,
-                                order: _currentAppliedOrder,
-                              ));
-                              _resetScroll();
-                            },
-                          );
-                        }),
-                  ),
-                );
+              : _content(state.lists);
         } else {
           return Container();
         }
       },
+    );
+  }
+
+  Widget _content(List<KanjiList> lists) {
+    return Expanded(
+      child: RefreshIndicator(
+        onRefresh: () => _addLoadingEvent(reset: true),
+        color: CustomColors.secondaryColor,
+        child: ListView.builder(
+          key: const PageStorageKey<String>('kanListListsController'),
+          controller: _scrollController,
+          itemCount: lists.length,
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          padding: const EdgeInsets.only(bottom: Margins.margin24),
+          itemBuilder: (context, k) {
+            return KPDataTile<KanjiList>(
+              item: lists[k],
+              onTap: widget.removeFocus,
+              mode: VisualizationModeExt.mode(StorageManager.readData(
+                      StorageManager.kanListGraphVisualization) ??
+                  VisualizationMode.radialChart),
+              onRemoval: () {
+                BlocProvider.of<KanjiListBloc>(context)
+                    .add(KanjiListEventDelete(
+                  lists[k],
+                  filter: _currentAppliedFilter,
+                  order: _currentAppliedOrder,
+                ));
+                _resetScroll();
+              },
+            );
+          },
+        ),
+      ),
     );
   }
 

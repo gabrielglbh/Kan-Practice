@@ -42,7 +42,9 @@ class KPDataTile<T> extends StatelessWidget {
         onTap: () {
           onTap();
           if (item is Folder) {
-            /// TODO: Add Navigation to KanList list view
+            Navigator.of(context).pushNamed(
+                KanPracticePages.kanjiListOnFolderPage,
+                arguments: (item as Folder).folder);
           } else {
             Navigator.of(context).pushNamed(
                 KanPracticePages.kanjiListDetailsPage,

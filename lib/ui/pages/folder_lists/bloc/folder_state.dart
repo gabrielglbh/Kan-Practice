@@ -20,13 +20,4 @@ class FolderStateLoaded extends FolderState {
   List<Object> get props => [lists];
 }
 
-class FolderStateTestLoaded extends FolderState {
-  final List<KanjiList> lists;
-
-  const FolderStateTestLoaded({this.lists = const []});
-
-  @override
-  List<Object> get props => [lists];
-}
-
 class FolderStateFailure extends FolderState {}

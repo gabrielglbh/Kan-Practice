@@ -4,6 +4,7 @@ import 'package:kanpractice/core/database/models/folder.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/models/rel_folder_kanlist.dart';
 import 'package:kanpractice/core/types/folder_filters.dart';
+import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -80,15 +81,21 @@ class FolderQueries {
     }
   }
 
+  // TODO: Not working
   /// Get the full list of [KanjiList] related to a certain [Folder]. The pagination
   /// is perfomed within the list_queries.dart file.
-  Future<List<KanjiList>> getAllListsOnFolder(String folder,
-      {int? offset, int? limit}) async {
+  Future<List<KanjiList>> getAllListsOnFolder(
+    String folder, {
+    KanListFilters filter = KanListFilters.all,
+    String order = "DESC",
+    int? offset,
+    int? limit,
+  }) async {
     if (_database != null) {
       try {
         final limitParsed = limit != null ? "LIMIT $limit" : "";
         final offsetParsed =
-            offset != null && limit != null ? "OFFSET $offset * $limit" : "";
+            offset != null && limit != null ? "OFFSET ${offset * limit}" : "";
         final res = await _database?.rawQuery(
             "SELECT DISTINCT R.${KanListTableFields.nameField}, "
             "R.${KanListTableFields.totalWinRateWritingField}, "
@@ -98,7 +105,46 @@ class FolderQueries {
             "R.${KanListTableFields.lastUpdatedField} "
             "FROM ${KanListFolderRelationTableFields.relTable} L JOIN ${KanListTableFields.listsTable} R "
             "ON L.${KanListFolderRelationTableFields.kanListNameField}=R.${KanListTableFields.nameField} "
-            "WHERE L.${KanListFolderRelationTableFields.nameField} IS $folder "
+            "WHERE L.${KanListFolderRelationTableFields.nameField} LIKE $folder "
+            "ORDER BY R.${filter.filter} $order "
+            "$limitParsed $offsetParsed");
+        if (res != null) {
+          return List.generate(res.length, (i) => KanjiList.fromJson(res[i]));
+        }
+        return [];
+      } catch (err) {
+        print(err.toString());
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
+
+  /// Get the full list of [KanjiList] related to a certain [Folder] with a matching query.
+  /// The pagination is perfomed within the list_queries.dart file.
+  Future<List<KanjiList>> getAllListsOnFolderOnQuery(
+      String query, String folder,
+      {int? offset, int? limit}) async {
+    if (_database != null) {
+      try {
+        final limitParsed = limit != null ? "LIMIT $limit" : "";
+        final offsetParsed =
+            offset != null && limit != null ? "OFFSET ${offset * limit}" : "";
+        final res = await _database?.rawQuery(
+            "SELECT DISTINCT R.${KanListTableFields.nameField}, "
+            "R.${KanListTableFields.totalWinRateWritingField}, "
+            "R.${KanListTableFields.totalWinRateReadingField}, "
+            "R.${KanListTableFields.totalWinRateRecognitionField}, "
+            "R.${KanListTableFields.totalWinRateListeningField}, "
+            "R.${KanListTableFields.lastUpdatedField} "
+            "FROM ${KanListFolderRelationTableFields.relTable} L JOIN ${KanListTableFields.listsTable} R "
+            "ON L.${KanListFolderRelationTableFields.kanListNameField}=R.${KanListTableFields.nameField} "
+            "JOIN ${KanjiTableFields.kanjiTable} K ON K.${KanjiTableFields.listNameField}=R.${KanListTableFields.nameField}"
+            "WHERE L.${KanListFolderRelationTableFields.nameField} LIKE $folder "
+            "AND (R.${KanListTableFields.nameField} LIKE '%$query%' OR K.${KanjiTableFields.meaningField} LIKE '%$query%' "
+            "OR K.${KanjiTableFields.kanjiField} LIKE '%$query%' OR K.${KanjiTableFields.pronunciationField} LIKE '%$query%') "
+            "ORDER BY ${KanListTableFields.lastUpdatedField} DESC "
             "$limitParsed $offsetParsed");
         if (res != null) {
           return List.generate(res.length, (i) => KanjiList.fromJson(res[i]));

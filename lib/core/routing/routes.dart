@@ -15,6 +15,7 @@ import 'package:kanpractice/ui/pages/jisho/arguments.dart';
 import 'package:kanpractice/ui/pages/jisho/jisho.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/bloc/details_bloc.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/list_details.dart';
+import 'package:kanpractice/ui/pages/kanji_list_on_folder/kanji_list_on_folder.dart';
 import 'package:kanpractice/ui/pages/study_modes/listening.dart';
 import 'package:kanpractice/ui/pages/study_modes/reading.dart';
 import 'package:kanpractice/ui/pages/study_modes/recognition.dart';
@@ -90,6 +91,10 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return CupertinoPageRoute(builder: (_) => const AddMarketListPage());
     case KanPracticePages.folderAddPage:
       return CupertinoPageRoute(builder: (_) => const AddFolderPage());
+    case KanPracticePages.kanjiListOnFolderPage:
+      String folder = settings.arguments as String;
+      return CupertinoPageRoute(
+          builder: (_) => KanListOnFolderPage(folder: folder));
   }
   return null;
 }

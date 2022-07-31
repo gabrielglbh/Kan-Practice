@@ -17,7 +17,7 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
 
     /// Maintain the list for pagination purposes on search
     List<Folder> searchList = [];
-    const int limit = LazyLoadingLimits.kanList;
+    const int limit = LazyLoadingLimits.folderList;
 
     /// Loading offset for normal pagination
     int loadingTimes = 0;
@@ -48,17 +48,6 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
         list.addAll(pagination);
         loadingTimes += 1;
         emit(FolderStateLoaded(lists: fullList));
-      } on Exception {
-        emit(FolderStateFailure());
-      }
-    });
-
-    on<FolderForTestEventLoading>((event, emit) async {
-      try {
-        emit(FolderStateLoading());
-        final List<KanjiList> lists =
-            await FolderQueries.instance.getAllListsOnFolder(event.folder);
-        emit(FolderStateTestLoaded(lists: lists));
       } on Exception {
         emit(FolderStateFailure());
       }

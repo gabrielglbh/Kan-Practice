@@ -1,18 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/database/queries/kanji_queries.dart';
-import 'package:kanpractice/core/jisho/models/jisho_data.dart';
-import 'package:kanpractice/core/types/kanlist_filters.dart';
-import 'package:kanpractice/ui/general_utils.dart';
-import 'package:kanpractice/core/types/kanji_categories.dart';
 import 'package:kanpractice/ui/pages/folder_lists/bloc/folder_bloc.dart';
-import 'package:kanpractice/ui/widgets/kp_kanji_lists/bloc/lists_bloc.dart';
-import 'package:kanpractice/ui/widgets/kp_create_kanlist_dialog.dart';
 import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
-import 'package:kanpractice/ui/widgets/kp_kanji_category_list.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 

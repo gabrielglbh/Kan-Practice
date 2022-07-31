@@ -4,8 +4,6 @@ import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/core/types/tab_types.dart';
 import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
-import 'package:kanpractice/ui/pages/home/widgets/test_widgets/test_bottom_sheet.dart';
 import 'package:kanpractice/ui/pages/kanji_list_on_folder/bloc/kl_folder_bloc.dart';
 import 'package:kanpractice/ui/widgets/blitz/kp_blitz_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/kp_kanji_lists/kanji_lists.dart';

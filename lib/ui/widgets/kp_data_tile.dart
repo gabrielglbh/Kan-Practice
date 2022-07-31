@@ -103,11 +103,11 @@ class KPDataTile<T> extends StatelessWidget {
         context: context,
         builder: (context) => KPDialog(
               title: Text(
-                  "kan_list_tile_createDialogForDeletingKanList_title".tr()),
+                  "kan_list_tile_createDialogForDeletingFolder_title".tr()),
               content: Text(
-                  "kan_list_tile_createDialogForDeletingKanList_content".tr()),
+                  "kan_list_tile_createDialogForDeletingFolder_content".tr()),
               positiveButtonText:
-                  "kan_list_tile_createDialogForDeletingKanList_positive".tr(),
+                  "kan_list_tile_createDialogForDeletingFolder_positive".tr(),
               onPositive: () => onRemoval(),
             ));
   }

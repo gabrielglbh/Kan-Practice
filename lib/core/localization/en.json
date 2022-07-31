@@ -309,5 +309,10 @@
   "bottom_actions_upload_list": "Upload a new list",
   "market_rating_not_found": "The list you just rated was not found.",
   "add_to_market_list_name_label": "List Name",
-  "add_to_market_list_name_hint": "Name"
+  "add_to_market_list_name_hint": "Name",
+  "folder_list_load_failed": "Failed to retrieve folders.",
+  "folder_list_empty": "No available folders.\n\nCreate new folders to arrange your lists by tapping on '+' or import them from your backup.",
+  "kan_list_tile_createDialogForDeletingFolder_title": "Remove a Folder",
+  "kan_list_tile_createDialogForDeletingFolder_content": "Are you sure you want to remove this folder? KanLists will not be removed by this action, although they will not be arranged anymore.",
+  "kan_list_tile_createDialogForDeletingFolder_positive": "Remove"
 }

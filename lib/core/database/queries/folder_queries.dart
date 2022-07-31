@@ -3,6 +3,7 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/folder.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/models/rel_folder_kanlist.dart';
+import 'package:kanpractice/core/types/folder_filters.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -48,6 +49,7 @@ class FolderQueries {
 
   /// Get all available [Folder] to show it on the UI
   Future<List<Folder>> getAllFolders({
+    FolderFilters filter = FolderFilters.all,
     String order = "DESC",
     int? limit,
     int? offset,
@@ -56,7 +58,7 @@ class FolderQueries {
       try {
         final res = await _database?.query(
           FolderTableFields.folderTable,
-          orderBy: "${FolderTableFields.lastUpdatedField} $order",
+          orderBy: "${filter.filter} $order",
           limit: limit,
           offset: (offset != null && limit != null) ? offset * limit : null,
         );
@@ -76,9 +78,12 @@ class FolderQueries {
   /// Get the full list of [KanjiList] related to a certain [Folder]. The pagination
   /// is perfomed within the list_queries.dart file.
   Future<List<KanjiList>> getAllListsOnFolder(String folder,
-      {required int offset, required int limit}) async {
+      {int? offset, int? limit}) async {
     if (_database != null) {
       try {
+        final limitParsed = limit != null ? "LIMIT $limit" : "";
+        final offsetParsed =
+            offset != null && limit != null ? "OFFSET $offset * $limit" : "";
         final res = await _database?.rawQuery(
             "SELECT DISTINCT R.${KanListTableFields.nameField}, "
             "R.${KanListTableFields.totalWinRateWritingField}, "
@@ -89,7 +94,7 @@ class FolderQueries {
             "FROM ${KanListFolderRelationTableFields.relTable} L JOIN ${KanListTableFields.listsTable} R "
             "ON L.${KanListFolderRelationTableFields.kanListNameField}=R.${KanListTableFields.nameField} "
             "WHERE L.${KanListFolderRelationTableFields.nameField} IS $folder "
-            "LIMIT $limit OFFSET ${offset * limit}");
+            "$limitParsed $offsetParsed");
         if (res != null) {
           return List.generate(res.length, (i) => KanjiList.fromJson(res[i]));
         }
@@ -175,7 +180,7 @@ class FolderQueries {
   /// 1: Error during removal.
   ///
   /// 2: Database is not created.
-  Future<int> removeKanji(String folder) async {
+  Future<int> removeFolder(String folder) async {
     if (_database != null) {
       try {
         await _database?.delete(FolderTableFields.folderTable,

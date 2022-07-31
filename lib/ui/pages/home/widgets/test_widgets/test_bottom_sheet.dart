@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
-import 'package:kanpractice/ui/pages/kanji_lists/widgets/kanlist_category_selection_bottom_sheet.dart';
-import 'package:kanpractice/ui/pages/kanji_lists/widgets/kanlist_selection_bottom_sheet.dart';
+import 'package:kanpractice/ui/pages/home/widgets/test_widgets/kanlist_category_selection_bottom_sheet.dart';
+import 'package:kanpractice/ui/pages/home/widgets/test_widgets/kanlist_selection_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/blitz/kp_blitz_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
 import 'package:kanpractice/ui/consts.dart';

@@ -7,15 +7,18 @@ import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/tutorial/tutorial_manager.dart';
 import 'package:kanpractice/core/types/coach_tutorial_parts.dart';
+import 'package:kanpractice/core/types/folder_filters.dart';
 import 'package:kanpractice/core/types/home_types.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
 import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
+import 'package:kanpractice/ui/pages/folder_lists/bloc/folder_bloc.dart';
+import 'package:kanpractice/ui/pages/folder_lists/folder_list.dart';
 import 'package:kanpractice/ui/pages/home/widgets/actions_bottom_sheet.dart';
 import 'package:kanpractice/ui/pages/home/widgets/update_container.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/kanji_lists.dart';
-import 'package:kanpractice/ui/pages/kanji_lists/widgets/test_bottom_sheet.dart';
+import 'package:kanpractice/ui/pages/home/widgets/test_widgets/test_bottom_sheet.dart';
 import 'package:kanpractice/ui/pages/market/bloc/market_bloc.dart';
 import 'package:kanpractice/ui/pages/market/market.dart';
 import 'package:kanpractice/ui/consts.dart';
@@ -44,6 +47,8 @@ class _HomePageState extends State<HomePage> {
 
   KanListFilters _currentAppliedFilter = KanListFilters.all;
   bool _currentAppliedOrder = true;
+  FolderFilters _currentAppliedFolderFilter = FolderFilters.all;
+  bool _currentAppliedFolderOrder = true;
   MarketFilters _currentAppliedMarketFilter = MarketFilters.all;
   bool _currentAppliedMarketOrder = true;
 
@@ -62,6 +67,14 @@ class _HomePageState extends State<HomePage> {
     _currentAppliedFilter = KanListFiltersUtils.getFilterFrom(filterText);
     _currentAppliedOrder =
         StorageManager.readData(StorageManager.orderOnList) ?? true;
+
+    final filterFolderText =
+        StorageManager.readData(StorageManager.filtersOnFolder) ??
+            FolderTableFields.lastUpdatedField;
+    _currentAppliedFolderFilter =
+        FolderFiltersUtils.getFilterFrom(filterFolderText);
+    _currentAppliedFolderOrder =
+        StorageManager.readData(StorageManager.orderOnFolder) ?? true;
 
     final filterMarketText =
         StorageManager.readData(StorageManager.filtersOnMarket) ??
@@ -88,6 +101,16 @@ class _HomePageState extends State<HomePage> {
   KanjiListEventSearching _addKanjiListSearchingEvent(String query,
           {bool reset = true}) =>
       KanjiListEventSearching(query, reset: reset);
+
+  FolderEventLoading _addFolderListLoadingEvent({bool reset = true}) =>
+      FolderEventLoading(
+          filter: _currentAppliedFolderFilter,
+          order: _currentAppliedFolderOrder,
+          reset: reset);
+
+  FolderEventSearching _addFolderListSearchingEvent(String query,
+          {bool reset = true}) =>
+      FolderEventSearching(query, reset: reset);
 
   MarketEventLoading _addMarketLoadingEvent({bool reset = true}) =>
       MarketEventLoading(
@@ -123,18 +146,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    /// In order to make proper calls to BlocProvider.of(context).add(...) within
-    /// deep widgets, we will need to wrap them up in BlocBuilders to get the
-    /// proper context to make the call.
-    ///
-    /// We can also nest various BlocBuilders to achieve listening to various
-    /// BlocProviders and perform various calls to distinct providers.
+    /// Do not retrieve lists from Firebase until the user taps on Market.
     return MultiBlocProvider(
       providers: [
         BlocProvider<KanjiListBloc>(
             create: (_) => KanjiListBloc()..add(_addKanjiListLoadingEvent())),
-
-        /// Do not retrieve lists from Firebase until the user taps on Market.
+        BlocProvider<FolderBloc>(
+            create: (_) => FolderBloc()..add(_addFolderListLoadingEvent())),
         BlocProvider<MarketBloc>(
             create: (_) => MarketBloc()..add(MarketEventIdle())),
       ],
@@ -263,7 +281,27 @@ class _HomePageState extends State<HomePage> {
             },
           ),
         ),
-        Container(width: 250, height: 250, color: Colors.amber)
+        BlocBuilder<FolderBloc, FolderState>(
+          builder: (context, state) => FolderList(
+            // TODO: Tutorial -> key: folders,
+            removeFocus: () => _searchBarFn.unfocus(),
+            onScrolledToBottom: () {
+              /// If the query is empty, use the pagination for search bar
+              if (_query.isNotEmpty) {
+                context
+                    .read<FolderBloc>()
+                    .add(_addFolderListSearchingEvent(_query, reset: false));
+              }
+
+              /// Else use the normal pagination
+              else {
+                context
+                    .read<FolderBloc>()
+                    .add(_addFolderListLoadingEvent(reset: false));
+              }
+            },
+          ),
+        ),
       ],
     );
   }

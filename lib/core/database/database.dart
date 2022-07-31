@@ -27,64 +27,68 @@ class CustomDatabase {
       await Directory(databasesPath).create(recursive: true);
     } catch (_) {}
 
-    _database = await openDatabase(path, version: 7, singleInstance: true,
-        onConfigure: (db) async {
-      await db.execute('PRAGMA foreign_keys = ON');
-    }, onUpgrade: (Database db, int oldVersion, int newVersion) async {
-      await _onUpgrade(db, oldVersion, newVersion);
-    }, onCreate: (Database db, int version) async {
-      await db.execute("CREATE TABLE ${KanjiTableFields.kanjiTable}("
-          "${KanjiTableFields.kanjiField} TEXT NOT NULL, "
-          "${KanjiTableFields.listNameField} TEXT NOT NULL, "
-          "${KanjiTableFields.meaningField} TEXT NOT NULL, "
-          "${KanjiTableFields.pronunciationField} TEXT NOT NULL, "
-          "${KanjiTableFields.winRateWritingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
-          "${KanjiTableFields.winRateReadingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
-          "${KanjiTableFields.winRateRecognitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
-          "${KanjiTableFields.winRateListeningField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
-          "${KanjiTableFields.dateAddedField} INTEGER NOT NULL DEFAULT 0, "
-          "${KanjiTableFields.dateLastShown} INTEGER NOT NULL DEFAULT 0, "
-          "${KanjiTableFields.dateLastShownWriting} INTEGER NOT NULL DEFAULT 0, "
-          "${KanjiTableFields.dateLastShownReading} INTEGER NOT NULL DEFAULT 0, "
-          "${KanjiTableFields.dateLastShownRecognition} INTEGER NOT NULL DEFAULT 0, "
-          "${KanjiTableFields.dateLastShownListening} INTEGER NOT NULL DEFAULT 0, "
-          "${KanjiTableFields.categoryField} INTEGER NOT NULL DEFAULT 0, "
-          "PRIMARY KEY (${KanjiTableFields.kanjiField}, ${KanjiTableFields.meaningField}, ${KanjiTableFields.pronunciationField}), "
-          "FOREIGN KEY (${KanjiTableFields.listNameField}) "
-          "REFERENCES ${KanListTableFields.listsTable}(${KanListTableFields.nameField}) "
-          "ON DELETE CASCADE ON UPDATE CASCADE)");
+    _database = await openDatabase(
+      path,
+      version: 7,
+      singleInstance: true,
+      onConfigure: (db) async {
+        await db.execute('PRAGMA foreign_keys = ON');
+      },
+      onUpgrade: (Database db, int oldVersion, int newVersion) async {
+        await _onUpgrade(db, oldVersion, newVersion);
+      },
+      onCreate: (Database db, int version) async {
+        await db.execute("CREATE TABLE ${KanjiTableFields.kanjiTable}("
+            "${KanjiTableFields.kanjiField} TEXT NOT NULL, "
+            "${KanjiTableFields.listNameField} TEXT NOT NULL, "
+            "${KanjiTableFields.meaningField} TEXT NOT NULL, "
+            "${KanjiTableFields.pronunciationField} TEXT NOT NULL, "
+            "${KanjiTableFields.winRateWritingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${KanjiTableFields.winRateReadingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${KanjiTableFields.winRateRecognitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${KanjiTableFields.winRateListeningField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${KanjiTableFields.dateAddedField} INTEGER NOT NULL DEFAULT 0, "
+            "${KanjiTableFields.dateLastShown} INTEGER NOT NULL DEFAULT 0, "
+            "${KanjiTableFields.dateLastShownWriting} INTEGER NOT NULL DEFAULT 0, "
+            "${KanjiTableFields.dateLastShownReading} INTEGER NOT NULL DEFAULT 0, "
+            "${KanjiTableFields.dateLastShownRecognition} INTEGER NOT NULL DEFAULT 0, "
+            "${KanjiTableFields.dateLastShownListening} INTEGER NOT NULL DEFAULT 0, "
+            "${KanjiTableFields.categoryField} INTEGER NOT NULL DEFAULT 0, "
+            "PRIMARY KEY (${KanjiTableFields.kanjiField}, ${KanjiTableFields.meaningField}, ${KanjiTableFields.pronunciationField}), "
+            "FOREIGN KEY (${KanjiTableFields.listNameField}) "
+            "REFERENCES ${KanListTableFields.listsTable}(${KanListTableFields.nameField}) "
+            "ON DELETE CASCADE ON UPDATE CASCADE)");
 
-      await db.execute("CREATE TABLE ${KanListTableFields.listsTable}("
-          "${KanListTableFields.nameField} TEXT PRIMARY KEY NOT NULL, "
-          "${KanListTableFields.totalWinRateWritingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
-          "${KanListTableFields.totalWinRateReadingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
-          "${KanListTableFields.totalWinRateRecognitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
-          "${KanListTableFields.totalWinRateListeningField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
-          "${KanListTableFields.lastUpdatedField} INTEGER NOT NULL DEFAULT 0)");
+        await db.execute("CREATE TABLE ${KanListTableFields.listsTable}("
+            "${KanListTableFields.nameField} TEXT PRIMARY KEY NOT NULL, "
+            "${KanListTableFields.totalWinRateWritingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${KanListTableFields.totalWinRateReadingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${KanListTableFields.totalWinRateRecognitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${KanListTableFields.totalWinRateListeningField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${KanListTableFields.lastUpdatedField} INTEGER NOT NULL DEFAULT 0)");
 
-      await db.execute("CREATE TABLE ${TestTableFields.testTable}("
-          "${TestTableFields.testIdField} INTEGER PRIMARY KEY AUTOINCREMENT, "
-          "${TestTableFields.takenDateField} INTEGER NOT NULL DEFAULT 0, "
-          "${TestTableFields.testScoreField} INTEGER NOT NULL DEFAULT 0, "
-          "${TestTableFields.kanjiInTestField} INTEGER NOT NULL DEFAULT 0, "
-          "${TestTableFields.kanjiListsField} TEXT NOT NULL, "
-          "${TestTableFields.studyModeField} INTEGER NOT NULL DEFAULT 0, "
-          "${TestTableFields.testModeField} INTEGER NOT NULL DEFAULT -1)");
+        await db.execute("CREATE TABLE ${TestTableFields.testTable}("
+            "${TestTableFields.testIdField} INTEGER PRIMARY KEY AUTOINCREMENT, "
+            "${TestTableFields.takenDateField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestTableFields.testScoreField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestTableFields.kanjiInTestField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestTableFields.kanjiListsField} TEXT NOT NULL, "
+            "${TestTableFields.studyModeField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestTableFields.testModeField} INTEGER NOT NULL DEFAULT -1)");
 
-      await db.execute("CREATE TABLE ${FolderTableFields.folderTable}("
-          "${FolderTableFields.nameField} TEXT NOT NULL PRIMARY KEY, "
-          "${FolderTableFields.lastUpdatedField} INTEGER NOT NULL DEFAULT 0)");
+        await db.execute("CREATE TABLE ${FolderTableFields.folderTable}("
+            "${FolderTableFields.nameField} TEXT NOT NULL PRIMARY KEY, "
+            "${FolderTableFields.lastUpdatedField} INTEGER NOT NULL DEFAULT 0)");
 
-      // TODO: ON DELETE CASCADE ON UPDATE CASCADE on KanLists:
-      // Check if when removing a list from the KanList tab, affects the navigation to the folder containing it
-      await db.execute(
-          "CREATE TABLE ${KanListFolderRelationTableFields.relTable}("
-          "${KanListFolderRelationTableFields.relIdField} INTEGER PRIMARY KEY AUTOINCREMENT, "
-          "${KanListFolderRelationTableFields.nameField} TEXT NOT NULL, "
-          "${KanListFolderRelationTableFields.kanListNameField} TEXT NOT NULL, "
-          "FOREIGN KEY (${KanListFolderRelationTableFields.nameField}) REFERENCES ${FolderTableFields.folderTable}(${FolderTableFields.nameField}) ON DELETE CASCADE ON UPDATE CASCADE, "
-          "FOREIGN KEY (${KanListFolderRelationTableFields.kanListNameField}) REFERENCES ${KanListTableFields.listsTable}(${KanListTableFields.nameField}))");
-    });
+        await db.execute(
+            "CREATE TABLE ${KanListFolderRelationTableFields.relTable}("
+            "${KanListFolderRelationTableFields.relIdField} INTEGER PRIMARY KEY AUTOINCREMENT, "
+            "${KanListFolderRelationTableFields.nameField} TEXT NOT NULL, "
+            "${KanListFolderRelationTableFields.kanListNameField} TEXT NOT NULL, "
+            "FOREIGN KEY (${KanListFolderRelationTableFields.nameField}) REFERENCES ${FolderTableFields.folderTable}(${FolderTableFields.nameField}) ON DELETE CASCADE ON UPDATE CASCADE, "
+            "FOREIGN KEY (${KanListFolderRelationTableFields.kanListNameField}) REFERENCES ${KanListTableFields.listsTable}(${KanListTableFields.nameField}) ON DELETE CASCADE ON UPDATE CASCADE)");
+      },
+    );
   }
 
   /// Function to manage migrations on whenever an update is needed.

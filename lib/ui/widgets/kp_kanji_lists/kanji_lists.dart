@@ -17,10 +17,12 @@ class KPKanjiLists extends StatefulWidget {
   final Function() removeFocus;
   final Function() onScrolledToBottom;
   final String? folder;
+  final bool withinFolder;
   const KPKanjiLists({
     Key? key,
     required this.removeFocus,
     required this.onScrolledToBottom,
+    this.withinFolder = false,
     this.folder,
   }) : super(key: key);
 
@@ -228,16 +230,28 @@ class _KPKanjiListsState extends State<KPKanjiLists>
             return KPDataTile<KanjiList>(
               item: lists[k],
               onTap: widget.removeFocus,
+              withinFolder: widget.withinFolder,
               mode: VisualizationModeExt.mode(StorageManager.readData(
                       StorageManager.kanListGraphVisualization) ??
                   VisualizationMode.radialChart),
               onRemoval: () {
-                BlocProvider.of<KanjiListBloc>(context)
-                    .add(KanjiListEventDelete(
-                  lists[k],
-                  filter: _currentAppliedFilter,
-                  order: _currentAppliedOrder,
-                ));
+                if (widget.folder == null) {
+                  BlocProvider.of<KanjiListBloc>(context)
+                      .add(KanjiListEventDelete(
+                    lists[k],
+                    filter: _currentAppliedFilter,
+                    order: _currentAppliedOrder,
+                  ));
+                } else {
+                  BlocProvider.of<KLFolderBloc>(context).add(
+                    KLFolderEventDelete(
+                      widget.folder!,
+                      lists[k],
+                      filter: _currentAppliedFilter,
+                      order: _currentAppliedOrder,
+                    ),
+                  );
+                }
                 _resetScroll();
               },
             );

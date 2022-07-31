@@ -12,7 +12,7 @@ class Migrations extends MigrationUtils {
         "${KanListFolderRelationTableFields.nameField} TEXT NOT NULL, "
         "${KanListFolderRelationTableFields.kanListNameField} TEXT NOT NULL, "
         "FOREIGN KEY (${KanListFolderRelationTableFields.nameField}) REFERENCES ${FolderTableFields.folderTable}(${FolderTableFields.nameField}) ON DELETE CASCADE ON UPDATE CASCADE, "
-        "FOREIGN KEY (${KanListFolderRelationTableFields.kanListNameField}) REFERENCES ${KanListTableFields.listsTable}(${KanListTableFields.nameField}))");
+        "FOREIGN KEY (${KanListFolderRelationTableFields.kanListNameField}) REFERENCES ${KanListTableFields.listsTable}(${KanListTableFields.nameField}) ON DELETE CASCADE ON UPDATE CASCADE)");
 
     await db.rawQuery("CREATE TABLE ${FolderTableFields.folderTable}("
         "${FolderTableFields.nameField} TEXT NOT NULL PRIMARY KEY, "

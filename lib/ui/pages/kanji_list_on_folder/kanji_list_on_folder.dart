@@ -69,6 +69,12 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
         appBarTitle: widget.folder,
         appBarActions: [
           IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () async {
+              // TODO: Show lists to add
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.track_changes_rounded,
                 color: CustomColors.secondaryColor),
             onPressed: () async {
@@ -114,6 +120,7 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
               Expanded(
                 child: KPKanjiLists(
                   folder: widget.folder,
+                  withinFolder: true,
                   removeFocus: () => _searchBarFn.unfocus(),
                   onScrolledToBottom: () {
                     /// If the query is empty, use the pagination for search bar

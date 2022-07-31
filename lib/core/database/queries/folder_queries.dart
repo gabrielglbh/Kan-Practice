@@ -200,6 +200,26 @@ class FolderQueries {
     }
   }
 
+  /// Removes the relation between a [KanList] and a [Folder]
+  Future<int> removeKanListToFolder(String folder, String list) async {
+    if (_database != null) {
+      try {
+        await _database?.delete(
+          KanListFolderRelationTableFields.relTable,
+          where:
+              "${KanListFolderRelationTableFields.kanListNameField}=? AND ${KanListFolderRelationTableFields.nameField}=?",
+          whereArgs: [list, folder],
+        );
+        return 0;
+      } catch (err) {
+        print(err.toString());
+        return -1;
+      }
+    } else {
+      return -2;
+    }
+  }
+
   /// Get all available relations [Folder]-[RelFolderKanList] for backup purposes
   Future<List<RelFolderKanList>> getFolderRelation() async {
     if (_database != null) {

@@ -21,11 +21,15 @@ class KPDataTile<T> extends StatelessWidget {
 
   /// Mode to show the statistics
   final VisualizationMode mode;
+
+  /// Tells the widget that [this] is a [KanjiList] within a Folder
+  final bool withinFolder;
   const KPDataTile({
     Key? key,
     required this.item,
     required this.onTap,
     required this.onRemoval,
+    this.withinFolder = false,
     this.mode = VisualizationMode.radialChart,
   })  : assert(item is KanjiList || item is Folder),
         super(key: key);
@@ -55,7 +59,11 @@ class KPDataTile<T> extends StatelessWidget {
           if (item is Folder) {
             _createDialogForDeletingFolder(context);
           } else {
-            _createDialogForDeletingKanList(context);
+            if (withinFolder) {
+              _createDialogForDeletingKanListWithinFolder(context);
+            } else {
+              _createDialogForDeletingKanList(context);
+            }
           }
         },
         title: Padding(
@@ -101,6 +109,23 @@ class KPDataTile<T> extends StatelessWidget {
                   "kan_list_tile_createDialogForDeletingKanList_content".tr()),
               positiveButtonText:
                   "kan_list_tile_createDialogForDeletingKanList_positive".tr(),
+              onPositive: () => onRemoval(),
+            ));
+  }
+
+  _createDialogForDeletingKanListWithinFolder(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => KPDialog(
+              title: Text(
+                  "kan_list_tile_createDialogForDeletingKanListWithinFolder_title"
+                      .tr()),
+              content: Text(
+                  "kan_list_tile_createDialogForDeletingKanListWithinFolder_content"
+                      .tr()),
+              positiveButtonText:
+                  "kan_list_tile_createDialogForDeletingKanListWithinFolder_positive"
+                      .tr(),
               onPositive: () => onRemoval(),
             ));
   }

@@ -93,6 +93,75 @@ class KLFolderBloc extends Bloc<KLFolderEvent, KLFolderState> {
         emit(KLFolderStateFailure());
       }
     });
+
+    on<KLFolderEventDelete>((event, emit) async {
+      if (state is KLFolderStateLoaded) {
+        String name = event.list.name;
+
+        final code = await FolderQueries.instance
+            .removeKanListToFolder(event.folder, name);
+        if (code == 0) {
+          emit(KLFolderStateLoading());
+          List<KanjiList> newList =
+              await _getNewAllListsAndUpdateLazyLoadingState(
+            event.folder,
+            event.filter,
+            event.order,
+            limit: limit,
+            l: list,
+          );
+
+          /// Reset offsets
+          loadingTimes = 0;
+          loadingTimesForSearch = 0;
+          emit(KLFolderStateLoaded(lists: newList));
+        }
+      }
+    });
+
+    on<KLFolderEventAdd>((event, emit) async {
+      /*if (state is KLFolderStateLoaded) {
+        String? name = event.name;
+        final code = await FolderQueries.instance.createFolder(name);
+        if (code == 0) {
+          emit(FolderStateLoading());
+          List<Folder> newList = [];
+          if (event.useLazyLoading) {
+            newList = await _getNewAllListsAndUpdateLazyLoadingState(
+                event.filter, event.order,
+                limit: limit, l: list);
+          } else {
+            newList = await FolderQueries.instance.getAllFolders();
+          }
+
+          /// Reset offsets
+          loadingTimes = 0;
+          loadingTimesForSearch = 0;
+          emit(FolderStateLoaded(lists: newList));
+        }
+      }*/
+    });
+  }
+
+  Future<List<KanjiList>> _getNewAllListsAndUpdateLazyLoadingState(
+      String folder, KanListFilters filter, bool order,
+      {required int limit, required List<KanjiList> l}) async {
+    /// When creating or removing a new list, reset any pagination offset
+    /// to load up from the start
+    final List<KanjiList> lists =
+        await FolderQueries.instance.getAllListsOnFolder(
+      folder,
+      filter: filter,
+      order: _getSelectedOrder(order),
+      limit: limit,
+      offset: 0,
+    );
+
+    /// Clear the list and repopulate it with the newest items for FolderEventLoading
+    /// to work properly for the next offset
+    l.clear();
+    l.addAll(lists);
+    return lists;
   }
 
   String _getSelectedOrder(bool order) => order ? "DESC" : "ASC";

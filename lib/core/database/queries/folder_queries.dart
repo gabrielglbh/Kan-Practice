@@ -81,7 +81,6 @@ class FolderQueries {
     }
   }
 
-  // TODO: Not working
   /// Get the full list of [KanjiList] related to a certain [Folder]. The pagination
   /// is perfomed within the list_queries.dart file.
   Future<List<KanjiList>> getAllListsOnFolder(
@@ -105,7 +104,7 @@ class FolderQueries {
             "R.${KanListTableFields.lastUpdatedField} "
             "FROM ${KanListFolderRelationTableFields.relTable} L JOIN ${KanListTableFields.listsTable} R "
             "ON L.${KanListFolderRelationTableFields.kanListNameField}=R.${KanListTableFields.nameField} "
-            "WHERE L.${KanListFolderRelationTableFields.nameField} LIKE $folder "
+            "WHERE L.${KanListFolderRelationTableFields.nameField} LIKE '$folder' "
             "ORDER BY R.${filter.filter} $order "
             "$limitParsed $offsetParsed");
         if (res != null) {
@@ -140,8 +139,8 @@ class FolderQueries {
             "R.${KanListTableFields.lastUpdatedField} "
             "FROM ${KanListFolderRelationTableFields.relTable} L JOIN ${KanListTableFields.listsTable} R "
             "ON L.${KanListFolderRelationTableFields.kanListNameField}=R.${KanListTableFields.nameField} "
-            "JOIN ${KanjiTableFields.kanjiTable} K ON K.${KanjiTableFields.listNameField}=R.${KanListTableFields.nameField}"
-            "WHERE L.${KanListFolderRelationTableFields.nameField} LIKE $folder "
+            "JOIN ${KanjiTableFields.kanjiTable} K ON K.${KanjiTableFields.listNameField}=R.${KanListTableFields.nameField} "
+            "WHERE L.${KanListFolderRelationTableFields.nameField} LIKE '$folder' "
             "AND (R.${KanListTableFields.nameField} LIKE '%$query%' OR K.${KanjiTableFields.meaningField} LIKE '%$query%' "
             "OR K.${KanjiTableFields.kanjiField} LIKE '%$query%' OR K.${KanjiTableFields.pronunciationField} LIKE '%$query%') "
             "ORDER BY ${KanListTableFields.lastUpdatedField} DESC "

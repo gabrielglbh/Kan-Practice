@@ -39,6 +39,7 @@ class _HomePageState extends State<HomePage>
   final lists = GlobalKey();
   final bottomActions = GlobalKey();
   final dictionary = GlobalKey();
+  final folders = GlobalKey();
 
   late PageController _controller;
   late TabController _tabController;
@@ -178,7 +179,7 @@ class _HomePageState extends State<HomePage>
                     StorageManager.haveSeenKanListCoachMark) ==
                 false) {
               _onTutorial = true;
-              await TutorialCoach([lists, bottomActions, dictionary],
+              await TutorialCoach([lists, folders, bottomActions, dictionary],
                       CoachTutorialParts.kanList)
                   .showTutorial(context, onEnd: () => _onTutorial = false);
             }
@@ -259,6 +260,7 @@ class _HomePageState extends State<HomePage>
                   children: [
                     if (_currentPage == HomeType.kanlist)
                       TabBar(
+                        key: folders,
                         controller: _tabController,
                         tabs: const [
                           Tab(icon: Icon(Icons.table_rows_rounded)),
@@ -303,7 +305,6 @@ class _HomePageState extends State<HomePage>
         ),
         BlocBuilder<FolderBloc, FolderState>(
           builder: (context, state) => FolderList(
-            // TODO: Tutorial -> key: folders,
             removeFocus: () => _searchBarFn.unfocus(),
             onScrolledToBottom: () {
               /// If the query is empty, use the pagination for search bar

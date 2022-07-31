@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kanpractice/core/database/models/folder.dart';
-import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/types/folder_filters.dart';
 import 'package:kanpractice/ui/consts.dart';

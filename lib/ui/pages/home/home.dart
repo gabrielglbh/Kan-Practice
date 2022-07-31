@@ -138,7 +138,7 @@ class _HomePageState extends State<HomePage> {
         BlocProvider<MarketBloc>(
             create: (_) => MarketBloc()..add(MarketEventIdle())),
       ],
-      child: BlocListener<KanjiListBloc, KanjiListState>(
+      child: BlocConsumer<KanjiListBloc, KanjiListState>(
         listener: (context, state) async {
           if (state is KanjiListStateLoaded) {
             if (StorageManager.readData(
@@ -151,7 +151,7 @@ class _HomePageState extends State<HomePage> {
             }
           }
         },
-        child: KPScaffold(
+        builder: (context1, state1) => KPScaffold(
           onWillPop: () async {
             if (_onTutorial) return false;
             if (_searchHasFocus) {
@@ -172,58 +172,99 @@ class _HomePageState extends State<HomePage> {
                     arguments: const DictionaryArguments(searchInJisho: true));
               },
             ),
-            BlocBuilder<KanjiListBloc, KanjiListState>(
-              builder: (context, state) => IconButton(
-                onPressed: () async {
-                  await Navigator.of(context)
-                      .pushNamed(KanPracticePages.settingsPage)
-                      .then((code) {
-                    if (_currentPage == HomeType.kanlist) {
-                      BlocProvider.of<KanjiListBloc>(context)
-                          .add(_addKanjiListLoadingEvent());
-                    }
-                  });
-                },
-                icon: const Icon(Icons.settings),
-              ),
+            IconButton(
+              onPressed: () async {
+                await Navigator.of(context)
+                    .pushNamed(KanPracticePages.settingsPage)
+                    .then((code) {
+                  if (_currentPage == HomeType.kanlist) {
+                    context1
+                        .read<KanjiListBloc>()
+                        .add(_addKanjiListLoadingEvent());
+                  }
+                });
+              },
+              icon: const Icon(Icons.settings),
             )
           ],
+          bottomNavigationWidget: _bottomNavigationBar(),
           child: Column(
             children: [
               const UpdateContainer(),
-              BlocBuilder<KanjiListBloc, KanjiListState>(
-                builder: (context1, state1) =>
-                    BlocBuilder<MarketBloc, MarketState>(
-                  builder: (context2, state2) => KPSearchBar(
-                    controller: _searchTextController,
-                    hint: _currentPage.searchBarHint,
-                    focus: _searchBarFn,
-                    onQuery: (String query) {
-                      /// Everytime the user queries, reset the query itself and
-                      /// the pagination index
-                      _query = query;
-                      if (_currentPage == HomeType.kanlist) {
-                        BlocProvider.of<KanjiListBloc>(context1)
-                            .add(_addKanjiListSearchingEvent(query));
-                      } else {
-                        BlocProvider.of<MarketBloc>(context2)
-                            .add(_addMarketSearchingEvent(query));
-                      }
-                    },
-                    onExitSearch: () {
-                      /// Empty the query
-                      _query = "";
-                      _resetLists(context1, context2);
-                    },
+              BlocBuilder<MarketBloc, MarketState>(
+                builder: (context2, state2) => KPSearchBar(
+                  controller: _searchTextController,
+                  hint: _currentPage.searchBarHint,
+                  focus: _searchBarFn,
+                  onQuery: (String query) {
+                    /// Everytime the user queries, reset the query itself and
+                    /// the pagination index
+                    _query = query;
+                    if (_currentPage == HomeType.kanlist) {
+                      context1
+                          .read<KanjiListBloc>()
+                          .add(_addKanjiListSearchingEvent(query));
+                    } else {
+                      context2
+                          .read<MarketBloc>()
+                          .add(_addMarketSearchingEvent(query));
+                    }
+                  },
+                  onExitSearch: () {
+                    /// Empty the query
+                    _query = "";
+                    _resetLists(context1, context2);
+                  },
+                ),
+              ),
+              Expanded(
+                child: DefaultTabController(
+                  length: 2,
+                  child: Column(
+                    children: [
+                      if (_currentPage == HomeType.kanlist)
+                        const TabBar(tabs: [
+                          Tab(icon: Icon(Icons.table_rows_rounded)),
+                          Tab(icon: Icon(Icons.folder_rounded)),
+                        ]),
+                      Expanded(child: _body()),
+                    ],
                   ),
                 ),
               ),
-              Expanded(child: _body()),
             ],
           ),
-          bottomNavigationWidget: _bottomNavigationBar(),
         ),
       ),
+    );
+  }
+
+  Widget _tabView() {
+    return TabBarView(
+      children: [
+        BlocBuilder<KanjiListBloc, KanjiListState>(
+          builder: (context, state) => KanjiLists(
+            key: lists,
+            removeFocus: () => _searchBarFn.unfocus(),
+            onScrolledToBottom: () {
+              /// If the query is empty, use the pagination for search bar
+              if (_query.isNotEmpty) {
+                context
+                    .read<KanjiListBloc>()
+                    .add(_addKanjiListSearchingEvent(_query, reset: false));
+              }
+
+              /// Else use the normal pagination
+              else {
+                context
+                    .read<KanjiListBloc>()
+                    .add(_addKanjiListLoadingEvent(reset: false));
+              }
+            },
+          ),
+        ),
+        Container(width: 250, height: 250, color: Colors.amber)
+      ],
     );
   }
 
@@ -237,38 +278,22 @@ class _HomePageState extends State<HomePage> {
       },
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        BlocBuilder<KanjiListBloc, KanjiListState>(
-          builder: (context, state) => KanjiLists(
-            key: lists,
-            removeFocus: () => _searchBarFn.unfocus(),
-            onScrolledToBottom: () {
-              /// If the query is empty, use the pagination for search bar
-              if (_query.isNotEmpty) {
-                BlocProvider.of<KanjiListBloc>(context)
-                    .add(_addKanjiListSearchingEvent(_query, reset: false));
-              }
-
-              /// Else use the normal pagination
-              else {
-                BlocProvider.of<KanjiListBloc>(context)
-                    .add(_addKanjiListLoadingEvent(reset: false));
-              }
-            },
-          ),
-        ),
+        _tabView(),
         BlocBuilder<MarketBloc, MarketState>(
           builder: (context, state) => MarketPlace(
             removeFocus: () => _searchBarFn.unfocus(),
             onScrolledToBottom: () {
               /// If the query is empty, use the pagination for search bar
               if (_query.isNotEmpty) {
-                BlocProvider.of<MarketBloc>(context)
+                context
+                    .read<MarketBloc>()
                     .add(_addMarketSearchingEvent(_query, reset: false));
               }
 
               /// Else use the normal pagination
               else {
-                BlocProvider.of<MarketBloc>(context)
+                context
+                    .read<MarketBloc>()
                     .add(_addMarketLoadingEvent(reset: false));
               }
             },
@@ -304,8 +329,7 @@ class _HomePageState extends State<HomePage> {
                     _searchTextController.text = "";
                     _controller.jumpToPage(page);
                     if (_currentPage == HomeType.market) {
-                      BlocProvider.of<MarketBloc>(context)
-                          .add(_addMarketLoadingEvent());
+                      context.read<MarketBloc>().add(_addMarketLoadingEvent());
                     }
                   }
                 },
@@ -331,10 +355,8 @@ class _HomePageState extends State<HomePage> {
           final kanListName =
               await ActionsBottomSheet.show(context, _currentPage);
           if (kanListName != null) {
-            BlocProvider.of<KanjiListBloc>(context).add(KanjiListEventCreate(
-                kanListName,
-                filter: _currentAppliedFilter,
-                order: _currentAppliedOrder));
+            context.read<KanjiListBloc>().add(KanjiListEventCreate(kanListName,
+                filter: _currentAppliedFilter, order: _currentAppliedOrder));
           }
         },
         child: Padding(

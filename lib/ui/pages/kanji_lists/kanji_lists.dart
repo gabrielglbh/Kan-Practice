@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
+import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
-import 'package:kanpractice/ui/pages/kanji_lists/widgets/kanlist_tile.dart';
+import 'package:kanpractice/ui/widgets/kp_data_tile.dart';
 import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
@@ -175,7 +176,7 @@ class _KanjiListsState extends State<KanjiLists>
                         padding:
                             const EdgeInsets.only(bottom: Margins.margin24),
                         itemBuilder: (context, k) {
-                          return KanListTile(
+                          return KPDataTile<KanjiList>(
                             item: state.lists[k],
                             onTap: widget.removeFocus,
                             mode: VisualizationModeExt.mode(

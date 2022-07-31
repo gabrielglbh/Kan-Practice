@@ -68,20 +68,6 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
         },
         appBarTitle: widget.folder,
         appBarActions: [
-          BlocBuilder<KLFolderBloc, KLFolderState>(
-            builder: (context, state) {
-              return IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: () async {
-                  final bloc = context.read<KLFolderBloc>();
-                  await Navigator.of(context).pushNamed(
-                      KanPracticePages.folderAddPage,
-                      arguments: widget.folder);
-                  bloc.add(_addListLoadingEvent());
-                },
-              );
-            },
-          ),
           IconButton(
             icon: const Icon(Icons.track_changes_rounded,
                 color: CustomColors.secondaryColor),
@@ -107,23 +93,41 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
         child: BlocBuilder<KLFolderBloc, KLFolderState>(
           builder: (context, state) => Column(
             children: [
-              KPSearchBar(
-                controller: _searchTextController,
-                hint: TabType.kanlist.searchBarHint,
-                focus: _searchBarFn,
-                onQuery: (String query) {
-                  /// Everytime the user queries, reset the query itself and
-                  /// the pagination index
-                  _query = query;
-                  context
-                      .read<KLFolderBloc>()
-                      .add(_addListSearchingEvent(query));
-                },
-                onExitSearch: () {
-                  /// Empty the query
-                  _query = "";
-                  _resetList(context);
-                },
+              Row(
+                children: [
+                  Expanded(
+                    child: KPSearchBar(
+                      controller: _searchTextController,
+                      hint: TabType.kanlist.searchBarHint,
+                      focus: _searchBarFn,
+                      right: Margins.margin12,
+                      onQuery: (String query) {
+                        /// Everytime the user queries, reset the query itself and
+                        /// the pagination index
+                        _query = query;
+                        context
+                            .read<KLFolderBloc>()
+                            .add(_addListSearchingEvent(query));
+                      },
+                      onExitSearch: () {
+                        /// Empty the query
+                        _query = "";
+                        _resetList(context);
+                      },
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.auto_awesome_motion_rounded),
+                    splashRadius: 32,
+                    onPressed: () async {
+                      final bloc = context.read<KLFolderBloc>();
+                      await Navigator.of(context).pushNamed(
+                          KanPracticePages.folderAddPage,
+                          arguments: widget.folder);
+                      bloc.add(_addListLoadingEvent());
+                    },
+                  )
+                ],
               ),
               Expanded(
                 child: KPKanjiLists(

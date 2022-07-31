@@ -24,7 +24,7 @@ class AddFolderStateSuccess extends AddFolderState {}
 
 class AddFolderStateAvailableKanLists extends AddFolderState {
   final List<KanjiList> lists;
-  final List<String> alreadyAdded;
+  final Map<String, bool> alreadyAdded;
 
   const AddFolderStateAvailableKanLists(this.lists, this.alreadyAdded);
 

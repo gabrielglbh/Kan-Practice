@@ -22,7 +22,7 @@ class _AddFolderPageState extends State<AddFolderPage> {
   late TextEditingController _tc;
   late FocusNode _fn;
   List<KanjiList> _availableLists = [];
-  List<String> _selectedLists = [];
+  final Map<String, bool> _selectedLists = {};
 
   @override
   void initState() {
@@ -58,9 +58,12 @@ class _AddFolderPageState extends State<AddFolderPage> {
                 return IconButton(
                   onPressed: () {
                     if (widget.folder != null) {
-                      context.read<AddFolderBloc>().add(
-                          AddFolderEventOnListAddition(
-                              widget.folder!, _selectedLists));
+                      context
+                          .read<AddFolderBloc>()
+                          .add(AddFolderEventOnListAddition(
+                            widget.folder!,
+                            _selectedLists,
+                          ));
                     } else {
                       context.read<AddFolderBloc>().add(
                           AddFolderEventOnUpload(_tc.text, _selectedLists));
@@ -114,13 +117,13 @@ class _AddFolderPageState extends State<AddFolderPage> {
                                 child: KPKanListGrid(
                                   items: _availableLists,
                                   isSelected: (name) =>
-                                      _selectedLists.contains(name),
+                                      _selectedLists[name] == true,
                                   onTap: (name) {
                                     setState(() {
-                                      if (_selectedLists.contains(name)) {
-                                        _selectedLists.remove(name);
+                                      if (_selectedLists[name] == true) {
+                                        _selectedLists[name] = false;
                                       } else {
-                                        _selectedLists.add(name);
+                                        _selectedLists[name] = true;
                                       }
                                     });
                                   },

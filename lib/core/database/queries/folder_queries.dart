@@ -188,8 +188,11 @@ class FolderQueries {
   Future<int> moveKanListToFolder(String folder, String list) async {
     if (_database != null) {
       try {
-        await _database?.insert(KanListFolderRelationTableFields.relTable,
-            RelFolderKanList(folder: folder, kanListName: list).toJson());
+        await _database?.insert(
+          KanListFolderRelationTableFields.relTable,
+          RelFolderKanList(folder: folder, kanListName: list).toJson(),
+          conflictAlgorithm: ConflictAlgorithm.ignore,
+        );
         return 0;
       } catch (err) {
         print(err.toString());

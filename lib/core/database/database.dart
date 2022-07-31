@@ -82,9 +82,9 @@ class CustomDatabase {
 
         await db.execute(
             "CREATE TABLE ${KanListFolderRelationTableFields.relTable}("
-            "${KanListFolderRelationTableFields.relIdField} INTEGER PRIMARY KEY AUTOINCREMENT, "
             "${KanListFolderRelationTableFields.nameField} TEXT NOT NULL, "
             "${KanListFolderRelationTableFields.kanListNameField} TEXT NOT NULL, "
+            "PRIMARY KEY(${KanListFolderRelationTableFields.nameField}, ${KanListFolderRelationTableFields.kanListNameField}), "
             "FOREIGN KEY (${KanListFolderRelationTableFields.nameField}) REFERENCES ${FolderTableFields.folderTable}(${FolderTableFields.nameField}) ON DELETE CASCADE ON UPDATE CASCADE, "
             "FOREIGN KEY (${KanListFolderRelationTableFields.kanListNameField}) REFERENCES ${KanListTableFields.listsTable}(${KanListTableFields.nameField}) ON DELETE CASCADE ON UPDATE CASCADE)");
       },

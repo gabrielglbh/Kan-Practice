@@ -15,7 +15,7 @@ class AddFolderEventIdle extends AddFolderEvent {
 
 class AddFolderEventOnUpload extends AddFolderEvent {
   final String folder;
-  final List<String> kanLists;
+  final Map<String, bool> kanLists;
 
   const AddFolderEventOnUpload(this.folder, this.kanLists);
 
@@ -25,7 +25,7 @@ class AddFolderEventOnUpload extends AddFolderEvent {
 
 class AddFolderEventOnListAddition extends AddFolderEvent {
   final String folder;
-  final List<String> kanLists;
+  final Map<String, bool> kanLists;
 
   const AddFolderEventOnListAddition(this.folder, this.kanLists);
 

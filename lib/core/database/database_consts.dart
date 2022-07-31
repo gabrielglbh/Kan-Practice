@@ -40,7 +40,6 @@ class TestTableFields {
 
 class KanListFolderRelationTableFields {
   static const String relTable = "FOLDER_RELATION_TABLE";
-  static const String relIdField = "id";
   static const String nameField = "folder";
   static const String kanListNameField = "kanListName";
 }

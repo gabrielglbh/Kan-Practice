@@ -12,14 +12,20 @@ class AddFolderBloc extends Bloc<AddFolderEvent, AddFolderState> {
   AddFolderBloc() : super(AddFolderStateInitial()) {
     on<AddFolderEventIdle>((event, emit) async {
       var lists = await ListQueries.instance.getAllLists();
+      final map = {for (var k in lists) k.name: false};
+
       if (event.folder != null) {
         final alreadyIncludedLists =
             await FolderQueries.instance.getAllListsOnFolder(event.folder!);
         final alreadyIncludedStrings = List.generate(
             alreadyIncludedLists.length, (x) => alreadyIncludedLists[x].name);
-        emit(AddFolderStateAvailableKanLists(lists, alreadyIncludedStrings));
+
+        for (var a in alreadyIncludedStrings) {
+          if (map.containsKey(a)) map[a] = true;
+        }
+        emit(AddFolderStateAvailableKanLists(lists, map));
       } else {
-        emit(AddFolderStateAvailableKanLists(lists, const []));
+        emit(AddFolderStateAvailableKanLists(lists, map));
       }
     });
 
@@ -29,7 +35,7 @@ class AddFolderBloc extends Bloc<AddFolderEvent, AddFolderState> {
         emit(AddFolderStateFailure("add_folder_name_error".tr()));
       } else {
         final code = await FolderQueries.instance
-            .createFolder(event.folder, kanLists: event.kanLists);
+            .createFolder(event.folder, kanLists: event.kanLists.keys.toList());
         if (code == 0) {
           emit(AddFolderStateSuccess());
         } else {
@@ -41,15 +47,27 @@ class AddFolderBloc extends Bloc<AddFolderEvent, AddFolderState> {
     on<AddFolderEventOnListAddition>((event, emit) async {
       emit(AddFolderStateLoading());
       try {
-        for (var l in event.kanLists) {
-          final code =
-              await FolderQueries.instance.moveKanListToFolder(event.folder, l);
-          if (code != 0) throw Exception();
-        }
+        event.kanLists.forEach((key, value) {
+          if (value) {
+            _createRelation(event.folder, key);
+          } else {
+            _removeRelation(event.folder, key);
+          }
+        });
         emit(AddFolderStateSuccess());
       } catch (e) {
         emit(AddFolderStateFailure("add_folder_insertion_error".tr()));
       }
     });
+  }
+
+  Future<void> _createRelation(String f, String l) async {
+    final code = await FolderQueries.instance.moveKanListToFolder(f, l);
+    if (code != 0) throw Exception();
+  }
+
+  Future<void> _removeRelation(String f, String l) async {
+    final code = await FolderQueries.instance.removeKanListToFolder(f, l);
+    if (code != 0) throw Exception();
   }
 }

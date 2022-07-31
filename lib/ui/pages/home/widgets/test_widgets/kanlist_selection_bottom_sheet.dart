@@ -5,6 +5,7 @@ import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
 import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
+import 'package:kanpractice/ui/widgets/kp_kanlist_grid.dart';
 import 'package:kanpractice/ui/widgets/kp_study_mode.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_button.dart';
@@ -125,45 +126,18 @@ class _KanListSelectionBottomSheetState
     return Column(
       children: [
         Expanded(
-          child: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4, childAspectRatio: 2),
-            itemCount: state.lists.length,
-            itemBuilder: (context, index) {
-              String name = state.lists[index].name;
-              return Padding(
-                padding: const EdgeInsets.all(Margins.margin4),
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _onListEmpty = false;
-                      if (_selectedLists.contains(name)) {
-                        _selectedLists.remove(name);
-                      } else {
-                        _selectedLists.add(name);
-                      }
-                    });
-                  },
-                  child: Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: Margins.margin4),
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.circular(CustomRadius.radius16),
-                        color: _selectedLists.contains(name)
-                            ? CustomColors.secondaryDarkerColor
-                            : CustomColors.secondaryColor,
-                      ),
-                      child: FittedBox(
-                          fit: BoxFit.contain,
-                          child: Text(name,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  ?.copyWith(color: Colors.white)))),
-                ),
-              );
+          child: KPKanListGrid(
+            items: state.lists,
+            isSelected: (name) => _selectedLists.contains(name),
+            onTap: (name) {
+              setState(() {
+                _onListEmpty = false;
+                if (_selectedLists.contains(name)) {
+                  _selectedLists.remove(name);
+                } else {
+                  _selectedLists.add(name);
+                }
+              });
             },
           ),
         ),

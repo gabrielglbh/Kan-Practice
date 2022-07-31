@@ -16,4 +16,5 @@ class KanPracticePages {
   static const String statisticsPage = "/statisticsPage";
   static const String marketAddListPage = "/marketAddListPage";
   static const String homePage = "/homePage";
+  static const String folderAddPage = "/folderAddPage";
 }

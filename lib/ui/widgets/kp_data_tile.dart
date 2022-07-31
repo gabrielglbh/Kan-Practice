@@ -32,11 +32,16 @@ class KPDataTile<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final date = GeneralUtils.parseDateMilliseconds(
+        context,
+        item is Folder
+            ? (item as Folder).lastUpdated
+            : (item as KanjiList).lastUpdated);
     return Card(
       child: ListTile(
         onTap: () {
           onTap();
-          if (item == Folder) {
+          if (item is Folder) {
             /// TODO: Add Navigation to KanList list view
           } else {
             Navigator.of(context).pushNamed(
@@ -45,7 +50,7 @@ class KPDataTile<T> extends StatelessWidget {
           }
         },
         onLongPress: () {
-          if (item == Folder) {
+          if (item is Folder) {
             _createDialogForDeletingFolder(context);
           } else {
             _createDialogForDeletingKanList(context);
@@ -58,20 +63,20 @@ class KPDataTile<T> extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                    item == Folder
+                    item is Folder
                         ? (item as Folder).folder
                         : (item as KanjiList).name,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.headline5),
               ),
               Text(
-                "${"created_label".tr()} ${GeneralUtils.parseDateMilliseconds(context, item == Folder ? (item as Folder).lastUpdated : (item as KanjiList).lastUpdated)}",
+                "${"created_label".tr()} $date",
                 style: Theme.of(context).textTheme.subtitle2,
               )
             ],
           ),
         ),
-        subtitle: item == Folder
+        subtitle: item is Folder
             ? null
             : KPDependentGraph(
                 mode: mode,

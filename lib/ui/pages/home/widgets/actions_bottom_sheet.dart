@@ -73,11 +73,22 @@ class ActionsBottomSheet extends StatelessWidget {
                       ),
                       const Divider(),
                       ListTile(
+                        title: Text("bottom_actions_create_folder".tr()),
+                        leading: const Icon(Icons.create_new_folder_rounded),
+                        onTap: () async {
+                          final navigator = Navigator.of(context);
+                          await navigator
+                              .pushNamed(KanPracticePages.folderAddPage);
+                          navigator.pop();
+                        },
+                      ),
+                      const Divider(),
+                      ListTile(
                         title: Text("bottom_actions_upload_list".tr()),
                         leading: const Icon(Icons.upload_rounded),
                         onTap: () async {
                           final navigator = Navigator.of(context);
-                          await Navigator.of(context)
+                          await navigator
                               .pushNamed(KanPracticePages.marketAddListPage);
                           navigator.pop();
                         },

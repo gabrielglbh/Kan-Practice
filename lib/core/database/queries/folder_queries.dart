@@ -27,7 +27,8 @@ class FolderQueries {
   /// 1: Error during insertion.
   ///
   /// 2: Database is not created.
-  Future<int> createFolder(String name) async {
+  Future<int> createFolder(String name,
+      {List<String> kanLists = const []}) async {
     if (_database != null) {
       try {
         if (name.trim().isEmpty) return -1;
@@ -37,6 +38,10 @@ class FolderQueries {
               folder: name,
               lastUpdated: GeneralUtils.getCurrentMilliseconds(),
             ).toJson());
+        for (var l in kanLists) {
+          int code = await moveKanListToFolder(name, l);
+          if (code != 0) throw Exception();
+        }
         return 0;
       } catch (err) {
         print(err.toString());
@@ -138,10 +143,8 @@ class FolderQueries {
   Future<int> moveKanListToFolder(String folder, String list) async {
     if (_database != null) {
       try {
-        await _database?.insert(KanListFolderRelationTableFields.relTable, {
-          KanListFolderRelationTableFields.nameField: folder,
-          KanListFolderRelationTableFields.kanListNameField: list
-        });
+        await _database?.insert(KanListFolderRelationTableFields.relTable,
+            RelFolderKanList(folder: folder, kanListName: list).toJson());
         return 0;
       } catch (err) {
         print(err.toString());

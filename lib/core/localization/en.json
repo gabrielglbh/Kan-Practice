@@ -315,5 +315,12 @@
   "kan_list_tile_createDialogForDeletingFolder_title": "Remove a Folder",
   "kan_list_tile_createDialogForDeletingFolder_content": "Are you sure you want to remove this folder? KanLists will not be removed by this action, although they will not be arranged anymore.",
   "kan_list_tile_createDialogForDeletingFolder_positive": "Remove",
-  "folder_searchBar_hint": "Search by folder name"
+  "folder_searchBar_hint": "Search by folder name",
+  "bottom_actions_create_folder": "Create a new folder",
+  "add_folder_title": "Add Folder",
+  "add_folder_name_label": "Folder Name",
+  "add_folder_name_hint": "Manga Related",
+  "add_folder_lists_selection": "Choose which lists you want to add to this folder",
+  "add_folder_insertion_error": "Something happened while creating the folder. Try again later.",
+  "add_folder_name_error": "The folder name must not be empty."
 }

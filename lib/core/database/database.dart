@@ -75,6 +75,8 @@ class CustomDatabase {
           "${FolderTableFields.nameField} TEXT NOT NULL PRIMARY KEY, "
           "${FolderTableFields.lastUpdatedField} INTEGER NOT NULL DEFAULT 0)");
 
+      // TODO: ON DELETE CASCADE ON UPDATE CASCADE on KanLists:
+      // Check if when removing a list from the KanList tab, affects the navigation to the folder containing it
       await db.execute(
           "CREATE TABLE ${KanListFolderRelationTableFields.relTable}("
           "${KanListFolderRelationTableFields.relIdField} INTEGER PRIMARY KEY AUTOINCREMENT, "

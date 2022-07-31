@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/routing/pages.dart';
+import 'package:kanpractice/ui/pages/add_folder/add_folder.dart';
 import 'package:kanpractice/ui/pages/add_kanji/add_kanji.dart';
 import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/pages/add_market_list/add_market_list.dart';
@@ -87,6 +88,8 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return CupertinoPageRoute(builder: (_) => const StatisticsPage());
     case KanPracticePages.marketAddListPage:
       return CupertinoPageRoute(builder: (_) => const AddMarketListPage());
+    case KanPracticePages.folderAddPage:
+      return CupertinoPageRoute(builder: (_) => const AddFolderPage());
   }
   return null;
 }

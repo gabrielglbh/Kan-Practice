@@ -7,6 +7,7 @@ import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
 import 'package:kanpractice/ui/pages/home/widgets/test_widgets/test_bottom_sheet.dart';
 import 'package:kanpractice/ui/pages/kanji_list_on_folder/bloc/kl_folder_bloc.dart';
+import 'package:kanpractice/ui/widgets/blitz/kp_blitz_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/kp_kanji_lists/kanji_lists.dart';
 import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 import 'package:kanpractice/ui/widgets/kp_search_bar.dart';
@@ -56,107 +57,82 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
   Widget build(BuildContext context) {
     return BlocProvider<KLFolderBloc>(
       create: (_) => KLFolderBloc()..add(_addListLoadingEvent()),
-      child: KPScaffold(
-        onWillPop: () async {
-          if (_searchHasFocus) {
-            _resetList(context);
-            _searchBarFn.unfocus();
-            return false;
-          } else {
-            return true;
-          }
-        },
-        appBarTitle: widget.folder,
-        appBarActions: [
-          IconButton(
-            icon: const Icon(Icons.track_changes_rounded,
-                color: CustomColors.secondaryColor),
-            onPressed: () async {
-              await TestBottomSheet.show(context);
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.menu_book_rounded),
-            onPressed: () {
-              Navigator.of(context).pushNamed(KanPracticePages.dictionaryPage,
-                  arguments: const DictionaryArguments(searchInJisho: true));
-            },
-          ),
-          IconButton(
-            onPressed: () async {
-              await Navigator.of(context)
-                  .pushNamed(KanPracticePages.settingsPage);
-            },
-            icon: const Icon(Icons.settings),
-          )
-        ],
-        child: BlocBuilder<KLFolderBloc, KLFolderState>(
-          builder: (context, state) => Column(
-            children: [
-              Row(
+      child: BlocBuilder<KLFolderBloc, KLFolderState>(
+        builder: (context, state) {
+          return KPScaffold(
+              onWillPop: () async {
+                if (_searchHasFocus) {
+                  _resetList(context);
+                  _searchBarFn.unfocus();
+                  return false;
+                } else {
+                  return true;
+                }
+              },
+              appBarTitle: widget.folder,
+              appBarActions: [
+                IconButton(
+                  // TODO: Adjust KPBlitzBottomSheet to accept as parameter practiceFolder and begin tests
+                  onPressed: () async =>
+                      await KPBlitzBottomSheet.show(context, practiceList: ""),
+                  icon: const Icon(Icons.flash_on_rounded),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.auto_awesome_motion_rounded),
+                  onPressed: () async {
+                    final bloc = context.read<KLFolderBloc>();
+                    await Navigator.of(context).pushNamed(
+                        KanPracticePages.folderAddPage,
+                        arguments: widget.folder);
+                    bloc.add(_addListLoadingEvent());
+                  },
+                )
+              ],
+              child: Column(
                 children: [
+                  KPSearchBar(
+                    controller: _searchTextController,
+                    hint: TabType.kanlist.searchBarHint,
+                    focus: _searchBarFn,
+                    right: Margins.margin12,
+                    onQuery: (String query) {
+                      /// Everytime the user queries, reset the query itself and
+                      /// the pagination index
+                      _query = query;
+                      context
+                          .read<KLFolderBloc>()
+                          .add(_addListSearchingEvent(query));
+                    },
+                    onExitSearch: () {
+                      /// Empty the query
+                      _query = "";
+                      _resetList(context);
+                    },
+                  ),
                   Expanded(
-                    child: KPSearchBar(
-                      controller: _searchTextController,
-                      hint: TabType.kanlist.searchBarHint,
-                      focus: _searchBarFn,
-                      right: Margins.margin12,
-                      onQuery: (String query) {
-                        /// Everytime the user queries, reset the query itself and
-                        /// the pagination index
-                        _query = query;
-                        context
-                            .read<KLFolderBloc>()
-                            .add(_addListSearchingEvent(query));
-                      },
-                      onExitSearch: () {
-                        /// Empty the query
-                        _query = "";
-                        _resetList(context);
+                    child: KPKanjiLists(
+                      folder: widget.folder,
+                      withinFolder: true,
+                      removeFocus: () => _searchBarFn.unfocus(),
+                      onScrolledToBottom: () {
+                        /// If the query is empty, use the pagination for search bar
+                        if (_query.isNotEmpty) {
+                          context.read<KLFolderBloc>().add(
+                              _addListSearchingEvent(_query, reset: false));
+                        }
+
+                        /// Else use the normal pagination
+                        else {
+                          context
+                              .read<KLFolderBloc>()
+                              .add(_addListLoadingEvent(reset: false));
+                        }
                       },
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: Margins.margin8),
-                    child: IconButton(
-                      icon: const Icon(Icons.auto_awesome_motion_rounded),
-                      splashRadius: 26,
-                      onPressed: () async {
-                        final bloc = context.read<KLFolderBloc>();
-                        await Navigator.of(context).pushNamed(
-                            KanPracticePages.folderAddPage,
-                            arguments: widget.folder);
-                        bloc.add(_addListLoadingEvent());
-                      },
-                    ),
-                  )
                 ],
-              ),
-              Expanded(
-                child: KPKanjiLists(
-                  folder: widget.folder,
-                  withinFolder: true,
-                  removeFocus: () => _searchBarFn.unfocus(),
-                  onScrolledToBottom: () {
-                    /// If the query is empty, use the pagination for search bar
-                    if (_query.isNotEmpty) {
-                      context
-                          .read<KLFolderBloc>()
-                          .add(_addListSearchingEvent(_query, reset: false));
-                    }
-
-                    /// Else use the normal pagination
-                    else {
-                      context
-                          .read<KLFolderBloc>()
-                          .add(_addListLoadingEvent(reset: false));
-                    }
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
+              ));
+        },
       ),
     );
   }

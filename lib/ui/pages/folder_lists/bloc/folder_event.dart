@@ -25,11 +25,8 @@ class FolderEventLoading extends FolderEvent {
 }
 
 class FolderForTestEventLoading extends FolderEvent {
-  final String folder;
-  const FolderForTestEventLoading(this.folder);
-
-  @override
-  List<Object> get props => [folder];
+  final String? folder;
+  const FolderForTestEventLoading({this.folder});
 }
 
 class FolderEventSearching extends FolderEvent {
@@ -59,6 +56,16 @@ class FolderEventCreate extends FolderEvent {
 
   @override
   List<Object> get props => [name, filter, order, useLazyLoading];
+}
+
+class FolderEventAddSingleList extends FolderEvent {
+  final String name;
+  final String folder;
+
+  const FolderEventAddSingleList(this.name, this.folder);
+
+  @override
+  List<Object> get props => [name, folder];
 }
 
 class FolderEventDelete extends FolderEvent {

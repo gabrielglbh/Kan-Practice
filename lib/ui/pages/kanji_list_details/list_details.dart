@@ -12,6 +12,7 @@ import 'package:kanpractice/core/types/learning_mode.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/bloc/details_bloc.dart';
+import 'package:kanpractice/ui/pages/kanji_list_details/widgets/add_to_folder_bottom_sheet.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/widgets/kanji_item.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
@@ -302,32 +303,50 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
           ],
         ),
         IconButton(
-          key: addVocabulary,
           onPressed: () async {
-            await Navigator.of(context)
-                .pushNamed(KanPracticePages.addKanjiPage,
-                    arguments: AddKanjiArgs(listName: _listName))
-                .then((code) => _addLoadingEvent(reset: true));
+            await AddToFolderBottomSheet.show(context, widget.list.name);
           },
-          icon: const Icon(Icons.add),
+          icon: const Icon(Icons.create_new_folder_rounded),
         ),
       ],
       child: Column(
         children: [
-          KPSearchBar(
-            hint: "list_details_searchBar_hint".tr(),
-            focus: _searchBarFn,
-            onQuery: (String query) {
-              /// Everytime the user queries, reset the query itself and
-              /// the pagination index
-              _query = query;
-              _addSearchingEvent(query, reset: true);
-            },
-            onExitSearch: () {
-              /// Empty the query
-              _query = "";
-              _addLoadingEvent(reset: true);
-            },
+          Row(
+            children: [
+              Expanded(
+                child: KPSearchBar(
+                  hint: "list_details_searchBar_hint".tr(),
+                  focus: _searchBarFn,
+                  onQuery: (String query) {
+                    /// Everytime the user queries, reset the query itself and
+                    /// the pagination index
+                    _query = query;
+                    _addSearchingEvent(query, reset: true);
+                  },
+                  onExitSearch: () {
+                    /// Empty the query
+                    _query = "";
+                    _addLoadingEvent(reset: true);
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: Margins.margin8),
+                child: IconButton(
+                  key: addVocabulary,
+                  splashRadius: 26,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: Margins.margin8),
+                  onPressed: () async {
+                    await Navigator.of(context)
+                        .pushNamed(KanPracticePages.addKanjiPage,
+                            arguments: AddKanjiArgs(listName: _listName))
+                        .then((code) => _addLoadingEvent(reset: true));
+                  },
+                  icon: const Icon(Icons.add),
+                ),
+              ),
+            ],
           ),
           Expanded(
             child: BlocConsumer<KanjiListDetailBloc, KanjiListDetailState>(

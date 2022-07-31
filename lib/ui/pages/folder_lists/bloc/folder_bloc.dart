@@ -77,6 +77,32 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
       }
     });
 
+    on<FolderForTestEventLoading>((event, emit) async {
+      try {
+        emit(FolderStateLoading());
+        if (event.folder == null) {
+          final List<Folder> lists =
+              await FolderQueries.instance.getAllFolders();
+          emit(FolderStateLoaded(lists: lists));
+        } else {
+          // TODO: Retrieve from single folder for test purposes
+        }
+      } on Exception {
+        emit(FolderStateFailure());
+      }
+    });
+
+    on<FolderEventAddSingleList>((event, emit) async {
+      try {
+        final code = await FolderQueries.instance
+            .moveKanListToFolder(event.folder, event.name);
+        if (code != 0) throw Exception();
+        emit(const FolderStateLoaded(lists: []));
+      } catch (e) {
+        emit(FolderStateFailure());
+      }
+    });
+
     on<FolderEventDelete>((event, emit) async {
       if (state is FolderStateLoaded) {
         String name = event.list.folder;

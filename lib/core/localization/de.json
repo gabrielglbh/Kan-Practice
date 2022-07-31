@@ -323,5 +323,12 @@
   "add_folder_name_hint": "Manga-Verwandt",
   "add_folder_lists_selection": "Wählen Sie aus, welche Listen Sie zu diesem Ordner hinzufügen möchten",
   "add_folder_insertion_error": "Beim Erstellen des Ordners ist etwas passiert. Versuchen Sie es später noch einmal.",
-  "add_folder_name_error": "Der Ordnername darf nicht leer sein."
+  "add_folder_name_error": "Der Ordnername darf nicht leer sein.",
+  "kan_list_tile_createDialogForDeletingKanListWithinFolder_title": "Eine KanList aus diesem Ordner entfernen",
+  "kan_list_tile_createDialogForDeletingKanListWithinFolder_content": "Sind Sie sicher, dass Sie diese Liste aus diesem Ordner entfernen wollen?",
+  "kan_list_tile_createDialogForDeletingKanListWithinFolder_positive": "Entfernen",
+  "add_folder_update_title": "Listen zum Ordner hinzufügen",
+  "add_folder_lists_selection_empty": "Keine verfügbaren KanListen. Erstellen Sie weitere, um sie zu diesem Ordner hinzufügen zu können.",
+  "add_to_folder_from_list_title": "Diese Liste zu einem beliebigen Ordner hinzufügen",
+  "add_to_folder_from_list_error": "Beim Hinzufügen der Liste zum Ordner ist etwas passiert. Versuchen Sie es später noch einmal."
 }

@@ -323,5 +323,12 @@
   "add_folder_name_hint": "Manga",
   "add_folder_lists_selection": "Elige qué listas quieres añadir a esta carpeta",
   "add_folder_insertion_error": "Ha ocurrido algo al crear la carpeta. Inténtalo de nuevo más tarde",
-  "add_folder_name_error": "El nombre de la carpeta no debe estar vacío"
+  "add_folder_name_error": "El nombre de la carpeta no debe estar vacío",
+  "kan_list_tile_createDialogForDeletingKanListWithinFolder_title": "Eliminar esta lista de esta carpeta",
+  "kan_list_tile_createDialogForDeletingKanListWithinFolder_content": "¿Está seguro de que quieres eliminar esta lista de esta carpeta?",
+  "kan_list_tile_createDialogForDeletingKanListWithinFolder_positive": "Eliminar",
+  "add_folder_update_title": "Añadir lista a carpeta",
+  "add_folder_lists_selection_empty": "No hay listas disponibles. Crea más para poder añadirlas a esta carpeta",
+  "add_to_folder_from_list_title": "Añadir esta lista a cualquier carpeta",
+  "add_to_folder_from_list_error": "Ha ocurrido algo al añadir la lista a la carpeta. Inténtalo de nuevo más tarde."
 }

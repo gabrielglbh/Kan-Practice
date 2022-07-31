@@ -116,16 +116,19 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
                       },
                     ),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.auto_awesome_motion_rounded),
-                    splashRadius: 32,
-                    onPressed: () async {
-                      final bloc = context.read<KLFolderBloc>();
-                      await Navigator.of(context).pushNamed(
-                          KanPracticePages.folderAddPage,
-                          arguments: widget.folder);
-                      bloc.add(_addListLoadingEvent());
-                    },
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: Margins.margin8),
+                    child: IconButton(
+                      icon: const Icon(Icons.auto_awesome_motion_rounded),
+                      splashRadius: 26,
+                      onPressed: () async {
+                        final bloc = context.read<KLFolderBloc>();
+                        await Navigator.of(context).pushNamed(
+                            KanPracticePages.folderAddPage,
+                            arguments: widget.folder);
+                        bloc.add(_addListLoadingEvent());
+                      },
+                    ),
                   )
                 ],
               ),

@@ -309,5 +309,18 @@
   "bottom_actions_upload_list": "Subir una nueva lista",
   "market_rating_not_found": "La lista que has calificado no se ha podido encontrar.",
   "add_to_market_list_name_label": "Nombre de la Lista",
-  "add_to_market_list_name_hint": "Nombre"
+  "add_to_market_list_name_hint": "Nombre",
+  "folder_list_load_failed": "Fallo en la recuperación de carpetas",
+  "folder_list_empty": "No hay carpetas disponibles.\n\nCrea nuevas carpetas para organizar las listas tocando en '+' o importalas desde su copia de seguridad.",
+  "kan_list_tile_createDialogForDeletingFolder_title": "Eliminar una carpeta",
+  "kan_list_tile_createDialogForDeletingFolder_content": "¿Estás seguro de que quieres eliminar esta carpeta? Las listas no se eliminarán con esta acción, aunque ya no estarán ordenadas",
+  "kan_list_tile_createDialogForDeletingFolder_positive": "Eliminar",
+  "folder_searchBar_hint": "Buscar por nombre de carpeta",
+  "bottom_actions_create_folder": "Crear una nueva carpeta",
+  "add_folder_title": "Añadir carpeta",
+  "add_folder_name_label": "Nombre de la carpeta",
+  "add_folder_name_hint": "Manga",
+  "add_folder_lists_selection": "Elige qué listas quieres añadir a esta carpeta",
+  "add_folder_insertion_error": "Ha ocurrido algo al crear la carpeta. Inténtalo de nuevo más tarde",
+  "add_folder_name_error": "El nombre de la carpeta no debe estar vacío"
 }

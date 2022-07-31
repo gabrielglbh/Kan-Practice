@@ -309,5 +309,18 @@
   "bottom_actions_upload_list": "Eine neue Liste hochladen",
   "market_rating_not_found": "Die Liste, die Sie gerade bewertet haben, wurde nicht gefunden.",
   "add_to_market_list_name_label": "Listenname",
-  "add_to_market_list_name_hint": "Name"
+  "add_to_market_list_name_hint": "Name",
+  "folder_list_load_failed": "Das Abrufen von Ordnern ist fehlgeschlagen.",
+  "folder_list_empty": "Keine verfügbaren Ordner.\n\nErstellen Sie neue Ordner, um Ihre Listen zu ordnen, indem Sie auf '+' tippen, oder importieren Sie sie aus Ihrem Backup.",
+  "kan_list_tile_createDialogForDeletingFolder_title": "Entfernen eines Ordners",
+  "kan_list_tile_createDialogForDeletingFolder_content": "Sind Sie sicher, dass Sie diesen Ordner entfernen wollen? KanListen werden durch diese Aktion nicht entfernt, aber sie werden nicht mehr angeordnet",
+  "kan_list_tile_createDialogForDeletingFolder_positive": "Entfernen",
+  "folder_searchBar_hint": "Nach Ordnername suchen",
+  "bottom_actions_create_folder": "Einen neuen Ordner erstellen",
+  "add_folder_title": "Ordner hinzufügen",
+  "add_folder_name_label": "Ordnername",
+  "add_folder_name_hint": "Manga-Verwandt",
+  "add_folder_lists_selection": "Wählen Sie aus, welche Listen Sie zu diesem Ordner hinzufügen möchten",
+  "add_folder_insertion_error": "Beim Erstellen des Ordners ist etwas passiert. Versuchen Sie es später noch einmal.",
+  "add_folder_name_error": "Der Ordnername darf nicht leer sein."
 }

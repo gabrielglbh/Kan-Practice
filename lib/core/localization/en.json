@@ -314,5 +314,6 @@
   "folder_list_empty": "No available folders.\n\nCreate new folders to arrange your lists by tapping on '+' or import them from your backup.",
   "kan_list_tile_createDialogForDeletingFolder_title": "Remove a Folder",
   "kan_list_tile_createDialogForDeletingFolder_content": "Are you sure you want to remove this folder? KanLists will not be removed by this action, although they will not be arranged anymore.",
-  "kan_list_tile_createDialogForDeletingFolder_positive": "Remove"
+  "kan_list_tile_createDialogForDeletingFolder_positive": "Remove",
+  "folder_searchBar_hint": "Search by folder name"
 }

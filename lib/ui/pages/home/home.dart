@@ -11,6 +11,7 @@ import 'package:kanpractice/core/types/folder_filters.dart';
 import 'package:kanpractice/core/types/home_types.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
+import 'package:kanpractice/core/types/tab_types.dart';
 import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
 import 'package:kanpractice/ui/pages/folder_lists/bloc/folder_bloc.dart';
 import 'package:kanpractice/ui/pages/folder_lists/folder_list.dart';
@@ -33,13 +34,16 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   final lists = GlobalKey();
   final bottomActions = GlobalKey();
   final dictionary = GlobalKey();
 
   late PageController _controller;
+  late TabController _tabController;
   HomeType _currentPage = HomeType.kanlist;
+  TabType _currentTab = TabType.kanlist;
 
   late FocusNode _searchBarFn;
   late TextEditingController _searchTextController;
@@ -61,6 +65,8 @@ class _HomePageState extends State<HomePage> {
     _searchTextController = TextEditingController();
     _searchBarFn.addListener(_focusListener);
     _controller = PageController();
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(_onTabChanged);
 
     final filterText = StorageManager.readData(StorageManager.filtersOnList) ??
         KanListTableFields.lastUpdatedField;
@@ -127,17 +133,26 @@ class _HomePageState extends State<HomePage> {
 
   _focusListener() => _searchHasFocus = _searchBarFn.hasFocus;
 
-  _resetLists(BuildContext c1, BuildContext c2) {
+  _onTabChanged() =>
+      setState(() => _currentTab = TabType.values[_tabController.index]);
+
+  _resetLists(BuildContext c1, BuildContext c2, BuildContext c3) {
     if (_currentPage == HomeType.kanlist) {
-      BlocProvider.of<KanjiListBloc>(c1).add(_addKanjiListLoadingEvent());
+      if (_currentTab == TabType.kanlist) {
+        c1.read<KanjiListBloc>().add(_addKanjiListLoadingEvent());
+      } else {
+        c3.read<FolderBloc>().add(_addFolderListLoadingEvent());
+      }
     } else {
-      BlocProvider.of<MarketBloc>(c2).add(_addMarketLoadingEvent());
+      c2.read<MarketBloc>().add(_addMarketLoadingEvent());
     }
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _tabController.removeListener(_onTabChanged);
+    _tabController.dispose();
     _searchTextController.dispose();
     _searchBarFn.removeListener(_focusListener);
     _searchBarFn.dispose();
@@ -173,7 +188,7 @@ class _HomePageState extends State<HomePage> {
           onWillPop: () async {
             if (_onTutorial) return false;
             if (_searchHasFocus) {
-              _resetLists(context, context);
+              _resetLists(context, context, context);
               _searchBarFn.unfocus();
               return false;
             } else {
@@ -193,14 +208,7 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               onPressed: () async {
                 await Navigator.of(context)
-                    .pushNamed(KanPracticePages.settingsPage)
-                    .then((code) {
-                  if (_currentPage == HomeType.kanlist) {
-                    context1
-                        .read<KanjiListBloc>()
-                        .add(_addKanjiListLoadingEvent());
-                  }
-                });
+                    .pushNamed(KanPracticePages.settingsPage);
               },
               icon: const Icon(Icons.settings),
             )
@@ -210,44 +218,55 @@ class _HomePageState extends State<HomePage> {
             children: [
               const UpdateContainer(),
               BlocBuilder<MarketBloc, MarketState>(
-                builder: (context2, state2) => KPSearchBar(
-                  controller: _searchTextController,
-                  hint: _currentPage.searchBarHint,
-                  focus: _searchBarFn,
-                  onQuery: (String query) {
-                    /// Everytime the user queries, reset the query itself and
-                    /// the pagination index
-                    _query = query;
-                    if (_currentPage == HomeType.kanlist) {
-                      context1
-                          .read<KanjiListBloc>()
-                          .add(_addKanjiListSearchingEvent(query));
-                    } else {
-                      context2
-                          .read<MarketBloc>()
-                          .add(_addMarketSearchingEvent(query));
-                    }
-                  },
-                  onExitSearch: () {
-                    /// Empty the query
-                    _query = "";
-                    _resetLists(context1, context2);
-                  },
+                builder: (context2, state2) =>
+                    BlocBuilder<FolderBloc, FolderState>(
+                  builder: (context3, state3) => KPSearchBar(
+                    controller: _searchTextController,
+                    hint: _currentPage == HomeType.market
+                        ? _currentPage.searchBarHint
+                        : _currentTab.searchBarHint,
+                    focus: _searchBarFn,
+                    onQuery: (String query) {
+                      /// Everytime the user queries, reset the query itself and
+                      /// the pagination index
+                      _query = query;
+                      if (_currentPage == HomeType.kanlist) {
+                        if (_currentTab == TabType.kanlist) {
+                          context1
+                              .read<KanjiListBloc>()
+                              .add(_addKanjiListSearchingEvent(query));
+                        } else {
+                          context3
+                              .read<FolderBloc>()
+                              .add(_addFolderListSearchingEvent(query));
+                        }
+                      } else {
+                        context2
+                            .read<MarketBloc>()
+                            .add(_addMarketSearchingEvent(query));
+                      }
+                    },
+                    onExitSearch: () {
+                      /// Empty the query
+                      _query = "";
+                      _resetLists(context1, context2, context3);
+                    },
+                  ),
                 ),
               ),
               Expanded(
-                child: DefaultTabController(
-                  length: 2,
-                  child: Column(
-                    children: [
-                      if (_currentPage == HomeType.kanlist)
-                        const TabBar(tabs: [
+                child: Column(
+                  children: [
+                    if (_currentPage == HomeType.kanlist)
+                      TabBar(
+                        controller: _tabController,
+                        tabs: const [
                           Tab(icon: Icon(Icons.table_rows_rounded)),
                           Tab(icon: Icon(Icons.folder_rounded)),
-                        ]),
-                      Expanded(child: _body()),
-                    ],
-                  ),
+                        ],
+                      ),
+                    Expanded(child: _body()),
+                  ],
                 ),
               ),
             ],
@@ -259,6 +278,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _tabView() {
     return TabBarView(
+      controller: _tabController,
       children: [
         BlocBuilder<KanjiListBloc, KanjiListState>(
           builder: (context, state) => KanjiLists(

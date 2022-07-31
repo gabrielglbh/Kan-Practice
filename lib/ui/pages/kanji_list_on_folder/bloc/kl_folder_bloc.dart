@@ -118,29 +118,6 @@ class KLFolderBloc extends Bloc<KLFolderEvent, KLFolderState> {
         }
       }
     });
-
-    on<KLFolderEventAdd>((event, emit) async {
-      /*if (state is KLFolderStateLoaded) {
-        String? name = event.name;
-        final code = await FolderQueries.instance.createFolder(name);
-        if (code == 0) {
-          emit(FolderStateLoading());
-          List<Folder> newList = [];
-          if (event.useLazyLoading) {
-            newList = await _getNewAllListsAndUpdateLazyLoadingState(
-                event.filter, event.order,
-                limit: limit, l: list);
-          } else {
-            newList = await FolderQueries.instance.getAllFolders();
-          }
-
-          /// Reset offsets
-          loadingTimes = 0;
-          loadingTimesForSearch = 0;
-          emit(FolderStateLoaded(lists: newList));
-        }
-      }*/
-    });
   }
 
   Future<List<KanjiList>> _getNewAllListsAndUpdateLazyLoadingState(

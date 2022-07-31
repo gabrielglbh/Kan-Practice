@@ -50,23 +50,6 @@ class KLFolderEventSearching extends KLFolderEvent {
   List<Object> get props => [query, reset];
 }
 
-class KLFolderEventAdd extends KLFolderEvent {
-  final String name;
-
-  /// Maintains the filter applied by the user for loading new lists
-  final KanListFilters filter;
-
-  /// Maintains the order applied by the user for loading new lists
-  final bool order;
-  final bool useLazyLoading;
-
-  const KLFolderEventAdd(this.name,
-      {required this.filter, required this.order, this.useLazyLoading = true});
-
-  @override
-  List<Object> get props => [name, filter, order, useLazyLoading];
-}
-
 class KLFolderEventDelete extends KLFolderEvent {
   final String folder;
   final KanjiList list;

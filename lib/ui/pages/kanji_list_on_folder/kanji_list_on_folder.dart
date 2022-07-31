@@ -55,7 +55,7 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<KLFolderBloc>(
-      create: (context) => KLFolderBloc()..add(_addListLoadingEvent()),
+      create: (_) => KLFolderBloc()..add(_addListLoadingEvent()),
       child: KPScaffold(
         onWillPop: () async {
           if (_searchHasFocus) {
@@ -68,10 +68,18 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
         },
         appBarTitle: widget.folder,
         appBarActions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () async {
-              // TODO: Show lists to add
+          BlocBuilder<KLFolderBloc, KLFolderState>(
+            builder: (context, state) {
+              return IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () async {
+                  final bloc = context.read<KLFolderBloc>();
+                  await Navigator.of(context).pushNamed(
+                      KanPracticePages.folderAddPage,
+                      arguments: widget.folder);
+                  bloc.add(_addListLoadingEvent());
+                },
+              );
             },
           ),
           IconButton(

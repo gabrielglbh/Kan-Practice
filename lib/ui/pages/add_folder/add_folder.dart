@@ -11,7 +11,8 @@ import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 import 'package:kanpractice/ui/widgets/kp_text_form.dart';
 
 class AddFolderPage extends StatefulWidget {
-  const AddFolderPage({Key? key}) : super(key: key);
+  final String? folder;
+  const AddFolderPage({Key? key, this.folder}) : super(key: key);
 
   @override
   State<AddFolderPage> createState() => _AddFolderPageState();
@@ -21,12 +22,13 @@ class _AddFolderPageState extends State<AddFolderPage> {
   late TextEditingController _tc;
   late FocusNode _fn;
   List<KanjiList> _availableLists = [];
-  final List<String> _selectedLists = [];
+  List<String> _selectedLists = [];
 
   @override
   void initState() {
     _tc = TextEditingController();
     _fn = FocusNode();
+    if (widget.folder != null) _tc.text = widget.folder!;
     super.initState();
   }
 
@@ -40,10 +42,12 @@ class _AddFolderPageState extends State<AddFolderPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AddFolderBloc()..add(AddFolderEventIdle()),
+      create: (_) => AddFolderBloc()..add(AddFolderEventIdle(widget.folder)),
       child: KPScaffold(
         resizeToAvoidBottomInset: true,
-        appBarTitle: "add_folder_title".tr(),
+        appBarTitle: widget.folder != null
+            ? "add_folder_update_title".tr()
+            : "add_folder_title".tr(),
         appBarActions: [
           BlocBuilder<AddFolderBloc, AddFolderState>(
             builder: (context, state) {
@@ -53,9 +57,14 @@ class _AddFolderPageState extends State<AddFolderPage> {
               } else {
                 return IconButton(
                   onPressed: () {
-                    context
-                        .read<AddFolderBloc>()
-                        .add(AddFolderEventOnUpload(_tc.text, _selectedLists));
+                    if (widget.folder != null) {
+                      context.read<AddFolderBloc>().add(
+                          AddFolderEventOnListAddition(
+                              widget.folder!, _selectedLists));
+                    } else {
+                      context.read<AddFolderBloc>().add(
+                          AddFolderEventOnUpload(_tc.text, _selectedLists));
+                    }
                   },
                   icon: const Icon(Icons.check),
                 );
@@ -72,7 +81,10 @@ class _AddFolderPageState extends State<AddFolderPage> {
               Navigator.of(context).pop();
             }
             if (state is AddFolderStateAvailableKanLists) {
-              setState(() => _availableLists = state.lists);
+              setState(() {
+                _availableLists = state.lists;
+                _selectedLists.addAll(state.alreadyAdded);
+              });
             }
           },
           builder: (context, state) {
@@ -89,42 +101,35 @@ class _AddFolderPageState extends State<AddFolderPage> {
                     maxLines: 1,
                     maxLength: 32,
                     action: TextInputAction.done,
+                    enabled: widget.folder == null,
                     onEditingComplete: () => _fn.unfocus(),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: Margins.margin16,
-                      horizontal: Margins.margin8,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "add_folder_lists_selection".tr(),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.headline6,
+                  state is AddFolderStateAvailableKanLists &&
+                          state.lists.isNotEmpty
+                      ? Expanded(
+                          child: Column(
+                            children: [
+                              _headline("add_folder_lists_selection".tr()),
+                              Expanded(
+                                child: KPKanListGrid(
+                                  items: _availableLists,
+                                  isSelected: (name) =>
+                                      _selectedLists.contains(name),
+                                  onTap: (name) {
+                                    setState(() {
+                                      if (_selectedLists.contains(name)) {
+                                        _selectedLists.remove(name);
+                                      } else {
+                                        _selectedLists.add(name);
+                                      }
+                                    });
+                                  },
+                                ),
+                              )
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: KPKanListGrid(
-                      items: _availableLists,
-                      isSelected: (name) => _selectedLists.contains(name),
-                      onTap: (name) {
-                        setState(() {
-                          if (_selectedLists.contains(name)) {
-                            _selectedLists.remove(name);
-                          } else {
-                            _selectedLists.add(name);
-                          }
-                        });
-                      },
-                    ),
-                  )
+                        )
+                      : _headline("add_folder_lists_selection_empty".tr())
                 ],
               );
             } else if (state is AddFolderStateLoading) {
@@ -134,6 +139,28 @@ class _AddFolderPageState extends State<AddFolderPage> {
             }
           },
         ),
+      ),
+    );
+  }
+
+  Widget _headline(String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: Margins.margin16,
+        horizontal: Margins.margin8,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Text(
+              title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.headline6,
+            ),
+          ),
+        ],
       ),
     );
   }

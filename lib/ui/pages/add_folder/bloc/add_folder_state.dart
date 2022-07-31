@@ -24,9 +24,10 @@ class AddFolderStateSuccess extends AddFolderState {}
 
 class AddFolderStateAvailableKanLists extends AddFolderState {
   final List<KanjiList> lists;
+  final List<String> alreadyAdded;
 
-  const AddFolderStateAvailableKanLists(this.lists);
+  const AddFolderStateAvailableKanLists(this.lists, this.alreadyAdded);
 
   @override
-  List<Object> get props => [lists];
+  List<Object> get props => [lists, alreadyAdded];
 }

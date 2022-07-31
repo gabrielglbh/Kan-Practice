@@ -326,5 +326,7 @@
   "add_folder_name_error": "The folder name must not be empty.",
   "kan_list_tile_createDialogForDeletingKanListWithinFolder_title": "Remove a KanList from this folder",
   "kan_list_tile_createDialogForDeletingKanListWithinFolder_content": "Are you sure you want to remove this list from this folder?",
-  "kan_list_tile_createDialogForDeletingKanListWithinFolder_positive": "Remove"
+  "kan_list_tile_createDialogForDeletingKanListWithinFolder_positive": "Remove",
+  "add_folder_update_title": "Add Lists to Folder",
+  "add_folder_lists_selection_empty": "No available KanLists. Create more to be able to add them to this folder."
 }

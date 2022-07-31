@@ -90,7 +90,8 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case KanPracticePages.marketAddListPage:
       return CupertinoPageRoute(builder: (_) => const AddMarketListPage());
     case KanPracticePages.folderAddPage:
-      return CupertinoPageRoute(builder: (_) => const AddFolderPage());
+      String? folder = settings.arguments as String?;
+      return CupertinoPageRoute(builder: (_) => AddFolderPage(folder: folder));
     case KanPracticePages.kanjiListOnFolderPage:
       String folder = settings.arguments as String;
       return CupertinoPageRoute(

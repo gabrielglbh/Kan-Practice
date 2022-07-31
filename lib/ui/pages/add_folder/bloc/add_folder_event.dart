@@ -7,13 +7,27 @@ abstract class AddFolderEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class AddFolderEventIdle extends AddFolderEvent {}
+class AddFolderEventIdle extends AddFolderEvent {
+  final String? folder;
+
+  const AddFolderEventIdle(this.folder);
+}
 
 class AddFolderEventOnUpload extends AddFolderEvent {
   final String folder;
   final List<String> kanLists;
 
   const AddFolderEventOnUpload(this.folder, this.kanLists);
+
+  @override
+  List<Object> get props => [folder, kanLists];
+}
+
+class AddFolderEventOnListAddition extends AddFolderEvent {
+  final String folder;
+  final List<String> kanLists;
+
+  const AddFolderEventOnListAddition(this.folder, this.kanLists);
 
   @override
   List<Object> get props => [folder, kanLists];

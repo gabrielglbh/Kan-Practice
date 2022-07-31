@@ -11,8 +11,16 @@ part 'add_folder_state.dart';
 class AddFolderBloc extends Bloc<AddFolderEvent, AddFolderState> {
   AddFolderBloc() : super(AddFolderStateInitial()) {
     on<AddFolderEventIdle>((event, emit) async {
-      final lists = await ListQueries.instance.getAllLists();
-      emit(AddFolderStateAvailableKanLists(lists));
+      var lists = await ListQueries.instance.getAllLists();
+      if (event.folder != null) {
+        final alreadyIncludedLists =
+            await FolderQueries.instance.getAllListsOnFolder(event.folder!);
+        final alreadyIncludedStrings = List.generate(
+            alreadyIncludedLists.length, (x) => alreadyIncludedLists[x].name);
+        emit(AddFolderStateAvailableKanLists(lists, alreadyIncludedStrings));
+      } else {
+        emit(AddFolderStateAvailableKanLists(lists, const []));
+      }
     });
 
     on<AddFolderEventOnUpload>((event, emit) async {
@@ -27,6 +35,20 @@ class AddFolderBloc extends Bloc<AddFolderEvent, AddFolderState> {
         } else {
           emit(AddFolderStateFailure("add_folder_insertion_error".tr()));
         }
+      }
+    });
+
+    on<AddFolderEventOnListAddition>((event, emit) async {
+      emit(AddFolderStateLoading());
+      try {
+        for (var l in event.kanLists) {
+          final code =
+              await FolderQueries.instance.moveKanListToFolder(event.folder, l);
+          if (code != 0) throw Exception();
+        }
+        emit(AddFolderStateSuccess());
+      } catch (e) {
+        emit(AddFolderStateFailure("add_folder_insertion_error".tr()));
       }
     });
   }

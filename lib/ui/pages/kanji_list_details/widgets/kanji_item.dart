@@ -28,7 +28,7 @@ class KanjiItem extends StatefulWidget {
       : super(key: key);
 
   @override
-  _KanjiItemState createState() => _KanjiItemState();
+  State<KanjiItem> createState() => _KanjiItemState();
 }
 
 class _KanjiItemState extends State<KanjiItem> {

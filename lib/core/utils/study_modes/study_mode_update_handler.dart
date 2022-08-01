@@ -54,7 +54,8 @@ class StudyModeUpdateHandler {
                 if (isTestPopped) {
                   Navigator.of(context).pop();
                 } else if (isTestFinished) {
-                  Map<String, List<Map<Kanji, double>>>? _studyList;
+                  final navigator = Navigator.of(context);
+                  Map<String, List<Map<Kanji, double>>>? studyList;
 
                   /// If the test was a number test, just go to the result page with
                   /// a null study list to not show anything.
@@ -64,10 +65,10 @@ class StudyModeUpdateHandler {
                         false) {
                       await _updateScoreForTestsAffectingPractice(args);
                     }
-                    _studyList =
+                    studyList =
                         _getMapOfKanjiInTest(args.studyList, testScores);
                   }
-                  Navigator.of(context).pushReplacementNamed(
+                  navigator.pushReplacementNamed(
                       KanPracticePages.testResultPage,
                       arguments: TestResultArguments(
                           score: testScore,
@@ -75,7 +76,7 @@ class StudyModeUpdateHandler {
                           studyMode: args.mode.index,
                           testMode: args.testMode.index,
                           listsName: args.listsNames,
-                          studyList: _studyList));
+                          studyList: studyList));
                 }
 
                 /// If the user went back in mid list, update the list accordingly
@@ -85,20 +86,22 @@ class StudyModeUpdateHandler {
                   if (lastIndex == 0) {
                     Navigator.of(context).pop();
                   } else {
+                    final navigator = Navigator.of(context);
                     await calculateScore(args, 0.5, lastIndex);
                     final double score =
                         await _getScore(args) / args.studyList.length;
                     await _updateList(score, args);
-                    Navigator.of(context).pop();
+                    navigator.pop();
                   }
                 }
 
                 /// If the user went through all the list, update the list accordingly
                 else {
+                  final navigator = Navigator.of(context);
                   final double score =
                       await _getScore(args) / args.studyList.length;
                   await _updateList(score, args);
-                  Navigator.of(context).pop();
+                  navigator.pop();
                 }
               });
         });

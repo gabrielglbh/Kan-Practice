@@ -14,7 +14,7 @@ class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -65,10 +65,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _changePasswordDialog(BuildContext bloc) {
-    TextEditingController _currPassword = TextEditingController();
-    TextEditingController _newPassword = TextEditingController();
-    FocusNode _currPasswordFn = FocusNode();
-    FocusNode _newPasswordFn = FocusNode();
+    TextEditingController currPassword = TextEditingController();
+    TextEditingController newPassword = TextEditingController();
+    FocusNode currPasswordFn = FocusNode();
+    FocusNode newPasswordFn = FocusNode();
     showDialog(
         context: bloc,
         builder: (context) {
@@ -80,11 +80,11 @@ class _LoginPageState extends State<LoginPage> {
                     hint: 'login_changePasswordDialog_hint'.tr(),
                     header: 'login_changePasswordDialog_old_header'.tr(),
                     inputType: TextInputType.visiblePassword,
-                    controller: _currPassword,
-                    focusNode: _currPasswordFn,
+                    controller: currPassword,
+                    focusNode: currPasswordFn,
                     autofocus: true,
                     obscure: true,
-                    onEditingComplete: () => _newPasswordFn.requestFocus(),
+                    onEditingComplete: () => newPasswordFn.requestFocus(),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: Margins.margin16),
@@ -92,13 +92,13 @@ class _LoginPageState extends State<LoginPage> {
                       hint: 'login_changePasswordDialog_hint'.tr(),
                       header: 'login_changePasswordDialog_new_header'.tr(),
                       inputType: TextInputType.visiblePassword,
-                      controller: _newPassword,
-                      focusNode: _newPasswordFn,
+                      controller: newPassword,
+                      focusNode: newPasswordFn,
                       obscure: true,
                       onEditingComplete: () {
                         Navigator.of(context).pop();
                         _changePassword(
-                            bloc, _currPassword.text, _newPassword.text);
+                            bloc, currPassword.text, newPassword.text);
                       },
                     ),
                   )
@@ -106,13 +106,13 @@ class _LoginPageState extends State<LoginPage> {
               ),
               positiveButtonText: "login_changePasswordDialog_positive".tr(),
               onPositive: () =>
-                  _changePassword(bloc, _currPassword.text, _newPassword.text));
+                  _changePassword(bloc, currPassword.text, newPassword.text));
         });
   }
 
   _removeAccountDialog(BuildContext bloc) {
-    TextEditingController _currPassword = TextEditingController();
-    FocusNode _currPasswordFn = FocusNode();
+    TextEditingController currPassword = TextEditingController();
+    FocusNode currPasswordFn = FocusNode();
     showDialog(
         context: bloc,
         builder: (context) {
@@ -129,18 +129,18 @@ class _LoginPageState extends State<LoginPage> {
                     hint: 'login_removeAccountDialog_hint'.tr(),
                     header: 'login_removeAccountDialog_header'.tr(),
                     inputType: TextInputType.visiblePassword,
-                    controller: _currPassword,
-                    focusNode: _currPasswordFn,
+                    controller: currPassword,
+                    focusNode: currPasswordFn,
                     obscure: true,
                     onEditingComplete: () {
                       Navigator.of(context).pop();
-                      _removeAccount(bloc, _currPassword.text);
+                      _removeAccount(bloc, currPassword.text);
                     },
                   ),
                 ],
               ),
               positiveButtonText: "login_removeAccountDialog_positive".tr(),
-              onPositive: () => _removeAccount(bloc, _currPassword.text));
+              onPositive: () => _removeAccount(bloc, currPassword.text));
         });
   }
 

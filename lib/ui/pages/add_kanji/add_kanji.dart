@@ -19,7 +19,7 @@ class AddKanjiPage extends StatefulWidget {
   const AddKanjiPage({Key? key, required this.args}) : super(key: key);
 
   @override
-  _AddKanjiPageState createState() => _AddKanjiPageState();
+  State<AddKanjiPage> createState() => _AddKanjiPageState();
 }
 
 class _AddKanjiPageState extends State<AddKanjiPage> {

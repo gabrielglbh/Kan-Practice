@@ -10,31 +10,41 @@ class KPBlitzBottomSheet extends StatelessWidget {
   /// String defining if the user wants to perform a Blitz Test on a practice
   /// lesson specifically. If null, all kanji available will be taken into consideration.
   final String? practiceList;
+
+  /// Folder for UI on history test
+  final String? folderList;
   final bool remembranceTest;
   final bool lessPctTest;
 
   /// Creates a blitz test study mode selection bottom sheet for BLITZ and
   /// REMEMBRANCE tests.
-  const KPBlitzBottomSheet(
-      {Key? key,
-      this.practiceList,
-      this.remembranceTest = false,
-      this.lessPctTest = false})
-      : super(key: key);
+  const KPBlitzBottomSheet({
+    Key? key,
+    this.practiceList,
+    this.folderList,
+    this.remembranceTest = false,
+    this.lessPctTest = false,
+  }) : super(key: key);
 
   /// Creates and calls the [BottomSheet] with the content for a blitz test
-  static Future<String?> show(BuildContext context,
-      {String? practiceList,
-      bool remembranceTest = false,
-      bool lessPctTest = false}) async {
+  static Future<String?> show(
+    BuildContext context, {
+    String? practiceList,
+    String? folderList,
+    bool remembranceTest = false,
+    bool lessPctTest = false,
+  }) async {
     return await showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        builder: (context) => KPBlitzBottomSheet(
-            practiceList: practiceList,
-            remembranceTest: remembranceTest,
-            lessPctTest: lessPctTest));
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => KPBlitzBottomSheet(
+        practiceList: practiceList,
+        folderList: folderList,
+        remembranceTest: remembranceTest,
+        lessPctTest: lessPctTest,
+      ),
+    );
   }
 
   @override
@@ -42,6 +52,23 @@ class KPBlitzBottomSheet extends StatelessWidget {
     final kanjiInTest =
         StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
             CustomSizes.numberOfKanjiInTest;
+    final type = remembranceTest
+        ? Tests.time
+        : lessPctTest
+            ? Tests.less
+            : folderList != null
+                ? Tests.folder
+                : Tests.blitz;
+    final testName = remembranceTest
+        ? "remembrance_bottom_sheet_label".tr()
+        : lessPctTest
+            ? "less_pct_bottom_sheet_label".tr()
+            : folderList != null
+                ? '${"blitz_bottom_sheet_on_label".tr()} $folderList'
+                : practiceList == null
+                    ? 'blitz_bottom_sheet_label'.tr()
+                    : '${"blitz_bottom_sheet_on_label".tr()} $practiceList';
+
     return BottomSheet(
       enableDrag: false,
       onClosing: () {},
@@ -73,18 +100,9 @@ class KPBlitzBottomSheet extends StatelessWidget {
               ),
               KPTestStudyMode(
                 practiceList: practiceList,
-                type: remembranceTest
-                    ? Tests.time
-                    : lessPctTest
-                        ? Tests.less
-                        : Tests.blitz,
-                testName: remembranceTest
-                    ? "remembrance_bottom_sheet_label".tr()
-                    : lessPctTest
-                        ? "less_pct_bottom_sheet_label".tr()
-                        : practiceList == null
-                            ? 'blitz_bottom_sheet_label'.tr()
-                            : '${"blitz_bottom_sheet_on_label".tr()} $practiceList',
+                folder: folderList,
+                type: type,
+                testName: testName,
               )
             ],
           ),

@@ -1,35 +1,35 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
+import 'package:kanpractice/core/database/models/folder.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
-import 'package:kanpractice/core/types/visualization_mode.dart';
-import 'package:kanpractice/ui/pages/kanji_lists/bloc/lists_bloc.dart';
-import 'package:kanpractice/core/types/kanlist_filters.dart';
-import 'package:kanpractice/ui/pages/kanji_lists/widgets/kanlist_tile.dart';
-import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
+import 'package:kanpractice/core/types/folder_filters.dart';
 import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/ui/pages/folder_lists/bloc/folder_bloc.dart';
+import 'package:kanpractice/ui/widgets/kp_data_tile.dart';
+import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
-import 'package:easy_localization/easy_localization.dart';
 
-class KanjiLists extends StatefulWidget {
+class FolderList extends StatefulWidget {
   final Function() removeFocus;
   final Function() onScrolledToBottom;
-  const KanjiLists(
+  const FolderList(
       {Key? key, required this.removeFocus, required this.onScrolledToBottom})
       : super(key: key);
 
   @override
-  _KanjiListsState createState() => _KanjiListsState();
+  State<FolderList> createState() => _FolderListState();
 }
 
-class _KanjiListsState extends State<KanjiLists>
+class _FolderListState extends State<FolderList>
     with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
 
   /// This variable keeps track of the actual filter applied. The value is
   /// saved into the shared preferences when a filter is applied.
   /// This value is then restored upon new session.
-  KanListFilters _currentAppliedFilter = KanListFilters.all;
+  FolderFilters _currentAppliedFilter = FolderFilters.all;
 
   /// This variable keeps track of the order applied on the current filter only:
   /// true --> DESC or false --> ASC. The value is saved into the shared preferences when a filter
@@ -40,12 +40,13 @@ class _KanjiListsState extends State<KanjiLists>
   void initState() {
     _scrollController.addListener(_scrollListener);
 
-    final filterText = StorageManager.readData(StorageManager.filtersOnList) ??
-        KanListTableFields.lastUpdatedField;
-    _currentAppliedFilter = KanListFiltersUtils.getFilterFrom(filterText);
+    final filterText =
+        StorageManager.readData(StorageManager.filtersOnFolder) ??
+            FolderTableFields.lastUpdatedField;
+    _currentAppliedFilter = FolderFiltersUtils.getFilterFrom(filterText);
 
     _currentAppliedOrder =
-        StorageManager.readData(StorageManager.orderOnList) ?? true;
+        StorageManager.readData(StorageManager.orderOnFolder) ?? true;
     super.initState();
   }
 
@@ -65,8 +66,8 @@ class _KanjiListsState extends State<KanjiLists>
   }
 
   _addLoadingEvent({bool reset = false}) {
-    return BlocProvider.of<KanjiListBloc>(context)
-      ..add(KanjiListEventLoading(
+    return BlocProvider.of<FolderBloc>(context)
+      ..add(FolderEventLoading(
           filter: _currentAppliedFilter,
           order: _currentAppliedOrder,
           reset: reset));
@@ -93,15 +94,15 @@ class _KanjiListsState extends State<KanjiLists>
 
     /// Change the current applied filter based on the index selected on the ChoiceChip
     /// and change the value on _filterValues map to reflect the change on the UI
-    _currentAppliedFilter = KanListFilters.values[index];
+    _currentAppliedFilter = FolderFilters.values[index];
 
     /// Adds the loading event to the bloc builder to load the new specified list
     _addLoadingEvent(reset: true);
 
     /// Stores the new filter and order applied to shared preferences
     StorageManager.saveData(
-        StorageManager.filtersOnList, _currentAppliedFilter.filter);
-    StorageManager.saveData(StorageManager.orderOnList, _currentAppliedOrder);
+        StorageManager.filtersOnFolder, _currentAppliedFilter.filter);
+    StorageManager.saveData(StorageManager.orderOnFolder, _currentAppliedOrder);
   }
 
   @override
@@ -124,14 +125,14 @@ class _KanjiListsState extends State<KanjiLists>
     return SizedBox(
         height: CustomSizes.defaultSizeFiltersList,
         child: ListView.builder(
-            itemCount: KanListFilters.values.length,
+            itemCount: FolderFilters.values.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: Margins.margin2),
                 child: ChoiceChip(
-                  label: Text(KanListFilters.values[index].label),
+                  label: Text(FolderFilters.values[index].label),
                   avatar: _currentAppliedFilter.index != index ? null : icon,
                   pressElevation: Margins.margin4,
                   padding:
@@ -144,30 +145,30 @@ class _KanjiListsState extends State<KanjiLists>
   }
 
   BlocBuilder _lists() {
-    return BlocBuilder<KanjiListBloc, KanjiListState>(
+    return BlocBuilder<FolderBloc, FolderState>(
       builder: (context, state) {
-        if (state is KanjiListStateFailure) {
+        if (state is FolderStateFailure) {
           return KPEmptyList(
               showTryButton: true,
               onRefresh: () => _addLoadingEvent(reset: true),
-              message: "kanji_lists_load_failed".tr());
-        } else if (state is KanjiListStateLoading ||
-            state is KanjiListStateSearching) {
+              message: "folder_list_load_failed".tr());
+        } else if (state is FolderStateLoading ||
+            state is FolderStateSearching) {
           return const Expanded(child: KPProgressIndicator());
-        } else if (state is KanjiListStateLoaded) {
+        } else if (state is FolderStateLoaded) {
           return state.lists.isEmpty
               ? Expanded(
                   child: KPEmptyList(
                       onRefresh: () => _addLoadingEvent(reset: true),
                       showTryButton: true,
-                      message: "kanji_lists_empty".tr()))
+                      message: "folder_list_empty".tr()))
               : Expanded(
                   child: RefreshIndicator(
                     onRefresh: () => _addLoadingEvent(reset: true),
                     color: CustomColors.secondaryColor,
                     child: ListView.builder(
                         key: const PageStorageKey<String>(
-                            'kanListListsController'),
+                            'folderListsController'),
                         controller: _scrollController,
                         itemCount: state.lists.length,
                         keyboardDismissBehavior:
@@ -175,16 +176,12 @@ class _KanjiListsState extends State<KanjiLists>
                         padding:
                             const EdgeInsets.only(bottom: Margins.margin24),
                         itemBuilder: (context, k) {
-                          return KanListTile(
+                          return KPDataTile<Folder>(
                             item: state.lists[k],
                             onTap: widget.removeFocus,
-                            mode: VisualizationModeExt.mode(
-                                StorageManager.readData(StorageManager
-                                        .kanListGraphVisualization) ??
-                                    VisualizationMode.radialChart),
                             onRemoval: () {
-                              BlocProvider.of<KanjiListBloc>(context)
-                                  .add(KanjiListEventDelete(
+                              BlocProvider.of<FolderBloc>(context)
+                                  .add(FolderEventDelete(
                                 state.lists[k],
                                 filter: _currentAppliedFilter,
                                 order: _currentAppliedOrder,

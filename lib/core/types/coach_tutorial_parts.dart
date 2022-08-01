@@ -10,7 +10,8 @@ extension CoachTutorialPartsExt on CoachTutorialParts {
         return [
           "coach_tutorial_kanlists_1".tr(),
           "coach_tutorial_kanlists_2".tr(),
-          "coach_tutorial_kanlists_3".tr()
+          "coach_tutorial_kanlists_3".tr(),
+          "coach_tutorial_kanlists_4".tr()
         ];
       case CoachTutorialParts.details:
         return [
@@ -26,6 +27,7 @@ extension CoachTutorialPartsExt on CoachTutorialParts {
     switch (this) {
       case CoachTutorialParts.kanList:
         return [
+          ShapeLightFocus.RRect,
           ShapeLightFocus.RRect,
           ShapeLightFocus.RRect,
           ShapeLightFocus.Circle

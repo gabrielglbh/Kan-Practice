@@ -8,44 +8,44 @@ import 'package:kanpractice/ui/consts.dart';
 part 'lists_event.dart';
 part 'lists_state.dart';
 
-/// This bloc is used in kanji_lists.dart, jisho.dart and add_market_list.dart.
+/// This bloc is used in kanjilists.dart, jisho.dart and add_marketlist.dart.
 class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
   KanjiListBloc() : super(KanjiListStateLoading()) {
     /// Maintain the list for pagination purposes
-    List<KanjiList> _list = [];
+    List<KanjiList> list = [];
 
     /// Maintain the list for pagination purposes on search
-    List<KanjiList> _searchList = [];
-    const int _limit = LazyLoadingLimits.kanList;
+    List<KanjiList> searchList = [];
+    const int limit = LazyLoadingLimits.kanList;
 
     /// Loading offset for normal pagination
-    int _loadingTimes = 0;
+    int loadingTimes = 0;
 
     /// Loading offset for search bar list pagination
-    int _loadingTimesForSearch = 0;
+    int loadingTimesForSearch = 0;
 
     on<KanjiListEventLoading>((event, emit) async {
       try {
-        _loadingTimesForSearch = 0;
+        loadingTimesForSearch = 0;
         if (event.reset) {
           emit(KanjiListStateLoading());
-          _list.clear();
-          _loadingTimes = 0;
+          list.clear();
+          loadingTimes = 0;
         }
 
         /// For every time we want to retrieve data, we need to instantiate
         /// a new list in order for Equatable to trigger and perform a change
-        /// of state. After, add to _list the elements for the next iteration.
-        List<KanjiList> fullList = List.of(_list);
+        /// of state. After, add to list the elements for the next iteration.
+        List<KanjiList> fullList = List.of(list);
         final List<KanjiList> pagination = await ListQueries.instance
             .getAllLists(
                 filter: event.filter,
                 order: _getSelectedOrder(event.order),
-                limit: _limit,
-                offset: _loadingTimes);
+                limit: limit,
+                offset: loadingTimes);
         fullList.addAll(pagination);
-        _list.addAll(pagination);
-        _loadingTimes += 1;
+        list.addAll(pagination);
+        loadingTimes += 1;
         emit(KanjiListStateLoaded(lists: fullList));
       } on Exception {
         emit(KanjiListStateFailure());
@@ -64,23 +64,23 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
 
     on<KanjiListEventSearching>((event, emit) async {
       try {
-        _loadingTimes = 0;
+        loadingTimes = 0;
         if (event.reset) {
           emit(KanjiListStateLoading());
-          _searchList.clear();
-          _loadingTimesForSearch = 0;
+          searchList.clear();
+          loadingTimesForSearch = 0;
         }
 
         /// For every time we want to retrieve data, we need to instantiate
         /// a new list in order for Equatable to trigger and perform a change
-        /// of state. After, add to _list the elements for the next iteration.
-        List<KanjiList> fullList = List.of(_searchList);
+        /// of state. After, add to list the elements for the next iteration.
+        List<KanjiList> fullList = List.of(searchList);
         final List<KanjiList> pagination = await ListQueries.instance
             .getListsMatchingQuery(event.query,
-                offset: _loadingTimesForSearch, limit: _limit);
+                offset: loadingTimesForSearch, limit: limit);
         fullList.addAll(pagination);
-        _searchList.addAll(pagination);
-        _loadingTimesForSearch += 1;
+        searchList.addAll(pagination);
+        loadingTimesForSearch += 1;
         emit(KanjiListStateLoaded(lists: fullList));
       } on Exception {
         emit(KanjiListStateFailure());
@@ -96,11 +96,11 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
           List<KanjiList> newList =
               await _getNewAllListsAndUpdateLazyLoadingState(
                   event.filter, event.order,
-                  limit: _limit, l: _list);
+                  limit: limit, l: list);
 
           /// Reset offsets
-          _loadingTimes = 0;
-          _loadingTimesForSearch = 0;
+          loadingTimes = 0;
+          loadingTimesForSearch = 0;
           emit(KanjiListStateLoaded(lists: newList));
         }
       }
@@ -116,14 +116,14 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
           if (event.useLazyLoading) {
             newList = await _getNewAllListsAndUpdateLazyLoadingState(
                 event.filter, event.order,
-                limit: _limit, l: _list);
+                limit: limit, l: list);
           } else {
             newList = await ListQueries.instance.getAllLists();
           }
 
           /// Reset offsets
-          _loadingTimes = 0;
-          _loadingTimesForSearch = 0;
+          loadingTimes = 0;
+          loadingTimesForSearch = 0;
           emit(KanjiListStateLoaded(lists: newList));
         }
       }
@@ -141,7 +141,7 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
         limit: limit,
         offset: 0);
 
-    /// Clear the _list and repopulate it with the newest items for KanjiListEventLoading
+    /// Clear the list and repopulate it with the newest items for KanjiListEventLoading
     /// to work properly for the next offset
     l.clear();
     l.addAll(lists);

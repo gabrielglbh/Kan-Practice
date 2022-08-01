@@ -13,7 +13,7 @@ class BulletPageView extends StatefulWidget {
       : super(key: key);
 
   @override
-  _BulletPageViewState createState() => _BulletPageViewState();
+  State<BulletPageView> createState() => _BulletPageViewState();
 }
 
 class _BulletPageViewState extends State<BulletPageView> {

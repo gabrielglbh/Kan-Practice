@@ -68,7 +68,7 @@ class Classifier {
     /// Resizes the image to its actual size to fit model's input shape
     final resizedImage = i.copyResize(image, width: width, height: height);
 
-    var _inputImage = List<List<double>>.generate(
+    var inputImage = List<List<double>>.generate(
             height, (i) => List.generate(width, (j) => 0.0))
         .reshape<double>([1, height, width, 1]);
 
@@ -78,7 +78,7 @@ class Classifier {
       for (int y = 0; y < width; y++) {
         double val = resizedImage[(x * width) + y].toDouble();
         val = val > 50 ? 1.0 : 0;
-        _inputImage[0][x][y][0] = val;
+        inputImage[0][x][y][0] = val;
       }
     }
 
@@ -87,7 +87,7 @@ class Classifier {
         interpreter.getOutputTensor(0).type);
 
     /// Run the interpreter on the given image
-    interpreter.run(_inputImage, outputBuffer.getBuffer());
+    interpreter.run(inputImage, outputBuffer.getBuffer());
 
     /// Normalize the output to go from 0 to 1 only
     final probabilityProcessor =

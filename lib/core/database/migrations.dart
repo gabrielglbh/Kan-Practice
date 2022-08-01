@@ -5,6 +5,20 @@ import 'package:kanpractice/core/database/models/test_result.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Migrations extends MigrationUtils {
+  Future<void> version6to7(Database db) async {
+    await db.rawQuery(
+        "CREATE TABLE ${KanListFolderRelationTableFields.relTable}("
+        "${KanListFolderRelationTableFields.nameField} TEXT NOT NULL, "
+        "${KanListFolderRelationTableFields.kanListNameField} TEXT NOT NULL, "
+        "PRIMARY KEY(${KanListFolderRelationTableFields.nameField}, ${KanListFolderRelationTableFields.kanListNameField}), "
+        "FOREIGN KEY (${KanListFolderRelationTableFields.nameField}) REFERENCES ${FolderTableFields.folderTable}(${FolderTableFields.nameField}) ON DELETE CASCADE ON UPDATE CASCADE, "
+        "FOREIGN KEY (${KanListFolderRelationTableFields.kanListNameField}) REFERENCES ${KanListTableFields.listsTable}(${KanListTableFields.nameField}) ON DELETE CASCADE ON UPDATE CASCADE)");
+
+    await db.rawQuery("CREATE TABLE ${FolderTableFields.folderTable}("
+        "${FolderTableFields.nameField} TEXT NOT NULL PRIMARY KEY, "
+        "${FolderTableFields.lastUpdatedField} INTEGER NOT NULL DEFAULT 0)");
+  }
+
   Future<void> version5to6(Database db) async {
     await db.rawQuery("ALTER TABLE ${TestTableFields.testTable} "
         "ADD COLUMN ${TestTableFields.testModeField} INTEGER NOT NULL "

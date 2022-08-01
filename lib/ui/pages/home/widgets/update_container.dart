@@ -17,7 +17,7 @@ class _UpdateContainerState extends State<UpdateContainer> {
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _getVersionNotice();
     });
     super.initState();

@@ -27,7 +27,7 @@ class KPCustomCanvas extends StatefulWidget {
       : super(key: key);
 
   @override
-  _KPCustomCanvasState createState() => _KPCustomCanvasState();
+  State<KPCustomCanvas> createState() => _KPCustomCanvasState();
 }
 
 class _KPCustomCanvasState extends State<KPCustomCanvas> {

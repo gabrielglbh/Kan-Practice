@@ -64,7 +64,7 @@ class BackUpPage extends StatelessWidget {
   }
 
   _createDialogForCreatingBackUp(BuildContext bloc) {
-    bool _backUpTests = true;
+    bool backUpTests = true;
     showDialog(
         context: bloc,
         builder: (context) => StatefulBuilder(
@@ -84,16 +84,16 @@ class BackUpPage extends StatelessWidget {
                                   style:
                                       Theme.of(context).textTheme.bodyText1)),
                           Switch(
-                              value: _backUpTests,
+                              value: backUpTests,
                               onChanged: (val) =>
-                                  setState(() => _backUpTests = !_backUpTests))
+                                  setState(() => backUpTests = !backUpTests))
                         ],
                       )
                     ],
                   ),
                   positiveButtonText: "backup_creation_dialog_positive".tr(),
-                  onPositive: () => BlocProvider.of<BackUpBloc>(bloc).add(
-                      BackUpLoadingCreateBackUp(backUpTests: _backUpTests)),
+                  onPositive: () => BlocProvider.of<BackUpBloc>(bloc)
+                      .add(BackUpLoadingCreateBackUp(backUpTests: backUpTests)),
                 );
               },
             ));

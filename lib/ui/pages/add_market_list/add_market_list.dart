@@ -59,7 +59,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
               builder: (context, state) {
                 if (state is AddToMarketStateLoading ||
                     state is AddToMarketStateSuccess) {
-                  return Container();
+                  return const SizedBox();
                 } else {
                   return IconButton(
                       onPressed: () {

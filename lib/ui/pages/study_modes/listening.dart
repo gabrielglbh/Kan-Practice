@@ -23,7 +23,7 @@ class ListeningStudy extends StatefulWidget {
   const ListeningStudy({Key? key, required this.args}) : super(key: key);
 
   @override
-  _ListeningStudyState createState() => _ListeningStudyState();
+  State<ListeningStudy> createState() => _ListeningStudyState();
 }
 
 class _ListeningStudyState extends State<ListeningStudy> {

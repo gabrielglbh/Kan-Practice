@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/routing/pages.dart';
+import 'package:kanpractice/ui/pages/add_folder/add_folder.dart';
 import 'package:kanpractice/ui/pages/add_kanji/add_kanji.dart';
 import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/pages/add_market_list/add_market_list.dart';
@@ -14,6 +15,7 @@ import 'package:kanpractice/ui/pages/jisho/arguments.dart';
 import 'package:kanpractice/ui/pages/jisho/jisho.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/bloc/details_bloc.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/list_details.dart';
+import 'package:kanpractice/ui/pages/kanji_list_on_folder/kanji_list_on_folder.dart';
 import 'package:kanpractice/ui/pages/study_modes/listening.dart';
 import 'package:kanpractice/ui/pages/study_modes/reading.dart';
 import 'package:kanpractice/ui/pages/study_modes/recognition.dart';
@@ -87,6 +89,13 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return CupertinoPageRoute(builder: (_) => const StatisticsPage());
     case KanPracticePages.marketAddListPage:
       return CupertinoPageRoute(builder: (_) => const AddMarketListPage());
+    case KanPracticePages.folderAddPage:
+      String? folder = settings.arguments as String?;
+      return CupertinoPageRoute(builder: (_) => AddFolderPage(folder: folder));
+    case KanPracticePages.kanjiListOnFolderPage:
+      String folder = settings.arguments as String;
+      return CupertinoPageRoute(
+          builder: (_) => KanListOnFolderPage(folder: folder));
   }
   return null;
 }

@@ -23,10 +23,10 @@ class KPLearningHeaderAnimation extends StatelessWidget {
           return FadeTransition(
             opacity: animation.drive(Tween(begin: 0, end: 1)),
             child: SlideTransition(
-                child: child,
                 position: animation.drive(Tween(
                     begin: const Offset(CustomAnimations.dxCardInfo, 0),
-                    end: Offset.zero))),
+                    end: Offset.zero)),
+                child: child),
           );
         },
         child: Card(

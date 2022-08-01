@@ -178,11 +178,11 @@ class MarketRecords {
   /// else, -2 will be returned
   Future<int> uploadToMarketPlace(String name, KanjiList list,
       List<Kanji> kanji, String description) async {
-    User? _user = _auth.currentUser;
-    await _user?.reload();
+    User? user = _auth.currentUser;
+    await user?.reload();
 
     /// If the user is not authenticated, exit
-    if (_user == null) {
+    if (user == null) {
       return -2;
     } else {
       try {
@@ -200,8 +200,8 @@ class MarketRecords {
         final MarketList resetList = MarketList(
                 name: name,
                 words: kanji.length,
-                uid: _user.uid,
-                author: _user.displayName ?? "",
+                uid: user.uid,
+                author: user.displayName ?? "",
                 description: description,
                 uploadedToMarket: GeneralUtils.getCurrentMilliseconds())
             .copyWithKeywords();
@@ -243,11 +243,11 @@ class MarketRecords {
   ///
   /// The [id] comes from the Firebase document id when retrieving the lists.
   Future<String> downloadFromMarketPlace(String id) async {
-    User? _user = _auth.currentUser;
-    await _user?.reload();
+    User? user = _auth.currentUser;
+    await user?.reload();
 
     /// If the user is not authenticated, exit
-    if (_user == null) {
+    if (user == null) {
       return "market_need_auth".tr();
     } else {
       try {
@@ -296,11 +296,11 @@ class MarketRecords {
   ///
   /// The [id] comes from the Firebase document id when retrieving the lists.
   Future<String> removeFromMarketPlace(String id) async {
-    User? _user = _auth.currentUser;
-    await _user?.reload();
+    User? user = _auth.currentUser;
+    await user?.reload();
 
     /// If the user is not authenticated, exit
-    if (_user == null) {
+    if (user == null) {
       return "market_need_auth".tr();
     } else {
       try {
@@ -347,11 +347,11 @@ class MarketRecords {
   ///
   /// The whole mean of the list is affected by this change.
   Future<String> rateList(String id, double rate) async {
-    User? _user = _auth.currentUser;
-    await _user?.reload();
+    User? user = _auth.currentUser;
+    await user?.reload();
 
     /// If the user is not authenticated, exit
-    if (_user == null) {
+    if (user == null) {
       return "market_need_auth".tr();
     } else {
       try {
@@ -367,12 +367,12 @@ class MarketRecords {
             if (doc.exists) {
               /// Update the current rating map with the new or already rated user score
               transaction.update(marketListDoc,
-                  {"${MarketList.ratingMapField}.${_user.uid}": rate});
+                  {"${MarketList.ratingMapField}.${user.uid}": rate});
 
               /// Get the number of entries in the map and calculate the average
               final ratings =
                   doc.get(MarketList.ratingMapField) as Map<String, dynamic>;
-              ratings[_user.uid] = rate;
+              ratings[user.uid] = rate;
               final ratingsValues = ratings.values.toList().cast<double>();
 
               /// If ratingValues is empty, mean will be equal to the first value: rate.

@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/home_types.dart';
-import 'package:kanpractice/ui/pages/kanji_lists/widgets/test_bottom_sheet.dart';
+import 'package:kanpractice/ui/pages/home/widgets/test_widgets/test_bottom_sheet.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_create_kanlist_dialog.dart';
 import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
@@ -63,10 +63,23 @@ class ActionsBottomSheet extends StatelessWidget {
                         title: Text("bottom_actions_create_kanlist".tr()),
                         leading: const Icon(Icons.add),
                         onTap: () async {
+                          final navigator = Navigator.of(context);
+
                           /// Pass through the parent the name being input
                           final name =
                               await KPCreateKanListDialog.show(context);
-                          Navigator.of(context).pop(name);
+                          navigator.pop(name);
+                        },
+                      ),
+                      const Divider(),
+                      ListTile(
+                        title: Text("bottom_actions_create_folder".tr()),
+                        leading: const Icon(Icons.create_new_folder_rounded),
+                        onTap: () async {
+                          final navigator = Navigator.of(context);
+                          await navigator
+                              .pushNamed(KanPracticePages.folderAddPage);
+                          navigator.pop("__folder");
                         },
                       ),
                       const Divider(),
@@ -74,9 +87,10 @@ class ActionsBottomSheet extends StatelessWidget {
                         title: Text("bottom_actions_upload_list".tr()),
                         leading: const Icon(Icons.upload_rounded),
                         onTap: () async {
-                          await Navigator.of(context)
+                          final navigator = Navigator.of(context);
+                          await navigator
                               .pushNamed(KanPracticePages.marketAddListPage);
-                          Navigator.of(context).pop();
+                          navigator.pop();
                         },
                       ),
                       const SizedBox(height: Margins.margin24)

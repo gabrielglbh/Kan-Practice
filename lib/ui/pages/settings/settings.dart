@@ -20,7 +20,7 @@ class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
 
   @override
-  _SettingsState createState() => _SettingsState();
+  State<Settings> createState() => _SettingsState();
 }
 
 class _SettingsState extends State<Settings> {
@@ -65,7 +65,7 @@ class _SettingsState extends State<Settings> {
                 trailing: const Icon(Icons.link),
                 onTap: () async {
                   try {
-                    await launch("google_play_link".tr());
+                    await launchUrl(Uri.parse("google_play_link".tr()));
                   } catch (err) {
                     GeneralUtils.getSnackBar(
                         context, "settings_information_rating_failed".tr());
@@ -79,7 +79,8 @@ class _SettingsState extends State<Settings> {
                 trailing: const Icon(Icons.link),
                 onTap: () async {
                   try {
-                    await launch("https://github.com/gabrielglbh/Kan-Practice");
+                    await launchUrl(Uri.parse(
+                        "https://github.com/gabrielglbh/Kan-Practice"));
                   } catch (err) {
                     GeneralUtils.getSnackBar(
                         context, "settings_information_rating_failed".tr());
@@ -239,7 +240,8 @@ class _SettingsState extends State<Settings> {
                     trailing: const Icon(Icons.link),
                     onTap: () async {
                       try {
-                        await launch("https://kanpractice.web.app");
+                        await launchUrl(
+                            Uri.parse("https://kanpractice.web.app"));
                       } catch (err) {
                         GeneralUtils.getSnackBar(
                             context, "launch_url_failed".tr());

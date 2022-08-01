@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/pages/backup/bloc/backup_bloc.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
@@ -17,11 +18,21 @@ class BackUpPage extends StatelessWidget {
         appBarTitle: "backup_title".tr(),
         child: BlocProvider<BackUpBloc>(
           create: (_) => BackUpBloc()..add(BackUpIdle()),
-          child: BlocBuilder<BackUpBloc, BackUpState>(
+          child: BlocConsumer<BackUpBloc, BackUpState>(
+            listener: (context, state) {
+              if (state is BackUpStateFailure) {
+                GeneralUtils.getSnackBar(context, state.message);
+              }
+              if (state is BackUpStateSuccess) {
+                GeneralUtils.getSnackBar(context, state.message);
+                Navigator.of(context).pop(); // Go to manage account, pop
+                Navigator.of(context).pop(); // Go to settings, pop
+              }
+            },
             builder: (context, state) {
               if (state is BackUpStateLoading) {
                 return const KPProgressIndicator();
-              } else if (state is BackUpStateLoaded) {
+              } else {
                 return SingleChildScrollView(
                   child: Column(
                     children: [
@@ -44,19 +55,9 @@ class BackUpPage extends StatelessWidget {
                                     CustomColors.getSecondaryColor(context))),
                         onTap: () => _createDialogForRemovingBackUp(context),
                       ),
-                      const Divider(),
-                      Visibility(
-                        visible: state.message != "",
-                        child: ListTile(
-                            leading: Icon(Icons.info_rounded,
-                                color: CustomColors.getSecondaryColor(context)),
-                            title: Text(state.message)),
-                      )
                     ],
                   ),
                 );
-              } else {
-                return Container();
               }
             },
           ),
@@ -92,7 +93,8 @@ class BackUpPage extends StatelessWidget {
                     ],
                   ),
                   positiveButtonText: "backup_creation_dialog_positive".tr(),
-                  onPositive: () => BlocProvider.of<BackUpBloc>(bloc)
+                  onPositive: () => bloc
+                      .read<BackUpBloc>()
                       .add(BackUpLoadingCreateBackUp(backUpTests: backUpTests)),
                 );
               },
@@ -107,8 +109,8 @@ class BackUpPage extends StatelessWidget {
               content: Text("backup_merge_dialog_content".tr(),
                   style: Theme.of(context).textTheme.bodyText1),
               positiveButtonText: "backup_merge_dialog_positive".tr(),
-              onPositive: () => BlocProvider.of<BackUpBloc>(bloc)
-                  .add(BackUpLoadingMergeBackUp()),
+              onPositive: () =>
+                  bloc.read<BackUpBloc>().add(BackUpLoadingMergeBackUp()),
             ));
   }
 
@@ -120,8 +122,8 @@ class BackUpPage extends StatelessWidget {
               content: Text("backup_removal_dialog_content".tr(),
                   style: Theme.of(context).textTheme.bodyText1),
               positiveButtonText: "backup_removal_dialog_positive".tr(),
-              onPositive: () => BlocProvider.of<BackUpBloc>(bloc)
-                  .add(BackUpLoadingRemoveBackUp()),
+              onPositive: () =>
+                  bloc.read<BackUpBloc>().add(BackUpLoadingRemoveBackUp()),
             ));
   }
 }

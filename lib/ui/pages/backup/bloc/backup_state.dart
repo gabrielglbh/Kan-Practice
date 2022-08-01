@@ -7,10 +7,21 @@ class BackUpState extends Equatable {
   List<Object?> get props => [];
 }
 
-class BackUpStateLoaded extends BackUpState {
+class BackUpStateIdle extends BackUpState {}
+
+class BackUpStateFailure extends BackUpState {
   final String message;
 
-  const BackUpStateLoaded({this.message = ""});
+  const BackUpStateFailure({this.message = ""});
+
+  @override
+  List<Object> get props => [message];
+}
+
+class BackUpStateSuccess extends BackUpState {
+  final String message;
+
+  const BackUpStateSuccess({this.message = ""});
 
   @override
   List<Object> get props => [message];

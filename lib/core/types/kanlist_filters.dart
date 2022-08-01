@@ -1,13 +1,22 @@
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-enum KanListFilters { all, writing, reading, recognition, listening }
+enum KanListFilters {
+  all,
+  alphabetically,
+  writing,
+  reading,
+  recognition,
+  listening
+}
 
 extension KanListFiltersExtensions on KanListFilters {
   String get label {
     switch (this) {
       case KanListFilters.all:
         return "filters_all".tr();
+      case KanListFilters.alphabetically:
+        return "ABC";
       case KanListFilters.writing:
         return "${"study_modes_writing".tr()} %";
       case KanListFilters.reading:
@@ -31,6 +40,8 @@ extension KanListFiltersExtensions on KanListFilters {
         return KanListTableFields.totalWinRateListeningField;
       case KanListFilters.all:
         return KanListTableFields.lastUpdatedField;
+      case KanListFilters.alphabetically:
+        return KanListTableFields.nameField;
     }
   }
 }
@@ -39,6 +50,8 @@ class KanListFiltersUtils {
   static KanListFilters getFilterFrom(String f) {
     if (f == KanListTableFields.lastUpdatedField) {
       return KanListFilters.all;
+    } else if (f == KanListTableFields.nameField) {
+      return KanListFilters.alphabetically;
     } else if (f == KanListTableFields.totalWinRateWritingField) {
       return KanListFilters.writing;
     } else if (f == KanListTableFields.totalWinRateReadingField) {

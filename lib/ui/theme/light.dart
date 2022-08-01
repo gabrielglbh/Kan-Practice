@@ -80,13 +80,12 @@ final ThemeData light = ThemeData(
               BorderRadius.all(Radius.circular(CustomRadius.radius16))),
     ),
     snackBarTheme: const SnackBarThemeData(
-        backgroundColor: Colors.grey,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
             borderRadius:
                 BorderRadius.all(Radius.circular(CustomRadius.radius16))),
-        elevation: 6,
-        contentTextStyle: TextStyle(color: _accent)),
+        elevation: 12,
+        contentTextStyle: TextStyle(color: _primary)),
     textSelectionTheme: const TextSelectionThemeData(
         cursorColor: CustomColors.secondaryDarkerColor),
     inputDecorationTheme: InputDecorationTheme(

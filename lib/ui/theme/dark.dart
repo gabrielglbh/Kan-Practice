@@ -78,14 +78,13 @@ final ThemeData dark = ThemeData(
         shape: RoundedRectangleBorder(
             borderRadius:
                 BorderRadius.all(Radius.circular(CustomRadius.radius16)))),
-    snackBarTheme: SnackBarThemeData(
-        backgroundColor: Colors.grey,
+    snackBarTheme: const SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
-        shape: const RoundedRectangleBorder(
+        shape: RoundedRectangleBorder(
             borderRadius:
                 BorderRadius.all(Radius.circular(CustomRadius.radius16))),
-        elevation: 6,
-        contentTextStyle: TextStyle(color: _primary)),
+        elevation: 12,
+        contentTextStyle: TextStyle(color: _accent)),
     textSelectionTheme:
         const TextSelectionThemeData(cursorColor: CustomColors.secondaryColor),
     inputDecorationTheme: InputDecorationTheme(

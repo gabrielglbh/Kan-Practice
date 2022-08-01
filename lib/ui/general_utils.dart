@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/core/firebase/queries/back_ups.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:timeago/timeago.dart' as t;
@@ -83,8 +84,18 @@ class GeneralUtils {
   static getSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(
-          content: Text(message), duration: const Duration(seconds: 2)));
+      ..showSnackBar(
+        SnackBar(
+          content: Row(children: [
+            const Padding(
+              padding: EdgeInsets.only(right: Margins.margin8),
+              child: Icon(Icons.info_rounded, color: Colors.white),
+            ),
+            Expanded(child: Text(message)),
+          ]),
+          duration: const Duration(seconds: 2),
+        ),
+      );
   }
 
   /// Transforms the current time to milliseconds

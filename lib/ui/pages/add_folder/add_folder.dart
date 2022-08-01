@@ -107,8 +107,10 @@ class _AddFolderPageState extends State<AddFolderPage> {
                     enabled: widget.folder == null,
                     onEditingComplete: () => _fn.unfocus(),
                   ),
-                  state is AddFolderStateAvailableKanLists &&
-                          state.lists.isNotEmpty
+                  (state is AddFolderStateAvailableKanLists &&
+                              state.lists.isNotEmpty) ||
+                          state is AddFolderStateInitial ||
+                          state is AddFolderStateFailure
                       ? Expanded(
                           child: Column(
                             children: [

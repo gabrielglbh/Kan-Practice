@@ -34,8 +34,12 @@ class AddFolderBloc extends Bloc<AddFolderEvent, AddFolderState> {
       if (event.folder.trim().isEmpty) {
         emit(AddFolderStateFailure("add_folder_name_error".tr()));
       } else {
+        final List<String> map = [];
+        event.kanLists.forEach((key, value) {
+          if (value) map.add(key);
+        });
         final code = await FolderQueries.instance
-            .createFolder(event.folder, kanLists: event.kanLists.keys.toList());
+            .createFolder(event.folder, kanLists: map);
         if (code == 0) {
           emit(AddFolderStateSuccess());
         } else {

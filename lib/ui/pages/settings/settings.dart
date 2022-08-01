@@ -156,10 +156,11 @@ class _SettingsState extends State<Settings> {
                         ?.copyWith(color: Colors.grey.shade500)),
                 onTap: () async {
                   final newValue = await ChangeKanjiInTest.show(context);
-                  setState(() => _kanjiInTest =
-                      newValue ?? CustomSizes.numberOfKanjiInTest);
-                  StorageManager.saveData(
-                      StorageManager.numberOfKanjiInTest, _kanjiInTest);
+                  if (newValue != null) {
+                    setState(() => _kanjiInTest = newValue);
+                    StorageManager.saveData(
+                        StorageManager.numberOfKanjiInTest, _kanjiInTest);
+                  }
                 },
               ),
               const Divider(),

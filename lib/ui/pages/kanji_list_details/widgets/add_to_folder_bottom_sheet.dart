@@ -45,8 +45,7 @@ class _AddToFolderBottomSheetState extends State<AddToFolderBottomSheet> {
                     style: Theme.of(context).textTheme.headline6),
               ),
               BlocProvider<FolderBloc>(
-                create: (_) =>
-                    FolderBloc()..add(const FolderForTestEventLoading()),
+                create: (_) => FolderBloc()..add(FolderForTestEventLoading()),
                 child: BlocConsumer<FolderBloc, FolderState>(
                   listener: (context, state) {
                     if (state is FolderStateLoaded && state.lists.isEmpty) {
@@ -59,7 +58,7 @@ class _AddToFolderBottomSheetState extends State<AddToFolderBottomSheet> {
                           showTryButton: true,
                           onRefresh: () => context
                               .read<FolderBloc>()
-                              .add(const FolderForTestEventLoading()),
+                              .add(FolderForTestEventLoading()),
                           message: "add_to_folder_from_list_error".tr());
                     } else if (state is FolderStateLoading) {
                       return const KPProgressIndicator();

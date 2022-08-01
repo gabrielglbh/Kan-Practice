@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
+import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
@@ -28,6 +29,11 @@ class KPTestStudyMode extends StatelessWidget {
   /// lesson specifically. If null, all kanji available will be taken into consideration.
   final String? practiceList;
 
+  /// ONLY VALID FOR FOLDER TEST
+  ///
+  /// String defining the folder from which gather the words
+  final String? folder;
+
   /// Type of test being performed
   final Tests type;
 
@@ -35,6 +41,7 @@ class KPTestStudyMode extends StatelessWidget {
       {Key? key,
       this.list,
       this.practiceList,
+      this.folder,
       required this.type,
       required this.testName})
       : super(key: key);
@@ -44,6 +51,17 @@ class KPTestStudyMode extends StatelessWidget {
 
     /// Get all the list of all kanji and perform a 20 kanji random sublist
     if (listName == null) {
+      /// If the type is Folder, it means that we are on an specific folder kanjilist list
+      /// and we want to perform a fast test on all kanji available within
+      /// the KanList of the folder
+      if (type == Tests.folder) {
+        if (folder == null) return [];
+
+        List<Kanji> list =
+            await FolderQueries.instance.getAllKanjiOnListsOnFolder([folder!]);
+        list.shuffle();
+        return list;
+      }
       List<Kanji> list =
           await KanjiQueries.instance.getAllKanji(mode: mode, type: type);
 

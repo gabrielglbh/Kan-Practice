@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kanpractice/core/database/models/folder.dart';
-import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/types/folder_filters.dart';
 import 'package:kanpractice/ui/consts.dart';
@@ -81,19 +80,8 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
     on<FolderForTestEventLoading>((event, emit) async {
       try {
         emit(FolderStateLoading());
-        // Used in add_folder_page to get all folders
-        if (event.folder == null) {
-          final List<Folder> lists =
-              await FolderQueries.instance.getAllFolders();
-          emit(FolderStateLoaded(lists: lists));
-        }
-        // Used in the folder test to gather only the lists and words related
-        // to a certain folder: Used within kanji_list_on_folder
-        else {
-          final List<KanjiList> lists =
-              await FolderQueries.instance.getAllListsOnFolder(event.folder!);
-          // TODO: Retrieve from single folder for test purposes
-        }
+        final List<Folder> lists = await FolderQueries.instance.getAllFolders();
+        emit(FolderStateLoaded(lists: lists));
       } on Exception {
         emit(FolderStateFailure());
       }

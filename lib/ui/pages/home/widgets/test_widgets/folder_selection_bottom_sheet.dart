@@ -90,14 +90,14 @@ class _FolderSelectionBottomSheetState
               Visibility(
                 visible: !_selectionMode,
                 child: BlocProvider(
-                  create: (_) => _bloc..add(const FolderForTestEventLoading()),
+                  create: (_) => _bloc..add(FolderForTestEventLoading()),
                   child: BlocBuilder<FolderBloc, FolderState>(
                     builder: (context, state) {
                       if (state is FolderStateFailure) {
                         return KPEmptyList(
                             showTryButton: true,
                             onRefresh: () =>
-                                _bloc..add(const FolderForTestEventLoading()),
+                                _bloc..add(FolderForTestEventLoading()),
                             message: "study_bottom_sheet_load_failed".tr());
                       } else if (state is FolderStateLoading) {
                         return const KPProgressIndicator();

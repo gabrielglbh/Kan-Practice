@@ -4,8 +4,6 @@ import 'package:kanpractice/core/database/models/folder.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/models/rel_folder_kanlist.dart';
-import 'package:kanpractice/core/database/queries/kanji_queries.dart';
-import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:kanpractice/core/types/folder_filters.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/ui/general_utils.dart';

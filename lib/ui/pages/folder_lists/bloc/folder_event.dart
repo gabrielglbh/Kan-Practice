@@ -24,10 +24,7 @@ class FolderEventLoading extends FolderEvent {
   List<Object> get props => [filter, order, reset];
 }
 
-class FolderForTestEventLoading extends FolderEvent {
-  final String? folder;
-  const FolderForTestEventLoading({this.folder});
-}
+class FolderForTestEventLoading extends FolderEvent {}
 
 class FolderEventSearching extends FolderEvent {
   final String query;

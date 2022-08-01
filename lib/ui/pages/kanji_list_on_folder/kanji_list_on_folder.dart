@@ -5,6 +5,7 @@ import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/core/types/tab_types.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/pages/kanji_list_on_folder/bloc/kl_folder_bloc.dart';
+import 'package:kanpractice/ui/widgets/blitz/kp_blitz_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/kp_kanji_lists/kanji_lists.dart';
 import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 import 'package:kanpractice/ui/widgets/kp_search_bar.dart';
@@ -69,8 +70,9 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
               appBarTitle: widget.folder,
               appBarActions: [
                 IconButton(
-                  onPressed: () {
-                    // TODO: New bottom sheet for selecting the folders
+                  onPressed: () async {
+                    await KPBlitzBottomSheet.show(context,
+                        folderList: widget.folder);
                   },
                   icon: const Icon(Icons.flash_on_rounded),
                 ),

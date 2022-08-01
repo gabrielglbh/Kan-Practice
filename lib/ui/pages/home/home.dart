@@ -266,6 +266,17 @@ class _HomePageState extends State<HomePage>
                           TabBar(
                             key: folders,
                             controller: _tabController,
+                            onTap: (tab) {
+                              if (tab == 0) {
+                                context
+                                    .read<KanjiListBloc>()
+                                    .add(_addKanjiListLoadingEvent());
+                              } else {
+                                contextFolder
+                                    .read<FolderBloc>()
+                                    .add(_addFolderListLoadingEvent());
+                              }
+                            },
                             tabs: const [
                               Tab(icon: Icon(Icons.table_rows_rounded)),
                               Tab(icon: Icon(Icons.folder_rounded)),

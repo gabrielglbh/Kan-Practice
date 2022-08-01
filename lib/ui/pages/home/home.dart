@@ -25,7 +25,6 @@ import 'package:kanpractice/ui/pages/market/market.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 import 'package:kanpractice/ui/widgets/kp_search_bar.dart';
-import 'package:timeago/timeago.dart';
 
 class HomePage extends StatefulWidget {
   final bool? showTestBottomSheet;

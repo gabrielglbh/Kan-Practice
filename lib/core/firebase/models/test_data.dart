@@ -20,6 +20,7 @@ class TestData {
   final int numberTests;
   final int lessPctTests;
   final int categoryTests;
+  final int folderTests;
 
   const TestData(
       {required this.totalTests,
@@ -37,7 +38,8 @@ class TestData {
       required this.remembranceTests,
       required this.numberTests,
       required this.lessPctTests,
-      required this.categoryTests});
+      required this.categoryTests,
+      required this.folderTests});
 
   /// Empty instance of [BackUp]
   static const TestData empty = TestData(
@@ -56,7 +58,8 @@ class TestData {
       remembranceTests: 0,
       numberTests: 0,
       lessPctTests: 0,
-      categoryTests: 0);
+      categoryTests: 0,
+      folderTests: 0);
 
   factory TestData.fromJson(Map<String, dynamic> json) =>
       _$TestDataFromJson(json);

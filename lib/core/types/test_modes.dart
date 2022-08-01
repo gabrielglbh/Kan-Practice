@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-enum Tests { lists, blitz, time, numbers, less, categories }
+enum Tests { lists, blitz, time, numbers, less, categories, folder }
 
 extension TestsExt on Tests {
   String get name {
@@ -18,6 +18,8 @@ extension TestsExt on Tests {
         return "test_mode_less".tr();
       case Tests.categories:
         return "test_mode_categories".tr();
+      case Tests.folder:
+        return "test_mode_folder".tr();
     }
   }
 
@@ -35,6 +37,8 @@ extension TestsExt on Tests {
         return Icons.indeterminate_check_box_outlined;
       case Tests.categories:
         return Icons.category;
+      case Tests.folder:
+        return Icons.folder_rounded;
     }
   }
 }
@@ -53,6 +57,8 @@ class TestsUtils {
         return Tests.less;
       case 5:
         return Tests.categories;
+      case 6:
+        return Tests.folder;
       case 0:
       default:
         return Tests.lists;

@@ -69,6 +69,8 @@ class _TestBottomSheetState extends State<TestBottomSheet> {
                           return _testBasedButtons(context, Tests.less);
                         case Tests.categories:
                           return _testBasedButtons(context, Tests.categories);
+                        case Tests.folder:
+                          return _testBasedButtons(context, Tests.folder);
                       }
                     })),
               ),
@@ -103,6 +105,9 @@ class _TestBottomSheetState extends State<TestBottomSheet> {
               break;
             case Tests.categories:
               KanListCategorySelectionBottomSheet.show(context);
+              break;
+            case Tests.folder:
+              // TODO: New bottom sheet for selecting the folders
               break;
           }
         });

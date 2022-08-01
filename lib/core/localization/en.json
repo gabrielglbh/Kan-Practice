@@ -330,5 +330,6 @@
   "add_folder_update_title": "Add Lists to Folder",
   "add_folder_lists_selection_empty": "No available KanLists. Create more to be able to add them to this folder.",
   "add_to_folder_from_list_title": "Add this list to any folder",
-  "add_to_folder_from_list_error": "Something happened while adding the list to the folder. Try again later."
+  "add_to_folder_from_list_error": "Something happened while adding the list to the folder. Try again later.",
+  "test_mode_folder": "Folder Test"
 }

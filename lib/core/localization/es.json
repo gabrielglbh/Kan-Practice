@@ -332,5 +332,12 @@
   "add_to_folder_from_list_title": "Añadir esta lista a cualquier carpeta",
   "add_to_folder_from_list_error": "Ha ocurrido algo al añadir la lista a la carpeta. Inténtalo de nuevo más tarde.",
   "test_mode_folder": "Test de Carpeta",
-  "study_folder_bottom_sheet_title": "Haz un test con las KanLists dentro de las carpetas de tu elección"
+  "study_folder_bottom_sheet_title": "Haz un test con las KanLists dentro de las carpetas de tu elección",
+  "abbr_test_mode_selection": "Selección",
+  "abbr_test_mode_blitz": "Blitz",
+  "abbr_test_mode_remembrance": "Recuerdo",
+  "abbr_test_mode_number": "Números",
+  "abbr_test_mode_less": "Menor %",
+  "abbr_test_mode_categories": "Categorías",
+  "abbr_test_mode_folder": "Carpetas"
 }

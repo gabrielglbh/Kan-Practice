@@ -332,5 +332,12 @@
   "add_to_folder_from_list_title": "Diese Liste zu einem beliebigen Ordner hinzufügen",
   "add_to_folder_from_list_error": "Beim Hinzufügen der Liste zum Ordner ist etwas passiert. Versuchen Sie es später noch einmal.",
   "test_mode_folder": "Ordner test",
-  "study_folder_bottom_sheet_title": "Machen Sie einen Test mit den KanListen in den Ordnern Ihrer Wahl"
+  "study_folder_bottom_sheet_title": "Machen Sie einen Test mit den KanListen in den Ordnern Ihrer Wahl",
+  "abbr_test_mode_selection": "Auswahl",
+  "abbr_test_mode_blitz": "Blitz",
+  "abbr_test_mode_remembrance": "Gedächtnis",
+  "abbr_test_mode_number": "Nummers",
+  "abbr_test_mode_less": "Weniger %",
+  "abbr_test_mode_categories": "Kategories",
+  "abbr_test_mode_folder": "Ordner"
 }

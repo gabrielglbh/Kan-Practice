@@ -86,7 +86,7 @@ class _TestBottomSheetState extends State<TestBottomSheet> {
   Widget _testBasedButtons(BuildContext context, Tests mode) {
     return KPButton(
         icon: mode.icon,
-        title2: mode.name,
+        title2: mode.nameAbbr,
         onTap: () async {
           switch (mode) {
             case Tests.lists:

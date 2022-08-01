@@ -23,6 +23,25 @@ extension TestsExt on Tests {
     }
   }
 
+  String get nameAbbr {
+    switch (this) {
+      case Tests.lists:
+        return "abbr_test_mode_selection".tr();
+      case Tests.blitz:
+        return "abbr_test_mode_blitz".tr();
+      case Tests.time:
+        return "abbr_test_mode_remembrance".tr();
+      case Tests.numbers:
+        return "abbr_test_mode_number".tr();
+      case Tests.less:
+        return "abbr_test_mode_less".tr();
+      case Tests.categories:
+        return "abbr_test_mode_categories".tr();
+      case Tests.folder:
+        return "abbr_test_mode_folder".tr();
+    }
+  }
+
   IconData get icon {
     switch (this) {
       case Tests.lists:

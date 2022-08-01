@@ -88,7 +88,7 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
           emit(FolderStateLoaded(lists: lists));
         }
         // Used in the folder test to gather only the lists and words related
-        // to a certain folder
+        // to a certain folder: Used within kanji_list_on_folder
         else {
           final List<KanjiList> lists =
               await FolderQueries.instance.getAllListsOnFolder(event.folder!);

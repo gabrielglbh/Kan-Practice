@@ -330,5 +330,7 @@
   "add_folder_update_title": "Listen zum Ordner hinzufügen",
   "add_folder_lists_selection_empty": "Keine verfügbaren KanListen. Erstellen Sie weitere, um sie zu diesem Ordner hinzufügen zu können.",
   "add_to_folder_from_list_title": "Diese Liste zu einem beliebigen Ordner hinzufügen",
-  "add_to_folder_from_list_error": "Beim Hinzufügen der Liste zum Ordner ist etwas passiert. Versuchen Sie es später noch einmal."
+  "add_to_folder_from_list_error": "Beim Hinzufügen der Liste zum Ordner ist etwas passiert. Versuchen Sie es später noch einmal.",
+  "test_mode_folder": "Ordner test",
+  "study_folder_bottom_sheet_title": "Machen Sie einen Test mit den KanListen in den Ordnern Ihrer Wahl"
 }

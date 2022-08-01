@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:kanpractice/core/database/models/folder.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/ui/consts.dart';
 
-class KPKanListGrid extends StatelessWidget {
+class KPKanListGrid<T> extends StatelessWidget {
   final Function(String name) onTap;
-  final List<KanjiList> items;
+  final List<T> items;
   final bool Function(String name) isSelected;
   const KPKanListGrid({
     Key? key,
     required this.onTap,
     required this.items,
     required this.isSelected,
-  }) : super(key: key);
+  })  : assert(items is List<Folder> || items is List<KanjiList>),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,9 @@ class KPKanListGrid extends StatelessWidget {
           crossAxisCount: 4, childAspectRatio: 2),
       itemCount: items.length,
       itemBuilder: (context, index) {
-        String name = items[index].name;
+        String name = items[index] is KanjiList
+            ? (items[index] as KanjiList).name
+            : (items[index] as Folder).folder;
         return Padding(
           padding: const EdgeInsets.all(Margins.margin4),
           child: GestureDetector(

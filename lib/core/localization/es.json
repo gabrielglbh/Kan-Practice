@@ -330,5 +330,7 @@
   "add_folder_update_title": "Añadir lista a carpeta",
   "add_folder_lists_selection_empty": "No hay listas disponibles. Crea más para poder añadirlas a esta carpeta",
   "add_to_folder_from_list_title": "Añadir esta lista a cualquier carpeta",
-  "add_to_folder_from_list_error": "Ha ocurrido algo al añadir la lista a la carpeta. Inténtalo de nuevo más tarde."
+  "add_to_folder_from_list_error": "Ha ocurrido algo al añadir la lista a la carpeta. Inténtalo de nuevo más tarde.",
+  "test_mode_folder": "Test de Carpeta",
+  "study_folder_bottom_sheet_title": "Haz un test con las KanLists dentro de las carpetas de tu elección"
 }

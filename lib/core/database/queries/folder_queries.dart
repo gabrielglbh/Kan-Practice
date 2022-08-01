@@ -1,8 +1,11 @@
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/folder.dart';
+import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/models/rel_folder_kanlist.dart';
+import 'package:kanpractice/core/database/queries/kanji_queries.dart';
+import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:kanpractice/core/types/folder_filters.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/ui/general_utils.dart';
@@ -109,6 +112,56 @@ class FolderQueries {
             "$limitParsed $offsetParsed");
         if (res != null) {
           return List.generate(res.length, (i) => KanjiList.fromJson(res[i]));
+        }
+        return [];
+      } catch (err) {
+        print(err.toString());
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
+
+  /// Get the full list of [Kanji] related to a certain [Folder] from all [KanjiList]
+  /// appearing on it.
+  Future<List<Kanji>> getAllKanjiOnListsOnFolder(List<String> folders) async {
+    if (_database != null) {
+      try {
+        String whereClause = "";
+
+        /// Build up the where clauses from the listName
+        for (var folder in folders) {
+          whereClause +=
+              "${KanListFolderRelationTableFields.nameField} LIKE '$folder' OR ";
+        }
+
+        /// Clean up the String
+        whereClause = whereClause.substring(0, whereClause.length - 4);
+
+        final res = await _database?.rawQuery(
+            "SELECT DISTINCT K.${KanjiTableFields.kanjiField}, "
+            "K.${KanjiTableFields.listNameField}, "
+            "K.${KanjiTableFields.meaningField}, "
+            "K.${KanjiTableFields.pronunciationField}, "
+            "K.${KanjiTableFields.winRateWritingField}, "
+            "K.${KanjiTableFields.winRateReadingField}, "
+            "K.${KanjiTableFields.winRateRecognitionField}, "
+            "K.${KanjiTableFields.winRateListeningField}, "
+            "K.${KanjiTableFields.dateAddedField}, "
+            "K.${KanjiTableFields.dateLastShown}, "
+            "K.${KanjiTableFields.dateLastShownWriting}, "
+            "K.${KanjiTableFields.dateLastShownReading}, "
+            "K.${KanjiTableFields.dateLastShownRecognition}, "
+            "K.${KanjiTableFields.dateLastShownListening}, "
+            "K.${KanjiTableFields.categoryField} "
+            "FROM ${KanListFolderRelationTableFields.relTable} L JOIN ${KanListTableFields.listsTable} R "
+            "ON L.${KanListFolderRelationTableFields.kanListNameField}=R.${KanListTableFields.nameField} "
+            "JOIN ${KanjiTableFields.kanjiTable} K "
+            "ON K.${KanjiTableFields.listNameField}=R.${KanListTableFields.nameField} "
+            "WHERE $whereClause");
+        if (res != null) {
+          return List.generate(res.length, (i) => Kanji.fromJson(res[i]));
         }
         return [];
       } catch (err) {

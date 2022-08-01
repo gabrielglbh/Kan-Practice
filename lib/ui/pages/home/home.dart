@@ -25,6 +25,7 @@ import 'package:kanpractice/ui/pages/market/market.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 import 'package:kanpractice/ui/widgets/kp_search_bar.dart';
+import 'package:timeago/timeago.dart';
 
 class HomePage extends StatefulWidget {
   final bool? showTestBottomSheet;
@@ -142,10 +143,10 @@ class _HomePageState extends State<HomePage>
       if (_currentTab == TabType.kanlist) {
         c1.read<KanjiListBloc>().add(_addKanjiListLoadingEvent());
       } else {
-        c3.read<FolderBloc>().add(_addFolderListLoadingEvent());
+        c2.read<FolderBloc>().add(_addFolderListLoadingEvent());
       }
     } else {
-      c2.read<MarketBloc>().add(_addMarketLoadingEvent());
+      c3.read<MarketBloc>().add(_addMarketLoadingEvent());
     }
   }
 
@@ -185,43 +186,49 @@ class _HomePageState extends State<HomePage>
             }
           }
         },
-        builder: (context1, state1) => KPScaffold(
-          onWillPop: () async {
-            if (_onTutorial) return false;
-            if (_searchHasFocus) {
-              _resetLists(context, context, context);
-              _searchBarFn.unfocus();
-              return false;
-            } else {
-              return true;
-            }
-          },
-          appBarTitle: _currentPage.appBarTitle,
-          appBarActions: [
-            IconButton(
-              key: dictionary,
-              icon: const Icon(Icons.menu_book_rounded),
-              onPressed: () {
-                Navigator.of(context).pushNamed(KanPracticePages.dictionaryPage,
-                    arguments: const DictionaryArguments(searchInJisho: true));
-              },
-            ),
-            IconButton(
-              onPressed: () async {
-                await Navigator.of(context)
-                    .pushNamed(KanPracticePages.settingsPage);
-              },
-              icon: const Icon(Icons.settings),
-            )
-          ],
-          bottomNavigationWidget: _bottomNavigationBar(),
-          child: Column(
-            children: [
-              const UpdateContainer(),
+        builder: (context, state) => BlocBuilder<FolderBloc, FolderState>(
+          builder: (contextFolder, stateFolder) =>
               BlocBuilder<MarketBloc, MarketState>(
-                builder: (context2, state2) =>
-                    BlocBuilder<FolderBloc, FolderState>(
-                  builder: (context3, state3) => KPSearchBar(
+            builder: (contextMarket, stateMarket) => KPScaffold(
+              onWillPop: () async {
+                if (_onTutorial) return false;
+                if (_searchHasFocus) {
+                  _resetLists(context, context, context);
+                  _searchBarFn.unfocus();
+                  return false;
+                } else {
+                  return true;
+                }
+              },
+              appBarTitle: _currentPage.appBarTitle,
+              appBarActions: [
+                IconButton(
+                  key: dictionary,
+                  icon: const Icon(Icons.menu_book_rounded),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(
+                        KanPracticePages.dictionaryPage,
+                        arguments:
+                            const DictionaryArguments(searchInJisho: true));
+                  },
+                ),
+                IconButton(
+                  onPressed: () async {
+                    await Navigator.of(context)
+                        .pushNamed(KanPracticePages.settingsPage);
+                  },
+                  icon: const Icon(Icons.settings),
+                )
+              ],
+              bottomNavigationWidget: _bottomNavigationBar(
+                context,
+                contextFolder,
+                contextMarket,
+              ),
+              child: Column(
+                children: [
+                  const UpdateContainer(),
+                  KPSearchBar(
                     controller: _searchTextController,
                     hint: _currentPage == HomeType.market
                         ? _currentPage.searchBarHint
@@ -233,16 +240,16 @@ class _HomePageState extends State<HomePage>
                       _query = query;
                       if (_currentPage == HomeType.kanlist) {
                         if (_currentTab == TabType.kanlist) {
-                          context1
+                          context
                               .read<KanjiListBloc>()
                               .add(_addKanjiListSearchingEvent(query));
                         } else {
-                          context3
+                          contextFolder
                               .read<FolderBloc>()
                               .add(_addFolderListSearchingEvent(query));
                         }
                       } else {
-                        context2
+                        contextMarket
                             .read<MarketBloc>()
                             .add(_addMarketSearchingEvent(query));
                       }
@@ -250,84 +257,86 @@ class _HomePageState extends State<HomePage>
                     onExitSearch: () {
                       /// Empty the query
                       _query = "";
-                      _resetLists(context1, context2, context3);
+                      _resetLists(context, contextFolder, contextMarket);
                     },
                   ),
-                ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        if (_currentPage == HomeType.kanlist)
+                          TabBar(
+                            key: folders,
+                            controller: _tabController,
+                            tabs: const [
+                              Tab(icon: Icon(Icons.table_rows_rounded)),
+                              Tab(icon: Icon(Icons.folder_rounded)),
+                            ],
+                          ),
+                        Expanded(
+                          child: _body(
+                            context,
+                            contextFolder,
+                            contextMarket,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              Expanded(
-                child: Column(
-                  children: [
-                    if (_currentPage == HomeType.kanlist)
-                      TabBar(
-                        key: folders,
-                        controller: _tabController,
-                        tabs: const [
-                          Tab(icon: Icon(Icons.table_rows_rounded)),
-                          Tab(icon: Icon(Icons.folder_rounded)),
-                        ],
-                      ),
-                    Expanded(child: _body()),
-                  ],
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _tabView() {
+  Widget _tabView(BuildContext c, BuildContext cF) {
     return TabBarView(
       controller: _tabController,
       children: [
-        BlocBuilder<KanjiListBloc, KanjiListState>(
-          builder: (context, state) => KPKanjiLists(
-            key: lists,
-            removeFocus: () => _searchBarFn.unfocus(),
-            onScrolledToBottom: () {
-              /// If the query is empty, use the pagination for search bar
-              if (_query.isNotEmpty) {
-                context
-                    .read<KanjiListBloc>()
-                    .add(_addKanjiListSearchingEvent(_query, reset: false));
-              }
+        KPKanjiLists(
+          key: lists,
+          removeFocus: () => _searchBarFn.unfocus(),
+          onScrolledToBottom: () {
+            /// If the query is empty, use the pagination for search bar
+            if (_query.isNotEmpty) {
+              c
+                  .read<KanjiListBloc>()
+                  .add(_addKanjiListSearchingEvent(_query, reset: false));
+            }
 
-              /// Else use the normal pagination
-              else {
-                context
-                    .read<KanjiListBloc>()
-                    .add(_addKanjiListLoadingEvent(reset: false));
-              }
-            },
-          ),
+            /// Else use the normal pagination
+            else {
+              c
+                  .read<KanjiListBloc>()
+                  .add(_addKanjiListLoadingEvent(reset: false));
+            }
+          },
         ),
-        BlocBuilder<FolderBloc, FolderState>(
-          builder: (context, state) => FolderList(
-            removeFocus: () => _searchBarFn.unfocus(),
-            onScrolledToBottom: () {
-              /// If the query is empty, use the pagination for search bar
-              if (_query.isNotEmpty) {
-                context
-                    .read<FolderBloc>()
-                    .add(_addFolderListSearchingEvent(_query, reset: false));
-              }
+        FolderList(
+          removeFocus: () => _searchBarFn.unfocus(),
+          onScrolledToBottom: () {
+            /// If the query is empty, use the pagination for search bar
+            if (_query.isNotEmpty) {
+              cF
+                  .read<FolderBloc>()
+                  .add(_addFolderListSearchingEvent(_query, reset: false));
+            }
 
-              /// Else use the normal pagination
-              else {
-                context
-                    .read<FolderBloc>()
-                    .add(_addFolderListLoadingEvent(reset: false));
-              }
-            },
-          ),
+            /// Else use the normal pagination
+            else {
+              cF
+                  .read<FolderBloc>()
+                  .add(_addFolderListLoadingEvent(reset: false));
+            }
+          },
         ),
       ],
     );
   }
 
-  PageView _body() {
+  PageView _body(BuildContext c, BuildContext cF, BuildContext cM) {
     return PageView(
       controller: _controller,
       onPageChanged: (page) {
@@ -337,32 +346,29 @@ class _HomePageState extends State<HomePage>
       },
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        _tabView(),
-        BlocBuilder<MarketBloc, MarketState>(
-          builder: (context, state) => MarketPlace(
-            removeFocus: () => _searchBarFn.unfocus(),
-            onScrolledToBottom: () {
-              /// If the query is empty, use the pagination for search bar
-              if (_query.isNotEmpty) {
-                context
-                    .read<MarketBloc>()
-                    .add(_addMarketSearchingEvent(_query, reset: false));
-              }
+        _tabView(c, cF),
+        MarketPlace(
+          removeFocus: () => _searchBarFn.unfocus(),
+          onScrolledToBottom: () {
+            /// If the query is empty, use the pagination for search bar
+            if (_query.isNotEmpty) {
+              cM
+                  .read<MarketBloc>()
+                  .add(_addMarketSearchingEvent(_query, reset: false));
+            }
 
-              /// Else use the normal pagination
-              else {
-                context
-                    .read<MarketBloc>()
-                    .add(_addMarketLoadingEvent(reset: false));
-              }
-            },
-          ),
+            /// Else use the normal pagination
+            else {
+              cM.read<MarketBloc>().add(_addMarketLoadingEvent(reset: false));
+            }
+          },
         )
       ],
     );
   }
 
-  Widget _bottomNavigationBar() {
+  Widget _bottomNavigationBar(
+      BuildContext c, BuildContext cF, BuildContext cM) {
     return Stack(
         clipBehavior: Clip.none,
         alignment: const FractionalOffset(.5, 1.0),
@@ -377,66 +383,65 @@ class _HomePageState extends State<HomePage>
                     blurRadius: 10)
               ],
             ),
-            child: BlocBuilder<MarketBloc, MarketState>(
-              builder: (context, state) => BottomNavigationBar(
-                key: bottomActions,
-                currentIndex: _currentPage.index,
-                onTap: (page) {
-                  /// Avoid extra loading when tapping the same item
-                  if (_currentPage.index != page) {
-                    _searchBarFn.unfocus();
-                    _searchTextController.text = "";
-                    _controller.jumpToPage(page);
-                    if (_currentPage == HomeType.market) {
-                      context.read<MarketBloc>().add(_addMarketLoadingEvent());
-                    }
+            child: BottomNavigationBar(
+              key: bottomActions,
+              currentIndex: _currentPage.index,
+              onTap: (page) {
+                /// Avoid extra loading when tapping the same item
+                if (_currentPage.index != page) {
+                  _searchBarFn.unfocus();
+                  _searchTextController.text = "";
+                  _controller.jumpToPage(page);
+                  if (_currentPage == HomeType.market) {
+                    cM.read<MarketBloc>().add(_addMarketLoadingEvent());
                   }
-                },
-                items: [
-                  BottomNavigationBarItem(
-                      icon: const Icon(Icons.table_rows_rounded),
-                      label: "bottom_nav_kanlists".tr()),
-                  BottomNavigationBarItem(
-                      icon: const Icon(Icons.shopping_bag_rounded),
-                      label: "bottom_nav_market".tr()),
-                ],
-              ),
+                }
+              },
+              items: [
+                BottomNavigationBarItem(
+                    icon: const Icon(Icons.table_rows_rounded),
+                    label: "bottom_nav_kanlists".tr()),
+                BottomNavigationBarItem(
+                    icon: const Icon(Icons.shopping_bag_rounded),
+                    label: "bottom_nav_market".tr()),
+              ],
             ),
           ),
-          _actionsButton(),
+          _actionsButton(c, cF),
         ]);
   }
 
-  Widget _actionsButton() {
-    return BlocBuilder<KanjiListBloc, KanjiListState>(
-      builder: (context, state) => GestureDetector(
-        onTap: () async {
-          final kanListName =
-              await ActionsBottomSheet.show(context, _currentPage);
-          if (kanListName != null) {
-            if (!mounted) return;
-            context.read<KanjiListBloc>().add(KanjiListEventCreate(kanListName,
+  Widget _actionsButton(BuildContext c, BuildContext cF) {
+    return GestureDetector(
+      onTap: () async {
+        final code = await ActionsBottomSheet.show(context, _currentPage);
+        if (code != null) {
+          if (!mounted) return;
+          if (code == "__folder") {
+            cF.read<FolderBloc>().add(_addFolderListLoadingEvent());
+          } else {
+            c.read<KanjiListBloc>().add(KanjiListEventCreate(code,
                 filter: _currentAppliedFilter, order: _currentAppliedOrder));
           }
-        },
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: Margins.margin8),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                  padding: const EdgeInsets.only(bottom: Margins.margin4),
-                  child: Icon(Icons.add,
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.grey.shade700
-                          : Colors.grey.shade400)),
-              Text("bottom_nav_actions".tr(),
-                  style: Theme.of(context).textTheme.subtitle2?.copyWith(
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.grey.shade700
-                          : Colors.grey.shade400))
-            ],
-          ),
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: Margins.margin8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+                padding: const EdgeInsets.only(bottom: Margins.margin4),
+                child: Icon(Icons.add,
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.grey.shade700
+                        : Colors.grey.shade400)),
+            Text("bottom_nav_actions".tr(),
+                style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.grey.shade700
+                        : Colors.grey.shade400))
+          ],
         ),
       ),
     );

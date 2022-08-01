@@ -79,7 +79,7 @@ class ActionsBottomSheet extends StatelessWidget {
                           final navigator = Navigator.of(context);
                           await navigator
                               .pushNamed(KanPracticePages.folderAddPage);
-                          navigator.pop();
+                          navigator.pop("__folder");
                         },
                       ),
                       const Divider(),

@@ -280,8 +280,8 @@
   "market_filter_words": "Wörter",
   "market_need_auth": "Sie müssen in KanPractice registriert sein. Gehen Sie zu Einstellungen > Konto, und melden Sie sich an.",
   "market_downloaded_successfully": "Sie haben die Liste erfolgreich auf Ihr Gerät heruntergeladen",
-  "add_to_market_select_list": "Wählen Sie eine Ihrer Listen aus",
-  "add_to_market_title": "Eine Liste hochladen",
+  "add_to_market_select_list": "Eine Liste oder einen Ordner auswählen",
+  "add_to_market_title": "Hochladen einer Liste oder Ordners",
   "add_to_market_needs_registration": "Um eine Liste auf dem Markt zu erstellen, müssen Sie bei KanPractice registriert sein.",
   "add_to_market_description_label": "Beschreibung",
   "add_to_market_description_hint": "Beschreibt die Liste für andere Nutzer",
@@ -307,7 +307,7 @@
   "bottom_nav_market": "Markt",
   "bottom_actions_create_test": "Einen neuen Test durchführen",
   "bottom_actions_create_kanlist": "Eine neue Liste erstellen",
-  "bottom_actions_upload_list": "Eine neue Liste hochladen",
+  "bottom_actions_upload_list": "Eine neue Liste oder Ordner hochladen",
   "market_rating_not_found": "Die Liste, die Sie gerade bewertet haben, wurde nicht gefunden.",
   "add_to_market_list_name_label": "Listenname",
   "add_to_market_list_name_hint": "Name",
@@ -339,5 +339,7 @@
   "abbr_test_mode_number": "Nummers",
   "abbr_test_mode_less": "Weniger %",
   "abbr_test_mode_categories": "Kategories",
-  "abbr_test_mode_folder": "Ordner"
+  "abbr_test_mode_folder": "Ordner",
+  "market_list_to_upload": "Liste",
+  "market_folder_to_upload": "Ordner"
 }

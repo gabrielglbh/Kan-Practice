@@ -194,15 +194,23 @@ class _MarketPlaceState extends State<MarketPlace>
                       return MarketListTile(
                         list: state.lists[k],
                         isManaging: _currentAppliedFilter == MarketFilters.mine,
-                        onDownload: (listId) {
-                          BlocProvider.of<MarketBloc>(context).add(
-                              MarketEventDownload(listId, _currentAppliedFilter,
-                                  _currentAppliedOrder));
+                        onDownload: (listId, isFolder) {
+                          BlocProvider.of<MarketBloc>(context)
+                              .add(MarketEventDownload(
+                            listId,
+                            isFolder,
+                            _currentAppliedFilter,
+                            _currentAppliedOrder,
+                          ));
                         },
-                        onRemove: (listId) {
-                          BlocProvider.of<MarketBloc>(context).add(
-                              MarketEventRemove(listId, _currentAppliedFilter,
-                                  _currentAppliedOrder));
+                        onRemove: (listId, isFolder) {
+                          BlocProvider.of<MarketBloc>(context)
+                              .add(MarketEventRemove(
+                            listId,
+                            isFolder,
+                            _currentAppliedFilter,
+                            _currentAppliedOrder,
+                          ));
                         },
                       );
                     }),

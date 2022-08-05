@@ -7,25 +7,28 @@ import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class AddToFolderBottomSheet extends StatefulWidget {
+class FolderListBottomSheet extends StatefulWidget {
   final String? name;
-  const AddToFolderBottomSheet({Key? key, required this.name})
-      : super(key: key);
+  const FolderListBottomSheet({Key? key, required this.name}) : super(key: key);
 
   /// Creates and calls the [BottomSheet] with the content for a regular test
   static Future<String?> show(BuildContext context, String? name) async {
-    return await showModalBottomSheet(
+    String? name;
+    await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
-        builder: (context) => AddToFolderBottomSheet(name: name));
+        builder: (context) => FolderListBottomSheet(name: name)).then((value) {
+      name = value;
+    });
+    return name;
   }
 
   @override
-  State<AddToFolderBottomSheet> createState() => _AddToFolderBottomSheetState();
+  State<FolderListBottomSheet> createState() => _FolderListBottomSheetState();
 }
 
-class _AddToFolderBottomSheetState extends State<AddToFolderBottomSheet> {
+class _FolderListBottomSheetState extends State<FolderListBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return BottomSheet(
@@ -40,7 +43,10 @@ class _AddToFolderBottomSheetState extends State<AddToFolderBottomSheet> {
               Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: Margins.margin8, horizontal: Margins.margin32),
-                child: Text("add_to_folder_from_list_title".tr(),
+                child: Text(
+                    widget.name != null
+                        ? "add_to_folder_from_list_title".tr()
+                        : "add_to_market_select_list".tr(),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6),
               ),
@@ -66,7 +72,7 @@ class _AddToFolderBottomSheetState extends State<AddToFolderBottomSheet> {
                       return Container(
                           constraints: BoxConstraints(
                               maxHeight:
-                                  MediaQuery.of(context).size.height / 2),
+                                  MediaQuery.of(context).size.height / 3),
                           margin: const EdgeInsets.all(Margins.margin8),
                           child: _listSelection(state));
                     } else {
@@ -90,9 +96,13 @@ class _AddToFolderBottomSheetState extends State<AddToFolderBottomSheet> {
         String listName = state.lists[index].folder;
         return ListTile(
           onTap: () {
-            context
-                .read<FolderBloc>()
-                .add(FolderEventAddSingleList(widget.name!, listName));
+            if (widget.name != null) {
+              context
+                  .read<FolderBloc>()
+                  .add(FolderEventAddSingleList(widget.name!, listName));
+            } else {
+              Navigator.of(context).pop(listName);
+            }
           },
           title: Text(listName),
         );

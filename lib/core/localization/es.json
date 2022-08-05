@@ -280,8 +280,8 @@
   "market_filter_words": "Palabras",
   "market_need_auth": "Necesitas estar registrado en KanPractice. Ve a Ajustes > Cuenta, e inicia sesión.",
   "market_downloaded_successfully": "Se ha descargado correctamente la lista en tu dispositivo",
-  "add_to_market_select_list": "Selecciona una de tus listas",
-  "add_to_market_title": "Sube una lista",
+  "add_to_market_select_list": "Selecciona una lista o una carpeta",
+  "add_to_market_title": "Sube una lista o carpeta",
   "add_to_market_needs_registration": "Para crear una lista en el marketplace necesitas estar registrado en KanPractice.",
   "add_to_market_description_label": "Descripción",
   "add_to_market_description_hint": "Describe la lista para los demás usuarios",
@@ -307,7 +307,7 @@
   "bottom_nav_market": "Mercado",
   "bottom_actions_create_test": "Realizar un nuevo test",
   "bottom_actions_create_kanlist": "Crear una nueva lista",
-  "bottom_actions_upload_list": "Subir una nueva lista",
+  "bottom_actions_upload_list": "Subir una nueva lista o carpeta",
   "market_rating_not_found": "La lista que has calificado no se ha podido encontrar.",
   "add_to_market_list_name_label": "Nombre de la Lista",
   "add_to_market_list_name_hint": "Nombre",
@@ -339,5 +339,7 @@
   "abbr_test_mode_number": "Números",
   "abbr_test_mode_less": "Menor %",
   "abbr_test_mode_categories": "Categorías",
-  "abbr_test_mode_folder": "Carpetas"
+  "abbr_test_mode_folder": "Carpetas",
+  "market_list_to_upload": "Lista",
+  "market_folder_to_upload": "Carpeta"
 }

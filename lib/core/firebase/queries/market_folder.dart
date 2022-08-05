@@ -110,19 +110,19 @@ class MarketFolderRecords {
               .collection(MarketRecords.instance.relationsKLLabel)
               .doc(x.toString());
           batch.set(k, relations[x].toJson());
+          batch = await _reinitializeBatch(batch, x);
         }
-        await batch.commit();
 
         /// KanList
-        for (var m in resetLists) {
-          final DocumentReference k =
-              doc.collection(MarketRecords.instance.listLabel).doc(m.name);
-          batch.set(k, m.toJson());
+        for (int x = 0; x < resetLists.length; x++) {
+          final DocumentReference k = doc
+              .collection(MarketRecords.instance.listLabel)
+              .doc(resetLists[x].name);
+          batch.set(k, resetLists[x].toJson());
+          batch = await _reinitializeBatch(batch, x);
         }
-        await batch.commit();
 
         /// Kanji list
-        batch = _ref.batch();
         for (int x = 0; x < resetKanji.length; x++) {
           final DocumentReference k = doc
               .collection(MarketRecords.instance.kanjiLabel)

@@ -88,9 +88,12 @@ class _TestResultState extends State<TestResult> {
                 ),
               ),
               Switch(
-                  value: _performAnotherTest,
-                  onChanged: (value) =>
-                      setState(() => _performAnotherTest = value)),
+                value: _performAnotherTest,
+                activeColor: CustomColors.secondaryDarkerColor,
+                activeTrackColor: CustomColors.secondaryColor,
+                onChanged: (value) =>
+                    setState(() => _performAnotherTest = value),
+              ),
             ],
           ),
           KPActionButton(

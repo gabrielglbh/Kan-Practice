@@ -280,8 +280,8 @@
   "market_filter_words": "Words",
   "market_need_auth": "You need to be registered in KanPractice. Go to Settings > Account, and log in.",
   "market_downloaded_successfully": "Successfully downloaded the list onto your device",
-  "add_to_market_select_list": "Select one of your lists",
-  "add_to_market_title": "Upload a list",
+  "add_to_market_select_list": "Select one list or folder",
+  "add_to_market_title": "Upload a list or folder",
   "add_to_market_needs_registration": "To create a list in the market you need to be registered on KanPractice.",
   "add_to_market_description_label": "Description",
   "add_to_market_description_hint": "Describes the listing for other users.",
@@ -307,7 +307,7 @@
   "bottom_nav_market": "Market",
   "bottom_actions_create_test": "Perform a new test",
   "bottom_actions_create_kanlist": "Create a new list",
-  "bottom_actions_upload_list": "Upload a new list",
+  "bottom_actions_upload_list": "Upload a new list or folder",
   "market_rating_not_found": "The list you just rated was not found.",
   "add_to_market_list_name_label": "List Name",
   "add_to_market_list_name_hint": "Name",
@@ -339,5 +339,7 @@
   "abbr_test_mode_number": "Numbers",
   "abbr_test_mode_less": "Less %",
   "abbr_test_mode_categories": "Categories",
-  "abbr_test_mode_folder": "Folders"
+  "abbr_test_mode_folder": "Folders",
+  "market_list_to_upload": "List",
+  "market_folder_to_upload": "Folder"
 }

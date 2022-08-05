@@ -5,18 +5,18 @@ import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:sqflite/sqflite.dart';
 
-class WordHistoryQueries {
+class HistoryWordQueries {
   Database? _database;
 
-  WordHistoryQueries._() {
+  HistoryWordQueries._() {
     _database = CustomDatabase.instance.database;
   }
 
-  static final WordHistoryQueries _instance = WordHistoryQueries._();
+  static final HistoryWordQueries _instance = HistoryWordQueries._();
 
-  /// Singleton instance of [WordHistoryQueries
+  /// Singleton instance of [HistoryWordQueries
   ///]
-  static WordHistoryQueries get instance => _instance;
+  static HistoryWordQueries get instance => _instance;
 
   /// Creates a [HistoryWord] and inserts it to the db.
   /// Returns an integer depending on the error given:

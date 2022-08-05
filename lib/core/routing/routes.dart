@@ -28,6 +28,7 @@ import 'package:kanpractice/ui/pages/test_result/test_result.dart';
 import 'package:kanpractice/ui/pages/tutorial/tutorial.dart';
 import 'package:kanpractice/ui/pages/study_modes/writing.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
+import 'package:kanpractice/ui/pages/word_history/word_history.dart';
 import 'package:page_transition/page_transition.dart';
 
 /// Router generator in which all pages and their transitions are made.
@@ -96,6 +97,8 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       String folder = settings.arguments as String;
       return CupertinoPageRoute(
           builder: (_) => KanListOnFolderPage(folder: folder));
+    case KanPracticePages.historyWordPage:
+      return CupertinoPageRoute(builder: (_) => const WordHistoryPage());
   }
   return null;
 }

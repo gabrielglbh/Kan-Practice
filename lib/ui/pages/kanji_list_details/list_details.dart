@@ -300,13 +300,13 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
                   practiceList: _listName),
               icon: const Icon(Icons.flash_on_rounded),
             ),
+            IconButton(
+              onPressed: () {
+                FolderListBottomSheet.show(context, widget.list.name);
+              },
+              icon: const Icon(Icons.create_new_folder_rounded),
+            ),
           ],
-        ),
-        IconButton(
-          onPressed: () async {
-            await FolderListBottomSheet.show(context, widget.list.name);
-          },
-          icon: const Icon(Icons.create_new_folder_rounded),
         ),
       ],
       child: Column(

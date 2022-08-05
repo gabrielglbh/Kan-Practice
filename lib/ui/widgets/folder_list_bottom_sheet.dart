@@ -52,12 +52,7 @@ class _FolderListBottomSheetState extends State<FolderListBottomSheet> {
               ),
               BlocProvider<FolderBloc>(
                 create: (_) => FolderBloc()..add(FolderForTestEventLoading()),
-                child: BlocConsumer<FolderBloc, FolderState>(
-                  listener: (context, state) {
-                    if (state is FolderStateLoaded && state.lists.isEmpty) {
-                      Navigator.of(context).pop();
-                    }
-                  },
+                child: BlocBuilder<FolderBloc, FolderState>(
                   builder: (context, state) {
                     if (state is FolderStateFailure) {
                       return KPEmptyList(
@@ -74,7 +69,13 @@ class _FolderListBottomSheetState extends State<FolderListBottomSheet> {
                               maxHeight:
                                   MediaQuery.of(context).size.height / 3),
                           margin: const EdgeInsets.all(Margins.margin8),
-                          child: _listSelection(state));
+                          child: state.lists.isEmpty
+                              ? Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: Margins.margin24),
+                                  child: Text("folder_list_empty".tr()),
+                                )
+                              : _listSelection(state));
                     } else {
                       return const SizedBox();
                     }

@@ -127,6 +127,12 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                   ? Icons.search
                                   : Icons.done,
                               color: Colors.white,
+                              size: _searchBarTextController?.text != "" ||
+                                      _searchBarTextController
+                                              ?.text.isNotEmpty ==
+                                          true
+                                  ? 24
+                                  : 0,
                             ),
                           ),
                           onTap: () {

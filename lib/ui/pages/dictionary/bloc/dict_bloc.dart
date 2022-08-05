@@ -39,7 +39,7 @@ class DictBloc extends Bloc<DictEvent, DictState> {
     });
 
     on<DictEventAddToHistory>((event, emit) async {
-      HistoryWordQueries.instance.createWord(event.word);
+      WordHistoryQueries.instance.createWord(event.word);
     });
   }
 }

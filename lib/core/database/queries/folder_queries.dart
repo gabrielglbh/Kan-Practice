@@ -54,6 +54,28 @@ class FolderQueries {
     }
   }
 
+  /// Get specific [Folder] to show it on the UI
+  Future<Folder> getFolder(String name) async {
+    if (_database != null) {
+      try {
+        final res = await _database?.query(
+          FolderTableFields.folderTable,
+          where: "${FolderTableFields.nameField}=?",
+          whereArgs: [name],
+        );
+        if (res != null) {
+          return Folder.fromJson(res[0]);
+        }
+        return Folder.empty;
+      } catch (err) {
+        print(err.toString());
+        return Folder.empty;
+      }
+    } else {
+      return Folder.empty;
+    }
+  }
+
   /// Get all available [Folder] to show it on the UI
   Future<List<Folder>> getAllFolders({
     FolderFilters filter = FolderFilters.all,

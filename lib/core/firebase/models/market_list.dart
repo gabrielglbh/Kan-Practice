@@ -13,6 +13,7 @@ class MarketList {
   static const authorField = "author";
   static const keywordsField = "keywords";
   static const uploadedToMarketField = "uploadedToMarket";
+  static const isFolderField = "isFolder";
 
   final String name;
   final int words;
@@ -34,18 +35,21 @@ class MarketList {
   /// Firebase ID of the author that created the KanList
   final String author;
   final int uploadedToMarket;
+  final bool isFolder;
 
-  MarketList(
-      {required this.words,
-      required this.uid,
-      required this.name,
-      this.ratingMap = const {},
-      this.rating = 0,
-      this.downloads = 0,
-      required this.description,
-      required this.author,
-      this.keywords = const [],
-      this.uploadedToMarket = 0});
+  MarketList({
+    required this.words,
+    required this.uid,
+    required this.name,
+    this.ratingMap = const {},
+    this.rating = 0,
+    this.downloads = 0,
+    required this.description,
+    required this.author,
+    this.keywords = const [],
+    this.uploadedToMarket = 0,
+    this.isFolder = false,
+  });
 
   /// Empty [MarketList]
   static final MarketList empty =
@@ -69,15 +73,17 @@ class MarketList {
       k.add(name.substring(0, x + 1).toLowerCase());
     }
     return MarketList(
-        name: name,
-        uid: uid,
-        words: words,
-        ratingMap: ratingMap,
-        rating: rating,
-        keywords: k,
-        downloads: downloads,
-        description: description,
-        author: author,
-        uploadedToMarket: uploadedToMarket);
+      name: name,
+      uid: uid,
+      words: words,
+      ratingMap: ratingMap,
+      rating: rating,
+      keywords: k,
+      downloads: downloads,
+      description: description,
+      author: author,
+      uploadedToMarket: uploadedToMarket,
+      isFolder: isFolder,
+    );
   }
 }

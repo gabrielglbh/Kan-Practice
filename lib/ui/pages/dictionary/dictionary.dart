@@ -68,7 +68,6 @@ class _DictionaryPageState extends State<DictionaryPage> {
               onPressed: () => _showDisclaimerDialog(),
               icon: const Icon(Icons.info_outline_rounded))
         ],
-        centerTitle: true,
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -121,6 +120,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
                         /// If the user is searching for words, redirect them to Jisho
                         /// If the user is adding words, pop and send the predicted word back
                         if (widget.args.searchInJisho) {
+                          // TODO: Add to history
                           Navigator.of(context).pushNamed(
                               KanPracticePages.jishoPage,
                               arguments: JishoArguments(

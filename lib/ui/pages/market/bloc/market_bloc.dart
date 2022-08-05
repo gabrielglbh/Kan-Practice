@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/firebase/queries/market.dart';
+import 'package:kanpractice/core/firebase/queries/market_folder.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
 
 part 'market_event.dart';
@@ -106,8 +107,14 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
 
     on<MarketEventDownload>((event, emit) async {
       emit(MarketStateLoading());
-      final res =
-          await MarketRecords.instance.downloadFromMarketPlace(event.id);
+      String res = "";
+      if (!event.isFolder) {
+        res = await MarketRecords.instance.downloadFromMarketPlace(event.id);
+      } else {
+        res = await MarketFolderRecords.instance
+            .downloadFromMarketPlace(event.id);
+      }
+
       if (res.isEmpty) {
         emit(MarketStateSuccess("market_downloaded_successfully".tr()));
       } else {
@@ -119,7 +126,14 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
 
     on<MarketEventRemove>((event, emit) async {
       emit(MarketStateLoading());
-      final res = await MarketRecords.instance.removeFromMarketPlace(event.id);
+      String res = "";
+      if (!event.isFolder) {
+        res = await MarketRecords.instance.removeFromMarketPlace(event.id);
+      } else {
+        res =
+            await MarketFolderRecords.instance.removeFromMarketPlace(event.id);
+      }
+
       if (res.isEmpty) {
         emit(MarketStateSuccess("market_removed_successfully".tr()));
       } else {

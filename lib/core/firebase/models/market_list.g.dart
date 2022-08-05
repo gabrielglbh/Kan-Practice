@@ -23,6 +23,7 @@ MarketList _$MarketListFromJson(Map<String, dynamic> json) => MarketList(
               .toList() ??
           const [],
       uploadedToMarket: json['uploadedToMarket'] as int? ?? 0,
+      isFolder: json['isFolder'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$MarketListToJson(MarketList instance) =>
@@ -37,4 +38,5 @@ Map<String, dynamic> _$MarketListToJson(MarketList instance) =>
       'description': instance.description,
       'author': instance.author,
       'uploadedToMarket': instance.uploadedToMarket,
+      'isFolder': instance.isFolder,
     };

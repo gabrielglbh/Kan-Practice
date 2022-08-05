@@ -9,8 +9,8 @@ import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
 
 class MarketListTile extends StatelessWidget {
   final MarketList list;
-  final Function(String) onDownload;
-  final Function(String) onRemove;
+  final Function(String, bool) onDownload;
+  final Function(String, bool) onRemove;
   final bool isManaging;
   const MarketListTile(
       {Key? key,
@@ -99,9 +99,22 @@ class MarketListTile extends StatelessWidget {
         Text(list.description, overflow: TextOverflow.ellipsis, maxLines: 5),
         Padding(
           padding: const EdgeInsets.only(top: Margins.margin8),
-          child: Text("${"market_filter_words".tr()}: ${list.words}",
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.bodyText2),
+          child: Row(
+            children: [
+              Text("${"market_filter_words".tr()}: ${list.words}",
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyText2),
+              if (list.isFolder)
+                Padding(
+                  padding: const EdgeInsets.only(left: Margins.margin8),
+                  child: Icon(
+                    Icons.folder_rounded,
+                    color: Colors.grey.shade500,
+                    size: 18,
+                  ),
+                ),
+            ],
+          ),
         ),
         Text("${"market_filter_downloads".tr()}: ${list.downloads}",
             overflow: TextOverflow.ellipsis,
@@ -118,7 +131,7 @@ class MarketListTile extends StatelessWidget {
                   )),
             ),
             IconButton(
-                onPressed: () => onDownload(list.name),
+                onPressed: () => onDownload(list.name, list.isFolder),
                 splashRadius: CustomRadius.radius24,
                 icon: const Icon(Icons.download_rounded)),
             if (isManaging)
@@ -131,7 +144,8 @@ class MarketListTile extends StatelessWidget {
                               title: Text("market_remove_dialog_label".tr()),
                               content: Text("market_remove_sure_label".tr()),
                               positiveButtonText: "Ok",
-                              onPositive: () => onRemove(list.name));
+                              onPositive: () =>
+                                  onRemove(list.name, list.isFolder));
                         });
                   },
                   splashRadius: CustomRadius.radius24,

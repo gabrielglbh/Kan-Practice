@@ -48,11 +48,12 @@ class MarketEventDownload extends MarketEvent {
   /// Whether to reset the counter for the offset on the lazy loading or not
   final bool order;
   final String id;
+  final bool isFolder;
 
-  const MarketEventDownload(this.id, this.filter, this.order);
+  const MarketEventDownload(this.id, this.isFolder, this.filter, this.order);
 
   @override
-  List<Object> get props => [id, filter, order];
+  List<Object> get props => [id, isFolder, filter, order];
 }
 
 class MarketEventRemove extends MarketEvent {
@@ -62,9 +63,10 @@ class MarketEventRemove extends MarketEvent {
   /// Whether to reset the counter for the offset on the lazy loading or not
   final bool order;
   final String id;
+  final bool isFolder;
 
-  const MarketEventRemove(this.id, this.filter, this.order);
+  const MarketEventRemove(this.id, this.isFolder, this.filter, this.order);
 
   @override
-  List<Object> get props => [id, filter, order];
+  List<Object> get props => [id, filter, order, isFolder];
 }

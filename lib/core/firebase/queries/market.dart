@@ -17,6 +17,8 @@ class MarketRecords {
   final String collection = "Market";
   final String kanjiLabel = "Kanji";
   final String listLabel = "List";
+  final String folderLabel = "Folder";
+  final String relationsKLLabel = "RelationsKL";
 
   MarketRecords._() {
     _ref = FirebaseUtils.instance.dbRef;

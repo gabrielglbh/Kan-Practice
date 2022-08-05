@@ -18,10 +18,10 @@ class Migrations extends MigrationUtils {
         "${FolderTableFields.nameField} TEXT NOT NULL PRIMARY KEY, "
         "${FolderTableFields.lastUpdatedField} INTEGER NOT NULL DEFAULT 0)");
 
-    await db.execute("CREATE TABLE ${HistoryWordFields.historyTable}("
+    await db.execute("CREATE TABLE ${WordHistoryFields.historyTable}("
         "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-        "${HistoryWordFields.wordField} TEXT NOT NULL, "
-        "${HistoryWordFields.searchedOnField} INTEGER NOT NULL DEFAULT 0)");
+        "${WordHistoryFields.wordField} TEXT NOT NULL, "
+        "${WordHistoryFields.searchedOnField} INTEGER NOT NULL DEFAULT 0)");
   }
 
   Future<void> version5to6(Database db) async {

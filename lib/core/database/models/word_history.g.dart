@@ -1,17 +1,17 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'history_word.dart';
+part of 'word_history.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-HistoryWord _$HistoryWordFromJson(Map<String, dynamic> json) => HistoryWord(
+WordHistory _$HistoryWordFromJson(Map<String, dynamic> json) => WordHistory(
       word: json['word'] as String,
       searchedOn: json['searchedOn'] as int,
     );
 
-Map<String, dynamic> _$HistoryWordToJson(HistoryWord instance) =>
+Map<String, dynamic> _$HistoryWordToJson(WordHistory instance) =>
     <String, dynamic>{
       'word': instance.word,
       'searchedOn': instance.searchedOn,

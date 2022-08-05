@@ -88,10 +88,10 @@ class CustomDatabase {
             "FOREIGN KEY (${KanListFolderRelationTableFields.nameField}) REFERENCES ${FolderTableFields.folderTable}(${FolderTableFields.nameField}) ON DELETE CASCADE ON UPDATE CASCADE, "
             "FOREIGN KEY (${KanListFolderRelationTableFields.kanListNameField}) REFERENCES ${KanListTableFields.listsTable}(${KanListTableFields.nameField}) ON DELETE CASCADE ON UPDATE CASCADE)");
 
-        await db.execute("CREATE TABLE ${HistoryWordFields.historyTable}("
+        await db.execute("CREATE TABLE ${WordHistoryFields.historyTable}("
             "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-            "${HistoryWordFields.wordField} TEXT NOT NULL, "
-            "${HistoryWordFields.searchedOnField} INTEGER NOT NULL DEFAULT 0)");
+            "${WordHistoryFields.wordField} TEXT NOT NULL, "
+            "${WordHistoryFields.searchedOnField} INTEGER NOT NULL DEFAULT 0)");
       },
     );
   }

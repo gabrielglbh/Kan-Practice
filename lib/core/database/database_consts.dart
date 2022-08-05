@@ -50,7 +50,7 @@ class FolderTableFields {
   static const String lastUpdatedField = "lastUpdated";
 }
 
-class HistoryWordFields {
+class WordHistoryFields {
   static const String historyTable = "WORD_HISTORY_TABLE";
   static const String wordField = "word";
   static const String searchedOnField = "searchedOn";

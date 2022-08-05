@@ -341,5 +341,11 @@
   "abbr_test_mode_categories": "Categorías",
   "abbr_test_mode_folder": "Carpetas",
   "market_list_to_upload": "Lista",
-  "market_folder_to_upload": "Carpeta"
+  "market_folder_to_upload": "Carpeta",
+  "word_history_title": "Historial",
+  "word_history_load_failed": "Ha ocurrido algo mal durante la carga del historial. Inténtalo de nuevo más tarde.",
+  "word_history_empty": "No se ha encontrado ninguna palabra en el historial",
+  "word_history_showRemoveHistorysDialog_title": "Eliminar todas las palabras buscadas",
+  "word_history_showRemoveHistorysDialog_content": "Se eliminarán todas las palabras buscadas hasta el momento. Esta acción no se puede deshacer. ¿Quieres continuar?",
+  "word_history_showRemoveHistorysDialog_positive": "Eliminar"
 }

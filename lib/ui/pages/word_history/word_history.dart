@@ -4,7 +4,6 @@ import 'package:kanpractice/core/database/models/word_history.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/pages/jisho/arguments.dart';
-import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/pages/word_history/bloc/word_history_bloc.dart';
 import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/ui/widgets/kp_empty_list.dart';

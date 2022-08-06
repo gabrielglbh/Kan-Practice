@@ -168,7 +168,7 @@ class _FolderListState extends State<FolderList>
                   child: RefreshIndicator(
                     onRefresh: () => _addLoadingEvent(reset: true),
                     color: CustomColors.secondaryColor,
-                    child: ListView.builder(
+                    child: ListView.separated(
                         key: const PageStorageKey<String>(
                             'folderListsController'),
                         controller: _scrollController,
@@ -177,6 +177,7 @@ class _FolderListState extends State<FolderList>
                             ScrollViewKeyboardDismissBehavior.onDrag,
                         padding:
                             const EdgeInsets.only(bottom: Margins.margin24),
+                        separatorBuilder: (_, __) => const Divider(),
                         itemBuilder: (context, k) {
                           final folder = state.lists[k];
                           final date = GeneralUtils.parseDateMilliseconds(

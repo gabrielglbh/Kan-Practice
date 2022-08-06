@@ -4,10 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/folder.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
+import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/folder_filters.dart';
 import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/pages/folder_lists/bloc/folder_bloc.dart';
-import 'package:kanpractice/ui/widgets/kp_data_tile.dart';
+import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 
@@ -146,7 +148,7 @@ class _FolderListState extends State<FolderList>
 
   BlocBuilder _lists() {
     return BlocBuilder<FolderBloc, FolderState>(
-      builder: (context, state) {
+      builder: (bloc, state) {
         if (state is FolderStateFailure) {
           return KPEmptyList(
               showTryButton: true,
@@ -176,19 +178,10 @@ class _FolderListState extends State<FolderList>
                         padding:
                             const EdgeInsets.only(bottom: Margins.margin24),
                         itemBuilder: (context, k) {
-                          return KPDataTile<Folder>(
-                            item: state.lists[k],
-                            onTap: widget.removeFocus,
-                            onRemoval: () {
-                              BlocProvider.of<FolderBloc>(context)
-                                  .add(FolderEventDelete(
-                                state.lists[k],
-                                filter: _currentAppliedFilter,
-                                order: _currentAppliedOrder,
-                              ));
-                              _resetScroll();
-                            },
-                          );
+                          final folder = state.lists[k];
+                          final date = GeneralUtils.parseDateMilliseconds(
+                              context, folder.lastUpdated);
+                          return _tile(bloc, folder, date);
                         }),
                   ),
                 );
@@ -196,6 +189,46 @@ class _FolderListState extends State<FolderList>
           return Container();
         }
       },
+    );
+  }
+
+  Widget _tile(BuildContext bloc, Folder folder, String date) {
+    return ListTile(
+      onTap: () {
+        Navigator.of(context).pushNamed(
+          KanPracticePages.kanjiListOnFolderPage,
+          arguments: folder.folder,
+        );
+        widget.removeFocus();
+      },
+      onLongPress: () {
+        showDialog(
+          context: context,
+          builder: (context) => KPDialog(
+            title:
+                Text("kan_list_tile_createDialogForDeletingFolder_title".tr()),
+            content: Text(
+                "kan_list_tile_createDialogForDeletingFolder_content".tr()),
+            positiveButtonText:
+                "kan_list_tile_createDialogForDeletingFolder_positive".tr(),
+            onPositive: () {
+              bloc.read<FolderBloc>().add(FolderEventDelete(
+                    folder,
+                    filter: _currentAppliedFilter,
+                    order: _currentAppliedOrder,
+                  ));
+              _resetScroll();
+            },
+          ),
+        );
+      },
+      title: Text(folder.folder,
+          style: Theme.of(context)
+              .textTheme
+              .headline5
+              ?.copyWith(fontWeight: FontWeight.normal),
+          overflow: TextOverflow.ellipsis),
+      subtitle: Text("${"created_label".tr()} $date"),
     );
   }
 

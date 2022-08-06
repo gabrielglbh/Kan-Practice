@@ -9,14 +9,14 @@ import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class KPDataTile<T> extends StatelessWidget {
-  /// [T] item to paint as a Tile. Must be either [KanjiList] or [Folder].
-  final T item;
+class KanjiListTile extends StatelessWidget {
+  /// [KanjiList] item to paint as a Tile.
+  final KanjiList item;
 
-  /// Action to perform when tapping on a [T], in addition to navigating to kanji_list_details
+  /// Action to perform when tapping on a [KanjiList], in addition to navigating to kanji_list_details
   final Function onTap;
 
-  /// Action to perform when removing a [T]
+  /// Action to perform when removing a [KanjiList]
   final Function onRemoval;
 
   /// Mode to show the statistics
@@ -24,46 +24,30 @@ class KPDataTile<T> extends StatelessWidget {
 
   /// Tells the widget that [this] is a [KanjiList] within a Folder
   final bool withinFolder;
-  const KPDataTile({
+  const KanjiListTile({
     Key? key,
     required this.item,
     required this.onTap,
     required this.onRemoval,
     this.withinFolder = false,
     this.mode = VisualizationMode.radialChart,
-  })  : assert(item is KanjiList || item is Folder),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final date = GeneralUtils.parseDateMilliseconds(
-        context,
-        item is Folder
-            ? (item as Folder).lastUpdated
-            : (item as KanjiList).lastUpdated);
+    final date = GeneralUtils.parseDateMilliseconds(context, item.lastUpdated);
     return Card(
       child: ListTile(
         onTap: () {
           onTap();
-          if (item is Folder) {
-            Navigator.of(context).pushNamed(
-                KanPracticePages.kanjiListOnFolderPage,
-                arguments: (item as Folder).folder);
-          } else {
-            Navigator.of(context).pushNamed(
-                KanPracticePages.kanjiListDetailsPage,
-                arguments: item);
-          }
+          Navigator.of(context).pushNamed(KanPracticePages.kanjiListDetailsPage,
+              arguments: item);
         },
         onLongPress: () {
-          if (item is Folder) {
-            _createDialogForDeletingFolder(context);
+          if (withinFolder) {
+            _createDialogForDeletingKanListWithinFolder(context);
           } else {
-            if (withinFolder) {
-              _createDialogForDeletingKanListWithinFolder(context);
-            } else {
-              _createDialogForDeletingKanList(context);
-            }
+            _createDialogForDeletingKanList(context);
           }
         },
         title: Padding(
@@ -72,10 +56,7 @@ class KPDataTile<T> extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: Text(
-                    item is Folder
-                        ? (item as Folder).folder
-                        : (item as KanjiList).name,
+                child: Text(item.name,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.headline5),
               ),
@@ -86,15 +67,13 @@ class KPDataTile<T> extends StatelessWidget {
             ],
           ),
         ),
-        subtitle: item is Folder
-            ? null
-            : KPDependentGraph(
-                mode: mode,
-                writing: (item as KanjiList).totalWinRateWriting,
-                reading: (item as KanjiList).totalWinRateReading,
-                recognition: (item as KanjiList).totalWinRateRecognition,
-                listening: (item as KanjiList).totalWinRateListening,
-              ),
+        subtitle: KPDependentGraph(
+          mode: mode,
+          writing: item.totalWinRateWriting,
+          reading: item.totalWinRateReading,
+          recognition: item.totalWinRateRecognition,
+          listening: item.totalWinRateListening,
+        ),
       ),
     );
   }
@@ -126,20 +105,6 @@ class KPDataTile<T> extends StatelessWidget {
               positiveButtonText:
                   "kan_list_tile_createDialogForDeletingKanListWithinFolder_positive"
                       .tr(),
-              onPositive: () => onRemoval(),
-            ));
-  }
-
-  _createDialogForDeletingFolder(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) => KPDialog(
-              title: Text(
-                  "kan_list_tile_createDialogForDeletingFolder_title".tr()),
-              content: Text(
-                  "kan_list_tile_createDialogForDeletingFolder_content".tr()),
-              positiveButtonText:
-                  "kan_list_tile_createDialogForDeletingFolder_positive".tr(),
               onPositive: () => onRemoval(),
             ));
   }

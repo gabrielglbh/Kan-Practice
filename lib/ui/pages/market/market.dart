@@ -69,7 +69,7 @@ class _MarketPlaceState extends State<MarketPlace>
   }
 
   _addLoadingEvent({bool reset = false}) {
-    return BlocProvider.of<MarketBloc>(context)
+    return context.read<MarketBloc>()
       ..add(MarketEventLoading(
           filter: _currentAppliedFilter,
           order: _currentAppliedOrder,
@@ -195,22 +195,20 @@ class _MarketPlaceState extends State<MarketPlace>
                         list: state.lists[k],
                         isManaging: _currentAppliedFilter == MarketFilters.mine,
                         onDownload: (listId, isFolder) {
-                          BlocProvider.of<MarketBloc>(context)
-                              .add(MarketEventDownload(
-                            listId,
-                            isFolder,
-                            _currentAppliedFilter,
-                            _currentAppliedOrder,
-                          ));
+                          context.read<MarketBloc>().add(MarketEventDownload(
+                                listId,
+                                isFolder,
+                                _currentAppliedFilter,
+                                _currentAppliedOrder,
+                              ));
                         },
                         onRemove: (listId, isFolder) {
-                          BlocProvider.of<MarketBloc>(context)
-                              .add(MarketEventRemove(
-                            listId,
-                            isFolder,
-                            _currentAppliedFilter,
-                            _currentAppliedOrder,
-                          ));
+                          context.read<MarketBloc>().add(MarketEventRemove(
+                                listId,
+                                isFolder,
+                                _currentAppliedFilter,
+                                _currentAppliedOrder,
+                              ));
                         },
                       );
                     }),

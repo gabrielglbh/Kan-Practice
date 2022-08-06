@@ -68,7 +68,7 @@ class _FolderListState extends State<FolderList>
   }
 
   _addLoadingEvent({bool reset = false}) {
-    return BlocProvider.of<FolderBloc>(context)
+    return context.read<FolderBloc>()
       ..add(FolderEventLoading(
           filter: _currentAppliedFilter,
           order: _currentAppliedOrder,

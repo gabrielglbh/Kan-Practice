@@ -37,9 +37,9 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
             ));
   }
 
-  _addLoadingEvent({int offset = 0}) =>
-      BlocProvider.of<WordHistoryBloc>(context)
-          .add(WordHistoryEventLoading(offset: offset));
+  _addLoadingEvent({int offset = 0}) => context
+      .read<WordHistoryBloc>()
+      .add(WordHistoryEventLoading(offset: offset));
 
   _scrollListener() {
     if (_scrollController.offset ==

@@ -40,7 +40,7 @@ class MarketListRating extends StatelessWidget {
       itemBuilder: (context, _) =>
           const Icon(Icons.star_rounded, color: CustomColors.secondaryColor),
       onRatingUpdate: (rate) {
-        BlocProvider.of<RateBloc>(context).add(RateEventUpdate(listId, rate));
+        context.read<RateBloc>().add(RateEventUpdate(listId, rate));
       },
     );
   }

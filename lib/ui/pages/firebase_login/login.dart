@@ -47,20 +47,19 @@ class _LoginPageState extends State<LoginPage> {
     String? email = _emailController?.text;
     String? password = _passwordController?.text;
     if (email != null && password != null) {
-      BlocProvider.of<LoginBloc>(bloc)
-          .add(LoginSubmitting(_mode, email, password));
+      bloc.read<LoginBloc>().add(LoginSubmitting(_mode, email, password));
     }
   }
 
   _changePassword(BuildContext bloc, String prevPass, String newPass) {
     if (prevPass.isNotEmpty && newPass.isNotEmpty) {
-      BlocProvider.of<LoginBloc>(bloc).add(ChangePassword(prevPass, newPass));
+      bloc.read<LoginBloc>().add(ChangePassword(prevPass, newPass));
     }
   }
 
   _removeAccount(BuildContext bloc, String pass) {
     if (pass.isNotEmpty) {
-      BlocProvider.of<LoginBloc>(bloc).add(RemoveAccount(pass));
+      bloc.read<LoginBloc>().add(RemoveAccount(pass));
     }
   }
 

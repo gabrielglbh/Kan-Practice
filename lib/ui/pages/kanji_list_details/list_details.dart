@@ -155,19 +155,20 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
   }
 
   _addLoadingEvent({bool reset = false}) {
-    return BlocProvider.of<KanjiListDetailBloc>(context)
+    return context
+        .read<KanjiListDetailBloc>()
         .add(KanjiEventLoading(_listName, reset: reset));
   }
 
   _addSearchingEvent(String query, {bool reset = false}) {
-    return BlocProvider.of<KanjiListDetailBloc>(context)
+    return context
+        .read<KanjiListDetailBloc>()
         .add(KanjiEventSearching(query, _listName, reset: reset));
   }
 
   _updateName(BuildContext bloc, String name) {
     if (name.isNotEmpty) {
-      BlocProvider.of<KanjiListDetailBloc>(bloc)
-          .add(UpdateKanList(name, _listName));
+      bloc.read<KanjiListDetailBloc>().add(UpdateKanList(name, _listName));
     }
   }
 
@@ -435,7 +436,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
             title1: "list_details_practice_button_label_ext".tr(),
             title2:
                 "${"list_details_practice_button_label".tr()} • ${_learningMode == LearningMode.spatial ? LearningMode.spatial.name : LearningMode.random.name}",
-            onTap: () => BlocProvider.of<KanjiListDetailBloc>(bloc).add(
+            onTap: () => bloc.read<KanjiListDetailBloc>().add(
                 KanjiEventLoadUpPractice(
                     _learningMode, _listName, _selectedMode))),
       ],

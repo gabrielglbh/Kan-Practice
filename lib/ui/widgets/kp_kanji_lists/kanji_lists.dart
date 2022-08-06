@@ -77,13 +77,13 @@ class _KPKanjiListsState extends State<KPKanjiLists>
 
   _addLoadingEvent({bool reset = false}) {
     if (widget.folder == null) {
-      return BlocProvider.of<KanjiListBloc>(context)
+      return context.read<KanjiListBloc>()
         ..add(KanjiListEventLoading(
             filter: _currentAppliedFilter,
             order: _currentAppliedOrder,
             reset: reset));
     }
-    return BlocProvider.of<KLFolderBloc>(context)
+    return context.read<KLFolderBloc>()
       ..add(KLFolderEventLoading(
           folder: widget.folder!,
           filter: _currentAppliedFilter,
@@ -236,21 +236,20 @@ class _KPKanjiListsState extends State<KPKanjiLists>
                   VisualizationMode.radialChart),
               onRemoval: () {
                 if (widget.folder == null) {
-                  BlocProvider.of<KanjiListBloc>(context)
-                      .add(KanjiListEventDelete(
-                    lists[k],
-                    filter: _currentAppliedFilter,
-                    order: _currentAppliedOrder,
-                  ));
+                  context.read<KanjiListBloc>().add(KanjiListEventDelete(
+                        lists[k],
+                        filter: _currentAppliedFilter,
+                        order: _currentAppliedOrder,
+                      ));
                 } else {
-                  BlocProvider.of<KLFolderBloc>(context).add(
-                    KLFolderEventDelete(
-                      widget.folder!,
-                      lists[k],
-                      filter: _currentAppliedFilter,
-                      order: _currentAppliedOrder,
-                    ),
-                  );
+                  context.read<KLFolderBloc>().add(
+                        KLFolderEventDelete(
+                          widget.folder!,
+                          lists[k],
+                          filter: _currentAppliedFilter,
+                          order: _currentAppliedOrder,
+                        ),
+                      );
                 }
                 _resetScroll();
               },

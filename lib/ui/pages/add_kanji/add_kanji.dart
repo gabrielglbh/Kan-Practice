@@ -62,7 +62,7 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
   }
 
   Future<void> _createKanji(BuildContext bloc, {bool exit = true}) async {
-    BlocProvider.of<AddKanjiBloc>(bloc).add(AddKanjiEventCreate(
+    bloc.read<AddKanjiBloc>().add(AddKanjiEventCreate(
         exitMode: exit,
         kanji: Kanji(
           kanji: _kanjiController?.text ?? "",
@@ -78,14 +78,15 @@ class _AddKanjiPageState extends State<AddKanjiPage> {
   Future<void> _updateKanji(BuildContext bloc) async {
     Kanji? k = widget.args.kanji;
     if (k != null) {
-      BlocProvider.of<AddKanjiBloc>(bloc)
+      bloc
+          .read<AddKanjiBloc>()
           .add(AddKanjiEventUpdate(widget.args.listName, k.kanji, parameters: {
-        KanjiTableFields.kanjiField: _kanjiController?.text ?? "",
-        KanjiTableFields.pronunciationField:
-            _pronunciationController?.text ?? "",
-        KanjiTableFields.meaningField: _meaningController?.text ?? "",
-        KanjiTableFields.categoryField: _currentCategory.index
-      }));
+            KanjiTableFields.kanjiField: _kanjiController?.text ?? "",
+            KanjiTableFields.pronunciationField:
+                _pronunciationController?.text ?? "",
+            KanjiTableFields.meaningField: _meaningController?.text ?? "",
+            KanjiTableFields.categoryField: _currentCategory.index
+          }));
     }
   }
 

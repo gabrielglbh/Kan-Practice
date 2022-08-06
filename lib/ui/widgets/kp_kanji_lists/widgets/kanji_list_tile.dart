@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/models/folder.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/general_utils.dart';

@@ -22,7 +22,7 @@ class RecognitionStudy extends StatefulWidget {
   const RecognitionStudy({Key? key, required this.args}) : super(key: key);
 
   @override
-  _RecognitionStudyState createState() => _RecognitionStudyState();
+  State<RecognitionStudy> createState() => _RecognitionStudyState();
 }
 
 class _RecognitionStudyState extends State<RecognitionStudy> {

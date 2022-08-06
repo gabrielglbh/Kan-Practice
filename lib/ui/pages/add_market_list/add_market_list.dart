@@ -1,10 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/core/types/market_list_type.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/pages/add_market_list/bloc/add_to_market_bloc.dart';
 import 'package:kanpractice/ui/pages/add_market_list/widgets/add_to_market_bottom_sheet.dart';
 import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/ui/widgets/folder_list_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 import 'package:kanpractice/ui/widgets/kp_text_form.dart';
@@ -23,6 +25,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
   late FocusNode _fnUser;
   late TextEditingController _tcList;
   late FocusNode _fnList;
+  MarketListType _selectedType = MarketListType.list;
   String _listSelection = "add_to_market_select_list".tr();
 
   @override
@@ -59,13 +62,19 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
               builder: (context, state) {
                 if (state is AddToMarketStateLoading ||
                     state is AddToMarketStateSuccess) {
-                  return Container();
+                  return const SizedBox();
                 } else {
                   return IconButton(
                       onPressed: () {
-                        context.read<AddToMarketBloc>().add(
-                            AddToMarketEventOnUpload(_listSelection, _tc.text,
-                                _tcUser.text, _tcList.text));
+                        context
+                            .read<AddToMarketBloc>()
+                            .add(AddToMarketEventOnUpload(
+                              _selectedType,
+                              _listSelection,
+                              _tc.text,
+                              _tcUser.text,
+                              _tcList.text,
+                            ));
                       },
                       icon: const Icon(Icons.check));
                 }
@@ -105,6 +114,13 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                           ],
                         ),
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          _radio(MarketListType.list),
+                          _radio(MarketListType.folder)
+                        ],
+                      ),
                       Padding(
                         padding:
                             const EdgeInsets.only(bottom: Margins.margin16),
@@ -112,11 +128,21 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                           child: ListTile(
                             title: Text(_listSelection),
                             onTap: () async {
-                              String? list = await AddToMarketBottomSheet
-                                  .callAddToMarketBottomSheet(context);
-                              if (list != null && list.isNotEmpty) {
-                                setState(() => _listSelection = list);
-                                _tcList.text = _listSelection;
+                              if (_selectedType == MarketListType.list) {
+                                String? list = await AddToMarketBottomSheet
+                                    .callAddToMarketBottomSheet(context);
+                                if (list != null && list.isNotEmpty) {
+                                  setState(() => _listSelection = list);
+                                  _tcList.text = _listSelection;
+                                }
+                              } else {
+                                String? folder =
+                                    await FolderListBottomSheet.show(
+                                        context, null);
+                                if (folder != null && folder.isNotEmpty) {
+                                  setState(() => _listSelection = folder);
+                                  _tcList.text = _listSelection;
+                                }
                               }
                             },
                           ),
@@ -171,5 +197,23 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
             ),
           ),
         ));
+  }
+
+  Widget _radio(MarketListType type) {
+    return Flexible(
+      child: ListTile(
+        title: Text(type.name),
+        onTap: () {
+          setState(() => _selectedType = type);
+        },
+        leading: Radio<MarketListType>(
+          value: type,
+          groupValue: _selectedType,
+          onChanged: (value) {
+            setState(() => _selectedType = value!);
+          },
+        ),
+      ),
+    );
   }
 }

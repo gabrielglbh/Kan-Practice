@@ -128,7 +128,7 @@ class KanjiQueries {
         String whereClause = "";
 
         /// Build up the where clauses from the listName
-        for (var _ in listNames) {
+        for (var x = 0; x < listNames.length; x++) {
           whereClause += "${KanjiTableFields.listNameField}=? OR ";
         }
 

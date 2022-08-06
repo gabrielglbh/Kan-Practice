@@ -46,24 +46,28 @@ class KPTextForm extends StatelessWidget {
 
   /// Text Style of the input. Defaults to headline5
   final TextStyle? style;
-  const KPTextForm(
-      {Key? key,
-      required this.header,
-      required this.hint,
-      required this.controller,
-      required this.focusNode,
-      required this.onEditingComplete,
-      this.onSubmitted,
-      this.inputType = TextInputType.text,
-      this.action = TextInputAction.next,
-      this.centerText = TextAlign.start,
-      this.autofocus = false,
-      this.obscure = false,
-      this.additionalWidget,
-      this.maxLength,
-      this.maxLines,
-      this.style})
-      : super(key: key);
+
+  /// Whehter the input is enabled or not
+  final bool enabled;
+  const KPTextForm({
+    Key? key,
+    required this.header,
+    required this.hint,
+    required this.controller,
+    required this.focusNode,
+    required this.onEditingComplete,
+    this.onSubmitted,
+    this.inputType = TextInputType.text,
+    this.action = TextInputAction.next,
+    this.centerText = TextAlign.start,
+    this.autofocus = false,
+    this.obscure = false,
+    this.additionalWidget,
+    this.maxLength,
+    this.maxLines,
+    this.style,
+    this.enabled = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -87,22 +91,24 @@ class KPTextForm extends StatelessWidget {
           ),
         ),
         TextField(
-            controller: controller,
-            focusNode: focusNode,
-            textAlign: centerText,
-            style: style ?? Theme.of(context).textTheme.bodyText1,
-            textInputAction: action,
-            keyboardType: inputType,
-            maxLength: maxLength,
-            maxLines: obscure ? 1 : maxLines,
-            textCapitalization: TextCapitalization.sentences,
-            autofocus: autofocus,
-            obscureText: obscure,
-            decoration: InputDecoration(hintText: hint),
-            onEditingComplete: () => onEditingComplete(),
-            onSubmitted: (kanji) {
-              if (onSubmitted != null) onSubmitted!(kanji);
-            }),
+          controller: controller,
+          focusNode: focusNode,
+          textAlign: centerText,
+          style: style ?? Theme.of(context).textTheme.bodyText1,
+          textInputAction: action,
+          keyboardType: inputType,
+          maxLength: maxLength,
+          maxLines: obscure ? 1 : maxLines,
+          textCapitalization: TextCapitalization.sentences,
+          autofocus: autofocus,
+          obscureText: obscure,
+          decoration: InputDecoration(hintText: hint),
+          enabled: enabled,
+          onEditingComplete: () => onEditingComplete(),
+          onSubmitted: (kanji) {
+            if (onSubmitted != null) onSubmitted!(kanji);
+          },
+        ),
       ],
     );
   }

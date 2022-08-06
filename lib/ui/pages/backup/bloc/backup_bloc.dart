@@ -7,16 +7,16 @@ part 'backup_event.dart';
 part 'backup_state.dart';
 
 class BackUpBloc extends Bloc<BackUpEvent, BackUpState> {
-  BackUpBloc() : super(const BackUpStateLoaded()) {
+  BackUpBloc() : super(BackUpStateIdle()) {
     on<BackUpLoadingCreateBackUp>((event, emit) async {
       emit(BackUpStateLoading());
       final error = await BackUpRecords.instance
           .createBackUp(backUpTests: event.backUpTests);
       if (error == "") {
-        emit(
-            BackUpStateLoaded(message: "backup_bloc_creation_successful".tr()));
+        emit(BackUpStateSuccess(
+            message: "backup_bloc_creation_successful".tr()));
       } else {
-        emit(BackUpStateLoaded(
+        emit(BackUpStateFailure(
             message: "${"backup_bloc_creation_failed".tr()} $error"));
       }
     });
@@ -25,9 +25,9 @@ class BackUpBloc extends Bloc<BackUpEvent, BackUpState> {
       emit(BackUpStateLoading());
       final error = await BackUpRecords.instance.restoreBackUp();
       if (error == "") {
-        emit(BackUpStateLoaded(message: "backup_bloc_merge_successful".tr()));
+        emit(BackUpStateSuccess(message: "backup_bloc_merge_successful".tr()));
       } else {
-        emit(BackUpStateLoaded(
+        emit(BackUpStateFailure(
             message: "${"backup_bloc_merge_failed".tr()} $error"));
       }
     });
@@ -36,15 +36,16 @@ class BackUpBloc extends Bloc<BackUpEvent, BackUpState> {
       emit(BackUpStateLoading());
       final error = await BackUpRecords.instance.removeBackUp();
       if (error == "") {
-        emit(BackUpStateLoaded(message: "backup_bloc_removal_successful".tr()));
+        emit(
+            BackUpStateSuccess(message: "backup_bloc_removal_successful".tr()));
       } else {
-        emit(BackUpStateLoaded(
+        emit(BackUpStateFailure(
             message: "${"backup_bloc_removal_failed".tr()} $error"));
       }
     });
 
     on<BackUpIdle>((event, emit) {
-      emit(const BackUpStateLoaded());
+      emit(BackUpStateIdle());
     });
   }
 }

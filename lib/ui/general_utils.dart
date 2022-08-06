@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/core/firebase/queries/back_ups.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:timeago/timeago.dart' as t;
@@ -83,8 +84,18 @@ class GeneralUtils {
   static getSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(
-          content: Text(message), duration: const Duration(seconds: 2)));
+      ..showSnackBar(
+        SnackBar(
+          content: Row(children: [
+            const Padding(
+              padding: EdgeInsets.only(right: Margins.margin8),
+              child: Icon(Icons.info_rounded, color: Colors.white),
+            ),
+            Expanded(child: Text(message)),
+          ]),
+          duration: const Duration(seconds: 2),
+        ),
+      );
   }
 
   /// Transforms the current time to milliseconds
@@ -95,8 +106,8 @@ class GeneralUtils {
   /// Parses the [date] that should be in milliseconds to a [DateTime] object
   /// and applies a parser with the time_ago package
   static String parseDateMilliseconds(BuildContext context, int date) {
-    final _d = DateTime.fromMillisecondsSinceEpoch(date);
-    Duration e = DateTime.now().difference(_d);
+    final d = DateTime.fromMillisecondsSinceEpoch(date);
+    Duration e = DateTime.now().difference(d);
     return t.format(DateTime.now().subtract(e),
         locale: (EasyLocalization.of(context)?.currentLocale?.languageCode ??
             "en"));
@@ -105,12 +116,13 @@ class GeneralUtils {
   static Future<void> showVersionNotes(BuildContext context,
       {String? version}) async {
     PackageInfo pi = await PackageInfo.fromPlatform();
+    // ignore: use_build_context_synchronously
     List<String> notes = await BackUpRecords.instance.getVersionNotes(context);
     Text child = const Text("");
     String versionNotes = "";
     if (notes.isNotEmpty) {
       for (var note in notes) {
-        versionNotes = versionNotes + "$note\n";
+        versionNotes = "$versionNotes$note\n";
       }
       child = Text(versionNotes);
     }
@@ -137,8 +149,8 @@ class GeneralUtils {
               : 'Ok',
           onPositive: () async {
             if (version != null) {
-              if (await canLaunch("google_play_link".tr())) {
-                await launch("google_play_link".tr());
+              if (await canLaunchUrl(Uri.parse("google_play_link".tr()))) {
+                await launchUrl(Uri.parse("google_play_link".tr()));
               }
             }
           },

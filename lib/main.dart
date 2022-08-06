@@ -86,7 +86,7 @@ class KanPractice extends StatefulWidget {
   const KanPractice({Key? key}) : super(key: key);
 
   @override
-  _KanPracticeState createState() => _KanPracticeState();
+  State<KanPractice> createState() => _KanPracticeState();
 }
 
 class _KanPracticeState extends State<KanPractice> {

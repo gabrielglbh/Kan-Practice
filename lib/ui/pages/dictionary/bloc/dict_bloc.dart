@@ -1,6 +1,7 @@
 import 'package:image/image.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:kanpractice/core/database/queries/word_history_queries.dart';
 import 'package:kanpractice/core/tflite/classifier.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
@@ -35,6 +36,10 @@ class DictBloc extends Bloc<DictEvent, DictState> {
       } on Exception {
         emit(DictStateFailure());
       }
+    });
+
+    on<DictEventAddToHistory>((event, emit) async {
+      WordHistoryQueries.instance.createWord(event.word);
     });
   }
 }

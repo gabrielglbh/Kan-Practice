@@ -19,7 +19,7 @@ class DictionaryPage extends StatefulWidget {
   const DictionaryPage({Key? key, required this.args}) : super(key: key);
 
   @override
-  _DictionaryPageState createState() => _DictionaryPageState();
+  State<DictionaryPage> createState() => _DictionaryPageState();
 }
 
 class _DictionaryPageState extends State<DictionaryPage> {
@@ -58,87 +58,110 @@ class _DictionaryPageState extends State<DictionaryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return KPScaffold(
-        setGestureDetector: false,
-        appBarTitle: widget.args.searchInJisho
-            ? "dict_title".tr()
-            : 'dict_add_kanji_title'.tr(),
-        appBarActions: [
-          IconButton(
-              onPressed: () => _showDisclaimerDialog(),
-              icon: const Icon(Icons.info_outline_rounded))
-        ],
-        centerTitle: true,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: KanjiSearchBar(
-                        top: 0,
-                        hint: widget.args.searchInJisho
-                            ? "dict_search_bar_hint".tr()
-                            : "add_kanji_textForm_kanji_ext".tr(),
-                        controller: _searchBarTextController,
-                        onClear: () =>
-                            setState(() => _searchBarTextController?.clear()),
-                        onRemoveLast: () {
-                          String? text = _searchBarTextController?.text;
-                          if (text != null && text.isNotEmpty) {
-                            setState(() {
-                              _searchBarTextController?.text =
-                                  text.substring(0, text.length - 1);
-                            });
-                          }
-                        }),
-                  ),
-                  GestureDetector(
-                    child: AnimatedContainer(
-                      width: _searchBarTextController?.text != "" ||
-                              _searchBarTextController?.text.isNotEmpty == true
-                          ? CustomSizes.defaultSizeSearchBarIcons
-                          : 0,
-                      height: CustomSizes.defaultSizeSearchBarIcons,
-                      duration: const Duration(milliseconds: 400),
-                      margin: EdgeInsets.symmetric(
-                          horizontal: _searchBarTextController?.text != "" ||
-                                  _searchBarTextController?.text.isNotEmpty ==
-                                      true
-                              ? Margins.margin8
-                              : 0),
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: CustomColors.secondaryColor),
-                      child: Icon(
-                        widget.args.searchInJisho ? Icons.search : Icons.done,
-                        color: Colors.white,
-                      ),
+    return BlocProvider<DictBloc>(
+      create: (context) => DictBloc()..add(DictEventIdle()),
+      child: KPScaffold(
+          setGestureDetector: false,
+          appBarTitle: widget.args.searchInJisho
+              ? "dict_title".tr()
+              : 'dict_add_kanji_title'.tr(),
+          appBarActions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed(KanPracticePages.historyWordPage);
+                },
+                icon: const Icon(Icons.history_rounded)),
+            IconButton(
+                onPressed: () => _showDisclaimerDialog(),
+                icon: const Icon(Icons.info_outline_rounded))
+          ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: KanjiSearchBar(
+                          top: 0,
+                          hint: widget.args.searchInJisho
+                              ? "dict_search_bar_hint".tr()
+                              : "add_kanji_textForm_kanji_ext".tr(),
+                          controller: _searchBarTextController,
+                          onClear: () =>
+                              setState(() => _searchBarTextController?.clear()),
+                          onRemoveLast: () {
+                            String? text = _searchBarTextController?.text;
+                            if (text != null && text.isNotEmpty) {
+                              setState(() {
+                                _searchBarTextController?.text =
+                                    text.substring(0, text.length - 1);
+                              });
+                            }
+                          }),
                     ),
-                    onTap: () {
-                      String? text = _searchBarTextController?.text;
-                      if (text != null && text.isNotEmpty) {
-                        /// If the user is searching for words, redirect them to Jisho
-                        /// If the user is adding words, pop and send the predicted word back
-                        if (widget.args.searchInJisho) {
-                          Navigator.of(context).pushNamed(
-                              KanPracticePages.jishoPage,
-                              arguments: JishoArguments(
-                                  kanji: text, fromDictionary: true));
-                        } else {
-                          Navigator.of(context).pop(text);
-                        }
-                      } else {
-                        GeneralUtils.getSnackBar(
-                            context, "dict_search_empty".tr());
-                      }
-                    },
-                  ),
-                ],
-              ),
-              BlocProvider<DictBloc>(
-                create: (_) => DictBloc()..add(DictEventIdle()),
-                child: BlocBuilder<DictBloc, DictState>(
+                    BlocBuilder<DictBloc, DictState>(
+                      builder: (context, state) {
+                        return GestureDetector(
+                          child: AnimatedContainer(
+                            width: _searchBarTextController?.text != "" ||
+                                    _searchBarTextController?.text.isNotEmpty ==
+                                        true
+                                ? CustomSizes.defaultSizeSearchBarIcons
+                                : 0,
+                            height: CustomSizes.defaultSizeSearchBarIcons,
+                            duration: const Duration(milliseconds: 400),
+                            margin: EdgeInsets.symmetric(
+                                horizontal:
+                                    _searchBarTextController?.text != "" ||
+                                            _searchBarTextController
+                                                    ?.text.isNotEmpty ==
+                                                true
+                                        ? Margins.margin8
+                                        : 0),
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: CustomColors.secondaryColor),
+                            child: Icon(
+                              widget.args.searchInJisho
+                                  ? Icons.search
+                                  : Icons.done,
+                              color: Colors.white,
+                              size: _searchBarTextController?.text != "" ||
+                                      _searchBarTextController
+                                              ?.text.isNotEmpty ==
+                                          true
+                                  ? 24
+                                  : 0,
+                            ),
+                          ),
+                          onTap: () {
+                            String? text = _searchBarTextController?.text;
+                            if (text != null && text.isNotEmpty) {
+                              /// If the user is searching for words, redirect them to Jisho
+                              /// If the user is adding words, pop and send the predicted word back
+                              if (widget.args.searchInJisho) {
+                                context
+                                    .read<DictBloc>()
+                                    .add(DictEventAddToHistory(word: text));
+                                Navigator.of(context).pushNamed(
+                                    KanPracticePages.jishoPage,
+                                    arguments: JishoArguments(
+                                        kanji: text, fromDictionary: true));
+                              } else {
+                                Navigator.of(context).pop(text);
+                              }
+                            } else {
+                              GeneralUtils.getSnackBar(
+                                  context, "dict_search_empty".tr());
+                            }
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                BlocBuilder<DictBloc, DictState>(
                   builder: (context, state) {
                     if (state is DictStateLoading) {
                       return const Center(
@@ -194,11 +217,11 @@ class _DictionaryPageState extends State<DictionaryPage> {
                       return Container();
                     }
                   },
-                ),
-              ),
-            ],
-          ),
-        ));
+                )
+              ],
+            ),
+          )),
+    );
   }
 
   SizedBox _predictions(DictStateLoaded state) {

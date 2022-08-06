@@ -15,7 +15,7 @@ class TutorialPage extends StatefulWidget {
   const TutorialPage({Key? key, this.alreadyShown}) : super(key: key);
 
   @override
-  _TutorialPageState createState() => _TutorialPageState();
+  State<TutorialPage> createState() => _TutorialPageState();
 }
 
 class _TutorialPageState extends State<TutorialPage> {

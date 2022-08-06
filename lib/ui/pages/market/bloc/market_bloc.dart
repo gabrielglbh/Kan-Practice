@@ -3,44 +3,45 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/firebase/queries/market.dart';
+import 'package:kanpractice/core/firebase/queries/market_folder.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
 
 part 'market_event.dart';
 part 'market_state.dart';
 
-/// Used on market.dart and manage_market_list.dart.
+/// Used on market.dart and manage_marketlist.dart.
 class MarketBloc extends Bloc<MarketEvent, MarketState> {
   MarketBloc() : super(MarketStateLoading()) {
     /// Maintain the list for pagination purposes
-    List<MarketList> _list = [];
+    List<MarketList> list = [];
 
     /// Maintain the list for pagination purposes on search
-    List<MarketList> _searchList = [];
+    List<MarketList> searchList = [];
 
     /// Maintain the offset of the documents from Firebase
-    String _lastRetrievedDocumentId = "";
+    String lastRetrievedDocumentId = "";
 
     /// Maintain the offset of the documents from Firebase when searching
-    String _lastRetrievedDocumentIdWhenSearching = "";
+    String lastRetrievedDocumentIdWhenSearching = "";
 
     /// Reset lists for proper pagination and retrieves new list
     Future<List<MarketList>> _resetCache(
         MarketFilters filter, bool order) async {
-      _list.clear();
-      _searchList.clear();
-      _lastRetrievedDocumentId = "";
-      _lastRetrievedDocumentIdWhenSearching = "";
+      list.clear();
+      searchList.clear();
+      lastRetrievedDocumentId = "";
+      lastRetrievedDocumentIdWhenSearching = "";
 
-      List<MarketList> fullList = List.of(_list);
+      List<MarketList> fullList = List.of(list);
 
       final List<MarketList> pagination = await MarketRecords.instance.getLists(
           filter: filter,
           descending: order,
-          offsetDocumentId: _lastRetrievedDocumentId,
-          onLastQueriedDocument: (id) => _lastRetrievedDocumentId = id,
+          offsetDocumentId: lastRetrievedDocumentId,
+          onLastQueriedDocument: (id) => lastRetrievedDocumentId = id,
           filterByMine: filter == MarketFilters.mine);
       fullList.addAll(pagination);
-      _list.addAll(pagination);
+      list.addAll(pagination);
       return fullList;
     }
 
@@ -48,26 +49,26 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
 
     on<MarketEventLoading>((event, emit) async {
       try {
-        _lastRetrievedDocumentIdWhenSearching = "";
+        lastRetrievedDocumentIdWhenSearching = "";
         if (event.reset) {
           emit(MarketStateLoading());
-          _list.clear();
-          _lastRetrievedDocumentId = "";
+          list.clear();
+          lastRetrievedDocumentId = "";
         }
 
         /// For every time we want to retrieve data, we need to instantiate
         /// a new list in order for Equatable to trigger and perform a change
-        /// of state. After, add to _list the elements for the next iteration.
-        List<MarketList> fullList = List.of(_list);
+        /// of state. After, add to list the elements for the next iteration.
+        List<MarketList> fullList = List.of(list);
         final List<MarketList> pagination = await MarketRecords.instance
             .getLists(
                 filter: event.filter,
                 descending: event.order,
-                offsetDocumentId: _lastRetrievedDocumentId,
-                onLastQueriedDocument: (id) => _lastRetrievedDocumentId = id,
+                offsetDocumentId: lastRetrievedDocumentId,
+                onLastQueriedDocument: (id) => lastRetrievedDocumentId = id,
                 filterByMine: event.filter == MarketFilters.mine);
         fullList.addAll(pagination);
-        _list.addAll(pagination);
+        list.addAll(pagination);
         emit(MarketStateLoaded(lists: fullList));
       } catch (err) {
         emit(MarketStateFailure(err.toString()));
@@ -76,28 +77,28 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
 
     on<MarketEventSearching>((event, emit) async {
       try {
-        _lastRetrievedDocumentId = "";
+        lastRetrievedDocumentId = "";
         if (event.reset) {
           emit(MarketStateLoading());
-          _searchList.clear();
-          _lastRetrievedDocumentIdWhenSearching = "";
+          searchList.clear();
+          lastRetrievedDocumentIdWhenSearching = "";
         }
 
         /// For every time we want to retrieve data, we need to instantiate
         /// a new list in order for Equatable to trigger and perform a change
-        /// of state. After, add to _list the elements for the next iteration.
-        List<MarketList> fullList = List.of(_searchList);
+        /// of state. After, add to list the elements for the next iteration.
+        List<MarketList> fullList = List.of(searchList);
         final List<MarketList> pagination = await MarketRecords.instance
             .getLists(
                 query: event.query,
                 filter: event.filter,
                 descending: event.order,
-                offsetDocumentId: _lastRetrievedDocumentIdWhenSearching,
+                offsetDocumentId: lastRetrievedDocumentIdWhenSearching,
                 onLastQueriedDocument: (id) =>
-                    _lastRetrievedDocumentIdWhenSearching = id,
+                    lastRetrievedDocumentIdWhenSearching = id,
                 filterByMine: event.filter == MarketFilters.mine);
         fullList.addAll(pagination);
-        _searchList.addAll(pagination);
+        searchList.addAll(pagination);
         emit(MarketStateLoaded(lists: fullList));
       } catch (err) {
         emit(MarketStateFailure(err.toString()));
@@ -106,8 +107,14 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
 
     on<MarketEventDownload>((event, emit) async {
       emit(MarketStateLoading());
-      final res =
-          await MarketRecords.instance.downloadFromMarketPlace(event.id);
+      String res = "";
+      if (!event.isFolder) {
+        res = await MarketRecords.instance.downloadFromMarketPlace(event.id);
+      } else {
+        res = await MarketFolderRecords.instance
+            .downloadFromMarketPlace(event.id);
+      }
+
       if (res.isEmpty) {
         emit(MarketStateSuccess("market_downloaded_successfully".tr()));
       } else {
@@ -119,7 +126,14 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
 
     on<MarketEventRemove>((event, emit) async {
       emit(MarketStateLoading());
-      final res = await MarketRecords.instance.removeFromMarketPlace(event.id);
+      String res = "";
+      if (!event.isFolder) {
+        res = await MarketRecords.instance.removeFromMarketPlace(event.id);
+      } else {
+        res =
+            await MarketFolderRecords.instance.removeFromMarketPlace(event.id);
+      }
+
       if (res.isEmpty) {
         emit(MarketStateSuccess("market_removed_successfully".tr()));
       } else {

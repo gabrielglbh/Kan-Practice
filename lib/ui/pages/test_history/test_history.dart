@@ -16,7 +16,7 @@ class TestHistory extends StatefulWidget {
   const TestHistory({Key? key}) : super(key: key);
 
   @override
-  _TestHistoryState createState() => _TestHistoryState();
+  State<TestHistory> createState() => _TestHistoryState();
 }
 
 class _TestHistoryState extends State<TestHistory> {
@@ -37,8 +37,8 @@ class _TestHistoryState extends State<TestHistory> {
             ));
   }
 
-  _addLoadingEvent({int offset = 0}) => BlocProvider.of<TestListBloc>(context)
-      .add(TestListEventLoading(offset: offset));
+  _addLoadingEvent({int offset = 0}) =>
+      context.read<TestListBloc>().add(TestListEventLoading(offset: offset));
 
   _scrollListener() {
     if (_scrollController.offset ==

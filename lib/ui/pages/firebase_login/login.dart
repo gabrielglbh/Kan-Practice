@@ -14,7 +14,7 @@ class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -47,28 +47,27 @@ class _LoginPageState extends State<LoginPage> {
     String? email = _emailController?.text;
     String? password = _passwordController?.text;
     if (email != null && password != null) {
-      BlocProvider.of<LoginBloc>(bloc)
-          .add(LoginSubmitting(_mode, email, password));
+      bloc.read<LoginBloc>().add(LoginSubmitting(_mode, email, password));
     }
   }
 
   _changePassword(BuildContext bloc, String prevPass, String newPass) {
     if (prevPass.isNotEmpty && newPass.isNotEmpty) {
-      BlocProvider.of<LoginBloc>(bloc).add(ChangePassword(prevPass, newPass));
+      bloc.read<LoginBloc>().add(ChangePassword(prevPass, newPass));
     }
   }
 
   _removeAccount(BuildContext bloc, String pass) {
     if (pass.isNotEmpty) {
-      BlocProvider.of<LoginBloc>(bloc).add(RemoveAccount(pass));
+      bloc.read<LoginBloc>().add(RemoveAccount(pass));
     }
   }
 
   _changePasswordDialog(BuildContext bloc) {
-    TextEditingController _currPassword = TextEditingController();
-    TextEditingController _newPassword = TextEditingController();
-    FocusNode _currPasswordFn = FocusNode();
-    FocusNode _newPasswordFn = FocusNode();
+    TextEditingController currPassword = TextEditingController();
+    TextEditingController newPassword = TextEditingController();
+    FocusNode currPasswordFn = FocusNode();
+    FocusNode newPasswordFn = FocusNode();
     showDialog(
         context: bloc,
         builder: (context) {
@@ -80,11 +79,11 @@ class _LoginPageState extends State<LoginPage> {
                     hint: 'login_changePasswordDialog_hint'.tr(),
                     header: 'login_changePasswordDialog_old_header'.tr(),
                     inputType: TextInputType.visiblePassword,
-                    controller: _currPassword,
-                    focusNode: _currPasswordFn,
+                    controller: currPassword,
+                    focusNode: currPasswordFn,
                     autofocus: true,
                     obscure: true,
-                    onEditingComplete: () => _newPasswordFn.requestFocus(),
+                    onEditingComplete: () => newPasswordFn.requestFocus(),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: Margins.margin16),
@@ -92,13 +91,13 @@ class _LoginPageState extends State<LoginPage> {
                       hint: 'login_changePasswordDialog_hint'.tr(),
                       header: 'login_changePasswordDialog_new_header'.tr(),
                       inputType: TextInputType.visiblePassword,
-                      controller: _newPassword,
-                      focusNode: _newPasswordFn,
+                      controller: newPassword,
+                      focusNode: newPasswordFn,
                       obscure: true,
                       onEditingComplete: () {
                         Navigator.of(context).pop();
                         _changePassword(
-                            bloc, _currPassword.text, _newPassword.text);
+                            bloc, currPassword.text, newPassword.text);
                       },
                     ),
                   )
@@ -106,13 +105,13 @@ class _LoginPageState extends State<LoginPage> {
               ),
               positiveButtonText: "login_changePasswordDialog_positive".tr(),
               onPositive: () =>
-                  _changePassword(bloc, _currPassword.text, _newPassword.text));
+                  _changePassword(bloc, currPassword.text, newPassword.text));
         });
   }
 
   _removeAccountDialog(BuildContext bloc) {
-    TextEditingController _currPassword = TextEditingController();
-    FocusNode _currPasswordFn = FocusNode();
+    TextEditingController currPassword = TextEditingController();
+    FocusNode currPasswordFn = FocusNode();
     showDialog(
         context: bloc,
         builder: (context) {
@@ -129,18 +128,18 @@ class _LoginPageState extends State<LoginPage> {
                     hint: 'login_removeAccountDialog_hint'.tr(),
                     header: 'login_removeAccountDialog_header'.tr(),
                     inputType: TextInputType.visiblePassword,
-                    controller: _currPassword,
-                    focusNode: _currPasswordFn,
+                    controller: currPassword,
+                    focusNode: currPasswordFn,
                     obscure: true,
                     onEditingComplete: () {
                       Navigator.of(context).pop();
-                      _removeAccount(bloc, _currPassword.text);
+                      _removeAccount(bloc, currPassword.text);
                     },
                   ),
                 ],
               ),
               positiveButtonText: "login_removeAccountDialog_positive".tr(),
-              onPositive: () => _removeAccount(bloc, _currPassword.text));
+              onPositive: () => _removeAccount(bloc, currPassword.text));
         });
   }
 

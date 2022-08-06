@@ -38,6 +38,24 @@ class TestTableFields {
   static const String testModeField = "testMode";
 }
 
+class KanListFolderRelationTableFields {
+  static const String relTable = "FOLDER_RELATION_TABLE";
+  static const String nameField = "folder";
+  static const String kanListNameField = "kanListName";
+}
+
+class FolderTableFields {
+  static const String folderTable = "FOLDER_TABLE";
+  static const String nameField = "folder";
+  static const String lastUpdatedField = "lastUpdated";
+}
+
+class WordHistoryFields {
+  static const String historyTable = "WORD_HISTORY_TABLE";
+  static const String wordField = "word";
+  static const String searchedOnField = "searchedOn";
+}
+
 class DatabaseConstants {
   static const double emptyWinRate = -1;
 }

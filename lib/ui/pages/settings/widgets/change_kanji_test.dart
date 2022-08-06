@@ -8,15 +8,14 @@ class ChangeKanjiInTest extends StatefulWidget {
   const ChangeKanjiInTest({Key? key}) : super(key: key);
 
   static Future<int?> show(BuildContext context) async {
-    int? _value;
+    int? value;
     await showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            backgroundColor: Colors.transparent,
-            isDismissible: true,
-            builder: (context) => const ChangeKanjiInTest())
-        .then((value) => _value = value);
-    return _value;
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        isDismissible: true,
+        builder: (context) => const ChangeKanjiInTest()).then((v) => value = v);
+    return value;
   }
 
   @override

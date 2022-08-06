@@ -26,7 +26,7 @@ class KPNumberTestBottomSheet extends StatefulWidget {
   }
 
   @override
-  _KPNumberTestBottomSheetState createState() =>
+  State<KPNumberTestBottomSheet> createState() =>
       _KPNumberTestBottomSheetState();
 }
 
@@ -38,7 +38,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
     /// If no range is selected, 0 to 10K will be taken
     int min = Ranges.from0to1K.min;
     int max = Ranges.from1Kto10K.max;
-    final _random = Random();
+    final random = Random();
 
     /// Sort the list of selected ranges to properly apply the min and max
     _selectedLists.sort((a, b) => a.index.compareTo(b.index));
@@ -48,7 +48,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
     }
 
     return List.generate(_kanjiInTest, (n) {
-      String num = (min + _random.nextInt((max + 1) - min)).toString();
+      String num = (min + random.nextInt((max + 1) - min)).toString();
       return Kanji(
           kanji: num, pronunciation: num, meaning: num, listName: "Numbers");
     });

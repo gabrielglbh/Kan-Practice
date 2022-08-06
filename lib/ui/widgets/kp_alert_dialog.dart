@@ -42,11 +42,6 @@ class KPDialog extends StatelessWidget {
         Visibility(
           visible: negativeButton,
           child: ElevatedButton(
-              child: Text("back_button_label".tr(),
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      ?.copyWith(color: Colors.white)),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.grey),
                 shape: MaterialStateProperty.all<OutlinedBorder>(
@@ -54,14 +49,14 @@ class KPDialog extends StatelessWidget {
                         borderRadius:
                             BorderRadius.circular(CustomRadius.radius8))),
               ),
-              onPressed: () => Navigator.of(context).pop()),
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text("back_button_label".tr(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2
+                      ?.copyWith(color: Colors.white))),
         ),
         ElevatedButton(
-            child: Text(positiveButtonText,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    ?.copyWith(color: Colors.white)),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
               shape: MaterialStateProperty.all<OutlinedBorder>(
@@ -72,7 +67,12 @@ class KPDialog extends StatelessWidget {
             onPressed: () async {
               if (popDialog) Navigator.of(context).pop();
               await onPositive();
-            }),
+            },
+            child: Text(positiveButtonText,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    ?.copyWith(color: Colors.white))),
       ],
     );
   }

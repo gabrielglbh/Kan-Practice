@@ -158,7 +158,8 @@ class TestQueries {
         remembranceTests: testModesCount[2],
         numberTests: testModesCount[3],
         lessPctTests: testModesCount[4],
-        categoryTests: testModesCount[5]);
+        categoryTests: testModesCount[5],
+        folderTests: testModesCount[6]);
   }
 
   /// Retrieves the total test count saved locally in the device.
@@ -288,6 +289,9 @@ class TestQueries {
                 break;
               case Tests.categories:
                 counters[5] += 1;
+                break;
+              case Tests.folder:
+                counters[6] += 1;
                 break;
             }
           }

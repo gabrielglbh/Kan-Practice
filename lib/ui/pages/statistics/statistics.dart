@@ -211,6 +211,9 @@ class StatisticsPage extends StatelessWidget {
             case Tests.categories:
               return _testModeCountContainer(
                   context, Tests.categories, s.test.categoryTests);
+            case Tests.folder:
+              return _testModeCountContainer(
+                  context, Tests.folder, s.test.folderTests);
           }
         }));
   }
@@ -223,7 +226,8 @@ class StatisticsPage extends StatelessWidget {
           Icon(t.icon, size: Margins.margin18),
           Padding(
             padding: const EdgeInsets.only(left: Margins.margin8),
-            child: Text(t.name, style: Theme.of(context).textTheme.bodyText2),
+            child:
+                Text(t.nameAbbr, style: Theme.of(context).textTheme.bodyText2),
           ),
           Expanded(child: Container()),
           Text(count.toString(),

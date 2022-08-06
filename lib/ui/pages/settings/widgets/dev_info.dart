@@ -62,29 +62,30 @@ class DevInfo extends StatelessWidget {
         ListTile(
           title: Text("developer_info_follow".tr()),
           leading: const Icon(Icons.developer_mode_rounded),
-          onTap: () async => await launch("https://github.com/gabrielglbh"),
+          onTap: () async =>
+              await launchUrl(Uri.parse("https://github.com/gabrielglbh")),
           trailing: const Icon(Icons.link),
         ),
         ListTile(
           title: Text("developer_info_github_issue".tr()),
           leading: const Icon(Icons.bug_report_outlined),
-          onTap: () async => await launch(
-              "https://github.com/gabrielglbh/Kan-Practice/issues/new"),
+          onTap: () async => await launchUrl(Uri.parse(
+              "https://github.com/gabrielglbh/Kan-Practice/issues/new")),
           trailing: const Icon(Icons.link),
         ),
         ListTile(
           title: Text("${"developer_info_report".tr()} devgglop@gmail.com"),
           leading: const Icon(Icons.bug_report_rounded),
           onTap: () async {
-            final Uri _emailLaunchUri = Uri(
+            final Uri emailLaunchUri = Uri(
                 scheme: 'mailto',
                 path: 'devgglop@gmail.com',
                 queryParameters: {
                   'subject': "Found a bug on KanPractice!",
                 });
-            String url = _emailLaunchUri.toString().replaceAll("+", "%20");
-            if (await canLaunch(url)) {
-              await launch(url);
+            String url = emailLaunchUri.toString().replaceAll("+", "%20");
+            if (await canLaunchUrl(Uri.parse(url))) {
+              await launchUrl(Uri.parse(url));
             } else {
               GeneralUtils.getSnackBar(context, "launch_url_failed".tr());
             }

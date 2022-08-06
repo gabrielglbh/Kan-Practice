@@ -109,6 +109,8 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
         itemCount: state.list.length,
         itemBuilder: (context, k) {
           WordHistory wordHistory = state.list[k];
+          final date = GeneralUtils.parseDateMilliseconds(
+              context, wordHistory.searchedOn);
           return ListTile(
             onTap: () {
               Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
@@ -121,8 +123,7 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
                     .headline5
                     ?.copyWith(fontWeight: FontWeight.normal),
                 overflow: TextOverflow.ellipsis),
-            subtitle: Text(GeneralUtils.parseDateMilliseconds(
-                context, wordHistory.searchedOn)),
+            subtitle: Text("${"searched_label".tr()} $date"),
           );
         });
   }

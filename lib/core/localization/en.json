@@ -347,5 +347,6 @@
   "word_history_empty": "No words have been found in the history",
   "word_history_showRemoveHistorysDialog_title": "Delete all searched words",
   "word_history_showRemoveHistorysDialog_content": "All searched words until now will be removed. This action cannot be undone. Do you want to proceed?",
-  "word_history_showRemoveHistorysDialog_positive": "Delete"
+  "word_history_showRemoveHistorysDialog_positive": "Delete",
+  "searched_label": "Searched"
 }

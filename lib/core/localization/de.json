@@ -347,5 +347,6 @@
   "word_history_empty": "Es wurden keine Wörter in der Historie gefunden",
   "word_history_showRemoveHistorysDialog_title": "Alle gesuchten Wörter löschen",
   "word_history_showRemoveHistorysDialog_content": "Alle bis jetzt gesuchten Wörter werden entfernt. Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie fortfahren?",
-  "word_history_showRemoveHistorysDialog_positive": "Löschen"
+  "word_history_showRemoveHistorysDialog_positive": "Löschen",
+  "searched_label": "Durchsucht"
 }

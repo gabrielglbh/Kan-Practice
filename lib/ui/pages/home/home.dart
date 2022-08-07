@@ -92,9 +92,17 @@ class _HomePageState extends State<HomePage>
         StorageManager.readData(StorageManager.orderOnMarket) ?? true;
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // TODO: If on folder, KPTestBottomSheet.show(context, widget.folder);
+      /// Read folder from SharedPreferences, current selected folder for the latest
+      /// test. If any, show that BS and navigate to that tab. Else just
+      /// show the BS with all tests
+      String? folder = StorageManager.readData(StorageManager.folderWhenOnTest);
+      bool hasFolder = folder != null && folder.isNotEmpty;
+      if (hasFolder) _tabController.animateTo(1);
       if (widget.showTestBottomSheet == true) {
-        await KPTestBottomSheet.show(context);
+        await KPTestBottomSheet.show(
+          context,
+          folder: hasFolder ? folder : null,
+        );
       }
     });
     super.initState();

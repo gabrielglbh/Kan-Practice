@@ -199,6 +199,11 @@ class KPTestStudyMode extends StatelessWidget {
     navigator.pop(); // Dismiss this bottom sheet
     navigator.pop(); // Dismiss the tests bottom sheet
 
+    /// Save to SharedPreferences the current folder, if any, to manage
+    /// proper navigation when finishing the test.
+    /// See addPostFrameCallback() in init() in [HomePage]
+    StorageManager.saveData(StorageManager.folderWhenOnTest, folder ?? "");
+
     switch (mode) {
       case StudyModes.writing:
         await navigator.pushNamed(KanPracticePages.writingStudyPage,

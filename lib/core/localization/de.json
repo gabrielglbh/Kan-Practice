@@ -230,7 +230,7 @@
   "number_bottom_sheet_begin": "Start",
   "image_not_loaded": "Bild kann nicht geladen werden :(",
   "dict_title": "Wörterbuch",
-  "dict_search_bar_hint": "Zeichnen Sie ein Kanji und suchen Sie nach der Bedeutung",
+  "dict_search_bar_hint": "Zeichne oder schreibe ein Wort",
   "dict_search_empty": "Zeichnen Sie zuerst ein Kanji",
   "dict_search_button_title": "Suchen",
   "dict_predictions_most_likely": "Höchstwahrscheinlich",

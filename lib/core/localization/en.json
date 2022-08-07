@@ -230,7 +230,7 @@
   "number_bottom_sheet_begin": "Begin",
   "image_not_loaded": "Could not load image :(",
   "dict_title": "Dictionary",
-  "dict_search_bar_hint": "Draw a kanji and search its meaning",
+  "dict_search_bar_hint": "Draw or type a word",
   "dict_search_empty": "Draw a kanji first",
   "dict_search_button_title": "Search",
   "dict_predictions_most_likely": "Most likely",

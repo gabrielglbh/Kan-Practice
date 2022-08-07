@@ -48,6 +48,7 @@ class _KPKanListCategorySelectionBottomSheetState
     } else {
       list = await FolderQueries.instance.getAllKanjiOnListsOnFolder(
         [widget.folder!],
+        type: Tests.categories,
         category: category.index,
       );
     }
@@ -85,10 +86,12 @@ class _KPKanListCategorySelectionBottomSheetState
               Visibility(
                 visible: _selectionMode,
                 child: KPTestStudyMode(
-                    list: _kanji,
-                    type: Tests.categories,
-                    testName:
-                        "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category}"),
+                  list: _kanji,
+                  type: Tests.categories,
+                  testName: widget.folder == null
+                      ? "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category}"
+                      : "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category} - ${widget.folder}",
+                ),
               ),
               Visibility(
                 visible: !_selectionMode,

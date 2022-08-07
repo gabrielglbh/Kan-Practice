@@ -12,7 +12,7 @@ class KPBlitzBottomSheet extends StatelessWidget {
   final String? practiceList;
 
   /// Folder for UI on history test
-  final String? folderList;
+  final String? folder;
   final bool remembranceTest;
   final bool lessPctTest;
 
@@ -21,7 +21,7 @@ class KPBlitzBottomSheet extends StatelessWidget {
   const KPBlitzBottomSheet({
     Key? key,
     this.practiceList,
-    this.folderList,
+    this.folder,
     this.remembranceTest = false,
     this.lessPctTest = false,
   })  : assert(lessPctTest != remembranceTest),
@@ -31,7 +31,7 @@ class KPBlitzBottomSheet extends StatelessWidget {
   static Future<String?> show(
     BuildContext context, {
     String? practiceList,
-    String? folderList,
+    String? folder,
     bool remembranceTest = false,
     bool lessPctTest = false,
   }) async {
@@ -41,7 +41,7 @@ class KPBlitzBottomSheet extends StatelessWidget {
       backgroundColor: Colors.transparent,
       builder: (context) => KPBlitzBottomSheet(
         practiceList: practiceList,
-        folderList: folderList,
+        folder: folder,
         remembranceTest: remembranceTest,
         lessPctTest: lessPctTest,
       ),
@@ -57,7 +57,7 @@ class KPBlitzBottomSheet extends StatelessWidget {
         ? Tests.time
         : lessPctTest
             ? Tests.less
-            : folderList != null
+            : folder != null
                 ? Tests.folder
                 : Tests.blitz;
 
@@ -69,19 +69,19 @@ class KPBlitzBottomSheet extends StatelessWidget {
 
     String testName = "";
     if (remembranceTest) {
-      if (folderList == null) {
+      if (folder == null) {
         testName = "remembrance_bottom_sheet_label".tr();
       } else {
-        testName = '${"remembrance_bottom_sheet_on_label".tr()} $folderList';
+        testName = '${"remembrance_bottom_sheet_on_label".tr()} $folder';
       }
     } else if (lessPctTest) {
-      if (folderList == null) {
+      if (folder == null) {
         testName = "less_pct_bottom_sheet_label".tr();
       } else {
-        testName = '${"less_pct_bottom_sheet_on_label".tr()} $folderList';
+        testName = '${"less_pct_bottom_sheet_on_label".tr()} $folder';
       }
-    } else if (folderList != null) {
-      testName = '${"blitz_bottom_sheet_on_label".tr()} $folderList';
+    } else if (folder != null) {
+      testName = '${"blitz_bottom_sheet_on_label".tr()} $folder';
     } else if (practiceList == null) {
       testName = 'blitz_bottom_sheet_label'.tr();
     } else {
@@ -118,7 +118,7 @@ class KPBlitzBottomSheet extends StatelessWidget {
               ),
               KPTestStudyMode(
                 practiceList: practiceList,
-                folder: folderList,
+                folder: folder,
                 type: type,
                 testName: testName,
               )

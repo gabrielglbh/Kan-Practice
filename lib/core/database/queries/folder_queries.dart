@@ -146,9 +146,11 @@ class FolderQueries {
   }
 
   /// Get the full list of [Kanji] related to a certain [Folder] from all [KanjiList]
-  /// appearing on it.
+  /// appearing on it. [mode], [type] and [category] serves as helper variables to
+  /// order and query different words within the Folder to perform tests
+  /// (Blitz, remembrance, less % and category).
   Future<List<Kanji>> getAllKanjiOnListsOnFolder(List<String> folders,
-      {StudyModes? mode, Tests? type}) async {
+      {StudyModes? mode, Tests? type, int? category}) async {
     if (_database != null) {
       try {
         String whereClause = "";
@@ -185,7 +187,14 @@ class FolderQueries {
             "ON K.${KanjiTableFields.listNameField}=R.${KanListTableFields.nameField} "
             "WHERE $whereClause";
 
-        if (type == Tests.time) {
+        if (type == Tests.categories) {
+          if (category != null) {
+            query =
+                "$joinSelection AND K.${KanjiTableFields.categoryField}=$category";
+          } else {
+            return [];
+          }
+        } else if (type == Tests.time) {
           if (mode != null) {
             switch (mode) {
               case StudyModes.writing:

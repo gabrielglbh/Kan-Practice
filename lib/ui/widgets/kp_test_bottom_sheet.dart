@@ -107,7 +107,7 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
               if (widget.folder != null) {
                 await KPBlitzBottomSheet.show(
                   context,
-                  folderList: widget.folder,
+                  folder: widget.folder,
                 );
               } else {
                 await KPBlitzBottomSheet.show(context);
@@ -117,7 +117,7 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
               if (widget.folder != null) {
                 await KPBlitzBottomSheet.show(
                   context,
-                  folderList: widget.folder,
+                  folder: widget.folder,
                   remembranceTest: true,
                 );
               } else {
@@ -131,7 +131,7 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
               if (widget.folder != null) {
                 await KPBlitzBottomSheet.show(
                   context,
-                  folderList: widget.folder,
+                  folder: widget.folder,
                   lessPctTest: true,
                 );
               } else {
@@ -139,8 +139,14 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
               }
               break;
             case Tests.categories:
-              // TODO: Accept folder
-              await KPKanListCategorySelectionBottomSheet.show(context);
+              if (widget.folder != null) {
+                await KPKanListCategorySelectionBottomSheet.show(
+                  context,
+                  folder: widget.folder,
+                );
+              } else {
+                await KPKanListCategorySelectionBottomSheet.show(context);
+              }
               break;
             case Tests.folder:
               await FolderSelectionBottomSheet.show(context);

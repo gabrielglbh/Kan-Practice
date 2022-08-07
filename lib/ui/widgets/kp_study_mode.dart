@@ -61,24 +61,13 @@ class KPTestStudyMode extends StatelessWidget {
         list.shuffle();
         return list;
       }
-      if (type == Tests.time && folder != null) {
+      if ((type == Tests.time || type == Tests.less) && folder != null) {
         List<Kanji> list =
             await FolderQueries.instance.getAllKanjiOnListsOnFolder(
           [folder!],
           mode: mode,
           type: type,
         );
-        list.shuffle();
-        return list;
-      }
-      if (type == Tests.less && folder != null) {
-        List<Kanji> list =
-            await FolderQueries.instance.getAllKanjiOnListsOnFolder(
-          [folder!],
-          mode: mode,
-          type: type,
-        );
-        list.shuffle();
         return list;
       }
 

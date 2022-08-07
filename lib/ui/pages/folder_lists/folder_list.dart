@@ -233,7 +233,7 @@ class _FolderListState extends State<FolderList>
       subtitle: Text("${"created_label".tr()} $date"),
       trailing: IconButton(
         onPressed: () async {
-          await KPTestBottomSheet.show(context, withinFolder: true);
+          await KPTestBottomSheet.show(context, folder: folder.folder);
         },
         icon: const Icon(Icons.track_changes_rounded,
             color: CustomColors.secondaryColor),

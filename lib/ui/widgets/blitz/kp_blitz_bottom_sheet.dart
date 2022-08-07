@@ -24,7 +24,8 @@ class KPBlitzBottomSheet extends StatelessWidget {
     this.folderList,
     this.remembranceTest = false,
     this.lessPctTest = false,
-  }) : super(key: key);
+  })  : assert(lessPctTest != remembranceTest),
+        super(key: key);
 
   /// Creates and calls the [BottomSheet] with the content for a blitz test
   static Future<String?> show(
@@ -59,15 +60,33 @@ class KPBlitzBottomSheet extends StatelessWidget {
             : folderList != null
                 ? Tests.folder
                 : Tests.blitz;
-    final testName = remembranceTest
-        ? "remembrance_bottom_sheet_label".tr()
+
+    final description = remembranceTest
+        ? "remembrance_bottom_sheet_content".tr()
         : lessPctTest
-            ? "less_pct_bottom_sheet_label".tr()
-            : folderList != null
-                ? '${"blitz_bottom_sheet_on_label".tr()} $folderList'
-                : practiceList == null
-                    ? 'blitz_bottom_sheet_label'.tr()
-                    : '${"blitz_bottom_sheet_on_label".tr()} $practiceList';
+            ? "less_pct_bottom_sheet_content".tr()
+            : "blitz_bottom_sheet_content".tr();
+
+    String testName = "";
+    if (remembranceTest) {
+      if (folderList == null) {
+        testName = "remembrance_bottom_sheet_label".tr();
+      } else {
+        testName = '${"remembrance_bottom_sheet_on_label".tr()} $folderList';
+      }
+    } else if (lessPctTest) {
+      if (folderList == null) {
+        testName = "less_pct_bottom_sheet_label".tr();
+      } else {
+        testName = '${"less_pct_bottom_sheet_on_label".tr()} $folderList';
+      }
+    } else if (folderList != null) {
+      testName = '${"blitz_bottom_sheet_on_label".tr()} $folderList';
+    } else if (practiceList == null) {
+      testName = 'blitz_bottom_sheet_label'.tr();
+    } else {
+      testName = '${"blitz_bottom_sheet_on_label".tr()} $practiceList';
+    }
 
     return BottomSheet(
       enableDrag: false,
@@ -93,8 +112,7 @@ class KPBlitzBottomSheet extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: Margins.margin8, horizontal: Margins.margin32),
-                child: Text(
-                    "$kanjiInTest ${remembranceTest ? "remembrance_bottom_sheet_content".tr() : lessPctTest ? "less_pct_bottom_sheet_content".tr() : "blitz_bottom_sheet_content".tr()}",
+                child: Text("$kanjiInTest $description",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyText1),
               ),

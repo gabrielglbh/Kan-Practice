@@ -5,10 +5,10 @@ import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/core/types/tab_types.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/pages/kanji_list_on_folder/bloc/kl_folder_bloc.dart';
-import 'package:kanpractice/ui/widgets/blitz/kp_blitz_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/kp_kanji_lists/kanji_lists.dart';
 import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 import 'package:kanpractice/ui/widgets/kp_search_bar.dart';
+import 'package:kanpractice/ui/widgets/kp_test_bottom_sheet.dart';
 
 class KanListOnFolderPage extends StatefulWidget {
   final String folder;
@@ -71,10 +71,11 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
               appBarActions: [
                 IconButton(
                   onPressed: () async {
-                    await KPBlitzBottomSheet.show(context,
-                        folderList: widget.folder);
+                    await KPTestBottomSheet.show(context,
+                        folder: widget.folder);
                   },
-                  icon: const Icon(Icons.flash_on_rounded),
+                  icon: const Icon(Icons.track_changes_rounded,
+                      color: CustomColors.secondaryColor),
                 ),
                 IconButton(
                   icon: const Icon(Icons.auto_awesome_motion_rounded),

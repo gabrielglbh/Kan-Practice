@@ -348,5 +348,7 @@
   "word_history_showRemoveHistorysDialog_title": "Eliminar todas las palabras buscadas",
   "word_history_showRemoveHistorysDialog_content": "Se eliminarán todas las palabras buscadas hasta el momento. Esta acción no se puede deshacer. ¿Quieres continuar?",
   "word_history_showRemoveHistorysDialog_positive": "Eliminar",
-  "searched_label": "Buscado"
+  "searched_label": "Buscado",
+  "remembrance_bottom_sheet_on_label": "Recuerdo en",
+  "less_pct_bottom_sheet_on_label": "Menor % en"
 }

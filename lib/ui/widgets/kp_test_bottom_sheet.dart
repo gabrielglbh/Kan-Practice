@@ -11,21 +11,19 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/widgets/blitz/kp_number_test_bottom_sheet.dart';
 
 class KPTestBottomSheet extends StatefulWidget {
-  final bool withinFolder;
-  const KPTestBottomSheet({Key? key, this.withinFolder = false})
-      : super(key: key);
+  final String? folder;
+  const KPTestBottomSheet({Key? key, this.folder}) : super(key: key);
 
   @override
   State<KPTestBottomSheet> createState() => _KPTestBottomSheetState();
 
   /// Creates and calls the [BottomSheet] with the content for a regular test
-  static Future<String?> show(BuildContext context,
-      {bool withinFolder = false}) async {
+  static Future<String?> show(BuildContext context, {String? folder}) async {
     return await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
-        builder: (context) => KPTestBottomSheet(withinFolder: withinFolder));
+        builder: (context) => KPTestBottomSheet(folder: folder));
   }
 }
 
@@ -57,10 +55,10 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: widget.withinFolder ? 2 : 3,
-                      childAspectRatio: widget.withinFolder ? 1.9 : 1.3,
+                      crossAxisCount: widget.folder != null ? 2 : 3,
+                      childAspectRatio: widget.folder != null ? 1.9 : 1.3,
                     ),
-                    children: widget.withinFolder
+                    children: widget.folder != null
                         ? [
                             _testBasedButtons(context, Tests.blitz),
                             _testBasedButtons(context, Tests.time),
@@ -106,18 +104,42 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
               await KanListSelectionBottomSheet.show(context);
               break;
             case Tests.blitz:
-              await KPBlitzBottomSheet.show(context);
+              if (widget.folder != null) {
+                await KPBlitzBottomSheet.show(
+                  context,
+                  folderList: widget.folder,
+                );
+              } else {
+                await KPBlitzBottomSheet.show(context);
+              }
               break;
             case Tests.time:
-              await KPBlitzBottomSheet.show(context, remembranceTest: true);
+              if (widget.folder != null) {
+                await KPBlitzBottomSheet.show(
+                  context,
+                  folderList: widget.folder,
+                  remembranceTest: true,
+                );
+              } else {
+                await KPBlitzBottomSheet.show(context, remembranceTest: true);
+              }
               break;
             case Tests.numbers:
               await KPNumberTestBottomSheet.show(context);
               break;
             case Tests.less:
-              await KPBlitzBottomSheet.show(context, lessPctTest: true);
+              if (widget.folder != null) {
+                await KPBlitzBottomSheet.show(
+                  context,
+                  folderList: widget.folder,
+                  lessPctTest: true,
+                );
+              } else {
+                await KPBlitzBottomSheet.show(context, lessPctTest: true);
+              }
               break;
             case Tests.categories:
+              // TODO: Accept folder
               await KPKanListCategorySelectionBottomSheet.show(context);
               break;
             case Tests.folder:

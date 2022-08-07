@@ -348,5 +348,7 @@
   "word_history_showRemoveHistorysDialog_title": "Alle gesuchten Wörter löschen",
   "word_history_showRemoveHistorysDialog_content": "Alle bis jetzt gesuchten Wörter werden entfernt. Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie fortfahren?",
   "word_history_showRemoveHistorysDialog_positive": "Löschen",
-  "searched_label": "Durchsucht"
+  "searched_label": "Durchsucht",
+  "remembrance_bottom_sheet_on_label": "Gedächtnis an",
+  "less_pct_bottom_sheet_on_label": "Weniger % an"
 }

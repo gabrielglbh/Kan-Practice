@@ -46,15 +46,14 @@ class KPTestStudyMode extends StatelessWidget {
       required this.testName})
       : super(key: key);
 
-  Future<List<Kanji>> _loadBlitzTest(StudyModes mode) async {
+  Future<List<Kanji>> _loadTest(StudyModes mode) async {
     String? listName = practiceList;
 
     /// Get all the list of all kanji and perform a 20 kanji random sublist
     if (listName == null) {
-      /// If the type is Folder, it means that we are on an specific folder kanjilist list
-      /// and we want to perform a fast test on all kanji available within
-      /// the KanList of the folder
-      if (type == Tests.folder) {
+      /// If the type is Folder or Blitz with a specified folder, gather all
+      /// words within the folder
+      if (type == Tests.folder || (type == Tests.blitz && folder != null)) {
         if (folder == null) return [];
 
         List<Kanji> list =
@@ -62,6 +61,28 @@ class KPTestStudyMode extends StatelessWidget {
         list.shuffle();
         return list;
       }
+      if (type == Tests.time && folder != null) {
+        List<Kanji> list =
+            await FolderQueries.instance.getAllKanjiOnListsOnFolder(
+          [folder!],
+          mode: mode,
+          type: type,
+        );
+        list.shuffle();
+        return list;
+      }
+      if (type == Tests.less && folder != null) {
+        List<Kanji> list =
+            await FolderQueries.instance.getAllKanjiOnListsOnFolder(
+          [folder!],
+          mode: mode,
+          type: type,
+        );
+        list.shuffle();
+        return list;
+      }
+
+      /// Else, just get all Kanji
       List<Kanji> list =
           await KanjiQueries.instance.getAllKanji(mode: mode, type: type);
 
@@ -163,7 +184,7 @@ class KPTestStudyMode extends StatelessWidget {
               await _decideOnMode(navigator, l, mode);
             }
           } else {
-            List<Kanji> l = await _loadBlitzTest(mode);
+            List<Kanji> l = await _loadTest(mode);
             if (l.isEmpty) {
               navigator.pop();
               // ignore: use_build_context_synchronously

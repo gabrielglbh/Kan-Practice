@@ -349,6 +349,7 @@
   "word_history_showRemoveHistorysDialog_content": "Se eliminarán todas las palabras buscadas hasta el momento. Esta acción no se puede deshacer. ¿Quieres continuar?",
   "word_history_showRemoveHistorysDialog_positive": "Eliminar",
   "searched_label": "Buscado",
-  "remembrance_bottom_sheet_on_label": "Recuerdo en",
-  "less_pct_bottom_sheet_on_label": "Menor % en"
+  "blitz_bottom_sheet_on_folder_label": "Blitz en carpeta",
+  "remembrance_bottom_sheet_on_folder_label": "Recuerdo en carpeta",
+  "less_pct_bottom_sheet_on_folder_label": "Menor % en carpeta"
 }

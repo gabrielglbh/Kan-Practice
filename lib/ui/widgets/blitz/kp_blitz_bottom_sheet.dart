@@ -24,8 +24,7 @@ class KPBlitzBottomSheet extends StatelessWidget {
     this.folder,
     this.remembranceTest = false,
     this.lessPctTest = false,
-  })  : assert(lessPctTest != remembranceTest),
-        super(key: key);
+  }) : super(key: key);
 
   /// Creates and calls the [BottomSheet] with the content for a blitz test
   static Future<String?> show(
@@ -72,16 +71,16 @@ class KPBlitzBottomSheet extends StatelessWidget {
       if (folder == null) {
         testName = "remembrance_bottom_sheet_label".tr();
       } else {
-        testName = '${"remembrance_bottom_sheet_on_label".tr()} $folder';
+        testName = '${"remembrance_bottom_sheet_on_folder_label".tr()} $folder';
       }
     } else if (lessPctTest) {
       if (folder == null) {
         testName = "less_pct_bottom_sheet_label".tr();
       } else {
-        testName = '${"less_pct_bottom_sheet_on_label".tr()} $folder';
+        testName = '${"less_pct_bottom_sheet_on_folder_label".tr()} $folder';
       }
     } else if (folder != null) {
-      testName = '${"blitz_bottom_sheet_on_label".tr()} $folder';
+      testName = '${"blitz_bottom_sheet_on_folder_label".tr()} $folder';
     } else if (practiceList == null) {
       testName = 'blitz_bottom_sheet_label'.tr();
     } else {

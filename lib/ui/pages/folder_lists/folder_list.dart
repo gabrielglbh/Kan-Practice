@@ -12,6 +12,7 @@ import 'package:kanpractice/ui/pages/folder_lists/bloc/folder_bloc.dart';
 import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
+import 'package:kanpractice/ui/widgets/kp_test_bottom_sheet.dart';
 
 class FolderList extends StatefulWidget {
   final Function() removeFocus;
@@ -230,6 +231,13 @@ class _FolderListState extends State<FolderList>
               ?.copyWith(fontWeight: FontWeight.normal),
           overflow: TextOverflow.ellipsis),
       subtitle: Text("${"created_label".tr()} $date"),
+      trailing: IconButton(
+        onPressed: () async {
+          await KPTestBottomSheet.show(context, withinFolder: true);
+        },
+        icon: const Icon(Icons.track_changes_rounded,
+            color: CustomColors.secondaryColor),
+      ),
     );
   }
 

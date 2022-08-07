@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/ui/pages/home/widgets/test_widgets/folder_selection_bottom_sheet.dart';
-import 'package:kanpractice/ui/pages/home/widgets/test_widgets/kanlist_category_selection_bottom_sheet.dart';
+import 'package:kanpractice/ui/widgets/kp_kanlist_category_selection_bottom_sheet.dart';
 import 'package:kanpractice/ui/pages/home/widgets/test_widgets/kanlist_selection_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/blitz/kp_blitz_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
@@ -10,23 +10,26 @@ import 'package:kanpractice/ui/widgets/kp_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/widgets/blitz/kp_number_test_bottom_sheet.dart';
 
-class TestBottomSheet extends StatefulWidget {
-  const TestBottomSheet({Key? key}) : super(key: key);
+class KPTestBottomSheet extends StatefulWidget {
+  final bool withinFolder;
+  const KPTestBottomSheet({Key? key, this.withinFolder = false})
+      : super(key: key);
 
   @override
-  State<TestBottomSheet> createState() => _TestBottomSheetState();
+  State<KPTestBottomSheet> createState() => _KPTestBottomSheetState();
 
   /// Creates and calls the [BottomSheet] with the content for a regular test
-  static Future<String?> show(BuildContext context) async {
+  static Future<String?> show(BuildContext context,
+      {bool withinFolder = false}) async {
     return await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
-        builder: (context) => const TestBottomSheet());
+        builder: (context) => KPTestBottomSheet(withinFolder: withinFolder));
   }
 }
 
-class _TestBottomSheetState extends State<TestBottomSheet> {
+class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return BottomSheet(
@@ -53,27 +56,37 @@ class _TestBottomSheetState extends State<TestBottomSheet> {
                 child: GridView(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3, childAspectRatio: 1.3),
-                    children: List.generate(Tests.values.length, (index) {
-                      switch (Tests.values[index]) {
-                        case Tests.lists:
-                          return _testBasedButtons(context, Tests.lists);
-                        case Tests.blitz:
-                          return _testBasedButtons(context, Tests.blitz);
-                        case Tests.time:
-                          return _testBasedButtons(context, Tests.time);
-                        case Tests.numbers:
-                          return _testBasedButtons(context, Tests.numbers);
-                        case Tests.less:
-                          return _testBasedButtons(context, Tests.less);
-                        case Tests.categories:
-                          return _testBasedButtons(context, Tests.categories);
-                        case Tests.folder:
-                          return _testBasedButtons(context, Tests.folder);
-                      }
-                    })),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: widget.withinFolder ? 2 : 3,
+                      childAspectRatio: widget.withinFolder ? 1.9 : 1.3,
+                    ),
+                    children: widget.withinFolder
+                        ? [
+                            _testBasedButtons(context, Tests.blitz),
+                            _testBasedButtons(context, Tests.time),
+                            _testBasedButtons(context, Tests.less),
+                            _testBasedButtons(context, Tests.categories)
+                          ]
+                        : List.generate(Tests.values.length, (index) {
+                            switch (Tests.values[index]) {
+                              case Tests.lists:
+                                return _testBasedButtons(context, Tests.lists);
+                              case Tests.blitz:
+                                return _testBasedButtons(context, Tests.blitz);
+                              case Tests.time:
+                                return _testBasedButtons(context, Tests.time);
+                              case Tests.numbers:
+                                return _testBasedButtons(
+                                    context, Tests.numbers);
+                              case Tests.less:
+                                return _testBasedButtons(context, Tests.less);
+                              case Tests.categories:
+                                return _testBasedButtons(
+                                    context, Tests.categories);
+                              case Tests.folder:
+                                return _testBasedButtons(context, Tests.folder);
+                            }
+                          })),
               ),
               Container(height: Margins.margin16)
             ],
@@ -105,7 +118,7 @@ class _TestBottomSheetState extends State<TestBottomSheet> {
               await KPBlitzBottomSheet.show(context, lessPctTest: true);
               break;
             case Tests.categories:
-              await KanListCategorySelectionBottomSheet.show(context);
+              await KPKanListCategorySelectionBottomSheet.show(context);
               break;
             case Tests.folder:
               await FolderSelectionBottomSheet.show(context);

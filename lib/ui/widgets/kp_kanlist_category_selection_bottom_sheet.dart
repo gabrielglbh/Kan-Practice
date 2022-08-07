@@ -14,12 +14,12 @@ import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class KanListCategorySelectionBottomSheet extends StatefulWidget {
-  const KanListCategorySelectionBottomSheet({Key? key}) : super(key: key);
+class KPKanListCategorySelectionBottomSheet extends StatefulWidget {
+  const KPKanListCategorySelectionBottomSheet({Key? key}) : super(key: key);
 
   @override
-  State<KanListCategorySelectionBottomSheet> createState() =>
-      _KanListCategorySelectionBottomSheetState();
+  State<KPKanListCategorySelectionBottomSheet> createState() =>
+      _KPKanListCategorySelectionBottomSheetState();
 
   /// Creates and calls the [BottomSheet] with the content for a regular test
   static Future<String?> show(BuildContext context) async {
@@ -27,12 +27,12 @@ class KanListCategorySelectionBottomSheet extends StatefulWidget {
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
-        builder: (context) => const KanListCategorySelectionBottomSheet());
+        builder: (context) => const KPKanListCategorySelectionBottomSheet());
   }
 }
 
-class _KanListCategorySelectionBottomSheetState
-    extends State<KanListCategorySelectionBottomSheet> {
+class _KPKanListCategorySelectionBottomSheetState
+    extends State<KPKanListCategorySelectionBottomSheet> {
   final KanjiListBloc _bloc = KanjiListBloc();
   List<Kanji> _kanji = [];
   KanjiCategory _selectedCategory = KanjiCategory.noun;

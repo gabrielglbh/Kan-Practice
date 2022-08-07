@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/home_types.dart';
-import 'package:kanpractice/ui/pages/home/widgets/test_widgets/test_bottom_sheet.dart';
+import 'package:kanpractice/ui/widgets/kp_test_bottom_sheet.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_create_kanlist_dialog.dart';
 import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
@@ -55,7 +55,7 @@ class ActionsBottomSheet extends StatelessWidget {
                             color: CustomColors.secondaryColor),
                         onTap: () async {
                           Navigator.of(context).pop();
-                          await TestBottomSheet.show(context);
+                          await KPTestBottomSheet.show(context);
                         },
                       ),
                       const Divider(),

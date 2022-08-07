@@ -100,6 +100,8 @@ class _TestResultState extends State<TestResult> {
               label: "test_result_save_button_label".tr(),
               vertical: Margins.margin16,
               onTap: () {
+                // TODO: Manage to get the folder name until here and pass it over to the homePage
+                // TODO: If coming from folder, just stay in the folder page
                 /// Remove all navigation stack and push kanList
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     KanPracticePages.homePage, (route) => false,

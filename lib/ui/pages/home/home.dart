@@ -17,7 +17,7 @@ import 'package:kanpractice/ui/pages/folder_lists/bloc/folder_bloc.dart';
 import 'package:kanpractice/ui/pages/folder_lists/folder_list.dart';
 import 'package:kanpractice/ui/pages/home/widgets/actions_bottom_sheet.dart';
 import 'package:kanpractice/ui/pages/home/widgets/update_container.dart';
-import 'package:kanpractice/ui/pages/home/widgets/test_widgets/test_bottom_sheet.dart';
+import 'package:kanpractice/ui/widgets/kp_test_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/kp_kanji_lists/bloc/lists_bloc.dart';
 import 'package:kanpractice/ui/widgets/kp_kanji_lists/kanji_lists.dart';
 import 'package:kanpractice/ui/pages/market/bloc/market_bloc.dart';
@@ -92,8 +92,17 @@ class _HomePageState extends State<HomePage>
         StorageManager.readData(StorageManager.orderOnMarket) ?? true;
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      /// Read folder from SharedPreferences, current selected folder for the latest
+      /// test. If any, show that BS and navigate to that tab. Else just
+      /// show the BS with all tests
+      String? folder = StorageManager.readData(StorageManager.folderWhenOnTest);
+      bool hasFolder = folder != null && folder.isNotEmpty;
+      if (hasFolder) _tabController.animateTo(1);
       if (widget.showTestBottomSheet == true) {
-        await TestBottomSheet.show(context);
+        await KPTestBottomSheet.show(
+          context,
+          folder: hasFolder ? folder : null,
+        );
       }
     });
     super.initState();

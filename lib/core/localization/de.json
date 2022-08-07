@@ -348,5 +348,8 @@
   "word_history_showRemoveHistorysDialog_title": "Alle gesuchten Wörter löschen",
   "word_history_showRemoveHistorysDialog_content": "Alle bis jetzt gesuchten Wörter werden entfernt. Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie fortfahren?",
   "word_history_showRemoveHistorysDialog_positive": "Löschen",
-  "searched_label": "Durchsucht"
+  "searched_label": "Durchsucht",
+  "blitz_bottom_sheet_on_folder_label": "Blitz auf Ordner",
+  "erinnerung_unten_blatt_auf_ordner_label": "Gedächtnis auf Ordner",
+  "less_pct_bottom_sheet_on_folder_label": "Weniger % auf Ordner"
 }

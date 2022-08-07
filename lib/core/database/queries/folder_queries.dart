@@ -6,6 +6,8 @@ import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/models/rel_folder_kanlist.dart';
 import 'package:kanpractice/core/types/folder_filters.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
+import 'package:kanpractice/core/types/study_modes.dart';
+import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -144,11 +146,15 @@ class FolderQueries {
   }
 
   /// Get the full list of [Kanji] related to a certain [Folder] from all [KanjiList]
-  /// appearing on it.
-  Future<List<Kanji>> getAllKanjiOnListsOnFolder(List<String> folders) async {
+  /// appearing on it. [mode], [type] and [category] serves as helper variables to
+  /// order and query different words within the Folder to perform tests
+  /// (Blitz, remembrance, less % and category).
+  Future<List<Kanji>> getAllKanjiOnListsOnFolder(List<String> folders,
+      {StudyModes? mode, Tests? type, int? category}) async {
     if (_database != null) {
       try {
         String whereClause = "";
+        String query = "";
 
         /// Build up the where clauses from the listName
         for (var folder in folders) {
@@ -159,7 +165,7 @@ class FolderQueries {
         /// Clean up the String
         whereClause = whereClause.substring(0, whereClause.length - 4);
 
-        final res = await _database?.rawQuery(
+        final joinSelection =
             "SELECT DISTINCT K.${KanjiTableFields.kanjiField}, "
             "K.${KanjiTableFields.listNameField}, "
             "K.${KanjiTableFields.meaningField}, "
@@ -179,7 +185,66 @@ class FolderQueries {
             "ON L.${KanListFolderRelationTableFields.kanListNameField}=R.${KanListTableFields.nameField} "
             "JOIN ${KanjiTableFields.kanjiTable} K "
             "ON K.${KanjiTableFields.listNameField}=R.${KanListTableFields.nameField} "
-            "WHERE $whereClause");
+            "WHERE $whereClause";
+
+        if (type == Tests.categories) {
+          if (category != null) {
+            query =
+                "$joinSelection AND K.${KanjiTableFields.categoryField}=$category";
+          } else {
+            return [];
+          }
+        } else if (type == Tests.time) {
+          if (mode != null) {
+            switch (mode) {
+              case StudyModes.writing:
+                query =
+                    "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownWriting} ASC";
+                break;
+              case StudyModes.reading:
+                query =
+                    "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownReading} ASC";
+                break;
+              case StudyModes.recognition:
+                query =
+                    "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownRecognition} ASC";
+                break;
+              case StudyModes.listening:
+                query =
+                    "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownListening} ASC";
+                break;
+            }
+          } else {
+            return [];
+          }
+        } else if (type == Tests.less) {
+          if (mode != null) {
+            switch (mode) {
+              case StudyModes.writing:
+                query =
+                    "$joinSelection ORDER BY K.${KanjiTableFields.winRateWritingField} ASC";
+                break;
+              case StudyModes.reading:
+                query =
+                    "$joinSelection ORDER BY K.${KanjiTableFields.winRateReadingField} ASC";
+                break;
+              case StudyModes.recognition:
+                query =
+                    "$joinSelection ORDER BY K.${KanjiTableFields.winRateRecognitionField} ASC";
+                break;
+              case StudyModes.listening:
+                query =
+                    "$joinSelection ORDER BY K.${KanjiTableFields.winRateListeningField} ASC";
+                break;
+            }
+          } else {
+            return [];
+          }
+        } else {
+          query = joinSelection;
+        }
+
+        final res = await _database?.rawQuery(query);
         if (res != null) {
           return List.generate(res.length, (i) => Kanji.fromJson(res[i]));
         }

@@ -348,5 +348,8 @@
   "word_history_showRemoveHistorysDialog_title": "Delete all searched words",
   "word_history_showRemoveHistorysDialog_content": "All searched words until now will be removed. This action cannot be undone. Do you want to proceed?",
   "word_history_showRemoveHistorysDialog_positive": "Delete",
-  "searched_label": "Searched"
+  "searched_label": "Searched",
+  "blitz_bottom_sheet_on_folder_label": "Blitz on folder",
+  "remembrance_bottom_sheet_on_folder_label": "Remembrance on folder",
+  "less_pct_bottom_sheet_on_folder_label": "Less % on folder"
 }

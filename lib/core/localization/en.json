@@ -359,5 +359,6 @@
   "daily_test_description": "Perform a daily test on a random mode (writing, reading, listening or recognition) with an ordered combination of words to strengthen your study.\n\nYou can repeat this test whenever you want but you cannot exit from it, you have to finish it!",
   "daily_test_start_button": "Start",
   "daily_test_start_button_tr": "始める",
-  "daily_test_cannot_go_back": "You are performing a daily test. Finish the test, you can do it!"
+  "daily_test_cannot_go_back": "You are performing a daily test. Finish the test, you can do it!",
+  "settings_notifications_label": "Enable/Disable Notifications"
 }

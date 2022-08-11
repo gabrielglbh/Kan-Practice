@@ -51,6 +51,7 @@ dependencies:
   bloc: ^8.0.3
   image: ^3.2.0
   intl: ^0.17.0
+  app_settings: ^4.1.8
 
 flutter_icons:
   android: "launcher_icon"

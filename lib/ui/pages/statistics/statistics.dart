@@ -214,6 +214,9 @@ class StatisticsPage extends StatelessWidget {
             case Tests.folder:
               return _testModeCountContainer(
                   context, Tests.folder, s.test.folderTests);
+            case Tests.daily:
+              return _testModeCountContainer(
+                  context, Tests.daily, s.test.dailyTests);
           }
         }));
   }

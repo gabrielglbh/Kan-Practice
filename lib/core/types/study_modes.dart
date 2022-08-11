@@ -46,17 +46,5 @@ extension StudyModesExt on StudyModes {
 
 class StudyModesUtil {
   /// Maps the integer received from the source to a StudyModes. Based on [map]
-  static StudyModes mapStudyMode(int map) {
-    switch (map) {
-      case 0:
-        return StudyModes.writing;
-      case 1:
-        return StudyModes.reading;
-      case 2:
-        return StudyModes.recognition;
-      case 3:
-      default:
-        return StudyModes.listening;
-    }
-  }
+  static StudyModes mapStudyMode(int map) => StudyModes.values[map];
 }

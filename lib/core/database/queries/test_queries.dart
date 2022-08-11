@@ -143,23 +143,25 @@ class TestQueries {
     final List<int> testModesCount = await _getAllTestsBasedOnTestMode();
 
     return TestData(
-        totalTests: totalTests,
-        totalTestAccuracy: totalTestAccuracy,
-        testTotalCountWriting: testTotalCountWriting,
-        testTotalCountReading: testTotalCountReading,
-        testTotalCountRecognition: testTotalCountRecognition,
-        testTotalCountListening: testTotalCountListening,
-        testTotalWinRateWriting: testTotalWinRateWriting,
-        testTotalWinRateReading: testTotalWinRateReading,
-        testTotalWinRateRecognition: testTotalWinRateRecognition,
-        testTotalWinRateListening: testTotalWinRateListening,
-        selectionTests: testModesCount[0],
-        blitzTests: testModesCount[1],
-        remembranceTests: testModesCount[2],
-        numberTests: testModesCount[3],
-        lessPctTests: testModesCount[4],
-        categoryTests: testModesCount[5],
-        folderTests: testModesCount[6]);
+      totalTests: totalTests,
+      totalTestAccuracy: totalTestAccuracy,
+      testTotalCountWriting: testTotalCountWriting,
+      testTotalCountReading: testTotalCountReading,
+      testTotalCountRecognition: testTotalCountRecognition,
+      testTotalCountListening: testTotalCountListening,
+      testTotalWinRateWriting: testTotalWinRateWriting,
+      testTotalWinRateReading: testTotalWinRateReading,
+      testTotalWinRateRecognition: testTotalWinRateRecognition,
+      testTotalWinRateListening: testTotalWinRateListening,
+      selectionTests: testModesCount[0],
+      blitzTests: testModesCount[1],
+      remembranceTests: testModesCount[2],
+      numberTests: testModesCount[3],
+      lessPctTests: testModesCount[4],
+      categoryTests: testModesCount[5],
+      folderTests: testModesCount[6],
+      dailyTests: testModesCount[7],
+    );
   }
 
   /// Retrieves the total test count saved locally in the device.
@@ -292,6 +294,9 @@ class TestQueries {
                 break;
               case Tests.folder:
                 counters[6] += 1;
+                break;
+              case Tests.daily:
+                counters[7] += 1;
                 break;
             }
           }

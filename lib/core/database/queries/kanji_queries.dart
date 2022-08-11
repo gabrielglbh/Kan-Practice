@@ -39,6 +39,46 @@ class KanjiQueries {
     }
   }
 
+  Future<List<Kanji>> getDailyKanjis(StudyModes mode) async {
+    if (_database != null) {
+      try {
+        String query = "";
+        switch (mode) {
+          case StudyModes.writing:
+            query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                "ORDER BY ${KanjiTableFields.dateLastShownWriting}, "
+                "${KanjiTableFields.winRateWritingField} ASC";
+            break;
+          case StudyModes.reading:
+            query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                "ORDER BY ${KanjiTableFields.dateLastShownReading}, "
+                "${KanjiTableFields.winRateReadingField} ASC";
+            break;
+          case StudyModes.recognition:
+            query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                "ORDER BY ${KanjiTableFields.dateLastShownRecognition}, "
+                "${KanjiTableFields.winRateRecognitionField} ASC";
+            break;
+          case StudyModes.listening:
+            query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                "ORDER BY ${KanjiTableFields.dateLastShownListening}, "
+                "${KanjiTableFields.winRateListeningField} ASC";
+            break;
+        }
+        final res = await _database?.rawQuery(query);
+        if (res != null) {
+          return List.generate(res.length, (i) => Kanji.fromJson(res[i]));
+        } else {
+          return [];
+        }
+      } catch (e) {
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
+
   /// Query to get all kanji available in the current db. If anything goes wrong,
   /// an empty list will be returned.
   ///

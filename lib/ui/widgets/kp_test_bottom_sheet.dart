@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
+import 'package:kanpractice/ui/pages/home/widgets/test_widgets/daily_test_bottom_sheet.dart';
 import 'package:kanpractice/ui/pages/home/widgets/test_widgets/folder_selection_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/kp_kanlist_category_selection_bottom_sheet.dart';
 import 'package:kanpractice/ui/pages/home/widgets/test_widgets/kanlist_selection_bottom_sheet.dart';
@@ -83,6 +84,8 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                                     context, Tests.categories);
                               case Tests.folder:
                                 return _testBasedButtons(context, Tests.folder);
+                              case Tests.daily:
+                                return _testBasedButtons(context, Tests.daily);
                             }
                           })),
               ),
@@ -150,6 +153,9 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
               break;
             case Tests.folder:
               await FolderSelectionBottomSheet.show(context);
+              break;
+            case Tests.daily:
+              await DailyBottomSheet.show(context);
               break;
           }
         });

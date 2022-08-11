@@ -359,5 +359,6 @@
   "daily_test_description": "Führen Sie einen täglichen Test in einem zufälligen Modus (Schreiben, Lesen, Hören oder Erkennen) mit einer geordneten Kombination von Wörtern durch, um Ihr Lernen zu stärken.\n\nSie können diesen Test jederzeit wiederholen, aber Sie können ihn nicht beenden, sondern müssen ihn zu Ende bringen!",
   "daily_test_start_button": "Start",
   "daily_test_start_button_tr": "始める",
-  "daily_test_cannot_go_back": "Sie führen gerade einen täglichen Test durch. Beenden Sie den Test, Sie können es schaffen!"
+  "daily_test_cannot_go_back": "Sie führen gerade einen täglichen Test durch. Beenden Sie den Test, Sie können es schaffen!",
+  "settings_notifications_label": "Aktivieren/Deaktivieren von Benachrichtigungen"
 }

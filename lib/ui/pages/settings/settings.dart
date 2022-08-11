@@ -1,3 +1,4 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -173,6 +174,13 @@ class _SettingsState extends State<Settings> {
                     StorageManager.saveData(
                         StorageManager.kanListGraphVisualization,
                         _graphMode.name);
+                  }),
+              const Divider(),
+              ListTile(
+                  leading: const Icon(Icons.notifications_active_rounded),
+                  title: Text("settings_notifications_label".tr()),
+                  onTap: () {
+                    AppSettings.openNotificationSettings();
                   }),
               const Divider(),
               BlocBuilder<SettingsBloc, SettingsState>(

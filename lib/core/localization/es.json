@@ -359,5 +359,6 @@
   "daily_test_description": "Realiza un test diario en una modalidad aleatoria (escritura, lectura, escucha o reconocimiento) con una combinación ordenada de palabras para reforzar tu estudio.\n\nPuedes repetir este test cuando quieras pero no puedes salir de él, ¡tienes que terminarlo!",
   "daily_test_start_button": "Empezar",
   "daily_test_start_button_tr": "始める",
-  "daily_test_cannot_go_back": "Estás haciendo un test diario. Termina el test, ¡tú puedes!"
+  "daily_test_cannot_go_back": "Estás haciendo un test diario. Termina el test, ¡tú puedes!",
+  "settings_notifications_label": "Activar/Desactivar Notificaciones"
 }

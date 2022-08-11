@@ -46,7 +46,12 @@ class _DailyBottomSheetState extends State<DailyBottomSheet> {
     navigator.pop(); // Dismiss this bottom sheet
     navigator.pop(); // Dismiss the tests bottom sheet
 
-    final displayName = "${"abbr_test_mode_daily".tr()}: $today";
+    final name = "${"abbr_test_mode_daily".tr()}: $today";
+
+    /// Save to SharedPreferences the current folder, if any, to manage
+    /// proper navigation when finishing the test.
+    /// See addPostFrameCallback() in init() in [HomePage]
+    StorageManager.saveData(StorageManager.folderWhenOnTest, "");
 
     switch (randomStudyMode) {
       case StudyModes.writing:
@@ -56,9 +61,9 @@ class _DailyBottomSheetState extends State<DailyBottomSheet> {
             studyList: sortedList,
             isTest: true,
             testMode: Tests.daily,
-            display: displayName,
+            display: Tests.daily.name,
             mode: randomStudyMode,
-            listsNames: "",
+            listsNames: name,
           ),
         );
         break;
@@ -69,9 +74,9 @@ class _DailyBottomSheetState extends State<DailyBottomSheet> {
             studyList: sortedList,
             isTest: true,
             testMode: Tests.daily,
-            display: displayName,
+            display: Tests.daily.name,
             mode: randomStudyMode,
-            listsNames: "",
+            listsNames: name,
           ),
         );
         break;
@@ -82,9 +87,9 @@ class _DailyBottomSheetState extends State<DailyBottomSheet> {
             studyList: sortedList,
             isTest: true,
             testMode: Tests.daily,
-            display: displayName,
+            display: Tests.daily.name,
             mode: randomStudyMode,
-            listsNames: "",
+            listsNames: name,
           ),
         );
         break;
@@ -95,9 +100,9 @@ class _DailyBottomSheetState extends State<DailyBottomSheet> {
             studyList: sortedList,
             isTest: true,
             testMode: Tests.daily,
-            display: displayName,
+            display: Tests.daily.name,
             mode: randomStudyMode,
-            listsNames: "",
+            listsNames: name,
           ),
         );
         break;

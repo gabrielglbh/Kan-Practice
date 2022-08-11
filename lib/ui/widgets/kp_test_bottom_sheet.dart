@@ -83,6 +83,8 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                                     context, Tests.categories);
                               case Tests.folder:
                                 return _testBasedButtons(context, Tests.folder);
+                              case Tests.daily:
+                                return _testBasedButtons(context, Tests.daily);
                             }
                           })),
               ),
@@ -150,6 +152,9 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
               break;
             case Tests.folder:
               await FolderSelectionBottomSheet.show(context);
+              break;
+            case Tests.daily:
+              // TODO: Random StudyMode selection on daily BS
               break;
           }
         });

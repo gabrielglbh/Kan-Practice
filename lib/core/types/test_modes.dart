@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-enum Tests { lists, blitz, time, numbers, less, categories, folder }
+enum Tests { lists, blitz, time, numbers, less, categories, folder, daily }
 
 extension TestsExt on Tests {
   String get name {
@@ -20,6 +20,8 @@ extension TestsExt on Tests {
         return "test_mode_categories".tr();
       case Tests.folder:
         return "test_mode_folder".tr();
+      case Tests.daily:
+        return "test_mode_daily".tr();
     }
   }
 
@@ -39,6 +41,8 @@ extension TestsExt on Tests {
         return "abbr_test_mode_categories".tr();
       case Tests.folder:
         return "abbr_test_mode_folder".tr();
+      case Tests.daily:
+        return "abbr_test_mode_daily".tr();
     }
   }
 
@@ -58,29 +62,13 @@ extension TestsExt on Tests {
         return Icons.category;
       case Tests.folder:
         return Icons.folder_rounded;
+      case Tests.daily:
+        return Icons.calendar_today;
     }
   }
 }
 
 class TestsUtils {
   /// Maps the int received from the source to a Tests. Based on [map]
-  static Tests mapTestMode(int map) {
-    switch (map) {
-      case 1:
-        return Tests.blitz;
-      case 2:
-        return Tests.time;
-      case 3:
-        return Tests.numbers;
-      case 4:
-        return Tests.less;
-      case 5:
-        return Tests.categories;
-      case 6:
-        return Tests.folder;
-      case 0:
-      default:
-        return Tests.lists;
-    }
-  }
+  static Tests mapTestMode(int map) => Tests.values[map];
 }

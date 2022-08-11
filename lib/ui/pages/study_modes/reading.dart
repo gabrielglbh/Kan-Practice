@@ -4,6 +4,7 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
+import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/ui/consts.dart';
@@ -147,8 +148,19 @@ class _ReadingStudyState extends State<ReadingStudy> {
   @override
   Widget build(BuildContext context) {
     return KPScaffold(
-      onWillPop: () async => StudyModeUpdateHandler.handle(context, widget.args,
-          onPop: true, lastIndex: _macro),
+      onWillPop: () async {
+        if (widget.args.testMode == Tests.daily) {
+          GeneralUtils.getSnackBar(context, "daily_test_cannot_go_back".tr());
+          return false;
+        }
+
+        return StudyModeUpdateHandler.handle(
+          context,
+          widget.args,
+          onPop: true,
+          lastIndex: _macro,
+        );
+      },
       appBarTitle: StudyModeAppBar(
           title: widget.args.display, studyMode: widget.args.mode.mode),
       centerTitle: true,

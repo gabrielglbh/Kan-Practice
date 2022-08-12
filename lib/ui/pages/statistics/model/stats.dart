@@ -7,6 +7,7 @@ class KanPracticeStats {
   final double totalWinRateReading;
   final double totalWinRateRecognition;
   final double totalWinRateListening;
+  final double totalWinRateSpeaking;
   final String bestList;
   final String worstList;
   final TestData test;
@@ -18,6 +19,7 @@ class KanPracticeStats {
       required this.totalWinRateReading,
       required this.totalWinRateRecognition,
       required this.totalWinRateListening,
+      required this.totalWinRateSpeaking,
       required this.bestList,
       required this.worstList,
       required this.test});

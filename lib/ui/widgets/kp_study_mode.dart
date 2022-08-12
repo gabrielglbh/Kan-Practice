@@ -134,18 +134,7 @@ class KPTestStudyMode extends StatelessWidget {
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2, childAspectRatio: 1.9),
                 itemBuilder: (context, index) {
-                  switch (StudyModes.values[index]) {
-                    case StudyModes.writing:
-                      return _modeBasedButtons(context, StudyModes.writing);
-                    case StudyModes.reading:
-                      return _modeBasedButtons(context, StudyModes.reading);
-                    case StudyModes.recognition:
-                      return _modeBasedButtons(context, StudyModes.recognition);
-                    case StudyModes.listening:
-                      return _modeBasedButtons(context, StudyModes.listening);
-                    case StudyModes.speaking:
-                      return _modeBasedButtons(context, StudyModes.speaking);
-                  }
+                  return _modeBasedButtons(context, StudyModes.values[index]);
                 },
               ),
             ),
@@ -206,26 +195,8 @@ class KPTestStudyMode extends StatelessWidget {
     /// See addPostFrameCallback() in init() in [HomePage]
     StorageManager.saveData(StorageManager.folderWhenOnTest, folder ?? "");
 
-    late String pageName;
-    switch (mode) {
-      case StudyModes.writing:
-        pageName = KanPracticePages.writingStudyPage;
-        break;
-      case StudyModes.reading:
-        pageName = KanPracticePages.readingStudyPage;
-        break;
-      case StudyModes.recognition:
-        pageName = KanPracticePages.recognitionStudyPage;
-        break;
-      case StudyModes.listening:
-        pageName = KanPracticePages.listeningStudyPage;
-        break;
-      case StudyModes.speaking:
-        pageName = KanPracticePages.speakingStudyPage;
-        break;
-    }
     await navigator.pushNamed(
-      pageName,
+      mode.page,
       arguments: ModeArguments(
         studyList: sortedList,
         isTest: true,

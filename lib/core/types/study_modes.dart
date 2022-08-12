@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/core/routing/pages.dart';
 
 enum StudyModes { writing, reading, recognition, listening, speaking }
 
@@ -46,6 +47,21 @@ extension StudyModesExt on StudyModes {
         return Colors.green.shade300;
       case StudyModes.speaking:
         return Colors.brown.shade300;
+    }
+  }
+
+  String get page {
+    switch (this) {
+      case StudyModes.writing:
+        return KanPracticePages.writingStudyPage;
+      case StudyModes.reading:
+        return KanPracticePages.readingStudyPage;
+      case StudyModes.recognition:
+        return KanPracticePages.recognitionStudyPage;
+      case StudyModes.listening:
+        return KanPracticePages.listeningStudyPage;
+      case StudyModes.speaking:
+        return KanPracticePages.speakingStudyPage;
     }
   }
 }

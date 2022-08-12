@@ -24,17 +24,19 @@ class StatisticsBloc extends Bloc<StatsEvent, StatsState> {
       final TestData test = await TestQueries.instance.getTestData();
 
       emit(StatisticsLoaded(
-          stats: KanPracticeStats(
-        totalLists: totalLists,
-        totalKanji: totalKanji,
-        totalWinRateWriting: winRates.winRateWriting,
-        totalWinRateReading: winRates.winRateReading,
-        totalWinRateRecognition: winRates.winRateRecognition,
-        totalWinRateListening: winRates.winRateListening,
-        bestList: lists[0],
-        worstList: lists[1],
-        test: test,
-      )));
+        stats: KanPracticeStats(
+          totalLists: totalLists,
+          totalKanji: totalKanji,
+          totalWinRateWriting: winRates.winRateWriting,
+          totalWinRateReading: winRates.winRateReading,
+          totalWinRateRecognition: winRates.winRateRecognition,
+          totalWinRateListening: winRates.winRateListening,
+          totalWinRateSpeaking: winRates.winRateSpeaking,
+          bestList: lists[0],
+          worstList: lists[1],
+          test: test,
+        ),
+      ));
     });
   }
 }

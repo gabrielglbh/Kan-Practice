@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kana_kit/kana_kit.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
@@ -40,15 +39,11 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
   /// Widget auxiliary variable
   List<Kanji> _studyList = [];
 
-  /// For translating the hiragana
-  KanaKit? _kanaKit;
-
   final String _none = "wildcard".tr();
 
   @override
   void initState() {
     _studyList = widget.args.studyList;
-    _kanaKit = const KanaKit();
     super.initState();
   }
 
@@ -101,7 +96,7 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
         widget.args.studyList[_macro].listName,
         widget.args.studyList[_macro].kanji, {
       KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds(),
-      KanjiTableFields.dateLastShownReading:
+      KanjiTableFields.dateLastShownSpeaking:
           GeneralUtils.getCurrentMilliseconds()
     });
 
@@ -122,16 +117,6 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
     if (_showInfo) {
       return _studyList[_macro].pronunciation;
     } else {
-      return _none;
-    }
-  }
-
-  String _getProperAlphabet() {
-    /// Based on the states, update the romanji version
-    String r = "[${(_kanaKit?.toRomaji(_getProperPronunciation()) ?? "")}]";
-    if (_showInfo) {
-      return r;
-    } else {
       return "";
     }
   }
@@ -141,7 +126,7 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
     if (_showInfo) {
       return _studyList[_macro].kanji;
     } else {
-      return "";
+      return _none;
     }
   }
 
@@ -202,11 +187,7 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
   List<Widget> _header() {
     return [
       KPLearningHeaderContainer(
-          color: CustomColors.secondaryColor,
-          height: CustomSizes.defaultSizeLearningExtContainer,
-          text: _getProperAlphabet()),
-      KPLearningHeaderContainer(
-          height: CustomSizes.defaultResultKanjiListOnTest,
+          height: CustomSizes.defaultSizeLearningExtContainer + Margins.margin8,
           fontWeight: FontWeight.bold,
           text: _getProperPronunciation()),
       KPLearningHeaderContainer(

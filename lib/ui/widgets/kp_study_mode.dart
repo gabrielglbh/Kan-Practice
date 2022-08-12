@@ -131,7 +131,7 @@ class KPTestStudyMode extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, childAspectRatio: 1.9),
+                    crossAxisCount: 3, childAspectRatio: 1.2),
                 itemBuilder: (context, index) {
                   return _modeBasedButtons(context, StudyModes.values[index]);
                 },

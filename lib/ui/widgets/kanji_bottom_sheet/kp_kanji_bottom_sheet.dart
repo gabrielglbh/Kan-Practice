@@ -49,17 +49,15 @@ class KPKanjiBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final maxHeight = MediaQuery.of(context).size.height - Margins.margin64;
     return BottomSheet(
       enableDrag: false,
-      constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height - Margins.margin64),
+      constraints: BoxConstraints(maxHeight: maxHeight),
       onClosing: () {},
       builder: (context) {
         return Wrap(children: [
-          Container(
-              margin: const EdgeInsets.all(Margins.margin8),
-
-              /// Make sure we get the latest data of the Kanji when looking it up
+          Padding(
+              padding: const EdgeInsets.all(Margins.margin8),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -144,7 +142,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(CustomRadius.radius16)),
         margin: const EdgeInsets.only(
-            bottom: Margins.margin16, top: Margins.margin8),
+            bottom: Margins.margin4, top: Margins.margin8),
         child: ListTile(
           title: KPDependentGraph(
             mode: VisualizationModeExt.mode(StorageManager.readData(
@@ -216,22 +214,14 @@ class KPKanjiBottomSheet extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyText2)),
             children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height <
-                        CustomSizes.minimumHeight
-                    ? CustomSizes.maxHeightForLastSeenDates
-                    : null,
-                child: ListView.builder(
-                  shrinkWrap: MediaQuery.of(context).size.height <
-                          CustomSizes.minimumHeight
-                      ? false
-                      : true,
-                  itemCount: StudyModes.values.length,
-                  itemBuilder: (context, index) {
-                    return _lastSeenOnModes(
-                        context, updatedKanji, StudyModes.values[index]);
-                  },
-                ),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: StudyModes.values.length,
+                itemBuilder: (context, index) {
+                  return _lastSeenOnModes(
+                      context, updatedKanji, StudyModes.values[index]);
+                },
               )
             ]));
   }

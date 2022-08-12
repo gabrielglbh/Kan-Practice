@@ -197,6 +197,38 @@ class FolderQueries {
           } else {
             return [];
           }
+        } else if (type == Tests.daily) {
+          if (mode != null) {
+            switch (mode) {
+              case StudyModes.writing:
+                query =
+                    "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownWriting} ASC, "
+                    "K.${KanjiTableFields.winRateWritingField} ASC";
+                break;
+              case StudyModes.reading:
+                query =
+                    "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownReading} ASC, "
+                    "K.${KanjiTableFields.winRateReadingField} ASC";
+                break;
+              case StudyModes.recognition:
+                query =
+                    "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownRecognition} ASC, "
+                    "K.${KanjiTableFields.winRateRecognitionField} ASC";
+                break;
+              case StudyModes.listening:
+                query =
+                    "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownListening} ASC, "
+                    "K.${KanjiTableFields.winRateListeningField} ASC";
+                break;
+              case StudyModes.speaking:
+                query =
+                    "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownSpeaking} ASC, "
+                    "K.${KanjiTableFields.winRateSpeakingField} ASC";
+                break;
+            }
+          } else {
+            return [];
+          }
         } else if (type == Tests.time) {
           if (mode != null) {
             switch (mode) {

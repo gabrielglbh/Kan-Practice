@@ -55,16 +55,18 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                 child: GridView(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: widget.folder != null ? 2 : 3,
-                      childAspectRatio: widget.folder != null ? 1.9 : 1.3,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      childAspectRatio: 1.3,
                     ),
                     children: widget.folder != null
                         ? [
                             _testBasedButtons(context, Tests.blitz),
                             _testBasedButtons(context, Tests.time),
                             _testBasedButtons(context, Tests.less),
-                            _testBasedButtons(context, Tests.categories)
+                            _testBasedButtons(context, Tests.categories),
+                            _testBasedButtons(context, Tests.daily)
                           ]
                         : List.generate(Tests.values.length, (index) {
                             switch (Tests.values[index]) {
@@ -107,55 +109,39 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
               await KanListSelectionBottomSheet.show(context);
               break;
             case Tests.blitz:
-              if (widget.folder != null) {
-                await KPBlitzBottomSheet.show(
-                  context,
-                  folder: widget.folder,
-                );
-              } else {
-                await KPBlitzBottomSheet.show(context);
-              }
+              await KPBlitzBottomSheet.show(
+                context,
+                folder: widget.folder,
+              );
               break;
             case Tests.time:
-              if (widget.folder != null) {
-                await KPBlitzBottomSheet.show(
-                  context,
-                  folder: widget.folder,
-                  remembranceTest: true,
-                );
-              } else {
-                await KPBlitzBottomSheet.show(context, remembranceTest: true);
-              }
+              await KPBlitzBottomSheet.show(
+                context,
+                folder: widget.folder,
+                remembranceTest: true,
+              );
               break;
             case Tests.numbers:
               await KPNumberTestBottomSheet.show(context);
               break;
             case Tests.less:
-              if (widget.folder != null) {
-                await KPBlitzBottomSheet.show(
-                  context,
-                  folder: widget.folder,
-                  lessPctTest: true,
-                );
-              } else {
-                await KPBlitzBottomSheet.show(context, lessPctTest: true);
-              }
+              await KPBlitzBottomSheet.show(
+                context,
+                folder: widget.folder,
+                lessPctTest: true,
+              );
               break;
             case Tests.categories:
-              if (widget.folder != null) {
-                await KPKanListCategorySelectionBottomSheet.show(
-                  context,
-                  folder: widget.folder,
-                );
-              } else {
-                await KPKanListCategorySelectionBottomSheet.show(context);
-              }
+              await KPKanListCategorySelectionBottomSheet.show(
+                context,
+                folder: widget.folder,
+              );
               break;
             case Tests.folder:
               await FolderSelectionBottomSheet.show(context);
               break;
             case Tests.daily:
-              await DailyBottomSheet.show(context);
+              await DailyBottomSheet.show(context, folder: widget.folder);
               break;
           }
         });

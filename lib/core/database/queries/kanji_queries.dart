@@ -46,27 +46,27 @@ class KanjiQueries {
         switch (mode) {
           case StudyModes.writing:
             query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                "ORDER BY ${KanjiTableFields.dateLastShownWriting}, "
+                "ORDER BY ${KanjiTableFields.dateLastShownWriting} ASC, "
                 "${KanjiTableFields.winRateWritingField} ASC";
             break;
           case StudyModes.reading:
             query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                "ORDER BY ${KanjiTableFields.dateLastShownReading}, "
+                "ORDER BY ${KanjiTableFields.dateLastShownReading} ASC, "
                 "${KanjiTableFields.winRateReadingField} ASC";
             break;
           case StudyModes.recognition:
             query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                "ORDER BY ${KanjiTableFields.dateLastShownRecognition}, "
+                "ORDER BY ${KanjiTableFields.dateLastShownRecognition} ASC, "
                 "${KanjiTableFields.winRateRecognitionField} ASC";
             break;
           case StudyModes.listening:
             query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                "ORDER BY ${KanjiTableFields.dateLastShownListening}, "
+                "ORDER BY ${KanjiTableFields.dateLastShownListening} ASC, "
                 "${KanjiTableFields.winRateListeningField} ASC";
             break;
           case StudyModes.speaking:
             query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                "ORDER BY ${KanjiTableFields.dateLastShownSpeaking}, "
+                "ORDER BY ${KanjiTableFields.dateLastShownSpeaking} ASC, "
                 "${KanjiTableFields.winRateSpeakingField} ASC";
             break;
         }

@@ -75,7 +75,7 @@ class StudyModeUpdateHandler {
                           kanji: args.studyList.length,
                           studyMode: args.mode.index,
                           testMode: args.testMode.index,
-                          listsName: args.listsNames,
+                          listsName: args.testHistoryDisplasyName,
                           studyList: studyList));
                 }
 

@@ -20,6 +20,7 @@ class MessagingHandler {
 
     FirebaseMessaging.instance.getToken().then((String? token) {
       assert(token != null);
+      print(token);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((message) async {

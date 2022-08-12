@@ -109,20 +109,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
   _onModeChange(StudyModes newMode) {
     _searchBarFn?.unfocus();
     setState(() {
-      switch (newMode) {
-        case StudyModes.writing:
-          _selectedMode = StudyModes.writing;
-          break;
-        case StudyModes.reading:
-          _selectedMode = StudyModes.reading;
-          break;
-        case StudyModes.recognition:
-          _selectedMode = StudyModes.recognition;
-          break;
-        case StudyModes.listening:
-          _selectedMode = StudyModes.listening;
-          break;
-      }
+      _selectedMode = newMode;
     });
     _tabController?.animateTo(newMode.index,
         duration: const Duration(milliseconds: CustomAnimations.ms300),
@@ -149,7 +136,14 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
         }
         break;
       case StudyModes.listening:
-        if (pv > 0) _onModeChange(StudyModes.recognition);
+        if (pv < 0) {
+          _onModeChange(StudyModes.speaking);
+        } else if (pv > 0) {
+          _onModeChange(StudyModes.recognition);
+        }
+        break;
+      case StudyModes.speaking:
+        if (pv > 0) _onModeChange(StudyModes.listening);
         break;
     }
   }
@@ -199,52 +193,17 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
   }
 
   Future<void> _goToPractice(KanjiListDetailStateLoadedPractice state) async {
-    switch (state.mode) {
-      case StudyModes.writing:
-        await Navigator.of(context)
-            .pushNamed(KanPracticePages.writingStudyPage,
-                arguments: ModeArguments(
-                    studyList: state.list,
-                    isTest: false,
-                    mode: StudyModes.writing,
-                    testMode: Tests.blitz,
-                    display: widget.list.name))
-            .then((value) => _addLoadingEvent(reset: true));
-        break;
-      case StudyModes.reading:
-        await Navigator.of(context)
-            .pushNamed(KanPracticePages.readingStudyPage,
-                arguments: ModeArguments(
-                    studyList: state.list,
-                    isTest: false,
-                    mode: StudyModes.reading,
-                    testMode: Tests.blitz,
-                    display: widget.list.name))
-            .then((value) => _addLoadingEvent(reset: true));
-        break;
-      case StudyModes.recognition:
-        await Navigator.of(context)
-            .pushNamed(KanPracticePages.recognitionStudyPage,
-                arguments: ModeArguments(
-                    studyList: state.list,
-                    isTest: false,
-                    mode: StudyModes.recognition,
-                    testMode: Tests.blitz,
-                    display: widget.list.name))
-            .then((value) => _addLoadingEvent(reset: true));
-        break;
-      case StudyModes.listening:
-        await Navigator.of(context)
-            .pushNamed(KanPracticePages.listeningStudyPage,
-                arguments: ModeArguments(
-                    studyList: state.list,
-                    isTest: false,
-                    mode: StudyModes.listening,
-                    testMode: Tests.blitz,
-                    display: widget.list.name))
-            .then((value) => _addLoadingEvent(reset: true));
-        break;
-    }
+    await Navigator.of(context)
+        .pushNamed(state.mode.page,
+            arguments: ModeArguments(
+                studyList: state.list,
+                isTest: false,
+                mode: state.mode,
+                testMode: Tests.blitz,
+                display: widget.list.name))
+        .then(
+          (value) => _addLoadingEvent(reset: true),
+        );
   }
 
   @override
@@ -404,16 +363,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
           child: TabBar(
               controller: _tabController,
               tabs: List.generate(StudyModes.values.length, (index) {
-                switch (StudyModes.values[index]) {
-                  case StudyModes.writing:
-                    return _tabBarElement(StudyModes.writing.mode);
-                  case StudyModes.reading:
-                    return _tabBarElement(StudyModes.reading.mode);
-                  case StudyModes.recognition:
-                    return _tabBarElement(StudyModes.recognition.mode);
-                  case StudyModes.listening:
-                    return _tabBarElement(StudyModes.listening.mode);
-                }
+                return _tabBarElement(StudyModes.values[index].mode);
               })),
         ),
         Expanded(

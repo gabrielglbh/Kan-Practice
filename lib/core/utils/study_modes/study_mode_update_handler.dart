@@ -156,6 +156,15 @@ class StudyModeUpdateHandler {
         }
         toUpdate = {KanjiTableFields.winRateListeningField: actualScore};
         break;
+      case StudyModes.speaking:
+        if (args.studyList[index].winRateSpeaking ==
+            DatabaseConstants.emptyWinRate) {
+          actualScore = score;
+        } else {
+          actualScore = (score + args.studyList[index].winRateSpeaking) / 2;
+        }
+        toUpdate = {KanjiTableFields.winRateSpeakingField: actualScore};
+        break;
     }
     return await KanjiQueries.instance.updateKanji(
         args.studyList[index].listName, args.studyList[index].kanji, toUpdate);
@@ -229,6 +238,12 @@ class StudyModeUpdateHandler {
                   (overallScore[kanListName] ?? 0) + k.winRateListening;
             }
             break;
+          case StudyModes.speaking:
+            if (k.winRateSpeaking != DatabaseConstants.emptyWinRate) {
+              overallScore[kanListName] =
+                  (overallScore[kanListName] ?? 0) + k.winRateSpeaking;
+            }
+            break;
         }
       });
 
@@ -268,6 +283,11 @@ class StudyModeUpdateHandler {
             overallScore += k.winRateListening;
           }
           break;
+        case StudyModes.speaking:
+          if (k.winRateSpeaking != DatabaseConstants.emptyWinRate) {
+            overallScore += k.winRateSpeaking;
+          }
+          break;
       }
     }
     return overallScore;
@@ -291,6 +311,9 @@ class StudyModeUpdateHandler {
         break;
       case StudyModes.listening:
         toUpdate = {KanListTableFields.totalWinRateListeningField: overall};
+        break;
+      case StudyModes.speaking:
+        toUpdate = {KanListTableFields.totalWinRateSpeakingField: overall};
         break;
     }
     await ListQueries.instance

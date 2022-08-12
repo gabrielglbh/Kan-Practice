@@ -8,7 +8,11 @@ import 'package:kanpractice/ui/widgets/graphs/kp_win_rate_chart.dart';
 
 class KPRadialGraph extends StatelessWidget {
   /// [KanjiList] item to paint as a Tile
-  final double rateWriting, rateReading, rateRecognition, rateListening;
+  final double rateWriting,
+      rateReading,
+      rateRecognition,
+      rateListening,
+      rateSpeaking;
   final double height;
   const KPRadialGraph(
       {Key? key,
@@ -16,6 +20,7 @@ class KPRadialGraph extends StatelessWidget {
       required this.rateReading,
       required this.rateRecognition,
       required this.rateListening,
+      required this.rateSpeaking,
       this.height = CustomSizes.defaultSizeWinRateChart + Margins.margin32})
       : super(key: key);
 
@@ -30,12 +35,10 @@ class KPRadialGraph extends StatelessWidget {
           width: MediaQuery.of(context).size.width / 2,
           height: height,
           alignment: Alignment.center,
-          child: GridView.builder(
+          child: ListView.builder(
             physics: const NeverScrollableScrollPhysics(),
             itemCount: StudyModes.values.length,
             shrinkWrap: true,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, childAspectRatio: 2.5),
             itemBuilder: (context, index) {
               double rate = 0;
               switch (StudyModes.values[index]) {
@@ -51,6 +54,9 @@ class KPRadialGraph extends StatelessWidget {
                 case StudyModes.listening:
                   rate = rateListening;
                   break;
+                case StudyModes.speaking:
+                  rate = rateSpeaking;
+                  break;
               }
 
               return Row(
@@ -58,47 +64,37 @@ class KPRadialGraph extends StatelessWidget {
                 children: [
                   Container(
                     width: Margins.margin8,
-                    height: Margins.margin8,
-                    margin: const EdgeInsets.only(
-                        right: Margins.margin8,
-                        left: Margins.margin8,
-                        top: Margins.margin4),
+                    height: Margins.margin12,
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: Margins.margin8),
                     decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: StudyModes.values[index].color),
+                      shape: BoxShape.circle,
+                      color: StudyModes.values[index].color,
+                    ),
                   ),
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
                       children: [
-                        Container(
-                          height: Margins.margin16,
-                          alignment: Alignment.centerLeft,
-                          child: FittedBox(
-                            fit: BoxFit.contain,
-                            child: Text(
-                              "${StudyModes.values[index].mode}:",
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                        Expanded(
+                          child: Text(
+                            "${StudyModes.values[index].mode}:",
+                            style: const TextStyle(fontSize: Margins.margin12),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         Container(
-                          height: Margins.margin16,
                           alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(left: Margins.margin16),
-                          child: FittedBox(
-                            fit: BoxFit.contain,
-                            child: Text(
-                              rate != DatabaseConstants.emptyWinRate
-                                  ? "${GeneralUtils.roundUpAsString(GeneralUtils.getFixedDouble(rate * 100))}%"
-                                  : "0%",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.light
-                                      ? Colors.black87
-                                      : Colors.white),
-                            ),
+                          child: Text(
+                            rate != DatabaseConstants.emptyWinRate
+                                ? "${GeneralUtils.roundUpAsString(GeneralUtils.getFixedDouble(rate * 100))}%"
+                                : "0%",
+                            style: TextStyle(
+                                fontSize: Margins.margin12,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.black87
+                                    : Colors.white),
                           ),
                         )
                       ],
@@ -122,38 +118,53 @@ class KPRadialGraph extends StatelessWidget {
           Positioned(
             left: 0,
             right: 0,
-            top: Margins.margin26,
-            bottom: Margins.margin26,
+            top: 33,
+            bottom: 33,
+            child: WinRateChart(
+              winRate: rateSpeaking,
+              backgroundColor: Colors.transparent,
+              chartColor: StudyModes.speaking.color,
+              showGaugeAnnotation: false,
+              padding: EdgeInsets.zero,
+              widthLine: 0.23,
+              pointerOffset: 0,
+            ),
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            top: 25,
+            bottom: 25,
             child: WinRateChart(
               winRate: rateListening,
               backgroundColor: Colors.transparent,
               chartColor: StudyModes.listening.color,
               showGaugeAnnotation: false,
               padding: EdgeInsets.zero,
-              widthLine: 0.15,
+              widthLine: 0.2,
               pointerOffset: 0,
             ),
           ),
           Positioned(
             left: 0,
             right: 0,
-            top: Margins.margin18,
-            bottom: Margins.margin18,
+            top: 17,
+            bottom: 17,
             child: WinRateChart(
               winRate: rateRecognition,
               backgroundColor: Colors.transparent,
               chartColor: StudyModes.recognition.color,
               showGaugeAnnotation: false,
               padding: EdgeInsets.zero,
-              widthLine: 0.15,
+              widthLine: 0.16,
               pointerOffset: 0,
             ),
           ),
           Positioned(
             left: 0,
             right: 0,
-            top: Margins.margin10,
-            bottom: Margins.margin10,
+            top: Margins.margin8,
+            bottom: Margins.margin8,
             child: WinRateChart(
               winRate: rateReading,
               backgroundColor: Colors.transparent,
@@ -175,7 +186,7 @@ class KPRadialGraph extends StatelessWidget {
               chartColor: StudyModes.writing.color,
               showGaugeAnnotation: false,
               padding: EdgeInsets.zero,
-              widthLine: 0.15,
+              widthLine: 0.12,
               pointerOffset: 0,
             ),
           ),

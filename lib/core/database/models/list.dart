@@ -11,6 +11,7 @@ class KanjiList {
   double totalWinRateReading;
   double totalWinRateRecognition;
   double totalWinRateListening;
+  double totalWinRateSpeaking;
   final int lastUpdated;
 
   KanjiList(
@@ -19,6 +20,7 @@ class KanjiList {
       this.totalWinRateReading = DatabaseConstants.emptyWinRate,
       this.totalWinRateRecognition = DatabaseConstants.emptyWinRate,
       this.totalWinRateListening = DatabaseConstants.emptyWinRate,
+      this.totalWinRateSpeaking = DatabaseConstants.emptyWinRate,
       required this.lastUpdated});
 
   /// Empty [KanjiList]
@@ -34,6 +36,7 @@ class KanjiList {
       totalWinRateReading: totalWinRateReading,
       totalWinRateRecognition: totalWinRateRecognition,
       totalWinRateListening: totalWinRateListening,
+      totalWinRateSpeaking: totalWinRateSpeaking,
       lastUpdated: lastUpdated ?? this.lastUpdated);
 
   KanjiList copyWithReset() => KanjiList(
@@ -42,5 +45,6 @@ class KanjiList {
       totalWinRateReading: DatabaseConstants.emptyWinRate,
       totalWinRateRecognition: DatabaseConstants.emptyWinRate,
       totalWinRateListening: DatabaseConstants.emptyWinRate,
+      totalWinRateSpeaking: DatabaseConstants.emptyWinRate,
       lastUpdated: GeneralUtils.getCurrentMilliseconds());
 }

@@ -19,12 +19,15 @@ Kanji _$KanjiFromJson(Map<String, dynamic> json) => Kanji(
           DatabaseConstants.emptyWinRate,
       winRateListening: (json['winRateListening'] as num?)?.toDouble() ??
           DatabaseConstants.emptyWinRate,
+      winRateSpeaking: (json['winRateSpeaking'] as num?)?.toDouble() ??
+          DatabaseConstants.emptyWinRate,
       dateAdded: json['dateAdded'] as int? ?? 0,
       dateLastShown: json['dateLastShown'] as int? ?? 0,
       dateLastShownWriting: json['dateLastShownWriting'] as int? ?? 0,
       dateLastShownReading: json['dateLastShownReading'] as int? ?? 0,
       dateLastShownRecognition: json['dateLastShownRecognition'] as int? ?? 0,
       dateLastShownListening: json['dateLastShownListening'] as int? ?? 0,
+      dateLastShownSpeaking: json['dateLastShownSpeaking'] as int? ?? 0,
       category: json['category'] as int? ?? 0,
     );
 
@@ -37,11 +40,13 @@ Map<String, dynamic> _$KanjiToJson(Kanji instance) => <String, dynamic>{
       'winRateReading': instance.winRateReading,
       'winRateRecognition': instance.winRateRecognition,
       'winRateListening': instance.winRateListening,
+      'winRateSpeaking': instance.winRateSpeaking,
       'dateAdded': instance.dateAdded,
       'dateLastShown': instance.dateLastShown,
       'dateLastShownWriting': instance.dateLastShownWriting,
       'dateLastShownReading': instance.dateLastShownReading,
       'dateLastShownRecognition': instance.dateLastShownRecognition,
       'dateLastShownListening': instance.dateLastShownListening,
+      'dateLastShownSpeaking': instance.dateLastShownSpeaking,
       'category': instance.category,
     };

@@ -132,6 +132,8 @@ class TestQueries {
         await _getTestCountBasedOnStudyMode(StudyModes.recognition.index);
     final int testTotalCountListening =
         await _getTestCountBasedOnStudyMode(StudyModes.listening.index);
+    final int testTotalCountSpeaking =
+        await _getTestCountBasedOnStudyMode(StudyModes.speaking.index);
     final double testTotalWinRateWriting =
         await _getTestAccuracyBasedOnStudyMode(StudyModes.writing.index);
     final double testTotalWinRateReading =
@@ -140,6 +142,8 @@ class TestQueries {
         await _getTestAccuracyBasedOnStudyMode(StudyModes.recognition.index);
     final double testTotalWinRateListening =
         await _getTestAccuracyBasedOnStudyMode(StudyModes.listening.index);
+    final double testTotalWinRateSpeaking =
+        await _getTestAccuracyBasedOnStudyMode(StudyModes.speaking.index);
     final List<int> testModesCount = await _getAllTestsBasedOnTestMode();
 
     return TestData(
@@ -149,10 +153,12 @@ class TestQueries {
       testTotalCountReading: testTotalCountReading,
       testTotalCountRecognition: testTotalCountRecognition,
       testTotalCountListening: testTotalCountListening,
+      testTotalCountSpeaking: testTotalCountSpeaking,
       testTotalWinRateWriting: testTotalWinRateWriting,
       testTotalWinRateReading: testTotalWinRateReading,
       testTotalWinRateRecognition: testTotalWinRateRecognition,
       testTotalWinRateListening: testTotalWinRateListening,
+      testTotalWinRateSpeaking: testTotalWinRateSpeaking,
       selectionTests: testModesCount[0],
       blitzTests: testModesCount[1],
       remembranceTests: testModesCount[2],

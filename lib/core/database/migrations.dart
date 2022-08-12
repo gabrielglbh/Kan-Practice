@@ -5,6 +5,20 @@ import 'package:kanpractice/core/database/models/test_result.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Migrations extends MigrationUtils {
+  Future<void> version7to8(Database db) async {
+    await db.rawQuery("ALTER TABLE ${KanjiTableFields.kanjiTable} "
+        "ADD COLUMN ${KanjiTableFields.winRateSpeakingField} INTEGER NOT NULL "
+        "DEFAULT ${DatabaseConstants.emptyWinRate.toString()}");
+
+    await db.rawQuery("ALTER TABLE ${KanjiTableFields.kanjiTable} "
+        "ADD COLUMN ${KanjiTableFields.dateLastShownSpeaking} INTEGER NOT NULL "
+        "DEFAULT 0");
+
+    await db.rawQuery("ALTER TABLE ${KanListTableFields.listsTable} "
+        "ADD COLUMN ${KanListTableFields.totalWinRateSpeakingField} INTEGER NOT NULL "
+        "DEFAULT ${DatabaseConstants.emptyWinRate.toString()}");
+  }
+
   Future<void> version6to7(Database db) async {
     await db.rawQuery(
         "CREATE TABLE ${KanListFolderRelationTableFields.relTable}("

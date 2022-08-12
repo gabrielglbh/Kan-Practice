@@ -3,7 +3,6 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
-import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
@@ -132,18 +131,9 @@ class KPTestStudyMode extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, childAspectRatio: 1.9),
+                    crossAxisCount: 3, childAspectRatio: 1.2),
                 itemBuilder: (context, index) {
-                  switch (StudyModes.values[index]) {
-                    case StudyModes.writing:
-                      return _modeBasedButtons(context, StudyModes.writing);
-                    case StudyModes.reading:
-                      return _modeBasedButtons(context, StudyModes.reading);
-                    case StudyModes.recognition:
-                      return _modeBasedButtons(context, StudyModes.recognition);
-                    case StudyModes.listening:
-                      return _modeBasedButtons(context, StudyModes.listening);
-                  }
+                  return _modeBasedButtons(context, StudyModes.values[index]);
                 },
               ),
             ),
@@ -204,47 +194,16 @@ class KPTestStudyMode extends StatelessWidget {
     /// See addPostFrameCallback() in init() in [HomePage]
     StorageManager.saveData(StorageManager.folderWhenOnTest, folder ?? "");
 
-    switch (mode) {
-      case StudyModes.writing:
-        await navigator.pushNamed(KanPracticePages.writingStudyPage,
-            arguments: ModeArguments(
-                studyList: sortedList,
-                isTest: true,
-                testMode: type,
-                display: displayTestName,
-                mode: mode,
-                listsNames: testName));
-        break;
-      case StudyModes.reading:
-        await navigator.pushNamed(KanPracticePages.readingStudyPage,
-            arguments: ModeArguments(
-                studyList: sortedList,
-                isTest: true,
-                testMode: type,
-                display: displayTestName,
-                mode: mode,
-                listsNames: testName));
-        break;
-      case StudyModes.recognition:
-        await navigator.pushNamed(KanPracticePages.recognitionStudyPage,
-            arguments: ModeArguments(
-                studyList: sortedList,
-                isTest: true,
-                testMode: type,
-                display: displayTestName,
-                mode: mode,
-                listsNames: testName));
-        break;
-      case StudyModes.listening:
-        await navigator.pushNamed(KanPracticePages.listeningStudyPage,
-            arguments: ModeArguments(
-                studyList: sortedList,
-                isTest: true,
-                testMode: type,
-                display: displayTestName,
-                mode: mode,
-                listsNames: testName));
-        break;
-    }
+    await navigator.pushNamed(
+      mode.page,
+      arguments: ModeArguments(
+        studyList: sortedList,
+        isTest: true,
+        testMode: type,
+        display: displayTestName,
+        mode: mode,
+        listsNames: testName,
+      ),
+    );
   }
 }

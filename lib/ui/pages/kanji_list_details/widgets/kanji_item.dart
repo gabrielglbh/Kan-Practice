@@ -44,6 +44,8 @@ class _KanjiItemState extends State<KanjiItem> {
         return kanji.winRateRecognition;
       case StudyModes.listening:
         return kanji.winRateListening;
+      case StudyModes.speaking:
+        return kanji.winRateSpeaking;
     }
   }
 

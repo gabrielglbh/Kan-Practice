@@ -51,11 +51,13 @@ class StatisticsPage extends StatelessWidget {
         Padding(
             padding: const EdgeInsets.only(top: Margins.margin16),
             child: KPDependentGraph(
-                mode: mode,
-                writing: s.totalWinRateWriting,
-                reading: s.totalWinRateReading,
-                recognition: s.totalWinRateRecognition,
-                listening: s.totalWinRateListening)),
+              mode: mode,
+              writing: s.totalWinRateWriting,
+              reading: s.totalWinRateReading,
+              recognition: s.totalWinRateRecognition,
+              listening: s.totalWinRateListening,
+              speaking: s.totalWinRateSpeaking,
+            )),
         const Divider(),
         Row(
           children: [
@@ -122,6 +124,14 @@ class StatisticsPage extends StatelessWidget {
                         context, s.test.testTotalCountListening.toString())
                   ],
                 );
+              case StudyModes.speaking:
+                return Row(
+                  children: [
+                    _bullet(StudyModes.values[index]),
+                    _fittedText(
+                        context, s.test.testTotalCountSpeaking.toString())
+                  ],
+                );
             }
           }),
         ),
@@ -135,11 +145,13 @@ class StatisticsPage extends StatelessWidget {
         Padding(
             padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
             child: KPDependentGraph(
-                mode: mode,
-                writing: s.test.testTotalWinRateWriting,
-                reading: s.test.testTotalWinRateReading,
-                recognition: s.test.testTotalWinRateRecognition,
-                listening: s.test.testTotalWinRateListening)),
+              mode: mode,
+              writing: s.test.testTotalWinRateWriting,
+              reading: s.test.testTotalWinRateReading,
+              recognition: s.test.testTotalWinRateRecognition,
+              listening: s.test.testTotalWinRateListening,
+              speaking: s.test.testTotalWinRateSpeaking,
+            )),
         const SizedBox(height: Margins.margin64)
       ],
     );

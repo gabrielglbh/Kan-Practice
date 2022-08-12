@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
-import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
@@ -52,61 +51,17 @@ class _DailyBottomSheetState extends State<DailyBottomSheet> {
     /// proper navigation when finishing the test.
     /// See addPostFrameCallback() in init() in [HomePage]
     StorageManager.saveData(StorageManager.folderWhenOnTest, "");
-
-    switch (randomStudyMode) {
-      case StudyModes.writing:
-        await navigator.pushNamed(
-          KanPracticePages.writingStudyPage,
-          arguments: ModeArguments(
-            studyList: sortedList,
-            isTest: true,
-            testMode: Tests.daily,
-            display: Tests.daily.name,
-            mode: randomStudyMode,
-            listsNames: name,
-          ),
-        );
-        break;
-      case StudyModes.reading:
-        await navigator.pushNamed(
-          KanPracticePages.readingStudyPage,
-          arguments: ModeArguments(
-            studyList: sortedList,
-            isTest: true,
-            testMode: Tests.daily,
-            display: Tests.daily.name,
-            mode: randomStudyMode,
-            listsNames: name,
-          ),
-        );
-        break;
-      case StudyModes.recognition:
-        await navigator.pushNamed(
-          KanPracticePages.recognitionStudyPage,
-          arguments: ModeArguments(
-            studyList: sortedList,
-            isTest: true,
-            testMode: Tests.daily,
-            display: Tests.daily.name,
-            mode: randomStudyMode,
-            listsNames: name,
-          ),
-        );
-        break;
-      case StudyModes.listening:
-        await navigator.pushNamed(
-          KanPracticePages.listeningStudyPage,
-          arguments: ModeArguments(
-            studyList: sortedList,
-            isTest: true,
-            testMode: Tests.daily,
-            display: Tests.daily.name,
-            mode: randomStudyMode,
-            listsNames: name,
-          ),
-        );
-        break;
-    }
+    await navigator.pushNamed(
+      randomStudyMode.page,
+      arguments: ModeArguments(
+        studyList: sortedList,
+        isTest: true,
+        testMode: Tests.daily,
+        display: Tests.daily.name,
+        mode: randomStudyMode,
+        listsNames: name,
+      ),
+    );
   }
 
   @override

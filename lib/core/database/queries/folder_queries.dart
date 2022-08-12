@@ -126,6 +126,7 @@ class FolderQueries {
             "R.${KanListTableFields.totalWinRateReadingField}, "
             "R.${KanListTableFields.totalWinRateRecognitionField}, "
             "R.${KanListTableFields.totalWinRateListeningField}, "
+            "R.${KanListTableFields.totalWinRateSpeakingField}, "
             "R.${KanListTableFields.lastUpdatedField} "
             "FROM ${KanListFolderRelationTableFields.relTable} L JOIN ${KanListTableFields.listsTable} R "
             "ON L.${KanListFolderRelationTableFields.kanListNameField}=R.${KanListTableFields.nameField} "
@@ -174,12 +175,14 @@ class FolderQueries {
             "K.${KanjiTableFields.winRateReadingField}, "
             "K.${KanjiTableFields.winRateRecognitionField}, "
             "K.${KanjiTableFields.winRateListeningField}, "
+            "K.${KanjiTableFields.winRateSpeakingField}, "
             "K.${KanjiTableFields.dateAddedField}, "
             "K.${KanjiTableFields.dateLastShown}, "
             "K.${KanjiTableFields.dateLastShownWriting}, "
             "K.${KanjiTableFields.dateLastShownReading}, "
             "K.${KanjiTableFields.dateLastShownRecognition}, "
             "K.${KanjiTableFields.dateLastShownListening}, "
+            "K.${KanjiTableFields.dateLastShownSpeaking}, "
             "K.${KanjiTableFields.categoryField} "
             "FROM ${KanListFolderRelationTableFields.relTable} L JOIN ${KanListTableFields.listsTable} R "
             "ON L.${KanListFolderRelationTableFields.kanListNameField}=R.${KanListTableFields.nameField} "
@@ -213,6 +216,10 @@ class FolderQueries {
                 query =
                     "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownListening} ASC";
                 break;
+              case StudyModes.speaking:
+                query =
+                    "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownSpeaking} ASC";
+                break;
             }
           } else {
             return [];
@@ -235,6 +242,10 @@ class FolderQueries {
               case StudyModes.listening:
                 query =
                     "$joinSelection ORDER BY K.${KanjiTableFields.winRateListeningField} ASC";
+                break;
+              case StudyModes.speaking:
+                query =
+                    "$joinSelection ORDER BY K.${KanjiTableFields.winRateSpeakingField} ASC";
                 break;
             }
           } else {
@@ -274,6 +285,7 @@ class FolderQueries {
             "R.${KanListTableFields.totalWinRateReadingField}, "
             "R.${KanListTableFields.totalWinRateRecognitionField}, "
             "R.${KanListTableFields.totalWinRateListeningField}, "
+            "R.${KanListTableFields.totalWinRateSpeakingField}, "
             "R.${KanListTableFields.lastUpdatedField} "
             "FROM ${KanListFolderRelationTableFields.relTable} L JOIN ${KanListTableFields.listsTable} R "
             "ON L.${KanListFolderRelationTableFields.kanListNameField}=R.${KanListTableFields.nameField} "

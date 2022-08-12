@@ -57,7 +57,7 @@ class DailyBottomSheet extends StatelessWidget {
     /// Save to SharedPreferences the current folder, if any, to manage
     /// proper navigation when finishing the test.
     /// See addPostFrameCallback() in init() in [HomePage]
-    StorageManager.saveData(StorageManager.folderWhenOnTest, "");
+    StorageManager.saveData(StorageManager.folderWhenOnTest, folder ?? "");
     await navigator.pushNamed(
       randomStudyMode.page,
       arguments: ModeArguments(

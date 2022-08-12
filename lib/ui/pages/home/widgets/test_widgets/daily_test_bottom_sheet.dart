@@ -129,12 +129,6 @@ class _DailyBottomSheetState extends State<DailyBottomSheet> {
                   await _loadDailyTest();
                 },
               ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: Margins.margin16, bottom: Margins.margin16),
-                child: Text("study_modes_good_luck".tr(),
-                    style: Theme.of(context).textTheme.headline5),
-              )
             ],
           ),
         ]);

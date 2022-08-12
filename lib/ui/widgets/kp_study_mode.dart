@@ -125,7 +125,11 @@ class KPTestStudyMode extends StatelessWidget {
                   )),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
+              padding: const EdgeInsets.only(
+                right: Margins.margin16,
+                left: Margins.margin16,
+                bottom: Margins.margin8,
+              ),
               child: GridView.builder(
                 itemCount: StudyModes.values.length,
                 physics: const NeverScrollableScrollPhysics(),
@@ -137,12 +141,6 @@ class KPTestStudyMode extends StatelessWidget {
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: Margins.margin16, bottom: Margins.margin16),
-              child: Text("study_modes_good_luck".tr(),
-                  style: Theme.of(context).textTheme.headline5),
-            )
           ],
         ));
   }

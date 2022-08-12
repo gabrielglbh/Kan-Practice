@@ -143,6 +143,8 @@ class KPTestStudyMode extends StatelessWidget {
                       return _modeBasedButtons(context, StudyModes.recognition);
                     case StudyModes.listening:
                       return _modeBasedButtons(context, StudyModes.listening);
+                    case StudyModes.speaking:
+                      return _modeBasedButtons(context, StudyModes.speaking);
                   }
                 },
               ),
@@ -204,47 +206,34 @@ class KPTestStudyMode extends StatelessWidget {
     /// See addPostFrameCallback() in init() in [HomePage]
     StorageManager.saveData(StorageManager.folderWhenOnTest, folder ?? "");
 
+    late String pageName;
     switch (mode) {
       case StudyModes.writing:
-        await navigator.pushNamed(KanPracticePages.writingStudyPage,
-            arguments: ModeArguments(
-                studyList: sortedList,
-                isTest: true,
-                testMode: type,
-                display: displayTestName,
-                mode: mode,
-                listsNames: testName));
+        pageName = KanPracticePages.writingStudyPage;
         break;
       case StudyModes.reading:
-        await navigator.pushNamed(KanPracticePages.readingStudyPage,
-            arguments: ModeArguments(
-                studyList: sortedList,
-                isTest: true,
-                testMode: type,
-                display: displayTestName,
-                mode: mode,
-                listsNames: testName));
+        pageName = KanPracticePages.readingStudyPage;
         break;
       case StudyModes.recognition:
-        await navigator.pushNamed(KanPracticePages.recognitionStudyPage,
-            arguments: ModeArguments(
-                studyList: sortedList,
-                isTest: true,
-                testMode: type,
-                display: displayTestName,
-                mode: mode,
-                listsNames: testName));
+        pageName = KanPracticePages.recognitionStudyPage;
         break;
       case StudyModes.listening:
-        await navigator.pushNamed(KanPracticePages.listeningStudyPage,
-            arguments: ModeArguments(
-                studyList: sortedList,
-                isTest: true,
-                testMode: type,
-                display: displayTestName,
-                mode: mode,
-                listsNames: testName));
+        pageName = KanPracticePages.listeningStudyPage;
+        break;
+      case StudyModes.speaking:
+        pageName = KanPracticePages.speakingStudyPage;
         break;
     }
+    await navigator.pushNamed(
+      pageName,
+      arguments: ModeArguments(
+        studyList: sortedList,
+        isTest: true,
+        testMode: type,
+        display: displayTestName,
+        mode: mode,
+        listsNames: testName,
+      ),
+    );
   }
 }

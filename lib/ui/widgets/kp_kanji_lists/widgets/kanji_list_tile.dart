@@ -72,6 +72,7 @@ class KanjiListTile extends StatelessWidget {
           reading: item.totalWinRateReading,
           recognition: item.totalWinRateRecognition,
           listening: item.totalWinRateListening,
+          speaking: item.totalWinRateSpeaking,
         ),
       ),
     );

@@ -8,7 +8,11 @@ import 'package:kanpractice/ui/widgets/graphs/kp_win_rate_chart.dart';
 
 class KPRadialGraph extends StatelessWidget {
   /// [KanjiList] item to paint as a Tile
-  final double rateWriting, rateReading, rateRecognition, rateListening;
+  final double rateWriting,
+      rateReading,
+      rateRecognition,
+      rateListening,
+      rateSpeaking;
   final double height;
   const KPRadialGraph(
       {Key? key,
@@ -16,6 +20,7 @@ class KPRadialGraph extends StatelessWidget {
       required this.rateReading,
       required this.rateRecognition,
       required this.rateListening,
+      required this.rateSpeaking,
       this.height = CustomSizes.defaultSizeWinRateChart + Margins.margin32})
       : super(key: key);
 
@@ -50,6 +55,9 @@ class KPRadialGraph extends StatelessWidget {
                   break;
                 case StudyModes.listening:
                   rate = rateListening;
+                  break;
+                case StudyModes.speaking:
+                  rate = rateSpeaking;
                   break;
               }
 
@@ -119,6 +127,21 @@ class KPRadialGraph extends StatelessWidget {
       height: height,
       child: Stack(
         children: [
+          Positioned(
+            left: 0,
+            right: 0,
+            top: Margins.margin32,
+            bottom: Margins.margin32,
+            child: WinRateChart(
+              winRate: rateSpeaking,
+              backgroundColor: Colors.transparent,
+              chartColor: StudyModes.speaking.color,
+              showGaugeAnnotation: false,
+              padding: EdgeInsets.zero,
+              widthLine: 0.15,
+              pointerOffset: 0,
+            ),
+          ),
           Positioned(
             left: 0,
             right: 0,

@@ -146,15 +146,17 @@ class KPKanjiBottomSheet extends StatelessWidget {
         margin: const EdgeInsets.only(
             bottom: Margins.margin16, top: Margins.margin8),
         child: ListTile(
-            title: KPDependentGraph(
-          mode: VisualizationModeExt.mode(StorageManager.readData(
-                  StorageManager.kanListGraphVisualization) ??
-              VisualizationMode.radialChart),
-          writing: updatedKanji.winRateWriting,
-          reading: updatedKanji.winRateReading,
-          recognition: updatedKanji.winRateRecognition,
-          listening: updatedKanji.winRateListening,
-        )),
+          title: KPDependentGraph(
+            mode: VisualizationModeExt.mode(StorageManager.readData(
+                    StorageManager.kanListGraphVisualization) ??
+                VisualizationMode.radialChart),
+            writing: updatedKanji.winRateWriting,
+            reading: updatedKanji.winRateReading,
+            recognition: updatedKanji.winRateRecognition,
+            listening: updatedKanji.winRateListening,
+            speaking: updatedKanji.winRateSpeaking,
+          ),
+        ),
       ),
       _lastTimeShownWidget(context, updatedKanji),
       Visibility(
@@ -250,6 +252,9 @@ class KPKanjiBottomSheet extends StatelessWidget {
         break;
       case StudyModes.listening:
         date = updatedKanji.dateLastShownListening;
+        break;
+      case StudyModes.speaking:
+        date = updatedKanji.dateLastShownSpeaking;
         break;
     }
     if (date != 0) {

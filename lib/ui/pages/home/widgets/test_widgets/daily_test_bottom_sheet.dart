@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
+import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
@@ -12,12 +13,9 @@ import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class DailyBottomSheet extends StatefulWidget {
+class DailyBottomSheet extends StatelessWidget {
   final String? folder;
   const DailyBottomSheet({Key? key, this.folder}) : super(key: key);
-
-  @override
-  State<DailyBottomSheet> createState() => _DailyBottomSheetState();
 
   /// Creates and calls the [BottomSheet] with the content for a regular test
   static Future<String?> show(BuildContext context, {String? folder}) async {
@@ -27,10 +25,8 @@ class DailyBottomSheet extends StatefulWidget {
         backgroundColor: Colors.transparent,
         builder: (context) => DailyBottomSheet(folder: folder));
   }
-}
 
-class _DailyBottomSheetState extends State<DailyBottomSheet> {
-  Future<void> _loadDailyTest() async {
+  Future<void> _loadDailyTest(BuildContext context) async {
     final navigator = Navigator.of(context);
     final randomStudyMode =
         StudyModesUtil.mapStudyMode(Random().nextInt(StudyModes.values.length));
@@ -39,15 +35,24 @@ class _DailyBottomSheetState extends State<DailyBottomSheet> {
             CustomSizes.numberOfKanjiInTest;
 
     final today = await GeneralUtils.parseTodayDate(context);
-    final list = await KanjiQueries.instance.getDailyKanjis(randomStudyMode);
+    List<Kanji> list = [];
+    if (folder == null) {
+      list = await KanjiQueries.instance.getDailyKanjis(randomStudyMode);
+    } else {
+      list = await FolderQueries.instance.getAllKanjiOnListsOnFolder(
+        [folder!],
+        type: Tests.daily,
+        mode: randomStudyMode,
+      );
+    }
     List<Kanji> sortedList =
         list.sublist(0, list.length < kanjiInTest ? list.length : kanjiInTest);
 
     navigator.pop(); // Dismiss this bottom sheet
     navigator.pop(); // Dismiss the tests bottom sheet
 
-    final folder = widget.folder != null ? " - ${widget.folder}" : "";
-    final name = "${"abbr_test_mode_daily".tr()}: $today$folder";
+    final folderTitle = folder != null ? " - $folder" : "";
+    final name = "${"abbr_test_mode_daily".tr()}: $today$folderTitle";
 
     /// Save to SharedPreferences the current folder, if any, to manage
     /// proper navigation when finishing the test.
@@ -68,7 +73,7 @@ class _DailyBottomSheetState extends State<DailyBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final title = widget.folder != null ? ": ${widget.folder}" : "";
+    final title = folder != null ? ": $folder" : "";
     return BottomSheet(
       enableDrag: false,
       onClosing: () {},
@@ -126,7 +131,7 @@ class _DailyBottomSheetState extends State<DailyBottomSheet> {
                 title1: "daily_test_start_button_tr".tr(),
                 title2: "daily_test_start_button".tr(),
                 onTap: () async {
-                  await _loadDailyTest();
+                  await _loadDailyTest(context);
                 },
               ),
             ],

@@ -49,6 +49,12 @@ class KPBlitzBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final title = remembranceTest
+        ? "remembrance_bottom_sheet_title".tr()
+        : lessPctTest
+            ? "less_pct_bottom_sheet_title".tr()
+            : "blitz_bottom_sheet_title".tr();
+    final folderTitle = folder != null ? ": $folder" : "";
     final kanjiInTest =
         StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
             CustomSizes.numberOfKanjiInTest;
@@ -99,12 +105,7 @@ class KPBlitzBottomSheet extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: Margins.margin8, horizontal: Margins.margin32),
-                child: Text(
-                    remembranceTest
-                        ? "remembrance_bottom_sheet_title".tr()
-                        : lessPctTest
-                            ? "less_pct_bottom_sheet_title".tr()
-                            : "blitz_bottom_sheet_title".tr(),
+                child: Text("$title$folderTitle",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6),
               ),

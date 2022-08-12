@@ -13,18 +13,19 @@ import 'package:kanpractice/ui/widgets/kp_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class DailyBottomSheet extends StatefulWidget {
-  const DailyBottomSheet({Key? key}) : super(key: key);
+  final String? folder;
+  const DailyBottomSheet({Key? key, this.folder}) : super(key: key);
 
   @override
   State<DailyBottomSheet> createState() => _DailyBottomSheetState();
 
   /// Creates and calls the [BottomSheet] with the content for a regular test
-  static Future<String?> show(BuildContext context) async {
+  static Future<String?> show(BuildContext context, {String? folder}) async {
     return await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
-        builder: (context) => const DailyBottomSheet());
+        builder: (context) => DailyBottomSheet(folder: folder));
   }
 }
 
@@ -45,7 +46,8 @@ class _DailyBottomSheetState extends State<DailyBottomSheet> {
     navigator.pop(); // Dismiss this bottom sheet
     navigator.pop(); // Dismiss the tests bottom sheet
 
-    final name = "${"abbr_test_mode_daily".tr()}: $today";
+    final folder = widget.folder != null ? " - ${widget.folder}" : "";
+    final name = "${"abbr_test_mode_daily".tr()}: $today$folder";
 
     /// Save to SharedPreferences the current folder, if any, to manage
     /// proper navigation when finishing the test.
@@ -57,15 +59,16 @@ class _DailyBottomSheetState extends State<DailyBottomSheet> {
         studyList: sortedList,
         isTest: true,
         testMode: Tests.daily,
-        display: Tests.daily.name,
+        studyModeHeaderDisplayName: Tests.daily.name,
         mode: randomStudyMode,
-        listsNames: name,
+        testHistoryDisplasyName: name,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final title = widget.folder != null ? ": ${widget.folder}" : "";
     return BottomSheet(
       enableDrag: false,
       onClosing: () {},
@@ -78,7 +81,7 @@ class _DailyBottomSheetState extends State<DailyBottomSheet> {
               Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: Margins.margin8, horizontal: Margins.margin32),
-                child: Text("daily_test_bottom_sheet_title".tr(),
+                child: Text("${"daily_test_bottom_sheet_title".tr()}$title",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6),
               ),

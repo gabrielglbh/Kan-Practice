@@ -200,9 +200,9 @@ class KPTestStudyMode extends StatelessWidget {
         studyList: sortedList,
         isTest: true,
         testMode: type,
-        display: displayTestName,
+        studyModeHeaderDisplayName: displayTestName,
         mode: mode,
-        listsNames: testName,
+        testHistoryDisplasyName: testName,
       ),
     );
   }

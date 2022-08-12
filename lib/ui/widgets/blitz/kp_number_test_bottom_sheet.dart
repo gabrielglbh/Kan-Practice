@@ -147,8 +147,8 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
                         isTest: true,
                         mode: StudyModes.listening,
                         testMode: Tests.numbers,
-                        display: "test_mode_number".tr(),
-                        listsNames: listsNames,
+                        studyModeHeaderDisplayName: "test_mode_number".tr(),
+                        testHistoryDisplasyName: listsNames,
                         isNumberTest: true));
               }
             }),

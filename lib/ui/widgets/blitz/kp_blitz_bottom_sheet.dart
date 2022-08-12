@@ -12,7 +12,7 @@ class KPBlitzBottomSheet extends StatelessWidget {
   final String? practiceList;
 
   /// Folder for UI on history test
-  final String? folderList;
+  final String? folder;
   final bool remembranceTest;
   final bool lessPctTest;
 
@@ -21,7 +21,7 @@ class KPBlitzBottomSheet extends StatelessWidget {
   const KPBlitzBottomSheet({
     Key? key,
     this.practiceList,
-    this.folderList,
+    this.folder,
     this.remembranceTest = false,
     this.lessPctTest = false,
   }) : super(key: key);
@@ -30,7 +30,7 @@ class KPBlitzBottomSheet extends StatelessWidget {
   static Future<String?> show(
     BuildContext context, {
     String? practiceList,
-    String? folderList,
+    String? folder,
     bool remembranceTest = false,
     bool lessPctTest = false,
   }) async {
@@ -40,7 +40,7 @@ class KPBlitzBottomSheet extends StatelessWidget {
       backgroundColor: Colors.transparent,
       builder: (context) => KPBlitzBottomSheet(
         practiceList: practiceList,
-        folderList: folderList,
+        folder: folder,
         remembranceTest: remembranceTest,
         lessPctTest: lessPctTest,
       ),
@@ -49,6 +49,12 @@ class KPBlitzBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final title = remembranceTest
+        ? "remembrance_bottom_sheet_title".tr()
+        : lessPctTest
+            ? "less_pct_bottom_sheet_title".tr()
+            : "blitz_bottom_sheet_title".tr();
+    final folderTitle = folder != null ? ": $folder" : "";
     final kanjiInTest =
         StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
             CustomSizes.numberOfKanjiInTest;
@@ -56,18 +62,36 @@ class KPBlitzBottomSheet extends StatelessWidget {
         ? Tests.time
         : lessPctTest
             ? Tests.less
-            : folderList != null
+            : folder != null
                 ? Tests.folder
                 : Tests.blitz;
-    final testName = remembranceTest
-        ? "remembrance_bottom_sheet_label".tr()
+
+    final description = remembranceTest
+        ? "remembrance_bottom_sheet_content".tr()
         : lessPctTest
-            ? "less_pct_bottom_sheet_label".tr()
-            : folderList != null
-                ? '${"blitz_bottom_sheet_on_label".tr()} $folderList'
-                : practiceList == null
-                    ? 'blitz_bottom_sheet_label'.tr()
-                    : '${"blitz_bottom_sheet_on_label".tr()} $practiceList';
+            ? "less_pct_bottom_sheet_content".tr()
+            : "blitz_bottom_sheet_content".tr();
+
+    String testName = "";
+    if (remembranceTest) {
+      if (folder == null) {
+        testName = "remembrance_bottom_sheet_label".tr();
+      } else {
+        testName = '${"remembrance_bottom_sheet_on_folder_label".tr()} $folder';
+      }
+    } else if (lessPctTest) {
+      if (folder == null) {
+        testName = "less_pct_bottom_sheet_label".tr();
+      } else {
+        testName = '${"less_pct_bottom_sheet_on_folder_label".tr()} $folder';
+      }
+    } else if (folder != null) {
+      testName = '${"blitz_bottom_sheet_on_folder_label".tr()} $folder';
+    } else if (practiceList == null) {
+      testName = 'blitz_bottom_sheet_label'.tr();
+    } else {
+      testName = '${"blitz_bottom_sheet_on_label".tr()} $practiceList';
+    }
 
     return BottomSheet(
       enableDrag: false,
@@ -81,26 +105,20 @@ class KPBlitzBottomSheet extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: Margins.margin8, horizontal: Margins.margin32),
-                child: Text(
-                    remembranceTest
-                        ? "remembrance_bottom_sheet_title".tr()
-                        : lessPctTest
-                            ? "less_pct_bottom_sheet_title".tr()
-                            : "blitz_bottom_sheet_title".tr(),
+                child: Text("$title$folderTitle",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: Margins.margin8, horizontal: Margins.margin32),
-                child: Text(
-                    "$kanjiInTest ${remembranceTest ? "remembrance_bottom_sheet_content".tr() : lessPctTest ? "less_pct_bottom_sheet_content".tr() : "blitz_bottom_sheet_content".tr()}",
+                child: Text("$kanjiInTest $description",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyText1),
               ),
               KPTestStudyMode(
                 practiceList: practiceList,
-                folder: folderList,
+                folder: folder,
                 type: type,
                 testName: testName,
               )

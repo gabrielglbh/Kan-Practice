@@ -132,6 +132,8 @@ class TestQueries {
         await _getTestCountBasedOnStudyMode(StudyModes.recognition.index);
     final int testTotalCountListening =
         await _getTestCountBasedOnStudyMode(StudyModes.listening.index);
+    final int testTotalCountSpeaking =
+        await _getTestCountBasedOnStudyMode(StudyModes.speaking.index);
     final double testTotalWinRateWriting =
         await _getTestAccuracyBasedOnStudyMode(StudyModes.writing.index);
     final double testTotalWinRateReading =
@@ -140,26 +142,32 @@ class TestQueries {
         await _getTestAccuracyBasedOnStudyMode(StudyModes.recognition.index);
     final double testTotalWinRateListening =
         await _getTestAccuracyBasedOnStudyMode(StudyModes.listening.index);
+    final double testTotalWinRateSpeaking =
+        await _getTestAccuracyBasedOnStudyMode(StudyModes.speaking.index);
     final List<int> testModesCount = await _getAllTestsBasedOnTestMode();
 
     return TestData(
-        totalTests: totalTests,
-        totalTestAccuracy: totalTestAccuracy,
-        testTotalCountWriting: testTotalCountWriting,
-        testTotalCountReading: testTotalCountReading,
-        testTotalCountRecognition: testTotalCountRecognition,
-        testTotalCountListening: testTotalCountListening,
-        testTotalWinRateWriting: testTotalWinRateWriting,
-        testTotalWinRateReading: testTotalWinRateReading,
-        testTotalWinRateRecognition: testTotalWinRateRecognition,
-        testTotalWinRateListening: testTotalWinRateListening,
-        selectionTests: testModesCount[0],
-        blitzTests: testModesCount[1],
-        remembranceTests: testModesCount[2],
-        numberTests: testModesCount[3],
-        lessPctTests: testModesCount[4],
-        categoryTests: testModesCount[5],
-        folderTests: testModesCount[6]);
+      totalTests: totalTests,
+      totalTestAccuracy: totalTestAccuracy,
+      testTotalCountWriting: testTotalCountWriting,
+      testTotalCountReading: testTotalCountReading,
+      testTotalCountRecognition: testTotalCountRecognition,
+      testTotalCountListening: testTotalCountListening,
+      testTotalCountSpeaking: testTotalCountSpeaking,
+      testTotalWinRateWriting: testTotalWinRateWriting,
+      testTotalWinRateReading: testTotalWinRateReading,
+      testTotalWinRateRecognition: testTotalWinRateRecognition,
+      testTotalWinRateListening: testTotalWinRateListening,
+      testTotalWinRateSpeaking: testTotalWinRateSpeaking,
+      selectionTests: testModesCount[0],
+      blitzTests: testModesCount[1],
+      remembranceTests: testModesCount[2],
+      numberTests: testModesCount[3],
+      lessPctTests: testModesCount[4],
+      categoryTests: testModesCount[5],
+      folderTests: testModesCount[6],
+      dailyTests: testModesCount[7],
+    );
   }
 
   /// Retrieves the total test count saved locally in the device.
@@ -292,6 +300,9 @@ class TestQueries {
                 break;
               case Tests.folder:
                 counters[6] += 1;
+                break;
+              case Tests.daily:
+                counters[7] += 1;
                 break;
             }
           }

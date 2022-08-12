@@ -100,7 +100,6 @@ class _TestResultState extends State<TestResult> {
               label: "test_result_save_button_label".tr(),
               vertical: Margins.margin16,
               onTap: () {
-                /// Remove all navigation stack and push kanList
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     KanPracticePages.homePage, (route) => false,
                     arguments: _performAnotherTest);

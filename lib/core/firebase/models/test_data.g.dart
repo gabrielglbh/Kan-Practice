@@ -13,6 +13,7 @@ TestData _$TestDataFromJson(Map<String, dynamic> json) => TestData(
       testTotalCountReading: json['testTotalCountReading'] as int,
       testTotalCountRecognition: json['testTotalCountRecognition'] as int,
       testTotalCountListening: json['testTotalCountListening'] as int,
+      testTotalCountSpeaking: json['testTotalCountSpeaking'] as int,
       testTotalWinRateWriting:
           (json['testTotalWinRateWriting'] as num).toDouble(),
       testTotalWinRateReading:
@@ -21,6 +22,8 @@ TestData _$TestDataFromJson(Map<String, dynamic> json) => TestData(
           (json['testTotalWinRateRecognition'] as num).toDouble(),
       testTotalWinRateListening:
           (json['testTotalWinRateListening'] as num).toDouble(),
+      testTotalWinRateSpeaking:
+          (json['testTotalWinRateSpeaking'] as num).toDouble(),
       selectionTests: json['selectionTests'] as int,
       blitzTests: json['blitzTests'] as int,
       remembranceTests: json['remembranceTests'] as int,
@@ -28,6 +31,7 @@ TestData _$TestDataFromJson(Map<String, dynamic> json) => TestData(
       lessPctTests: json['lessPctTests'] as int,
       categoryTests: json['categoryTests'] as int,
       folderTests: json['folderTests'] as int,
+      dailyTests: json['dailyTests'] as int,
     );
 
 Map<String, dynamic> _$TestDataToJson(TestData instance) => <String, dynamic>{
@@ -37,10 +41,12 @@ Map<String, dynamic> _$TestDataToJson(TestData instance) => <String, dynamic>{
       'testTotalCountReading': instance.testTotalCountReading,
       'testTotalCountRecognition': instance.testTotalCountRecognition,
       'testTotalCountListening': instance.testTotalCountListening,
+      'testTotalCountSpeaking': instance.testTotalCountSpeaking,
       'testTotalWinRateWriting': instance.testTotalWinRateWriting,
       'testTotalWinRateReading': instance.testTotalWinRateReading,
       'testTotalWinRateRecognition': instance.testTotalWinRateRecognition,
       'testTotalWinRateListening': instance.testTotalWinRateListening,
+      'testTotalWinRateSpeaking': instance.testTotalWinRateSpeaking,
       'selectionTests': instance.selectionTests,
       'blitzTests': instance.blitzTests,
       'remembranceTests': instance.remembranceTests,
@@ -48,4 +54,5 @@ Map<String, dynamic> _$TestDataToJson(TestData instance) => <String, dynamic>{
       'lessPctTests': instance.lessPctTests,
       'categoryTests': instance.categoryTests,
       'folderTests': instance.folderTests,
+      'dailyTests': instance.dailyTests,
     };

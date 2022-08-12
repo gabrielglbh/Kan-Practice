@@ -4,6 +4,7 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
+import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/ui/pages/study_modes/widgets/writing_buttons_animation.dart';
 import 'package:kanpractice/ui/widgets/kp_study_mode_app_bar.dart';
 import 'package:kanpractice/ui/widgets/canvas/kp_custom_canvas.dart';
@@ -192,11 +193,23 @@ class _WritingStudyState extends State<WritingStudy> {
   @override
   Widget build(BuildContext context) {
     return KPScaffold(
-      onWillPop: () async => StudyModeUpdateHandler.handle(context, widget.args,
-          onPop: true, lastIndex: _macro),
+      onWillPop: () async {
+        if (widget.args.testMode == Tests.daily) {
+          GeneralUtils.getSnackBar(context, "daily_test_cannot_go_back".tr());
+          return false;
+        }
+
+        return StudyModeUpdateHandler.handle(
+          context,
+          widget.args,
+          onPop: true,
+          lastIndex: _macro,
+        );
+      },
       setGestureDetector: false,
       appBarTitle: StudyModeAppBar(
-          title: widget.args.display, studyMode: widget.args.mode.mode),
+          title: widget.args.studyModeHeaderDisplayName,
+          studyMode: widget.args.mode.mode),
       centerTitle: true,
       appBarActions: [
         Visibility(

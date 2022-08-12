@@ -21,6 +21,7 @@ import 'package:kanpractice/ui/pages/study_modes/reading.dart';
 import 'package:kanpractice/ui/pages/study_modes/recognition.dart';
 import 'package:kanpractice/ui/pages/settings/settings.dart';
 import 'package:kanpractice/ui/pages/statistics/statistics.dart';
+import 'package:kanpractice/ui/pages/study_modes/speaking.dart';
 import 'package:kanpractice/ui/pages/test_history/bloc/test_bloc.dart';
 import 'package:kanpractice/ui/pages/test_history/test_history.dart';
 import 'package:kanpractice/ui/pages/test_result/arguments.dart';
@@ -63,6 +64,9 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case KanPracticePages.listeningStudyPage:
       ModeArguments args = settings.arguments as ModeArguments;
       return CupertinoPageRoute(builder: (_) => ListeningStudy(args: args));
+    case KanPracticePages.speakingStudyPage:
+      ModeArguments args = settings.arguments as ModeArguments;
+      return CupertinoPageRoute(builder: (_) => SpeakingStudy(args: args));
     case KanPracticePages.testResultPage:
       TestResultArguments args = settings.arguments as TestResultArguments;
       return CupertinoPageRoute(builder: (_) => TestResult(args: args));

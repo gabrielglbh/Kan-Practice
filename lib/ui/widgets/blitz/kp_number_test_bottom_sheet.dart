@@ -147,17 +147,11 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
                         isTest: true,
                         mode: StudyModes.listening,
                         testMode: Tests.numbers,
-                        display: "test_mode_number".tr(),
-                        listsNames: listsNames,
+                        studyModeHeaderDisplayName: "test_mode_number".tr(),
+                        testHistoryDisplasyName: listsNames,
                         isNumberTest: true));
               }
             }),
-        Padding(
-          padding: const EdgeInsets.only(
-              top: Margins.margin16, bottom: Margins.margin16),
-          child: Text("study_modes_good_luck".tr(),
-              style: Theme.of(context).textTheme.headline5),
-        )
       ],
     );
   }

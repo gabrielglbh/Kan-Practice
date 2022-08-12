@@ -29,7 +29,7 @@ class CustomDatabase {
 
     _database = await openDatabase(
       path,
-      version: 7,
+      version: 8,
       singleInstance: true,
       onConfigure: (db) async {
         await db.execute('PRAGMA foreign_keys = ON');
@@ -47,12 +47,14 @@ class CustomDatabase {
             "${KanjiTableFields.winRateReadingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${KanjiTableFields.winRateRecognitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${KanjiTableFields.winRateListeningField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${KanjiTableFields.winRateSpeakingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${KanjiTableFields.dateAddedField} INTEGER NOT NULL DEFAULT 0, "
             "${KanjiTableFields.dateLastShown} INTEGER NOT NULL DEFAULT 0, "
             "${KanjiTableFields.dateLastShownWriting} INTEGER NOT NULL DEFAULT 0, "
             "${KanjiTableFields.dateLastShownReading} INTEGER NOT NULL DEFAULT 0, "
             "${KanjiTableFields.dateLastShownRecognition} INTEGER NOT NULL DEFAULT 0, "
             "${KanjiTableFields.dateLastShownListening} INTEGER NOT NULL DEFAULT 0, "
+            "${KanjiTableFields.dateLastShownSpeaking} INTEGER NOT NULL DEFAULT 0, "
             "${KanjiTableFields.categoryField} INTEGER NOT NULL DEFAULT 0, "
             "PRIMARY KEY (${KanjiTableFields.kanjiField}, ${KanjiTableFields.meaningField}, ${KanjiTableFields.pronunciationField}), "
             "FOREIGN KEY (${KanjiTableFields.listNameField}) "
@@ -65,6 +67,7 @@ class CustomDatabase {
             "${KanListTableFields.totalWinRateReadingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${KanListTableFields.totalWinRateRecognitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${KanListTableFields.totalWinRateListeningField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${KanListTableFields.totalWinRateSpeakingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${KanListTableFields.lastUpdatedField} INTEGER NOT NULL DEFAULT 0)");
 
         await db.execute("CREATE TABLE ${TestTableFields.testTable}("
@@ -106,6 +109,7 @@ class CustomDatabase {
     if (oldVersion <= 4) c.version4to5(db);
     if (oldVersion <= 5) c.version5to6(db);
     if (oldVersion <= 6) c.version6to7(db);
+    if (oldVersion <= 7) c.version7to8(db);
   }
 
   /// Closes up the current database.

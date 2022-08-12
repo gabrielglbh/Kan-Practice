@@ -7,8 +7,8 @@ class ModeArguments {
   final bool isTest;
   final StudyModes mode;
   final Tests testMode;
-  final String listsNames;
-  final String display;
+  final String testHistoryDisplasyName;
+  final String studyModeHeaderDisplayName;
 
   /// Only used when in listening mode and performing a Number Test.
   /// Defaults to false.
@@ -19,7 +19,7 @@ class ModeArguments {
       required this.isTest,
       required this.mode,
       required this.testMode,
-      required this.display,
-      this.listsNames = "",
+      required this.studyModeHeaderDisplayName,
+      this.testHistoryDisplasyName = "",
       this.isNumberTest = false});
 }

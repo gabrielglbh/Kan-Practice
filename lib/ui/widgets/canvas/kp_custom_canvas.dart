@@ -145,6 +145,7 @@ class _KPCustomCanvasState extends State<KPCustomCanvas> {
 
   _onPanStart(DragStartDetails details) {
     if (widget.allowEdit) {
+      FocusManager.instance.primaryFocus?.unfocus();
       final box = context.findRenderObject() as RenderBox;
       final point = box.globalToLocal(details.globalPosition);
       setState(() => widget.line.add(point));

@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:kanpractice/core/firebase/queries/back_ups.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
@@ -100,6 +101,15 @@ class GeneralUtils {
 
   /// Transforms the current time to milliseconds
   static int getCurrentMilliseconds() => DateTime.now().millisecondsSinceEpoch;
+
+  static Future<String> parseTodayDate(BuildContext context) async {
+    final locale =
+        EasyLocalization.of(context)?.currentLocale?.languageCode ?? "en";
+    await initializeDateFormatting(locale, null);
+    final today = DateTime.now();
+    final formatter = DateFormat.yMd();
+    return formatter.format(today);
+  }
 
   static String getFixedDouble(double d) => d.toStringAsFixed(2);
 

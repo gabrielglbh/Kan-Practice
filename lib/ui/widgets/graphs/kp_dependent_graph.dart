@@ -5,7 +5,7 @@ import 'package:kanpractice/ui/widgets/graphs/kp_radial_graph.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_win_rate_bar_chart.dart';
 
 class KPDependentGraph extends StatelessWidget {
-  final double writing, reading, recognition, listening;
+  final double writing, reading, recognition, listening, speaking;
   final VisualizationMode mode;
   const KPDependentGraph(
       {Key? key,
@@ -13,6 +13,7 @@ class KPDependentGraph extends StatelessWidget {
       required this.reading,
       required this.recognition,
       required this.listening,
+      required this.speaking,
       this.mode = VisualizationMode.radialChart})
       : super(key: key);
 
@@ -25,6 +26,7 @@ class KPDependentGraph extends StatelessWidget {
             rateReading: reading,
             rateRecognition: recognition,
             rateListening: listening,
+            rateSpeaking: speaking,
           );
   }
 
@@ -56,6 +58,11 @@ class KPDependentGraph extends StatelessWidget {
                     x: StudyModes.listening.mode,
                     y: listening,
                     color: StudyModes.listening.color);
+              case StudyModes.speaking:
+                return BarData(
+                    x: StudyModes.speaking.mode,
+                    y: speaking,
+                    color: StudyModes.speaking.color);
             }
           })),
         )

@@ -3,7 +3,6 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
-import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
@@ -46,15 +45,14 @@ class KPTestStudyMode extends StatelessWidget {
       required this.testName})
       : super(key: key);
 
-  Future<List<Kanji>> _loadBlitzTest(StudyModes mode) async {
+  Future<List<Kanji>> _loadTest(StudyModes mode) async {
     String? listName = practiceList;
 
     /// Get all the list of all kanji and perform a 20 kanji random sublist
     if (listName == null) {
-      /// If the type is Folder, it means that we are on an specific folder kanjilist list
-      /// and we want to perform a fast test on all kanji available within
-      /// the KanList of the folder
-      if (type == Tests.folder) {
+      /// If the type is Folder or Blitz with a specified folder, gather all
+      /// words within the folder
+      if (type == Tests.folder || (type == Tests.blitz && folder != null)) {
         if (folder == null) return [];
 
         List<Kanji> list =
@@ -62,6 +60,17 @@ class KPTestStudyMode extends StatelessWidget {
         list.shuffle();
         return list;
       }
+      if ((type == Tests.time || type == Tests.less) && folder != null) {
+        List<Kanji> list =
+            await FolderQueries.instance.getAllKanjiOnListsOnFolder(
+          [folder!],
+          mode: mode,
+          type: type,
+        );
+        return list;
+      }
+
+      /// Else, just get all Kanji
       List<Kanji> list =
           await KanjiQueries.instance.getAllKanji(mode: mode, type: type);
 
@@ -116,33 +125,22 @@ class KPTestStudyMode extends StatelessWidget {
                   )),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
+              padding: const EdgeInsets.only(
+                right: Margins.margin16,
+                left: Margins.margin16,
+                bottom: Margins.margin8,
+              ),
               child: GridView.builder(
                 itemCount: StudyModes.values.length,
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, childAspectRatio: 1.9),
+                    crossAxisCount: 3, childAspectRatio: 1.2),
                 itemBuilder: (context, index) {
-                  switch (StudyModes.values[index]) {
-                    case StudyModes.writing:
-                      return _modeBasedButtons(context, StudyModes.writing);
-                    case StudyModes.reading:
-                      return _modeBasedButtons(context, StudyModes.reading);
-                    case StudyModes.recognition:
-                      return _modeBasedButtons(context, StudyModes.recognition);
-                    case StudyModes.listening:
-                      return _modeBasedButtons(context, StudyModes.listening);
-                  }
+                  return _modeBasedButtons(context, StudyModes.values[index]);
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: Margins.margin16, bottom: Margins.margin16),
-              child: Text("study_modes_good_luck".tr(),
-                  style: Theme.of(context).textTheme.headline5),
-            )
           ],
         ));
   }
@@ -163,7 +161,7 @@ class KPTestStudyMode extends StatelessWidget {
               await _decideOnMode(navigator, l, mode);
             }
           } else {
-            List<Kanji> l = await _loadBlitzTest(mode);
+            List<Kanji> l = await _loadTest(mode);
             if (l.isEmpty) {
               navigator.pop();
               // ignore: use_build_context_synchronously
@@ -189,47 +187,21 @@ class KPTestStudyMode extends StatelessWidget {
     navigator.pop(); // Dismiss this bottom sheet
     navigator.pop(); // Dismiss the tests bottom sheet
 
-    switch (mode) {
-      case StudyModes.writing:
-        await navigator.pushNamed(KanPracticePages.writingStudyPage,
-            arguments: ModeArguments(
-                studyList: sortedList,
-                isTest: true,
-                testMode: type,
-                display: displayTestName,
-                mode: mode,
-                listsNames: testName));
-        break;
-      case StudyModes.reading:
-        await navigator.pushNamed(KanPracticePages.readingStudyPage,
-            arguments: ModeArguments(
-                studyList: sortedList,
-                isTest: true,
-                testMode: type,
-                display: displayTestName,
-                mode: mode,
-                listsNames: testName));
-        break;
-      case StudyModes.recognition:
-        await navigator.pushNamed(KanPracticePages.recognitionStudyPage,
-            arguments: ModeArguments(
-                studyList: sortedList,
-                isTest: true,
-                testMode: type,
-                display: displayTestName,
-                mode: mode,
-                listsNames: testName));
-        break;
-      case StudyModes.listening:
-        await navigator.pushNamed(KanPracticePages.listeningStudyPage,
-            arguments: ModeArguments(
-                studyList: sortedList,
-                isTest: true,
-                testMode: type,
-                display: displayTestName,
-                mode: mode,
-                listsNames: testName));
-        break;
-    }
+    /// Save to SharedPreferences the current folder, if any, to manage
+    /// proper navigation when finishing the test.
+    /// See addPostFrameCallback() in init() in [HomePage]
+    StorageManager.saveData(StorageManager.folderWhenOnTest, folder ?? "");
+
+    await navigator.pushNamed(
+      mode.page,
+      arguments: ModeArguments(
+        studyList: sortedList,
+        isTest: true,
+        testMode: type,
+        studyModeHeaderDisplayName: displayTestName,
+        mode: mode,
+        testHistoryDisplasyName: testName,
+      ),
+    );
   }
 }

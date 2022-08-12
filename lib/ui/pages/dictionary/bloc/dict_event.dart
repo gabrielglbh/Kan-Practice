@@ -16,13 +16,4 @@ class DictEventLoading extends DictEvent {
   List<Object> get props => [];
 }
 
-class DictEventAddToHistory extends DictEvent {
-  final String word;
-
-  const DictEventAddToHistory({required this.word});
-
-  @override
-  List<Object> get props => [word];
-}
-
 class DictEventIdle extends DictEvent {}

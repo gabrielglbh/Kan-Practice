@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:kanpractice/core/database/queries/word_history_queries.dart';
 import 'package:kanpractice/core/jisho/jisho_api.dart';
 import 'package:kanpractice/core/jisho/models/jisho_data.dart';
 import 'package:unofficial_jisho_api/api.dart' as jisho;
@@ -18,14 +19,23 @@ class JishoBloc extends Bloc<JishoEvent, JishoState> {
             await JishoAPI.instance.searchPhrase(event.kanji);
         List<KanjiExample> example =
             await JishoAPI.instance.searchForExample(event.kanji);
+
         KanjiData data = KanjiData(
             resultData: resultData,
             resultPhrase: resultPhrase,
             example: example);
-        emit(JishoStateLoaded(data: data));
+        if (data.resultData == null && data.example.isEmpty) {
+          emit(JishoStateFailure());
+        } else {
+          emit(JishoStateLoaded(data: data));
+        }
       } on Exception {
         emit(JishoStateFailure());
       }
+    });
+
+    on<JishoEventAddToHistory>((event, emit) async {
+      await WordHistoryQueries.instance.createWord(event.word);
     });
   }
 }

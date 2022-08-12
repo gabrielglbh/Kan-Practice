@@ -12,10 +12,10 @@ class CustomSizes {
   static const double defaultSizeKanjiItemOnResultTest = 60;
   static const double actionButtonsKanjiDetail = 55;
   static const double appBarHeight = 80;
-  static const double defaultSizeWinRateChart = 80;
+  static const double defaultSizeWinRateChart = 90;
   static const double listStudyHeight = 85;
   static const double defaultSizeDragContainerWidth = 90;
-  static const double defaultSizeWinRateBarChart = 90;
+  static const double defaultSizeWinRateBarChart = 110;
   static const double customButtonWidth = 110;
   static const double defaultJishoGIF = 124;
   static const double appIcon = 150;

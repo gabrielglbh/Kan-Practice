@@ -39,6 +39,51 @@ class KanjiQueries {
     }
   }
 
+  Future<List<Kanji>> getDailyKanjis(StudyModes mode) async {
+    if (_database != null) {
+      try {
+        String query = "";
+        switch (mode) {
+          case StudyModes.writing:
+            query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                "ORDER BY ${KanjiTableFields.dateLastShownWriting} ASC, "
+                "${KanjiTableFields.winRateWritingField} ASC";
+            break;
+          case StudyModes.reading:
+            query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                "ORDER BY ${KanjiTableFields.dateLastShownReading} ASC, "
+                "${KanjiTableFields.winRateReadingField} ASC";
+            break;
+          case StudyModes.recognition:
+            query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                "ORDER BY ${KanjiTableFields.dateLastShownRecognition} ASC, "
+                "${KanjiTableFields.winRateRecognitionField} ASC";
+            break;
+          case StudyModes.listening:
+            query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                "ORDER BY ${KanjiTableFields.dateLastShownListening} ASC, "
+                "${KanjiTableFields.winRateListeningField} ASC";
+            break;
+          case StudyModes.speaking:
+            query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                "ORDER BY ${KanjiTableFields.dateLastShownSpeaking} ASC, "
+                "${KanjiTableFields.winRateSpeakingField} ASC";
+            break;
+        }
+        final res = await _database?.rawQuery(query);
+        if (res != null) {
+          return List.generate(res.length, (i) => Kanji.fromJson(res[i]));
+        } else {
+          return [];
+        }
+      } catch (e) {
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
+
   /// Query to get all kanji available in the current db. If anything goes wrong,
   /// an empty list will be returned.
   ///
@@ -71,6 +116,10 @@ class KanjiQueries {
                 query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
                     "ORDER BY ${KanjiTableFields.dateLastShownListening} ASC";
                 break;
+              case StudyModes.speaking:
+                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                    "ORDER BY ${KanjiTableFields.dateLastShownSpeaking} ASC";
+                break;
             }
           } else {
             return [];
@@ -93,6 +142,10 @@ class KanjiQueries {
               case StudyModes.listening:
                 query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
                     "ORDER BY ${KanjiTableFields.winRateListeningField} ASC";
+                break;
+              case StudyModes.speaking:
+                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
+                    "ORDER BY ${KanjiTableFields.winRateSpeakingField} ASC";
                 break;
             }
           } else {
@@ -267,6 +320,12 @@ class KanjiQueries {
                 whereArgs: [listName],
                 orderBy: "${KanjiTableFields.winRateListeningField} ASC");
             break;
+          case StudyModes.speaking:
+            res = await _database?.query(KanjiTableFields.kanjiTable,
+                where: "${KanjiTableFields.listNameField}=?",
+                whereArgs: [listName],
+                orderBy: "${KanjiTableFields.winRateSpeakingField} ASC");
+            break;
         }
         if (res != null) {
           return List.generate(res.length, (i) => Kanji.fromJson(res![i]));
@@ -319,6 +378,7 @@ class KanjiQueries {
           double reading = 0;
           double recognition = 0;
           double listening = 0;
+          double speaking = 0;
           for (var kanji in l) {
             writing += (kanji.winRateWriting == DatabaseConstants.emptyWinRate
                 ? 0
@@ -334,6 +394,9 @@ class KanjiQueries {
                 (kanji.winRateListening == DatabaseConstants.emptyWinRate
                     ? 0
                     : kanji.winRateListening);
+            speaking += (kanji.winRateSpeaking == DatabaseConstants.emptyWinRate
+                ? 0
+                : kanji.winRateSpeaking);
           }
           return Kanji(
               meaning: '',
@@ -343,7 +406,8 @@ class KanjiQueries {
               winRateWriting: writing == 0 ? 0 : writing / total,
               winRateReading: reading == 0 ? 0 : reading / total,
               winRateRecognition: recognition == 0 ? 0 : recognition / total,
-              winRateListening: listening == 0 ? 0 : listening / total);
+              winRateListening: listening == 0 ? 0 : listening / total,
+              winRateSpeaking: speaking == 0 ? 0 : speaking / total);
         } else {
           return Kanji.empty;
         }

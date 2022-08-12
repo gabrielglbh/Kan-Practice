@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kana_kit/kana_kit.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
@@ -19,19 +18,19 @@ import 'package:kanpractice/ui/widgets/kp_tts_icon_button.dart';
 import 'package:kanpractice/ui/widgets/kp_validation_buttons.dart';
 import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 
-class ReadingStudy extends StatefulWidget {
+class SpeakingStudy extends StatefulWidget {
   final ModeArguments args;
-  const ReadingStudy({Key? key, required this.args}) : super(key: key);
+  const SpeakingStudy({Key? key, required this.args}) : super(key: key);
 
   @override
-  State<ReadingStudy> createState() => _ReadingStudyState();
+  State<SpeakingStudy> createState() => _SpeakingStudyState();
 }
 
-class _ReadingStudyState extends State<ReadingStudy> {
+class _SpeakingStudyState extends State<SpeakingStudy> {
   /// Current word index
   int _macro = 0;
 
-  bool _showPronunciation = false;
+  bool _showInfo = false;
   bool _hasFinished = false;
 
   /// Array that saves all scores without any previous context for the test result
@@ -40,15 +39,11 @@ class _ReadingStudyState extends State<ReadingStudy> {
   /// Widget auxiliary variable
   List<Kanji> _studyList = [];
 
-  /// For translating the hiragana
-  KanaKit? _kanaKit;
-
   final String _none = "wildcard".tr();
 
   @override
   void initState() {
     _studyList = widget.args.studyList;
-    _kanaKit = const KanaKit();
     super.initState();
   }
 
@@ -65,7 +60,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
         if (_macro < _studyList.length - 1) {
           setState(() {
             _macro++;
-            _showPronunciation = false;
+            _showInfo = false;
           });
         }
 
@@ -101,7 +96,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
         widget.args.studyList[_macro].listName,
         widget.args.studyList[_macro].kanji, {
       KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds(),
-      KanjiTableFields.dateLastShownReading:
+      KanjiTableFields.dateLastShownSpeaking:
           GeneralUtils.getCurrentMilliseconds()
     });
 
@@ -119,29 +114,19 @@ class _ReadingStudyState extends State<ReadingStudy> {
 
   String _getProperPronunciation() {
     /// Based on the states, update the pronunciation
-    if (_showPronunciation) {
+    if (_showInfo) {
       return _studyList[_macro].pronunciation;
     } else {
+      return "";
+    }
+  }
+
+  String _getProperKanji() {
+    /// Based on the states, update the kanji
+    if (_showInfo) {
+      return _studyList[_macro].kanji;
+    } else {
       return _none;
-    }
-  }
-
-  String _getProperAlphabet() {
-    /// Based on the states, update the romanji version
-    String r = "[${(_kanaKit?.toRomaji(_getProperPronunciation()) ?? "")}]";
-    if (_showPronunciation) {
-      return r;
-    } else {
-      return "";
-    }
-  }
-
-  String _getProperMeaning() {
-    /// Based on the states, update the meaning
-    if (_showPronunciation) {
-      return _studyList[_macro].meaning;
-    } else {
-      return "";
     }
   }
 
@@ -167,7 +152,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
       centerTitle: true,
       appBarActions: [
         Visibility(
-          visible: _showPronunciation,
+          visible: _showInfo,
           child:
               TTSIconButton(kanji: widget.args.studyList[_macro].pronunciation),
         )
@@ -186,13 +171,13 @@ class _ReadingStudyState extends State<ReadingStudy> {
             right: 0,
             left: 0,
             child: KPValidationButtons(
-              trigger: _showPronunciation,
+              trigger: _showInfo,
               submitLabel: "done_button_label".tr(),
               wrongAction: (score) async => await _updateUIOnSubmit(score),
               midWrongAction: (score) async => await _updateUIOnSubmit(score),
               midPerfectAction: (score) async => await _updateUIOnSubmit(score),
               perfectAction: (score) async => await _updateUIOnSubmit(score),
-              onSubmit: () => setState(() => _showPronunciation = true),
+              onSubmit: () => setState(() => _showInfo = true),
             ),
           )
         ],
@@ -203,20 +188,16 @@ class _ReadingStudyState extends State<ReadingStudy> {
   List<Widget> _header() {
     return [
       KPLearningHeaderContainer(
-          color: CustomColors.secondaryColor,
-          height: CustomSizes.defaultSizeLearningExtContainer,
-          text: _getProperAlphabet()),
-      KPLearningHeaderContainer(
-          height: CustomSizes.defaultResultKanjiListOnTest,
+          height: CustomSizes.defaultSizeLearningExtContainer + Margins.margin8,
           fontWeight: FontWeight.bold,
           text: _getProperPronunciation()),
       KPLearningHeaderContainer(
           fontSize: FontSizes.fontSize64,
           height: CustomSizes.listStudyHeight,
-          text: _studyList[_macro].kanji),
+          text: _getProperKanji()),
       KPLearningHeaderContainer(
           height: CustomSizes.defaultSizeLearningExtContainer,
-          text: _getProperMeaning(),
+          text: _studyList[_macro].meaning,
           top: Margins.margin8)
     ];
   }

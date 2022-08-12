@@ -149,6 +149,7 @@ class ListQueries {
             "L.${KanListTableFields.totalWinRateReadingField}, "
             "L.${KanListTableFields.totalWinRateRecognitionField}, "
             "L.${KanListTableFields.totalWinRateListeningField}, "
+            "L.${KanListTableFields.totalWinRateSpeakingField}, "
             "L.${KanListTableFields.lastUpdatedField} "
             "FROM ${KanListTableFields.listsTable} L JOIN ${KanjiTableFields.kanjiTable} K "
             "ON K.${KanjiTableFields.listNameField}=L.${KanListTableFields.nameField} "

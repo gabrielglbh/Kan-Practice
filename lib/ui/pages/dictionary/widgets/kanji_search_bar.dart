@@ -10,6 +10,7 @@ class KanjiSearchBar extends StatelessWidget {
 
   /// Controller for the text field
   final TextEditingController? controller;
+  final bool enabled;
   final Function() onClear;
   final Function() onRemoveLast;
   const KanjiSearchBar({
@@ -18,6 +19,7 @@ class KanjiSearchBar extends StatelessWidget {
     required this.controller,
     required this.onClear,
     required this.onRemoveLast,
+    this.enabled = false,
     this.top = Margins.margin8,
     this.bottom = 0,
     this.left = Margins.margin8,
@@ -27,13 +29,15 @@ class KanjiSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding:
-            EdgeInsets.only(left: left, right: right, top: top, bottom: bottom),
-        child: Column(children: <Widget>[
-          Padding(
-              padding: const EdgeInsets.only(bottom: Margins.margin8),
-              child: _searchBar())
-        ]));
+      padding:
+          EdgeInsets.only(left: left, right: right, top: top, bottom: bottom),
+      child: Column(children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(bottom: Margins.margin8),
+          child: _searchBar(),
+        )
+      ]),
+    );
   }
 
   Stack _searchBar() {
@@ -42,7 +46,7 @@ class KanjiSearchBar extends StatelessWidget {
         controller: controller,
         textInputAction: TextInputAction.search,
         textCapitalization: TextCapitalization.sentences,
-        enabled: false,
+        enabled: enabled,
         decoration: InputDecoration(
             contentPadding: const EdgeInsets.only(
                 top: Margins.margin24,

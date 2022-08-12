@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-enum StudyModes { writing, reading, recognition, listening }
+enum StudyModes { writing, reading, recognition, listening, speaking }
 
 extension StudyModesExt on StudyModes {
   String get mode {
@@ -14,6 +14,8 @@ extension StudyModesExt on StudyModes {
         return "study_modes_recognition".tr();
       case StudyModes.listening:
         return "study_modes_listening".tr();
+      case StudyModes.speaking:
+        return "study_modes_speaking".tr();
     }
   }
 
@@ -27,6 +29,8 @@ extension StudyModesExt on StudyModes {
         return "study_modes_recognition_ext".tr();
       case StudyModes.listening:
         return "study_modes_listening_ext".tr();
+      case StudyModes.speaking:
+        return "study_modes_speaking_ext".tr();
     }
   }
 
@@ -40,6 +44,8 @@ extension StudyModesExt on StudyModes {
         return Colors.orange.shade300;
       case StudyModes.listening:
         return Colors.green.shade300;
+      case StudyModes.speaking:
+        return Colors.brown.shade300;
     }
   }
 }

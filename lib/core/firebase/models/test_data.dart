@@ -10,10 +10,12 @@ class TestData {
   final int testTotalCountReading;
   final int testTotalCountRecognition;
   final int testTotalCountListening;
+  final int testTotalCountSpeaking;
   final double testTotalWinRateWriting;
   final double testTotalWinRateReading;
   final double testTotalWinRateRecognition;
   final double testTotalWinRateListening;
+  final double testTotalWinRateSpeaking;
   final int selectionTests;
   final int blitzTests;
   final int remembranceTests;
@@ -30,10 +32,12 @@ class TestData {
     required this.testTotalCountReading,
     required this.testTotalCountRecognition,
     required this.testTotalCountListening,
+    required this.testTotalCountSpeaking,
     required this.testTotalWinRateWriting,
     required this.testTotalWinRateReading,
     required this.testTotalWinRateRecognition,
     required this.testTotalWinRateListening,
+    required this.testTotalWinRateSpeaking,
     required this.selectionTests,
     required this.blitzTests,
     required this.remembranceTests,
@@ -52,10 +56,12 @@ class TestData {
     testTotalCountReading: 0,
     testTotalCountRecognition: 0,
     testTotalCountListening: 0,
+    testTotalCountSpeaking: 0,
     testTotalWinRateWriting: 0,
     testTotalWinRateReading: 0,
     testTotalWinRateRecognition: 0,
     testTotalWinRateListening: 0,
+    testTotalWinRateSpeaking: 0,
     selectionTests: 0,
     blitzTests: 0,
     remembranceTests: 0,

@@ -11,10 +11,12 @@
   "study_modes_reading": "Reading",
   "study_modes_recognition": "Recognition",
   "study_modes_listening": "Listening",
+  "study_modes_speaking": "Speaking",
   "study_modes_writing_ext": "書く",
   "study_modes_reading_ext": "読む",
   "study_modes_recognition_ext": "認識",
   "study_modes_listening_ext": "聴聞",
+  "study_modes_speaking_ext": "発声",
   "study_mode_update_handler_poppedTest_content": "The test will result invalid and no result will be provided.",
   "study_mode_update_handler_finishedTest_content": "Tap on 'Finish' to see the results.",
   "study_mode_update_handler_poppedPractice_content": "Score up to this word will be saved. Current word will be count as 50%.",
@@ -361,4 +363,5 @@
   "daily_test_start_button_tr": "始める",
   "daily_test_cannot_go_back": "You are performing a daily test. Finish the test, you can do it!",
   "settings_notifications_label": "Enable/Disable Notifications"
+
 }

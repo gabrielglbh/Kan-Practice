@@ -15,12 +15,14 @@ class Kanji {
   final double winRateReading;
   final double winRateRecognition;
   final double winRateListening;
+  final double winRateSpeaking;
   final int dateAdded;
   final int dateLastShown;
   final int dateLastShownWriting;
   final int dateLastShownReading;
   final int dateLastShownRecognition;
   final int dateLastShownListening;
+  final int dateLastShownSpeaking;
   final int category;
 
   const Kanji(
@@ -32,12 +34,14 @@ class Kanji {
       this.winRateRecognition = DatabaseConstants.emptyWinRate,
       this.winRateWriting = DatabaseConstants.emptyWinRate,
       this.winRateListening = DatabaseConstants.emptyWinRate,
+      this.winRateSpeaking = DatabaseConstants.emptyWinRate,
       this.dateAdded = 0,
       this.dateLastShown = 0,
       this.dateLastShownWriting = 0,
       this.dateLastShownReading = 0,
       this.dateLastShownRecognition = 0,
       this.dateLastShownListening = 0,
+      this.dateLastShownSpeaking = 0,
       this.category = 0});
 
   /// Empty [Kanji]
@@ -56,10 +60,12 @@ class Kanji {
       winRateReading: winRateReading,
       winRateRecognition: winRateRecognition,
       winRateListening: winRateListening,
+      winRateSpeaking: winRateSpeaking,
       dateLastShownWriting: dateLastShownWriting,
       dateLastShownReading: dateLastShownReading,
       dateLastShownRecognition: dateLastShownRecognition,
       dateLastShownListening: dateLastShownListening,
+      dateLastShownSpeaking: dateLastShownSpeaking,
       dateAdded: dateAdded ?? this.dateAdded,
       dateLastShown: dateLastShown ?? this.dateLastShown,
       category: category);
@@ -73,10 +79,12 @@ class Kanji {
       winRateReading: DatabaseConstants.emptyWinRate,
       winRateRecognition: DatabaseConstants.emptyWinRate,
       winRateListening: DatabaseConstants.emptyWinRate,
+      winRateSpeaking: DatabaseConstants.emptyWinRate,
       dateLastShownWriting: GeneralUtils.getCurrentMilliseconds(),
       dateLastShownReading: GeneralUtils.getCurrentMilliseconds(),
       dateLastShownRecognition: GeneralUtils.getCurrentMilliseconds(),
       dateLastShownListening: GeneralUtils.getCurrentMilliseconds(),
+      dateLastShownSpeaking: GeneralUtils.getCurrentMilliseconds(),
       dateAdded: dateAdded,
       dateLastShown: GeneralUtils.getCurrentMilliseconds(),
       category: category);

@@ -58,6 +58,7 @@ class _KPKanListCategorySelectionBottomSheetState
 
   @override
   Widget build(BuildContext context) {
+    final folder = widget.folder != null ? ": ${widget.folder}" : "";
     return BottomSheet(
       enableDrag: false,
       onClosing: () {},
@@ -70,7 +71,8 @@ class _KPKanListCategorySelectionBottomSheetState
               Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: Margins.margin8, horizontal: Margins.margin32),
-                child: Text("categories_test_bottom_sheet_title".tr(),
+                child: Text(
+                    "${"categories_test_bottom_sheet_title".tr()}$folder",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6),
               ),

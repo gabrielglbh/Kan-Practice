@@ -147,7 +147,8 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
         );
       },
       appBarTitle: StudyModeAppBar(
-          title: widget.args.display, studyMode: widget.args.mode.mode),
+          title: widget.args.studyModeHeaderDisplayName,
+          studyMode: widget.args.mode.mode),
       centerTitle: true,
       appBarActions: [
         Visibility(

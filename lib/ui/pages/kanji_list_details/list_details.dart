@@ -200,7 +200,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
                 isTest: false,
                 mode: state.mode,
                 testMode: Tests.blitz,
-                display: widget.list.name))
+                studyModeHeaderDisplayName: widget.list.name))
         .then(
           (value) => _addLoadingEvent(reset: true),
         );

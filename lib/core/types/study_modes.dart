@@ -46,7 +46,7 @@ extension StudyModesExt on StudyModes {
       case StudyModes.listening:
         return Colors.green.shade300;
       case StudyModes.speaking:
-        return Colors.brown.shade300;
+        return Colors.red.shade200;
     }
   }
 

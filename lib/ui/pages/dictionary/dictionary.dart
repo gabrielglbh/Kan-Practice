@@ -198,7 +198,6 @@ class _DictionaryPageState extends State<DictionaryPage> {
           /// If the user is searching for words, redirect them to Jisho
           /// If the user is adding words, pop and send the predicted word back
           if (widget.args.searchInJisho) {
-            context.read<DictBloc>().add(DictEventAddToHistory(word: text));
             Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
                 arguments: JishoArguments(kanji: text, fromDictionary: true));
           } else {

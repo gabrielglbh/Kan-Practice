@@ -30,7 +30,14 @@ class JishoPage extends StatelessWidget {
               child: BlocProvider<JishoBloc>(
                 create: (_) => JishoBloc()
                   ..add(JishoLoadingEvent(kanji: args.kanji ?? "")),
-                child: BlocBuilder<JishoBloc, JishoState>(
+                child: BlocConsumer<JishoBloc, JishoState>(
+                  listener: (context, state) {
+                    if (state is JishoStateLoaded && args.kanji != null) {
+                      context
+                          .read<JishoBloc>()
+                          .add(JishoEventAddToHistory(word: args.kanji!));
+                    }
+                  },
                   builder: (context, state) {
                     if (state is JishoStateLoading) {
                       return const KPProgressIndicator();
@@ -51,9 +58,6 @@ class JishoPage extends StatelessWidget {
   }
 
   Widget _content(BuildContext context, JishoStateLoaded state) {
-    if (state.data.resultData == null && state.data.example.isEmpty) {
-      return _nothingFound();
-    }
     return Column(
       children: [
         Expanded(

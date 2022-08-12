@@ -15,3 +15,12 @@ class JishoLoadingEvent extends JishoEvent {
   @override
   List<Object> get props => [kanji];
 }
+
+class JishoEventAddToHistory extends JishoEvent {
+  final String word;
+
+  const JishoEventAddToHistory({required this.word});
+
+  @override
+  List<Object> get props => [word];
+}

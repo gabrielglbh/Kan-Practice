@@ -68,7 +68,6 @@ class TutorialCoach {
     /// Added a few delay in order for the coach to load up properly
     await Future.delayed(const Duration(seconds: 1), () {
       TutorialCoachMark(
-        context,
         targets: _targets,
         colorShadow: CustomColors.secondaryDarkerColor,
         focusAnimationDuration: const Duration(milliseconds: 200),
@@ -88,7 +87,7 @@ class TutorialCoach {
           }
           onEnd();
         },
-      ).show();
+      ).show(context: context);
     });
   }
 }

@@ -92,7 +92,7 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
         final code = await FolderQueries.instance
             .moveKanListToFolder(event.folder, event.name);
         if (code != 0) throw Exception();
-        emit(const FolderStateLoaded(lists: []));
+        emit(FolderStateAddedList());
       } catch (e) {
         emit(FolderStateFailure());
       }

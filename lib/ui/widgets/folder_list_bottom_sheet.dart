@@ -13,15 +13,15 @@ class FolderListBottomSheet extends StatefulWidget {
 
   /// Creates and calls the [BottomSheet] with the content for a regular test
   static Future<String?> show(BuildContext context, String? name) async {
-    String? name;
+    String? resultName;
     await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (context) => FolderListBottomSheet(name: name)).then((value) {
-      name = value;
+      resultName = value;
     });
-    return name;
+    return resultName;
   }
 
   @override
@@ -52,7 +52,12 @@ class _FolderListBottomSheetState extends State<FolderListBottomSheet> {
               ),
               BlocProvider<FolderBloc>(
                 create: (_) => FolderBloc()..add(FolderForTestEventLoading()),
-                child: BlocBuilder<FolderBloc, FolderState>(
+                child: BlocConsumer<FolderBloc, FolderState>(
+                  listener: (context, state) {
+                    if (state is FolderStateAddedList) {
+                      Navigator.of(context).pop();
+                    }
+                  },
                   builder: (context, state) {
                     if (state is FolderStateFailure) {
                       return KPEmptyList(

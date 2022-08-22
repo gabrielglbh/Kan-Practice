@@ -26,19 +26,21 @@ class _DictionaryPageState extends State<DictionaryPage> {
   /// Current drawn line in the canvas
   List<Offset?> _line = [];
 
-  TextEditingController? _searchBarTextController;
+  late TextEditingController _searchBarTextController;
+
+  bool canSearch = false;
 
   @override
   void initState() {
     _searchBarTextController = TextEditingController();
     String? word = widget.args.word;
-    if (word != null) _searchBarTextController?.text = word;
+    if (word != null) _searchBarTextController.text = word;
     super.initState();
   }
 
   @override
   void dispose() {
-    _searchBarTextController?.dispose();
+    _searchBarTextController.dispose();
     super.dispose();
   }
 
@@ -58,6 +60,10 @@ class _DictionaryPageState extends State<DictionaryPage> {
 
   @override
   Widget build(BuildContext context) {
+    final canSearchEitherWay = canSearch ||
+        _searchBarTextController.text != "" ||
+        _searchBarTextController.text.isNotEmpty;
+
     return BlocProvider<DictBloc>(
       create: (context) => DictBloc()..add(DictEventIdle()),
       child: KPScaffold(
@@ -92,20 +98,36 @@ class _DictionaryPageState extends State<DictionaryPage> {
                               : "add_kanji_textForm_kanji_ext".tr(),
                           controller: _searchBarTextController,
                           enabled: widget.args.searchInJisho,
-                          onClear: () =>
-                              setState(() => _searchBarTextController?.clear()),
+                          onChange: (value) {
+                            setState(() {
+                              if (value.isNotEmpty) {
+                                canSearch = true;
+                              } else {
+                                canSearch = false;
+                              }
+                            });
+                          },
+                          onClear: () {
+                            setState(() {
+                              _searchBarTextController.clear();
+                              canSearch = false;
+                            });
+                          },
                           onRemoveLast: () {
-                            String? text = _searchBarTextController?.text;
-                            if (text != null && text.isNotEmpty) {
+                            String? text = _searchBarTextController.text;
+                            if (text.isNotEmpty) {
                               setState(() {
-                                _searchBarTextController?.text =
+                                _searchBarTextController.text =
                                     text.substring(0, text.length - 1);
+                                if (_searchBarTextController.text
+                                    .trim()
+                                    .isEmpty) canSearch = false;
                               });
                             }
                           },
                         ),
                       ),
-                      _searchWidget()
+                      _searchWidget(canSearchEitherWay)
                     ],
                   ),
                   if (state is DictStateLoading)
@@ -167,34 +189,25 @@ class _DictionaryPageState extends State<DictionaryPage> {
     );
   }
 
-  Widget _searchWidget() {
+  Widget _searchWidget(bool canSearchEitherWay) {
     return GestureDetector(
       child: AnimatedContainer(
-        width: _searchBarTextController?.text != "" ||
-                _searchBarTextController?.text.isNotEmpty == true
-            ? CustomSizes.defaultSizeSearchBarIcons
-            : 0,
+        width: canSearchEitherWay ? CustomSizes.defaultSizeSearchBarIcons : 0,
         height: CustomSizes.defaultSizeSearchBarIcons,
         duration: const Duration(milliseconds: 400),
         margin: EdgeInsets.symmetric(
-            horizontal: _searchBarTextController?.text != "" ||
-                    _searchBarTextController?.text.isNotEmpty == true
-                ? Margins.margin8
-                : 0),
+            horizontal: canSearchEitherWay ? Margins.margin8 : 0),
         decoration: const BoxDecoration(
             shape: BoxShape.circle, color: CustomColors.secondaryColor),
         child: Icon(
           widget.args.searchInJisho ? Icons.search : Icons.done,
           color: Colors.white,
-          size: _searchBarTextController?.text != "" ||
-                  _searchBarTextController?.text.isNotEmpty == true
-              ? 24
-              : 0,
+          size: canSearchEitherWay ? 24 : 0,
         ),
       ),
       onTap: () {
-        String? text = _searchBarTextController?.text;
-        if (text != null && text.isNotEmpty) {
+        String? text = _searchBarTextController.text;
+        if (text.isNotEmpty) {
           /// If the user is searching for words, redirect them to Jisho
           /// If the user is adding words, pop and send the predicted word back
           if (widget.args.searchInJisho) {
@@ -235,7 +248,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
                     pressElevation: Margins.margin2,
                     onPressed: () {
                       FocusManager.instance.primaryFocus?.unfocus();
-                      _searchBarTextController?.text += kanji;
+                      _searchBarTextController.text += kanji;
                       setState(() => _line = []);
                     }),
               );

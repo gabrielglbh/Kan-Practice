@@ -37,12 +37,38 @@ class StatisticsPage extends StatelessWidget {
     );
   }
 
-  ListView _body(BuildContext context, StatisticsLoaded state) {
+  Widget _body(BuildContext context, StatisticsLoaded state) {
     final KanPracticeStats s = state.stats;
     final mode = VisualizationModeExt.mode(
         StorageManager.readData(StorageManager.kanListGraphVisualization) ??
             VisualizationMode.radialChart);
 
+    return DefaultTabController(
+      length: 2,
+      child: Column(
+        children: [
+          const TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.table_rows_rounded)),
+              Tab(icon: Icon(Icons.track_changes_rounded)),
+            ],
+          ),
+          Expanded(
+            child: TabBarView(children: [
+              _lists(context, s, mode),
+              _tests(context, s, mode),
+            ]),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _lists(
+    BuildContext context,
+    KanPracticeStats s,
+    VisualizationMode mode,
+  ) {
     return ListView(
       children: [
         _header(context, "${"stats_words".tr()} • ",
@@ -85,7 +111,17 @@ class StatisticsPage extends StatelessWidget {
             )
           ],
         ),
-        const Divider(),
+      ],
+    );
+  }
+
+  Widget _tests(
+    BuildContext context,
+    KanPracticeStats s,
+    VisualizationMode mode,
+  ) {
+    return ListView(
+      children: [
         _header(context, "${"stats_tests".tr()} • ",
             "${GeneralUtils.roundUpAsString(GeneralUtils.getFixedDouble(s.test.totalTestAccuracy * 100))}%"),
         Row(
@@ -143,16 +179,16 @@ class StatisticsPage extends StatelessWidget {
         _expandedTestCount(context, s),
         const Divider(),
         Padding(
-            padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
-            child: KPDependentGraph(
-              mode: mode,
-              writing: s.test.testTotalWinRateWriting,
-              reading: s.test.testTotalWinRateReading,
-              recognition: s.test.testTotalWinRateRecognition,
-              listening: s.test.testTotalWinRateListening,
-              speaking: s.test.testTotalWinRateSpeaking,
-            )),
-        const SizedBox(height: Margins.margin64)
+          padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
+          child: KPDependentGraph(
+            mode: mode,
+            writing: s.test.testTotalWinRateWriting,
+            reading: s.test.testTotalWinRateReading,
+            recognition: s.test.testTotalWinRateRecognition,
+            listening: s.test.testTotalWinRateListening,
+            speaking: s.test.testTotalWinRateSpeaking,
+          ),
+        ),
       ],
     );
   }

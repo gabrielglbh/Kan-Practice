@@ -1,7 +1,7 @@
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
+import 'package:kanpractice/core/database/models/test_data.dart';
 import 'package:kanpractice/core/database/models/test_result.dart';
-import 'package:kanpractice/core/firebase/models/test_data.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';

@@ -10,6 +10,7 @@ import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_dependent_graph.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_vertical_chart.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 
@@ -37,12 +38,38 @@ class StatisticsPage extends StatelessWidget {
     );
   }
 
-  ListView _body(BuildContext context, StatisticsLoaded state) {
+  Widget _body(BuildContext context, StatisticsLoaded state) {
     final KanPracticeStats s = state.stats;
     final mode = VisualizationModeExt.mode(
         StorageManager.readData(StorageManager.kanListGraphVisualization) ??
             VisualizationMode.radialChart);
 
+    return DefaultTabController(
+      length: 2,
+      child: Column(
+        children: [
+          const TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.table_rows_rounded)),
+              Tab(icon: Icon(Icons.track_changes_rounded)),
+            ],
+          ),
+          Expanded(
+            child: TabBarView(children: [
+              _lists(context, s, mode),
+              _tests(context, s, mode),
+            ]),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _lists(
+    BuildContext context,
+    KanPracticeStats s,
+    VisualizationMode mode,
+  ) {
     return ListView(
       children: [
         _header(context, "${"stats_words".tr()} • ",
@@ -85,74 +112,81 @@ class StatisticsPage extends StatelessWidget {
             )
           ],
         ),
-        const Divider(),
+      ],
+    );
+  }
+
+  Widget _tests(
+    BuildContext context,
+    KanPracticeStats s,
+    VisualizationMode mode,
+  ) {
+    return ListView(
+      children: [
         _header(context, "${"stats_tests".tr()} • ",
             "${GeneralUtils.roundUpAsString(GeneralUtils.getFixedDouble(s.test.totalTestAccuracy * 100))}%"),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: List.generate(StudyModes.values.length, (index) {
-            switch (StudyModes.values[index]) {
-              case StudyModes.writing:
-                return Row(
-                  children: [
-                    _bullet(StudyModes.values[index]),
-                    _fittedText(
-                        context, s.test.testTotalCountWriting.toString())
-                  ],
-                );
-              case StudyModes.reading:
-                return Row(
-                  children: [
-                    _bullet(StudyModes.values[index]),
-                    _fittedText(
-                        context, s.test.testTotalCountReading.toString())
-                  ],
-                );
-              case StudyModes.recognition:
-                return Row(
-                  children: [
-                    _bullet(StudyModes.values[index]),
-                    _fittedText(
-                        context, s.test.testTotalCountRecognition.toString())
-                  ],
-                );
-              case StudyModes.listening:
-                return Row(
-                  children: [
-                    _bullet(StudyModes.values[index]),
-                    _fittedText(
-                        context, s.test.testTotalCountListening.toString())
-                  ],
-                );
-              case StudyModes.speaking:
-                return Row(
-                  children: [
-                    _bullet(StudyModes.values[index]),
-                    _fittedText(
-                        context, s.test.testTotalCountSpeaking.toString())
-                  ],
-                );
-            }
-          }),
-        ),
         Padding(
           padding: const EdgeInsets.only(top: Margins.margin16),
           child: _countLabel(context, s.test.totalTests.toString()),
         ),
+        KPVerticalBarChart(
+          dataSource: List.generate(StudyModes.values.length, (index) {
+            switch (StudyModes.values[index]) {
+              case StudyModes.writing:
+                final v = s.test.testTotalCountWriting;
+                return VerticalBarData(
+                  x: StudyModes.writing.mode,
+                  y: v.toDouble(),
+                  color: StudyModes.writing.color,
+                );
+              case StudyModes.reading:
+                final v = s.test.testTotalCountReading;
+                return VerticalBarData(
+                  x: StudyModes.reading.mode,
+                  y: v.toDouble(),
+                  color: StudyModes.reading.color,
+                );
+              case StudyModes.recognition:
+                final v = s.test.testTotalCountRecognition;
+                return VerticalBarData(
+                  x: StudyModes.recognition.mode,
+                  y: v.toDouble(),
+                  color: StudyModes.recognition.color,
+                );
+              case StudyModes.listening:
+                final v = s.test.testTotalCountListening;
+                return VerticalBarData(
+                  x: StudyModes.listening.mode,
+                  y: v.toDouble(),
+                  color: StudyModes.listening.color,
+                );
+              case StudyModes.speaking:
+                final v = s.test.testTotalCountSpeaking;
+                return VerticalBarData(
+                  x: StudyModes.speaking.mode,
+                  y: v.toDouble(),
+                  color: StudyModes.speaking.color,
+                );
+            }
+          }),
+        ),
         const Divider(),
+        _header(context, "stats_tests_by_type".tr(), ""),
         _expandedTestCount(context, s),
         const Divider(),
+        _header(context, "stats_tests_total_acc".tr(), ""),
         Padding(
-            padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
-            child: KPDependentGraph(
-              mode: mode,
-              writing: s.test.testTotalWinRateWriting,
-              reading: s.test.testTotalWinRateReading,
-              recognition: s.test.testTotalWinRateRecognition,
-              listening: s.test.testTotalWinRateListening,
-              speaking: s.test.testTotalWinRateSpeaking,
-            )),
-        const SizedBox(height: Margins.margin64)
+          padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
+          child: KPDependentGraph(
+            mode: mode,
+            writing: s.test.testTotalWinRateWriting,
+            reading: s.test.testTotalWinRateReading,
+            recognition: s.test.testTotalWinRateRecognition,
+            listening: s.test.testTotalWinRateListening,
+            speaking: s.test.testTotalWinRateSpeaking,
+          ),
+        ),
+        const SizedBox(height: 64)
       ],
     );
   }
@@ -186,72 +220,60 @@ class StatisticsPage extends StatelessWidget {
         child: Text(t, style: style ?? Theme.of(context).textTheme.bodyText1));
   }
 
-  Container _bullet(StudyModes mode) {
-    return Container(
-      width: Margins.margin8,
-      height: Margins.margin8,
-      margin: const EdgeInsets.only(
-          right: Margins.margin8,
-          left: Margins.margin8,
-          top: Margins.margin4,
-          bottom: Margins.margin4),
-      decoration: BoxDecoration(shape: BoxShape.circle, color: mode.color),
-    );
-  }
-
-  ListView _expandedTestCount(BuildContext context, KanPracticeStats s) {
-    return ListView(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        children: List.generate(Tests.values.length, (index) {
-          switch (Tests.values[index]) {
-            case Tests.lists:
-              return _testModeCountContainer(
-                  context, Tests.lists, s.test.selectionTests);
-            case Tests.blitz:
-              return _testModeCountContainer(
-                  context, Tests.blitz, s.test.blitzTests);
-            case Tests.time:
-              return _testModeCountContainer(
-                  context, Tests.time, s.test.remembranceTests);
-            case Tests.numbers:
-              return _testModeCountContainer(
-                  context, Tests.numbers, s.test.numberTests);
-            case Tests.less:
-              return _testModeCountContainer(
-                  context, Tests.less, s.test.lessPctTests);
-            case Tests.categories:
-              return _testModeCountContainer(
-                  context, Tests.categories, s.test.categoryTests);
-            case Tests.folder:
-              return _testModeCountContainer(
-                  context, Tests.folder, s.test.folderTests);
-            case Tests.daily:
-              return _testModeCountContainer(
-                  context, Tests.daily, s.test.dailyTests);
-          }
-        }));
-  }
-
-  Widget _testModeCountContainer(BuildContext context, Tests t, int count) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
-      child: Row(
-        children: [
-          Icon(t.icon, size: Margins.margin18),
-          Padding(
-            padding: const EdgeInsets.only(left: Margins.margin8),
-            child:
-                Text(t.nameAbbr, style: Theme.of(context).textTheme.bodyText2),
-          ),
-          Expanded(child: Container()),
-          Text(count.toString(),
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText2
-                  ?.copyWith(fontWeight: FontWeight.bold))
-        ],
-      ),
+  Widget _expandedTestCount(BuildContext context, KanPracticeStats s) {
+    return KPVerticalBarChart(
+      dataSource: List.generate(Tests.values.length, (index) {
+        switch (Tests.values[index]) {
+          case Tests.lists:
+            return VerticalBarData(
+              x: Tests.lists.nameAbbr,
+              y: s.test.selectionTests.toDouble(),
+              color: CustomColors.secondaryColor,
+            );
+          case Tests.blitz:
+            return VerticalBarData(
+              x: Tests.blitz.nameAbbr,
+              y: s.test.blitzTests.toDouble(),
+              color: CustomColors.secondaryColor,
+            );
+          case Tests.time:
+            return VerticalBarData(
+              x: Tests.time.nameAbbr,
+              y: s.test.remembranceTests.toDouble(),
+              color: CustomColors.secondaryColor,
+            );
+          case Tests.numbers:
+            return VerticalBarData(
+              x: Tests.numbers.nameAbbr,
+              y: s.test.numberTests.toDouble(),
+              color: CustomColors.secondaryColor,
+            );
+          case Tests.less:
+            return VerticalBarData(
+              x: Tests.less.nameAbbr,
+              y: s.test.lessPctTests.toDouble(),
+              color: CustomColors.secondaryColor,
+            );
+          case Tests.categories:
+            return VerticalBarData(
+              x: Tests.categories.nameAbbr,
+              y: s.test.categoryTests.toDouble(),
+              color: CustomColors.secondaryColor,
+            );
+          case Tests.folder:
+            return VerticalBarData(
+              x: Tests.folder.nameAbbr,
+              y: s.test.folderTests.toDouble(),
+              color: CustomColors.secondaryColor,
+            );
+          case Tests.daily:
+            return VerticalBarData(
+              x: Tests.daily.nameAbbr,
+              y: s.test.dailyTests.toDouble(),
+              color: CustomColors.secondaryColor,
+            );
+        }
+      }),
     );
   }
 }

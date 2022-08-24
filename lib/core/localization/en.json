@@ -362,6 +362,7 @@
   "daily_test_start_button": "Start",
   "daily_test_start_button_tr": "始める",
   "daily_test_cannot_go_back": "You are performing a daily test. Finish the test, you can do it!",
-  "settings_notifications_label": "Enable/Disable Notifications"
-
+  "settings_notifications_label": "Enable/Disable Notifications",
+  "stats_tests_by_type": "Total Number of Tests by Type",
+  "stats_tests_total_acc": "Total Accuracy by Study Mode"
 }

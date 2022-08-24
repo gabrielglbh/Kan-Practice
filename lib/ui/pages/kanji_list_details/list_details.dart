@@ -363,7 +363,13 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
           child: TabBar(
               controller: _tabController,
               tabs: List.generate(StudyModes.values.length, (index) {
-                return _tabBarElement(StudyModes.values[index].mode);
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Icon(
+                    StudyModes.values[index].icon,
+                    color: StudyModes.values[index].color,
+                  ),
+                );
               })),
         ),
         Expanded(
@@ -390,19 +396,6 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
                 KanjiEventLoadUpPractice(
                     _learningMode, _listName, _selectedMode))),
       ],
-    );
-  }
-
-  Widget _tabBarElement(String mode) {
-    return Container(
-      height: CustomSizes.defaultSizeLearningModeBar,
-      alignment: Alignment.center,
-      child: FittedBox(
-        fit: BoxFit.fitWidth,
-        child: Text(mode,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyText1),
-      ),
     );
   }
 

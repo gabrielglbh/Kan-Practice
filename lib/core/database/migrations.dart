@@ -5,6 +5,38 @@ import 'package:kanpractice/core/database/models/test_result.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Migrations extends MigrationUtils {
+  Future<void> version8to9(Database db) async {
+    await db.execute("CREATE TABLE ${TestDataTableFields.testDataTable}("
+        "${TestDataTableFields.statsIdField} TEXT NOT NULL PRIMARY KEY, "
+        "${TestDataTableFields.totalTestsField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.totalTestAccuracyField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalCountWritingField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalCountReadingField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalCountRecognitionField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalCountListeningField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalCountSpeakingField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalWinRateWritingField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalWinRateReadingField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalWinRateRecognitionField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalWinRateListeningField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalWinRateSpeakingField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.selectionTestsField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.blitzTestsField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.remembranceTestsField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.numberTestsField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.lessPctTestsField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.categoryTestsField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.folderTestsField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.dailyTestsField} INTEGER NOT NULL DEFAULT 0)");
+
+    final currStats = await MigrationUtils().getTestData(db);
+    try {
+      await db.insert(TestDataTableFields.testDataTable, currStats.toJson());
+    } catch (err) {
+      print(err.toString());
+    }
+  }
+
   Future<void> version7to8(Database db) async {
     await db.rawQuery("ALTER TABLE ${KanjiTableFields.kanjiTable} "
         "ADD COLUMN ${KanjiTableFields.winRateSpeakingField} INTEGER NOT NULL "

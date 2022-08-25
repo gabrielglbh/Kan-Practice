@@ -59,6 +59,36 @@ class WordHistoryFields {
   static const String searchedOnField = "searchedOn";
 }
 
+class TestDataTableFields {
+  static const String statsMainId = "MAIN_STATS_TABLE";
+  static const String testDataTable = "TEST_DATA_TABLE";
+  static const String statsIdField = "statsId";
+  static const String totalTestsField = "totalTests";
+  static const String totalTestAccuracyField = "totalTestAccuracy";
+  static const String testTotalCountWritingField = "testTotalCountWriting";
+  static const String testTotalCountReadingField = "testTotalCountReading";
+  static const String testTotalCountRecognitionField =
+      "testTotalCountRecognition";
+  static const String testTotalCountListeningField = "testTotalCountListening";
+  static const String testTotalCountSpeakingField = "testTotalCountSpeaking";
+  static const String testTotalWinRateWritingField = "testTotalWinRateWriting";
+  static const String testTotalWinRateReadingField = "testTotalWinRateReading";
+  static const String testTotalWinRateRecognitionField =
+      "testTotalWinRateRecognition";
+  static const String testTotalWinRateListeningField =
+      "testTotalWinRateListening";
+  static const String testTotalWinRateSpeakingField =
+      "testTotalWinRateSpeaking";
+  static const String selectionTestsField = "selectionTests";
+  static const String blitzTestsField = "blitzTests";
+  static const String remembranceTestsField = "remembranceTests";
+  static const String numberTestsField = "numberTests";
+  static const String lessPctTestsField = "lessPctTests";
+  static const String categoryTestsField = "categoryTests";
+  static const String folderTestsField = "folderTests";
+  static const String dailyTestsField = "dailyTests";
+}
+
 class DatabaseConstants {
   static const double emptyWinRate = -1;
 }

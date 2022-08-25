@@ -123,12 +123,8 @@ class StatisticsPage extends StatelessWidget {
   ) {
     return ListView(
       children: [
-        _header(context, "${"stats_tests".tr()} • ",
-            "${GeneralUtils.roundUpAsString(GeneralUtils.getFixedDouble(s.test.totalTestAccuracy * 100))}%"),
-        Padding(
-          padding: const EdgeInsets.only(top: Margins.margin16),
-          child: _countLabel(context, s.test.totalTests.toString()),
-        ),
+        _header(
+            context, "${"stats_tests".tr()} • ", s.test.totalTests.toString()),
         KPVerticalBarChart(
           dataSource: List.generate(StudyModes.values.length, (index) {
             switch (StudyModes.values[index]) {
@@ -174,7 +170,8 @@ class StatisticsPage extends StatelessWidget {
         _header(context, "stats_tests_by_type".tr(), ""),
         _expandedTestCount(context, s),
         const Divider(),
-        _header(context, "stats_tests_total_acc".tr(), ""),
+        _header(context, "${"stats_tests_total_acc".tr()} • ",
+            "${GeneralUtils.roundUpAsString(GeneralUtils.getFixedDouble(s.test.totalTestAccuracy * 100))}%"),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
           child: KPDependentGraph(

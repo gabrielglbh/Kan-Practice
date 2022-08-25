@@ -21,7 +21,7 @@ class StatisticsBloc extends Bloc<StatsEvent, StatsState> {
           await KanjiQueries.instance.getTotalKanjiWinRates();
       final List<String> lists =
           await ListQueries.instance.getBestAndWorstList();
-      final TestData test = await TestQueries.instance.getTestData();
+      final TestData test = await TestQueries.instance.getTestDataFromDb();
 
       emit(StatisticsLoaded(
         stats: KanPracticeStats(

@@ -2,7 +2,6 @@ import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/test_data.dart';
 import 'package:kanpractice/core/database/models/test_result.dart';
-import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/ui/consts.dart';
@@ -28,20 +27,10 @@ class TestQueries {
   /// 1: Error during insertion.
   ///
   /// 2: Database is not created.
-  Future<int> createTest(
-      double score, int kanji, int mode, int testMode, String lists) async {
+  Future<int> createTest(Test test) async {
     if (_database != null) {
       try {
-        await _database?.insert(
-            TestTableFields.testTable,
-            Test(
-                    testScore: score,
-                    kanjiInTest: kanji,
-                    studyMode: mode,
-                    testMode: testMode,
-                    kanjiLists: lists,
-                    takenDate: GeneralUtils.getCurrentMilliseconds())
-                .toJson());
+        await _database?.insert(TestTableFields.testTable, test.toJson());
         return 0;
       } catch (err) {
         print(err.toString());
@@ -120,202 +109,180 @@ class TestQueries {
     }
   }
 
-  /// Gets all [TestData]
-  Future<TestData> getTestData() async {
-    final int totalTests = await _getTotalTestCount();
-    final double totalTestAccuracy = await _getTotalTestAccuracy();
-    final int testTotalCountWriting =
-        await _getTestCountBasedOnStudyMode(StudyModes.writing.index);
-    final int testTotalCountReading =
-        await _getTestCountBasedOnStudyMode(StudyModes.reading.index);
-    final int testTotalCountRecognition =
-        await _getTestCountBasedOnStudyMode(StudyModes.recognition.index);
-    final int testTotalCountListening =
-        await _getTestCountBasedOnStudyMode(StudyModes.listening.index);
-    final int testTotalCountSpeaking =
-        await _getTestCountBasedOnStudyMode(StudyModes.speaking.index);
-    final double testTotalWinRateWriting =
-        await _getTestAccuracyBasedOnStudyMode(StudyModes.writing.index);
-    final double testTotalWinRateReading =
-        await _getTestAccuracyBasedOnStudyMode(StudyModes.reading.index);
-    final double testTotalWinRateRecognition =
-        await _getTestAccuracyBasedOnStudyMode(StudyModes.recognition.index);
-    final double testTotalWinRateListening =
-        await _getTestAccuracyBasedOnStudyMode(StudyModes.listening.index);
-    final double testTotalWinRateSpeaking =
-        await _getTestAccuracyBasedOnStudyMode(StudyModes.speaking.index);
-    final List<int> testModesCount = await _getAllTestsBasedOnTestMode();
-
-    return TestData(
-      totalTests: totalTests,
-      totalTestAccuracy: totalTestAccuracy,
-      testTotalCountWriting: testTotalCountWriting,
-      testTotalCountReading: testTotalCountReading,
-      testTotalCountRecognition: testTotalCountRecognition,
-      testTotalCountListening: testTotalCountListening,
-      testTotalCountSpeaking: testTotalCountSpeaking,
-      testTotalWinRateWriting: testTotalWinRateWriting,
-      testTotalWinRateReading: testTotalWinRateReading,
-      testTotalWinRateRecognition: testTotalWinRateRecognition,
-      testTotalWinRateListening: testTotalWinRateListening,
-      testTotalWinRateSpeaking: testTotalWinRateSpeaking,
-      selectionTests: testModesCount[0],
-      blitzTests: testModesCount[1],
-      remembranceTests: testModesCount[2],
-      numberTests: testModesCount[3],
-      lessPctTests: testModesCount[4],
-      categoryTests: testModesCount[5],
-      folderTests: testModesCount[6],
-      dailyTests: testModesCount[7],
-    );
-  }
-
-  /// Retrieves the total test count saved locally in the device.
-  Future<int> _getTotalTestCount() async {
+  /// Get all stats from DB
+  Future<TestData> getTestDataFromDb() async {
     if (_database != null) {
       try {
-        List<Map<String, dynamic>>? res = [];
-        res = await _database?.query(TestTableFields.testTable);
+        final res = await _database?.query(
+          TestDataTableFields.testDataTable,
+          where: "${TestDataTableFields.statsIdField}=?",
+          whereArgs: [TestDataTableFields.statsMainId],
+        );
         if (res != null) {
-          return res.length;
+          return TestData.fromJson(res[0]);
         } else {
-          return 0;
+          return TestData.empty;
         }
       } catch (err) {
         print(err.toString());
-        return 0;
+        return TestData.empty;
       }
     } else {
-      return -1;
+      return TestData.empty;
     }
   }
 
-  /// Retrieves the total test accuracy saved locally in the device.
-  Future<double> _getTotalTestAccuracy() async {
+  /// Update the stats when a test is finished
+  Future<void> updateStats(Test test) async {
     if (_database != null) {
       try {
-        List<Map<String, dynamic>>? res = [];
-        res = await _database?.query(TestTableFields.testTable);
-        if (res != null) {
-          List<Test> l =
-              List.generate(res.length, (i) => Test.fromJson(res![i]));
-          double acc = 0;
-          for (var test in l) {
-            acc += test.testScore;
-          }
-          return acc / l.length;
-        } else {
-          return 0;
-        }
-      } catch (err) {
-        print(err.toString());
-        return 0;
-      }
-    } else {
-      return -1;
-    }
-  }
+        final curr = await getTestDataFromDb();
+        final totalTests = curr.totalTests + 1;
+        final score = test.testScore;
+        final Map<String, num> map = {
+          TestDataTableFields.totalTestsField: totalTests,
+        };
+        late Map<String, num> additionalStudyParams;
+        late Map<String, num> additionalTestParams;
 
-  /// Retrieves the test count saved locally in the device based on the [StudyModes].
-  Future<int> _getTestCountBasedOnStudyMode(int mode) async {
-    if (_database != null) {
-      try {
-        List<Map<String, dynamic>>? res = [];
-        res = await _database?.query(TestTableFields.testTable,
-            where: "${TestTableFields.studyModeField}=?", whereArgs: [mode]);
-        if (res != null) {
-          return res.length;
-        } else {
-          return 0;
+        // TODO: Local win rates are not correctly calculated. I am adding overalls + locals.
+        switch (StudyModesUtil.mapStudyMode(test.studyMode)) {
+          case StudyModes.writing:
+            final totalTests = curr.testTotalCountWriting + 1;
+            final newAcc = (curr.testTotalWinRateWriting + score) / totalTests;
+            additionalStudyParams = {
+              TestDataTableFields.testTotalCountWritingField: totalTests,
+              TestDataTableFields.testTotalWinRateWritingField: newAcc,
+              TestDataTableFields.totalTestAccuracyField:
+                  (curr.testTotalWinRateReading +
+                          curr.testTotalWinRateRecognition +
+                          curr.testTotalWinRateListening +
+                          curr.testTotalWinRateSpeaking +
+                          newAcc) /
+                      StudyModes.values.length
+            };
+            break;
+          case StudyModes.reading:
+            final totalTests = curr.testTotalCountReading + 1;
+            final newAcc = (curr.testTotalWinRateReading + score) / totalTests;
+            additionalStudyParams = {
+              TestDataTableFields.testTotalCountReadingField: totalTests,
+              TestDataTableFields.testTotalWinRateReadingField: newAcc,
+              TestDataTableFields.totalTestAccuracyField:
+                  (curr.testTotalWinRateWriting +
+                          curr.testTotalWinRateRecognition +
+                          curr.testTotalWinRateListening +
+                          curr.testTotalWinRateSpeaking +
+                          newAcc) /
+                      StudyModes.values.length
+            };
+            break;
+          case StudyModes.recognition:
+            final totalTests = curr.testTotalCountRecognition + 1;
+            final newAcc =
+                (curr.testTotalWinRateRecognition + score) / totalTests;
+            additionalStudyParams = {
+              TestDataTableFields.testTotalCountRecognitionField: totalTests,
+              TestDataTableFields.testTotalWinRateRecognitionField: newAcc,
+              TestDataTableFields.totalTestAccuracyField:
+                  (curr.testTotalWinRateWriting +
+                          curr.testTotalWinRateReading +
+                          curr.testTotalWinRateListening +
+                          curr.testTotalWinRateSpeaking +
+                          newAcc) /
+                      StudyModes.values.length
+            };
+            break;
+          case StudyModes.listening:
+            final totalTests = curr.testTotalCountListening + 1;
+            final newAcc =
+                (curr.testTotalWinRateListening + score) / totalTests;
+            additionalStudyParams = {
+              TestDataTableFields.testTotalCountListeningField: totalTests,
+              TestDataTableFields.testTotalWinRateListeningField: newAcc,
+              TestDataTableFields.totalTestAccuracyField:
+                  (curr.testTotalWinRateWriting +
+                          curr.testTotalWinRateReading +
+                          curr.testTotalWinRateRecognition +
+                          curr.testTotalWinRateSpeaking +
+                          newAcc) /
+                      StudyModes.values.length
+            };
+            break;
+          case StudyModes.speaking:
+            final totalTests = curr.testTotalCountSpeaking + 1;
+            final newAcc = (curr.testTotalWinRateSpeaking + score) / totalTests;
+            additionalStudyParams = {
+              TestDataTableFields.testTotalCountSpeakingField: totalTests,
+              TestDataTableFields.testTotalWinRateSpeakingField: newAcc,
+              TestDataTableFields.totalTestAccuracyField:
+                  (curr.testTotalWinRateWriting +
+                          curr.testTotalWinRateReading +
+                          curr.testTotalWinRateRecognition +
+                          curr.testTotalWinRateListening +
+                          newAcc) /
+                      StudyModes.values.length
+            };
+            break;
         }
-      } catch (err) {
-        print(err.toString());
-        return 0;
-      }
-    } else {
-      return -1;
-    }
-  }
 
-  /// Retrieves the test accuracy saved locally in the device based on the [StudyModes].
-  Future<double> _getTestAccuracyBasedOnStudyMode(int mode) async {
-    if (_database != null) {
-      try {
-        List<Map<String, dynamic>>? res = [];
-        res = await _database?.query(TestTableFields.testTable,
-            where: "${TestTableFields.studyModeField}=?", whereArgs: [mode]);
-        if (res != null) {
-          List<Test> l =
-              List.generate(res.length, (i) => Test.fromJson(res![i]));
-          double acc = 0;
-          for (var test in l) {
-            acc += test.testScore;
-          }
-          return acc == 0 ? 0 : acc / l.length;
-        } else {
-          return 0;
-        }
-      } catch (err) {
-        print(err.toString());
-        return 0;
-      }
-    } else {
-      return -1;
-    }
-  }
+        map.addEntries(additionalStudyParams.entries);
 
-  /// Returns a list of counters of all the performed tests based on their test mode.
-  /// See [TestsUtils]. Each position represents the number of tests performed
-  /// in that mode.
-  ///
-  /// 0 -> Selection, 1 -> Blitz, 2 -> Remembrance, 3 -> Numbers, 4 -> Less %, 5 -> Category
-  Future<List<int>> _getAllTestsBasedOnTestMode() async {
-    List<int> counters = List.filled(Tests.values.length, 0);
-    if (_database != null) {
-      try {
-        List<Map<String, dynamic>>? res = [];
-        res = await _database?.query(TestTableFields.testTable);
-        if (res != null) {
-          final List<Test> tests =
-              List.generate(res.length, (i) => Test.fromJson(res![i]));
-          for (var t in tests) {
-            switch (TestsUtils.mapTestMode(t.testMode ?? -1)) {
-              case Tests.lists:
-                counters[0] += 1;
-                break;
-              case Tests.blitz:
-                counters[1] += 1;
-                break;
-              case Tests.time:
-                counters[2] += 1;
-                break;
-              case Tests.numbers:
-                counters[3] += 1;
-                break;
-              case Tests.less:
-                counters[4] += 1;
-                break;
-              case Tests.categories:
-                counters[5] += 1;
-                break;
-              case Tests.folder:
-                counters[6] += 1;
-                break;
-              case Tests.daily:
-                counters[7] += 1;
-                break;
-            }
-          }
-          return counters;
-        } else {
-          return counters;
+        switch (TestsUtils.mapTestMode(test.testMode!)) {
+          case Tests.lists:
+            additionalTestParams = {
+              TestDataTableFields.selectionTestsField: curr.selectionTests + 1
+            };
+            break;
+          case Tests.blitz:
+            additionalTestParams = {
+              TestDataTableFields.blitzTestsField: curr.blitzTests + 1
+            };
+            break;
+          case Tests.time:
+            additionalTestParams = {
+              TestDataTableFields.remembranceTestsField:
+                  curr.remembranceTests + 1
+            };
+            break;
+          case Tests.numbers:
+            additionalTestParams = {
+              TestDataTableFields.numberTestsField: curr.numberTests + 1
+            };
+            break;
+          case Tests.less:
+            additionalTestParams = {
+              TestDataTableFields.lessPctTestsField: curr.lessPctTests + 1
+            };
+            break;
+          case Tests.categories:
+            additionalTestParams = {
+              TestDataTableFields.categoryTestsField: curr.categoryTests + 1
+            };
+            break;
+          case Tests.folder:
+            additionalTestParams = {
+              TestDataTableFields.folderTestsField: curr.folderTests + 1
+            };
+            break;
+          case Tests.daily:
+            additionalTestParams = {
+              TestDataTableFields.dailyTestsField: curr.dailyTests + 1
+            };
+            break;
         }
+
+        map.addEntries(additionalTestParams.entries);
+
+        await _database?.update(
+          TestDataTableFields.testDataTable,
+          map,
+          where: "${TestDataTableFields.statsIdField}=?",
+          whereArgs: [TestDataTableFields.statsMainId],
+        );
       } catch (err) {
         print(err.toString());
-        return counters;
       }
-    } else {
-      return counters;
     }
   }
 }

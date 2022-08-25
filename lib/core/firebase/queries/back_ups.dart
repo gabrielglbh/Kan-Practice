@@ -83,6 +83,7 @@ class BackUpRecords {
   /// If [backUpTests] is true, a copy of all current tests will be saved in the back up.
   ///
   /// Returns an empty String if nothing happened, else, the error is returned.
+  /// TODO: If it works, create back up of TestData istead of the Test list
   Future<String> createBackUp({bool backUpTests = false}) async {
     User? user = _auth.currentUser;
     await user?.reload();

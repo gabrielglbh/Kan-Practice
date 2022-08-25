@@ -1,9 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:kanpractice/core/database/database_consts.dart';
 
 part 'test_data.g.dart';
 
 @JsonSerializable()
 class TestData {
+  final String statsId;
   final int totalTests;
   final double totalTestAccuracy;
   final int testTotalCountWriting;
@@ -26,6 +28,7 @@ class TestData {
   final int dailyTests;
 
   const TestData({
+    this.statsId = TestDataTableFields.statsMainId,
     required this.totalTests,
     required this.totalTestAccuracy,
     required this.testTotalCountWriting,

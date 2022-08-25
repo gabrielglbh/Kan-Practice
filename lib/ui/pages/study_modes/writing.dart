@@ -17,7 +17,6 @@ import 'package:kanpractice/ui/widgets/kp_learning_header_container.dart';
 import 'package:kanpractice/ui/widgets/kp_list_percentage_indicator.dart';
 import 'package:kanpractice/ui/widgets/kp_tts_icon_button.dart';
 import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class WritingStudy extends StatefulWidget {
@@ -217,16 +216,6 @@ class _WritingStudyState extends State<WritingStudy> {
           child:
               TTSIconButton(kanji: widget.args.studyList[_macro].pronunciation),
         ),
-        IconButton(
-          icon: const Icon(Icons.info_outline_rounded),
-          onPressed: () async {
-            if (await canLaunchUrl(
-                Uri.parse("https://www.sljfaq.org/afaq/stroke-order.html"))) {
-              launchUrl(
-                  Uri.parse("https://www.sljfaq.org/afaq/stroke-order.html"));
-            }
-          },
-        )
       ],
       child: Column(
         children: [

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class CopyrightInfo extends StatelessWidget {
@@ -18,12 +17,8 @@ class CopyrightInfo extends StatelessWidget {
         builder: (context) => const CopyrightInfo());
   }
 
-  Future<void> _launchUrl(BuildContext context, String url) async {
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
-    } else {
-      GeneralUtils.getSnackBar(context, "launch_url_failed".tr());
-    }
+  Future<void> _launch(BuildContext context, String url) async {
+    await GeneralUtils.launch(context, url);
   }
 
   @override
@@ -68,7 +63,7 @@ class CopyrightInfo extends StatelessWidget {
                           style: Theme.of(context).textTheme.overline,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () async {
-                              await _launchUrl(context,
+                              await _launch(context,
                                   "https://www.aist.go.jp/index_e.html");
                             },
                         ),
@@ -83,7 +78,7 @@ class CopyrightInfo extends StatelessWidget {
                           style: Theme.of(context).textTheme.overline,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () async {
-                              await _launchUrl(
+                              await _launch(
                                   context, "https://www.jeita.or.jp/english/");
                             },
                         ),
@@ -104,7 +99,7 @@ class CopyrightInfo extends StatelessWidget {
                           style: Theme.of(context).textTheme.overline,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () async {
-                              await _launchUrl(
+                              await _launch(
                                   context, "http://etlcdb.db.aist.go.jp/");
                             },
                         ),
@@ -117,7 +112,7 @@ class CopyrightInfo extends StatelessWidget {
                           style: Theme.of(context).textTheme.overline,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () async {
-                              await _launchUrl(context,
+                              await _launch(context,
                                   "http://etlcdb.db.aist.go.jp/specification-of-etl-9");
                             },
                         ),

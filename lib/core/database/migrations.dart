@@ -29,9 +29,51 @@ class Migrations extends MigrationUtils {
         "${TestDataTableFields.folderTestsField} INTEGER NOT NULL DEFAULT 0, "
         "${TestDataTableFields.dailyTestsField} INTEGER NOT NULL DEFAULT 0)");
 
+    await db.execute(
+        "CREATE TABLE ${TestSpecificDataTableFields.testDataTable}("
+        "${TestSpecificDataTableFields.idField} INTEGER NOT NULL PRIMARY KEY DEFAULT -1, "
+        "${TestSpecificDataTableFields.totalWinRateWritingField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestSpecificDataTableFields.totalWinRateReadingField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestSpecificDataTableFields.totalWinRateRecognitionField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestSpecificDataTableFields.totalWinRateListeningField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestSpecificDataTableFields.totalWinRateSpeakingField} INTEGER NOT NULL DEFAULT 0)");
+
     final currStats = await MigrationUtils().getTestData(db);
+
     try {
       await db.insert(TestDataTableFields.testDataTable, currStats.toJson());
+      if (currStats.selectionTestData.id != -1) {
+        await db.insert(TestSpecificDataTableFields.testDataTable,
+            currStats.selectionTestData.toJson());
+      }
+      if (currStats.blitzTestData.id != -1) {
+        await db.insert(TestSpecificDataTableFields.testDataTable,
+            currStats.blitzTestData.toJson());
+      }
+      if (currStats.remembranceTestData.id != -1) {
+        await db.insert(TestSpecificDataTableFields.testDataTable,
+            currStats.remembranceTestData.toJson());
+      }
+      if (currStats.numberTestData.id != -1) {
+        await db.insert(TestSpecificDataTableFields.testDataTable,
+            currStats.numberTestData.toJson());
+      }
+      if (currStats.lessPctTestData.id != -1) {
+        await db.insert(TestSpecificDataTableFields.testDataTable,
+            currStats.lessPctTestData.toJson());
+      }
+      if (currStats.categoryTestData.id != -1) {
+        await db.insert(TestSpecificDataTableFields.testDataTable,
+            currStats.categoryTestData.toJson());
+      }
+      if (currStats.folderTestData.id != -1) {
+        await db.insert(TestSpecificDataTableFields.testDataTable,
+            currStats.folderTestData.toJson());
+      }
+      if (currStats.dailyTestData.id != -1) {
+        await db.insert(TestSpecificDataTableFields.testDataTable,
+            currStats.dailyTestData.toJson());
+      }
     } catch (err) {
       print(err.toString());
     }

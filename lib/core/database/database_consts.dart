@@ -89,6 +89,16 @@ class TestDataTableFields {
   static const String dailyTestsField = "dailyTests";
 }
 
+class TestSpecificDataTableFields {
+  static const String testDataTable = "TEST_SPECIFIC_ACC_TABLE";
+  static const String idField = "id";
+  static const String totalWinRateWritingField = "totalWinRateWriting";
+  static const String totalWinRateReadingField = "totalWinRateReading";
+  static const String totalWinRateRecognitionField = "totalWinRateRecognition";
+  static const String totalWinRateListeningField = "totalWinRateListening";
+  static const String totalWinRateSpeakingField = "totalWinRateSpeaking";
+}
+
 class DatabaseConstants {
   static const double emptyWinRate = -1;
 }

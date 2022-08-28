@@ -50,14 +50,14 @@ class StatisticsPage extends StatelessWidget {
         children: [
           const TabBar(
             tabs: [
-              Tab(icon: Icon(Icons.table_rows_rounded)),
               Tab(icon: Icon(Icons.track_changes_rounded)),
+              Tab(icon: Icon(Icons.table_rows_rounded)),
             ],
           ),
           Expanded(
             child: TabBarView(children: [
-              _lists(context, s, mode),
               _tests(context, s, mode),
+              _lists(context, s, mode),
             ]),
           ),
         ],

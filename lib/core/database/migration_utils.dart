@@ -2,6 +2,7 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/test_data.dart';
 import 'package:kanpractice/core/database/models/test_result.dart';
+import 'package:kanpractice/core/database/models/test_specific_data.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:sqflite/sqflite.dart';
@@ -69,6 +70,17 @@ class MigrationUtils {
     final double testTotalWinRateSpeaking =
         await _getTestAccuracyBasedOnStudyMode(db, StudyModes.speaking.index);
     final List<int> testModesCount = await _getAllTestsBasedOnTestMode(db);
+    final selection =
+        await _getTestSpecificStudyModeAccuracies(db, Tests.lists);
+    final blitz = await _getTestSpecificStudyModeAccuracies(db, Tests.blitz);
+    final time = await _getTestSpecificStudyModeAccuracies(db, Tests.time);
+    final numbers =
+        await _getTestSpecificStudyModeAccuracies(db, Tests.numbers);
+    final less = await _getTestSpecificStudyModeAccuracies(db, Tests.less);
+    final categories =
+        await _getTestSpecificStudyModeAccuracies(db, Tests.categories);
+    final folder = await _getTestSpecificStudyModeAccuracies(db, Tests.folder);
+    final daily = await _getTestSpecificStudyModeAccuracies(db, Tests.daily);
 
     return TestData(
       totalTests: totalTests,
@@ -84,13 +96,21 @@ class MigrationUtils {
       testTotalWinRateListening: testTotalWinRateListening,
       testTotalWinRateSpeaking: testTotalWinRateSpeaking,
       selectionTests: testModesCount[0],
+      selectionTestData: selection,
       blitzTests: testModesCount[1],
+      blitzTestData: blitz,
       remembranceTests: testModesCount[2],
+      remembranceTestData: time,
       numberTests: testModesCount[3],
+      numberTestData: numbers,
       lessPctTests: testModesCount[4],
+      lessPctTestData: less,
       categoryTests: testModesCount[5],
+      categoryTestData: categories,
       folderTests: testModesCount[6],
+      folderTestData: folder,
       dailyTests: testModesCount[7],
+      dailyTestData: daily,
     );
   }
 
@@ -193,6 +213,52 @@ class MigrationUtils {
     } catch (err) {
       print(err.toString());
       return counters;
+    }
+  }
+
+  Future<TestSpecificData> _getTestSpecificStudyModeAccuracies(
+    Database db,
+    Tests mode,
+  ) async {
+    try {
+      final res = await db.query(TestTableFields.testTable,
+          where: "${TestTableFields.testModeField}=?", whereArgs: [mode.index]);
+      List<Test> t = List.generate(res.length, (i) => Test.fromJson(res[i]));
+      if (t.isEmpty) return TestSpecificData.empty;
+
+      final testCount = t.length;
+      double w = 0, red = 0, rec = 0, l = 0, s = 0;
+
+      for (var test in t) {
+        switch (StudyModesUtil.mapStudyMode(test.studyMode)) {
+          case StudyModes.writing:
+            w += test.testScore;
+            break;
+          case StudyModes.reading:
+            red += test.testScore;
+            break;
+          case StudyModes.recognition:
+            rec += test.testScore;
+            break;
+          case StudyModes.listening:
+            l += test.testScore;
+            break;
+          case StudyModes.speaking:
+            s += test.testScore;
+            break;
+        }
+      }
+
+      return TestSpecificData(
+        id: mode.index,
+        totalWinRateWriting: w / testCount,
+        totalWinRateReading: red / testCount,
+        totalWinRateRecognition: rec / testCount,
+        totalWinRateListening: l / testCount,
+        totalWinRateSpeaking: s / testCount,
+      );
+    } catch (err) {
+      return TestSpecificData.empty;
     }
   }
 }

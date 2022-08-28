@@ -261,11 +261,11 @@ class MigrationUtils {
         totalRecognitionCount: recc,
         totalListeningCount: lc,
         totalSpeakingCount: sc,
-        totalWinRateWriting: w / wc,
-        totalWinRateReading: red / redc,
-        totalWinRateRecognition: rec / recc,
-        totalWinRateListening: l / lc,
-        totalWinRateSpeaking: s / sc,
+        totalWinRateWriting: wc == 0 ? 0 : w / wc,
+        totalWinRateReading: redc == 0 ? 0 : red / redc,
+        totalWinRateRecognition: recc == 0 ? 0 : rec / recc,
+        totalWinRateListening: lc == 0 ? 0 : l / lc,
+        totalWinRateSpeaking: sc == 0 ? 0 : s / sc,
       );
     } catch (err) {
       return TestSpecificData.empty;

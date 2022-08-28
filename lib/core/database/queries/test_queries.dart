@@ -145,11 +145,13 @@ class TestQueries {
         late Map<String, num> additionalStudyParams;
         late Map<String, num> additionalTestParams;
 
-        // TODO: Local win rates are not correctly calculated. I am adding overalls + locals.
         switch (StudyModesUtil.mapStudyMode(test.studyMode)) {
           case StudyModes.writing:
             final totalTests = curr.testTotalCountWriting + 1;
-            final newAcc = (curr.testTotalWinRateWriting + score) / totalTests;
+            final newAcc =
+                ((curr.testTotalCountWriting * curr.testTotalWinRateWriting) +
+                        score) /
+                    totalTests;
             additionalStudyParams = {
               TestDataTableFields.testTotalCountWritingField: totalTests,
               TestDataTableFields.testTotalWinRateWritingField: newAcc,
@@ -164,7 +166,10 @@ class TestQueries {
             break;
           case StudyModes.reading:
             final totalTests = curr.testTotalCountReading + 1;
-            final newAcc = (curr.testTotalWinRateReading + score) / totalTests;
+            final newAcc =
+                ((curr.testTotalCountReading * curr.testTotalWinRateReading) +
+                        score) /
+                    totalTests;
             additionalStudyParams = {
               TestDataTableFields.testTotalCountReadingField: totalTests,
               TestDataTableFields.testTotalWinRateReadingField: newAcc,
@@ -179,8 +184,10 @@ class TestQueries {
             break;
           case StudyModes.recognition:
             final totalTests = curr.testTotalCountRecognition + 1;
-            final newAcc =
-                (curr.testTotalWinRateRecognition + score) / totalTests;
+            final newAcc = ((curr.testTotalCountRecognition *
+                        curr.testTotalWinRateRecognition) +
+                    score) /
+                totalTests;
             additionalStudyParams = {
               TestDataTableFields.testTotalCountRecognitionField: totalTests,
               TestDataTableFields.testTotalWinRateRecognitionField: newAcc,
@@ -195,8 +202,10 @@ class TestQueries {
             break;
           case StudyModes.listening:
             final totalTests = curr.testTotalCountListening + 1;
-            final newAcc =
-                (curr.testTotalWinRateListening + score) / totalTests;
+            final newAcc = ((curr.testTotalCountListening *
+                        curr.testTotalWinRateListening) +
+                    score) /
+                totalTests;
             additionalStudyParams = {
               TestDataTableFields.testTotalCountListeningField: totalTests,
               TestDataTableFields.testTotalWinRateListeningField: newAcc,
@@ -211,7 +220,10 @@ class TestQueries {
             break;
           case StudyModes.speaking:
             final totalTests = curr.testTotalCountSpeaking + 1;
-            final newAcc = (curr.testTotalWinRateSpeaking + score) / totalTests;
+            final newAcc =
+                ((curr.testTotalCountSpeaking * curr.testTotalWinRateSpeaking) +
+                        score) /
+                    totalTests;
             additionalStudyParams = {
               TestDataTableFields.testTotalCountSpeakingField: totalTests,
               TestDataTableFields.testTotalWinRateSpeakingField: newAcc,

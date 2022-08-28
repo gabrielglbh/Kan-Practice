@@ -119,7 +119,7 @@ class TestQueries {
           where: "${TestDataTableFields.statsIdField}=?",
           whereArgs: [TestDataTableFields.statsMainId],
         );
-        if (res != null) {
+        if (res != null && res.isNotEmpty) {
           /// Populate all TestSpecificData
           TestData rawTestData = TestData.fromJson(res[0]);
           for (var t in Tests.values) {

@@ -21,20 +21,28 @@ class TestData {
   final double testTotalWinRateListening;
   final double testTotalWinRateSpeaking;
   final int selectionTests;
+  @JsonKey(ignore: true)
   final TestSpecificData selectionTestData;
   final int blitzTests;
+  @JsonKey(ignore: true)
   final TestSpecificData blitzTestData;
   final int remembranceTests;
+  @JsonKey(ignore: true)
   final TestSpecificData remembranceTestData;
   final int numberTests;
+  @JsonKey(ignore: true)
   final TestSpecificData numberTestData;
   final int lessPctTests;
+  @JsonKey(ignore: true)
   final TestSpecificData lessPctTestData;
   final int categoryTests;
+  @JsonKey(ignore: true)
   final TestSpecificData categoryTestData;
   final int folderTests;
+  @JsonKey(ignore: true)
   final TestSpecificData folderTestData;
   final int dailyTests;
+  @JsonKey(ignore: true)
   final TestSpecificData dailyTestData;
 
   const TestData({
@@ -52,21 +60,21 @@ class TestData {
     required this.testTotalWinRateListening,
     required this.testTotalWinRateSpeaking,
     required this.selectionTests,
-    required this.selectionTestData,
     required this.blitzTests,
-    required this.blitzTestData,
     required this.remembranceTests,
-    required this.remembranceTestData,
     required this.numberTests,
-    required this.numberTestData,
     required this.lessPctTests,
-    required this.lessPctTestData,
     required this.categoryTests,
-    required this.categoryTestData,
     required this.folderTests,
-    required this.folderTestData,
     required this.dailyTests,
-    required this.dailyTestData,
+    this.selectionTestData = TestSpecificData.empty,
+    this.blitzTestData = TestSpecificData.empty,
+    this.remembranceTestData = TestSpecificData.empty,
+    this.numberTestData = TestSpecificData.empty,
+    this.lessPctTestData = TestSpecificData.empty,
+    this.categoryTestData = TestSpecificData.empty,
+    this.folderTestData = TestSpecificData.empty,
+    this.dailyTestData = TestSpecificData.empty,
   });
 
   TestData copyWith(TestSpecificData testSpecs) {
@@ -118,21 +126,13 @@ class TestData {
     testTotalWinRateListening: 0,
     testTotalWinRateSpeaking: 0,
     selectionTests: 0,
-    selectionTestData: TestSpecificData.empty,
     blitzTests: 0,
-    blitzTestData: TestSpecificData.empty,
     remembranceTests: 0,
-    remembranceTestData: TestSpecificData.empty,
     numberTests: 0,
-    numberTestData: TestSpecificData.empty,
     lessPctTests: 0,
-    lessPctTestData: TestSpecificData.empty,
     categoryTests: 0,
-    categoryTestData: TestSpecificData.empty,
     folderTests: 0,
-    folderTestData: TestSpecificData.empty,
     dailyTests: 0,
-    dailyTestData: TestSpecificData.empty,
   );
 
   factory TestData.fromJson(Map<String, dynamic> json) =>

@@ -26,29 +26,13 @@ TestData _$TestDataFromJson(Map<String, dynamic> json) => TestData(
       testTotalWinRateSpeaking:
           (json['testTotalWinRateSpeaking'] as num).toDouble(),
       selectionTests: json['selectionTests'] as int,
-      selectionTestData: TestSpecificData.fromJson(
-          json['selectionTestData'] as Map<String, dynamic>),
       blitzTests: json['blitzTests'] as int,
-      blitzTestData: TestSpecificData.fromJson(
-          json['blitzTestData'] as Map<String, dynamic>),
       remembranceTests: json['remembranceTests'] as int,
-      remembranceTestData: TestSpecificData.fromJson(
-          json['remembranceTestData'] as Map<String, dynamic>),
       numberTests: json['numberTests'] as int,
-      numberTestData: TestSpecificData.fromJson(
-          json['numberTestData'] as Map<String, dynamic>),
       lessPctTests: json['lessPctTests'] as int,
-      lessPctTestData: TestSpecificData.fromJson(
-          json['lessPctTestData'] as Map<String, dynamic>),
       categoryTests: json['categoryTests'] as int,
-      categoryTestData: TestSpecificData.fromJson(
-          json['categoryTestData'] as Map<String, dynamic>),
       folderTests: json['folderTests'] as int,
-      folderTestData: TestSpecificData.fromJson(
-          json['folderTestData'] as Map<String, dynamic>),
       dailyTests: json['dailyTests'] as int,
-      dailyTestData: TestSpecificData.fromJson(
-          json['dailyTestData'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$TestDataToJson(TestData instance) => <String, dynamic>{
@@ -66,19 +50,11 @@ Map<String, dynamic> _$TestDataToJson(TestData instance) => <String, dynamic>{
       'testTotalWinRateListening': instance.testTotalWinRateListening,
       'testTotalWinRateSpeaking': instance.testTotalWinRateSpeaking,
       'selectionTests': instance.selectionTests,
-      'selectionTestData': instance.selectionTestData,
       'blitzTests': instance.blitzTests,
-      'blitzTestData': instance.blitzTestData,
       'remembranceTests': instance.remembranceTests,
-      'remembranceTestData': instance.remembranceTestData,
       'numberTests': instance.numberTests,
-      'numberTestData': instance.numberTestData,
       'lessPctTests': instance.lessPctTests,
-      'lessPctTestData': instance.lessPctTestData,
       'categoryTests': instance.categoryTests,
-      'categoryTestData': instance.categoryTestData,
       'folderTests': instance.folderTests,
-      'folderTestData': instance.folderTestData,
       'dailyTests': instance.dailyTests,
-      'dailyTestData': instance.dailyTestData,
     };

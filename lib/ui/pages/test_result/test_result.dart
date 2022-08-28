@@ -30,7 +30,7 @@ class _TestResultState extends State<TestResult> {
     final test = Test(
         testScore: widget.args.score,
         kanjiInTest: widget.args.kanji,
-        studyMode: widget.args.testMode,
+        studyMode: widget.args.studyMode,
         testMode: widget.args.testMode,
         kanjiLists: widget.args.listsName,
         takenDate: GeneralUtils.getCurrentMilliseconds());

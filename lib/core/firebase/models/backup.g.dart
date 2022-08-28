@@ -13,9 +13,7 @@ BackUp _$BackUpFromJson(Map<String, dynamic> json) => BackUp(
       kanji: (json['kanji'] as List<dynamic>)
           .map((e) => Kanji.fromJson(e as Map<String, dynamic>))
           .toList(),
-      test: (json['test'] as List<dynamic>)
-          .map((e) => Test.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      testData: TestData.fromJson(json['testData'] as Map<String, dynamic>),
       folders: (json['folders'] as List<dynamic>)
           .map((e) => Folder.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -28,7 +26,7 @@ BackUp _$BackUpFromJson(Map<String, dynamic> json) => BackUp(
 Map<String, dynamic> _$BackUpToJson(BackUp instance) => <String, dynamic>{
       'lists': instance.lists,
       'kanji': instance.kanji,
-      'test': instance.test,
+      'testData': instance.testData,
       'folders': instance.folders,
       'relFolderKanList': instance.relFolderKanList,
       'lastUpdated': instance.lastUpdated,

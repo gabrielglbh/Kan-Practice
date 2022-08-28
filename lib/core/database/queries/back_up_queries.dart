@@ -5,7 +5,7 @@ import 'package:kanpractice/core/database/models/folder.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/models/rel_folder_kanlist.dart';
-import 'package:kanpractice/core/database/models/test_result.dart';
+import 'package:kanpractice/core/database/models/test_data.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -28,7 +28,7 @@ class BackUpQueries {
     List<Kanji> kanji,
     List<KanjiList> lists,
     List<Folder> folders,
-    List<Test> tests,
+    TestData testData,
     List<RelFolderKanList> relFolderKanList,
   ) async {
     if (_database != null) {
@@ -57,16 +57,8 @@ class BackUpQueries {
               conflictAlgorithm: ConflictAlgorithm.replace);
         }
 
-        /// Tests can be dismissed, checking if the test array has something
-        if (tests.isNotEmpty) {
-          for (int x = 0; x < tests.length; x++) {
-            batch?.insert(TestTableFields.testTable, tests[x].toJson(),
-                conflictAlgorithm: ConflictAlgorithm.replace);
-            if (tests[x].testMode == -1) {
-              utils.batchUpdateTestMode(batch, tests[x]);
-            }
-          }
-        }
+        batch?.insert(TestDataTableFields.testDataTable, testData.toJson(),
+            conflictAlgorithm: ConflictAlgorithm.replace);
 
         for (int x = 0; x < relFolderKanList.length; x++) {
           batch?.insert(KanListFolderRelationTableFields.relTable,

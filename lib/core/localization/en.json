@@ -53,7 +53,7 @@
   "backup_merge_tile": "Install Back Up",
   "backup_removal_tile": "Remove Back Up",
   "backup_creation_dialog_title": "Creating Back Up",
-  "backup_creation_dialog_content": "The back up will be created in the cloud. The current data in your device will be saved replacing the current back up data. Tests will not be saved. Do you want to proceed?",
+  "backup_creation_dialog_content": "The back up will be created in the cloud. The current data in your device will be saved replacing the current back up data. Do you want to proceed?",
   "backup_creation_dialog_positive": "Create",
   "backup_creation_dialog_tests": "Do you want to store all your tests?",
   "backup_merge_dialog_title": "Installing Back Up",

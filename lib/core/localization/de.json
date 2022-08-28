@@ -53,7 +53,7 @@
   "backup_merge_tile": "Datensicherung zusammenführen",
   "backup_removal_tile": "Datensicherung löschen",
   "backup_creation_dialog_title": "Datensicherung wird erstellt",
-  "backup_creation_dialog_content": "Die Datensicherung wird in der Cloud erstellt. Die aktuellen Daten auf Ihrem Gerät werden gespeichert und ersetzen die aktuellen Sicherungsdaten. Tests werden nicht gespeichert. Wollen Sie fortfahren? ",
+  "backup_creation_dialog_content": "Die Datensicherung wird in der Cloud erstellt. Die aktuellen Daten auf Ihrem Gerät werden gespeichert und ersetzen die aktuellen Sicherungsdaten. Wollen Sie fortfahren? ",
   "backup_creation_dialog_positive": "Erstellen",
   "backup_creation_dialog_tests": "Möchten Sie alle Ihre Tests speichern?",
   "backup_merge_dialog_title": "Kombiniere Datensicherungseinträge",

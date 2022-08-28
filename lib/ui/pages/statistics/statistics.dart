@@ -10,6 +10,7 @@ import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_dependent_graph.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_test_spec_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_vertical_chart.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
@@ -168,6 +169,25 @@ class StatisticsPage extends StatelessWidget {
         ),
         const Divider(),
         _header(context, "stats_tests_by_type".tr(), ""),
+        Padding(
+          padding: const EdgeInsets.only(
+            left: Margins.margin16,
+            right: Margins.margin16,
+            bottom: Margins.margin8,
+          ),
+          child: Row(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(right: Margins.margin8),
+                child: Icon(Icons.info_rounded, size: 16, color: Colors.grey),
+              ),
+              Text(
+                "stats_tests_tap_to_specs".tr(),
+                style: Theme.of(context).textTheme.caption,
+              ),
+            ],
+          ),
+        ),
         _expandedTestCount(context, s),
         const Divider(),
         _header(context, "${"stats_tests_total_acc".tr()} • ",
@@ -219,6 +239,12 @@ class StatisticsPage extends StatelessWidget {
 
   Widget _expandedTestCount(BuildContext context, KanPracticeStats s) {
     return KPVerticalBarChart(
+      onBarTapped: (model) {
+        if (model.selectedDatum.isNotEmpty) {
+          TestSpecBottomSheet.show(context,
+              TestsUtils.mapTestMode(model.selectedDatum[0].index ?? -1));
+        }
+      },
       dataSource: List.generate(Tests.values.length, (index) {
         switch (Tests.values[index]) {
           case Tests.lists:

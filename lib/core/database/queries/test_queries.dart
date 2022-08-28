@@ -110,6 +110,28 @@ class TestQueries {
     }
   }
 
+  Future<TestSpecificData> getSpecificTestData(Tests mode) async {
+    if (_database != null) {
+      try {
+        final res = await _database?.query(
+          TestSpecificDataTableFields.testDataTable,
+          where: "${TestSpecificDataTableFields.idField}=?",
+          whereArgs: [mode.index],
+        );
+        if (res != null) {
+          return TestSpecificData.fromJson(res[0]);
+        } else {
+          return TestSpecificData.empty;
+        }
+      } catch (err) {
+        print(err.toString());
+        return TestSpecificData.empty;
+      }
+    } else {
+      return TestSpecificData.empty;
+    }
+  }
+
   /// Get all stats from DB
   Future<TestData> getTestDataFromDb() async {
     if (_database != null) {
@@ -123,14 +145,9 @@ class TestQueries {
           /// Populate all TestSpecificData
           TestData rawTestData = TestData.fromJson(res[0]);
           for (var t in Tests.values) {
-            final rawSpec = await _database?.query(
-              TestSpecificDataTableFields.testDataTable,
-              where: "${TestSpecificDataTableFields.idField}=?",
-              whereArgs: [t.index],
-            );
-            if (rawSpec != null && rawSpec.isNotEmpty) {
-              rawTestData =
-                  rawTestData.copyWith(TestSpecificData.fromJson(rawSpec[0]));
+            final rawSpec = await getSpecificTestData(t);
+            if (rawSpec != TestSpecificData.empty) {
+              rawTestData = rawTestData.copyWith(rawSpec);
             }
           }
           return rawTestData;
@@ -294,65 +311,62 @@ class TestQueries {
 
   /// Updates the [test] specific stats using N*C + C' / N'
   Future<void> _updateSpecificTestStats(Test test) async {
-    final mode = test.testMode!;
-    final raw = await _database?.query(
-      TestSpecificDataTableFields.testDataTable,
-      where: "${TestSpecificDataTableFields.idField}=?",
-      whereArgs: [mode],
-    );
+    final raw =
+        await getSpecificTestData(TestsUtils.mapTestMode(test.testMode!));
 
-    if (raw != null && raw.isNotEmpty) {
-      final spec = TestSpecificData.fromJson(raw[0]);
-      final Map<String, num> map = {TestSpecificDataTableFields.idField: mode};
+    if (raw != TestSpecificData.empty) {
+      final Map<String, num> map = {
+        TestSpecificDataTableFields.idField: raw.id
+      };
       late Map<String, num> additionalSpecs;
 
       switch (StudyModesUtil.mapStudyMode(test.studyMode)) {
         case StudyModes.writing:
-          final count = spec.totalWritingCount + 1;
+          final count = raw.totalWritingCount + 1;
           additionalSpecs = {
             TestSpecificDataTableFields.totalWritingCountField: count,
             TestSpecificDataTableFields.totalWinRateWritingField:
-                ((spec.totalWinRateWriting * spec.totalWritingCount) +
+                ((raw.totalWinRateWriting * raw.totalWritingCount) +
                         test.testScore) /
                     count
           };
           break;
         case StudyModes.reading:
-          final count = spec.totalReadingCount + 1;
+          final count = raw.totalReadingCount + 1;
           additionalSpecs = {
             TestSpecificDataTableFields.totalReadingCountField: count,
             TestSpecificDataTableFields.totalWinRateReadingField:
-                ((spec.totalWinRateReading * spec.totalReadingCount) +
+                ((raw.totalWinRateReading * raw.totalReadingCount) +
                         test.testScore) /
                     count
           };
           break;
         case StudyModes.recognition:
-          final count = spec.totalRecognitionCount + 1;
+          final count = raw.totalRecognitionCount + 1;
           additionalSpecs = {
             TestSpecificDataTableFields.totalRecognitionCountField: count,
             TestSpecificDataTableFields.totalWinRateRecognitionField:
-                ((spec.totalWinRateRecognition * spec.totalRecognitionCount) +
+                ((raw.totalWinRateRecognition * raw.totalRecognitionCount) +
                         test.testScore) /
                     count
           };
           break;
         case StudyModes.listening:
-          final count = spec.totalListeningCount + 1;
+          final count = raw.totalListeningCount + 1;
           additionalSpecs = {
             TestSpecificDataTableFields.totalListeningCountField: count,
             TestSpecificDataTableFields.totalWinRateListeningField:
-                ((spec.totalWinRateListening * spec.totalListeningCount) +
+                ((raw.totalWinRateListening * raw.totalListeningCount) +
                         test.testScore) /
                     count
           };
           break;
         case StudyModes.speaking:
-          final count = spec.totalSpeakingCount + 1;
+          final count = raw.totalSpeakingCount + 1;
           additionalSpecs = {
             TestSpecificDataTableFields.totalSpeakingCountField: count,
             TestSpecificDataTableFields.totalWinRateSpeakingField:
-                ((spec.totalWinRateSpeaking * spec.totalSpeakingCount) +
+                ((raw.totalWinRateSpeaking * raw.totalSpeakingCount) +
                         test.testScore) /
                     count
           };
@@ -365,14 +379,14 @@ class TestQueries {
         TestSpecificDataTableFields.testDataTable,
         map,
         where: "${TestSpecificDataTableFields.idField}=?",
-        whereArgs: [mode],
+        whereArgs: [raw.id],
       );
     } else {
-      final m = StudyModesUtil.mapStudyMode(mode);
+      final m = StudyModesUtil.mapStudyMode(test.studyMode);
       await _database?.insert(
         TestSpecificDataTableFields.testDataTable,
         TestSpecificData(
-          id: mode,
+          id: test.testMode!,
           totalWritingCount: m == StudyModes.writing ? 1 : 0,
           totalReadingCount: m == StudyModes.reading ? 1 : 0,
           totalRecognitionCount: m == StudyModes.recognition ? 1 : 0,

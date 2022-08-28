@@ -364,5 +364,6 @@
   "daily_test_cannot_go_back": "Sie führen gerade einen täglichen Test durch. Beenden Sie den Test, Sie können es schaffen!",
   "settings_notifications_label": "Aktivieren/Deaktivieren von Benachrichtigungen",
   "stats_tests_by_type": "Gesamtzahl der Tests nach Typ",
-  "stats_tests_total_acc": "Gesamt-Genauigkeit nach Studienmodus"
+  "stats_tests_total_acc": "Gesamt-Genauigkeit nach Studienmodus",
+  "stats_tests_tap_to_specs": "Tippen Sie auf die Balken, um mehr Details für jeden Testtyp zu sehen"
 }

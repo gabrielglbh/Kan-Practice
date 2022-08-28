@@ -364,5 +364,6 @@
   "daily_test_cannot_go_back": "You are performing a daily test. Finish the test, you can do it!",
   "settings_notifications_label": "Enable/Disable Notifications",
   "stats_tests_by_type": "Total Number of Tests by Type",
-  "stats_tests_total_acc": "Total Accuracy by Study Mode"
+  "stats_tests_total_acc": "Total Accuracy by Study Mode",
+  "stats_tests_tap_to_specs": "Tap on the bars to see more details for each test type"
 }

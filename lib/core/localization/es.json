@@ -364,5 +364,6 @@
   "daily_test_cannot_go_back": "Estás haciendo un test diario. Termina el test, ¡tú puedes!",
   "settings_notifications_label": "Activar/Desactivar Notificaciones",
   "stats_tests_by_type": "Número Total de Tests por Tipo",
-  "stats_tests_total_acc": "Acierto Total por Modo de Estudio"
+  "stats_tests_total_acc": "Acierto Total por Modo de Estudio",
+  "stats_tests_tap_to_specs": "Toca las barras para conocer más detalles de cada tipo de test"
 }

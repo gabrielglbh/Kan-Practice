@@ -92,6 +92,11 @@ class TestDataTableFields {
 class TestSpecificDataTableFields {
   static const String testDataTable = "TEST_SPECIFIC_ACC_TABLE";
   static const String idField = "id";
+  static const String totalWritingCountField = "totalWritingCount";
+  static const String totalReadingCountField = "totalReadingCount";
+  static const String totalRecognitionCountField = "totalRecognitionCount";
+  static const String totalListeningCountField = "totalListeningCount";
+  static const String totalSpeakingCountField = "totalSpeakingCount";
   static const String totalWinRateWritingField = "totalWinRateWriting";
   static const String totalWinRateReadingField = "totalWinRateReading";
   static const String totalWinRateRecognitionField = "totalWinRateRecognition";

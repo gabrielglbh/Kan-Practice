@@ -32,6 +32,11 @@ class Migrations extends MigrationUtils {
     await db.execute(
         "CREATE TABLE ${TestSpecificDataTableFields.testDataTable}("
         "${TestSpecificDataTableFields.idField} INTEGER NOT NULL PRIMARY KEY DEFAULT -1, "
+        "${TestSpecificDataTableFields.totalWritingCountField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestSpecificDataTableFields.totalReadingCountField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestSpecificDataTableFields.totalRecognitionCountField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestSpecificDataTableFields.totalListeningCountField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestSpecificDataTableFields.totalSpeakingCountField} INTEGER NOT NULL DEFAULT 0, "
         "${TestSpecificDataTableFields.totalWinRateWritingField} INTEGER NOT NULL DEFAULT 0, "
         "${TestSpecificDataTableFields.totalWinRateReadingField} INTEGER NOT NULL DEFAULT 0, "
         "${TestSpecificDataTableFields.totalWinRateRecognitionField} INTEGER NOT NULL DEFAULT 0, "

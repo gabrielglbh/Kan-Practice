@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/test_specific_data.dart';
+import 'package:kanpractice/core/types/test_modes.dart';
 
 part 'test_data.g.dart';
 
@@ -67,6 +68,40 @@ class TestData {
     required this.dailyTests,
     required this.dailyTestData,
   });
+
+  TestData copyWith(TestSpecificData testSpecs) {
+    final test = TestsUtils.mapTestMode(testSpecs.id);
+    return TestData(
+      totalTests: totalTests,
+      totalTestAccuracy: totalTestAccuracy,
+      testTotalCountWriting: testTotalCountWriting,
+      testTotalCountReading: testTotalCountReading,
+      testTotalCountRecognition: testTotalCountRecognition,
+      testTotalCountListening: testTotalCountListening,
+      testTotalCountSpeaking: testTotalCountSpeaking,
+      testTotalWinRateWriting: testTotalWinRateWriting,
+      testTotalWinRateReading: testTotalWinRateReading,
+      testTotalWinRateRecognition: testTotalWinRateRecognition,
+      testTotalWinRateListening: testTotalWinRateListening,
+      testTotalWinRateSpeaking: testTotalWinRateSpeaking,
+      selectionTests: selectionTests,
+      selectionTestData: test == Tests.lists ? testSpecs : selectionTestData,
+      blitzTests: blitzTests,
+      blitzTestData: test == Tests.blitz ? testSpecs : blitzTestData,
+      remembranceTests: remembranceTests,
+      remembranceTestData: test == Tests.time ? testSpecs : remembranceTestData,
+      numberTests: numberTests,
+      numberTestData: test == Tests.numbers ? testSpecs : numberTestData,
+      lessPctTests: lessPctTests,
+      lessPctTestData: test == Tests.less ? testSpecs : lessPctTestData,
+      categoryTests: categoryTests,
+      categoryTestData: test == Tests.categories ? testSpecs : categoryTestData,
+      folderTests: folderTests,
+      folderTestData: test == Tests.folder ? testSpecs : folderTestData,
+      dailyTests: dailyTests,
+      dailyTestData: test == Tests.daily ? testSpecs : dailyTestData,
+    );
+  }
 
   /// Empty instance of [BackUp]
   static const TestData empty = TestData(

@@ -226,36 +226,46 @@ class MigrationUtils {
       List<Test> t = List.generate(res.length, (i) => Test.fromJson(res[i]));
       if (t.isEmpty) return TestSpecificData.empty;
 
-      final testCount = t.length;
       double w = 0, red = 0, rec = 0, l = 0, s = 0;
+      int wc = 0, redc = 0, recc = 0, lc = 0, sc = 0;
 
       for (var test in t) {
         switch (StudyModesUtil.mapStudyMode(test.studyMode)) {
           case StudyModes.writing:
             w += test.testScore;
+            wc += 1;
             break;
           case StudyModes.reading:
             red += test.testScore;
+            redc += 1;
             break;
           case StudyModes.recognition:
             rec += test.testScore;
+            recc += 1;
             break;
           case StudyModes.listening:
             l += test.testScore;
+            lc += 1;
             break;
           case StudyModes.speaking:
             s += test.testScore;
+            sc += 1;
             break;
         }
       }
 
       return TestSpecificData(
         id: mode.index,
-        totalWinRateWriting: w / testCount,
-        totalWinRateReading: red / testCount,
-        totalWinRateRecognition: rec / testCount,
-        totalWinRateListening: l / testCount,
-        totalWinRateSpeaking: s / testCount,
+        totalWritingCount: wc,
+        totalReadingCount: redc,
+        totalRecognitionCount: recc,
+        totalListeningCount: lc,
+        totalSpeakingCount: sc,
+        totalWinRateWriting: w / wc,
+        totalWinRateReading: red / redc,
+        totalWinRateRecognition: rec / recc,
+        totalWinRateListening: l / lc,
+        totalWinRateSpeaking: s / sc,
       );
     } catch (err) {
       return TestSpecificData.empty;

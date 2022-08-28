@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
+import 'package:kanpractice/core/database/models/test_result.dart';
 import 'package:kanpractice/core/database/queries/test_queries.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/general_utils.dart';
@@ -26,8 +27,15 @@ class _TestResultState extends State<TestResult> {
   /// Saves the current test on the database on the initialization of the current
   /// page to avoid unusual behaviors.
   Future<void> _saveTest() async {
-    await TestQueries.instance.createTest(widget.args.score, widget.args.kanji,
-        widget.args.studyMode, widget.args.testMode, widget.args.listsName);
+    final test = Test(
+        testScore: widget.args.score,
+        kanjiInTest: widget.args.kanji,
+        studyMode: widget.args.studyMode,
+        testMode: widget.args.testMode,
+        kanjiLists: widget.args.listsName,
+        takenDate: GeneralUtils.getCurrentMilliseconds());
+    await TestQueries.instance.createTest(test);
+    await TestQueries.instance.updateStats(test);
   }
 
   @override

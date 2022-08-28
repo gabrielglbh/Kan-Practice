@@ -3,7 +3,8 @@ import 'package:kanpractice/core/database/models/folder.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/models/rel_folder_kanlist.dart';
-import 'package:kanpractice/core/database/models/test_result.dart';
+import 'package:kanpractice/core/database/models/test_data.dart';
+import 'package:kanpractice/core/database/models/test_specific_data.dart';
 
 part 'backup.g.dart';
 
@@ -11,14 +12,16 @@ part 'backup.g.dart';
 class BackUp {
   final List<KanjiList> lists;
   final List<Kanji> kanji;
-  final List<Test> test;
+  final TestData testData;
+  final List<TestSpecificData> testSpecData;
   final List<Folder> folders;
   final List<RelFolderKanList> relFolderKanList;
   final int lastUpdated;
 
   static const String kanjiLabel = "kanji";
   static const String listLabel = "lists";
-  static const String testLabel = "test";
+  static const String testLabel = "testData";
+  static const String testSpecLabel = "testSpecData";
   static const String folderLabel = "folders";
   static const String relFolderKanListLabel = "relFK";
   static const String updatedLabel = "lastUpdated";
@@ -26,7 +29,8 @@ class BackUp {
   const BackUp(
       {required this.lists,
       required this.kanji,
-      required this.test,
+      required this.testData,
+      required this.testSpecData,
       required this.folders,
       required this.relFolderKanList,
       required this.lastUpdated});
@@ -35,7 +39,8 @@ class BackUp {
   static const BackUp empty = BackUp(
     lists: [],
     kanji: [],
-    test: [],
+    testData: TestData.empty,
+    testSpecData: [],
     folders: [],
     relFolderKanList: [],
     lastUpdated: 0,

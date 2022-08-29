@@ -315,15 +315,12 @@ class TestQueries {
         await getSpecificTestData(TestsUtils.mapTestMode(test.testMode!));
 
     if (raw != TestSpecificData.empty) {
-      final Map<String, num> map = {
-        TestSpecificDataTableFields.idField: raw.id
-      };
-      late Map<String, num> additionalSpecs;
+      late Map<String, num> map;
 
       switch (StudyModesUtil.mapStudyMode(test.studyMode)) {
         case StudyModes.writing:
           final count = raw.totalWritingCount + 1;
-          additionalSpecs = {
+          map = {
             TestSpecificDataTableFields.totalWritingCountField: count,
             TestSpecificDataTableFields.totalWinRateWritingField:
                 ((raw.totalWinRateWriting * raw.totalWritingCount) +
@@ -333,7 +330,7 @@ class TestQueries {
           break;
         case StudyModes.reading:
           final count = raw.totalReadingCount + 1;
-          additionalSpecs = {
+          map = {
             TestSpecificDataTableFields.totalReadingCountField: count,
             TestSpecificDataTableFields.totalWinRateReadingField:
                 ((raw.totalWinRateReading * raw.totalReadingCount) +
@@ -343,7 +340,7 @@ class TestQueries {
           break;
         case StudyModes.recognition:
           final count = raw.totalRecognitionCount + 1;
-          additionalSpecs = {
+          map = {
             TestSpecificDataTableFields.totalRecognitionCountField: count,
             TestSpecificDataTableFields.totalWinRateRecognitionField:
                 ((raw.totalWinRateRecognition * raw.totalRecognitionCount) +
@@ -353,7 +350,7 @@ class TestQueries {
           break;
         case StudyModes.listening:
           final count = raw.totalListeningCount + 1;
-          additionalSpecs = {
+          map = {
             TestSpecificDataTableFields.totalListeningCountField: count,
             TestSpecificDataTableFields.totalWinRateListeningField:
                 ((raw.totalWinRateListening * raw.totalListeningCount) +
@@ -363,7 +360,7 @@ class TestQueries {
           break;
         case StudyModes.speaking:
           final count = raw.totalSpeakingCount + 1;
-          additionalSpecs = {
+          map = {
             TestSpecificDataTableFields.totalSpeakingCountField: count,
             TestSpecificDataTableFields.totalWinRateSpeakingField:
                 ((raw.totalWinRateSpeaking * raw.totalSpeakingCount) +
@@ -372,8 +369,6 @@ class TestQueries {
           };
           break;
       }
-
-      map.addEntries(additionalSpecs.entries);
 
       await _database?.update(
         TestSpecificDataTableFields.testDataTable,

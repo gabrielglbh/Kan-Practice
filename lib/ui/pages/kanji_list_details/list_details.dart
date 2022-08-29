@@ -14,7 +14,7 @@ import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/bloc/details_bloc.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/widgets/kanji_item.dart';
 import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
+import 'package:kanpractice/ui/pages/study_modes/utils/mode_arguments.dart';
 import 'package:kanpractice/ui/widgets/folder_list_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/blitz/kp_blitz_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';

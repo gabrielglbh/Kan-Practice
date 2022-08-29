@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/core/database/queries/test_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/ui/general_utils.dart';
@@ -239,10 +240,13 @@ class StatisticsPage extends StatelessWidget {
 
   Widget _expandedTestCount(BuildContext context, KanPracticeStats s) {
     return KPVerticalBarChart(
-      onBarTapped: (model) {
+      onBarTapped: (model) async {
         if (model.selectedDatum.isNotEmpty) {
-          TestSpecBottomSheet.show(context,
-              TestsUtils.mapTestMode(model.selectedDatum[0].index ?? -1));
+          final mode =
+              TestsUtils.mapTestMode(model.selectedDatum[0].index ?? -1);
+          final data = await TestQueries.instance.getSpecificTestData(mode);
+          // ignore: use_build_context_synchronously
+          TestSpecBottomSheet.show(context, mode, data);
         }
       },
       dataSource: List.generate(Tests.values.length, (index) {

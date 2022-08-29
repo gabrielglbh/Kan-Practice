@@ -157,7 +157,7 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
               TTSIconButton(kanji: widget.args.studyList[_macro].pronunciation),
         )
       ],
-      child: Stack(
+      child: Column(
         children: [
           Column(
             children: [
@@ -166,19 +166,14 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
               KPLearningHeaderAnimation(id: _macro, children: _header()),
             ],
           ),
-          Positioned(
-            bottom: Margins.margin64,
-            right: 0,
-            left: 0,
-            child: KPValidationButtons(
-              trigger: _showInfo,
-              submitLabel: "done_button_label".tr(),
-              wrongAction: (score) async => await _updateUIOnSubmit(score),
-              midWrongAction: (score) async => await _updateUIOnSubmit(score),
-              midPerfectAction: (score) async => await _updateUIOnSubmit(score),
-              perfectAction: (score) async => await _updateUIOnSubmit(score),
-              onSubmit: () => setState(() => _showInfo = true),
-            ),
+          KPValidationButtons(
+            trigger: _showInfo,
+            submitLabel: "done_button_label".tr(),
+            wrongAction: (score) async => await _updateUIOnSubmit(score),
+            midWrongAction: (score) async => await _updateUIOnSubmit(score),
+            midPerfectAction: (score) async => await _updateUIOnSubmit(score),
+            perfectAction: (score) async => await _updateUIOnSubmit(score),
+            onSubmit: () => setState(() => _showInfo = true),
           )
         ],
       ),

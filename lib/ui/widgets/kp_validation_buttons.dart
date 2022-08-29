@@ -41,13 +41,15 @@ class KPValidationButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: CustomSizes.listStudyHeight,
-      child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: CustomAnimations.ms300),
-          switchInCurve: Curves.easeOut,
-          switchOutCurve: Curves.easeOut,
-          child: trigger ? _validation() : _submit()),
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: Margins.margin16),
+        child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: CustomAnimations.ms300),
+            switchInCurve: Curves.easeOut,
+            switchOutCurve: Curves.easeOut,
+            child: trigger ? _validation() : _submit()),
+      ),
     );
   }
 
@@ -78,61 +80,62 @@ class KPValidationButtons extends StatelessWidget {
   Widget _submit() {
     return _animation(
         side: true,
-        child: KPActionButton(
-            vertical: Margins.margin12,
-            horizontal: 0,
-            label: submitLabel,
-            onTap: onSubmit));
+        child: SizedBox(
+          height: CustomSizes.customButtonHeight,
+          child: KPActionButton(
+              vertical: Margins.margin12,
+              horizontal: Margins.margin8,
+              label: submitLabel,
+              onTap: onSubmit),
+        ));
   }
 
   /// This buttons will slide from the top one by one
-  Row _validation() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+  GridView _validation() {
+    return GridView(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 1.9,
+      ),
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
       children: [
-        Expanded(
-          flex: 1,
-          child: _animation(
-              duration: 1,
-              child: KPActionButton(
-                label: "wrong_button_label".tr(),
-                horizontal: Margins.margin2,
-                onTap: () async => await wrongAction(0),
-                color: Colors.red[700]!,
-              )),
-        ),
-        Expanded(
-          flex: 1,
-          child: _animation(
-              duration: 2,
-              child: KPActionButton(
-                label: "mid_wrong_button_label".tr(),
-                horizontal: Margins.margin2,
-                onTap: () async => await midWrongAction(0.33),
-                color: Colors.yellow[800]!,
-              )),
-        ),
-        Expanded(
-            flex: 1,
-            child: _animation(
-                duration: 3,
-                child: KPActionButton(
-                  label: "mid_perfect_button_label".tr(),
-                  horizontal: Margins.margin2,
-                  onTap: () async => await midPerfectAction(0.66),
-                  color: Colors.green[300]!,
-                ))),
-        Expanded(
-          flex: 1,
-          child: _animation(
-              duration: 4,
-              child: KPActionButton(
-                label: "perfect_button_label".tr(),
-                horizontal: Margins.margin2,
-                onTap: () async => await perfectAction(1),
-                color: Colors.green[700]!,
-              )),
-        )
+        _animation(
+            duration: 1,
+            child: KPActionButton(
+              label: "wrong_button_label".tr(),
+              horizontal: Margins.margin4,
+              vertical: Margins.margin4,
+              onTap: () async => await wrongAction(0),
+              color: Colors.red[700]!,
+            )),
+        _animation(
+            duration: 2,
+            child: KPActionButton(
+              label: "mid_wrong_button_label".tr(),
+              horizontal: Margins.margin4,
+              vertical: Margins.margin4,
+              onTap: () async => await midWrongAction(0.33),
+              color: Colors.yellow[800]!,
+            )),
+        _animation(
+            duration: 3,
+            child: KPActionButton(
+              label: "mid_perfect_button_label".tr(),
+              horizontal: Margins.margin4,
+              vertical: Margins.margin4,
+              onTap: () async => await midPerfectAction(0.66),
+              color: Colors.green[300]!,
+            )),
+        _animation(
+            duration: 4,
+            child: KPActionButton(
+              label: "perfect_button_label".tr(),
+              horizontal: Margins.margin4,
+              vertical: Margins.margin4,
+              onTap: () async => await perfectAction(1),
+              color: Colors.green[700]!,
+            ))
       ],
     );
   }

@@ -20,6 +20,21 @@ extension StudyModesExt on StudyModes {
     }
   }
 
+  IconData get icon {
+    switch (this) {
+      case StudyModes.writing:
+        return Icons.edit_note_outlined;
+      case StudyModes.reading:
+        return Icons.chrome_reader_mode_outlined;
+      case StudyModes.recognition:
+        return Icons.find_in_page_rounded;
+      case StudyModes.listening:
+        return Icons.volume_up_rounded;
+      case StudyModes.speaking:
+        return Icons.spatial_audio_off_rounded;
+    }
+  }
+
   String get japMode {
     switch (this) {
       case StudyModes.writing:

@@ -60,6 +60,16 @@ class GeneralUtils {
     }
   }
 
+  /// Opens up a [url]
+  static Future<void> launch(BuildContext context, String url) async {
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url),
+          mode: LaunchMode.externalNonBrowserApplication);
+    } else {
+      getSnackBar(context, "launch_url_failed".tr());
+    }
+  }
+
   /// Returns the text color based on the given [score]
   static Color getTextColorBasedOnScore(double score) {
     if (score >= 0 && score <= 0.2) {
@@ -159,9 +169,7 @@ class GeneralUtils {
               : 'Ok',
           onPositive: () async {
             if (version != null) {
-              if (await canLaunchUrl(Uri.parse("google_play_link".tr()))) {
-                await launchUrl(Uri.parse("google_play_link".tr()));
-              }
+              await launch(context, "google_play_link".tr());
             }
           },
         );

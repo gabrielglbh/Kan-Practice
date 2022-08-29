@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
+import 'package:kanpractice/core/database/models/test_data.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:kanpractice/core/database/queries/test_queries.dart';
-import 'package:kanpractice/core/firebase/models/test_data.dart';
 import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
 
 part 'stats_event.dart';
@@ -21,7 +21,7 @@ class StatisticsBloc extends Bloc<StatsEvent, StatsState> {
           await KanjiQueries.instance.getTotalKanjiWinRates();
       final List<String> lists =
           await ListQueries.instance.getBestAndWorstList();
-      final TestData test = await TestQueries.instance.getTestData();
+      final TestData test = await TestQueries.instance.getTestDataFromDb();
 
       emit(StatisticsLoaded(
         stats: KanPracticeStats(

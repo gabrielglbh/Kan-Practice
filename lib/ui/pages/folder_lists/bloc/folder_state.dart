@@ -21,3 +21,5 @@ class FolderStateLoaded extends FolderState {
 }
 
 class FolderStateFailure extends FolderState {}
+
+class FolderStateAddedList extends FolderState {}

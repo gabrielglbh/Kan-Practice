@@ -7,14 +7,7 @@ abstract class BackUpEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class BackUpLoadingCreateBackUp extends BackUpEvent {
-  final bool backUpTests;
-
-  const BackUpLoadingCreateBackUp({required this.backUpTests});
-
-  @override
-  List<Object> get props => [backUpTests];
-}
+class BackUpLoadingCreateBackUp extends BackUpEvent {}
 
 class BackUpLoadingMergeBackUp extends BackUpEvent {}
 

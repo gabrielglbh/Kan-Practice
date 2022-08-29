@@ -10,14 +10,13 @@ import 'package:kanpractice/ui/widgets/kp_study_mode_app_bar.dart';
 import 'package:kanpractice/ui/widgets/canvas/kp_custom_canvas.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/general_utils.dart';
-import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
-import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
+import 'package:kanpractice/ui/pages/study_modes/utils/mode_arguments.dart';
+import 'package:kanpractice/ui/pages/study_modes/utils/study_mode_update_handler.dart';
 import 'package:kanpractice/ui/widgets/kp_learning_header_animation.dart';
 import 'package:kanpractice/ui/widgets/kp_learning_header_container.dart';
 import 'package:kanpractice/ui/widgets/kp_list_percentage_indicator.dart';
 import 'package:kanpractice/ui/widgets/kp_tts_icon_button.dart';
 import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class WritingStudy extends StatefulWidget {
@@ -217,16 +216,6 @@ class _WritingStudyState extends State<WritingStudy> {
           child:
               TTSIconButton(kanji: widget.args.studyList[_macro].pronunciation),
         ),
-        IconButton(
-          icon: const Icon(Icons.info_outline_rounded),
-          onPressed: () async {
-            if (await canLaunchUrl(
-                Uri.parse("https://www.sljfaq.org/afaq/stroke-order.html"))) {
-              launchUrl(
-                  Uri.parse("https://www.sljfaq.org/afaq/stroke-order.html"));
-            }
-          },
-        )
       ],
       child: Column(
         children: [

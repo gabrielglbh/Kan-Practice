@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class DevInfo extends StatelessWidget {
@@ -62,15 +61,15 @@ class DevInfo extends StatelessWidget {
         ListTile(
           title: Text("developer_info_follow".tr()),
           leading: const Icon(Icons.developer_mode_rounded),
-          onTap: () async =>
-              await launchUrl(Uri.parse("https://github.com/gabrielglbh")),
+          onTap: () async => await GeneralUtils.launch(
+              context, "https://github.com/gabrielglbh"),
           trailing: const Icon(Icons.link),
         ),
         ListTile(
           title: Text("developer_info_github_issue".tr()),
           leading: const Icon(Icons.bug_report_outlined),
-          onTap: () async => await launchUrl(Uri.parse(
-              "https://github.com/gabrielglbh/Kan-Practice/issues/new")),
+          onTap: () async => await GeneralUtils.launch(context,
+              "https://github.com/gabrielglbh/Kan-Practice/issues/new"),
           trailing: const Icon(Icons.link),
         ),
         ListTile(
@@ -84,11 +83,7 @@ class DevInfo extends StatelessWidget {
                   'subject': "Found a bug on KanPractice!",
                 });
             String url = emailLaunchUri.toString().replaceAll("+", "%20");
-            if (await canLaunchUrl(Uri.parse(url))) {
-              await launchUrl(Uri.parse(url));
-            } else {
-              GeneralUtils.getSnackBar(context, "launch_url_failed".tr());
-            }
+            await GeneralUtils.launch(context, url);
           },
           trailing: const Icon(Icons.mail_outline_rounded),
         ),

@@ -5,7 +5,8 @@ import 'package:kanpractice/core/database/models/folder.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/models/rel_folder_kanlist.dart';
-import 'package:kanpractice/core/database/models/test_result.dart';
+import 'package:kanpractice/core/database/models/test_data.dart';
+import 'package:kanpractice/core/database/models/test_specific_data.dart';
 import 'package:kanpractice/core/database/queries/back_up_queries.dart';
 import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
@@ -25,6 +26,7 @@ class BackUpRecords {
   final String foldersLabel = "Folders";
   final String relFolderKanListLabel = "RelationsFK";
   final String testsLabel = "Tests";
+  final String testSpecsLabel = "TestsSpecs";
 
   BackUpRecords._() {
     _ref = FirebaseUtils.instance.dbRef;
@@ -80,17 +82,42 @@ class BackUpRecords {
   /// Creates the [BackUp] object and creates it in Firebase under the current UID.
   /// Based on sub collections.
   ///
-  /// If [backUpTests] is true, a copy of all current tests will be saved in the back up.
-  ///
   /// Returns an empty String if nothing happened, else, the error is returned.
-  Future<String> createBackUp({bool backUpTests = false}) async {
+  Future<String> createBackUp() async {
     User? user = _auth.currentUser;
     await user?.reload();
 
     List<Kanji> kanji = await KanjiQueries.instance.getAllKanji();
     List<KanjiList> lists = await ListQueries.instance.getAllLists();
-    List<Test> test =
-        backUpTests ? await TestQueries.instance.getAllTests() : [];
+    TestData testData = await TestQueries.instance.getTestDataFromDb();
+    List<TestSpecificData> testSpecData = [];
+
+    /// Remove from the back up the empty specs
+    if (testData.selectionTestData.id != -1) {
+      testSpecData.add(testData.selectionTestData);
+    }
+    if (testData.blitzTestData.id != -1) {
+      testSpecData.add(testData.blitzTestData);
+    }
+    if (testData.remembranceTestData.id != -1) {
+      testSpecData.add(testData.remembranceTestData);
+    }
+    if (testData.numberTestData.id != -1) {
+      testSpecData.add(testData.numberTestData);
+    }
+    if (testData.lessPctTestData.id != -1) {
+      testSpecData.add(testData.lessPctTestData);
+    }
+    if (testData.categoryTestData.id != -1) {
+      testSpecData.add(testData.categoryTestData);
+    }
+    if (testData.folderTestData.id != -1) {
+      testSpecData.add(testData.folderTestData);
+    }
+    if (testData.dailyTestData.id != -1) {
+      testSpecData.add(testData.dailyTestData);
+    }
+
     List<Folder> folders = await FolderQueries.instance.getAllFolders();
     List<RelFolderKanList> relFolderKanList =
         await FolderQueries.instance.getFolderRelation();
@@ -99,14 +126,6 @@ class BackUpRecords {
     if (lists.isEmpty) {
       return "backup_firebase_createBackUp_listEmpty".tr();
     } else {
-      BackUp backUpObject = BackUp(
-        lists: lists,
-        kanji: kanji,
-        test: test,
-        folders: folders,
-        relFolderKanList: relFolderKanList,
-        lastUpdated: date,
-      );
       WriteBatch? batch = _ref.batch();
       try {
         /// Making sure the back up only contains the actual data of the device
@@ -119,7 +138,7 @@ class BackUpRecords {
               .doc(user?.uid)
               .collection(kanjiLabel)
               .doc(kanji[x].kanji);
-          batch?.set(doc, backUpObject.kanji[x].toJson());
+          batch?.set(doc, kanji[x].toJson());
           batch = await _reinitializeBatch(batch, x);
         }
 
@@ -133,7 +152,7 @@ class BackUpRecords {
               .doc(user?.uid)
               .collection(listsLabel)
               .doc(lists[x].name);
-          batch?.set(doc, backUpObject.lists[x].toJson());
+          batch?.set(doc, lists[x].toJson());
           batch = await _reinitializeBatch(batch, x);
         }
 
@@ -147,7 +166,7 @@ class BackUpRecords {
               .doc(user?.uid)
               .collection(foldersLabel)
               .doc(folders[x].folder);
-          batch?.set(doc, backUpObject.folders[x].toJson());
+          batch?.set(doc, folders[x].toJson());
           batch = await _reinitializeBatch(batch, x);
         }
 
@@ -155,16 +174,25 @@ class BackUpRecords {
         batch = _ref.batch();
 
         /// Tests
-        if (backUpTests && test.isNotEmpty) {
-          for (int x = 0; x < test.length; x++) {
-            final DocumentReference doc = _ref
-                .collection(collection)
-                .doc(user?.uid)
-                .collection(testsLabel)
-                .doc(test[x].takenDate.toString());
-            batch?.set(doc, backUpObject.test[x].toJson());
-            batch = await _reinitializeBatch(batch, x);
-          }
+        final DocumentReference doc = _ref
+            .collection(collection)
+            .doc(user?.uid)
+            .collection(testsLabel)
+            .doc(testData.statsId.toString());
+        batch.set(doc, testData.toJson());
+
+        await batch.commit();
+        batch = _ref.batch();
+
+        /// Tests Specs
+        for (int x = 0; x < testSpecData.length; x++) {
+          final DocumentReference doc = _ref
+              .collection(collection)
+              .doc(user?.uid)
+              .collection(testSpecsLabel)
+              .doc(testSpecData[x].id.toString());
+          batch?.set(doc, testSpecData[x].toJson());
+          batch = await _reinitializeBatch(batch, x);
         }
 
         await batch?.commit();
@@ -177,7 +205,7 @@ class BackUpRecords {
               .doc(user?.uid)
               .collection(relFolderKanListLabel)
               .doc(x.toString());
-          batch?.set(doc, backUpObject.relFolderKanList[x].toJson());
+          batch?.set(doc, relFolderKanList[x].toJson());
           batch = await _reinitializeBatch(batch, x);
         }
 
@@ -186,7 +214,7 @@ class BackUpRecords {
 
         /// Last updated
         batch.set(_ref.collection(collection).doc(user?.uid),
-            {BackUp.updatedLabel: backUpObject.lastUpdated});
+            {BackUp.updatedLabel: date});
 
         await batch.commit();
         return "";
@@ -219,10 +247,15 @@ class BackUpRecords {
           .doc(user?.uid)
           .collection(foldersLabel)
           .get();
-      final testsSnapshot = await _ref
+      final testDataSnapshot = await _ref
           .collection(collection)
           .doc(user?.uid)
           .collection(testsLabel)
+          .get();
+      final testSpecDataSnapshot = await _ref
+          .collection(collection)
+          .doc(user?.uid)
+          .collection(testSpecsLabel)
           .get();
       final relFolderKanListSnapshot = await _ref
           .collection(collection)
@@ -234,9 +267,8 @@ class BackUpRecords {
       List<KanjiList> backUpLists = [];
       List<Folder> backUpFolders = [];
       List<RelFolderKanList> backUpRelFolderKanList = [];
-
-      /// If snapshot is null, backUpTests will be empty
-      List<Test> backUpTests = [];
+      TestData backUpTestData = TestData.empty;
+      List<TestSpecificData> backUpTestSpecData = [];
 
       if (kanjiSnapshot.size > 0 && listsSnapshot.size > 0) {
         for (int x = 0; x < kanjiSnapshot.size; x++) {
@@ -253,10 +285,8 @@ class BackUpRecords {
         }
       }
 
-      if (testsSnapshot.size > 0) {
-        for (int x = 0; x < testsSnapshot.size; x++) {
-          backUpTests.add(Test.fromJson(testsSnapshot.docs[x].data()));
-        }
+      if (testDataSnapshot.size > 0) {
+        backUpTestData = TestData.fromJson(testDataSnapshot.docs[0].data());
       }
 
       if (relFolderKanListSnapshot.size > 0) {
@@ -266,13 +296,22 @@ class BackUpRecords {
         }
       }
 
-      return await BackUpQueries.instance.mergeBackUp(
-        backUpKanji,
-        backUpLists,
-        backUpFolders,
-        backUpTests,
-        backUpRelFolderKanList,
-      );
+      if (testSpecDataSnapshot.size > 0) {
+        for (int x = 0; x < testSpecDataSnapshot.size; x++) {
+          backUpTestSpecData.add(
+              TestSpecificData.fromJson(testSpecDataSnapshot.docs[x].data()));
+        }
+      }
+
+      return await BackUpQueries.instance.mergeBackUp(BackUp(
+        lists: backUpLists,
+        kanji: backUpKanji,
+        testData: backUpTestData,
+        testSpecData: backUpTestSpecData,
+        folders: backUpFolders,
+        relFolderKanList: backUpRelFolderKanList,
+        lastUpdated: 0,
+      ));
     } catch (err) {
       return err.toString();
     }
@@ -300,10 +339,15 @@ class BackUpRecords {
           .doc(user?.uid)
           .collection(foldersLabel)
           .get();
-      final testsSnapshot = await _ref
+      final testDataSnapshot = await _ref
           .collection(collection)
           .doc(user?.uid)
           .collection(testsLabel)
+          .get();
+      final testSpecDataSnapshot = await _ref
+          .collection(collection)
+          .doc(user?.uid)
+          .collection(testSpecsLabel)
           .get();
       final relFolderKanListSnapshot = await _ref
           .collection(collection)
@@ -343,17 +387,15 @@ class BackUpRecords {
         }
       }
 
-      if (testsSnapshot.size > 0) {
-        for (int x = 0; x < testsSnapshot.size; x++) {
-          batch?.delete(_ref
-              .collection(collection)
-              .doc(user?.uid)
-              .collection(testsLabel)
-              .doc(Test.fromJson(testsSnapshot.docs[x].data())
-                  .takenDate
-                  .toString()));
-          batch = await _reinitializeBatch(batch, x);
-        }
+      if (testDataSnapshot.size > 0) {
+        batch?.delete(_ref
+            .collection(collection)
+            .doc(user?.uid)
+            .collection(testsLabel)
+            .doc(TestData.fromJson(testDataSnapshot.docs[0].data())
+                .statsId
+                .toString()));
+        batch = await _reinitializeBatch(batch, 499);
       }
 
       if (relFolderKanListSnapshot.size > 0) {
@@ -363,6 +405,20 @@ class BackUpRecords {
               .doc(user?.uid)
               .collection(relFolderKanListLabel)
               .doc(x.toString()));
+          batch = await _reinitializeBatch(batch, x);
+        }
+      }
+
+      if (testSpecDataSnapshot.size > 0) {
+        for (int x = 0; x < testSpecDataSnapshot.size; x++) {
+          batch?.delete(_ref
+              .collection(collection)
+              .doc(user?.uid)
+              .collection(testSpecsLabel)
+              .doc(
+                  TestSpecificData.fromJson(testSpecDataSnapshot.docs[x].data())
+                      .id
+                      .toString()));
           batch = await _reinitializeBatch(batch, x);
         }
       }

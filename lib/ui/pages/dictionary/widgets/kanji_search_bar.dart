@@ -13,12 +13,14 @@ class KanjiSearchBar extends StatelessWidget {
   final bool enabled;
   final Function() onClear;
   final Function() onRemoveLast;
+  final void Function(String) onChange;
   const KanjiSearchBar({
     Key? key,
     required this.hint,
     required this.controller,
     required this.onClear,
     required this.onRemoveLast,
+    required this.onChange,
     this.enabled = false,
     this.top = Margins.margin8,
     this.bottom = 0,
@@ -47,6 +49,7 @@ class KanjiSearchBar extends StatelessWidget {
         textInputAction: TextInputAction.search,
         textCapitalization: TextCapitalization.sentences,
         enabled: enabled,
+        onChanged: onChange,
         decoration: InputDecoration(
             contentPadding: const EdgeInsets.only(
                 top: Margins.margin24,

@@ -7,7 +7,8 @@ enum KanListFilters {
   writing,
   reading,
   recognition,
-  listening
+  listening,
+  speaking
 }
 
 extension KanListFiltersExtensions on KanListFilters {
@@ -25,6 +26,8 @@ extension KanListFiltersExtensions on KanListFilters {
         return "${"study_modes_recognition".tr()} %";
       case KanListFilters.listening:
         return "${"study_modes_listening".tr()} %";
+      case KanListFilters.speaking:
+        return "${"study_modes_speaking".tr()} %";
     }
   }
 
@@ -38,6 +41,8 @@ extension KanListFiltersExtensions on KanListFilters {
         return KanListTableFields.totalWinRateRecognitionField;
       case KanListFilters.listening:
         return KanListTableFields.totalWinRateListeningField;
+      case KanListFilters.speaking:
+        return KanListTableFields.totalWinRateSpeakingField;
       case KanListFilters.all:
         return KanListTableFields.lastUpdatedField;
       case KanListFilters.alphabetically:
@@ -58,8 +63,10 @@ class KanListFiltersUtils {
       return KanListFilters.reading;
     } else if (f == KanListTableFields.totalWinRateRecognitionField) {
       return KanListFilters.recognition;
-    } else {
+    } else if (f == KanListTableFields.totalWinRateListeningField) {
       return KanListFilters.listening;
+    } else {
+      return KanListFilters.speaking;
     }
   }
 }

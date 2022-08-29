@@ -65,37 +65,17 @@ class BackUpPage extends StatelessWidget {
   }
 
   _createDialogForCreatingBackUp(BuildContext bloc) {
-    bool backUpTests = true;
     showDialog(
         context: bloc,
         builder: (context) => StatefulBuilder(
               builder: (context, setState) {
                 return KPDialog(
                   title: Text("backup_creation_dialog_title".tr()),
-                  content: Column(
-                    children: [
-                      Text("backup_creation_dialog_content".tr(),
-                          style: Theme.of(context).textTheme.bodyText1),
-                      const Divider(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Expanded(
-                              child: Text("backup_creation_dialog_tests".tr(),
-                                  style:
-                                      Theme.of(context).textTheme.bodyText1)),
-                          Switch(
-                              value: backUpTests,
-                              onChanged: (val) =>
-                                  setState(() => backUpTests = !backUpTests))
-                        ],
-                      )
-                    ],
-                  ),
+                  content: Text("backup_creation_dialog_content".tr(),
+                      style: Theme.of(context).textTheme.bodyText1),
                   positiveButtonText: "backup_creation_dialog_positive".tr(),
-                  onPositive: () => bloc
-                      .read<BackUpBloc>()
-                      .add(BackUpLoadingCreateBackUp(backUpTests: backUpTests)),
+                  onPositive: () =>
+                      bloc.read<BackUpBloc>().add(BackUpLoadingCreateBackUp()),
                 );
               },
             ));

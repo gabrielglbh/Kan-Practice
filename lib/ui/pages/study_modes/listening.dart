@@ -8,8 +8,8 @@ import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/utils/tts.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/core/utils/study_modes/mode_arguments.dart';
-import 'package:kanpractice/core/utils/study_modes/study_mode_update_handler.dart';
+import 'package:kanpractice/ui/pages/study_modes/utils/mode_arguments.dart';
+import 'package:kanpractice/ui/pages/study_modes/utils/study_mode_update_handler.dart';
 import 'package:kanpractice/ui/widgets/kp_learning_header_animation.dart';
 import 'package:kanpractice/ui/widgets/kp_learning_header_container.dart';
 import 'package:kanpractice/ui/widgets/kp_list_percentage_indicator.dart';
@@ -152,7 +152,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
                 kanji: widget.args.studyList[_macro].pronunciation),
           )
         ],
-        child: Stack(
+        child: Column(
           children: [
             Column(
               children: [
@@ -161,22 +161,15 @@ class _ListeningStudyState extends State<ListeningStudy> {
                 KPLearningHeaderAnimation(id: _macro, children: _header()),
               ],
             ),
-            Positioned(
-                bottom: Margins.margin64,
-                right: 0,
-                left: 0,
-                child: KPValidationButtons(
-                  trigger: _showWord,
-                  submitLabel: "done_button_label".tr(),
-                  wrongAction: (score) async => await _updateUIOnSubmit(score),
-                  midWrongAction: (score) async =>
-                      await _updateUIOnSubmit(score),
-                  midPerfectAction: (score) async =>
-                      await _updateUIOnSubmit(score),
-                  perfectAction: (score) async =>
-                      await _updateUIOnSubmit(score),
-                  onSubmit: () => setState(() => _showWord = true),
-                ))
+            KPValidationButtons(
+              trigger: _showWord,
+              submitLabel: "done_button_label".tr(),
+              wrongAction: (score) async => await _updateUIOnSubmit(score),
+              midWrongAction: (score) async => await _updateUIOnSubmit(score),
+              midPerfectAction: (score) async => await _updateUIOnSubmit(score),
+              perfectAction: (score) async => await _updateUIOnSubmit(score),
+              onSubmit: () => setState(() => _showWord = true),
+            )
           ],
         ));
   }

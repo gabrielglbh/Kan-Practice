@@ -15,6 +15,7 @@ class CustomSizes {
   static const double defaultSizeWinRateChart = 90;
   static const double listStudyHeight = 85;
   static const double defaultSizeDragContainerWidth = 90;
+  static const double customButtonHeight = 100;
   static const double defaultSizeWinRateBarChart = 110;
   static const double customButtonWidth = 110;
   static const double defaultJishoGIF = 124;

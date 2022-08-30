@@ -110,16 +110,21 @@ class KanjiListDetailBloc
           /// Enable spatial learning, first elements are the ones with less %
           List<Kanji> list = [];
           switch (event.mode) {
-            case LearningMode.spatial:
+            case LearningMode.fifo:
               list = await KanjiQueries.instance
                   .getAllKanjiForPractice(event.list, event.studyMode);
               break;
+            case LearningMode.spatial:
             case LearningMode.random:
               allList.shuffle();
               list = allList;
               break;
           }
-          emit(KanjiListDetailStateLoadedPractice(event.studyMode, list));
+          emit(KanjiListDetailStateLoadedPractice(
+            event.studyMode,
+            list,
+            event.mode,
+          ));
         } else {
           emit(KanjiListDetailStateFailure(
               error: "list_details_loadUpPractice_failed".tr()));

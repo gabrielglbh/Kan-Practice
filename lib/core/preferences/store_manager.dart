@@ -16,6 +16,7 @@ class StorageManager {
       "haveSeenKanListDetailCoachMark";
   static const String numberOfKanjiInTest = "numberOfKanjiInTest";
   static const String folderWhenOnTest = "folderWhenOnTest";
+  static const String practiceLearningMode = "practiceLearningMode";
 
   static StorageManager? _storageUtils;
   static SharedPreferences? _preferences;

@@ -12,6 +12,7 @@ import 'package:kanpractice/core/types/learning_mode.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/bloc/details_bloc.dart';
+import 'package:kanpractice/ui/pages/kanji_list_details/widgets/change_learning_mode.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/widgets/kanji_item.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/pages/study_modes/utils/mode_arguments.dart';
@@ -47,7 +48,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
   FocusNode? _searchBarFn;
   TabController? _tabController;
   StudyModes _selectedMode = StudyModes.writing;
-  LearningMode _learningMode = LearningMode.spatial;
+  late LearningMode _learningMode;
 
   /// Saves the last state of the query
   String _query = "";
@@ -67,6 +68,9 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
     _searchBarFn?.addListener(_focusListener);
     _scrollController.addListener(_scrollListener);
     _listName = widget.list.name;
+    final ind = StorageManager.readData(StorageManager.practiceLearningMode) ??
+        LearningMode.spatial;
+    _learningMode = LearningMode.values[ind];
     super.initState();
   }
 
@@ -200,6 +204,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
                 isTest: false,
                 mode: state.mode,
                 testMode: Tests.blitz,
+                learningMode: state.lMode,
                 studyModeHeaderDisplayName: widget.list.name))
         .then(
           (value) => _addLoadingEvent(reset: true),
@@ -244,16 +249,18 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
           key: actions,
           children: [
             IconButton(
-              icon: Icon(_learningMode == LearningMode.spatial
-                  ? LearningMode.spatial.icon
-                  : LearningMode.random.icon),
-              onPressed: () => setState(() {
-                if (_learningMode == LearningMode.spatial) {
-                  _learningMode = LearningMode.random;
-                } else {
-                  _learningMode = LearningMode.spatial;
+              icon: Icon(_learningMode.icon),
+              onPressed: () async {
+                final mode =
+                    await ChangeLearningMode.show(context, _learningMode);
+                if (mode != null) {
+                  StorageManager.saveData(
+                      StorageManager.practiceLearningMode, mode.index);
+                  setState(() {
+                    _learningMode = mode;
+                  });
                 }
-              }),
+              },
             ),
             IconButton(
               onPressed: () async => await KPBlitzBottomSheet.show(context,
@@ -391,7 +398,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
         KPButton(
             title1: "list_details_practice_button_label_ext".tr(),
             title2:
-                "${"list_details_practice_button_label".tr()} • ${_learningMode == LearningMode.spatial ? LearningMode.spatial.name : LearningMode.random.name}",
+                "${"list_details_practice_button_label".tr()} • ${_learningMode.name}",
             onTap: () => bloc.read<KanjiListDetailBloc>().add(
                 KanjiEventLoadUpPractice(
                     _learningMode, _listName, _selectedMode))),

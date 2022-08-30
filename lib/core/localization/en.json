@@ -106,8 +106,8 @@
   "list_details_load_failed": "Failed to retrieve words",
   "list_details_practice_button_label": "Practice",
   "list_details_practice_button_label_ext": "練習",
-  "list_details_learningMode_spatial": "Spatial Learning",
-  "list_details_learningMode_random": "Random Learning",
+  "list_details_learningMode_spatial": "Spatial Repetition",
+  "list_details_learningMode_random": "Random",
   "list_details_empty": "No available words.\n\nAdd new words to this list by tapping on '+' or import them from your backup.",
   "list_details_searchBar_hint": "Search by word, meaning, pronunciation",
   "kan_list_tile_createDialogForDeletingKanList_title": "Remove a KanList",
@@ -365,5 +365,10 @@
   "settings_notifications_label": "Enable/Disable Notifications",
   "stats_tests_by_type": "Total Number of Tests by Type",
   "stats_tests_total_acc": "Total Accuracy by Study Mode",
-  "stats_tests_tap_to_specs": "Tap on the bars to see more details for each test type"
+  "stats_tests_tap_to_specs": "Tap on the bars to see more details for each test type",
+  "change_learning_mode_title": "Change learning mode",
+  "list_details_learningMode_fifo": "Worst First",
+  "list_details_learningMode_random_desc": "The order of the words will be random and no word will be repeated while practicing.",
+  "list_details_learningMode_spatial_desc": "Practice using SM2 spatial learning: when failing a word, it will appear later in the practice until you got it right.",
+  "list_details_learningMode_fifo_desc": "The words will be ordered from worst to perfect and no word will be repeated while practicing."
 }

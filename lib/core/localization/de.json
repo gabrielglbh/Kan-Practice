@@ -106,8 +106,8 @@
   "list_details_load_failed": "Wort konnte nicht abgerufen werden ",
   "list_details_practice_button_label": "Üben",
   "list_details_practice_button_label_ext": "練習",
-  "list_details_learningMode_spatial": "Spaced repetition",
-  "list_details_learningMode_random": "Zufälliges Lernen",
+  "list_details_learningMode_spatial": "Abgestufte Wiederholung",
+  "list_details_learningMode_random": "Zufälliges",
   "list_details_empty": "Kein verfügbares Wort.\n\nFügen Sie neue Wörter zu dieser Liste hinzu, indem Sie auf '+' tippen, oder importieren Sie sie aus Ihrem Backup.",
   "list_details_searchBar_hint": "Suche nach Wort, Bedeutung, Aussprache",
   "kan_list_tile_createDialogForDeletingKanList_title": "KanList entfernen",
@@ -365,5 +365,10 @@
   "settings_notifications_label": "Aktivieren/Deaktivieren von Benachrichtigungen",
   "stats_tests_by_type": "Gesamtzahl der Tests nach Typ",
   "stats_tests_total_acc": "Gesamt-Genauigkeit nach Studienmodus",
-  "stats_tests_tap_to_specs": "Tippen Sie auf die Balken, um mehr Details für jeden Testtyp zu sehen"
+  "stats_tests_tap_to_specs": "Tippen Sie auf die Balken, um mehr Details für jeden Testtyp zu sehen",
+  "change_learning_mode_title": "Lernmodus ändern",
+  "list_details_learningMode_fifo": "Schlechteste zuerst",
+  "list_details_learningMode_random_desc": "Die Reihenfolge der Wörter ist zufällig und kein Wort wird beim Üben wiederholt.",
+  "list_details_learningMode_spatial_desc": "Üben Sie mit SM2 räumliches Lernen: wenn Sie ein Wort nicht schaffen, wird es später in der Übung erscheinen, bis Sie es richtig haben.",
+  "list_details_learningMode_fifo_desc": "Die Wörter werden von schlecht bis perfekt geordnet und kein Wort wird beim Üben wiederholt."
 }

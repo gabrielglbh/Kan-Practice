@@ -12,7 +12,7 @@ import 'package:kanpractice/core/types/learning_mode.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/bloc/details_bloc.dart';
-import 'package:kanpractice/ui/pages/kanji_list_details/widgets/change_learning_mode.dart';
+import 'package:kanpractice/ui/widgets/change_learning_mode.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/widgets/kanji_item.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/pages/study_modes/utils/mode_arguments.dart';

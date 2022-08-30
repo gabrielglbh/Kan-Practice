@@ -1,7 +1,7 @@
 name: kanpractice
 description: A Flutter project to learn and study the different kanjis.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 2.3.1+22
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+version: 2.4.0+23
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
@@ -27,7 +27,7 @@ dependencies:
   charts_flutter:
     git:
       url: https://github.com/google/charts
-      path: charts_flutter    
+      path: charts_flutter
   percent_indicator: ^4.2.2
   kana_kit: ^2.0.0
   timeago: ^3.2.2
@@ -38,10 +38,10 @@ dependencies:
   unofficial_jisho_api: ^3.0.0
   page_transition: ^2.0.9
   cached_network_image: ^3.2.1
-# bash android_tflite.sh to get the jniLibs
+  # bash android_tflite.sh to get the jniLibs
   tflite_flutter: ^0.9.0
-  tflite_flutter_helper: 
-    git: 
+  tflite_flutter_helper:
+    git:
       url: https://github.com/gabrielglbh/tflite_flutter_helper
       ref: 1eee07e
   device_info_plus: ^3.2.2

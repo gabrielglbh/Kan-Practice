@@ -9,7 +9,7 @@ import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
 import 'package:kanpractice/ui/pages/statistics/widgets/stats_header.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_dependent_graph.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_test_spec_bottom_sheet.dart';
+import 'package:kanpractice/ui/pages/statistics/widgets/test_spec_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_vertical_chart.dart';
 
 class TestStats extends StatefulWidget {

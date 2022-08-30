@@ -37,6 +37,11 @@ class TestSpecBottomSheet extends StatefulWidget {
 class _TestSpecBottomSheetState extends State<TestSpecBottomSheet> {
   @override
   Widget build(BuildContext context) {
+    final numberOfTests = widget.data.totalWritingCount +
+        widget.data.totalReadingCount +
+        widget.data.totalRecognitionCount +
+        widget.data.totalListeningCount +
+        widget.data.totalSpeakingCount;
     return BottomSheet(
       enableDrag: false,
       onClosing: () {},
@@ -56,7 +61,7 @@ class _TestSpecBottomSheetState extends State<TestSpecBottomSheet> {
                       padding: const EdgeInsets.only(right: Margins.margin8),
                       child: Icon(widget.mode.icon),
                     ),
-                    Text(widget.mode.name,
+                    Text("${widget.mode.name} • $numberOfTests",
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.headline6)
                   ],

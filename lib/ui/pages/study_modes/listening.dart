@@ -3,6 +3,7 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
+import 'package:kanpractice/core/types/learning_mode.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/utils/tts.dart';
@@ -50,6 +51,16 @@ class _ListeningStudyState extends State<ListeningStudy> {
   }
 
   Future<void> _updateUIOnSubmit(double score) async {
+    /// If the score is less PARTIAL or WRONG and the Learning Mode is
+    /// SPATIAL, the append the current word to the list, to review it again.
+    /// Only do this when NOT on test
+    if (!widget.args.isTest &&
+        widget.args.learningMode == LearningMode.spatial &&
+        score < 0.5) {
+      // TODO: Dont add up the score once it has been appended. Only add up the initial score
+      _studyList.add(_studyList[_macro]);
+    }
+
     if (_hasFinished) {
       await _handleFinishedPractice();
     } else {

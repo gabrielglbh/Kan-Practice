@@ -3,6 +3,7 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
+import 'package:kanpractice/core/types/learning_mode.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/ui/pages/study_modes/widgets/writing_buttons_animation.dart';
@@ -79,13 +80,17 @@ class _WritingStudyState extends State<WritingStudy> {
     ///   - Add a " ? " string to the _currentKanji matrix which we will
     ///     later use for displaying each individual kanji once validated
     for (int x = 0; x < _studyList.length; x++) {
-      String kanji = _studyList[x].kanji;
-      _score.add(0);
-      _currentKanji.add([]);
-      _maxScore.add(kanji.length.toDouble());
-      for (int y = 0; y < kanji.length; y++) {
-        _currentKanji[x].add(_none);
-      }
+      _initScoreArray(x);
+    }
+  }
+
+  _initScoreArray(int x) {
+    String kanji = _studyList[x].kanji;
+    _score.add(0);
+    _currentKanji.add([]);
+    _maxScore.add(kanji.length.toDouble());
+    for (int y = 0; y < kanji.length; y++) {
+      _currentKanji[x].add(_none);
     }
   }
 
@@ -109,6 +114,18 @@ class _WritingStudyState extends State<WritingStudy> {
   _resetKanji() async {
     /// If we are done with the current word...
     if (_goNextKanji) {
+      /// If the score is less PARTIAL or WRONG and the Learning Mode is
+      /// SPATIAL, the append the current word to the list, to review it again.
+      /// Only do this when NOT on test
+      final double score = _score[_macro] / _maxScore[_macro];
+      if (!widget.args.isTest &&
+          widget.args.learningMode == LearningMode.spatial &&
+          score < 0.5) {
+        // TODO: Dont add up the score once it has been appended. Only add up the initial score
+        _studyList.add(_studyList[_macro]);
+        _initScoreArray(_studyList.length - 1);
+      }
+
       if (_hasFinished) {
         await _handleFinishedPractice();
       } else {

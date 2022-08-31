@@ -30,11 +30,33 @@ class _TestStatsState extends State<TestStats>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final countTheme = Theme.of(context).textTheme.bodyText1?.copyWith(
+          fontWeight: FontWeight.bold,
+        );
+
     return ListView(
       children: [
         StatsHeader(
           title: "${"stats_tests".tr()} • ",
           value: widget.s.test.totalTests.toString(),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Margins.margin24),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(widget.s.test.testTotalCountWriting.toString(),
+                  style: countTheme),
+              Text(widget.s.test.testTotalCountReading.toString(),
+                  style: countTheme),
+              Text(widget.s.test.testTotalCountRecognition.toString(),
+                  style: countTheme),
+              Text(widget.s.test.testTotalCountListening.toString(),
+                  style: countTheme),
+              Text(widget.s.test.testTotalCountSpeaking.toString(),
+                  style: countTheme),
+            ],
+          ),
         ),
         KPVerticalBarChart(
           dataSource: List.generate(StudyModes.values.length, (index) {
@@ -77,7 +99,10 @@ class _TestStatsState extends State<TestStats>
             }
           }),
         ),
-        const Divider(),
+        const Padding(
+          padding: EdgeInsets.only(top: Margins.margin16),
+          child: Divider(),
+        ),
         StatsHeader(title: "stats_tests_by_type".tr()),
         Padding(
           padding: const EdgeInsets.only(
@@ -98,8 +123,29 @@ class _TestStatsState extends State<TestStats>
             ],
           ),
         ),
+        Padding(
+          padding:
+              const EdgeInsets.only(left: 22, right: 22, top: Margins.margin8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(widget.s.test.selectionTests.toString(), style: countTheme),
+              Text(widget.s.test.blitzTests.toString(), style: countTheme),
+              Text(widget.s.test.remembranceTests.toString(),
+                  style: countTheme),
+              Text(widget.s.test.numberTests.toString(), style: countTheme),
+              Text(widget.s.test.lessPctTests.toString(), style: countTheme),
+              Text(widget.s.test.categoryTests.toString(), style: countTheme),
+              Text(widget.s.test.folderTests.toString(), style: countTheme),
+              Text(widget.s.test.dailyTests.toString(), style: countTheme),
+            ],
+          ),
+        ),
         _expandedTestCount(context, widget.s),
-        const Divider(),
+        const Padding(
+          padding: EdgeInsets.only(top: Margins.margin16),
+          child: Divider(),
+        ),
         StatsHeader(
           title: "${"stats_tests_total_acc".tr()} • ",
           value:
@@ -116,6 +162,7 @@ class _TestStatsState extends State<TestStats>
             speaking: widget.s.test.testTotalWinRateSpeaking,
           ),
         ),
+        const SizedBox(height: Margins.margin32)
       ],
     );
   }

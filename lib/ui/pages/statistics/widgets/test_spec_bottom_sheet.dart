@@ -42,6 +42,10 @@ class _TestSpecBottomSheetState extends State<TestSpecBottomSheet> {
         widget.data.totalRecognitionCount +
         widget.data.totalListeningCount +
         widget.data.totalSpeakingCount;
+    final countTheme = Theme.of(context).textTheme.bodyText1?.copyWith(
+          fontWeight: FontWeight.bold,
+        );
+
     return BottomSheet(
       enableDrag: false,
       onClosing: () {},
@@ -69,11 +73,30 @@ class _TestSpecBottomSheetState extends State<TestSpecBottomSheet> {
               ),
               Container(
                 constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height / 2.7),
+                    maxHeight: MediaQuery.of(context).size.height / 2.8),
                 margin: const EdgeInsets.all(Margins.margin8),
                 child: Column(
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 38),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(widget.data.totalWritingCount.toString(),
+                              style: countTheme),
+                          Text(widget.data.totalReadingCount.toString(),
+                              style: countTheme),
+                          Text(widget.data.totalRecognitionCount.toString(),
+                              style: countTheme),
+                          Text(widget.data.totalListeningCount.toString(),
+                              style: countTheme),
+                          Text(widget.data.totalSpeakingCount.toString(),
+                              style: countTheme),
+                        ],
+                      ),
+                    ),
                     KPVerticalBarChart(
+                      heightRatio: 1.3,
                       dataSource:
                           List.generate(StudyModes.values.length, (index) {
                         switch (StudyModes.values[index]) {

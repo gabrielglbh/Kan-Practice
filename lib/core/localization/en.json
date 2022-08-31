@@ -106,7 +106,7 @@
   "list_details_load_failed": "Failed to retrieve words",
   "list_details_practice_button_label": "Practice",
   "list_details_practice_button_label_ext": "練習",
-  "list_details_learningMode_spatial": "Spatial Repetition",
+  "list_details_learningMode_spatial": "Spaced Repetition",
   "list_details_empty": "No available words.\n\nAdd new words to this list by tapping on '+' or import them from your backup.",
   "list_details_searchBar_hint": "Search by word, meaning, pronunciation",
   "kan_list_tile_createDialogForDeletingKanList_title": "Remove a KanList",
@@ -365,5 +365,6 @@
   "stats_tests_by_type": "Total Number of Tests by Type",
   "stats_tests_total_acc": "Total Accuracy by Study Mode",
   "stats_tests_tap_to_specs": "Tap on the bars to see more details for each test type",
-  "folder_practice_title": "Practice with a subset of words of the lists within this folder."
+  "folder_practice_title": "Practice with a subset of words of the lists within this folder.",
+   "disclaimer_spatial_repetition": "The practice is based on learning by spaced repetition. This method is applied in such a way that the words you miss during practice, will reappear at the end of the entire review (until you get them right). This stimulates learning and improves vocabulary memorization."
 }

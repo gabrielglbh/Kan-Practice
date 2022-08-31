@@ -5,6 +5,7 @@ import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/core/types/tab_types.dart';
 import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/pages/kanji_list_on_folder/widgets/practice_on_folder.dart';
 import 'package:kanpractice/ui/pages/kanji_list_on_folder/bloc/kl_folder_bloc.dart';
 import 'package:kanpractice/ui/widgets/kp_button.dart';
@@ -89,6 +90,11 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
                         arguments: widget.folder);
                     bloc.add(_addListLoadingEvent());
                   },
+                ),
+                IconButton(
+                  onPressed: () =>
+                      GeneralUtils.showSpatialRepetitionDisclaimer(context),
+                  icon: const Icon(Icons.info_outline_rounded),
                 )
               ],
               child: Column(

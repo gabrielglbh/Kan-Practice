@@ -19,7 +19,7 @@
   "study_modes_speaking_ext": "発声",
   "study_mode_update_handler_poppedTest_content": "La prueba será inválida y no se proporcionará ningún resultado",
   "study_mode_update_handler_finishedTest_content": "Pulsa en 'Finalizar' para ver los resultados",
-  "study_mode_update_handler_poppedPractice_content": "Se guardará la puntuación hasta esta palabra. La palabra actual contará con el 50% de acierto",
+  "study_mode_update_handler_poppedPractice_content": "Se guardará la puntuación hasta esta palabra.",
   "study_mode_update_handler_finishedPractice_content": "Pulsa en 'Finalizar' para terminar la sesión de estudio",
   "study_mode_update_handler_finished_title": "¡Has terminado!",
   "study_mode_update_handler_popped_title": "¿Quieres salir?",

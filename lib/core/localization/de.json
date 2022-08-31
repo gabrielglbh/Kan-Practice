@@ -19,7 +19,7 @@
   "study_modes_speaking_ext": "発声",
   "study_mode_update_handler_poppedTest_content": "Das Testergebnis ist ungültig und es wird kein Ergebnis ausgegeben.",
   "study_mode_update_handler_finishedTest_content": "Tippen Sie auf „Fertig stellen“, um die Ergebnisse anzuzeigen.",
-  "study_mode_update_handler_poppedPractice_content": "Punkte bis zu diesem Wort werden gespeichert. Punkte für das aktuelle Wort werden halbiert. ",
+  "study_mode_update_handler_poppedPractice_content": "Punkte bis zu diesem Wort werden gespeichert.",
   "study_mode_update_handler_finishedPractice_content": "Tippen Sie auf „Fertig stellen“, um die Lernsitzung zu beenden.",
   "study_mode_update_handler_finished_title": "Sie sind fertig!",
   "study_mode_update_handler_popped_title": "Wirklich beenden?",

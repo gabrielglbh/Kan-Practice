@@ -19,7 +19,7 @@
   "study_modes_speaking_ext": "発声",
   "study_mode_update_handler_poppedTest_content": "The test will result invalid and no result will be provided.",
   "study_mode_update_handler_finishedTest_content": "Tap on 'Finish' to see the results.",
-  "study_mode_update_handler_poppedPractice_content": "Score up to this word will be saved. Current word will be count as 50%.",
+  "study_mode_update_handler_poppedPractice_content": "Score up to this word will be saved.",
   "study_mode_update_handler_finishedPractice_content": "Tap on 'Finish' to end the study session.",
   "study_mode_update_handler_finished_title": "You are done!",
   "study_mode_update_handler_popped_title": "Do you want to leave?",

@@ -80,14 +80,12 @@ class StudyModeUpdateHandler {
                 }
 
                 /// If the user went back in mid list, update the list accordingly
-                /// keeping in mind that the score of the last kanji should be 0.5.
                 else if (isPracticePopped) {
-                  /// If I am in the first kanji, just pop, no need to penalize
+                  /// If I am in the first kanji, just pop
                   if (lastIndex == 0) {
                     Navigator.of(context).pop();
                   } else {
                     final navigator = Navigator.of(context);
-                    await calculateScore(args, 0.5, lastIndex);
                     final double score =
                         await _getScore(args) / args.studyList.length;
                     await _updateList(score, args);

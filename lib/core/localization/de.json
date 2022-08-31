@@ -370,5 +370,6 @@
   "list_details_learningMode_fifo": "Schlechteste zuerst",
   "list_details_learningMode_random_desc": "Die Reihenfolge der Wörter ist zufällig und kein Wort wird beim Üben wiederholt.",
   "list_details_learningMode_spatial_desc": "Üben Sie mit SM2 räumliches Lernen: wenn Sie ein Wort nicht schaffen, wird es später in der Übung erscheinen, bis Sie es richtig haben.",
-  "list_details_learningMode_fifo_desc": "Die Wörter werden von schlecht bis perfekt geordnet und kein Wort wird beim Üben wiederholt."
+  "list_details_learningMode_fifo_desc": "Die Wörter werden von schlecht bis perfekt geordnet und kein Wort wird beim Üben wiederholt.",
+  "folder_practice_title": "Üben Sie mit einer Teilmenge von Wörtern aus den Listen in diesem Ordner unter Anwendung des ausgewählten Lernmodus"
 }

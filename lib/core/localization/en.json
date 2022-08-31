@@ -370,5 +370,6 @@
   "list_details_learningMode_fifo": "Worst First",
   "list_details_learningMode_random_desc": "The order of the words will be random and no word will be repeated while practicing.",
   "list_details_learningMode_spatial_desc": "Practice using SM2 spatial learning: when failing a word, it will appear later in the practice until you got it right.",
-  "list_details_learningMode_fifo_desc": "The words will be ordered from worst to perfect and no word will be repeated while practicing."
+  "list_details_learningMode_fifo_desc": "The words will be ordered from worst to perfect and no word will be repeated while practicing.",
+  "folder_practice_title": "Practice with a subset of words of the lists within this folder applying the selected learning mode"
 }

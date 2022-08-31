@@ -370,5 +370,6 @@
   "list_details_learningMode_fifo": "Peores Primero",
   "list_details_learningMode_random_desc": "El orden de las palabras será aleatorio y no se repetirá ninguna palabra durante la práctica",
   "list_details_learningMode_spatial_desc": "Practica usando el aprendizaje espacial SM2: cuando falles una palabra, aparecerá más adelante en la práctica hasta que la aciertes",
-  "list_details_learningMode_fifo_desc": "Las palabras se ordenarán de peor a mejor y no se repetirá ninguna palabra durante la práctica"
+  "list_details_learningMode_fifo_desc": "Las palabras se ordenarán de peor a mejor y no se repetirá ninguna palabra durante la práctica",
+  "folder_practice_title": "Practicar con un subconjunto de palabras de las listas de esta carpeta aplicando el modo de aprendizaje seleccionado"
 }

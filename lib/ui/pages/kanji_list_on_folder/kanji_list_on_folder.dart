@@ -7,6 +7,7 @@ import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/core/types/learning_mode.dart';
 import 'package:kanpractice/core/types/tab_types.dart';
 import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/ui/pages/kanji_list_on_folder/widgets/practice_on_folder.dart';
 import 'package:kanpractice/ui/widgets/change_learning_mode.dart';
 import 'package:kanpractice/ui/pages/kanji_list_on_folder/bloc/kl_folder_bloc.dart';
 import 'package:kanpractice/ui/widgets/kp_button.dart';
@@ -159,8 +160,9 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
                       title1: "list_details_practice_button_label_ext".tr(),
                       title2:
                           "${"list_details_practice_button_label".tr()} • ${_learningMode.name}",
-                      onTap: () {
-                        // TODO: Get random list of the folder words with _learningMode and selecting StudyMode.
+                      onTap: () async {
+                        await PracticeFolderBottomSheet.show(
+                            context, _learningMode, widget.folder);
                       },
                     ),
                   ),

@@ -4,7 +4,6 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
-import 'package:kanpractice/core/types/learning_mode.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/consts.dart';
@@ -107,18 +106,8 @@ class KanjiListDetailBloc
         final List<Kanji> allList =
             await KanjiQueries.instance.getAllKanjiFromList(event.list);
         if (allList.isNotEmpty) {
-          /// Enable spatial learning, first elements are the ones with less %
-          List<Kanji> list = [];
-          switch (event.mode) {
-            case LearningMode.spatial:
-              list = await KanjiQueries.instance
-                  .getAllKanjiForPractice(event.list, event.studyMode);
-              break;
-            case LearningMode.random:
-              allList.shuffle();
-              list = allList;
-              break;
-          }
+          allList.shuffle();
+          List<Kanji> list = allList;
           emit(KanjiListDetailStateLoadedPractice(event.studyMode, list));
         } else {
           emit(KanjiListDetailStateFailure(

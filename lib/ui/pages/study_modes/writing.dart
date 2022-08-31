@@ -56,11 +56,11 @@ class _WritingStudyState extends State<WritingStudy> {
   final String _none = "wildcard".tr();
 
   /// Widget auxiliary variable
-  List<Kanji> _studyList = [];
+  final List<Kanji> _studyList = [];
 
   @override
   void initState() {
-    _studyList = widget.args.studyList;
+    _studyList.addAll(widget.args.studyList);
     _initAuxKanjiArray();
     super.initState();
   }
@@ -79,13 +79,17 @@ class _WritingStudyState extends State<WritingStudy> {
     ///   - Add a " ? " string to the _currentKanji matrix which we will
     ///     later use for displaying each individual kanji once validated
     for (int x = 0; x < _studyList.length; x++) {
-      String kanji = _studyList[x].kanji;
-      _score.add(0);
-      _currentKanji.add([]);
-      _maxScore.add(kanji.length.toDouble());
-      for (int y = 0; y < kanji.length; y++) {
-        _currentKanji[x].add(_none);
-      }
+      _initScoreArray(x);
+    }
+  }
+
+  _initScoreArray(int x) {
+    String kanji = _studyList[x].kanji;
+    _score.add(0);
+    _currentKanji.add([]);
+    _maxScore.add(kanji.length.toDouble());
+    for (int y = 0; y < kanji.length; y++) {
+      _currentKanji[x].add(_none);
     }
   }
 
@@ -109,14 +113,27 @@ class _WritingStudyState extends State<WritingStudy> {
   _resetKanji() async {
     /// If we are done with the current word...
     if (_goNextKanji) {
+      /// If the score is less PARTIAL or WRONG and the Learning Mode is
+      /// SPATIAL, the append the current word to the list, to review it again.
+      /// Only do this when NOT on test
+      final double score = _score[_macro] / _maxScore[_macro];
+      if (!widget.args.isTest && score < 0.5) {
+        _studyList.add(_studyList[_macro]);
+        _initScoreArray(_studyList.length - 1);
+      }
+
       if (_hasFinished) {
         await _handleFinishedPractice();
       } else {
         /// Empty the current canvas
         _clear();
 
-        /// Calculate the current score
-        final int code = await _calculateKanjiScore();
+        /// Calculate the current score IF the word is within the initial
+        /// set of words. If the current word is above that, using SPATIAL
+        /// repetition, then do NOT calculate the score and return 0 directly.
+        final condition =
+            !widget.args.isTest && _macro >= widget.args.studyList.length;
+        final code = !condition ? await _calculateKanjiScore() : 0;
 
         /// If everything went well, and we have words left in the list,
         /// update _macro to the next one and reset _inner.
@@ -166,9 +183,8 @@ class _WritingStudyState extends State<WritingStudy> {
   Future<int> _calculateKanjiScore() async {
     /// Updates the dateLastShown attribute of the finished word AND
     /// the current specific last shown mode attribute
-    await KanjiQueries.instance.updateKanji(
-        widget.args.studyList[_macro].listName,
-        widget.args.studyList[_macro].kanji, {
+    await KanjiQueries.instance
+        .updateKanji(_studyList[_macro].listName, _studyList[_macro].kanji, {
       KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds(),
       KanjiTableFields.dateLastShownWriting:
           GeneralUtils.getCurrentMilliseconds()
@@ -213,8 +229,7 @@ class _WritingStudyState extends State<WritingStudy> {
       appBarActions: [
         Visibility(
           visible: _goNextKanji,
-          child:
-              TTSIconButton(kanji: widget.args.studyList[_macro].pronunciation),
+          child: TTSIconButton(kanji: _studyList[_macro].pronunciation),
         ),
       ],
       child: Column(

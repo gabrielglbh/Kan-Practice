@@ -176,4 +176,23 @@ class GeneralUtils {
       },
     );
   }
+
+  static Future<void> showSpatialRepetitionDisclaimer(
+    BuildContext context,
+  ) async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return KPDialog(
+          title: Text("list_details_learningMode_spatial".tr(),
+              style: Theme.of(context).textTheme.headline6),
+          content: Text("disclaimer_spatial_repetition".tr(),
+              style: Theme.of(context).textTheme.bodyText1),
+          positiveButtonText: "Ok",
+          negativeButton: false,
+          onPositive: () {},
+        );
+      },
+    );
+  }
 }

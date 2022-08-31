@@ -38,7 +38,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
   final List<double> _testScores = [];
 
   /// Widget auxiliary variable
-  List<Kanji> _studyList = [];
+  final List<Kanji> _studyList = [];
 
   /// For translating the hiragana
   KanaKit? _kanaKit;
@@ -47,17 +47,28 @@ class _ReadingStudyState extends State<ReadingStudy> {
 
   @override
   void initState() {
-    _studyList = widget.args.studyList;
+    _studyList.addAll(widget.args.studyList);
     _kanaKit = const KanaKit();
     super.initState();
   }
 
   Future<void> _updateUIOnSubmit(double score) async {
+    /// If the score is less PARTIAL or WRONG and the Learning Mode is
+    /// SPATIAL, the append the current word to the list, to review it again.
+    /// Only do this when NOT on test
+    if (!widget.args.isTest && score < 0.5) {
+      _studyList.add(_studyList[_macro]);
+    }
+
     if (_hasFinished) {
       await _handleFinishedPractice();
     } else {
-      /// Calculate the current score
-      final code = await _calculateKanjiScore(score);
+      /// Calculate the current score IF the word is within the initial
+      /// set of words. If the current word is above that, using SPATIAL
+      /// repetition, then do NOT calculate the score and return 0 directly.
+      final condition =
+          !widget.args.isTest && _macro >= widget.args.studyList.length;
+      final code = !condition ? await _calculateKanjiScore(score) : 0;
 
       /// If everything went well, and we have words left in the list,
       /// update _macro to the next one.
@@ -97,9 +108,8 @@ class _ReadingStudyState extends State<ReadingStudy> {
   Future<int> _calculateKanjiScore(double score) async {
     /// Updates the dateLastShown attribute of the finished word AND
     /// the current specific last shown mode attribute
-    await KanjiQueries.instance.updateKanji(
-        widget.args.studyList[_macro].listName,
-        widget.args.studyList[_macro].kanji, {
+    await KanjiQueries.instance
+        .updateKanji(_studyList[_macro].listName, _studyList[_macro].kanji, {
       KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds(),
       KanjiTableFields.dateLastShownReading:
           GeneralUtils.getCurrentMilliseconds()
@@ -168,8 +178,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
       appBarActions: [
         Visibility(
           visible: _showPronunciation,
-          child:
-              TTSIconButton(kanji: widget.args.studyList[_macro].pronunciation),
+          child: TTSIconButton(kanji: _studyList[_macro].pronunciation),
         )
       ],
       child: Column(

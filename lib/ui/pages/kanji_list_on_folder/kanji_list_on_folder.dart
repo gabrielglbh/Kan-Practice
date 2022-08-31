@@ -1,10 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/core/types/tab_types.dart';
 import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/ui/general_utils.dart';
+import 'package:kanpractice/ui/pages/kanji_list_on_folder/widgets/practice_on_folder.dart';
 import 'package:kanpractice/ui/pages/kanji_list_on_folder/bloc/kl_folder_bloc.dart';
+import 'package:kanpractice/ui/widgets/kp_button.dart';
 import 'package:kanpractice/ui/widgets/kp_kanji_lists/kanji_lists.dart';
 import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 import 'package:kanpractice/ui/widgets/kp_search_bar.dart';
@@ -86,6 +90,11 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
                         arguments: widget.folder);
                     bloc.add(_addListLoadingEvent());
                   },
+                ),
+                IconButton(
+                  onPressed: () =>
+                      GeneralUtils.showSpatialRepetitionDisclaimer(context),
+                  icon: const Icon(Icons.info_outline_rounded),
                 )
               ],
               child: Column(
@@ -127,6 +136,17 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
                               .read<KLFolderBloc>()
                               .add(_addListLoadingEvent(reset: false));
                         }
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 85,
+                    child: KPButton(
+                      title1: "list_details_practice_button_label_ext".tr(),
+                      title2: "list_details_practice_button_label".tr(),
+                      onTap: () async {
+                        await PracticeFolderBottomSheet.show(
+                            context, widget.folder);
                       },
                     ),
                   ),

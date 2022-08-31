@@ -14,16 +14,18 @@ class KPVerticalBarChart extends StatelessWidget {
   /// List of [VerticalBarData] to paint over a [c.BarChart]. See [VerticalBarData].
   final List<VerticalBarData> dataSource;
   final void Function(c.SelectionModel<String>)? onBarTapped;
+  final double heightRatio;
   const KPVerticalBarChart({
     Key? key,
     required this.dataSource,
     this.onBarTapped,
+    this.heightRatio = 1.7,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: CustomSizes.defaultSizeWinRateBarChart * 1.5,
+      height: CustomSizes.defaultSizeWinRateBarChart * heightRatio,
       width: MediaQuery.of(context).size.width - Margins.margin48,
       child: c.BarChart(
         [

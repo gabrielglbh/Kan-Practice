@@ -29,14 +29,13 @@ class KanjiEventSearching extends KanjiListDetailEvent {
 }
 
 class KanjiEventLoadUpPractice extends KanjiListDetailEvent {
-  final LearningMode mode;
   final StudyModes studyMode;
   final String list;
 
-  const KanjiEventLoadUpPractice(this.mode, this.list, this.studyMode);
+  const KanjiEventLoadUpPractice(this.list, this.studyMode);
 
   @override
-  List<Object> get props => [mode, list, studyMode];
+  List<Object> get props => [list, studyMode];
 }
 
 class UpdateKanList extends KanjiListDetailEvent {

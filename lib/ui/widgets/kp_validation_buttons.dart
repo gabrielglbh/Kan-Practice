@@ -43,7 +43,7 @@ class KPValidationButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.only(bottom: Margins.margin16),
+        padding: const EdgeInsets.only(top: 64, bottom: Margins.margin16),
         child: AnimatedSwitcher(
             duration: const Duration(milliseconds: CustomAnimations.ms300),
             switchInCurve: Curves.easeOut,

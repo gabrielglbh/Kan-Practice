@@ -3,7 +3,6 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
-import 'package:kanpractice/core/types/learning_mode.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/ui/pages/study_modes/widgets/writing_buttons_animation.dart';
@@ -118,9 +117,7 @@ class _WritingStudyState extends State<WritingStudy> {
       /// SPATIAL, the append the current word to the list, to review it again.
       /// Only do this when NOT on test
       final double score = _score[_macro] / _maxScore[_macro];
-      final isSpatialPractice = !widget.args.isTest &&
-          widget.args.learningMode == LearningMode.spatial;
-      if (isSpatialPractice && score < 0.5) {
+      if (!widget.args.isTest && score < 0.5) {
         _studyList.add(_studyList[_macro]);
         _initScoreArray(_studyList.length - 1);
       }
@@ -135,7 +132,7 @@ class _WritingStudyState extends State<WritingStudy> {
         /// set of words. If the current word is above that, using SPATIAL
         /// repetition, then do NOT calculate the score and return 0 directly.
         final condition =
-            isSpatialPractice && _macro >= widget.args.studyList.length;
+            !widget.args.isTest && _macro >= widget.args.studyList.length;
         final code = !condition ? await _calculateKanjiScore() : 0;
 
         /// If everything went well, and we have words left in the list,

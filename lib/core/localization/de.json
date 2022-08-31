@@ -107,7 +107,6 @@
   "list_details_practice_button_label": "Üben",
   "list_details_practice_button_label_ext": "練習",
   "list_details_learningMode_spatial": "Abgestufte Wiederholung",
-  "list_details_learningMode_random": "Zufälliges",
   "list_details_empty": "Kein verfügbares Wort.\n\nFügen Sie neue Wörter zu dieser Liste hinzu, indem Sie auf '+' tippen, oder importieren Sie sie aus Ihrem Backup.",
   "list_details_searchBar_hint": "Suche nach Wort, Bedeutung, Aussprache",
   "kan_list_tile_createDialogForDeletingKanList_title": "KanList entfernen",
@@ -249,7 +248,7 @@
   "coach_tutorial_kanlists_4": "Wenn du auf Wörter stößt, die du nicht kennst, kannst du sie im Wörterbuch nachschlagen und sie direkt zu deinen Listen hinzufügen",
   "coach_tutorial_detail_1": "Hier werden alle Vokabeln aus der Liste angezeigt. Sie können im Laufe Ihres Studiums jederzeit mehr hinzufügen.\n\nJedes Mal, wenn Sie in einem Bereich (z. B. Schreiben) üben, wird das Vokabular aktualisiert und der Prozentsatz des Erfolgs in diesem Bereich angezeigt.",
   "coach_tutorial_detail_2": "Fügen Sie weitere Vokabeln hinzu, die Sie auf der Straße, beim Lernen, Lesen, in Videospielen oder Anime sehen, indem Sie hier klicken.\n\n Sie können Wörter erstellen, indem Sie ihre Aussprache und Bedeutung hinzufügen.",
-  "coach_tutorial_detail_3": "Hier sind die zusätzlichen Aktionen. Sie können den Lernmodus ändern: zufällig, räumlich, Schlechteste zuerst (links), einen Blitztest nur mit dieser Vokabelliste machen (Mitte) oder die Liste zu einem bestimmten Ordner hinzufügen.\n\nDer Lernmodus bestimmt die Reihenfolge des Lernens beim Üben einer Vokabelliste: \n\nWenn er zufällig ist, wird die Reihenfolge der Wörter beim Üben zufällig sein.\n\nWenn er räumlich ist, werden die Wörter, bei denen Sie in früheren Sitzungen am schlechtesten abgeschnitten haben, zuerst erscheinen, die letzten sind die, die Sie am besten kennen.",
+  "coach_tutorial_detail_3": "Hier sind die ergänzenden Aktionen. Sie können einen Blitztest nur mit dieser Vokabelliste machen oder die Liste zu einem bestimmten Ordner hinzufügen.\n\nBeim Üben wird die räumliche Wiederholung verwendet: alle Wörter, die Sie nicht lernen, werden im weiteren Verlauf der Übung wieder auftauchen.",
   "coach_tutorial_detail_4": "Wenn Sie hier klicken, können Sie schließlich den Namen der Liste ändern, falls Sie einen Fehler gemacht oder Ihre Meinung über das gewählte Thema oder die Kategorisierung geändert haben.",
   "settings_general_statistics": "Allgemeine Statistik",
   "stats_words": "Gesamtzahl der Wörter",
@@ -366,10 +365,5 @@
   "stats_tests_by_type": "Gesamtzahl der Tests nach Typ",
   "stats_tests_total_acc": "Gesamt-Genauigkeit nach Studienmodus",
   "stats_tests_tap_to_specs": "Tippen Sie auf die Balken, um mehr Details für jeden Testtyp zu sehen",
-  "change_learning_mode_title": "Lernmodus ändern",
-  "list_details_learningMode_fifo": "Schlechteste zuerst",
-  "list_details_learningMode_random_desc": "Die Reihenfolge der Wörter ist zufällig und kein Wort wird beim Üben wiederholt.",
-  "list_details_learningMode_spatial_desc": "Üben Sie mit SM2 räumliches Lernen: wenn Sie ein Wort nicht schaffen, wird es später in der Übung erscheinen, bis Sie es richtig haben.",
-  "list_details_learningMode_fifo_desc": "Die Wörter werden von schlecht bis perfekt geordnet und kein Wort wird beim Üben wiederholt.",
-  "folder_practice_title": "Üben Sie mit einer Teilmenge von Wörtern aus den Listen in diesem Ordner unter Anwendung des ausgewählten Lernmodus"
+  "folder_practice_title": "Üben Sie mit einer Teilmenge von Wörtern aus den Listen in diesem Ordner."
 }

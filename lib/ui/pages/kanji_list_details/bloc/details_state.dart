@@ -14,12 +14,11 @@ class KanjiListDetailStateSearching extends KanjiListDetailState {}
 class KanjiListDetailStateLoadedPractice extends KanjiListDetailState {
   final StudyModes mode;
   final List<Kanji> list;
-  final LearningMode lMode;
 
-  const KanjiListDetailStateLoadedPractice(this.mode, this.list, this.lMode);
+  const KanjiListDetailStateLoadedPractice(this.mode, this.list);
 
   @override
-  List<Object> get props => [list, mode, lMode];
+  List<Object> get props => [list, mode];
 }
 
 class KanjiListDetailStateLoaded extends KanjiListDetailState {

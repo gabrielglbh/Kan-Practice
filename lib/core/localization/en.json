@@ -107,7 +107,6 @@
   "list_details_practice_button_label": "Practice",
   "list_details_practice_button_label_ext": "練習",
   "list_details_learningMode_spatial": "Spatial Repetition",
-  "list_details_learningMode_random": "Random",
   "list_details_empty": "No available words.\n\nAdd new words to this list by tapping on '+' or import them from your backup.",
   "list_details_searchBar_hint": "Search by word, meaning, pronunciation",
   "kan_list_tile_createDialogForDeletingKanList_title": "Remove a KanList",
@@ -249,7 +248,7 @@
   "coach_tutorial_kanlists_4": "When you find words you don't know, you can look them up in the dictionary and add them directly to your lists.",
   "coach_tutorial_detail_1": "All the vocabulary in the list is displayed here. You can add more at any time as your study progresses.\n\nEach time you practise in an area (e.g. writing), the vocabulary will be updated showing the percentage of success in that area.",
   "coach_tutorial_detail_2": "Add more vocabulary you see on the street, studying, reading, video games or anime by clicking here.\n\nYou can create words by adding their pronunciation and meaning.",
-  "coach_tutorial_detail_3": "Here are the supplementary actions. You can change the learning mode: random, spatial repetition or worst first (left), do a Blitz test of this vocabulary list only (middle) or add the list to a certain folder.\n\nThe learning mode determines the order of study when practising a vocabulary list:\n\nIf it is random, the order of the words when practising will be random.\n\nIf it is spatial, the words that you have been worst at in previous sessions will appear first, the last ones being the ones you know best.",
+  "coach_tutorial_detail_3": "Here are the supplementary actions. You can do a Blitz test of this vocabulary list only or add the list to a certain folder.\n\nWhen practicing, spatial repetition is used: all the words that you fail to study, will appear again further in the practice.",
   "coach_tutorial_detail_4": "Finally, if you click here, you will be able to change the name of the list, in case you have made a mistake or changed your mind about the chosen subject or categorisation.",
   "settings_general_statistics": "General Statistics",
   "stats_words": "Total Number of Words",
@@ -366,10 +365,5 @@
   "stats_tests_by_type": "Total Number of Tests by Type",
   "stats_tests_total_acc": "Total Accuracy by Study Mode",
   "stats_tests_tap_to_specs": "Tap on the bars to see more details for each test type",
-  "change_learning_mode_title": "Change learning mode",
-  "list_details_learningMode_fifo": "Worst First",
-  "list_details_learningMode_random_desc": "The order of the words will be random and no word will be repeated while practicing.",
-  "list_details_learningMode_spatial_desc": "Practice using SM2 spatial learning: when failing a word, it will appear later in the practice until you got it right.",
-  "list_details_learningMode_fifo_desc": "The words will be ordered from worst to perfect and no word will be repeated while practicing.",
-  "folder_practice_title": "Practice with a subset of words of the lists within this folder applying the selected learning mode"
+  "folder_practice_title": "Practice with a subset of words of the lists within this folder."
 }

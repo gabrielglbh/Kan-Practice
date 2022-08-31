@@ -5,7 +5,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
-import 'package:kanpractice/core/types/learning_mode.dart';
 import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/theme/theme_manager.dart';
@@ -27,10 +26,6 @@ Future<void> _initSharedPreferences() async {
   if (StorageManager.readData(StorageManager.numberOfKanjiInTest) == null) {
     StorageManager.saveData(
         StorageManager.numberOfKanjiInTest, CustomSizes.numberOfKanjiInTest);
-  }
-  if (StorageManager.readData(StorageManager.practiceLearningMode) == null) {
-    StorageManager.saveData(
-        StorageManager.practiceLearningMode, LearningMode.spatial);
   }
 
   /// Breaking change with 2.1.0: if themeMode in shared preferences is bool

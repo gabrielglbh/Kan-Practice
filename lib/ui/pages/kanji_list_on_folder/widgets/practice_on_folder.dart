@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
-import 'package:kanpractice/core/types/learning_mode.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
@@ -13,22 +12,18 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
 
 class PracticeFolderBottomSheet extends StatefulWidget {
-  final LearningMode learningMode;
   final String folder;
 
-  const PracticeFolderBottomSheet(
-      {Key? key, required this.learningMode, required this.folder})
+  const PracticeFolderBottomSheet({Key? key, required this.folder})
       : super(key: key);
 
   /// Creates and calls the [BottomSheet] with the content for a regular folder practice
-  static Future<void> show(
-      BuildContext context, LearningMode learningMode, String folder) async {
+  static Future<void> show(BuildContext context, String folder) async {
     await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
-        builder: (context) => PracticeFolderBottomSheet(
-            learningMode: learningMode, folder: folder));
+        builder: (context) => PracticeFolderBottomSheet(folder: folder));
   }
 
   @override
@@ -58,7 +53,8 @@ class _PracticeFolderBottomSheetState extends State<PracticeFolderBottomSheet> {
               Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: Margins.margin8, horizontal: Margins.margin32),
-                child: Text("${"list_details_practice_button_label".tr()}: ${widget.folder}",
+                child: Text(
+                    "${"list_details_practice_button_label".tr()}: ${widget.folder}",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6),
               ),
@@ -135,7 +131,6 @@ class _PracticeFolderBottomSheetState extends State<PracticeFolderBottomSheet> {
         studyList: sortedList,
         isTest: false,
         testMode: Tests.blitz,
-        learningMode: widget.learningMode,
         studyModeHeaderDisplayName: widget.folder,
         mode: mode,
       ),

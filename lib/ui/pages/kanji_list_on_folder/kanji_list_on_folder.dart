@@ -1,14 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
-import 'package:kanpractice/core/types/learning_mode.dart';
 import 'package:kanpractice/core/types/tab_types.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/pages/kanji_list_on_folder/widgets/practice_on_folder.dart';
-import 'package:kanpractice/ui/widgets/change_learning_mode.dart';
 import 'package:kanpractice/ui/pages/kanji_list_on_folder/bloc/kl_folder_bloc.dart';
 import 'package:kanpractice/ui/widgets/kp_button.dart';
 import 'package:kanpractice/ui/widgets/kp_kanji_lists/kanji_lists.dart';
@@ -27,7 +24,6 @@ class KanListOnFolderPage extends StatefulWidget {
 class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
   late FocusNode _searchBarFn;
   late TextEditingController _searchTextController;
-  late LearningMode _learningMode;
   bool _searchHasFocus = false;
 
   String _query = "";
@@ -37,9 +33,6 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
     _searchBarFn = FocusNode();
     _searchTextController = TextEditingController();
     _searchBarFn.addListener(_focusListener);
-    final ind = StorageManager.readData(StorageManager.practiceLearningMode) ??
-        LearningMode.spatial;
-    _learningMode = LearningMode.values[ind];
     super.initState();
   }
 
@@ -79,20 +72,6 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
               },
               appBarTitle: widget.folder,
               appBarActions: [
-                IconButton(
-                  icon: Icon(_learningMode.icon),
-                  onPressed: () async {
-                    final mode =
-                        await ChangeLearningMode.show(context, _learningMode);
-                    if (mode != null) {
-                      StorageManager.saveData(
-                          StorageManager.practiceLearningMode, mode.index);
-                      setState(() {
-                        _learningMode = mode;
-                      });
-                    }
-                  },
-                ),
                 IconButton(
                   onPressed: () async {
                     await KPTestBottomSheet.show(context,
@@ -158,11 +137,10 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
                     height: 85,
                     child: KPButton(
                       title1: "list_details_practice_button_label_ext".tr(),
-                      title2:
-                          "${"list_details_practice_button_label".tr()} • ${_learningMode.name}",
+                      title2: "list_details_practice_button_label".tr(),
                       onTap: () async {
                         await PracticeFolderBottomSheet.show(
-                            context, _learningMode, widget.folder);
+                            context, widget.folder);
                       },
                     ),
                   ),

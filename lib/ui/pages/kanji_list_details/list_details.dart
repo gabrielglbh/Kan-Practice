@@ -46,6 +46,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
   FocusNode? _searchBarFn;
   TabController? _tabController;
   StudyModes _selectedMode = StudyModes.writing;
+  bool _aggrStats = false;
 
   /// Saves the last state of the query
   String _query = "";
@@ -65,6 +66,8 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
     _searchBarFn?.addListener(_focusListener);
     _scrollController.addListener(_scrollListener);
     _listName = widget.list.name;
+    _aggrStats =
+        StorageManager.readData(StorageManager.kanListListVisualization);
     super.initState();
   }
 
@@ -349,36 +352,39 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
   Column _body(BuildContext bloc, KanjiListDetailStateLoaded state) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: Margins.margin8),
-          child: TabBar(
-              controller: _tabController,
-              tabs: List.generate(StudyModes.values.length, (index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Icon(
-                    StudyModes.values[index].icon,
-                    color: StudyModes.values[index].color,
-                  ),
-                );
-              })),
-        ),
-        Expanded(
-            child: GestureDetector(
-          /// Dismiss keyboard if possible whenever a vertical or horizontal
-          /// drag down occurs on screen
-          onVerticalDragStart: (details) {
-            FocusManager.instance.primaryFocus?.unfocus();
-          },
-          onHorizontalDragStart: (details) {
-            FocusManager.instance.primaryFocus?.unfocus();
-          },
-          onHorizontalDragEnd: (details) {
-            double? pv = details.primaryVelocity;
-            if (pv != null) _updateSelectedModePageView(pv);
-          },
-          child: _kanjiList(state),
-        )),
+        if (!_aggrStats)
+          Padding(
+            padding: const EdgeInsets.only(bottom: Margins.margin8),
+            child: TabBar(
+                controller: _tabController,
+                tabs: List.generate(StudyModes.values.length, (index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Icon(
+                      StudyModes.values[index].icon,
+                      color: StudyModes.values[index].color,
+                    ),
+                  );
+                })),
+          ),
+        _aggrStats
+            ? Expanded(child: _kanjiList(state))
+            : Expanded(
+                child: GestureDetector(
+                /// Dismiss keyboard if possible whenever a vertical or horizontal
+                /// drag down occurs on screen
+                onVerticalDragStart: (details) {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
+                onHorizontalDragStart: (details) {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
+                onHorizontalDragEnd: (details) {
+                  double? pv = details.primaryVelocity;
+                  if (pv != null) _updateSelectedModePageView(pv);
+                },
+                child: _kanjiList(state),
+              )),
         KPButton(
             title1: "list_details_practice_button_label_ext".tr(),
             title2: "list_details_practice_button_label".tr(),
@@ -406,6 +412,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
       itemBuilder: (context, k) {
         Kanji? kanji = state.list[k];
         return KanjiItem(
+          aggregateStats: _aggrStats,
           index: k,
           kanji: kanji,
           list: widget.list,

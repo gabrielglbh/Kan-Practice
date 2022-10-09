@@ -25,6 +25,7 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   VisualizationMode _graphMode = VisualizationMode.radialChart;
+  bool _aggStats = false;
   bool _toggleAffect = false;
   int _kanjiInTest = CustomSizes.numberOfKanjiInTest;
 
@@ -34,6 +35,8 @@ class _SettingsState extends State<Settings> {
     _graphMode = VisualizationModeExt.mode(
         StorageManager.readData(StorageManager.kanListGraphVisualization) ??
             VisualizationMode.radialChart);
+    _aggStats =
+        StorageManager.readData(StorageManager.kanListListVisualization);
     _kanjiInTest =
         StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
             CustomSizes.numberOfKanjiInTest;
@@ -120,8 +123,8 @@ class _SettingsState extends State<Settings> {
                             .bodyText2
                             ?.copyWith(color: Colors.grey.shade500))),
                 trailing: Switch(
-                  activeColor: Colors.blueAccent,
-                  activeTrackColor: Colors.lightBlueAccent,
+                  activeColor: CustomColors.secondaryDarkerColor,
+                  activeTrackColor: CustomColors.secondaryColor,
                   inactiveThumbColor:
                       Brightness.light == Theme.of(context).brightness
                           ? Colors.grey[600]
@@ -169,6 +172,39 @@ class _SettingsState extends State<Settings> {
                         StorageManager.kanListGraphVisualization,
                         _graphMode.name);
                   }),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.group_work_rounded,
+                    color: Colors.orangeAccent),
+                title: Text("settings_general_kanji_list".tr()),
+                subtitle: Padding(
+                    padding: const EdgeInsets.only(top: Margins.margin8),
+                    child: Text("settings_general_kanji_list_description".tr(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            ?.copyWith(color: Colors.grey.shade500))),
+                trailing: Switch(
+                  activeColor: CustomColors.secondaryDarkerColor,
+                  activeTrackColor: CustomColors.secondaryColor,
+                  inactiveThumbColor:
+                      Brightness.light == Theme.of(context).brightness
+                          ? Colors.grey[600]
+                          : Colors.white,
+                  inactiveTrackColor: Colors.grey,
+                  onChanged: (bool value) {
+                    StorageManager.saveData(
+                        StorageManager.kanListListVisualization, value);
+                    setState(() => _aggStats = value);
+                  },
+                  value: _aggStats,
+                ),
+                onTap: () async {
+                  StorageManager.saveData(
+                      StorageManager.kanListListVisualization, !_aggStats);
+                  setState(() => _aggStats = !_aggStats);
+                },
+              ),
               const Divider(),
               ListTile(
                   leading: const Icon(Icons.notifications_active_rounded),

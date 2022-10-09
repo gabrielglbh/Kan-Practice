@@ -54,14 +54,22 @@ class KanjiListTile extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
-                child: Text(item.name,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.headline5),
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 2.5,
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(item.name,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.headline5),
+                ),
               ),
-              Text(
-                "${"created_label".tr()} $date",
-                style: Theme.of(context).textTheme.subtitle2,
+              const SizedBox(width: 16),
+              Expanded(
+                child: Text(
+                  "${"created_label".tr()} $date",
+                  textAlign: TextAlign.end,
+                  style: Theme.of(context).textTheme.subtitle2,
+                ),
               )
             ],
           ),

@@ -23,6 +23,10 @@ Future<void> _initSharedPreferences() async {
     StorageManager.saveData(StorageManager.kanListGraphVisualization,
         VisualizationMode.radialChart.name);
   }
+  if (StorageManager.readData(StorageManager.kanListListVisualization) ==
+      null) {
+    StorageManager.saveData(StorageManager.kanListListVisualization, false);
+  }
   if (StorageManager.readData(StorageManager.numberOfKanjiInTest) == null) {
     StorageManager.saveData(
         StorageManager.numberOfKanjiInTest, CustomSizes.numberOfKanjiInTest);

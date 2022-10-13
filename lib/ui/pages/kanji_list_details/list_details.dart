@@ -255,11 +255,6 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
               },
               icon: const Icon(Icons.create_new_folder_rounded),
             ),
-            IconButton(
-              onPressed: () =>
-                  GeneralUtils.showSpatialRepetitionDisclaimer(context),
-              icon: const Icon(Icons.info_outline_rounded),
-            )
           ],
         ),
       ],

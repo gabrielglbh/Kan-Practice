@@ -369,5 +369,7 @@
   "disclaimer_spatial_repetition": "The practice is based on learning by spaced repetition. This method is applied in such a way that the words you miss during practice, will reappear at the end of the entire review (until you get them right). This stimulates learning and improves vocabulary memorization.",
   "settings_general_kanji_list": "Group statistics by word",
   "settings_general_kanji_list_description": "When active, all KanLists words will show the mean accross all study modes instead of swipping between them",
-  "tests": "Tests"
+  "tests": "Tests",
+  "specific_test_accuracy_label": "Success Rate on Test",
+  "success": "Success Rate"
 }

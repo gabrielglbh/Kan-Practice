@@ -60,6 +60,14 @@ class GeneralUtils {
     }
   }
 
+  static String getFixedPercentageAsString(double rate) {
+    return "${roundUpAsString(getFixedDouble(rate * 100))}%";
+  }
+
+  static double getFixedPercentage(double rate) {
+    return double.parse(getFixedDouble(rate * 100));
+  }
+
   /// Opens up a [url]
   static Future<void> launch(BuildContext context, String url) async {
     if (await canLaunchUrl(Uri.parse(url))) {

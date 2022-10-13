@@ -369,5 +369,7 @@
   "disclaimer_spatial_repetition": "Die Übung basiert auf dem Lernen durch räumliche Wiederholung. Diese Methode wird so angewandt, dass Wörter, die Sie beim Üben übersehen haben, am Ende der gesamten Prüfung wieder auftauchen (bis Sie sie richtig können). Dies fördert das Lernen und verbessert das Einprägen von Vokabeln",
   "settings_general_kanji_list": "Gruppenstatistiken nach Wort",
   "settings_general_kanji_list_description": "Wenn diese Funktion aktiviert ist, wird bei allen KanLists-Wörtern der Mittelwert über alle Studienmodi hinweg angezeigt, anstatt zwischen ihnen zu wechseln.",
-  "tests": "Tests"
+  "tests": "Tests",
+  "specific_test_accuracy_label": "Erfolgsquote beim Test",
+  "success": "Erfolgsquote"
 }

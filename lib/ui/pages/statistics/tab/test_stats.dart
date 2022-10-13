@@ -10,7 +10,7 @@ import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
 import 'package:kanpractice/ui/pages/statistics/widgets/stats_header.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_dependent_graph.dart';
 import 'package:kanpractice/ui/pages/statistics/widgets/test_spec_bottom_sheet.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_vertical_chart.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_bar_chart.dart';
 
 class TestStats extends StatefulWidget {
   final KanPracticeStats s;
@@ -37,40 +37,40 @@ class _TestStatsState extends State<TestStats>
           title: "${"stats_tests".tr()} • ",
           value: widget.s.test.totalTests.toString(),
         ),
-        KPVerticalBarChart(
+        KPBarChart(
           dataSource: List.generate(StudyModes.values.length, (index) {
             switch (StudyModes.values[index]) {
               case StudyModes.writing:
                 final v = widget.s.test.testTotalCountWriting;
-                return VerticalBarData(
+                return BarData(
                   x: StudyModes.writing.mode,
                   y: v.toDouble(),
                   color: StudyModes.writing.color,
                 );
               case StudyModes.reading:
                 final v = widget.s.test.testTotalCountReading;
-                return VerticalBarData(
+                return BarData(
                   x: StudyModes.reading.mode,
                   y: v.toDouble(),
                   color: StudyModes.reading.color,
                 );
               case StudyModes.recognition:
                 final v = widget.s.test.testTotalCountRecognition;
-                return VerticalBarData(
+                return BarData(
                   x: StudyModes.recognition.mode,
                   y: v.toDouble(),
                   color: StudyModes.recognition.color,
                 );
               case StudyModes.listening:
                 final v = widget.s.test.testTotalCountListening;
-                return VerticalBarData(
+                return BarData(
                   x: StudyModes.listening.mode,
                   y: v.toDouble(),
                   color: StudyModes.listening.color,
                 );
               case StudyModes.speaking:
                 final v = widget.s.test.testTotalCountSpeaking;
-                return VerticalBarData(
+                return BarData(
                   x: StudyModes.speaking.mode,
                   y: v.toDouble(),
                   color: StudyModes.speaking.color,
@@ -91,8 +91,8 @@ class _TestStatsState extends State<TestStats>
         ),
         StatsHeader(
           title: "${"stats_tests_total_acc".tr()} • ",
-          value:
-              "${GeneralUtils.roundUpAsString(GeneralUtils.getFixedDouble(widget.s.test.totalTestAccuracy * 100))}%",
+          value: GeneralUtils.getFixedPercentageAsString(
+              widget.s.test.totalTestAccuracy),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
@@ -111,7 +111,8 @@ class _TestStatsState extends State<TestStats>
   }
 
   Widget _expandedTestCount(BuildContext context, KanPracticeStats s) {
-    return KPVerticalBarChart(
+    return KPBarChart(
+      enableTooltip: false,
       onBarTapped: (model) async {
         if (model.dataPoints?.isNotEmpty == true) {
           final mode = TestsUtils.mapTestMode(model.pointIndex ?? -1);
@@ -123,49 +124,49 @@ class _TestStatsState extends State<TestStats>
       dataSource: List.generate(Tests.values.length, (index) {
         switch (Tests.values[index]) {
           case Tests.lists:
-            return VerticalBarData(
+            return BarData(
               x: Tests.lists.nameAbbr,
               y: s.test.selectionTests.toDouble(),
               color: CustomColors.secondaryColor,
             );
           case Tests.blitz:
-            return VerticalBarData(
+            return BarData(
               x: Tests.blitz.nameAbbr,
               y: s.test.blitzTests.toDouble(),
               color: CustomColors.secondaryColor,
             );
           case Tests.time:
-            return VerticalBarData(
+            return BarData(
               x: Tests.time.nameAbbr,
               y: s.test.remembranceTests.toDouble(),
               color: CustomColors.secondaryColor,
             );
           case Tests.numbers:
-            return VerticalBarData(
+            return BarData(
               x: Tests.numbers.nameAbbr,
               y: s.test.numberTests.toDouble(),
               color: CustomColors.secondaryColor,
             );
           case Tests.less:
-            return VerticalBarData(
+            return BarData(
               x: Tests.less.nameAbbr,
               y: s.test.lessPctTests.toDouble(),
               color: CustomColors.secondaryColor,
             );
           case Tests.categories:
-            return VerticalBarData(
+            return BarData(
               x: Tests.categories.nameAbbr,
               y: s.test.categoryTests.toDouble(),
               color: CustomColors.secondaryColor,
             );
           case Tests.folder:
-            return VerticalBarData(
+            return BarData(
               x: Tests.folder.nameAbbr,
               y: s.test.folderTests.toDouble(),
               color: CustomColors.secondaryColor,
             );
           case Tests.daily:
-            return VerticalBarData(
+            return BarData(
               x: Tests.daily.nameAbbr,
               y: s.test.dailyTests.toDouble(),
               color: CustomColors.secondaryColor,

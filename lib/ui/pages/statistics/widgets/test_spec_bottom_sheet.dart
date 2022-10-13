@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/test_specific_data.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
@@ -5,7 +6,7 @@ import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_dependent_graph.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_vertical_chart.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_bar_chart.dart';
 import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
 import 'package:kanpractice/ui/consts.dart';
 
@@ -42,9 +43,6 @@ class _TestSpecBottomSheetState extends State<TestSpecBottomSheet> {
         widget.data.totalRecognitionCount +
         widget.data.totalListeningCount +
         widget.data.totalSpeakingCount;
-    final countTheme = Theme.of(context).textTheme.bodyText1?.copyWith(
-          fontWeight: FontWeight.bold,
-        );
 
     return BottomSheet(
       enableDrag: false,
@@ -73,47 +71,53 @@ class _TestSpecBottomSheetState extends State<TestSpecBottomSheet> {
               ),
               Container(
                 constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height / 2.8),
+                    maxHeight: MediaQuery.of(context).size.height / 2.5),
                 margin: const EdgeInsets.all(Margins.margin8),
                 child: Column(
                   children: [
-                    KPVerticalBarChart(
+                    KPBarChart(
                       heightRatio: 1.3,
                       dataSource:
                           List.generate(StudyModes.values.length, (index) {
                         switch (StudyModes.values[index]) {
                           case StudyModes.writing:
-                            return VerticalBarData(
+                            return BarData(
                               x: StudyModes.writing.mode,
                               y: widget.data.totalWritingCount.toDouble(),
                               color: StudyModes.writing.color,
                             );
                           case StudyModes.reading:
-                            return VerticalBarData(
+                            return BarData(
                               x: StudyModes.reading.mode,
                               y: widget.data.totalReadingCount.toDouble(),
                               color: StudyModes.reading.color,
                             );
                           case StudyModes.recognition:
-                            return VerticalBarData(
+                            return BarData(
                               x: StudyModes.recognition.mode,
                               y: widget.data.totalRecognitionCount.toDouble(),
                               color: StudyModes.recognition.color,
                             );
                           case StudyModes.listening:
-                            return VerticalBarData(
+                            return BarData(
                               x: StudyModes.listening.mode,
                               y: widget.data.totalListeningCount.toDouble(),
                               color: StudyModes.listening.color,
                             );
                           case StudyModes.speaking:
-                            return VerticalBarData(
+                            return BarData(
                               x: StudyModes.speaking.mode,
                               y: widget.data.totalSpeakingCount.toDouble(),
                               color: StudyModes.speaking.color,
                             );
                         }
                       }),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text("specific_test_accuracy_label".tr(),
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.headline6),
                     ),
                     KPDependentGraph(
                       mode: VisualizationModeExt.mode(StorageManager.readData(

@@ -77,7 +77,10 @@ class WinRateChart extends StatelessWidget {
                           positionFactor: 0.5,
                           angle: 90,
                           widget: Text(
-                              "${GeneralUtils.roundUpAsString(GeneralUtils.getFixedDouble((((winRate == DatabaseConstants.emptyWinRate ? 0 : winRate)) * 100)))}%",
+                              GeneralUtils.getFixedPercentageAsString(
+                                  winRate == DatabaseConstants.emptyWinRate
+                                      ? 0
+                                      : winRate),
                               style: TextStyle(
                                   color: Colors.white, fontSize: rateSize)))
                     ]

@@ -86,7 +86,7 @@ class KPRadialGraph extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           child: Text(
                             rate != DatabaseConstants.emptyWinRate
-                                ? "${GeneralUtils.roundUpAsString(GeneralUtils.getFixedDouble(rate * 100))}%"
+                                ? GeneralUtils.getFixedPercentageAsString(rate)
                                 : "0%",
                             style: TextStyle(
                                 fontSize: Margins.margin12,

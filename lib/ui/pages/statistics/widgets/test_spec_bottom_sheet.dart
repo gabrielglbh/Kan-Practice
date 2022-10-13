@@ -77,6 +77,7 @@ class _TestSpecBottomSheetState extends State<TestSpecBottomSheet> {
                 child: Column(
                   children: [
                     KPBarChart(
+                      graphName: "tests".tr(),
                       heightRatio: 1.3,
                       dataSource:
                           List.generate(StudyModes.values.length, (index) {

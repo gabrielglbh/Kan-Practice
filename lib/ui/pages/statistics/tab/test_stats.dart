@@ -39,6 +39,7 @@ class _TestStatsState extends State<TestStats>
           value: widget.s.test.totalTests.toString(),
         ),
         KPBarChart(
+          graphName: "tests".tr(),
           dataSource: List.generate(StudyModes.values.length, (index) {
             switch (StudyModes.values[index]) {
               case StudyModes.writing:
@@ -114,6 +115,7 @@ class _TestStatsState extends State<TestStats>
   Widget _expandedTestCount(BuildContext context, KanPracticeStats s) {
     return KPBarChart(
       enableTooltip: false,
+      graphName: "tests".tr(),
       onBarTapped: (model) async {
         if (model.dataPoints?.isNotEmpty == true) {
           final mode = TestsUtils.mapTestMode(model.pointIndex ?? -1);

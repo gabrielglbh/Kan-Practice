@@ -371,5 +371,6 @@
   "settings_general_kanji_list_description": "When active, all KanLists words will show the mean accross all study modes instead of swipping between them",
   "tests": "Tests",
   "specific_test_accuracy_label": "Success Rate on Test",
-  "success": "Success Rate"
+  "success": "Success Rate",
+  "words_by_category": "Total Numbers of Words by Category"
 }

@@ -22,6 +22,8 @@ class StatisticsBloc extends Bloc<StatsEvent, StatsState> {
       final List<String> lists =
           await ListQueries.instance.getBestAndWorstList();
       final TestData test = await TestQueries.instance.getTestDataFromDb();
+      final List<int> totalCategoryCounts =
+          await KanjiQueries.instance.getKanjiFromCategory();
 
       emit(StatisticsLoaded(
         stats: KanPracticeStats(
@@ -35,6 +37,7 @@ class StatisticsBloc extends Bloc<StatsEvent, StatsState> {
           bestList: lists[0],
           worstList: lists[1],
           test: test,
+          totalCategoryCounts: totalCategoryCounts,
         ),
       ));
     });

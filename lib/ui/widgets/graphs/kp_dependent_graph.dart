@@ -8,15 +8,15 @@ import 'package:kanpractice/ui/widgets/graphs/kp_radial_graph.dart';
 class KPDependentGraph extends StatelessWidget {
   final double writing, reading, recognition, listening, speaking;
   final VisualizationMode mode;
-  const KPDependentGraph(
-      {Key? key,
-      required this.writing,
-      required this.reading,
-      required this.recognition,
-      required this.listening,
-      required this.speaking,
-      this.mode = VisualizationMode.radialChart})
-      : super(key: key);
+  const KPDependentGraph({
+    Key? key,
+    required this.writing,
+    required this.reading,
+    required this.recognition,
+    required this.listening,
+    required this.speaking,
+    this.mode = VisualizationMode.radialChart,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +39,7 @@ class KPDependentGraph extends StatelessWidget {
           child: KPBarChart(
             isWinRateChart: true,
             heightRatio: 1.2,
+            graphName: "",
             dataSource: List.generate(
               StudyModes.values.length,
               (index) {

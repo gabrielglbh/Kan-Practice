@@ -25,10 +25,6 @@ dependencies:
   json_annotation: ^4.6.0
   syncfusion_flutter_gauges: ^20.3.49
   syncfusion_flutter_charts: ^20.3.49
-  charts_flutter:
-    git:
-      url: https://github.com/google/charts
-      path: charts_flutter
   percent_indicator: ^4.2.2
   kana_kit: ^2.0.0
   timeago: ^3.2.2

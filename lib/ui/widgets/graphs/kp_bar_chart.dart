@@ -11,9 +11,11 @@ class KPBarChart extends StatelessWidget {
   final bool enableTooltip;
   final double heightRatio;
   final bool isWinRateChart;
+  final String graphName;
   const KPBarChart({
     Key? key,
     required this.dataSource,
+    required this.graphName,
     this.enableTooltip = true,
     this.onBarTapped,
     this.heightRatio = 1.7,
@@ -38,7 +40,7 @@ class KPBarChart extends StatelessWidget {
           !isWinRateChart
               ? ColumnSeries<DataFrame, String>(
                   animationDuration: 1000,
-                  name: "tests".tr(),
+                  name: graphName,
                   dataSource: dataSource,
                   pointColorMapper: (DataFrame data, _) => data.color,
                   xValueMapper: (DataFrame data, _) => data.x,

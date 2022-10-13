@@ -371,5 +371,6 @@
   "settings_general_kanji_list_description": "Cuando se activa, todas las palabras de las KanLists mostrarán la media de todos los modos de estudio en lugar de mostrar uno por uno",
   "tests": "Tests",
   "specific_test_accuracy_label": "Tasa de Acierto en Test",
-  "success": "Tasa de Acierto"
+  "success": "Tasa de Acierto",
+  "words_by_category": "Número Total de Palabras por Categoría"
 }

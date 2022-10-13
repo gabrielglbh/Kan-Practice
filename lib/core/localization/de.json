@@ -371,5 +371,6 @@
   "settings_general_kanji_list_description": "Wenn diese Funktion aktiviert ist, wird bei allen KanLists-Wörtern der Mittelwert über alle Studienmodi hinweg angezeigt, anstatt zwischen ihnen zu wechseln.",
   "tests": "Tests",
   "specific_test_accuracy_label": "Erfolgsquote beim Test",
-  "success": "Erfolgsquote"
+  "success": "Erfolgsquote",
+  "words_by_category": "Gesamtzahl der Wörter nach Kategorie"
 }

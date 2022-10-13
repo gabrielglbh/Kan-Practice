@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_data_frame.dart';
@@ -44,7 +45,8 @@ class KPBarChart extends StatelessWidget {
                   dataSource: dataSource,
                   pointColorMapper: (DataFrame data, _) => data.color,
                   xValueMapper: (DataFrame data, _) => data.x,
-                  yValueMapper: (DataFrame data, _) => data.y,
+                  yValueMapper: (DataFrame data, _) =>
+                      data.y == DatabaseConstants.emptyWinRate ? 0 : data.y,
                   onPointTap: onBarTapped != null
                       ? (details) {
                           onBarTapped!(details);
@@ -58,7 +60,9 @@ class KPBarChart extends StatelessWidget {
                   pointColorMapper: (DataFrame data, _) => data.color,
                   xValueMapper: (DataFrame data, _) => data.x,
                   yValueMapper: (DataFrame data, _) =>
-                      GeneralUtils.getFixedPercentage(data.y),
+                      data.y == DatabaseConstants.emptyWinRate
+                          ? 0
+                          : GeneralUtils.getFixedPercentage(data.y),
                 )
         ],
       ),

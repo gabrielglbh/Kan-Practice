@@ -67,7 +67,8 @@ class KPRadialGraph extends StatelessWidget {
               ),
               animationDuration: 1000,
               xValueMapper: (DataFrame data, _) => data.x,
-              yValueMapper: (DataFrame data, _) => data.y,
+              yValueMapper: (DataFrame data, _) =>
+                  data.y == DatabaseConstants.emptyWinRate ? 0 : data.y,
               pointColorMapper: (DataFrame data, _) => data.color,
               radius: "100%",
               innerRadius: "20%",

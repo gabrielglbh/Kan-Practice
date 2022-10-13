@@ -21,7 +21,50 @@ class KPDependentGraph extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return mode == VisualizationMode.barChart
-        ? _barChart()
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: KPBarChart(
+                  isWinRateChart: true,
+                  heightRatio: 1.2,
+                  graphName: "",
+                  dataSource: List.generate(
+                    StudyModes.values.length,
+                    (index) {
+                      switch (StudyModes.values[index]) {
+                        case StudyModes.writing:
+                          return DataFrame(
+                              x: StudyModes.writing.mode,
+                              y: writing,
+                              color: StudyModes.writing.color);
+                        case StudyModes.reading:
+                          return DataFrame(
+                              x: StudyModes.reading.mode,
+                              y: reading,
+                              color: StudyModes.reading.color);
+                        case StudyModes.recognition:
+                          return DataFrame(
+                              x: StudyModes.recognition.mode,
+                              y: recognition,
+                              color: StudyModes.recognition.color);
+                        case StudyModes.listening:
+                          return DataFrame(
+                              x: StudyModes.listening.mode,
+                              y: listening,
+                              color: StudyModes.listening.color);
+                        case StudyModes.speaking:
+                          return DataFrame(
+                              x: StudyModes.speaking.mode,
+                              y: speaking,
+                              color: StudyModes.speaking.color);
+                      }
+                    },
+                  ),
+                ),
+              )
+            ],
+          )
         : KPRadialGraph(
             rateWriting: writing,
             rateReading: reading,
@@ -29,52 +72,5 @@ class KPDependentGraph extends StatelessWidget {
             rateListening: listening,
             rateSpeaking: speaking,
           );
-  }
-
-  Widget _barChart() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Expanded(
-          child: KPBarChart(
-            isWinRateChart: true,
-            heightRatio: 1.2,
-            graphName: "",
-            dataSource: List.generate(
-              StudyModes.values.length,
-              (index) {
-                switch (StudyModes.values[index]) {
-                  case StudyModes.writing:
-                    return DataFrame(
-                        x: StudyModes.writing.mode,
-                        y: writing,
-                        color: StudyModes.writing.color);
-                  case StudyModes.reading:
-                    return DataFrame(
-                        x: StudyModes.reading.mode,
-                        y: reading,
-                        color: StudyModes.reading.color);
-                  case StudyModes.recognition:
-                    return DataFrame(
-                        x: StudyModes.recognition.mode,
-                        y: recognition,
-                        color: StudyModes.recognition.color);
-                  case StudyModes.listening:
-                    return DataFrame(
-                        x: StudyModes.listening.mode,
-                        y: listening,
-                        color: StudyModes.listening.color);
-                  case StudyModes.speaking:
-                    return DataFrame(
-                        x: StudyModes.speaking.mode,
-                        y: speaking,
-                        color: StudyModes.speaking.color);
-                }
-              },
-            ),
-          ),
-        )
-      ],
-    );
   }
 }

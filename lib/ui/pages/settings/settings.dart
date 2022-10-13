@@ -88,14 +88,6 @@ class _SettingsState extends State<Settings> {
               _header("settings_general".tr()),
               const Divider(),
               ListTile(
-                leading: const Icon(Icons.lightbulb, color: Colors.lime),
-                title: Text('settings_toggle_theme'.tr()),
-                onTap: () {
-                  ChangeAppTheme.show(context);
-                },
-              ),
-              const Divider(),
-              ListTile(
                 leading: const Icon(Icons.insert_chart_outlined_rounded,
                     color: Colors.teal),
                 title: Text("settings_general_statistics".tr()),
@@ -145,35 +137,6 @@ class _SettingsState extends State<Settings> {
               ),
               const Divider(),
               ListTile(
-                leading: const Icon(Icons.adjust_rounded),
-                title: Text("settings_number_of_kanji_in_test".tr()),
-                trailing: Text("$_kanjiInTest",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText2
-                        ?.copyWith(color: Colors.grey.shade500)),
-                onTap: () async {
-                  final newValue = await ChangeKanjiInTest.show(context);
-                  if (newValue != null) {
-                    setState(() => _kanjiInTest = newValue);
-                    StorageManager.saveData(
-                        StorageManager.numberOfKanjiInTest, _kanjiInTest);
-                  }
-                },
-              ),
-              const Divider(),
-              ListTile(
-                  leading: _graphMode.icon,
-                  title: Text("settings_general_graphs".tr()),
-                  onTap: () {
-                    setState(() =>
-                        _graphMode = VisualizationModeExt.toggle(_graphMode));
-                    StorageManager.saveData(
-                        StorageManager.kanListGraphVisualization,
-                        _graphMode.name);
-                  }),
-              const Divider(),
-              ListTile(
                 leading: const Icon(Icons.group_work_rounded,
                     color: Colors.orangeAccent),
                 title: Text("settings_general_kanji_list".tr()),
@@ -207,11 +170,48 @@ class _SettingsState extends State<Settings> {
               ),
               const Divider(),
               ListTile(
+                leading: const Icon(Icons.adjust_rounded),
+                title: Text("settings_number_of_kanji_in_test".tr()),
+                trailing: Text("$_kanjiInTest",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        ?.copyWith(color: Colors.grey.shade500)),
+                onTap: () async {
+                  final newValue = await ChangeKanjiInTest.show(context);
+                  if (newValue != null) {
+                    setState(() => _kanjiInTest = newValue);
+                    StorageManager.saveData(
+                        StorageManager.numberOfKanjiInTest, _kanjiInTest);
+                  }
+                },
+              ),
+              const Divider(),
+              ListTile(
+                  leading: _graphMode.icon,
+                  title: Text("settings_general_graphs".tr()),
+                  onTap: () {
+                    setState(() =>
+                        _graphMode = VisualizationModeExt.toggle(_graphMode));
+                    StorageManager.saveData(
+                        StorageManager.kanListGraphVisualization,
+                        _graphMode.name);
+                  }),
+              const Divider(),
+              ListTile(
                   leading: const Icon(Icons.notifications_active_rounded),
                   title: Text("settings_notifications_label".tr()),
                   onTap: () {
                     AppSettings.openNotificationSettings();
                   }),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.lightbulb, color: Colors.lime),
+                title: Text('settings_toggle_theme'.tr()),
+                onTap: () {
+                  ChangeAppTheme.show(context);
+                },
+              ),
               const Divider(),
               BlocBuilder<SettingsBloc, SettingsState>(
                 builder: (context, state) {

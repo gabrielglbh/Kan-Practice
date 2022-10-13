@@ -30,33 +30,12 @@ class _TestStatsState extends State<TestStats>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final countTheme = Theme.of(context).textTheme.bodyText1?.copyWith(
-          fontWeight: FontWeight.bold,
-        );
 
     return ListView(
       children: [
         StatsHeader(
           title: "${"stats_tests".tr()} • ",
           value: widget.s.test.totalTests.toString(),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Margins.margin24),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text(widget.s.test.testTotalCountWriting.toString(),
-                  style: countTheme),
-              Text(widget.s.test.testTotalCountReading.toString(),
-                  style: countTheme),
-              Text(widget.s.test.testTotalCountRecognition.toString(),
-                  style: countTheme),
-              Text(widget.s.test.testTotalCountListening.toString(),
-                  style: countTheme),
-              Text(widget.s.test.testTotalCountSpeaking.toString(),
-                  style: countTheme),
-            ],
-          ),
         ),
         KPVerticalBarChart(
           dataSource: List.generate(StudyModes.values.length, (index) {
@@ -104,43 +83,7 @@ class _TestStatsState extends State<TestStats>
           child: Divider(),
         ),
         StatsHeader(title: "stats_tests_by_type".tr()),
-        Padding(
-          padding: const EdgeInsets.only(
-            left: Margins.margin16,
-            right: Margins.margin16,
-            bottom: Margins.margin8,
-          ),
-          child: Row(
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(right: Margins.margin8),
-                child: Icon(Icons.info_rounded, size: 16, color: Colors.grey),
-              ),
-              Text(
-                "stats_tests_tap_to_specs".tr(),
-                style: Theme.of(context).textTheme.caption,
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding:
-              const EdgeInsets.only(left: 22, right: 22, top: Margins.margin8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text(widget.s.test.selectionTests.toString(), style: countTheme),
-              Text(widget.s.test.blitzTests.toString(), style: countTheme),
-              Text(widget.s.test.remembranceTests.toString(),
-                  style: countTheme),
-              Text(widget.s.test.numberTests.toString(), style: countTheme),
-              Text(widget.s.test.lessPctTests.toString(), style: countTheme),
-              Text(widget.s.test.categoryTests.toString(), style: countTheme),
-              Text(widget.s.test.folderTests.toString(), style: countTheme),
-              Text(widget.s.test.dailyTests.toString(), style: countTheme),
-            ],
-          ),
-        ),
+        _info,
         _expandedTestCount(context, widget.s),
         const Padding(
           padding: EdgeInsets.only(top: Margins.margin16),
@@ -170,9 +113,8 @@ class _TestStatsState extends State<TestStats>
   Widget _expandedTestCount(BuildContext context, KanPracticeStats s) {
     return KPVerticalBarChart(
       onBarTapped: (model) async {
-        if (model.selectedDatum.isNotEmpty) {
-          final mode =
-              TestsUtils.mapTestMode(model.selectedDatum[0].index ?? -1);
+        if (model.dataPoints?.isNotEmpty == true) {
+          final mode = TestsUtils.mapTestMode(model.pointIndex ?? -1);
           final data = await TestQueries.instance.getSpecificTestData(mode);
           // ignore: use_build_context_synchronously
           TestSpecBottomSheet.show(context, mode, data);
@@ -232,6 +174,26 @@ class _TestStatsState extends State<TestStats>
       }),
     );
   }
+
+  Widget get _info => Padding(
+        padding: const EdgeInsets.only(
+          left: Margins.margin16,
+          right: Margins.margin16,
+          bottom: Margins.margin8,
+        ),
+        child: Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(right: Margins.margin8),
+              child: Icon(Icons.info_rounded, size: 16, color: Colors.grey),
+            ),
+            Text(
+              "stats_tests_tap_to_specs".tr(),
+              style: Theme.of(context).textTheme.caption,
+            ),
+          ],
+        ),
+      );
 
   @override
   bool get wantKeepAlive => true;

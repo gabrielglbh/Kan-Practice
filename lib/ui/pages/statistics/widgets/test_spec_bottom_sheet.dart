@@ -77,24 +77,6 @@ class _TestSpecBottomSheetState extends State<TestSpecBottomSheet> {
                 margin: const EdgeInsets.all(Margins.margin8),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 38),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(widget.data.totalWritingCount.toString(),
-                              style: countTheme),
-                          Text(widget.data.totalReadingCount.toString(),
-                              style: countTheme),
-                          Text(widget.data.totalRecognitionCount.toString(),
-                              style: countTheme),
-                          Text(widget.data.totalListeningCount.toString(),
-                              style: countTheme),
-                          Text(widget.data.totalSpeakingCount.toString(),
-                              style: countTheme),
-                        ],
-                      ),
-                    ),
                     KPVerticalBarChart(
                       heightRatio: 1.3,
                       dataSource:

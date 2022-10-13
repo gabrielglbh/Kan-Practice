@@ -368,5 +368,6 @@
   "folder_practice_title": "Practicar con un subconjunto de palabras de las listas de esta carpeta.",
   "disclaimer_spatial_repetition": "La práctica se basa en el aprendizaje por repetición espaciada. Este método se aplica de tal manera que las palabras que falles durante la práctica, volverán a aparecer al terminar todo el repaso (hasta que las aciertes). Esto estimula el aprendizaje y mejora la memorización del vocabulario.",
   "settings_general_kanji_list": "Agrupar estadísticas por palabra",
-  "settings_general_kanji_list_description": "Cuando se activa, todas las palabras de las KanLists mostrarán la media de todos los modos de estudio en lugar de mostrar uno por uno"
+  "settings_general_kanji_list_description": "Cuando se activa, todas las palabras de las KanLists mostrarán la media de todos los modos de estudio en lugar de mostrar uno por uno",
+  "tests": "Tests"
 }

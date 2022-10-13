@@ -23,7 +23,8 @@ dependencies:
   shared_preferences: ^2.0.15
   path: ^1.8.1
   json_annotation: ^4.6.0
-  syncfusion_flutter_gauges: ^20.2.40
+  syncfusion_flutter_gauges: ^20.3.49
+  syncfusion_flutter_charts: ^20.3.49
   charts_flutter:
     git:
       url: https://github.com/google/charts

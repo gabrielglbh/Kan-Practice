@@ -1,39 +1,87 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_win_rate_chart.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_data_frame.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class KPRadialGraph extends StatelessWidget {
-  /// [KanjiList] item to paint as a Tile
   final double rateWriting,
       rateReading,
       rateRecognition,
       rateListening,
       rateSpeaking;
-  final double height;
-  const KPRadialGraph(
-      {Key? key,
-      required this.rateWriting,
-      required this.rateReading,
-      required this.rateRecognition,
-      required this.rateListening,
-      required this.rateSpeaking,
-      this.height = CustomSizes.defaultSizeWinRateChart + Margins.margin32})
-      : super(key: key);
+  const KPRadialGraph({
+    Key? key,
+    required this.rateWriting,
+    required this.rateReading,
+    required this.rateRecognition,
+    required this.rateListening,
+    required this.rateSpeaking,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    const size = CustomSizes.defaultSizeWinRateChart + Margins.margin32;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        _radialChart(height),
+        SizedBox(
+          width: size,
+          height: size,
+          child: SfCircularChart(series: <CircularSeries>[
+            RadialBarSeries<DataFrame, String>(
+              dataSource: List.generate(
+                StudyModes.values.length,
+                (index) {
+                  switch (StudyModes.values[index]) {
+                    case StudyModes.writing:
+                      return DataFrame(
+                          x: StudyModes.writing.mode,
+                          y: rateWriting,
+                          color: StudyModes.writing.color);
+                    case StudyModes.reading:
+                      return DataFrame(
+                          x: StudyModes.reading.mode,
+                          y: rateReading,
+                          color: StudyModes.reading.color);
+                    case StudyModes.recognition:
+                      return DataFrame(
+                          x: StudyModes.recognition.mode,
+                          y: rateRecognition,
+                          color: StudyModes.recognition.color);
+                    case StudyModes.listening:
+                      return DataFrame(
+                          x: StudyModes.listening.mode,
+                          y: rateListening,
+                          color: StudyModes.listening.color);
+                    case StudyModes.speaking:
+                      return DataFrame(
+                          x: StudyModes.speaking.mode,
+                          y: rateSpeaking,
+                          color: StudyModes.speaking.color);
+                  }
+                },
+              ),
+              animationDuration: 1000,
+              xValueMapper: (DataFrame data, _) => data.x,
+              yValueMapper: (DataFrame data, _) => data.y,
+              pointColorMapper: (DataFrame data, _) => data.color,
+              radius: "100%",
+              innerRadius: "20%",
+              cornerStyle: CornerStyle.bothCurve,
+              gap: "2",
+              useSeriesColor: true,
+              trackOpacity: 0.3,
+              maximumValue: 1,
+            )
+          ]),
+        ),
         Container(
           width: MediaQuery.of(context).size.width / 2,
-          height: height,
+          height: size,
           alignment: Alignment.center,
           child: ListView.builder(
             physics: const NeverScrollableScrollPhysics(),
@@ -106,92 +154,6 @@ class KPRadialGraph extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _radialChart(double height) {
-    return SizedBox(
-      width: height,
-      height: height,
-      child: Stack(
-        children: [
-          Positioned(
-            left: 0,
-            right: 0,
-            top: 33,
-            bottom: 33,
-            child: WinRateChart(
-              winRate: rateSpeaking,
-              backgroundColor: Colors.transparent,
-              chartColor: StudyModes.speaking.color,
-              showGaugeAnnotation: false,
-              padding: EdgeInsets.zero,
-              widthLine: 0.23,
-              pointerOffset: 0,
-            ),
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            top: 25,
-            bottom: 25,
-            child: WinRateChart(
-              winRate: rateListening,
-              backgroundColor: Colors.transparent,
-              chartColor: StudyModes.listening.color,
-              showGaugeAnnotation: false,
-              padding: EdgeInsets.zero,
-              widthLine: 0.2,
-              pointerOffset: 0,
-            ),
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            top: 17,
-            bottom: 17,
-            child: WinRateChart(
-              winRate: rateRecognition,
-              backgroundColor: Colors.transparent,
-              chartColor: StudyModes.recognition.color,
-              showGaugeAnnotation: false,
-              padding: EdgeInsets.zero,
-              widthLine: 0.16,
-              pointerOffset: 0,
-            ),
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            top: Margins.margin8,
-            bottom: Margins.margin8,
-            child: WinRateChart(
-              winRate: rateReading,
-              backgroundColor: Colors.transparent,
-              chartColor: StudyModes.reading.color,
-              showGaugeAnnotation: false,
-              padding: EdgeInsets.zero,
-              widthLine: 0.15,
-              pointerOffset: 0,
-            ),
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-            child: WinRateChart(
-              winRate: rateWriting,
-              backgroundColor: Colors.transparent,
-              chartColor: StudyModes.writing.color,
-              showGaugeAnnotation: false,
-              padding: EdgeInsets.zero,
-              widthLine: 0.12,
-              pointerOffset: 0,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

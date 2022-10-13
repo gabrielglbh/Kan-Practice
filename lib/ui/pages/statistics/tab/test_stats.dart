@@ -8,6 +8,7 @@ import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
 import 'package:kanpractice/ui/pages/statistics/widgets/stats_header.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_data_frame.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_dependent_graph.dart';
 import 'package:kanpractice/ui/pages/statistics/widgets/test_spec_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_bar_chart.dart';
@@ -42,35 +43,35 @@ class _TestStatsState extends State<TestStats>
             switch (StudyModes.values[index]) {
               case StudyModes.writing:
                 final v = widget.s.test.testTotalCountWriting;
-                return BarData(
+                return DataFrame(
                   x: StudyModes.writing.mode,
                   y: v.toDouble(),
                   color: StudyModes.writing.color,
                 );
               case StudyModes.reading:
                 final v = widget.s.test.testTotalCountReading;
-                return BarData(
+                return DataFrame(
                   x: StudyModes.reading.mode,
                   y: v.toDouble(),
                   color: StudyModes.reading.color,
                 );
               case StudyModes.recognition:
                 final v = widget.s.test.testTotalCountRecognition;
-                return BarData(
+                return DataFrame(
                   x: StudyModes.recognition.mode,
                   y: v.toDouble(),
                   color: StudyModes.recognition.color,
                 );
               case StudyModes.listening:
                 final v = widget.s.test.testTotalCountListening;
-                return BarData(
+                return DataFrame(
                   x: StudyModes.listening.mode,
                   y: v.toDouble(),
                   color: StudyModes.listening.color,
                 );
               case StudyModes.speaking:
                 final v = widget.s.test.testTotalCountSpeaking;
-                return BarData(
+                return DataFrame(
                   x: StudyModes.speaking.mode,
                   y: v.toDouble(),
                   color: StudyModes.speaking.color,
@@ -124,49 +125,49 @@ class _TestStatsState extends State<TestStats>
       dataSource: List.generate(Tests.values.length, (index) {
         switch (Tests.values[index]) {
           case Tests.lists:
-            return BarData(
+            return DataFrame(
               x: Tests.lists.nameAbbr,
               y: s.test.selectionTests.toDouble(),
               color: CustomColors.secondaryColor,
             );
           case Tests.blitz:
-            return BarData(
+            return DataFrame(
               x: Tests.blitz.nameAbbr,
               y: s.test.blitzTests.toDouble(),
               color: CustomColors.secondaryColor,
             );
           case Tests.time:
-            return BarData(
+            return DataFrame(
               x: Tests.time.nameAbbr,
               y: s.test.remembranceTests.toDouble(),
               color: CustomColors.secondaryColor,
             );
           case Tests.numbers:
-            return BarData(
+            return DataFrame(
               x: Tests.numbers.nameAbbr,
               y: s.test.numberTests.toDouble(),
               color: CustomColors.secondaryColor,
             );
           case Tests.less:
-            return BarData(
+            return DataFrame(
               x: Tests.less.nameAbbr,
               y: s.test.lessPctTests.toDouble(),
               color: CustomColors.secondaryColor,
             );
           case Tests.categories:
-            return BarData(
+            return DataFrame(
               x: Tests.categories.nameAbbr,
               y: s.test.categoryTests.toDouble(),
               color: CustomColors.secondaryColor,
             );
           case Tests.folder:
-            return BarData(
+            return DataFrame(
               x: Tests.folder.nameAbbr,
               y: s.test.folderTests.toDouble(),
               color: CustomColors.secondaryColor,
             );
           case Tests.daily:
-            return BarData(
+            return DataFrame(
               x: Tests.daily.nameAbbr,
               y: s.test.dailyTests.toDouble(),
               color: CustomColors.secondaryColor,

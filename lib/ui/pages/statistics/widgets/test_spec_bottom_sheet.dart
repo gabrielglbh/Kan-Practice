@@ -5,6 +5,7 @@ import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/core/types/visualization_mode.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_data_frame.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_dependent_graph.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_bar_chart.dart';
 import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
@@ -81,31 +82,31 @@ class _TestSpecBottomSheetState extends State<TestSpecBottomSheet> {
                           List.generate(StudyModes.values.length, (index) {
                         switch (StudyModes.values[index]) {
                           case StudyModes.writing:
-                            return BarData(
+                            return DataFrame(
                               x: StudyModes.writing.mode,
                               y: widget.data.totalWritingCount.toDouble(),
                               color: StudyModes.writing.color,
                             );
                           case StudyModes.reading:
-                            return BarData(
+                            return DataFrame(
                               x: StudyModes.reading.mode,
                               y: widget.data.totalReadingCount.toDouble(),
                               color: StudyModes.reading.color,
                             );
                           case StudyModes.recognition:
-                            return BarData(
+                            return DataFrame(
                               x: StudyModes.recognition.mode,
                               y: widget.data.totalRecognitionCount.toDouble(),
                               color: StudyModes.recognition.color,
                             );
                           case StudyModes.listening:
-                            return BarData(
+                            return DataFrame(
                               x: StudyModes.listening.mode,
                               y: widget.data.totalListeningCount.toDouble(),
                               color: StudyModes.listening.color,
                             );
                           case StudyModes.speaking:
-                            return BarData(
+                            return DataFrame(
                               x: StudyModes.speaking.mode,
                               y: widget.data.totalSpeakingCount.toDouble(),
                               color: StudyModes.speaking.color,

@@ -2,21 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/general_utils.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_data_frame.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class BarData {
-  final String x;
-  final double y;
-  final Color color;
-  const BarData({
-    required this.x,
-    required this.y,
-    required this.color,
-  });
-}
-
 class KPBarChart extends StatelessWidget {
-  final List<BarData> dataSource;
+  final List<DataFrame> dataSource;
   final void Function(ChartPointDetails)? onBarTapped;
   final bool enableTooltip;
   final double heightRatio;
@@ -44,26 +34,28 @@ class KPBarChart extends StatelessWidget {
         primaryYAxis: isWinRateChart
             ? NumericAxis(maximum: 100, minimum: 0, interval: 20)
             : null,
-        series: <ChartSeries<BarData, String>>[
+        series: <ChartSeries<DataFrame, String>>[
           !isWinRateChart
-              ? ColumnSeries<BarData, String>(
+              ? ColumnSeries<DataFrame, String>(
+                  animationDuration: 1000,
                   name: "tests".tr(),
                   dataSource: dataSource,
-                  pointColorMapper: (BarData data, _) => data.color,
-                  xValueMapper: (BarData data, _) => data.x,
-                  yValueMapper: (BarData data, _) => data.y,
+                  pointColorMapper: (DataFrame data, _) => data.color,
+                  xValueMapper: (DataFrame data, _) => data.x,
+                  yValueMapper: (DataFrame data, _) => data.y,
                   onPointTap: onBarTapped != null
                       ? (details) {
                           onBarTapped!(details);
                         }
                       : null,
                 )
-              : BarSeries<BarData, String>(
+              : BarSeries<DataFrame, String>(
+                  animationDuration: 1000,
                   name: "success".tr(),
                   dataSource: dataSource,
-                  pointColorMapper: (BarData data, _) => data.color,
-                  xValueMapper: (BarData data, _) => data.x,
-                  yValueMapper: (BarData data, _) =>
+                  pointColorMapper: (DataFrame data, _) => data.color,
+                  xValueMapper: (DataFrame data, _) => data.x,
+                  yValueMapper: (DataFrame data, _) =>
                       GeneralUtils.getFixedPercentage(data.y),
                 )
         ],

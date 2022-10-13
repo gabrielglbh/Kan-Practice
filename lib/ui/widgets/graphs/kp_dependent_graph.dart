@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_bar_chart.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_data_frame.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_radial_graph.dart';
 
 class KPDependentGraph extends StatelessWidget {
@@ -43,27 +44,27 @@ class KPDependentGraph extends StatelessWidget {
               (index) {
                 switch (StudyModes.values[index]) {
                   case StudyModes.writing:
-                    return BarData(
+                    return DataFrame(
                         x: StudyModes.writing.mode,
                         y: writing,
                         color: StudyModes.writing.color);
                   case StudyModes.reading:
-                    return BarData(
+                    return DataFrame(
                         x: StudyModes.reading.mode,
                         y: reading,
                         color: StudyModes.reading.color);
                   case StudyModes.recognition:
-                    return BarData(
+                    return DataFrame(
                         x: StudyModes.recognition.mode,
                         y: recognition,
                         color: StudyModes.recognition.color);
                   case StudyModes.listening:
-                    return BarData(
+                    return DataFrame(
                         x: StudyModes.listening.mode,
                         y: listening,
                         color: StudyModes.listening.color);
                   case StudyModes.speaking:
-                    return BarData(
+                    return DataFrame(
                         x: StudyModes.speaking.mode,
                         y: speaking,
                         color: StudyModes.speaking.color);

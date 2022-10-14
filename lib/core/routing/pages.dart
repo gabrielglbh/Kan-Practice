@@ -10,7 +10,6 @@ class KanPracticePages {
   static const String loginPage = "/loginPage";
   static const String backUpPage = "/backUpPage";
   static const String testResultPage = "/testResultPage";
-  static const String testHistoryPage = "/testHistoryPage";
   static const String tutorialPage = "/tutorialPage";
   static const String jishoPage = "/jishoPage";
   static const String dictionaryPage = "/dictionaryPage";

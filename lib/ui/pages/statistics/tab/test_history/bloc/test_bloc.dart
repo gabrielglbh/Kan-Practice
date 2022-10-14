@@ -11,6 +11,8 @@ class TestListBloc extends Bloc<TestListEvent, TestListState> {
     /// Maintain the list for pagination purposes
     List<Test> list = [];
 
+    on<TestListEventIdle>((_, __) {});
+
     on<TestListEventLoading>((event, emit) async {
       try {
         if (event.offset == 0) {

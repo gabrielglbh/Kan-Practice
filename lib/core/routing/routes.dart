@@ -23,8 +23,6 @@ import 'package:kanpractice/ui/pages/settings/settings.dart';
 import 'package:kanpractice/ui/pages/statistics/statistics.dart';
 import 'package:kanpractice/ui/pages/study_modes/speaking.dart';
 import 'package:kanpractice/ui/pages/study_modes/utils/mode_arguments.dart';
-import 'package:kanpractice/ui/pages/test_history/bloc/test_bloc.dart';
-import 'package:kanpractice/ui/pages/test_history/test_history.dart';
 import 'package:kanpractice/ui/pages/test_result/arguments.dart';
 import 'package:kanpractice/ui/pages/test_result/test_result.dart';
 import 'package:kanpractice/ui/pages/tutorial/tutorial.dart';
@@ -70,11 +68,6 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case KanPracticePages.testResultPage:
       TestResultArguments args = settings.arguments as TestResultArguments;
       return CupertinoPageRoute(builder: (_) => TestResult(args: args));
-    case KanPracticePages.testHistoryPage:
-      return CupertinoPageRoute(
-          builder: (_) => BlocProvider<TestListBloc>(
-              create: (_) => TestListBloc()..add(const TestListEventLoading()),
-              child: const TestHistory()));
     case KanPracticePages.loginPage:
       return CupertinoPageRoute(builder: (_) => const LoginPage());
     case KanPracticePages.backUpPage:

@@ -3,14 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/models/test_result.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
-import 'package:kanpractice/ui/pages/test_history/bloc/test_bloc.dart';
 import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
+import 'package:kanpractice/ui/pages/statistics/tab/test_history/bloc/test_bloc.dart';
 import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_win_rate_chart.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 
 class TestHistory extends StatefulWidget {
   const TestHistory({Key? key}) : super(key: key);
@@ -22,20 +20,6 @@ class TestHistory extends StatefulWidget {
 class _TestHistoryState extends State<TestHistory> {
   final ScrollController _scrollController = ScrollController();
   int _loadingTimes = 0;
-
-  _showRemoveTestsDialog(BuildContext bloc) {
-    showDialog(
-        context: bloc,
-        builder: (context) => KPDialog(
-              title: Text("test_history_showRemoveTestsDialog_title".tr()),
-              content: Text("test_history_showRemoveTestsDialog_content".tr(),
-                  style: Theme.of(context).textTheme.bodyText1),
-              positiveButtonText:
-                  "test_history_showRemoveTestsDialog_positive".tr(),
-              onPositive: () =>
-                  bloc.read<TestListBloc>().add(TestListEventRemoving()),
-            ));
-  }
 
   _addLoadingEvent({int offset = 0}) =>
       context.read<TestListBloc>().add(TestListEventLoading(offset: offset));
@@ -51,6 +35,7 @@ class _TestHistoryState extends State<TestHistory> {
   @override
   void initState() {
     _scrollController.addListener(_scrollListener);
+    context.read<TestListBloc>().add(const TestListEventLoading());
     super.initState();
   }
 
@@ -63,20 +48,8 @@ class _TestHistoryState extends State<TestHistory> {
 
   @override
   Widget build(BuildContext context) {
-    /// BlocProvider is defined at route level in order for the whole context of the
-    /// class to be accessible to the provider
-    return KPScaffold(
-      appBarTitle: "test_history_title".tr(),
-      appBarActions: [
-        BlocBuilder<TestListBloc, TestListState>(
-          builder: (context, state) => IconButton(
-            icon: const Icon(Icons.clear_all_rounded),
-            onPressed: () => _showRemoveTestsDialog(context),
-          ),
-        )
-      ],
-      child: BlocBuilder<TestListBloc, TestListState>(
-          builder: (context, state) => _body(state)),
+    return BlocBuilder<TestListBloc, TestListState>(
+      builder: (context, state) => _body(state),
     );
   }
 

@@ -39,7 +39,6 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
 
   /// Tutorial Global Keys
   final GlobalKey vocabulary = GlobalKey();
-  final GlobalKey addVocabulary = GlobalKey();
   final GlobalKey actions = GlobalKey();
   final GlobalKey changeName = GlobalKey();
 
@@ -255,47 +254,34 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
               },
               icon: const Icon(Icons.create_new_folder_rounded),
             ),
+            IconButton(
+              onPressed: () async {
+                await Navigator.of(context)
+                    .pushNamed(KanPracticePages.addKanjiPage,
+                        arguments: AddKanjiArgs(listName: _listName))
+                    .then((code) => _addLoadingEvent(reset: true));
+              },
+              icon: const Icon(Icons.add),
+            )
           ],
         ),
       ],
       child: Column(
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: KPSearchBar(
-                  hint: "list_details_searchBar_hint".tr(),
-                  focus: _searchBarFn,
-                  onQuery: (String query) {
-                    /// Everytime the user queries, reset the query itself and
-                    /// the pagination index
-                    _query = query;
-                    _addSearchingEvent(query, reset: true);
-                  },
-                  onExitSearch: () {
-                    /// Empty the query
-                    _query = "";
-                    _addLoadingEvent(reset: true);
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: Margins.margin8),
-                child: IconButton(
-                  key: addVocabulary,
-                  splashRadius: 26,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: Margins.margin8),
-                  onPressed: () async {
-                    await Navigator.of(context)
-                        .pushNamed(KanPracticePages.addKanjiPage,
-                            arguments: AddKanjiArgs(listName: _listName))
-                        .then((code) => _addLoadingEvent(reset: true));
-                  },
-                  icon: const Icon(Icons.add),
-                ),
-              ),
-            ],
+          KPSearchBar(
+            hint: "list_details_searchBar_hint".tr(),
+            focus: _searchBarFn,
+            onQuery: (String query) {
+              /// Everytime the user queries, reset the query itself and
+              /// the pagination index
+              _query = query;
+              _addSearchingEvent(query, reset: true);
+            },
+            onExitSearch: () {
+              /// Empty the query
+              _query = "";
+              _addLoadingEvent(reset: true);
+            },
           ),
           Expanded(
             child: BlocConsumer<KanjiListDetailBloc, KanjiListDetailState>(
@@ -312,8 +298,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
                           StorageManager.haveSeenKanListDetailCoachMark) ==
                       false) {
                     _onTutorial = true;
-                    await TutorialCoach(
-                            [vocabulary, addVocabulary, actions, changeName],
+                    await TutorialCoach([vocabulary, actions, changeName],
                             CoachTutorialParts.details)
                         .showTutorial(context,
                             onEnd: () => _onTutorial = false);

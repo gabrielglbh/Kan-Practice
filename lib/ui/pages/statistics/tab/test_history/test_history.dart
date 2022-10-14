@@ -4,11 +4,10 @@ import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/pages/statistics/tab/test_history/bloc/test_bloc.dart';
+import 'package:kanpractice/ui/pages/statistics/widgets/stats_header.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_cartesian_chart.dart';
-import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class TestHistory extends StatefulWidget {
   const TestHistory({Key? key}) : super(key: key);
@@ -19,103 +18,136 @@ class TestHistory extends StatefulWidget {
 
 class _TestHistoryState extends State<TestHistory>
     with AutomaticKeepAliveClientMixin {
-  final ScrollController _scrollController = ScrollController();
-  int _loadingTimes = 0;
+  late DateTime _firstDate, _lastDate;
 
-  _addLoadingEvent({int offset = 0}) =>
-      context.read<TestListBloc>().add(TestListEventLoading(offset: offset));
+  String _parseDate(DateTime date) {
+    final format = DateFormat('dd/MM/yyyy');
+    return format.format(date);
+  }
 
-  _scrollListener() {
-    if (_scrollController.offset ==
-        _scrollController.position.maxScrollExtent) {
-      _loadingTimes += 1;
-      _addLoadingEvent(offset: _loadingTimes);
-    }
+  Future<void> _showRangePicker() async {
+    final dialogColor = Theme.of(context).brightness == Brightness.light
+        ? Colors.black
+        : Colors.white;
+    late DateTimeRange? range;
+    await showDateRangePicker(
+      context: context,
+      initialDateRange: DateTimeRange(start: _firstDate, end: _lastDate),
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now(),
+      locale: context.locale,
+      helpText: 'date_picker_helper'.tr(),
+      fieldStartHintText: 'date_picker_start_hint'.tr(),
+      fieldEndHintText: 'date_picker_end_hint'.tr(),
+      saveText: 'date_picker_save'.tr(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            primaryColor: CustomColors.secondaryColor,
+            colorScheme: ColorScheme.fromSwatch().copyWith(
+              primary: CustomColors.secondaryColor,
+              onPrimary: dialogColor,
+              surface: CustomColors.secondaryColor,
+              onSurface: dialogColor,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    ).then((value) => range = value);
+    setState(() {
+      _firstDate = range?.start ?? _firstDate;
+      _lastDate = range?.end ?? _lastDate;
+    });
+    // ignore: use_build_context_synchronously
+    context
+        .read<TestListBloc>()
+        .add(TestListEventLoading(initial: _firstDate, last: _lastDate));
   }
 
   @override
   void initState() {
-    _scrollController.addListener(_scrollListener);
-    context.read<TestListBloc>().add(const TestListEventLoading());
+    _firstDate = DateTime.now().subtract(const Duration(days: 7));
+    _lastDate = DateTime.now();
+    context
+        .read<TestListBloc>()
+        .add(TestListEventLoading(initial: _firstDate, last: _lastDate));
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_scrollListener);
-    _scrollController.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return BlocBuilder<TestListBloc, TestListState>(
-      builder: (context, state) => _body(state),
+      builder: (context, state) => Column(
+        children: [
+          StatsHeader(title: "history_tests_header".tr()),
+          TextButton(
+            onPressed: () async {
+              await _showRangePicker();
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.grey.shade500),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "${_parseDate(_firstDate)} - ${_parseDate(_lastDate)}",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      ?.copyWith(color: Colors.white),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: Margins.margin8),
+                  child: Icon(
+                    Icons.expand_more_rounded,
+                    color: Colors.white,
+                  ),
+                )
+              ],
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
+              child: _body(state),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   _body(TestListState state) {
     if (state is TestListStateFailure) {
-      return KPEmptyList(
-          showTryButton: true,
-          onRefresh: () => _addLoadingEvent(),
-          message: "test_history_load_failed".tr());
+      return Center(child: Text("test_history_load_failed".tr()));
     } else if (state is TestListStateLoading) {
       return const KPProgressIndicator();
     } else if (state is TestListStateLoaded) {
       if (state.list.isEmpty) {
-        return KPEmptyList(
-            onRefresh: () => _addLoadingEvent(),
-            message: "test_history_empty".tr());
+        return Center(child: Text("test_history_load_failed".tr()));
       }
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: Margins.margin12),
-        child: _testList(state),
+        child: KPCartesianChart(
+          dataSource: List.generate(state.list.length, (index) {
+            final test = state.list[index];
+            return TestDataFrame(
+              x: DateTime.fromMillisecondsSinceEpoch(test.takenDate),
+              y: test.testScore,
+              color: StudyModesUtil.mapStudyMode(test.studyMode).color,
+              wordsOnTest: test.kanjiInTest,
+              mode: TestsUtils.mapTestMode(test.testMode ?? 0),
+            );
+          }),
+          graphName: "success".tr(),
+        ),
       );
     } else {
       return Container();
     }
-  }
-
-  _testList(TestListStateLoaded state) {
-    final keys = state.list.keys.toList();
-    return ListView.builder(
-      key: const PageStorageKey<String>('testListController'),
-      controller: _scrollController,
-      itemCount: state.list.length,
-      itemBuilder: (context, k) {
-        final tests = state.list[keys[k]] ?? [];
-        return ExpansionTile(
-          childrenPadding: EdgeInsets.zero,
-          tilePadding: const EdgeInsets.all(0),
-          iconColor: CustomColors.secondaryColor,
-          initiallyExpanded: k == 0,
-          title: Text(
-            "${"stats_test_from".tr()} ${keys[k]} (${tests.length})",
-            style: Theme.of(context).textTheme.bodyText1,
-          ),
-          children: [
-            KPCartesianChart(
-              intervalType: DateTimeIntervalType.hours,
-              dataSource: List.generate(
-                tests.length,
-                (index) => TestDataFrame(
-                  x: DateTime.fromMillisecondsSinceEpoch(
-                      tests[index].takenDate),
-                  y: tests[index].testScore,
-                  color:
-                      StudyModesUtil.mapStudyMode(tests[index].studyMode).color,
-                  wordsOnTest: tests[index].kanjiInTest,
-                  mode: TestsUtils.mapTestMode(tests[index].testMode ?? 0),
-                ),
-              ),
-              graphName: keys[k],
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override

@@ -10,12 +10,13 @@ abstract class TestListEvent extends Equatable {
 class TestListEventIdle extends TestListEvent {}
 
 class TestListEventLoading extends TestListEvent {
-  final int offset;
+  final DateTime initial;
+  final DateTime last;
 
-  const TestListEventLoading({this.offset = 0});
+  const TestListEventLoading({required this.initial, required this.last});
 
   @override
-  List<Object> get props => [offset];
+  List<Object> get props => [initial, last];
 }
 
 class TestListEventRemoving extends TestListEvent {}

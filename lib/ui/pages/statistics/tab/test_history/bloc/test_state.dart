@@ -10,9 +10,9 @@ class TestListState extends Equatable {
 class TestListStateLoading extends TestListState {}
 
 class TestListStateLoaded extends TestListState {
-  final Map<String, List<Test>> list;
+  final List<Test> list;
 
-  const TestListStateLoaded([this.list = const {}]);
+  const TestListStateLoaded([this.list = const []]);
 
   @override
   List<Object> get props => [list];

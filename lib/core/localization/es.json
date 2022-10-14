@@ -373,5 +373,9 @@
   "specific_test_accuracy_label": "Tasa de Acierto en Test",
   "success": "Tasa de Acierto",
   "words_by_category": "Número Total de Palabras por Categoría",
-  "stats_test_from": "Tests del"
+  "history_tests_header": "Acierto Total de Tests en las Fechas Seleccionadas",
+  "date_picker_helper": "Selecciona un Periodo",
+  "date_picker_start_hint": "Fecha Inicial",
+  "date_picker_end_hint": "Fecha Final",
+  "date_picker_save": "Guardar"
 }

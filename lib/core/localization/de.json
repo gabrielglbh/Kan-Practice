@@ -373,5 +373,9 @@
   "specific_test_accuracy_label": "Erfolgsquote beim Test",
   "success": "Erfolgsquote",
   "words_by_category": "Gesamtzahl der Wörter nach Kategorie",
-  "stats_test_from": "Tests des"
+  "history_tests_header": "Gesamterfolg der Tests an den gewählten Daten",
+  "date_picker_helper": "Wählen Sie einen Bereich",
+  "date_picker_start_hint": "Anfangsdatum",
+  "date_picker_end_hint": "Enddatum",
+  "date_picker_save": "Speichern"
 }

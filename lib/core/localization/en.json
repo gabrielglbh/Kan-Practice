@@ -373,5 +373,9 @@
   "specific_test_accuracy_label": "Success Rate on Test",
   "success": "Success Rate",
   "words_by_category": "Total Numbers of Words by Category",
-  "stats_test_from": "Tests from"
+  "history_tests_header": "Total Success of Tests on the Chosen Dates",
+  "date_picker_helper": "Choose a Range",
+  "date_picker_start_hint": "Initial Date",
+  "date_picker_end_hint": "End Date",
+  "date_picker_save": "Save"
 }

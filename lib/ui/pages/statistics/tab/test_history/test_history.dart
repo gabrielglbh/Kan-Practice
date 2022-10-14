@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/core/database/models/test_result.dart';
-import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
+import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/pages/statistics/tab/test_history/bloc/test_bloc.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_cartesian_chart.dart';
 import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_win_rate_chart.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class TestHistory extends StatefulWidget {
   const TestHistory({Key? key}) : super(key: key);
@@ -17,7 +17,8 @@ class TestHistory extends StatefulWidget {
   State<TestHistory> createState() => _TestHistoryState();
 }
 
-class _TestHistoryState extends State<TestHistory> {
+class _TestHistoryState extends State<TestHistory>
+    with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
   int _loadingTimes = 0;
 
@@ -48,6 +49,7 @@ class _TestHistoryState extends State<TestHistory> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocBuilder<TestListBloc, TestListState>(
       builder: (context, state) => _body(state),
     );
@@ -67,71 +69,55 @@ class _TestHistoryState extends State<TestHistory> {
             onRefresh: () => _addLoadingEvent(),
             message: "test_history_empty".tr());
       }
-      return _testList(state);
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Margins.margin12),
+        child: _testList(state),
+      );
     } else {
       return Container();
     }
   }
 
   _testList(TestListStateLoaded state) {
+    final keys = state.list.keys.toList();
     return ListView.builder(
-        key: const PageStorageKey<String>('testListController'),
-        controller: _scrollController,
-        itemCount: state.list.length,
-        itemBuilder: (context, k) {
-          Test t = state.list[k];
-          StudyModes mode = StudyModesUtil.mapStudyMode(t.studyMode);
-          return Card(
-            margin: const EdgeInsets.symmetric(vertical: Margins.margin8),
-            elevation: 8,
-            child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(
-                  horizontal: Margins.margin8, vertical: Margins.margin8),
-              onTap: () {},
-              title: Text(t.kanjiLists,
-                  textAlign: TextAlign.end, overflow: TextOverflow.ellipsis),
-              subtitle: Column(
-                children: [
-                  Container(
-                    alignment: Alignment.centerRight,
-                    margin: const EdgeInsets.only(top: Margins.margin4),
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: Text(
-                          "${mode.mode} • ${"test_history_testTaken".tr()} "
-                          "${GeneralUtils.parseDateMilliseconds(context, t.takenDate)}",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2
-                              ?.copyWith(
-                                  color: Colors.grey.shade500,
-                                  fontStyle: FontStyle.italic)),
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerRight,
-                    margin: const EdgeInsets.only(top: Margins.margin4),
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: Text(
-                          "${"market_filter_words".tr()}: ${t.kanjiInTest}",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2
-                              ?.copyWith(
-                                  color: Colors.grey.shade500,
-                                  fontStyle: FontStyle.italic)),
-                    ),
-                  )
-                ],
+      key: const PageStorageKey<String>('testListController'),
+      controller: _scrollController,
+      itemCount: state.list.length,
+      itemBuilder: (context, k) {
+        final tests = state.list[keys[k]] ?? [];
+        return ExpansionTile(
+          childrenPadding: EdgeInsets.zero,
+          tilePadding: const EdgeInsets.all(0),
+          iconColor: CustomColors.secondaryColor,
+          initiallyExpanded: k == 0,
+          title: Text(
+            "${"stats_test_from".tr()} ${keys[k]} (${tests.length})",
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+          children: [
+            KPCartesianChart(
+              intervalType: DateTimeIntervalType.hours,
+              dataSource: List.generate(
+                tests.length,
+                (index) => TestDataFrame(
+                  x: DateTime.fromMillisecondsSinceEpoch(
+                      tests[index].takenDate),
+                  y: tests[index].testScore,
+                  color:
+                      StudyModesUtil.mapStudyMode(tests[index].studyMode).color,
+                  wordsOnTest: tests[index].kanjiInTest,
+                  mode: TestsUtils.mapTestMode(tests[index].testMode ?? 0),
+                ),
               ),
-              leading: WinRateChart(
-                  winRate: t.testScore,
-                  padding: EdgeInsets.zero,
-                  rateSize: ChartSize.medium,
-                  backgroundColor: mode.color),
+              graphName: keys[k],
             ),
-          );
-        });
+          ],
+        );
+      },
+    );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

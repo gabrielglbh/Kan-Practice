@@ -372,5 +372,6 @@
   "tests": "Tests",
   "specific_test_accuracy_label": "Erfolgsquote beim Test",
   "success": "Erfolgsquote",
-  "words_by_category": "Gesamtzahl der Wörter nach Kategorie"
+  "words_by_category": "Gesamtzahl der Wörter nach Kategorie",
+  "stats_test_from": "Tests des"
 }

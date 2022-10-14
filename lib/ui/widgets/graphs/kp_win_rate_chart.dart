@@ -34,9 +34,6 @@ class WinRateChart extends StatelessWidget {
 
   /// Offset from the actual graph to the line
   final double pointerOffset;
-  // TODO: Mirar si se puede hacer un grafico de
-  // X: Date, Y: Success Rate
-  // Cada punto del grfico tapeable, con un tooltip mostrando la categoria del test, success, palabras y modo
   const WinRateChart(
       {Key? key,
       this.title,

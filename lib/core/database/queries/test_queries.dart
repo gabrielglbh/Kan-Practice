@@ -74,8 +74,8 @@ class TestQueries {
         List<Map<String, dynamic>>? res = [];
         res = await _database
             ?.rawQuery("SELECT * FROM ${TestTableFields.testTable} "
-                "ORDER BY ${TestTableFields.takenDateField} DESC "
-                "LIMIT $limit OFFSET ${offset * limit}");
+                "ORDER BY ${TestTableFields.takenDateField} DESC ");
+        //"LIMIT $limit OFFSET ${offset * limit}");
         if (res != null) {
           return List.generate(res.length, (i) => Test.fromJson(res![i]));
         } else {

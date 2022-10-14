@@ -372,5 +372,6 @@
   "tests": "Tests",
   "specific_test_accuracy_label": "Tasa de Acierto en Test",
   "success": "Tasa de Acierto",
-  "words_by_category": "Número Total de Palabras por Categoría"
+  "words_by_category": "Número Total de Palabras por Categoría",
+  "stats_test_from": "Tests del"
 }

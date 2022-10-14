@@ -25,8 +25,8 @@ class _StatisticsPageState extends State<StatisticsPage>
   late TabController _controller;
   int _selectedTab = 0;
   final _tabs = const [
-    Tab(icon: Icon(Icons.track_changes_rounded)),
     Tab(icon: Icon(Icons.table_rows_rounded)),
+    Tab(icon: Icon(Icons.track_changes_rounded)),
     Tab(icon: Icon(Icons.history_rounded)),
   ];
 
@@ -47,7 +47,6 @@ class _StatisticsPageState extends State<StatisticsPage>
   _changedTab() {
     setState(() {
       _selectedTab = _controller.index;
-      print(_selectedTab);
     });
   }
 
@@ -115,8 +114,8 @@ class _StatisticsPageState extends State<StatisticsPage>
           child: TabBarView(
             controller: _controller,
             children: [
-              TestStats(s: s, mode: mode),
               ListStats(s: s, mode: mode),
+              TestStats(s: s, mode: mode),
               const TestHistory(),
             ],
           ),

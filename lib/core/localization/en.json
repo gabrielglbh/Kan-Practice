@@ -372,5 +372,6 @@
   "tests": "Tests",
   "specific_test_accuracy_label": "Success Rate on Test",
   "success": "Success Rate",
-  "words_by_category": "Total Numbers of Words by Category"
+  "words_by_category": "Total Numbers of Words by Category",
+  "stats_test_from": "Tests from"
 }

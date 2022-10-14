@@ -37,6 +37,9 @@ class KPBarChart extends StatelessWidget {
         primaryYAxis: isWinRateChart
             ? NumericAxis(maximum: 100, minimum: 0, interval: 20)
             : null,
+        onTooltipRender: (tip) {
+          if (isWinRateChart) tip.text = "${tip.text}%";
+        },
         series: <ChartSeries<DataFrame, String>>[
           !isWinRateChart
               ? ColumnSeries<DataFrame, String>(

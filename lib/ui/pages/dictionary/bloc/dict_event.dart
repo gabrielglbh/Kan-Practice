@@ -7,6 +7,8 @@ abstract class DictEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class DictEventIdle extends DictEvent {}
+
 class DictEventLoading extends DictEvent {
   final Image image;
 
@@ -16,4 +18,4 @@ class DictEventLoading extends DictEvent {
   List<Object> get props => [];
 }
 
-class DictEventIdle extends DictEvent {}
+class DictEventStart extends DictEvent {}

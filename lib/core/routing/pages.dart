@@ -1,5 +1,4 @@
 class KanPracticePages {
-  static const String settingsPage = "/settingsPage";
   static const String kanjiListDetailsPage = "/KanjiListDetailsPage";
   static const String addKanjiPage = "/addKanjiPage";
   static const String writingStudyPage = "/writingStudyPage";

@@ -20,15 +20,6 @@ final ThemeData light = ThemeData(
     titleTextStyle: TextStyle(fontSize: FontSizes.fontSize32, color: _accent),
     iconTheme: IconThemeData(color: _accent),
   ),
-  bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: _primary,
-      showSelectedLabels: true,
-      showUnselectedLabels: true,
-      selectedItemColor: CustomColors.secondaryDarkerColor,
-      selectedIconTheme:
-          const IconThemeData(color: CustomColors.secondaryDarkerColor),
-      unselectedIconTheme: IconThemeData(color: _nav),
-      unselectedLabelStyle: TextStyle(color: _nav)),
   iconTheme: const IconThemeData(color: _accent),
   textTheme: TextTheme(
       headline1: const TextStyle(color: _accent),

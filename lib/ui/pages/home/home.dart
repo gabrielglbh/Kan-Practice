@@ -1,11 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/firebase/queries/messaging.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
-import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/tutorial/tutorial_manager.dart';
 import 'package:kanpractice/core/types/coach_tutorial_parts.dart';
 import 'package:kanpractice/core/types/folder_filters.dart';
@@ -14,16 +12,19 @@ import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
 import 'package:kanpractice/core/types/tab_types.dart';
 import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
+import 'package:kanpractice/ui/pages/dictionary/bloc/dict_bloc.dart';
+import 'package:kanpractice/ui/pages/dictionary/dictionary.dart';
 import 'package:kanpractice/ui/pages/folder_lists/bloc/folder_bloc.dart';
 import 'package:kanpractice/ui/pages/folder_lists/folder_list.dart';
-import 'package:kanpractice/ui/pages/home/widgets/actions_bottom_sheet.dart';
+import 'package:kanpractice/ui/pages/home/widgets/bottom_navigation.dart';
 import 'package:kanpractice/ui/pages/home/widgets/update_container.dart';
+import 'package:kanpractice/ui/pages/settings/bloc/settings_bloc.dart';
+import 'package:kanpractice/ui/pages/settings/settings.dart';
 import 'package:kanpractice/ui/widgets/kp_test_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/kp_kanji_lists/bloc/lists_bloc.dart';
 import 'package:kanpractice/ui/widgets/kp_kanji_lists/kanji_lists.dart';
 import 'package:kanpractice/ui/pages/market/bloc/market_bloc.dart';
 import 'package:kanpractice/ui/pages/market/market.dart';
-import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 import 'package:kanpractice/ui/widgets/kp_search_bar.dart';
 
@@ -39,7 +40,6 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   final lists = GlobalKey();
   final bottomActions = GlobalKey();
-  final dictionary = GlobalKey();
   final folders = GlobalKey();
 
   late PageController _controller;
@@ -182,8 +182,12 @@ class _HomePageState extends State<HomePage>
             create: (_) => KanjiListBloc()..add(_addKanjiListLoadingEvent())),
         BlocProvider<FolderBloc>(
             create: (_) => FolderBloc()..add(_addFolderListLoadingEvent())),
+        BlocProvider(create: (_) => DictBloc()..add(DictEventIdle())),
         BlocProvider<MarketBloc>(
             create: (_) => MarketBloc()..add(MarketEventIdle())),
+        BlocProvider(
+          create: (_) => SettingsBloc()..add(SettingsIdle()),
+        )
       ],
       child: BlocConsumer<KanjiListBloc, KanjiListState>(
         listener: (context, state) async {
@@ -192,7 +196,7 @@ class _HomePageState extends State<HomePage>
                     StorageManager.haveSeenKanListCoachMark) ==
                 false) {
               _onTutorial = true;
-              await TutorialCoach([lists, folders, bottomActions, dictionary],
+              await TutorialCoach([lists, folders, bottomActions],
                       CoachTutorialParts.kanList)
                   .showTutorial(context, onEnd: () => _onTutorial = false);
             }
@@ -213,29 +217,33 @@ class _HomePageState extends State<HomePage>
                 }
               },
               appBarTitle: _currentPage.appBarTitle,
-              appBarActions: [
-                IconButton(
-                  key: dictionary,
-                  icon: const Icon(Icons.menu_book_rounded),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(
-                        KanPracticePages.dictionaryPage,
-                        arguments:
-                            const DictionaryArguments(searchInJisho: true));
-                  },
-                ),
-                IconButton(
-                  onPressed: () async {
-                    await Navigator.of(context)
-                        .pushNamed(KanPracticePages.settingsPage);
-                  },
-                  icon: const Icon(Icons.settings),
-                )
-              ],
-              bottomNavigationWidget: _bottomNavigationBar(
-                context,
-                contextFolder,
-                contextMarket,
+              bottomNavigationWidget: HomeBottomNavigation(
+                key: bottomActions,
+                currentPage: _currentPage,
+                onPageChanged: (type) {
+                  if (_currentPage != type && type != HomeType.actions) {
+                    setState(() => _currentPage = type);
+                    _searchBarFn.unfocus();
+                    _searchTextController.text = "";
+                    _controller.jumpToPage(type.page);
+                    if (_currentPage == HomeType.market) {
+                      contextMarket
+                          .read<MarketBloc>()
+                          .add(_addMarketLoadingEvent());
+                    }
+                  }
+                },
+                onShowActions: (name) {
+                  if (name == "__folder") {
+                    contextFolder
+                        .read<FolderBloc>()
+                        .add(_addFolderListLoadingEvent());
+                  } else {
+                    context.read<KanjiListBloc>().add(KanjiListEventCreate(name,
+                        filter: _currentAppliedFilter,
+                        order: _currentAppliedOrder));
+                  }
+                },
               ),
               child: Column(
                 children: [
@@ -362,14 +370,10 @@ class _HomePageState extends State<HomePage>
   PageView _body(BuildContext c, BuildContext cF, BuildContext cM) {
     return PageView(
       controller: _controller,
-      onPageChanged: (page) {
-        if (HomeType.values[page] != _currentPage) {
-          setState(() => _currentPage = HomeType.values[page]);
-        }
-      },
       physics: const NeverScrollableScrollPhysics(),
       children: [
         _tabView(c, cF),
+        const DictionaryPage(args: DictionaryArguments(searchInJisho: true)),
         MarketPlace(
           removeFocus: () => _searchBarFn.unfocus(),
           onScrolledToBottom: () {
@@ -385,88 +389,9 @@ class _HomePageState extends State<HomePage>
               cM.read<MarketBloc>().add(_addMarketLoadingEvent(reset: false));
             }
           },
-        )
-      ],
-    );
-  }
-
-  Widget _bottomNavigationBar(
-      BuildContext c, BuildContext cF, BuildContext cM) {
-    return Stack(
-        clipBehavior: Clip.none,
-        alignment: const FractionalOffset(.5, 1.0),
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                    color: Theme.of(context).brightness == Brightness.light
-                        ? Colors.grey
-                        : Colors.black,
-                    blurRadius: 10)
-              ],
-            ),
-            child: BottomNavigationBar(
-              key: bottomActions,
-              currentIndex: _currentPage.index,
-              onTap: (page) {
-                /// Avoid extra loading when tapping the same item
-                if (_currentPage.index != page) {
-                  _searchBarFn.unfocus();
-                  _searchTextController.text = "";
-                  _controller.jumpToPage(page);
-                  if (_currentPage == HomeType.market) {
-                    cM.read<MarketBloc>().add(_addMarketLoadingEvent());
-                  }
-                }
-              },
-              items: [
-                BottomNavigationBarItem(
-                    icon: const Icon(Icons.table_rows_rounded),
-                    label: "bottom_nav_kanlists".tr()),
-                BottomNavigationBarItem(
-                    icon: const Icon(Icons.shopping_bag_rounded),
-                    label: "bottom_nav_market".tr()),
-              ],
-            ),
-          ),
-          _actionsButton(c, cF),
-        ]);
-  }
-
-  Widget _actionsButton(BuildContext c, BuildContext cF) {
-    return GestureDetector(
-      onTap: () async {
-        final code = await ActionsBottomSheet.show(context, _currentPage);
-        if (code != null) {
-          if (!mounted) return;
-          if (code == "__folder") {
-            cF.read<FolderBloc>().add(_addFolderListLoadingEvent());
-          } else {
-            c.read<KanjiListBloc>().add(KanjiListEventCreate(code,
-                filter: _currentAppliedFilter, order: _currentAppliedOrder));
-          }
-        }
-      },
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: Margins.margin8),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-                padding: const EdgeInsets.only(bottom: Margins.margin4),
-                child: Icon(Icons.add,
-                    color: Theme.of(context).brightness == Brightness.light
-                        ? Colors.grey.shade700
-                        : Colors.grey.shade400)),
-            Text("bottom_nav_actions".tr(),
-                style: Theme.of(context).textTheme.subtitle2?.copyWith(
-                    color: Theme.of(context).brightness == Brightness.light
-                        ? Colors.grey.shade700
-                        : Colors.grey.shade400))
-          ],
         ),
-      ),
+        const Settings()
+      ],
     );
   }
 }

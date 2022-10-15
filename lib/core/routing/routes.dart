@@ -8,6 +8,7 @@ import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/pages/add_market_list/add_market_list.dart';
 import 'package:kanpractice/ui/pages/backup/backup.dart';
 import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
+import 'package:kanpractice/ui/pages/dictionary/bloc/dict_bloc.dart';
 import 'package:kanpractice/ui/pages/dictionary/dictionary.dart';
 import 'package:kanpractice/ui/pages/firebase_login/login.dart';
 import 'package:kanpractice/ui/pages/home/home.dart';
@@ -19,7 +20,6 @@ import 'package:kanpractice/ui/pages/kanji_list_on_folder/kanji_list_on_folder.d
 import 'package:kanpractice/ui/pages/study_modes/listening.dart';
 import 'package:kanpractice/ui/pages/study_modes/reading.dart';
 import 'package:kanpractice/ui/pages/study_modes/recognition.dart';
-import 'package:kanpractice/ui/pages/settings/settings.dart';
 import 'package:kanpractice/ui/pages/statistics/statistics.dart';
 import 'package:kanpractice/ui/pages/study_modes/speaking.dart';
 import 'package:kanpractice/ui/pages/study_modes/utils/mode_arguments.dart';
@@ -45,8 +45,6 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
               create: (_) =>
                   KanjiListDetailBloc()..add(KanjiEventLoading(list.name)),
               child: KanjiListDetails(list: list)));
-    case KanPracticePages.settingsPage:
-      return CupertinoPageRoute(builder: (_) => const Settings());
     case KanPracticePages.addKanjiPage:
       AddKanjiArgs args = settings.arguments as AddKanjiArgs;
       return CupertinoPageRoute(builder: (_) => AddKanjiPage(args: args));
@@ -83,7 +81,11 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
           type: PageTransitionType.bottomToTop, child: JishoPage(args: args));
     case KanPracticePages.dictionaryPage:
       DictionaryArguments args = settings.arguments as DictionaryArguments;
-      return CupertinoPageRoute(builder: (_) => DictionaryPage(args: args));
+      return CupertinoPageRoute(
+          builder: (_) => BlocProvider<DictBloc>(
+                create: (context) => DictBloc(),
+                child: DictionaryPage(args: args),
+              ));
     case KanPracticePages.statisticsPage:
       return CupertinoPageRoute(builder: (_) => const StatisticsPage());
     case KanPracticePages.marketAddListPage:

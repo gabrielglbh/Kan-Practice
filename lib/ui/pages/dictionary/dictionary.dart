@@ -35,6 +35,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
     _searchBarTextController = TextEditingController();
     String? word = widget.args.word;
     if (word != null) _searchBarTextController.text = word;
+    context.read<DictBloc>().add(DictEventStart());
     super.initState();
   }
 
@@ -64,127 +65,126 @@ class _DictionaryPageState extends State<DictionaryPage> {
         _searchBarTextController.text != "" ||
         _searchBarTextController.text.isNotEmpty;
 
-    return BlocProvider<DictBloc>(
-      create: (context) => DictBloc()..add(DictEventIdle()),
-      child: KPScaffold(
-        setGestureDetector: false,
-        appBarTitle: widget.args.searchInJisho
-            ? "dict_title".tr()
-            : 'dict_add_kanji_title'.tr(),
-        appBarActions: [
-          if (widget.args.searchInJisho)
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context)
-                      .pushNamed(KanPracticePages.historyWordPage);
-                },
-                icon: const Icon(Icons.history_rounded)),
+    return KPScaffold(
+      setGestureDetector: false,
+      appBarTitle: widget.args.searchInJisho
+          ? "dict_title".tr()
+          : 'dict_add_kanji_title'.tr(),
+      appBarActions: [
+        if (widget.args.searchInJisho)
           IconButton(
-              onPressed: () => _showDisclaimerDialog(),
-              icon: const Icon(Icons.info_outline_rounded))
-        ],
-        child: BlocBuilder<DictBloc, DictState>(
-          builder: (context, state) {
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: KanjiSearchBar(
-                          top: 0,
-                          hint: widget.args.searchInJisho
-                              ? "dict_search_bar_hint".tr()
-                              : "add_kanji_textForm_kanji_ext".tr(),
-                          controller: _searchBarTextController,
-                          enabled: widget.args.searchInJisho,
-                          onChange: (value) {
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamed(KanPracticePages.historyWordPage);
+              },
+              icon: const Icon(Icons.history_rounded)),
+        IconButton(
+            onPressed: () => _showDisclaimerDialog(),
+            icon: const Icon(Icons.info_outline_rounded))
+      ],
+      child: BlocBuilder<DictBloc, DictState>(
+        builder: (context, state) {
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: KanjiSearchBar(
+                        top: 0,
+                        hint: widget.args.searchInJisho
+                            ? "dict_search_bar_hint".tr()
+                            : "add_kanji_textForm_kanji_ext".tr(),
+                        controller: _searchBarTextController,
+                        enabled: widget.args.searchInJisho,
+                        onChange: (value) {
+                          setState(() {
+                            if (value.isNotEmpty) {
+                              canSearch = true;
+                            } else {
+                              canSearch = false;
+                            }
+                          });
+                        },
+                        onClear: () {
+                          setState(() {
+                            _searchBarTextController.clear();
+                            canSearch = false;
+                          });
+                        },
+                        onRemoveLast: () {
+                          String? text = _searchBarTextController.text;
+                          if (text.isNotEmpty) {
                             setState(() {
-                              if (value.isNotEmpty) {
-                                canSearch = true;
-                              } else {
+                              _searchBarTextController.text =
+                                  text.substring(0, text.length - 1);
+                              if (_searchBarTextController.text
+                                  .trim()
+                                  .isEmpty) {
                                 canSearch = false;
                               }
                             });
-                          },
-                          onClear: () {
-                            setState(() {
-                              _searchBarTextController.clear();
-                              canSearch = false;
-                            });
-                          },
-                          onRemoveLast: () {
-                            String? text = _searchBarTextController.text;
-                            if (text.isNotEmpty) {
-                              setState(() {
-                                _searchBarTextController.text =
-                                    text.substring(0, text.length - 1);
-                                if (_searchBarTextController.text
-                                    .trim()
-                                    .isEmpty) canSearch = false;
-                              });
-                            }
-                          },
-                        ),
+                          }
+                        },
                       ),
-                      _searchWidget(canSearchEitherWay)
-                    ],
-                  ),
-                  if (state is DictStateLoading)
-                    const Center(
-                        child: Padding(
-                      padding: EdgeInsets.all(Margins.margin16),
-                      child: KPProgressIndicator(),
-                    ))
-                  else if (state is DictStateFailure)
-                    Center(
-                        child: Padding(
-                      padding: const EdgeInsets.all(Margins.margin16),
-                      child: Text("dict_model_not_loaded".tr(),
-                          style: Theme.of(context).textTheme.bodyText2),
-                    ))
-                  else if (state is DictStateLoaded)
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                "< ${"dict_predictions_most_likely".tr()}",
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.bodyText2,
-                              ),
+                    ),
+                    _searchWidget(canSearchEitherWay)
+                  ],
+                ),
+                if (state is DictStateLoading)
+                  const Center(
+                      child: Padding(
+                    padding: EdgeInsets.all(Margins.margin16),
+                    child: KPProgressIndicator(),
+                  ))
+                else if (state is DictStateFailure)
+                  Center(
+                      child: Padding(
+                    padding: const EdgeInsets.all(Margins.margin16),
+                    child: Text("dict_model_not_loaded".tr(),
+                        style: Theme.of(context).textTheme.bodyText2),
+                  ))
+                else if (state is DictStateLoaded)
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "< ${"dict_predictions_most_likely".tr()}",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.bodyText2,
                             ),
-                            Expanded(
-                              child: Text(
-                                "${"dict_predictions_less_likely".tr()} >",
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.end,
-                                style: Theme.of(context).textTheme.bodyText2,
-                              ),
-                            )
-                          ],
-                        ),
-                        _predictions(state),
-                        KPCustomCanvas(
-                          line: _line,
-                          allowPrediction: true,
-                          handleImage: (im.Image image) {
-                            context
-                                .read<DictBloc>()
-                                .add(DictEventLoading(image: image));
-                          },
-                        ),
-                      ],
-                    )
-                ],
-              ),
-            );
-          },
-        ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              "${"dict_predictions_less_likely".tr()} >",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.end,
+                              style: Theme.of(context).textTheme.bodyText2,
+                            ),
+                          )
+                        ],
+                      ),
+                      _predictions(state),
+                      KPCustomCanvas(
+                        line: _line,
+                        allowPrediction: true,
+                        handleImage: (im.Image image) {
+                          context
+                              .read<DictBloc>()
+                              .add(DictEventLoading(image: image));
+                        },
+                      ),
+                    ],
+                  )
+              ],
+            ),
+          );
+        },
       ),
     );
   }

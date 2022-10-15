@@ -249,27 +249,29 @@ class _HomePageState extends State<HomePage>
               child: Column(
                 children: [
                   const UpdateContainer(),
-                  KPSearchBar(
-                    controller: _searchTextController,
-                    hint: _currentPage == HomeType.market
-                        ? _currentPage.searchBarHint
-                        : _currentTab.searchBarHint,
-                    focus: _searchBarFn,
-                    onQuery: (String query) {
-                      _query = query;
-                      if (_currentPage == HomeType.kanlist) {
-                        if (_currentTab == TabType.kanlist) {
-                          return _addKanjiListSearchingEvent(c, query);
+                  if (HomeType.kanlist == _currentPage ||
+                      HomeType.market == _currentPage)
+                    KPSearchBar(
+                      controller: _searchTextController,
+                      hint: _currentPage == HomeType.market
+                          ? _currentPage.searchBarHint
+                          : _currentTab.searchBarHint,
+                      focus: _searchBarFn,
+                      onQuery: (String query) {
+                        _query = query;
+                        if (_currentPage == HomeType.kanlist) {
+                          if (_currentTab == TabType.kanlist) {
+                            return _addKanjiListSearchingEvent(c, query);
+                          }
+                          return _addFolderListSearchingEvent(cFolder, query);
                         }
-                        return _addFolderListSearchingEvent(cFolder, query);
-                      }
-                      return _addMarketSearchingEvent(cMarket, query);
-                    },
-                    onExitSearch: () {
-                      _query = "";
-                      _resetLists(c, cFolder, cMarket);
-                    },
-                  ),
+                        return _addMarketSearchingEvent(cMarket, query);
+                      },
+                      onExitSearch: () {
+                        _query = "";
+                        _resetLists(c, cFolder, cMarket);
+                      },
+                    ),
                   Expanded(
                     child: Column(
                       children: [

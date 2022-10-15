@@ -112,38 +112,37 @@ class _HomePageState extends State<HomePage>
     super.initState();
   }
 
-  KanjiListEventLoading _addKanjiListLoadingEvent({bool reset = true}) =>
-      KanjiListEventLoading(
+  _addKanjiListLoadingEvent(BuildContext c, {bool reset = true}) =>
+      c.read<KanjiListBloc>().add(KanjiListEventLoading(
           filter: _currentAppliedFilter,
           order: _currentAppliedOrder,
-          reset: reset);
+          reset: reset));
 
-  KanjiListEventSearching _addKanjiListSearchingEvent(String query,
+  _addKanjiListSearchingEvent(BuildContext c, String query,
           {bool reset = true}) =>
-      KanjiListEventSearching(query, reset: reset);
+      c.read<KanjiListBloc>().add(KanjiListEventSearching(query, reset: reset));
 
-  FolderEventLoading _addFolderListLoadingEvent({bool reset = true}) =>
-      FolderEventLoading(
+  _addFolderListLoadingEvent(BuildContext c, {bool reset = true}) =>
+      c.read<FolderBloc>().add(FolderEventLoading(
           filter: _currentAppliedFolderFilter,
           order: _currentAppliedFolderOrder,
-          reset: reset);
+          reset: reset));
 
-  FolderEventSearching _addFolderListSearchingEvent(String query,
+  _addFolderListSearchingEvent(BuildContext c, String query,
           {bool reset = true}) =>
-      FolderEventSearching(query, reset: reset);
+      c.read<FolderBloc>().add(FolderEventSearching(query, reset: reset));
 
-  MarketEventLoading _addMarketLoadingEvent({bool reset = true}) =>
-      MarketEventLoading(
+  _addMarketLoadingEvent(BuildContext c, {bool reset = true}) =>
+      c.read<MarketBloc>().add(MarketEventLoading(
           filter: _currentAppliedMarketFilter,
           order: _currentAppliedMarketOrder,
-          reset: reset);
+          reset: reset));
 
-  MarketEventSearching _addMarketSearchingEvent(String query,
-          {bool reset = true}) =>
-      MarketEventSearching(query,
+  _addMarketSearchingEvent(BuildContext c, String query, {bool reset = true}) =>
+      c.read<MarketBloc>().add(MarketEventSearching(query,
           reset: reset,
           order: _currentAppliedMarketOrder,
-          filter: _currentAppliedMarketFilter);
+          filter: _currentAppliedMarketFilter));
 
   _focusListener() => _searchHasFocus = _searchBarFn.hasFocus;
 
@@ -152,14 +151,10 @@ class _HomePageState extends State<HomePage>
 
   _resetLists(BuildContext c1, BuildContext c2, BuildContext c3) {
     if (_currentPage == HomeType.kanlist) {
-      if (_currentTab == TabType.kanlist) {
-        c1.read<KanjiListBloc>().add(_addKanjiListLoadingEvent());
-      } else {
-        c2.read<FolderBloc>().add(_addFolderListLoadingEvent());
-      }
-    } else {
-      c3.read<MarketBloc>().add(_addMarketLoadingEvent());
+      if (_currentTab == TabType.kanlist) return _addKanjiListLoadingEvent(c1);
+      return _addFolderListLoadingEvent(c2);
     }
+    return _addMarketLoadingEvent(c3);
   }
 
   @override
@@ -175,13 +170,23 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    /// Do not retrieve lists from Firebase until the user taps on Market.
     return MultiBlocProvider(
       providers: [
         BlocProvider<KanjiListBloc>(
-            create: (_) => KanjiListBloc()..add(_addKanjiListLoadingEvent())),
+          create: (_) => KanjiListBloc()
+            ..add(KanjiListEventLoading(
+              filter: _currentAppliedFilter,
+              order: _currentAppliedOrder,
+              reset: true,
+            )),
+        ),
         BlocProvider<FolderBloc>(
-            create: (_) => FolderBloc()..add(_addFolderListLoadingEvent())),
+          create: (_) => FolderBloc()
+            ..add(FolderEventLoading(
+                filter: _currentAppliedFolderFilter,
+                order: _currentAppliedFolderOrder,
+                reset: true)),
+        ),
         BlocProvider(create: (_) => DictBloc()..add(DictEventIdle())),
         BlocProvider<MarketBloc>(
             create: (_) => MarketBloc()..add(MarketEventIdle())),
@@ -202,14 +207,14 @@ class _HomePageState extends State<HomePage>
             }
           }
         },
-        builder: (context, state) => BlocBuilder<FolderBloc, FolderState>(
-          builder: (contextFolder, stateFolder) =>
+        builder: (c, state) => BlocBuilder<FolderBloc, FolderState>(
+          builder: (cFolder, stateFolder) =>
               BlocBuilder<MarketBloc, MarketState>(
-            builder: (contextMarket, stateMarket) => KPScaffold(
+            builder: (cMarket, stateMarket) => KPScaffold(
               onWillPop: () async {
                 if (_onTutorial) return false;
                 if (_searchHasFocus) {
-                  _resetLists(context, context, context);
+                  _resetLists(c, cFolder, cMarket);
                   _searchBarFn.unfocus();
                   return false;
                 } else {
@@ -227,19 +232,15 @@ class _HomePageState extends State<HomePage>
                     _searchTextController.text = "";
                     _controller.jumpToPage(type.page);
                     if (_currentPage == HomeType.market) {
-                      contextMarket
-                          .read<MarketBloc>()
-                          .add(_addMarketLoadingEvent());
+                      _addMarketLoadingEvent(cMarket);
                     }
                   }
                 },
                 onShowActions: (name) {
                   if (name == "__folder") {
-                    contextFolder
-                        .read<FolderBloc>()
-                        .add(_addFolderListLoadingEvent());
+                    _addFolderListLoadingEvent(cFolder);
                   } else {
-                    context.read<KanjiListBloc>().add(KanjiListEventCreate(name,
+                    c.read<KanjiListBloc>().add(KanjiListEventCreate(name,
                         filter: _currentAppliedFilter,
                         order: _currentAppliedOrder));
                   }
@@ -255,29 +256,18 @@ class _HomePageState extends State<HomePage>
                         : _currentTab.searchBarHint,
                     focus: _searchBarFn,
                     onQuery: (String query) {
-                      /// Everytime the user queries, reset the query itself and
-                      /// the pagination index
                       _query = query;
                       if (_currentPage == HomeType.kanlist) {
                         if (_currentTab == TabType.kanlist) {
-                          context
-                              .read<KanjiListBloc>()
-                              .add(_addKanjiListSearchingEvent(query));
-                        } else {
-                          contextFolder
-                              .read<FolderBloc>()
-                              .add(_addFolderListSearchingEvent(query));
+                          return _addKanjiListSearchingEvent(c, query);
                         }
-                      } else {
-                        contextMarket
-                            .read<MarketBloc>()
-                            .add(_addMarketSearchingEvent(query));
+                        return _addFolderListSearchingEvent(cFolder, query);
                       }
+                      return _addMarketSearchingEvent(cMarket, query);
                     },
                     onExitSearch: () {
-                      /// Empty the query
                       _query = "";
-                      _resetLists(context, contextFolder, contextMarket);
+                      _resetLists(c, cFolder, cMarket);
                     },
                   ),
                   Expanded(
@@ -289,27 +279,17 @@ class _HomePageState extends State<HomePage>
                             controller: _tabController,
                             onTap: (tab) {
                               if (tab == 0) {
-                                context
-                                    .read<KanjiListBloc>()
-                                    .add(_addKanjiListLoadingEvent());
-                              } else {
-                                contextFolder
-                                    .read<FolderBloc>()
-                                    .add(_addFolderListLoadingEvent());
+                                _addKanjiListLoadingEvent(c);
+                                return;
                               }
+                              _addFolderListLoadingEvent(cFolder);
                             },
                             tabs: const [
                               Tab(icon: Icon(Icons.table_rows_rounded)),
                               Tab(icon: Icon(Icons.folder_rounded)),
                             ],
                           ),
-                        Expanded(
-                          child: _body(
-                            context,
-                            contextFolder,
-                            contextMarket,
-                          ),
-                        ),
+                        Expanded(child: _body(c, cFolder, cMarket)),
                       ],
                     ),
                   ),
@@ -322,72 +302,43 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  Widget _tabView(BuildContext c, BuildContext cF) {
-    return TabBarView(
-      controller: _tabController,
-      children: [
-        KPKanjiLists(
-          key: lists,
-          removeFocus: () => _searchBarFn.unfocus(),
-          onScrolledToBottom: () {
-            /// If the query is empty, use the pagination for search bar
-            if (_query.isNotEmpty) {
-              c
-                  .read<KanjiListBloc>()
-                  .add(_addKanjiListSearchingEvent(_query, reset: false));
-            }
-
-            /// Else use the normal pagination
-            else {
-              c
-                  .read<KanjiListBloc>()
-                  .add(_addKanjiListLoadingEvent(reset: false));
-            }
-          },
-        ),
-        FolderList(
-          removeFocus: () => _searchBarFn.unfocus(),
-          onScrolledToBottom: () {
-            /// If the query is empty, use the pagination for search bar
-            if (_query.isNotEmpty) {
-              cF
-                  .read<FolderBloc>()
-                  .add(_addFolderListSearchingEvent(_query, reset: false));
-            }
-
-            /// Else use the normal pagination
-            else {
-              cF
-                  .read<FolderBloc>()
-                  .add(_addFolderListLoadingEvent(reset: false));
-            }
-          },
-        ),
-      ],
-    );
-  }
-
   PageView _body(BuildContext c, BuildContext cF, BuildContext cM) {
     return PageView(
       controller: _controller,
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        _tabView(c, cF),
+        TabBarView(
+          controller: _tabController,
+          children: [
+            KPKanjiLists(
+              key: lists,
+              removeFocus: () => _searchBarFn.unfocus(),
+              onScrolledToBottom: () {
+                if (_query.isNotEmpty) {
+                  return _addKanjiListSearchingEvent(c, _query, reset: false);
+                }
+                return _addKanjiListLoadingEvent(c, reset: false);
+              },
+            ),
+            FolderList(
+              removeFocus: () => _searchBarFn.unfocus(),
+              onScrolledToBottom: () {
+                if (_query.isNotEmpty) {
+                  return _addFolderListSearchingEvent(cF, _query, reset: false);
+                }
+                return _addFolderListLoadingEvent(cF, reset: false);
+              },
+            ),
+          ],
+        ),
         const DictionaryPage(args: DictionaryArguments(searchInJisho: true)),
         MarketPlace(
           removeFocus: () => _searchBarFn.unfocus(),
           onScrolledToBottom: () {
-            /// If the query is empty, use the pagination for search bar
             if (_query.isNotEmpty) {
-              cM
-                  .read<MarketBloc>()
-                  .add(_addMarketSearchingEvent(_query, reset: false));
+              return _addMarketSearchingEvent(cM, _query, reset: false);
             }
-
-            /// Else use the normal pagination
-            else {
-              cM.read<MarketBloc>().add(_addMarketLoadingEvent(reset: false));
-            }
+            return _addMarketLoadingEvent(cM, reset: false);
           },
         ),
         const Settings()

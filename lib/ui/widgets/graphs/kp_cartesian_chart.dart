@@ -35,7 +35,7 @@ class KPCartesianChart<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: CustomSizes.defaultSizeWinRateBarChart * 3,
+      height: CustomSizes.defaultSizeWinRateBarChart * 4,
       width: MediaQuery.of(context).size.width - Margins.margin48,
       child: SfCartesianChart(
         tooltipBehavior: TooltipBehavior(enable: true),
@@ -53,19 +53,31 @@ class KPCartesianChart<T> extends StatelessWidget {
         },
         primaryYAxis: NumericAxis(maximum: 100, minimum: 0, interval: 20),
         series: <ChartSeries<TestDataFrame, DateTime>>[
-          SplineSeries<TestDataFrame, DateTime>(
-            animationDuration: 1000,
-            name: graphName,
-            dataSource: dataSource,
-            enableTooltip: true,
-            markerSettings: const MarkerSettings(isVisible: true),
-            xValueMapper: (TestDataFrame data, _) => data.x,
-            yValueMapper: (TestDataFrame data, _) =>
-                data.y == DatabaseConstants.emptyWinRate
-                    ? 0
-                    : GeneralUtils.getFixedPercentage(data.y),
-            color: CustomColors.secondaryColor,
-          )
+          AreaSeries<TestDataFrame, DateTime>(
+              animationDuration: 1000,
+              name: graphName,
+              dataSource: dataSource,
+              enableTooltip: true,
+              markerSettings: const MarkerSettings(
+                isVisible: true,
+                color: Colors.white,
+                width: 12,
+                height: 12,
+              ),
+              xValueMapper: (TestDataFrame data, _) => data.x,
+              yValueMapper: (TestDataFrame data, _) =>
+                  data.y == DatabaseConstants.emptyWinRate
+                      ? 0
+                      : GeneralUtils.getFixedPercentage(data.y),
+              gradient: const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: [0.4, 1],
+                colors: [
+                  CustomColors.secondaryDarkerColor,
+                  CustomColors.secondaryColor
+                ],
+              ))
         ],
       ),
     );

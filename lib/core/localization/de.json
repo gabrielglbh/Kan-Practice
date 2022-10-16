@@ -247,7 +247,7 @@
   "coach_tutorial_detail_1": "Hier werden alle Vokabeln aus der Liste angezeigt. Sie können im Laufe Ihres Studiums jederzeit mehr hinzufügen.\n\nJedes Mal, wenn Sie in einem Bereich (z. B. Schreiben) üben, wird das Vokabular aktualisiert und der Prozentsatz des Erfolgs in diesem Bereich angezeigt.",
   "coach_tutorial_detail_2": "Hier sind die zusätzlichen Aktionen. Sie können einen Blitztest dieser Vokabelliste machen (links), die Liste zu einem bestimmten Ordner hinzufügen (Mitte) oder weitere Vokabeln zu Ihrer Liste hinzufügen, wenn Sie sie auf der Straße, beim Lernen, beim Lesen, in Videospielen oder Animes sehen.\n\nBeim Üben wird die räumliche Wiederholung verwendet: alle Vokabeln, die Sie nicht lernen, werden im weiteren Verlauf der Übung wieder auftauchen.",
   "coach_tutorial_detail_3": "Wenn Sie hier klicken, können Sie schließlich den Namen der Liste ändern, falls Sie einen Fehler gemacht oder Ihre Meinung über das gewählte Thema oder die Kategorisierung geändert haben.",
-  "settings_general_statistics": "Allgemeine Statistik",
+  "settings_general_statistics": "Statistik",
   "stats_words": "Gesamtzahl der Wörter",
   "stats_tests": "Gesamtzahl der Tests",
   "stats_words_lists": "Listen",

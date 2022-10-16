@@ -116,7 +116,7 @@ class _StatisticsPageState extends State<StatisticsPage>
             children: [
               ListStats(s: s, mode: mode),
               TestStats(s: s, mode: mode),
-              const TestHistory(),
+              TestHistory(s: s, mode: mode),
             ],
           ),
         ),

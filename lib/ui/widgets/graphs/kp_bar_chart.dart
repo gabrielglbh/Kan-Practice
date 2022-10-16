@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/ui/consts.dart';
@@ -11,7 +10,9 @@ class KPBarChart extends StatelessWidget {
   final void Function(ChartPointDetails)? onBarTapped;
   final bool enableTooltip;
   final double heightRatio;
-  final bool isWinRateChart;
+  final bool isHorizontalChart;
+  final ChartAxis? axysType;
+  final String tooltip;
   final String graphName;
   const KPBarChart({
     Key? key,
@@ -20,54 +21,65 @@ class KPBarChart extends StatelessWidget {
     this.enableTooltip = true,
     this.onBarTapped,
     this.heightRatio = 1.7,
-    this.isWinRateChart = false,
+    this.isHorizontalChart = false,
+    this.axysType,
+    this.tooltip = "",
   }) : super(key: key);
+
+  bool get _isWinRateChart => tooltip == "%";
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: CustomSizes.defaultSizeWinRateBarChart * heightRatio,
-      width: MediaQuery.of(context).size.width - Margins.margin48,
-      child: SfCartesianChart(
-        tooltipBehavior: TooltipBehavior(enable: enableTooltip),
-        primaryXAxis: CategoryAxis(
-          labelIntersectAction: AxisLabelIntersectAction.trim,
-          isInversed: isWinRateChart ? true : false,
+    return Padding(
+      padding: const EdgeInsets.only(right: Margins.margin8),
+      child: SizedBox(
+        height: CustomSizes.defaultSizeWinRateBarChart * heightRatio,
+        width: MediaQuery.of(context).size.width - Margins.margin48,
+        child: SfCartesianChart(
+          tooltipBehavior: TooltipBehavior(enable: enableTooltip),
+          primaryXAxis: CategoryAxis(
+            labelIntersectAction: AxisLabelIntersectAction.trim,
+            isInversed: isHorizontalChart ? true : false,
+          ),
+          primaryYAxis: axysType,
+          onTooltipRender: (tip) {
+            tip.text = "${tip.text}$tooltip";
+          },
+          series: <ChartSeries<DataFrame, String>>[
+            !isHorizontalChart
+                ? ColumnSeries<DataFrame, String>(
+                    animationDuration: 1000,
+                    name: graphName,
+                    dataSource: dataSource,
+                    pointColorMapper: (DataFrame data, _) => data.color,
+                    xValueMapper: (DataFrame data, _) => data.x,
+                    yValueMapper: (DataFrame data, _) =>
+                        data.y == DatabaseConstants.emptyWinRate ? 0 : data.y,
+                    onPointTap: onBarTapped != null
+                        ? (details) {
+                            onBarTapped!(details);
+                          }
+                        : null,
+                  )
+                : BarSeries<DataFrame, String>(
+                    animationDuration: 1000,
+                    name: graphName,
+                    dataSource: dataSource,
+                    pointColorMapper: (DataFrame data, _) => data.color,
+                    xValueMapper: (DataFrame data, _) => data.x,
+                    yValueMapper: (DataFrame data, _) => _isWinRateChart
+                        ? data.y == DatabaseConstants.emptyWinRate
+                            ? 0
+                            : GeneralUtils.getFixedPercentage(data.y)
+                        : data.y,
+                    onPointTap: onBarTapped != null
+                        ? (details) {
+                            onBarTapped!(details);
+                          }
+                        : null,
+                  )
+          ],
         ),
-        primaryYAxis: isWinRateChart
-            ? NumericAxis(maximum: 100, minimum: 0, interval: 20)
-            : null,
-        onTooltipRender: (tip) {
-          if (isWinRateChart) tip.text = "${tip.text}%";
-        },
-        series: <ChartSeries<DataFrame, String>>[
-          !isWinRateChart
-              ? ColumnSeries<DataFrame, String>(
-                  animationDuration: 1000,
-                  name: graphName,
-                  dataSource: dataSource,
-                  pointColorMapper: (DataFrame data, _) => data.color,
-                  xValueMapper: (DataFrame data, _) => data.x,
-                  yValueMapper: (DataFrame data, _) =>
-                      data.y == DatabaseConstants.emptyWinRate ? 0 : data.y,
-                  onPointTap: onBarTapped != null
-                      ? (details) {
-                          onBarTapped!(details);
-                        }
-                      : null,
-                )
-              : BarSeries<DataFrame, String>(
-                  animationDuration: 1000,
-                  name: "success".tr(),
-                  dataSource: dataSource,
-                  pointColorMapper: (DataFrame data, _) => data.color,
-                  xValueMapper: (DataFrame data, _) => data.x,
-                  yValueMapper: (DataFrame data, _) =>
-                      data.y == DatabaseConstants.emptyWinRate
-                          ? 0
-                          : GeneralUtils.getFixedPercentage(data.y),
-                )
-        ],
       ),
     );
   }

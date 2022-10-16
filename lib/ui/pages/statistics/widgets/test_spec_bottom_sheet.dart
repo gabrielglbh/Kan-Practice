@@ -70,69 +70,66 @@ class _TestSpecBottomSheetState extends State<TestSpecBottomSheet> {
                   ],
                 ),
               ),
-              Container(
-                constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height / 2.5),
-                margin: const EdgeInsets.all(Margins.margin8),
-                child: Column(
-                  children: [
-                    KPBarChart(
-                      graphName: "tests".tr(),
-                      heightRatio: 1.3,
-                      dataSource:
-                          List.generate(StudyModes.values.length, (index) {
-                        switch (StudyModes.values[index]) {
-                          case StudyModes.writing:
-                            return DataFrame(
-                              x: StudyModes.writing.mode,
-                              y: widget.data.totalWritingCount.toDouble(),
-                              color: StudyModes.writing.color,
-                            );
-                          case StudyModes.reading:
-                            return DataFrame(
-                              x: StudyModes.reading.mode,
-                              y: widget.data.totalReadingCount.toDouble(),
-                              color: StudyModes.reading.color,
-                            );
-                          case StudyModes.recognition:
-                            return DataFrame(
-                              x: StudyModes.recognition.mode,
-                              y: widget.data.totalRecognitionCount.toDouble(),
-                              color: StudyModes.recognition.color,
-                            );
-                          case StudyModes.listening:
-                            return DataFrame(
-                              x: StudyModes.listening.mode,
-                              y: widget.data.totalListeningCount.toDouble(),
-                              color: StudyModes.listening.color,
-                            );
-                          case StudyModes.speaking:
-                            return DataFrame(
-                              x: StudyModes.speaking.mode,
-                              y: widget.data.totalSpeakingCount.toDouble(),
-                              color: StudyModes.speaking.color,
-                            );
-                        }
-                      }),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text("specific_test_accuracy_label".tr(),
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headline6),
-                    ),
-                    KPDependentGraph(
-                      mode: VisualizationModeExt.mode(StorageManager.readData(
-                              StorageManager.kanListGraphVisualization) ??
-                          VisualizationMode.radialChart),
-                      writing: widget.data.totalWinRateWriting,
-                      reading: widget.data.totalWinRateReading,
-                      recognition: widget.data.totalWinRateRecognition,
-                      listening: widget.data.totalWinRateListening,
-                      speaking: widget.data.totalWinRateSpeaking,
-                    ),
-                  ],
-                ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  KPBarChart(
+                    graphName: "tests".tr(),
+                    heightRatio: 1.3,
+                    dataSource:
+                        List.generate(StudyModes.values.length, (index) {
+                      switch (StudyModes.values[index]) {
+                        case StudyModes.writing:
+                          return DataFrame(
+                            x: StudyModes.writing.mode,
+                            y: widget.data.totalWritingCount.toDouble(),
+                            color: StudyModes.writing.color,
+                          );
+                        case StudyModes.reading:
+                          return DataFrame(
+                            x: StudyModes.reading.mode,
+                            y: widget.data.totalReadingCount.toDouble(),
+                            color: StudyModes.reading.color,
+                          );
+                        case StudyModes.recognition:
+                          return DataFrame(
+                            x: StudyModes.recognition.mode,
+                            y: widget.data.totalRecognitionCount.toDouble(),
+                            color: StudyModes.recognition.color,
+                          );
+                        case StudyModes.listening:
+                          return DataFrame(
+                            x: StudyModes.listening.mode,
+                            y: widget.data.totalListeningCount.toDouble(),
+                            color: StudyModes.listening.color,
+                          );
+                        case StudyModes.speaking:
+                          return DataFrame(
+                            x: StudyModes.speaking.mode,
+                            y: widget.data.totalSpeakingCount.toDouble(),
+                            color: StudyModes.speaking.color,
+                          );
+                      }
+                    }),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text("specific_test_accuracy_label".tr(),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline6),
+                  ),
+                  KPDependentGraph(
+                    mode: VisualizationModeExt.mode(StorageManager.readData(
+                            StorageManager.kanListGraphVisualization) ??
+                        VisualizationMode.radialChart),
+                    writing: widget.data.totalWinRateWriting,
+                    reading: widget.data.totalWinRateReading,
+                    recognition: widget.data.totalWinRateRecognition,
+                    listening: widget.data.totalWinRateListening,
+                    speaking: widget.data.totalWinRateSpeaking,
+                  ),
+                  const SizedBox(height: Margins.margin16)
+                ],
               ),
             ],
           ),

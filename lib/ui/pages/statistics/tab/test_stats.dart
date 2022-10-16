@@ -5,11 +5,9 @@ import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
 import 'package:kanpractice/ui/pages/statistics/widgets/stats_header.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_data_frame.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_dependent_graph.dart';
 import 'package:kanpractice/ui/pages/statistics/widgets/test_spec_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_bar_chart.dart';
 
@@ -80,33 +78,10 @@ class _TestStatsState extends State<TestStats>
             }
           }),
         ),
-        const Padding(
-          padding: EdgeInsets.only(top: Margins.margin16),
-          child: Divider(),
-        ),
+        const Divider(),
         StatsHeader(title: "stats_tests_by_type".tr()),
         _info,
         _expandedTestCount(context, widget.s),
-        const Padding(
-          padding: EdgeInsets.only(top: Margins.margin16),
-          child: Divider(),
-        ),
-        StatsHeader(
-          title: "${"stats_tests_total_acc".tr()} • ",
-          value: GeneralUtils.getFixedPercentageAsString(
-              widget.s.test.totalTestAccuracy),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
-          child: KPDependentGraph(
-            mode: widget.mode,
-            writing: widget.s.test.testTotalWinRateWriting,
-            reading: widget.s.test.testTotalWinRateReading,
-            recognition: widget.s.test.testTotalWinRateRecognition,
-            listening: widget.s.test.testTotalWinRateListening,
-            speaking: widget.s.test.testTotalWinRateSpeaking,
-          ),
-        ),
         const SizedBox(height: Margins.margin32)
       ],
     );
@@ -115,6 +90,8 @@ class _TestStatsState extends State<TestStats>
   Widget _expandedTestCount(BuildContext context, KanPracticeStats s) {
     return KPBarChart(
       enableTooltip: false,
+      isHorizontalChart: true,
+      heightRatio: 2.3,
       graphName: "tests".tr(),
       onBarTapped: (model) async {
         if (model.dataPoints?.isNotEmpty == true) {

@@ -7,7 +7,6 @@ final Color _cardColor = Colors.grey.shade200;
 final Color _chipColor = Colors.grey.shade500;
 const Color _accent = Colors.black;
 final Color _subtle = Colors.grey.shade600;
-final Color _nav = Colors.grey.shade700;
 
 final ThemeData light = ThemeData(
   brightness: Brightness.light,

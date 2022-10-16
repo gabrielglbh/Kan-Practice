@@ -2,15 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
+import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/ui/general_utils.dart';
+import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
 import 'package:kanpractice/ui/pages/statistics/tab/test_history/bloc/test_bloc.dart';
 import 'package:kanpractice/ui/pages/statistics/widgets/stats_header.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_cartesian_chart.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_dependent_graph.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class TestHistory extends StatefulWidget {
-  const TestHistory({Key? key}) : super(key: key);
+  final KanPracticeStats s;
+  final VisualizationMode mode;
+  const TestHistory({
+    super.key,
+    required this.s,
+    required this.mode,
+  });
 
   @override
   State<TestHistory> createState() => _TestHistoryState();
@@ -33,6 +43,7 @@ class _TestHistoryState extends State<TestHistory>
     await showDateRangePicker(
       context: context,
       initialDateRange: DateTimeRange(start: _firstDate, end: _lastDate),
+      initialEntryMode: DatePickerEntryMode.calendarOnly,
       firstDate: DateTime(2020),
       lastDate: DateTime.now(),
       locale: context.locale,
@@ -79,34 +90,57 @@ class _TestHistoryState extends State<TestHistory>
   Widget build(BuildContext context) {
     super.build(context);
     return BlocBuilder<TestListBloc, TestListState>(
-      builder: (context, state) => Column(
+      builder: (context, state) => ListView(
         children: [
-          StatsHeader(title: "history_tests_header".tr()),
-          TextButton(
-            onPressed: () async {
-              await _showRangePicker();
-            },
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.grey.shade500),
+          StatsHeader(
+            title: "${"stats_tests_total_acc".tr()} • ",
+            value: GeneralUtils.getFixedPercentageAsString(
+                widget.s.test.totalTestAccuracy),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
+            child: KPDependentGraph(
+              mode: widget.mode,
+              writing: widget.s.test.testTotalWinRateWriting,
+              reading: widget.s.test.testTotalWinRateReading,
+              recognition: widget.s.test.testTotalWinRateRecognition,
+              listening: widget.s.test.testTotalWinRateListening,
+              speaking: widget.s.test.testTotalWinRateSpeaking,
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  "${_parseDate(_firstDate)} - ${_parseDate(_lastDate)}",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      ?.copyWith(color: Colors.white),
+          ),
+          const Divider(),
+          StatsHeader(title: "history_tests_header".tr()),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 72),
+            child: FittedBox(
+              child: TextButton(
+                onPressed: () async {
+                  await _showRangePicker();
+                },
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Colors.grey.shade500),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(left: Margins.margin8),
-                  child: Icon(
-                    Icons.expand_more_rounded,
-                    color: Colors.white,
-                  ),
-                )
-              ],
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "${_parseDate(_firstDate)} - ${_parseDate(_lastDate)}",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1
+                          ?.copyWith(color: Colors.white),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: Margins.margin8),
+                      child: Icon(
+                        Icons.expand_more_rounded,
+                        color: Colors.white,
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
           ),
           Expanded(
@@ -130,7 +164,7 @@ class _TestHistoryState extends State<TestHistory>
         return Center(child: Text("test_history_load_failed".tr()));
       }
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Margins.margin12),
+        padding: const EdgeInsets.symmetric(horizontal: Margins.margin32),
         child: KPCartesianChart(
           dataSource: List.generate(state.list.length, (index) {
             final test = state.list[index];

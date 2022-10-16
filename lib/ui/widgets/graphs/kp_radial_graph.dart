@@ -89,7 +89,7 @@ class KPRadialGraph extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               itemCount: StudyModes.values.length,
               shrinkWrap: true,
-              padding: const EdgeInsets.only(right: Margins.margin12),
+              padding: const EdgeInsets.symmetric(horizontal: Margins.margin12),
               itemBuilder: (context, index) {
                 double rate = 0;
                 switch (StudyModes.values[index]) {

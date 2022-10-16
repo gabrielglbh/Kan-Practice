@@ -71,6 +71,8 @@ class _ListStatsState extends State<ListStats>
         StatsHeader(title: "words_by_category".tr()),
         KPBarChart(
           graphName: "kanji_category_label".tr(),
+          heightRatio: 3,
+          isHorizontalChart: true,
           dataSource: List.generate(
             KanjiCategory.values.length,
             (index) => DataFrame(

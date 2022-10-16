@@ -247,7 +247,7 @@
   "coach_tutorial_detail_1": "Aquí se muestra todo el vocabulario de la lista. Podrás añadir más en cualquier momento a medida que tu estudio avance.\n\nCada vez que practiques en una área (escritura por ejemplo), el vocabulario se actualizará mostrando el porcentaje de acierto de la misma.",
   "coach_tutorial_detail_2": "Aquí están las acciones suplementarias. Podrás realizar un test Blitz solamente de esta lista de vocabulario (izquierda), añadir esta lista a una carpeta determinada (centro) o añadir más vocabulario a la lista que veas por la calle, estudiando, leyendo, en videojuegos o anime.\n\nAl practicar, se usa la repetición espaciada: cuando fallas el estudio de una palabra, esta saldrá más adelante en tu práctica.",
   "coach_tutorial_detail_3": "Por último, si pulsas aquí, podrás cambiar el nombre de la lista, por si te has equivocado o cambiado de opinión con respecto a la temática o categorización elegida.",
-  "settings_general_statistics": "Estadísticas Generales",
+  "settings_general_statistics": "Estadísticas",
   "stats_words": "Número Total de Palabras",
   "stats_tests": "Número Total de Tests",
   "stats_words_lists": "Listas",

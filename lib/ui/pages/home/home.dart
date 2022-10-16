@@ -97,10 +97,11 @@ class _HomePageState extends State<HomePage>
       /// Read folder from SharedPreferences, current selected folder for the latest
       /// test. If any, show that BS and navigate to that tab. Else just
       /// show the BS with all tests
-      String? folder = StorageManager.readData(StorageManager.folderWhenOnTest);
-      bool hasFolder = folder != null && folder.isNotEmpty;
-      if (hasFolder) _tabController.animateTo(1);
       if (widget.showTestBottomSheet == true) {
+        String? folder =
+            StorageManager.readData(StorageManager.folderWhenOnTest);
+        bool hasFolder = folder != null && folder.isNotEmpty;
+        if (hasFolder) _tabController.animateTo(1);
         await KPTestBottomSheet.show(
           context,
           folder: hasFolder ? folder : null,

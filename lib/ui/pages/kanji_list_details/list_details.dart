@@ -13,6 +13,7 @@ import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/bloc/details_bloc.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/widgets/kanji_item.dart';
 import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/ui/pages/kanji_list_details/widgets/practice_on_list_bottom_sheet.dart';
 import 'package:kanpractice/ui/pages/study_modes/utils/mode_arguments.dart';
 import 'package:kanpractice/ui/widgets/folder_list_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/blitz/kp_blitz_bottom_sheet.dart';
@@ -368,9 +369,18 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
         KPButton(
             title1: "list_details_practice_button_label_ext".tr(),
             title2: "list_details_practice_button_label".tr(),
-            onTap: () => bloc
-                .read<KanjiListDetailBloc>()
-                .add(KanjiEventLoadUpPractice(_listName, _selectedMode))),
+            onTap: () async {
+              if (_aggrStats) {
+                return await PracticeListBottomSheet.show(
+                        context, widget.list.name, state.list)
+                    .then(
+                  (value) => _addLoadingEvent(reset: true),
+                );
+              }
+              bloc
+                  .read<KanjiListDetailBloc>()
+                  .add(KanjiEventLoadUpPractice(_listName, _selectedMode));
+            }),
       ],
     );
   }

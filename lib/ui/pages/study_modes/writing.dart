@@ -231,11 +231,12 @@ class _WritingStudyState extends State<WritingStudy> {
           visible: _goNextKanji,
           child: TTSIconButton(kanji: _studyList[_macro].pronunciation),
         ),
-        IconButton(
-          onPressed: () =>
-              GeneralUtils.showSpatialRepetitionDisclaimer(context),
-          icon: const Icon(Icons.info_outline_rounded),
-        )
+        if (!widget.args.isTest)
+          IconButton(
+            onPressed: () =>
+                GeneralUtils.showSpatialRepetitionDisclaimer(context),
+            icon: const Icon(Icons.info_outline_rounded),
+          )
       ],
       child: Column(
         children: [

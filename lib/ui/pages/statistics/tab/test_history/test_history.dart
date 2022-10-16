@@ -70,7 +70,11 @@ class _TestHistoryState extends State<TestHistory>
     ).then((value) => range = value);
     setState(() {
       _firstDate = range?.start ?? _firstDate;
-      _lastDate = range?.end ?? _lastDate;
+      _lastDate =
+          range?.end.add(const Duration(hours: 23, minutes: 59)) ?? _lastDate;
+      if (_firstDate == _lastDate) {
+        _firstDate = _firstDate.subtract(const Duration(days: 1));
+      }
     });
     // ignore: use_build_context_synchronously
     context

@@ -1,11 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/visualization_mode.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_bar_chart.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_data_frame.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_radial_graph.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class KPDependentGraph extends StatelessWidget {
   final double writing, reading, recognition, listening, speaking;
@@ -22,7 +17,7 @@ class KPDependentGraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return mode == VisualizationMode.barChart
+    return /* mode == VisualizationMode.barChart
         ? KPBarChart(
             isHorizontalChart: true,
             axysType: NumericAxis(maximum: 100, minimum: 0, interval: 20),
@@ -62,12 +57,13 @@ class KPDependentGraph extends StatelessWidget {
               },
             ),
           )
-        : KPRadialGraph(
-            rateWriting: writing,
-            rateReading: reading,
-            rateRecognition: recognition,
-            rateListening: listening,
-            rateSpeaking: speaking,
-          );
+        :*/
+        KPRadialGraph(
+      rateWriting: writing,
+      rateReading: reading,
+      rateRecognition: recognition,
+      rateListening: listening,
+      rateSpeaking: speaking,
+    );
   }
 }

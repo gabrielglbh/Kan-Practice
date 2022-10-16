@@ -84,7 +84,7 @@ class KPCartesianChart<T> extends StatelessWidget {
                 data.y == DatabaseConstants.emptyWinRate
                     ? 0
                     : GeneralUtils.getFixedPercentage(data.y),
-            color: CustomColors.secondaryColor,
+            color: CustomColors.secondaryDarkerColor,
           )
         ],
       ),

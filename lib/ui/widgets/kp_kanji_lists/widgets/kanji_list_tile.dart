@@ -55,13 +55,10 @@ class KanjiListTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                width: MediaQuery.of(context).size.width / 2.5,
-                child: FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Text(item.name,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.headline5),
-                ),
+                width: MediaQuery.of(context).size.width / 2,
+                child: Text(item.name,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.headline5),
               ),
               const SizedBox(width: 16),
               Expanded(

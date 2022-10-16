@@ -12,9 +12,6 @@ import 'core/routing/routes.dart';
 
 Future<void> _initSharedPreferences() async {
   await StorageManager.getInstance();
-  if (StorageManager.readData(StorageManager.hasDoneTutorial) == null) {
-    StorageManager.saveData(StorageManager.hasDoneTutorial, false);
-  }
   if (StorageManager.readData(StorageManager.affectOnPractice) == null) {
     StorageManager.saveData(StorageManager.affectOnPractice, false);
   }
@@ -123,9 +120,7 @@ class _KanPracticeState extends State<KanPractice> {
       theme: ThemeManager.instance.currentLightThemeData,
       darkTheme: ThemeManager.instance.currentDarkThemeData,
       themeMode: ThemeManager.instance.themeMode,
-      initialRoute: StorageManager.readData(StorageManager.hasDoneTutorial)
-          ? KanPracticePages.homePage
-          : KanPracticePages.tutorialPage,
+      initialRoute: KanPracticePages.homePage,
       onGenerateRoute: onGenerateRoute,
     );
   }

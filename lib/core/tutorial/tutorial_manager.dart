@@ -22,7 +22,6 @@ class TutorialCoach {
       Offset offset = const Offset(0, 0);
       switch (_part) {
         case CoachTutorialParts.kanList:
-          if (y == markers.length - 1) align = ContentAlign.bottom;
           if (y == 0) offset = const Offset(0, Margins.margin32);
           break;
         case CoachTutorialParts.details:

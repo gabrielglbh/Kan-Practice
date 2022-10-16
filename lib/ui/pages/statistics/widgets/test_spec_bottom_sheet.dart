@@ -118,15 +118,19 @@ class _TestSpecBottomSheetState extends State<TestSpecBottomSheet> {
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.headline6),
                   ),
-                  KPDependentGraph(
-                    mode: VisualizationModeExt.mode(StorageManager.readData(
-                            StorageManager.kanListGraphVisualization) ??
-                        VisualizationMode.radialChart),
-                    writing: widget.data.totalWinRateWriting,
-                    reading: widget.data.totalWinRateReading,
-                    recognition: widget.data.totalWinRateRecognition,
-                    listening: widget.data.totalWinRateListening,
-                    speaking: widget.data.totalWinRateSpeaking,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: Margins.margin24),
+                    child: KPDependentGraph(
+                      mode: VisualizationModeExt.mode(StorageManager.readData(
+                              StorageManager.kanListGraphVisualization) ??
+                          VisualizationMode.radialChart),
+                      writing: widget.data.totalWinRateWriting,
+                      reading: widget.data.totalWinRateReading,
+                      recognition: widget.data.totalWinRateRecognition,
+                      listening: widget.data.totalWinRateListening,
+                      speaking: widget.data.totalWinRateSpeaking,
+                    ),
                   ),
                   const SizedBox(height: Margins.margin16)
                 ],

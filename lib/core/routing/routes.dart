@@ -25,7 +25,6 @@ import 'package:kanpractice/ui/pages/study_modes/speaking.dart';
 import 'package:kanpractice/ui/pages/study_modes/utils/mode_arguments.dart';
 import 'package:kanpractice/ui/pages/test_result/arguments.dart';
 import 'package:kanpractice/ui/pages/test_result/test_result.dart';
-import 'package:kanpractice/ui/pages/tutorial/tutorial.dart';
 import 'package:kanpractice/ui/pages/study_modes/writing.dart';
 import 'package:kanpractice/ui/pages/word_history/bloc/word_history_bloc.dart';
 import 'package:kanpractice/ui/pages/word_history/word_history.dart';
@@ -71,10 +70,6 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case KanPracticePages.backUpPage:
       String args = settings.arguments as String;
       return CupertinoPageRoute(builder: (_) => BackUpPage(uid: args));
-    case KanPracticePages.tutorialPage:
-      bool? args = settings.arguments as bool?;
-      return CupertinoPageRoute(
-          builder: (_) => TutorialPage(alreadyShown: args));
     case KanPracticePages.jishoPage:
       JishoArguments args = settings.arguments as JishoArguments;
       return PageTransition(

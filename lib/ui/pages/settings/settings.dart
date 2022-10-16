@@ -161,7 +161,7 @@ class _SettingsState extends State<Settings> {
             }
           },
         ),
-        const Divider(),
+        /*const Divider(),
         ListTile(
             leading: _graphMode.icon,
             title: Text("settings_general_graphs".tr()),
@@ -170,7 +170,7 @@ class _SettingsState extends State<Settings> {
                   () => _graphMode = VisualizationModeExt.toggle(_graphMode));
               StorageManager.saveData(
                   StorageManager.kanListGraphVisualization, _graphMode.name);
-            }),
+            }),*/
         const Divider(),
         ListTile(
             leading: const Icon(Icons.notifications_active_rounded),

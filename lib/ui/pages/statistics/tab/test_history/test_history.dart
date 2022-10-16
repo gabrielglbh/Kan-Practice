@@ -55,11 +55,13 @@ class _TestHistoryState extends State<TestHistory>
         return Theme(
           data: Theme.of(context).copyWith(
             primaryColor: CustomColors.secondaryColor,
+            splashColor: CustomColors.secondaryColor,
             colorScheme: ColorScheme.fromSwatch().copyWith(
               primary: CustomColors.secondaryColor,
               onPrimary: dialogColor,
               surface: CustomColors.secondaryColor,
               onSurface: dialogColor,
+              secondary: CustomColors.secondaryColor,
             ),
           ),
           child: child!,
@@ -111,7 +113,7 @@ class _TestHistoryState extends State<TestHistory>
           const Divider(),
           StatsHeader(title: "history_tests_header".tr()),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 72),
+            padding: const EdgeInsets.symmetric(horizontal: 80),
             child: FittedBox(
               child: TextButton(
                 onPressed: () async {
@@ -143,11 +145,9 @@ class _TestHistoryState extends State<TestHistory>
               ),
             ),
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
-              child: _body(state),
-            ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
+            child: _body(state),
           ),
         ],
       ),
@@ -164,14 +164,14 @@ class _TestHistoryState extends State<TestHistory>
         return Center(child: Text("test_history_load_failed".tr()));
       }
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Margins.margin32),
+        padding: const EdgeInsets.symmetric(horizontal: Margins.margin24),
         child: KPCartesianChart(
           dataSource: List.generate(state.list.length, (index) {
             final test = state.list[index];
             return TestDataFrame(
               x: DateTime.fromMillisecondsSinceEpoch(test.takenDate),
               y: test.testScore,
-              color: StudyModesUtil.mapStudyMode(test.studyMode).color,
+              studyMode: StudyModesUtil.mapStudyMode(test.studyMode),
               wordsOnTest: test.kanjiInTest,
               mode: TestsUtils.mapTestMode(test.testMode ?? 0),
             );

@@ -53,6 +53,7 @@ class TutorialCoach {
                       children: <Widget>[
                         Text(_tutorialText[y],
                             style: const TextStyle(
+                                fontSize: 12,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold)),
                       ],

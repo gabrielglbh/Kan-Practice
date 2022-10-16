@@ -20,7 +20,6 @@ class HomeBottomNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 64,
-      padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.light
             ? Colors.white
@@ -66,24 +65,11 @@ class HomeBottomNavigation extends StatelessWidget {
       },
       child: Container(
         key: key,
-        width: 64,
+        width: MediaQuery.of(context).size.width / 5,
         height: 42,
         color: Colors.transparent,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(type.icon,
-                color: selectedColor ? CustomColors.secondaryColor : color),
-            const SizedBox(height: Margins.margin4),
-            Flexible(
-              child: Text(
-                type.bottomBarLabel,
-                style: Theme.of(context).textTheme.subtitle2?.copyWith(
-                    color: selectedColor ? CustomColors.secondaryColor : color),
-              ),
-            )
-          ],
-        ),
+        child: Icon(type.icon,
+            color: selectedColor ? CustomColors.secondaryColor : color),
       ),
     );
   }

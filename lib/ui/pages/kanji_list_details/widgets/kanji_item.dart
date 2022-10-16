@@ -32,22 +32,27 @@ class KanjiItem extends StatelessWidget {
 
   double _getProperKanjiWinRate(Kanji kanji) {
     if (aggregateStats) {
-      return ((kanji.winRateWriting == DatabaseConstants.emptyWinRate
-                  ? 0
-                  : kanji.winRateWriting) +
-              (kanji.winRateReading == DatabaseConstants.emptyWinRate
-                  ? 0
-                  : kanji.winRateReading) +
-              (kanji.winRateRecognition == DatabaseConstants.emptyWinRate
-                  ? 0
-                  : kanji.winRateRecognition) +
-              (kanji.winRateListening == DatabaseConstants.emptyWinRate
-                  ? 0
-                  : kanji.winRateListening) +
-              (kanji.winRateSpeaking == DatabaseConstants.emptyWinRate
-                  ? 0
-                  : kanji.winRateSpeaking)) /
-          StudyModes.values.length;
+      final writing = (kanji.winRateWriting == DatabaseConstants.emptyWinRate
+          ? 0
+          : kanji.winRateWriting);
+      final reading = (kanji.winRateReading == DatabaseConstants.emptyWinRate
+          ? 0
+          : kanji.winRateReading);
+      final recognition =
+          (kanji.winRateRecognition == DatabaseConstants.emptyWinRate
+              ? 0
+              : kanji.winRateRecognition);
+      final listening =
+          (kanji.winRateListening == DatabaseConstants.emptyWinRate
+              ? 0
+              : kanji.winRateListening);
+      final speaking = (kanji.winRateSpeaking == DatabaseConstants.emptyWinRate
+          ? 0
+          : kanji.winRateSpeaking);
+
+      final aggregate = writing + reading + recognition + listening + speaking;
+      if (aggregate == 0) return -1;
+      return aggregate / StudyModes.values.length;
     }
 
     switch (selectedMode) {

@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:kanpractice/core/database/database.dart';
+import 'package:kanpractice/core/database/queries/initial_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/visualization_mode.dart';
@@ -43,17 +44,14 @@ Future<void> _initSharedPreferences() async {
   // DEBUG ONLY
   //StorageManager.saveData(StorageManager.haveSeenKanListCoachMark, false);
   //StorageManager.saveData(StorageManager.haveSeenKanListDetailCoachMark, false);
-  bool hasDoneTutorial =
-      StorageManager.readData(StorageManager.hasDoneTutorial);
   if (StorageManager.readData(StorageManager.haveSeenKanListCoachMark) ==
       null) {
-    StorageManager.saveData(
-        StorageManager.haveSeenKanListCoachMark, hasDoneTutorial);
+    StorageManager.saveData(StorageManager.haveSeenKanListCoachMark, false);
   }
   if (StorageManager.readData(StorageManager.haveSeenKanListDetailCoachMark) ==
       null) {
     StorageManager.saveData(
-        StorageManager.haveSeenKanListDetailCoachMark, hasDoneTutorial);
+        StorageManager.haveSeenKanListDetailCoachMark, false);
   }
 }
 
@@ -100,6 +98,12 @@ class _KanPracticeState extends State<KanPractice> {
   @override
   void initState() {
     ThemeManager.instance.addListenerTo(() => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (StorageManager.readData(StorageManager.haveSeenKanListCoachMark) ==
+          false) {
+        await InitialQueries.instance.setInitialDataForReference(context);
+      }
+    });
     super.initState();
   }
 

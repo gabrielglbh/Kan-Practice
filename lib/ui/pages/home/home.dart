@@ -224,6 +224,7 @@ class _HomePageState extends State<HomePage>
           builder: (cFolder, stateFolder) =>
               BlocBuilder<MarketBloc, MarketState>(
             builder: (cMarket, stateMarket) => KPScaffold(
+              setGestureDetector: false,
               onWillPop: () async {
                 if (_onTutorial) return false;
                 if (_searchHasFocus) {

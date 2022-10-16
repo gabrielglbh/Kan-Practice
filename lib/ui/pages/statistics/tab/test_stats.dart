@@ -168,9 +168,11 @@ class _TestStatsState extends State<TestStats>
               padding: EdgeInsets.only(right: Margins.margin8),
               child: Icon(Icons.info_rounded, size: 16, color: Colors.grey),
             ),
-            Text(
-              "stats_tests_tap_to_specs".tr(),
-              style: Theme.of(context).textTheme.caption,
+            Flexible(
+              child: Text(
+                "stats_tests_tap_to_specs".tr(),
+                style: Theme.of(context).textTheme.caption,
+              ),
             ),
           ],
         ),

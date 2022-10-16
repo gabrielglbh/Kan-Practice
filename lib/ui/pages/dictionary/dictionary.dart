@@ -65,71 +65,69 @@ class _DictionaryPageState extends State<DictionaryPage>
 
     return BlocBuilder<DictBloc, DictState>(
       builder: (context, state) {
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              Row(
+        return Column(
+          children: [
+            Row(
+              children: [
+                Expanded(child: _searchBar()),
+                _searchWidget(canSearchEitherWay)
+              ],
+            ),
+            if (state is DictStateLoading)
+              const Center(
+                  child: Padding(
+                padding: EdgeInsets.all(Margins.margin16),
+                child: KPProgressIndicator(),
+              ))
+            else if (state is DictStateFailure)
+              Center(
+                  child: Padding(
+                padding: const EdgeInsets.all(Margins.margin16),
+                child: Text("dict_model_not_loaded".tr(),
+                    style: Theme.of(context).textTheme.bodyText2),
+              ))
+            else if (state is DictStateLoaded)
+              Column(
                 children: [
-                  Expanded(child: _searchBar()),
-                  _searchWidget(canSearchEitherWay)
-                ],
-              ),
-              if (state is DictStateLoading)
-                const Center(
-                    child: Padding(
-                  padding: EdgeInsets.all(Margins.margin16),
-                  child: KPProgressIndicator(),
-                ))
-              else if (state is DictStateFailure)
-                Center(
-                    child: Padding(
-                  padding: const EdgeInsets.all(Margins.margin16),
-                  child: Text("dict_model_not_loaded".tr(),
-                      style: Theme.of(context).textTheme.bodyText2),
-                ))
-              else if (state is DictStateLoaded)
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: Margins.margin8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              "< ${"dict_predictions_most_likely".tr()}",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.bodyText2,
-                            ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: Margins.margin8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "< ${"dict_predictions_most_likely".tr()}",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodyText2,
                           ),
-                          Expanded(
-                            child: Text(
-                              "${"dict_predictions_less_likely".tr()} >",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.end,
-                              style: Theme.of(context).textTheme.bodyText2,
-                            ),
-                          )
-                        ],
-                      ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            "${"dict_predictions_less_likely".tr()} >",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.end,
+                            style: Theme.of(context).textTheme.bodyText2,
+                          ),
+                        )
+                      ],
                     ),
-                    _predictions(state),
-                    KPCustomCanvas(
-                      line: _line,
-                      allowPrediction: true,
-                      handleImage: (im.Image image) {
-                        context
-                            .read<DictBloc>()
-                            .add(DictEventLoading(image: image));
-                      },
-                    ),
-                  ],
-                )
-            ],
-          ),
+                  ),
+                  _predictions(state),
+                  KPCustomCanvas(
+                    line: _line,
+                    allowPrediction: true,
+                    handleImage: (im.Image image) {
+                      context
+                          .read<DictBloc>()
+                          .add(DictEventLoading(image: image));
+                    },
+                  ),
+                ],
+              )
+          ],
         );
       },
     );

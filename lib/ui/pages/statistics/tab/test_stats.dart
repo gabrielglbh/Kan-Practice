@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/queries/test_queries.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
-import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
 import 'package:kanpractice/ui/pages/statistics/widgets/stats_header.dart';
@@ -13,12 +12,7 @@ import 'package:kanpractice/ui/widgets/graphs/kp_bar_chart.dart';
 
 class TestStats extends StatefulWidget {
   final KanPracticeStats s;
-  final VisualizationMode mode;
-  const TestStats({
-    super.key,
-    required this.s,
-    required this.mode,
-  });
+  const TestStats({super.key, required this.s});
 
   @override
   State<TestStats> createState() => _TestStatsState();

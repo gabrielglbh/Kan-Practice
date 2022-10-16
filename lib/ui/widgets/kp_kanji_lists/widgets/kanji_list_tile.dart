@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/general_utils.dart';
-import 'package:kanpractice/core/types/visualization_mode.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_dependent_graph.dart';
 import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_radial_graph.dart';
 import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -18,9 +17,6 @@ class KanjiListTile extends StatelessWidget {
   /// Action to perform when removing a [KanjiList]
   final Function onRemoval;
 
-  /// Mode to show the statistics
-  final VisualizationMode mode;
-
   /// Tells the widget that [this] is a [KanjiList] within a Folder
   final bool withinFolder;
   const KanjiListTile({
@@ -29,7 +25,6 @@ class KanjiListTile extends StatelessWidget {
     required this.onTap,
     required this.onRemoval,
     this.withinFolder = false,
-    this.mode = VisualizationMode.radialChart,
   }) : super(key: key);
 
   @override
@@ -71,8 +66,7 @@ class KanjiListTile extends StatelessWidget {
             ],
           ),
         ),
-        subtitle: KPDependentGraph(
-          mode: mode,
+        subtitle: KPRadialGraph(
           writing: item.totalWinRateWriting,
           reading: item.totalWinRateReading,
           recognition: item.totalWinRateRecognition,

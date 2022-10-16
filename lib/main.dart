@@ -6,7 +6,6 @@ import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/queries/initial_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
-import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/theme/theme_manager.dart';
 import 'core/routing/routes.dart';
@@ -15,11 +14,6 @@ Future<void> _initSharedPreferences() async {
   await StorageManager.getInstance();
   if (StorageManager.readData(StorageManager.affectOnPractice) == null) {
     StorageManager.saveData(StorageManager.affectOnPractice, false);
-  }
-  if (StorageManager.readData(StorageManager.kanListGraphVisualization) ==
-      null) {
-    StorageManager.saveData(StorageManager.kanListGraphVisualization,
-        VisualizationMode.radialChart.name);
   }
   if (StorageManager.readData(StorageManager.kanListListVisualization) ==
       null) {

@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/general_utils.dart';
-import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/pages/settings/bloc/settings_bloc.dart';
 import 'package:kanpractice/ui/pages/settings/widgets/change_kanji_test.dart';
 import 'package:kanpractice/ui/pages/settings/widgets/change_theme.dart';
@@ -23,7 +22,6 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  VisualizationMode _graphMode = VisualizationMode.radialChart;
   bool _aggStats = false;
   bool _toggleAffect = false;
   int _kanjiInTest = CustomSizes.numberOfKanjiInTest;
@@ -31,9 +29,6 @@ class _SettingsState extends State<Settings> {
   @override
   void initState() {
     _toggleAffect = StorageManager.readData(StorageManager.affectOnPractice);
-    _graphMode = VisualizationModeExt.mode(
-        StorageManager.readData(StorageManager.kanListGraphVisualization) ??
-            VisualizationMode.radialChart);
     _aggStats =
         StorageManager.readData(StorageManager.kanListListVisualization);
     _kanjiInTest =
@@ -161,16 +156,6 @@ class _SettingsState extends State<Settings> {
             }
           },
         ),
-        /*const Divider(),
-        ListTile(
-            leading: _graphMode.icon,
-            title: Text("settings_general_graphs".tr()),
-            onTap: () {
-              setState(
-                  () => _graphMode = VisualizationModeExt.toggle(_graphMode));
-              StorageManager.saveData(
-                  StorageManager.kanListGraphVisualization, _graphMode.name);
-            }),*/
         const Divider(),
         ListTile(
             leading: const Icon(Icons.notifications_active_rounded),

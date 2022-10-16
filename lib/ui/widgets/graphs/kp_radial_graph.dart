@@ -8,18 +8,14 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart' as gauge;
 
 class KPRadialGraph extends StatelessWidget {
-  final double rateWriting,
-      rateReading,
-      rateRecognition,
-      rateListening,
-      rateSpeaking;
+  final double writing, reading, recognition, listening, speaking;
   const KPRadialGraph({
     Key? key,
-    required this.rateWriting,
-    required this.rateReading,
-    required this.rateRecognition,
-    required this.rateListening,
-    required this.rateSpeaking,
+    required this.writing,
+    required this.reading,
+    required this.recognition,
+    required this.listening,
+    required this.speaking,
   }) : super(key: key);
 
   @override
@@ -43,27 +39,27 @@ class KPRadialGraph extends StatelessWidget {
                         case StudyModes.writing:
                           return DataFrame(
                               x: StudyModes.writing.mode,
-                              y: rateWriting,
+                              y: writing,
                               color: StudyModes.writing.color);
                         case StudyModes.reading:
                           return DataFrame(
                               x: StudyModes.reading.mode,
-                              y: rateReading,
+                              y: reading,
                               color: StudyModes.reading.color);
                         case StudyModes.recognition:
                           return DataFrame(
                               x: StudyModes.recognition.mode,
-                              y: rateRecognition,
+                              y: recognition,
                               color: StudyModes.recognition.color);
                         case StudyModes.listening:
                           return DataFrame(
                               x: StudyModes.listening.mode,
-                              y: rateListening,
+                              y: listening,
                               color: StudyModes.listening.color);
                         case StudyModes.speaking:
                           return DataFrame(
                               x: StudyModes.speaking.mode,
-                              y: rateSpeaking,
+                              y: speaking,
                               color: StudyModes.speaking.color);
                       }
                     },
@@ -94,19 +90,19 @@ class KPRadialGraph extends StatelessWidget {
                 double rate = 0;
                 switch (StudyModes.values[index]) {
                   case StudyModes.writing:
-                    rate = rateWriting;
+                    rate = writing;
                     break;
                   case StudyModes.reading:
-                    rate = rateReading;
+                    rate = reading;
                     break;
                   case StudyModes.recognition:
-                    rate = rateRecognition;
+                    rate = recognition;
                     break;
                   case StudyModes.listening:
-                    rate = rateListening;
+                    rate = listening;
                     break;
                   case StudyModes.speaking:
-                    rate = rateSpeaking;
+                    rate = speaking;
                     break;
                 }
 

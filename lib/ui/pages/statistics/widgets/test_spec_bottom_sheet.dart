@@ -1,13 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/test_specific_data.dart';
-import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
-import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_data_frame.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_dependent_graph.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_bar_chart.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_radial_graph.dart';
 import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
 import 'package:kanpractice/ui/consts.dart';
 
@@ -121,10 +119,7 @@ class _TestSpecBottomSheetState extends State<TestSpecBottomSheet> {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: Margins.margin24),
-                    child: KPDependentGraph(
-                      mode: VisualizationModeExt.mode(StorageManager.readData(
-                              StorageManager.kanListGraphVisualization) ??
-                          VisualizationMode.radialChart),
+                    child: KPRadialGraph(
                       writing: widget.data.totalWinRateWriting,
                       reading: widget.data.totalWinRateReading,
                       recognition: widget.data.totalWinRateRecognition,

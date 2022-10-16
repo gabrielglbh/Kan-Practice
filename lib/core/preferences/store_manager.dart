@@ -10,7 +10,6 @@ class StorageManager {
   static const String orderOnMarket = "marketOrder";
   static const String hasDoneTutorial = "hasDoneTutorial";
   static const String affectOnPractice = "affectOnPractice";
-  static const String kanListGraphVisualization = "kanListGraphVisualization";
   static const String kanListListVisualization = "kanListListVisualization";
   static const String haveSeenKanListCoachMark = "haveSeenKanListCoachMark";
   static const String haveSeenKanListDetailCoachMark =

@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/kanji_categories.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
-import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/pages/jisho/arguments.dart';
 import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_radial_graph.dart';
 import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_dependent_graph.dart';
 import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/ui/widgets/kp_tts_icon_button.dart';
@@ -143,10 +141,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
                   ])),
             ),
           ),
-          KPDependentGraph(
-            mode: VisualizationModeExt.mode(StorageManager.readData(
-                    StorageManager.kanListGraphVisualization) ??
-                VisualizationMode.radialChart),
+          KPRadialGraph(
             writing: updatedKanji.winRateWriting,
             reading: updatedKanji.winRateReading,
             recognition: updatedKanji.winRateRecognition,

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/core/preferences/store_manager.dart';
-import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/pages/statistics/bloc/stats_bloc.dart';
 import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -103,9 +101,6 @@ class _StatisticsPageState extends State<StatisticsPage>
 
   Widget _body(BuildContext context, StatisticsLoaded state) {
     final KanPracticeStats s = state.stats;
-    final mode = VisualizationModeExt.mode(
-        StorageManager.readData(StorageManager.kanListGraphVisualization) ??
-            VisualizationMode.radialChart);
 
     return Column(
       children: [
@@ -114,9 +109,9 @@ class _StatisticsPageState extends State<StatisticsPage>
           child: TabBarView(
             controller: _controller,
             children: [
-              ListStats(s: s, mode: mode),
-              TestStats(s: s, mode: mode),
-              TestHistory(s: s, mode: mode),
+              ListStats(s: s),
+              TestStats(s: s),
+              TestHistory(s: s),
             ],
           ),
         ),

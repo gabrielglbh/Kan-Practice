@@ -2,25 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
-import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
 import 'package:kanpractice/ui/pages/statistics/tab/test_history/bloc/test_bloc.dart';
 import 'package:kanpractice/ui/pages/statistics/widgets/stats_header.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_cartesian_chart.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_dependent_graph.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_radial_graph.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class TestHistory extends StatefulWidget {
   final KanPracticeStats s;
-  final VisualizationMode mode;
-  const TestHistory({
-    super.key,
-    required this.s,
-    required this.mode,
-  });
+  const TestHistory({super.key, required this.s});
 
   @override
   State<TestHistory> createState() => _TestHistoryState();
@@ -105,8 +99,7 @@ class _TestHistoryState extends State<TestHistory>
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
-            child: KPDependentGraph(
-              mode: widget.mode,
+            child: KPRadialGraph(
               writing: widget.s.test.testTotalWinRateWriting,
               reading: widget.s.test.testTotalWinRateReading,
               recognition: widget.s.test.testTotalWinRateRecognition,

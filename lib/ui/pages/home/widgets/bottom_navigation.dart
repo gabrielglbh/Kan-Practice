@@ -7,11 +7,13 @@ class HomeBottomNavigation extends StatelessWidget {
   final Function(HomeType) onPageChanged;
   final Function(String) onShowActions;
   final HomeType currentPage;
+  final List<GlobalKey> tutorialKeys;
   const HomeBottomNavigation({
     super.key,
     required this.onShowActions,
     required this.currentPage,
     required this.onPageChanged,
+    required this.tutorialKeys,
   });
 
   @override
@@ -36,13 +38,17 @@ class HomeBottomNavigation extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List.generate(
           HomeType.values.length,
-          (index) => _bottomBarItem(context, HomeType.values[index]),
+          (index) => _bottomBarItem(
+            context,
+            HomeType.values[index],
+            tutorialKeys[index],
+          ),
         ),
       ),
     );
   }
 
-  Widget _bottomBarItem(BuildContext context, HomeType type) {
+  Widget _bottomBarItem(BuildContext context, HomeType type, GlobalKey key) {
     final selectedColor = currentPage == type;
     final color = Theme.of(context).brightness == Brightness.light
         ? Colors.grey.shade700
@@ -59,6 +65,7 @@ class HomeBottomNavigation extends StatelessWidget {
         }
       },
       child: Container(
+        key: key,
         width: 64,
         height: 42,
         color: Colors.transparent,

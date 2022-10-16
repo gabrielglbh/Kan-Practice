@@ -11,6 +11,10 @@ extension CoachTutorialPartsExt on CoachTutorialParts {
           "coach_tutorial_kanlists_1".tr(),
           "coach_tutorial_kanlists_2".tr(),
           "coach_tutorial_kanlists_3".tr(),
+          "coach_tutorial_kanlists_4".tr(),
+          "coach_tutorial_kanlists_5".tr(),
+          "coach_tutorial_kanlists_6".tr(),
+          "coach_tutorial_kanlists_7".tr(),
         ];
       case CoachTutorialParts.details:
         return [
@@ -27,13 +31,17 @@ extension CoachTutorialPartsExt on CoachTutorialParts {
         return [
           ShapeLightFocus.RRect,
           ShapeLightFocus.RRect,
-          ShapeLightFocus.RRect,
+          ShapeLightFocus.Circle,
+          ShapeLightFocus.Circle,
+          ShapeLightFocus.Circle,
+          ShapeLightFocus.Circle,
+          ShapeLightFocus.Circle,
         ];
       case CoachTutorialParts.details:
         return [
           ShapeLightFocus.RRect,
           ShapeLightFocus.Circle,
-          ShapeLightFocus.Circle,
+          ShapeLightFocus.RRect,
         ];
     }
   }

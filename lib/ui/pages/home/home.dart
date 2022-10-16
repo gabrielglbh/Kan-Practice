@@ -40,8 +40,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   final lists = GlobalKey();
-  final bottomActions = GlobalKey();
   final folders = GlobalKey();
+  final kanList = GlobalKey();
+  final dictionary = GlobalKey();
+  final actions = GlobalKey();
+  final market = GlobalKey();
+  final settings = GlobalKey();
 
   late PageController _controller;
   late TabController _tabController;
@@ -203,8 +207,15 @@ class _HomePageState extends State<HomePage>
                     StorageManager.haveSeenKanListCoachMark) ==
                 false) {
               _onTutorial = true;
-              await TutorialCoach([lists, folders, bottomActions],
-                      CoachTutorialParts.kanList)
+              await TutorialCoach([
+                lists,
+                folders,
+                kanList,
+                dictionary,
+                actions,
+                market,
+                settings,
+              ], CoachTutorialParts.kanList)
                   .showTutorial(context, onEnd: () => _onTutorial = false);
             }
           }
@@ -236,7 +247,7 @@ class _HomePageState extends State<HomePage>
                       ),
                     ],
               bottomNavigationWidget: HomeBottomNavigation(
-                key: bottomActions,
+                tutorialKeys: [kanList, dictionary, actions, market, settings],
                 currentPage: _currentPage,
                 onPageChanged: (type) {
                   if (_currentPage != type && type != HomeType.actions) {

@@ -4,6 +4,7 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/firebase/queries/messaging.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
+import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/tutorial/tutorial_manager.dart';
 import 'package:kanpractice/core/types/coach_tutorial_parts.dart';
 import 'package:kanpractice/core/types/folder_filters.dart';
@@ -222,6 +223,17 @@ class _HomePageState extends State<HomePage>
                 }
               },
               appBarTitle: _currentPage.appBarTitle,
+              appBarActions: _currentPage != HomeType.dictionary
+                  ? null
+                  : [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(KanPracticePages.historyWordPage);
+                        },
+                        icon: const Icon(Icons.history_rounded),
+                      ),
+                    ],
               bottomNavigationWidget: HomeBottomNavigation(
                 key: bottomActions,
                 currentPage: _currentPage,

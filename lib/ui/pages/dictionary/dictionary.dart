@@ -8,7 +8,6 @@ import 'package:kanpractice/ui/pages/dictionary/bloc/dict_bloc.dart';
 import 'package:kanpractice/ui/pages/dictionary/widgets/kanji_search_bar.dart';
 import 'package:kanpractice/ui/pages/jisho/arguments.dart';
 import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/ui/widgets/canvas/kp_custom_canvas.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -22,7 +21,8 @@ class DictionaryPage extends StatefulWidget {
   State<DictionaryPage> createState() => _DictionaryPageState();
 }
 
-class _DictionaryPageState extends State<DictionaryPage> {
+class _DictionaryPageState extends State<DictionaryPage>
+    with AutomaticKeepAliveClientMixin {
   /// Current drawn line in the canvas
   List<Offset?> _line = [];
 
@@ -45,109 +45,55 @@ class _DictionaryPageState extends State<DictionaryPage> {
     super.dispose();
   }
 
-  _showDisclaimerDialog() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return KPDialog(
-              title: const Center(child: Icon(Icons.warning_amber_rounded)),
-              content: Text("dict_predictions_disclaimer".tr(),
-                  style: Theme.of(context).textTheme.bodyText1),
-              positiveButtonText: "Ok",
-              negativeButton: false,
-              onPositive: () {});
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final canSearchEitherWay = canSearch ||
-        _searchBarTextController.text != "" ||
-        _searchBarTextController.text.isNotEmpty;
-
+    super.build(context);
+    if (widget.args.searchInJisho) return _body();
     return KPScaffold(
       setGestureDetector: false,
       appBarTitle: widget.args.searchInJisho
           ? "dict_title".tr()
           : 'dict_add_kanji_title'.tr(),
-      appBarActions: [
-        if (widget.args.searchInJisho)
-          IconButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .pushNamed(KanPracticePages.historyWordPage);
-              },
-              icon: const Icon(Icons.history_rounded)),
-        IconButton(
-            onPressed: () => _showDisclaimerDialog(),
-            icon: const Icon(Icons.info_outline_rounded))
-      ],
-      child: BlocBuilder<DictBloc, DictState>(
-        builder: (context, state) {
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                Row(
+      child: _body(),
+    );
+  }
+
+  Widget _body() {
+    final canSearchEitherWay = canSearch ||
+        _searchBarTextController.text != "" ||
+        _searchBarTextController.text.isNotEmpty;
+
+    return BlocBuilder<DictBloc, DictState>(
+      builder: (context, state) {
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(child: _searchBar()),
+                  _searchWidget(canSearchEitherWay)
+                ],
+              ),
+              if (state is DictStateLoading)
+                const Center(
+                    child: Padding(
+                  padding: EdgeInsets.all(Margins.margin16),
+                  child: KPProgressIndicator(),
+                ))
+              else if (state is DictStateFailure)
+                Center(
+                    child: Padding(
+                  padding: const EdgeInsets.all(Margins.margin16),
+                  child: Text("dict_model_not_loaded".tr(),
+                      style: Theme.of(context).textTheme.bodyText2),
+                ))
+              else if (state is DictStateLoaded)
+                Column(
                   children: [
-                    Expanded(
-                      child: KanjiSearchBar(
-                        top: 0,
-                        hint: widget.args.searchInJisho
-                            ? "dict_search_bar_hint".tr()
-                            : "add_kanji_textForm_kanji_ext".tr(),
-                        controller: _searchBarTextController,
-                        enabled: widget.args.searchInJisho,
-                        onChange: (value) {
-                          setState(() {
-                            if (value.isNotEmpty) {
-                              canSearch = true;
-                            } else {
-                              canSearch = false;
-                            }
-                          });
-                        },
-                        onClear: () {
-                          setState(() {
-                            _searchBarTextController.clear();
-                            canSearch = false;
-                          });
-                        },
-                        onRemoveLast: () {
-                          String? text = _searchBarTextController.text;
-                          if (text.isNotEmpty) {
-                            setState(() {
-                              _searchBarTextController.text =
-                                  text.substring(0, text.length - 1);
-                              if (_searchBarTextController.text
-                                  .trim()
-                                  .isEmpty) {
-                                canSearch = false;
-                              }
-                            });
-                          }
-                        },
-                      ),
-                    ),
-                    _searchWidget(canSearchEitherWay)
-                  ],
-                ),
-                if (state is DictStateLoading)
-                  const Center(
-                      child: Padding(
-                    padding: EdgeInsets.all(Margins.margin16),
-                    child: KPProgressIndicator(),
-                  ))
-                else if (state is DictStateFailure)
-                  Center(
-                      child: Padding(
-                    padding: const EdgeInsets.all(Margins.margin16),
-                    child: Text("dict_model_not_loaded".tr(),
-                        style: Theme.of(context).textTheme.bodyText2),
-                  ))
-                else if (state is DictStateLoaded)
-                  Column(
-                    children: [
-                      Row(
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Margins.margin8),
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
@@ -169,23 +115,60 @@ class _DictionaryPageState extends State<DictionaryPage> {
                           )
                         ],
                       ),
-                      _predictions(state),
-                      KPCustomCanvas(
-                        line: _line,
-                        allowPrediction: true,
-                        handleImage: (im.Image image) {
-                          context
-                              .read<DictBloc>()
-                              .add(DictEventLoading(image: image));
-                        },
-                      ),
-                    ],
-                  )
-              ],
-            ),
-          );
-        },
-      ),
+                    ),
+                    _predictions(state),
+                    KPCustomCanvas(
+                      line: _line,
+                      allowPrediction: true,
+                      handleImage: (im.Image image) {
+                        context
+                            .read<DictBloc>()
+                            .add(DictEventLoading(image: image));
+                      },
+                    ),
+                  ],
+                )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  KanjiSearchBar _searchBar() {
+    return KanjiSearchBar(
+      top: 0,
+      hint: widget.args.searchInJisho
+          ? "dict_search_bar_hint".tr()
+          : "add_kanji_textForm_kanji_ext".tr(),
+      controller: _searchBarTextController,
+      enabled: widget.args.searchInJisho,
+      onChange: (value) {
+        setState(() {
+          if (value.isNotEmpty) {
+            canSearch = true;
+          } else {
+            canSearch = false;
+          }
+        });
+      },
+      onClear: () {
+        setState(() {
+          _searchBarTextController.clear();
+          canSearch = false;
+        });
+      },
+      onRemoveLast: () {
+        String? text = _searchBarTextController.text;
+        if (text.isNotEmpty) {
+          setState(() {
+            _searchBarTextController.text = text.substring(0, text.length - 1);
+            if (_searchBarTextController.text.trim().isEmpty) {
+              canSearch = false;
+            }
+          });
+        }
+      },
     );
   }
 
@@ -225,33 +208,37 @@ class _DictionaryPageState extends State<DictionaryPage> {
 
   SizedBox _predictions(DictStateLoaded state) {
     return SizedBox(
-        height: CustomSizes.defaultSizeFiltersList,
-        child: ListView.builder(
-            itemCount: state.predictions.length,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              final String kanji =
-                  state.predictions[index].label.substring(0, 1);
-              final double score = state.predictions[index].score;
-              return Padding(
+      height: CustomSizes.defaultSizeFiltersList,
+      child: ListView.builder(
+        itemCount: state.predictions.length,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          final String kanji = state.predictions[index].label.substring(0, 1);
+          final double score = state.predictions[index].score;
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: Margins.margin2),
+            child: ActionChip(
+                label: Text(
+                  kanji,
+                  style: TextStyle(
+                      fontSize: FontSizes.fontSize18,
+                      color: GeneralUtils.getTextColorBasedOnScore(score)),
+                ),
                 padding:
-                    const EdgeInsets.symmetric(horizontal: Margins.margin2),
-                child: ActionChip(
-                    label: Text(kanji,
-                        style: TextStyle(
-                            fontSize: FontSizes.fontSize18,
-                            color:
-                                GeneralUtils.getTextColorBasedOnScore(score))),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: Margins.margin8),
-                    backgroundColor: GeneralUtils.getColorBasedOnScore(score),
-                    pressElevation: Margins.margin2,
-                    onPressed: () {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      _searchBarTextController.text += kanji;
-                      setState(() => _line = []);
-                    }),
-              );
-            }));
+                    const EdgeInsets.symmetric(horizontal: Margins.margin8),
+                backgroundColor: GeneralUtils.getColorBasedOnScore(score),
+                pressElevation: Margins.margin2,
+                onPressed: () {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  _searchBarTextController.text += kanji;
+                  setState(() => _line = []);
+                }),
+          );
+        },
+      ),
+    );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

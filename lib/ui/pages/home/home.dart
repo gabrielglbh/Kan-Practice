@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/firebase/models/market_list.dart';
+import 'package:kanpractice/core/firebase/queries/back_ups.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/tutorial/tutorial_manager.dart';
@@ -11,13 +12,14 @@ import 'package:kanpractice/core/types/home_types.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
 import 'package:kanpractice/core/types/tab_types.dart';
+import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
 import 'package:kanpractice/ui/pages/dictionary/bloc/dict_bloc.dart';
 import 'package:kanpractice/ui/pages/dictionary/dictionary.dart';
 import 'package:kanpractice/ui/pages/folder_lists/bloc/folder_bloc.dart';
 import 'package:kanpractice/ui/pages/folder_lists/folder_list.dart';
 import 'package:kanpractice/ui/pages/home/widgets/bottom_navigation.dart';
-import 'package:kanpractice/ui/pages/home/widgets/update_container.dart';
 import 'package:kanpractice/ui/pages/settings/bloc/settings_bloc.dart';
 import 'package:kanpractice/ui/pages/settings/settings.dart';
 import 'package:kanpractice/ui/widgets/kp_test_bottom_sheet.dart';
@@ -27,6 +29,7 @@ import 'package:kanpractice/ui/pages/market/bloc/market_bloc.dart';
 import 'package:kanpractice/ui/pages/market/market.dart';
 import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
 import 'package:kanpractice/ui/widgets/kp_search_bar.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class HomePage extends StatefulWidget {
   final bool? showTestBottomSheet;
@@ -64,6 +67,7 @@ class _HomePageState extends State<HomePage>
 
   String _query = "";
   bool _onTutorial = false;
+  String _newVersion = "";
 
   @override
   void initState() {
@@ -110,6 +114,7 @@ class _HomePageState extends State<HomePage>
           folder: hasFolder ? folder : null,
         );
       }
+      await _getVersionNotice();
     });
     super.initState();
   }
@@ -159,6 +164,12 @@ class _HomePageState extends State<HomePage>
     return _addMarketLoadingEvent(c3);
   }
 
+  Future<void> _getVersionNotice() async {
+    String v = await BackUpRecords.instance.getVersion();
+    PackageInfo pi = await PackageInfo.fromPlatform();
+    if (v != pi.version && v != "") setState(() => _newVersion = v);
+  }
+
   @override
   void dispose() {
     _controller.dispose();
@@ -172,6 +183,13 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
+    final updateIcon = IconButton(
+      onPressed: () async {
+        await GeneralUtils.showVersionNotes(context, version: _newVersion);
+      },
+      icon:
+          const Icon(Icons.update_rounded, color: CustomColors.secondaryColor),
+    );
     return MultiBlocProvider(
       providers: [
         BlocProvider<KanjiListBloc>(
@@ -233,8 +251,11 @@ class _HomePageState extends State<HomePage>
               },
               appBarTitle: _currentPage.appBarTitle,
               appBarActions: _currentPage != HomeType.dictionary
-                  ? null
+                  ? _newVersion.isNotEmpty
+                      ? [updateIcon]
+                      : null
                   : [
+                      updateIcon,
                       IconButton(
                         onPressed: () {
                           Navigator.of(context)
@@ -269,7 +290,6 @@ class _HomePageState extends State<HomePage>
               ),
               child: Column(
                 children: [
-                  const UpdateContainer(),
                   if (HomeType.kanlist == _currentPage ||
                       HomeType.market == _currentPage)
                     KPSearchBar(

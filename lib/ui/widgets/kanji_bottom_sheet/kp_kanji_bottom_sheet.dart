@@ -123,6 +123,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(
                   top: Margins.margin4,
+                  bottom: Margins.margin4,
                   right: Margins.margin16,
                   left: Margins.margin16),
               child: RichText(
@@ -141,6 +142,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
                   ])),
             ),
           ),
+          const Divider(),
           KPRadialGraph(
             writing: updatedKanji.winRateWriting,
             reading: updatedKanji.winRateReading,

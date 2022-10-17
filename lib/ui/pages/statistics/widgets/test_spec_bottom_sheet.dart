@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/test_specific_data.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
+import 'package:kanpractice/ui/general_utils.dart';
+import 'package:kanpractice/ui/pages/statistics/widgets/stats_header.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_data_frame.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_bar_chart.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_radial_graph.dart';
@@ -42,6 +44,11 @@ class _TestSpecBottomSheetState extends State<TestSpecBottomSheet> {
         widget.data.totalRecognitionCount +
         widget.data.totalListeningCount +
         widget.data.totalSpeakingCount;
+    final aggregateOfTests = widget.data.totalWinRateWriting +
+        widget.data.totalWinRateReading +
+        widget.data.totalWinRateRecognition +
+        widget.data.totalWinRateListening +
+        widget.data.totalWinRateSpeaking;
 
     return BottomSheet(
       enableDrag: false,
@@ -52,21 +59,11 @@ class _TestSpecBottomSheetState extends State<TestSpecBottomSheet> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const KPDragContainer(),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: Margins.margin8, horizontal: Margins.margin32),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: Margins.margin8),
-                      child: Icon(widget.mode.icon),
-                    ),
-                    Text("${widget.mode.name} • $numberOfTests",
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headline6)
-                  ],
-                ),
+              StatsHeader(
+                title: "${widget.mode.name} • ",
+                value: numberOfTests.toString(),
+                verticalVisualDensity: -4,
+                textAlign: TextAlign.center,
               ),
               Column(
                 mainAxisSize: MainAxisSize.min,
@@ -110,11 +107,12 @@ class _TestSpecBottomSheetState extends State<TestSpecBottomSheet> {
                       }
                     }),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text("specific_test_accuracy_label".tr(),
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headline6),
+                  StatsHeader(
+                    title: "${"specific_test_accuracy_label".tr()} • ",
+                    textAlign: TextAlign.center,
+                    verticalVisualDensity: -4,
+                    value: GeneralUtils.getFixedPercentageAsString(
+                        aggregateOfTests / StudyModes.values.length),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(

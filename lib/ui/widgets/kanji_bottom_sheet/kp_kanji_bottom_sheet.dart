@@ -191,7 +191,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
 
   Widget _lastTimeShownWidget(BuildContext context, Kanji updatedKanji) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
+        padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
         child: ExpansionTile(
             iconColor: CustomColors.secondaryColor,
             textColor: CustomColors.secondaryColor,

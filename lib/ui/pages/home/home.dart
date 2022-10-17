@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/firebase/models/market_list.dart';
-import 'package:kanpractice/core/firebase/queries/messaging.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/tutorial/tutorial_manager.dart';
@@ -111,9 +110,6 @@ class _HomePageState extends State<HomePage>
           folder: hasFolder ? folder : null,
         );
       }
-
-      // ignore: use_build_context_synchronously
-      await MessagingHandler.handler(context);
     });
     super.initState();
   }

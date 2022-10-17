@@ -54,19 +54,15 @@ class KPCartesianChart<T> extends StatelessWidget {
         ),
         onMarkerRender: (args) {
           final point = args.pointIndex;
-          final borderColor =
-              point == null ? null : dataSource[point].studyMode.color;
           args.color = point == null ? null : dataSource[point].studyMode.color;
           args.borderWidth = 1;
-          args.borderColor = Theme.of(context).brightness == Brightness.light
-              ? borderColor
-              : Colors.white;
+          args.borderColor = Colors.white;
         },
         primaryXAxis: DateTimeAxis(
           intervalType: intervalType,
           enableAutoIntervalOnZooming: true,
         ),
-        primaryYAxis: NumericAxis(maximum: 100, minimum: 0, interval: 20),
+        primaryYAxis: NumericAxis(maximum: 120, minimum: 0, interval: 20),
         series: <ChartSeries<TestDataFrame, DateTime>>[
           LineSeries<TestDataFrame, DateTime>(
             animationDuration: 1500,
@@ -76,8 +72,8 @@ class KPCartesianChart<T> extends StatelessWidget {
             markerSettings: const MarkerSettings(
               isVisible: true,
               color: Colors.white,
-              width: 12,
-              height: 12,
+              width: 18,
+              height: 18,
             ),
             xValueMapper: (TestDataFrame data, _) => data.x,
             yValueMapper: (TestDataFrame data, _) =>
@@ -107,7 +103,7 @@ class _KPCartesianChartTooltip extends StatelessWidget {
     final tooltipTextColor = Theme.of(context).brightness == Brightness.light
         ? Colors.white
         : Colors.black;
-    final format = DateFormat('MMM dd, hh:ss');
+    final format = DateFormat('MMM dd, HH:mm');
     final mode = source.mode.nameAbbr;
     final date = format.format(source.x);
     final rate = GeneralUtils.getFixedPercentageAsString(source.y);

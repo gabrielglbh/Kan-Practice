@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/queries/initial_queries.dart';
+import 'package:kanpractice/core/firebase/queries/messaging.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/consts.dart';
@@ -93,6 +94,7 @@ class _KanPracticeState extends State<KanPractice> {
   void initState() {
     ThemeManager.instance.addListenerTo(() => setState(() {}));
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      MessagingHandler.handler(context);
       if (StorageManager.readData(StorageManager.haveSeenKanListCoachMark) ==
           false) {
         await InitialQueries.instance.setInitialDataForReference(context);

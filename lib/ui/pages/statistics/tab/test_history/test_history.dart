@@ -66,9 +66,6 @@ class _TestHistoryState extends State<TestHistory>
       _firstDate = range?.start ?? _firstDate;
       _lastDate =
           range?.end.add(const Duration(hours: 23, minutes: 59)) ?? _lastDate;
-      if (_firstDate == _lastDate) {
-        _firstDate = _firstDate.subtract(const Duration(days: 1));
-      }
     });
     // ignore: use_build_context_synchronously
     context
@@ -78,8 +75,10 @@ class _TestHistoryState extends State<TestHistory>
 
   @override
   void initState() {
-    _firstDate = DateTime.now().subtract(const Duration(days: 7));
-    _lastDate = DateTime.now();
+    final now = DateTime.now();
+    final parsedNow = DateTime(now.year, now.month, now.day);
+    _firstDate = parsedNow;
+    _lastDate = parsedNow.add(const Duration(hours: 23, minutes: 59));
     context
         .read<TestListBloc>()
         .add(TestListEventLoading(initial: _firstDate, last: _lastDate));

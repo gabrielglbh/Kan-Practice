@@ -11,6 +11,7 @@ import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
 import 'package:kanpractice/ui/pages/dictionary/bloc/dict_bloc.dart';
 import 'package:kanpractice/ui/pages/dictionary/dictionary.dart';
 import 'package:kanpractice/ui/pages/firebase_login/login.dart';
+import 'package:kanpractice/ui/pages/history_test_landscape/history_test_landscape.dart';
 import 'package:kanpractice/ui/pages/home/home.dart';
 import 'package:kanpractice/ui/pages/jisho/arguments.dart';
 import 'package:kanpractice/ui/pages/jisho/jisho.dart';
@@ -98,6 +99,12 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
               create: (_) =>
                   WordHistoryBloc()..add(const WordHistoryEventLoading()),
               child: const WordHistoryPage()));
+    case KanPracticePages.historyTestExpandedPage:
+      return CupertinoPageRoute(builder: (_) {
+        HistoryTestExpandedArgs data =
+            settings.arguments as HistoryTestExpandedArgs;
+        return HistoryTestExpanded(data: data);
+      });
   }
   return null;
 }

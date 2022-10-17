@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/general_utils.dart';
+import 'package:kanpractice/ui/pages/history_test_landscape/history_test_landscape.dart';
 import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
 import 'package:kanpractice/ui/pages/statistics/tab/test_history/bloc/test_bloc.dart';
 import 'package:kanpractice/ui/pages/statistics/widgets/stats_header.dart';
@@ -24,44 +26,9 @@ class _TestHistoryState extends State<TestHistory>
     with AutomaticKeepAliveClientMixin {
   late DateTime _firstDate, _lastDate;
 
-  String _parseDate(DateTime date) {
-    final format = DateFormat('dd/MM/yyyy');
-    return format.format(date);
-  }
-
   Future<void> _showRangePicker() async {
-    final dialogColor = Theme.of(context).brightness == Brightness.light
-        ? Colors.black
-        : Colors.white;
-    late DateTimeRange? range;
-    await showDateRangePicker(
-      context: context,
-      initialDateRange: DateTimeRange(start: _firstDate, end: _lastDate),
-      initialEntryMode: DatePickerEntryMode.calendarOnly,
-      firstDate: DateTime(2020),
-      lastDate: DateTime.now(),
-      locale: context.locale,
-      helpText: 'date_picker_helper'.tr(),
-      fieldStartHintText: 'date_picker_start_hint'.tr(),
-      fieldEndHintText: 'date_picker_end_hint'.tr(),
-      saveText: 'date_picker_save'.tr(),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            primaryColor: CustomColors.secondaryColor,
-            splashColor: CustomColors.secondaryColor,
-            colorScheme: ColorScheme.fromSwatch().copyWith(
-              primary: CustomColors.secondaryColor,
-              onPrimary: dialogColor,
-              surface: CustomColors.secondaryColor,
-              onSurface: dialogColor,
-              secondary: CustomColors.secondaryColor,
-            ),
-          ),
-          child: child!,
-        );
-      },
-    ).then((value) => range = value);
+    DateTimeRange? range =
+        await GeneralUtils.showRangeTimeDialog(context, _firstDate, _lastDate);
     setState(() {
       _firstDate = range?.start ?? _firstDate;
       _lastDate =
@@ -108,7 +75,25 @@ class _TestHistoryState extends State<TestHistory>
             ),
           ),
           const Divider(),
-          StatsHeader(title: "history_tests_header".tr()),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Flexible(child: StatsHeader(title: "history_tests_header".tr())),
+              IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    KanPracticePages.historyTestExpandedPage,
+                    arguments: HistoryTestExpandedArgs(_firstDate, _lastDate),
+                  );
+                },
+                icon: const Icon(
+                  Icons.fullscreen_rounded,
+                  color: CustomColors.secondaryColor,
+                ),
+              ),
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 80),
             child: FittedBox(
@@ -124,7 +109,7 @@ class _TestHistoryState extends State<TestHistory>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      "${_parseDate(_firstDate)} - ${_parseDate(_lastDate)}",
+                      "${GeneralUtils.parseDate(_firstDate)} - ${GeneralUtils.parseDate(_lastDate)}",
                       style: Theme.of(context)
                           .textTheme
                           .bodyText1
@@ -158,9 +143,6 @@ class _TestHistoryState extends State<TestHistory>
     } else if (state is TestListStateLoading) {
       return const KPProgressIndicator();
     } else if (state is TestListStateLoaded) {
-      if (state.list.isEmpty) {
-        return Center(child: Text("test_history_load_failed".tr()));
-      }
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: Margins.margin24),
         child: KPCartesianChart(
@@ -178,7 +160,7 @@ class _TestHistoryState extends State<TestHistory>
         ),
       );
     } else {
-      return Container();
+      return const SizedBox();
     }
   }
 

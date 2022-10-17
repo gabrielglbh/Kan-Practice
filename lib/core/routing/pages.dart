@@ -17,4 +17,5 @@ class KanPracticePages {
   static const String folderAddPage = "/folderAddPage";
   static const String kanjiListOnFolderPage = "/kanjiListOnFolder";
   static const String historyWordPage = "/historyWordPage";
+  static const String historyTestExpandedPage = "/historyTestExpandedPage";
 }

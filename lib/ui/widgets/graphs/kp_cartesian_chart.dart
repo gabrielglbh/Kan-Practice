@@ -27,18 +27,18 @@ class KPCartesianChart<T> extends StatelessWidget {
   final List<TestDataFrame> dataSource;
   final String graphName;
   final DateTimeIntervalType intervalType;
+  final ZoomPanBehavior? zoomPanBehavior;
   const KPCartesianChart({
     Key? key,
     required this.dataSource,
     required this.graphName,
     this.intervalType = DateTimeIntervalType.auto,
+    this.zoomPanBehavior,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: CustomSizes.defaultSizeWinRateBarChart * 4,
-      width: MediaQuery.of(context).size.width - Margins.margin48,
       child: SfCartesianChart(
         tooltipBehavior: TooltipBehavior(
           enable: true,
@@ -47,11 +47,7 @@ class KPCartesianChart<T> extends StatelessWidget {
                 source: dataSource[pointIndex],
               )),
         ),
-        zoomPanBehavior: ZoomPanBehavior(
-          enablePinching: true,
-          enablePanning: true,
-          enableDoubleTapZooming: true,
-        ),
+        zoomPanBehavior: zoomPanBehavior,
         onMarkerRender: (args) {
           final point = args.pointIndex;
           args.color = point == null ? null : dataSource[point].studyMode.color;

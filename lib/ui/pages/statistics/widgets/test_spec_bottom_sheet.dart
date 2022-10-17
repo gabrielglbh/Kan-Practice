@@ -71,6 +71,7 @@ class _TestSpecBottomSheetState extends State<TestSpecBottomSheet> {
                   KPBarChart(
                     graphName: "tests".tr(),
                     heightRatio: 1.3,
+                    animationDuration: 0,
                     dataSource:
                         List.generate(StudyModes.values.length, (index) {
                       switch (StudyModes.values[index]) {
@@ -118,6 +119,7 @@ class _TestSpecBottomSheetState extends State<TestSpecBottomSheet> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: Margins.margin24),
                     child: KPRadialGraph(
+                      animationDuration: 0,
                       writing: widget.data.totalWinRateWriting,
                       reading: widget.data.totalWinRateReading,
                       recognition: widget.data.totalWinRateRecognition,

@@ -32,6 +32,7 @@ class _TestStatsState extends State<TestStats>
         ),
         KPBarChart(
           graphName: "tests".tr(),
+          animationDuration: 0,
           dataSource: List.generate(StudyModes.values.length, (index) {
             switch (StudyModes.values[index]) {
               case StudyModes.writing:
@@ -86,6 +87,7 @@ class _TestStatsState extends State<TestStats>
       enableTooltip: false,
       isHorizontalChart: true,
       heightRatio: 2.3,
+      animationDuration: 0,
       graphName: "tests".tr(),
       onBarTapped: (model) async {
         if (model.dataPoints?.isNotEmpty == true) {

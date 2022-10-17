@@ -65,7 +65,7 @@ class KPCartesianChart<T> extends StatelessWidget {
         primaryYAxis: NumericAxis(maximum: 120, minimum: 0, interval: 20),
         series: <ChartSeries<TestDataFrame, DateTime>>[
           LineSeries<TestDataFrame, DateTime>(
-            animationDuration: 1500,
+            animationDuration: 0,
             name: graphName,
             dataSource: dataSource,
             enableTooltip: true,

@@ -9,6 +9,7 @@ import 'package:syncfusion_flutter_gauges/gauges.dart' as gauge;
 
 class KPRadialGraph extends StatelessWidget {
   final double writing, reading, recognition, listening, speaking;
+  final double animationDuration;
   const KPRadialGraph({
     Key? key,
     required this.writing,
@@ -16,6 +17,7 @@ class KPRadialGraph extends StatelessWidget {
     required this.recognition,
     required this.listening,
     required this.speaking,
+    this.animationDuration = 1000,
   }) : super(key: key);
 
   @override
@@ -64,7 +66,7 @@ class KPRadialGraph extends StatelessWidget {
                       }
                     },
                   ),
-                  animationDuration: 1000,
+                  animationDuration: animationDuration,
                   xValueMapper: (DataFrame data, _) => data.x,
                   yValueMapper: (DataFrame data, _) =>
                       data.y == DatabaseConstants.emptyWinRate ? 0 : data.y,

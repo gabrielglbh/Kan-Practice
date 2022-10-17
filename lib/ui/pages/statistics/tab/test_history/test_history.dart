@@ -99,6 +99,7 @@ class _TestHistoryState extends State<TestHistory>
           Padding(
             padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
             child: KPRadialGraph(
+              animationDuration: 0,
               writing: widget.s.test.testTotalWinRateWriting,
               reading: widget.s.test.testTotalWinRateReading,
               recognition: widget.s.test.testTotalWinRateRecognition,

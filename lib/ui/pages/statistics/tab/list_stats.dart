@@ -35,6 +35,7 @@ class _ListStatsState extends State<ListStats>
         Padding(
             padding: const EdgeInsets.only(top: Margins.margin16),
             child: KPRadialGraph(
+              animationDuration: 0,
               writing: widget.s.totalWinRateWriting,
               reading: widget.s.totalWinRateReading,
               recognition: widget.s.totalWinRateRecognition,
@@ -64,6 +65,7 @@ class _ListStatsState extends State<ListStats>
         StatsHeader(title: "words_by_category".tr()),
         KPBarChart(
           graphName: "kanji_category_label".tr(),
+          animationDuration: 0,
           heightRatio: 3,
           isHorizontalChart: true,
           dataSource: List.generate(

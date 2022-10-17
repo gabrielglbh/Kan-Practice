@@ -131,6 +131,20 @@ class TestQueries {
     }
   }
 
+  Future<void> insertInitialTestData() async {
+    if (_database != null) {
+      try {
+        await _database?.insert(
+          TestDataTableFields.testDataTable,
+          TestData.empty.toJson(),
+          conflictAlgorithm: ConflictAlgorithm.ignore,
+        );
+      } catch (err) {
+        print(err.toString());
+      }
+    }
+  }
+
   /// Get all stats from DB
   Future<TestData> getTestDataFromDb() async {
     if (_database != null) {
@@ -151,11 +165,6 @@ class TestQueries {
           }
           return rawTestData;
         } else {
-          await _database?.insert(
-            TestDataTableFields.testDataTable,
-            TestData.empty.toJson(),
-            conflictAlgorithm: ConflictAlgorithm.ignore,
-          );
           return TestData.empty;
         }
       } catch (err) {

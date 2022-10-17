@@ -87,10 +87,7 @@ class _TestHistoryState extends State<TestHistory>
                     arguments: HistoryTestExpandedArgs(_firstDate, _lastDate),
                   );
                 },
-                icon: const Icon(
-                  Icons.fullscreen_rounded,
-                  color: CustomColors.secondaryColor,
-                ),
+                icon: const Icon(Icons.fullscreen_rounded),
               ),
             ],
           ),
@@ -146,6 +143,7 @@ class _TestHistoryState extends State<TestHistory>
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: Margins.margin24),
         child: KPCartesianChart(
+          markerThreshold: 30,
           dataSource: List.generate(state.list.length, (index) {
             final test = state.list[index];
             return TestDataFrame(

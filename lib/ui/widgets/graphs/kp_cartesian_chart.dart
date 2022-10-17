@@ -28,12 +28,14 @@ class KPCartesianChart<T> extends StatelessWidget {
   final String graphName;
   final DateTimeIntervalType intervalType;
   final ZoomPanBehavior? zoomPanBehavior;
+  final int markerThreshold;
   const KPCartesianChart({
     Key? key,
     required this.dataSource,
     required this.graphName,
     this.intervalType = DateTimeIntervalType.auto,
     this.zoomPanBehavior,
+    this.markerThreshold = 200,
   }) : super(key: key);
 
   @override
@@ -65,11 +67,11 @@ class KPCartesianChart<T> extends StatelessWidget {
             name: graphName,
             dataSource: dataSource,
             enableTooltip: true,
-            markerSettings: const MarkerSettings(
+            markerSettings: MarkerSettings(
               isVisible: true,
               color: Colors.white,
-              width: 18,
-              height: 18,
+              width: dataSource.length > markerThreshold ? 9 : 14,
+              height: dataSource.length > markerThreshold ? 9 : 14,
             ),
             xValueMapper: (TestDataFrame data, _) => data.x,
             yValueMapper: (TestDataFrame data, _) =>

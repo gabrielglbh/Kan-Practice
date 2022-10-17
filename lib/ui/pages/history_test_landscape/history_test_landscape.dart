@@ -79,6 +79,7 @@ class _HistoryTestExpandedState extends State<HistoryTestExpanded> {
                     alignment: Alignment.centerRight,
                     children: [
                       KPCartesianChart(
+                        markerThreshold: 150,
                         zoomPanBehavior: ZoomPanBehavior(
                           enablePanning: true,
                           enablePinching: true,
@@ -100,7 +101,7 @@ class _HistoryTestExpandedState extends State<HistoryTestExpanded> {
                       ),
                       Positioned(
                         top: 0,
-                        right: Margins.margin24,
+                        right: Margins.margin64 + Margins.margin24,
                         child: TextButton(
                           onPressed: () async {
                             await _showRangePicker(blocContext);
@@ -131,16 +132,13 @@ class _HistoryTestExpandedState extends State<HistoryTestExpanded> {
                         ),
                       ),
                       Positioned(
-                        bottom: Margins.margin32,
-                        right: Margins.margin24,
+                        top: 0,
+                        right: Margins.margin8,
                         child: IconButton(
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          icon: const Icon(
-                            Icons.fullscreen_exit_rounded,
-                            color: CustomColors.secondaryColor,
-                          ),
+                          icon: const Icon(Icons.fullscreen_exit_rounded),
                         ),
                       ),
                     ],

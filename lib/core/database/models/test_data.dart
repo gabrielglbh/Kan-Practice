@@ -111,8 +111,9 @@ class TestData {
     );
   }
 
-  /// Empty instance of [BackUp]
+  /// Empty instance of [TestData]
   static const TestData empty = TestData(
+    statsId: TestDataTableFields.statsMainId,
     totalTests: 0,
     totalTestAccuracy: 0,
     testTotalCountWriting: 0,

@@ -235,7 +235,7 @@ class _LoginPageState extends State<LoginPage> {
           visible: state.error != "",
           child: Padding(
             padding: const EdgeInsets.all(Margins.margin16),
-            child: Text("${"login_authentication_failed".tr()} ${state.error}",
+            child: Text("login_authentication_failed".tr(),
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1

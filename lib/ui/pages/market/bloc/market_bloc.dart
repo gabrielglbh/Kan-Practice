@@ -25,7 +25,7 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
     String lastRetrievedDocumentIdWhenSearching = "";
 
     /// Reset lists for proper pagination and retrieves new list
-    Future<List<MarketList>> _resetCache(
+    Future<List<MarketList>> resetCache(
         MarketFilters filter, bool order) async {
       list.clear();
       searchList.clear();
@@ -120,7 +120,7 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
       } else {
         emit(MarketStateFailure(res));
       }
-      final fullList = await _resetCache(event.filter, event.order);
+      final fullList = await resetCache(event.filter, event.order);
       emit(MarketStateLoaded(lists: fullList));
     });
 
@@ -139,7 +139,7 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
       } else {
         emit(MarketStateFailure(res));
       }
-      final fullList = await _resetCache(event.filter, event.order);
+      final fullList = await resetCache(event.filter, event.order);
       emit(MarketStateLoaded(lists: fullList));
     });
   }

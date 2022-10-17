@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/ui/general_utils.dart';
@@ -6,7 +7,8 @@ import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/ui/widgets/kanji_bottom_sheet/kp_kanji_bottom_sheet.dart';
 import 'package:kanpractice/ui/consts.dart';
 
-class KanjiItem extends StatefulWidget {
+class KanjiItem extends StatelessWidget {
+  final bool aggregateStats;
   final String listName;
   final KanjiList list;
   final Kanji kanji;
@@ -15,27 +17,45 @@ class KanjiItem extends StatefulWidget {
   final Function() onTap;
   final int index;
   final Function() onShowModal;
-  const KanjiItem(
-      {Key? key,
-      required this.listName,
-      required this.kanji,
-      required this.list,
-      required this.onRemoval,
-      required this.onTap,
-      required this.selectedMode,
-      required this.index,
-      required this.onShowModal})
-      : super(key: key);
-
-  @override
-  State<KanjiItem> createState() => _KanjiItemState();
-}
-
-class _KanjiItemState extends State<KanjiItem> {
-  //double _itemOpacity = 0.4;
+  const KanjiItem({
+    Key? key,
+    this.aggregateStats = false,
+    required this.listName,
+    required this.kanji,
+    required this.list,
+    required this.onRemoval,
+    required this.onTap,
+    required this.selectedMode,
+    required this.index,
+    required this.onShowModal,
+  }) : super(key: key);
 
   double _getProperKanjiWinRate(Kanji kanji) {
-    switch (widget.selectedMode) {
+    if (aggregateStats) {
+      final writing = (kanji.winRateWriting == DatabaseConstants.emptyWinRate
+          ? 0
+          : kanji.winRateWriting);
+      final reading = (kanji.winRateReading == DatabaseConstants.emptyWinRate
+          ? 0
+          : kanji.winRateReading);
+      final recognition =
+          (kanji.winRateRecognition == DatabaseConstants.emptyWinRate
+              ? 0
+              : kanji.winRateRecognition);
+      final listening =
+          (kanji.winRateListening == DatabaseConstants.emptyWinRate
+              ? 0
+              : kanji.winRateListening);
+      final speaking = (kanji.winRateSpeaking == DatabaseConstants.emptyWinRate
+          ? 0
+          : kanji.winRateSpeaking);
+
+      final aggregate = writing + reading + recognition + listening + speaking;
+      if (aggregate == 0) return -1;
+      return aggregate / StudyModes.values.length;
+    }
+
+    switch (selectedMode) {
       case StudyModes.writing:
         return kanji.winRateWriting;
       case StudyModes.reading:
@@ -45,78 +65,53 @@ class _KanjiItemState extends State<KanjiItem> {
       case StudyModes.listening:
         return kanji.winRateListening;
       case StudyModes.speaking:
+      default:
         return kanji.winRateSpeaking;
     }
   }
 
   @override
-  void initState() {
-    /*WidgetsBinding.instance?.addPostFrameCallback((_) {
-      setState(() => _itemOpacity = 1);
-    });*/
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return _item(context);
-    /*return TweenAnimationBuilder(
-      tween: Tween<Offset>(begin: const Offset(0, 0.4), end: const Offset(0, 0)),
-      duration: Duration(milliseconds: CustomAnimations.kanjiItemDuration * widget.index),
-      curve: Curves.linear,
-      builder: (context, offset, child) {
-        return FractionalTranslation(translation: offset as Offset, child: child);
-      },
-      child: AnimatedOpacity(
-        opacity: _itemOpacity,
-        curve: Curves.easeOut,
-        duration: Duration(milliseconds: CustomAnimations.kanjiItemDuration * widget.index),
-        child: _item(context),
-      ),
-    );*/
-  }
-
-  AnimatedContainer _item(BuildContext context) {
     return AnimatedContainer(
-        duration: const Duration(milliseconds: CustomAnimations.ms300),
-        padding: const EdgeInsets.all(Margins.margin2),
-        margin: const EdgeInsets.all(Margins.margin4),
-        decoration: BoxDecoration(
-            color: GeneralUtils.getColorBasedOnWinRate(
-                _getProperKanjiWinRate(widget.kanji)),
-            borderRadius:
-                const BorderRadius.all(Radius.circular(CustomRadius.radius8)),
-            boxShadow: const [
-              BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(0, 3),
-                  blurRadius: CustomRadius.radius4)
-            ]),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            borderRadius:
-                const BorderRadius.all(Radius.circular(CustomRadius.radius8)),
-            onTap: () async {
-              widget.onShowModal();
-              await KPKanjiBottomSheet.show(
-                  context, widget.listName, widget.kanji,
-                  onTap: widget.onTap, onRemove: widget.onRemoval);
-            },
-            child: Container(
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(CustomRadius.radius8))),
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: Text(widget.kanji.kanji,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText2
-                          ?.copyWith(color: Colors.black)),
-                )),
-          ),
-        ));
+      duration: const Duration(milliseconds: CustomAnimations.ms300),
+      padding: const EdgeInsets.all(Margins.margin2),
+      margin: const EdgeInsets.all(Margins.margin4),
+      decoration: BoxDecoration(
+          color: GeneralUtils.getColorBasedOnWinRate(
+              _getProperKanjiWinRate(kanji)),
+          borderRadius:
+              const BorderRadius.all(Radius.circular(CustomRadius.radius8)),
+          boxShadow: const [
+            BoxShadow(
+                color: Colors.grey,
+                offset: Offset(0, 3),
+                blurRadius: CustomRadius.radius4)
+          ]),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius:
+              const BorderRadius.all(Radius.circular(CustomRadius.radius8)),
+          onTap: () async {
+            onShowModal();
+            await KPKanjiBottomSheet.show(context, listName, kanji,
+                onTap: onTap, onRemove: onRemoval);
+          },
+          child: Container(
+              decoration: const BoxDecoration(
+                  borderRadius:
+                      BorderRadius.all(Radius.circular(CustomRadius.radius8))),
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Text(kanji.kanji,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        ?.copyWith(color: Colors.black)),
+              )),
+        ),
+      ),
+    );
   }
 }

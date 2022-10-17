@@ -1,11 +1,13 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/test_specific_data.dart';
-import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
-import 'package:kanpractice/core/types/visualization_mode.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_dependent_graph.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_vertical_chart.dart';
+import 'package:kanpractice/ui/general_utils.dart';
+import 'package:kanpractice/ui/pages/statistics/widgets/stats_header.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_data_frame.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_bar_chart.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_radial_graph.dart';
 import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
 import 'package:kanpractice/ui/consts.dart';
 
@@ -42,9 +44,11 @@ class _TestSpecBottomSheetState extends State<TestSpecBottomSheet> {
         widget.data.totalRecognitionCount +
         widget.data.totalListeningCount +
         widget.data.totalSpeakingCount;
-    final countTheme = Theme.of(context).textTheme.bodyText1?.copyWith(
-          fontWeight: FontWeight.bold,
-        );
+    final aggregateOfTests = widget.data.totalWinRateWriting +
+        widget.data.totalWinRateReading +
+        widget.data.totalWinRateRecognition +
+        widget.data.totalWinRateListening +
+        widget.data.totalWinRateSpeaking;
 
     return BottomSheet(
       enableDrag: false,
@@ -55,96 +59,74 @@ class _TestSpecBottomSheetState extends State<TestSpecBottomSheet> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const KPDragContainer(),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: Margins.margin8, horizontal: Margins.margin32),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: Margins.margin8),
-                      child: Icon(widget.mode.icon),
-                    ),
-                    Text("${widget.mode.name} • $numberOfTests",
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headline6)
-                  ],
-                ),
+              StatsHeader(
+                title: "${widget.mode.name} • ",
+                value: numberOfTests.toString(),
+                verticalVisualDensity: -4,
+                textAlign: TextAlign.center,
               ),
-              Container(
-                constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height / 2.8),
-                margin: const EdgeInsets.all(Margins.margin8),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 38),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(widget.data.totalWritingCount.toString(),
-                              style: countTheme),
-                          Text(widget.data.totalReadingCount.toString(),
-                              style: countTheme),
-                          Text(widget.data.totalRecognitionCount.toString(),
-                              style: countTheme),
-                          Text(widget.data.totalListeningCount.toString(),
-                              style: countTheme),
-                          Text(widget.data.totalSpeakingCount.toString(),
-                              style: countTheme),
-                        ],
-                      ),
-                    ),
-                    KPVerticalBarChart(
-                      heightRatio: 1.3,
-                      dataSource:
-                          List.generate(StudyModes.values.length, (index) {
-                        switch (StudyModes.values[index]) {
-                          case StudyModes.writing:
-                            return VerticalBarData(
-                              x: StudyModes.writing.mode,
-                              y: widget.data.totalWritingCount.toDouble(),
-                              color: StudyModes.writing.color,
-                            );
-                          case StudyModes.reading:
-                            return VerticalBarData(
-                              x: StudyModes.reading.mode,
-                              y: widget.data.totalReadingCount.toDouble(),
-                              color: StudyModes.reading.color,
-                            );
-                          case StudyModes.recognition:
-                            return VerticalBarData(
-                              x: StudyModes.recognition.mode,
-                              y: widget.data.totalRecognitionCount.toDouble(),
-                              color: StudyModes.recognition.color,
-                            );
-                          case StudyModes.listening:
-                            return VerticalBarData(
-                              x: StudyModes.listening.mode,
-                              y: widget.data.totalListeningCount.toDouble(),
-                              color: StudyModes.listening.color,
-                            );
-                          case StudyModes.speaking:
-                            return VerticalBarData(
-                              x: StudyModes.speaking.mode,
-                              y: widget.data.totalSpeakingCount.toDouble(),
-                              color: StudyModes.speaking.color,
-                            );
-                        }
-                      }),
-                    ),
-                    KPDependentGraph(
-                      mode: VisualizationModeExt.mode(StorageManager.readData(
-                              StorageManager.kanListGraphVisualization) ??
-                          VisualizationMode.radialChart),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  KPBarChart(
+                    graphName: "tests".tr(),
+                    heightRatio: 1.3,
+                    dataSource:
+                        List.generate(StudyModes.values.length, (index) {
+                      switch (StudyModes.values[index]) {
+                        case StudyModes.writing:
+                          return DataFrame(
+                            x: StudyModes.writing.mode,
+                            y: widget.data.totalWritingCount.toDouble(),
+                            color: StudyModes.writing.color,
+                          );
+                        case StudyModes.reading:
+                          return DataFrame(
+                            x: StudyModes.reading.mode,
+                            y: widget.data.totalReadingCount.toDouble(),
+                            color: StudyModes.reading.color,
+                          );
+                        case StudyModes.recognition:
+                          return DataFrame(
+                            x: StudyModes.recognition.mode,
+                            y: widget.data.totalRecognitionCount.toDouble(),
+                            color: StudyModes.recognition.color,
+                          );
+                        case StudyModes.listening:
+                          return DataFrame(
+                            x: StudyModes.listening.mode,
+                            y: widget.data.totalListeningCount.toDouble(),
+                            color: StudyModes.listening.color,
+                          );
+                        case StudyModes.speaking:
+                          return DataFrame(
+                            x: StudyModes.speaking.mode,
+                            y: widget.data.totalSpeakingCount.toDouble(),
+                            color: StudyModes.speaking.color,
+                          );
+                      }
+                    }),
+                  ),
+                  StatsHeader(
+                    title: "${"specific_test_accuracy_label".tr()} • ",
+                    textAlign: TextAlign.center,
+                    verticalVisualDensity: -4,
+                    value: GeneralUtils.getFixedPercentageAsString(
+                        aggregateOfTests / StudyModes.values.length),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: Margins.margin24),
+                    child: KPRadialGraph(
                       writing: widget.data.totalWinRateWriting,
                       reading: widget.data.totalWinRateReading,
                       recognition: widget.data.totalWinRateRecognition,
                       listening: widget.data.totalWinRateListening,
                       speaking: widget.data.totalWinRateSpeaking,
                     ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: Margins.margin16)
+                ],
               ),
             ],
           ),

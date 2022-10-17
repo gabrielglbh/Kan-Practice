@@ -5,7 +5,6 @@ import 'package:kanpractice/core/database/models/test_result.dart';
 import 'package:kanpractice/core/database/models/test_specific_data.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
-import 'package:kanpractice/ui/consts.dart';
 import 'package:sqflite/sqflite.dart';
 
 class TestQueries {
@@ -64,20 +63,20 @@ class TestQueries {
     }
   }
 
-  /// Query to get all [Test] from the db using lazy loading. Each time, helper
-  /// will get 10 tests. When user gets to the end of list, another 10 will be retrieved.
-  /// If anything goes wrong, an empty list will be returned.
-  Future<List<Test>> getTests(int offset,
-      {int limit = LazyLoadingLimits.testHistory}) async {
+  /// Query to get all [Test] from the db using lazy loading. It will
+  /// retrieve the tests performed between [initial] and [last].
+  Future<List<Test>> getTests(DateTime initial, DateTime last) async {
     if (_database != null) {
       try {
-        List<Map<String, dynamic>>? res = [];
-        res = await _database
-            ?.rawQuery("SELECT * FROM ${TestTableFields.testTable} "
-                "ORDER BY ${TestTableFields.takenDateField} DESC "
-                "LIMIT $limit OFFSET ${offset * limit}");
+        final initialMs = initial.millisecondsSinceEpoch;
+        final lastMs = last.millisecondsSinceEpoch;
+        List<Map<String, dynamic>>? res = await _database?.rawQuery(
+          "SELECT * FROM ${TestTableFields.testTable} "
+          "WHERE ${TestTableFields.takenDateField} >= $initialMs "
+          "AND ${TestTableFields.takenDateField} <= $lastMs",
+        );
         if (res != null) {
-          return List.generate(res.length, (i) => Test.fromJson(res![i]));
+          return List.generate(res.length, (i) => Test.fromJson(res[i]));
         } else {
           return [];
         }
@@ -129,6 +128,20 @@ class TestQueries {
       }
     } else {
       return TestSpecificData.empty;
+    }
+  }
+
+  Future<void> insertInitialTestData() async {
+    if (_database != null) {
+      try {
+        await _database?.insert(
+          TestDataTableFields.testDataTable,
+          TestData.empty.toJson(),
+          conflictAlgorithm: ConflictAlgorithm.ignore,
+        );
+      } catch (err) {
+        print(err.toString());
+      }
     }
   }
 

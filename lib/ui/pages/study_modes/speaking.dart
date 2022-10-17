@@ -164,7 +164,13 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
         Visibility(
           visible: _showInfo,
           child: TTSIconButton(kanji: _studyList[_macro].pronunciation),
-        )
+        ),
+        if (!widget.args.isTest)
+          IconButton(
+            onPressed: () =>
+                GeneralUtils.showSpatialRepetitionDisclaimer(context),
+            icon: const Icon(Icons.info_outline_rounded),
+          )
       ],
       child: Column(
         children: [

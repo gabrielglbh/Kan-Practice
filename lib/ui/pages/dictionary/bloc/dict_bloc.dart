@@ -11,7 +11,9 @@ part 'dict_state.dart';
 class DictBloc extends Bloc<DictEvent, DictState> {
   DictBloc() : super(DictStateLoading()) {
     late Classifier model;
-    on<DictEventIdle>((event, emit) async {
+    on<DictEventIdle>((_, __) {});
+
+    on<DictEventStart>((event, emit) async {
       try {
         emit(DictStateLoading());
 

@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/kanji_categories.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
-import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/pages/jisho/arguments.dart';
 import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/ui/widgets/graphs/kp_radial_graph.dart';
 import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_dependent_graph.dart';
 import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
 import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/ui/widgets/kp_tts_icon_button.dart';
@@ -104,76 +102,71 @@ class KPKanjiBottomSheet extends StatelessWidget {
   }
 
   Widget _body(BuildContext context, Kanji updatedKanji) {
-    return Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-      _header(context, updatedKanji),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
-        child: FittedBox(
-            fit: BoxFit.contain,
-            child: Text(KanjiCategory.values[updatedKanji.category].category,
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    ?.copyWith(fontStyle: FontStyle.italic))),
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
-        child: FittedBox(
-          fit: BoxFit.contain,
-          child: Text(updatedKanji.kanji,
-              textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline4
-                  ?.copyWith(fontWeight: FontWeight.bold)),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(
-            vertical: Margins.margin8, horizontal: Margins.margin16),
-        child: FittedBox(
-            fit: BoxFit.contain,
-            child: Text(updatedKanji.meaning,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyText2)),
-      ),
-      Card(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(CustomRadius.radius16)),
-        margin: const EdgeInsets.only(
-            bottom: Margins.margin4, top: Margins.margin8),
-        child: ListTile(
-          title: KPDependentGraph(
-            mode: VisualizationModeExt.mode(StorageManager.readData(
-                    StorageManager.kanListGraphVisualization) ??
-                VisualizationMode.radialChart),
+    return Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          _header(context, updatedKanji),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: Text(updatedKanji.kanji,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline5
+                      ?.copyWith(fontWeight: FontWeight.bold)),
+            ),
+          ),
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: Margins.margin4,
+                  bottom: Margins.margin4,
+                  right: Margins.margin16,
+                  left: Margins.margin16),
+              child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text:
+                          "(${KanjiCategory.values[updatedKanji.category].category}) ",
+                      style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                          color: Colors.grey.shade500,
+                          fontStyle: FontStyle.italic),
+                    ),
+                    TextSpan(
+                        text: updatedKanji.meaning,
+                        style: Theme.of(context).textTheme.bodyText2)
+                  ])),
+            ),
+          ),
+          const Divider(),
+          KPRadialGraph(
             writing: updatedKanji.winRateWriting,
             reading: updatedKanji.winRateReading,
             recognition: updatedKanji.winRateRecognition,
             listening: updatedKanji.winRateListening,
             speaking: updatedKanji.winRateSpeaking,
           ),
-        ),
-      ),
-      _lastTimeShownWidget(context, updatedKanji),
-      Visibility(
-        visible: onTap != null && onRemove != null,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Divider(),
-            _actionButtons(context),
-          ],
-        ),
-      ),
-    ]);
+          _lastTimeShownWidget(context, updatedKanji),
+          Visibility(
+            visible: onTap != null && onRemove != null,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Divider(),
+                _actionButtons(context),
+              ],
+            ),
+          ),
+        ]);
   }
 
   Widget _header(BuildContext context, Kanji updatedKanji) {
     return Padding(
-        padding: const EdgeInsets.symmetric(
-            vertical: Margins.margin4, horizontal: Margins.margin16),
+        padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -200,10 +193,11 @@ class KPKanjiBottomSheet extends StatelessWidget {
 
   Widget _lastTimeShownWidget(BuildContext context, Kanji updatedKanji) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
+        padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
         child: ExpansionTile(
             iconColor: CustomColors.secondaryColor,
             textColor: CustomColors.secondaryColor,
+            tilePadding: const EdgeInsets.all(0),
             title: FittedBox(
                 fit: BoxFit.contain,
                 child: Text(
@@ -283,48 +277,45 @@ class KPKanjiBottomSheet extends StatelessWidget {
     );
   }
 
-  SizedBox _actionButtons(BuildContext bloc) {
-    return SizedBox(
-      height: CustomSizes.actionButtonsKanjiDetail,
-      child: Row(
-        children: [
-          Expanded(
-            child: ListTile(
-              title: Text("kanji_bottom_sheet_removal_label".tr()),
-              trailing: const Icon(Icons.clear),
-              onTap: () {
-                showDialog(
-                    context: bloc,
-                    builder: (context) => KPDialog(
-                        title:
-                            Text("kanji_bottom_sheet_removeKanji_title".tr()),
-                        content:
-                            Text("kanji_bottom_sheet_removeKanji_content".tr()),
-                        positiveButtonText:
-                            "kanji_bottom_sheet_removeKanji_positive".tr(),
-                        onPositive: () {
-                          Navigator.of(context).pop();
-                          bloc
-                              .read<KanjiBSBloc>()
-                              .add(KanjiBSEventDelete(kanji));
-                          if (onRemove != null) onRemove!();
-                        }));
-              },
-            ),
+  Widget _actionButtons(BuildContext bloc) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Expanded(
+          child: ListTile(
+            title: Text("kanji_bottom_sheet_removal_label".tr()),
+            trailing: const Icon(Icons.clear),
+            visualDensity: const VisualDensity(vertical: -3),
+            onTap: () {
+              showDialog(
+                  context: bloc,
+                  builder: (context) => KPDialog(
+                      title: Text("kanji_bottom_sheet_removeKanji_title".tr()),
+                      content:
+                          Text("kanji_bottom_sheet_removeKanji_content".tr()),
+                      positiveButtonText:
+                          "kanji_bottom_sheet_removeKanji_positive".tr(),
+                      onPositive: () {
+                        Navigator.of(context).pop();
+                        bloc.read<KanjiBSBloc>().add(KanjiBSEventDelete(kanji));
+                        if (onRemove != null) onRemove!();
+                      }));
+            },
           ),
-          const RotatedBox(quarterTurns: 1, child: Divider()),
-          Expanded(
-            child: ListTile(
-              title: Text("kanji_bottom_sheet_update_label".tr()),
-              trailing: const Icon(Icons.arrow_forward_rounded),
-              onTap: () {
-                Navigator.of(bloc).pop();
-                if (onTap != null) onTap!();
-              },
-            ),
-          )
-        ],
-      ),
+        ),
+        const RotatedBox(quarterTurns: 1, child: Divider()),
+        Expanded(
+          child: ListTile(
+            title: Text("kanji_bottom_sheet_update_label".tr()),
+            trailing: const Icon(Icons.arrow_forward_rounded),
+            visualDensity: const VisualDensity(vertical: -3),
+            onTap: () {
+              Navigator.of(bloc).pop();
+              if (onTap != null) onTap!();
+            },
+          ),
+        )
+      ],
     );
   }
 }

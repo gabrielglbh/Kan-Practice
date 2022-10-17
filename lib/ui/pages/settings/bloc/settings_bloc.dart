@@ -8,6 +8,8 @@ part 'settings_state.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc() : super(const SettingsStateBackUpDateLoaded()) {
+    on<SettingsIdle>((_, __) {});
+
     on<SettingsLoadingBackUpDate>((event, emit) async {
       emit(SettingsStateBackUpDateLoading());
       final date = await BackUpRecords.instance.getLastUpdated(event.context);

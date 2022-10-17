@@ -163,7 +163,13 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
           Visibility(
             visible: _showMeaning,
             child: TTSIconButton(kanji: _studyList[_macro].pronunciation),
-          )
+          ),
+          if (!widget.args.isTest)
+            IconButton(
+              onPressed: () =>
+                  GeneralUtils.showSpatialRepetitionDisclaimer(context),
+              icon: const Icon(Icons.info_outline_rounded),
+            )
         ],
         child: Column(
           children: [

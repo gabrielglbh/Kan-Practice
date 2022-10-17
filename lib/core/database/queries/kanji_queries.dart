@@ -1,6 +1,7 @@
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
+import 'package:kanpractice/core/types/kanji_categories.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:sqflite/sqflite.dart';
@@ -417,6 +418,29 @@ class KanjiQueries {
       }
     } else {
       return Kanji.empty;
+    }
+  }
+
+  Future<List<int>> getKanjiFromCategory() async {
+    List<int> empty = List.generate(KanjiCategory.values.length, (index) => 0);
+    if (_database != null) {
+      try {
+        List<int> count = [];
+        for (int k = 0; k < KanjiCategory.values.length; k++) {
+          List<Map<String, dynamic>>? res = await _database?.query(
+            KanjiTableFields.kanjiTable,
+            where: "${KanjiTableFields.categoryField}=?",
+            whereArgs: [KanjiCategory.values[k].index],
+          );
+          count.add(res != null ? res.length : 0);
+        }
+        return count;
+      } catch (err) {
+        print(err.toString());
+        return empty;
+      }
+    } else {
+      return empty;
     }
   }
 

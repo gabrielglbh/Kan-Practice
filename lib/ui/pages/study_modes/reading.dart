@@ -179,7 +179,13 @@ class _ReadingStudyState extends State<ReadingStudy> {
         Visibility(
           visible: _showPronunciation,
           child: TTSIconButton(kanji: _studyList[_macro].pronunciation),
-        )
+        ),
+        if (!widget.args.isTest)
+          IconButton(
+            onPressed: () =>
+                GeneralUtils.showSpatialRepetitionDisclaimer(context),
+            icon: const Icon(Icons.info_outline_rounded),
+          )
       ],
       child: Column(
         children: [

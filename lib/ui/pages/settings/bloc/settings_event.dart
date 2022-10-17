@@ -7,6 +7,8 @@ abstract class SettingsEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class SettingsIdle extends SettingsEvent {}
+
 class SettingsLoadingBackUpDate extends SettingsEvent {
   final BuildContext context;
 

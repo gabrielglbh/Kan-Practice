@@ -8,6 +8,7 @@ import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
 import 'package:kanpractice/ui/pages/add_market_list/add_market_list.dart';
 import 'package:kanpractice/ui/pages/backup/backup.dart';
 import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
+import 'package:kanpractice/ui/pages/dictionary/bloc/dict_bloc.dart';
 import 'package:kanpractice/ui/pages/dictionary/dictionary.dart';
 import 'package:kanpractice/ui/pages/firebase_login/login.dart';
 import 'package:kanpractice/ui/pages/home/home.dart';
@@ -19,15 +20,11 @@ import 'package:kanpractice/ui/pages/kanji_list_on_folder/kanji_list_on_folder.d
 import 'package:kanpractice/ui/pages/study_modes/listening.dart';
 import 'package:kanpractice/ui/pages/study_modes/reading.dart';
 import 'package:kanpractice/ui/pages/study_modes/recognition.dart';
-import 'package:kanpractice/ui/pages/settings/settings.dart';
 import 'package:kanpractice/ui/pages/statistics/statistics.dart';
 import 'package:kanpractice/ui/pages/study_modes/speaking.dart';
 import 'package:kanpractice/ui/pages/study_modes/utils/mode_arguments.dart';
-import 'package:kanpractice/ui/pages/test_history/bloc/test_bloc.dart';
-import 'package:kanpractice/ui/pages/test_history/test_history.dart';
 import 'package:kanpractice/ui/pages/test_result/arguments.dart';
 import 'package:kanpractice/ui/pages/test_result/test_result.dart';
-import 'package:kanpractice/ui/pages/tutorial/tutorial.dart';
 import 'package:kanpractice/ui/pages/study_modes/writing.dart';
 import 'package:kanpractice/ui/pages/word_history/bloc/word_history_bloc.dart';
 import 'package:kanpractice/ui/pages/word_history/word_history.dart';
@@ -47,8 +44,6 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
               create: (_) =>
                   KanjiListDetailBloc()..add(KanjiEventLoading(list.name)),
               child: KanjiListDetails(list: list)));
-    case KanPracticePages.settingsPage:
-      return CupertinoPageRoute(builder: (_) => const Settings());
     case KanPracticePages.addKanjiPage:
       AddKanjiArgs args = settings.arguments as AddKanjiArgs;
       return CupertinoPageRoute(builder: (_) => AddKanjiPage(args: args));
@@ -70,27 +65,22 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case KanPracticePages.testResultPage:
       TestResultArguments args = settings.arguments as TestResultArguments;
       return CupertinoPageRoute(builder: (_) => TestResult(args: args));
-    case KanPracticePages.testHistoryPage:
-      return CupertinoPageRoute(
-          builder: (_) => BlocProvider<TestListBloc>(
-              create: (_) => TestListBloc()..add(const TestListEventLoading()),
-              child: const TestHistory()));
     case KanPracticePages.loginPage:
       return CupertinoPageRoute(builder: (_) => const LoginPage());
     case KanPracticePages.backUpPage:
       String args = settings.arguments as String;
       return CupertinoPageRoute(builder: (_) => BackUpPage(uid: args));
-    case KanPracticePages.tutorialPage:
-      bool? args = settings.arguments as bool?;
-      return CupertinoPageRoute(
-          builder: (_) => TutorialPage(alreadyShown: args));
     case KanPracticePages.jishoPage:
       JishoArguments args = settings.arguments as JishoArguments;
       return PageTransition(
           type: PageTransitionType.bottomToTop, child: JishoPage(args: args));
     case KanPracticePages.dictionaryPage:
       DictionaryArguments args = settings.arguments as DictionaryArguments;
-      return CupertinoPageRoute(builder: (_) => DictionaryPage(args: args));
+      return CupertinoPageRoute(
+          builder: (_) => BlocProvider<DictBloc>(
+                create: (context) => DictBloc(),
+                child: DictionaryPage(args: args),
+              ));
     case KanPracticePages.statisticsPage:
       return CupertinoPageRoute(builder: (_) => const StatisticsPage());
     case KanPracticePages.marketAddListPage:

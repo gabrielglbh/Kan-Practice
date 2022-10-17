@@ -113,7 +113,6 @@ class ListQueries {
                 list.totalWinRateRecognition +
                 list.totalWinRateListening;
             listAcc.add((acc <= 0 ? 0 : acc) / StudyModes.values.length);
-            print(acc / 4);
           }
           final double best =
               listAcc.reduce((curr, next) => curr > next ? curr : next);

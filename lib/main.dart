@@ -3,25 +3,23 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:kanpractice/core/database/database.dart';
+import 'package:kanpractice/core/database/queries/initial_queries.dart';
+import 'package:kanpractice/core/database/queries/test_queries.dart';
+import 'package:kanpractice/core/firebase/queries/messaging.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
-import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/theme/theme_manager.dart';
 import 'core/routing/routes.dart';
 
 Future<void> _initSharedPreferences() async {
   await StorageManager.getInstance();
-  if (StorageManager.readData(StorageManager.hasDoneTutorial) == null) {
-    StorageManager.saveData(StorageManager.hasDoneTutorial, false);
-  }
   if (StorageManager.readData(StorageManager.affectOnPractice) == null) {
     StorageManager.saveData(StorageManager.affectOnPractice, false);
   }
-  if (StorageManager.readData(StorageManager.kanListGraphVisualization) ==
+  if (StorageManager.readData(StorageManager.kanListListVisualization) ==
       null) {
-    StorageManager.saveData(StorageManager.kanListGraphVisualization,
-        VisualizationMode.radialChart.name);
+    StorageManager.saveData(StorageManager.kanListListVisualization, false);
   }
   if (StorageManager.readData(StorageManager.numberOfKanjiInTest) == null) {
     StorageManager.saveData(
@@ -42,17 +40,14 @@ Future<void> _initSharedPreferences() async {
   // DEBUG ONLY
   //StorageManager.saveData(StorageManager.haveSeenKanListCoachMark, false);
   //StorageManager.saveData(StorageManager.haveSeenKanListDetailCoachMark, false);
-  bool hasDoneTutorial =
-      StorageManager.readData(StorageManager.hasDoneTutorial);
   if (StorageManager.readData(StorageManager.haveSeenKanListCoachMark) ==
       null) {
-    StorageManager.saveData(
-        StorageManager.haveSeenKanListCoachMark, hasDoneTutorial);
+    StorageManager.saveData(StorageManager.haveSeenKanListCoachMark, false);
   }
   if (StorageManager.readData(StorageManager.haveSeenKanListDetailCoachMark) ==
       null) {
     StorageManager.saveData(
-        StorageManager.haveSeenKanListDetailCoachMark, hasDoneTutorial);
+        StorageManager.haveSeenKanListDetailCoachMark, false);
   }
 }
 
@@ -99,6 +94,14 @@ class _KanPracticeState extends State<KanPractice> {
   @override
   void initState() {
     ThemeManager.instance.addListenerTo(() => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      MessagingHandler.handler(context);
+      if (StorageManager.readData(StorageManager.haveSeenKanListCoachMark) ==
+          false) {
+        await InitialQueries.instance.setInitialDataForReference(context);
+        await TestQueries.instance.insertInitialTestData();
+      }
+    });
     super.initState();
   }
 
@@ -119,9 +122,7 @@ class _KanPracticeState extends State<KanPractice> {
       theme: ThemeManager.instance.currentLightThemeData,
       darkTheme: ThemeManager.instance.currentDarkThemeData,
       themeMode: ThemeManager.instance.themeMode,
-      initialRoute: StorageManager.readData(StorageManager.hasDoneTutorial)
-          ? KanPracticePages.homePage
-          : KanPracticePages.tutorialPage,
+      initialRoute: KanPracticePages.homePage,
       onGenerateRoute: onGenerateRoute,
     );
   }

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
-import 'package:kanpractice/core/types/visualization_mode.dart';
 import 'package:kanpractice/ui/pages/kanji_list_on_folder/bloc/kl_folder_bloc.dart';
 import 'package:kanpractice/ui/widgets/kp_kanji_lists/bloc/lists_bloc.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
@@ -231,9 +230,6 @@ class _KPKanjiListsState extends State<KPKanjiLists>
               item: lists[k],
               onTap: widget.removeFocus,
               withinFolder: widget.withinFolder,
-              mode: VisualizationModeExt.mode(StorageManager.readData(
-                      StorageManager.kanListGraphVisualization) ??
-                  VisualizationMode.radialChart),
               onRemoval: () {
                 if (widget.folder == null) {
                   context.read<KanjiListBloc>().add(KanjiListEventDelete(

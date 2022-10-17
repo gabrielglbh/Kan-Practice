@@ -151,6 +151,11 @@ class TestQueries {
           }
           return rawTestData;
         } else {
+          await _database?.insert(
+            TestDataTableFields.testDataTable,
+            TestData.empty.toJson(),
+            conflictAlgorithm: ConflictAlgorithm.ignore,
+          );
           return TestData.empty;
         }
       } catch (err) {

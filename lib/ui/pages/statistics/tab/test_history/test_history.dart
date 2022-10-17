@@ -145,6 +145,7 @@ class _TestHistoryState extends State<TestHistory>
             padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
             child: _body(state),
           ),
+          const SizedBox(height: Margins.margin32)
         ],
       ),
     );

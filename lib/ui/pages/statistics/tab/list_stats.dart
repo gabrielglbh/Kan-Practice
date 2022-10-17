@@ -75,6 +75,7 @@ class _ListStatsState extends State<ListStats>
             ),
           ),
         ),
+        const SizedBox(height: Margins.margin32)
       ],
     );
   }

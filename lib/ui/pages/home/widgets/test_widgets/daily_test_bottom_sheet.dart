@@ -29,7 +29,7 @@ class DailyBottomSheet extends StatelessWidget {
   Future<void> _loadDailyTest(BuildContext context) async {
     final navigator = Navigator.of(context);
     final randomStudyMode =
-        StudyModesUtil.mapStudyMode(Random().nextInt(StudyModes.values.length));
+        StudyModes.values[Random().nextInt(StudyModes.values.length)];
     final kanjiInTest =
         StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
             CustomSizes.numberOfKanjiInTest;

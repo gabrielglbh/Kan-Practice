@@ -91,7 +91,7 @@ class _TestStatsState extends State<TestStats>
       graphName: "tests".tr(),
       onBarTapped: (model) async {
         if (model.dataPoints?.isNotEmpty == true) {
-          final mode = TestsUtils.mapTestMode(model.pointIndex ?? -1);
+          final mode = Tests.values[model.pointIndex ?? -1];
           final data = await TestQueries.instance.getSpecificTestData(mode);
           // ignore: use_build_context_synchronously
           TestSpecBottomSheet.show(context, mode, data);

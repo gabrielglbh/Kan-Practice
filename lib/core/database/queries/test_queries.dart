@@ -227,7 +227,7 @@ class TestQueries {
   /// accuracy and the total tests accuracy using N*C + C' / N'
   Map<String, num> _getAdditionalParams(TestData curr, Test test) {
     final score = test.testScore;
-    switch (StudyModesUtil.mapStudyMode(test.studyMode)) {
+    switch (StudyModes.values[test.studyMode]) {
       case StudyModes.writing:
         final totalTests = curr.testTotalCountWriting + 1;
         final newAcc =
@@ -318,7 +318,7 @@ class TestQueries {
 
   /// Updates the count on test performed
   Map<String, num> _getTestParams(TestData curr, Test test) {
-    switch (TestsUtils.mapTestMode(test.testMode!)) {
+    switch (Tests.values[test.testMode!]) {
       case Tests.lists:
         return {
           TestDataTableFields.selectionTestsField: curr.selectionTests + 1
@@ -344,13 +344,12 @@ class TestQueries {
 
   /// Updates the [test] specific stats using N*C + C' / N'
   Future<void> _updateSpecificTestStats(Test test) async {
-    final raw =
-        await getSpecificTestData(TestsUtils.mapTestMode(test.testMode!));
+    final raw = await getSpecificTestData(Tests.values[test.testMode!]);
 
     if (raw != TestSpecificData.empty) {
       late Map<String, num> map;
 
-      switch (StudyModesUtil.mapStudyMode(test.studyMode)) {
+      switch (StudyModes.values[test.studyMode]) {
         case StudyModes.writing:
           final count = raw.totalWritingCount + 1;
           map = {
@@ -410,7 +409,7 @@ class TestQueries {
         whereArgs: [raw.id],
       );
     } else {
-      final m = StudyModesUtil.mapStudyMode(test.studyMode);
+      final m = StudyModes.values[test.studyMode];
       await _database?.insert(
         TestSpecificDataTableFields.testDataTable,
         TestSpecificData(

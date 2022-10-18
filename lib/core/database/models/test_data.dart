@@ -78,7 +78,7 @@ class TestData {
   });
 
   TestData copyWith(TestSpecificData testSpecs) {
-    final test = TestsUtils.mapTestMode(testSpecs.id);
+    final test = Tests.values[testSpecs.id];
     return TestData(
       totalTests: totalTests,
       totalTestAccuracy: totalTestAccuracy,

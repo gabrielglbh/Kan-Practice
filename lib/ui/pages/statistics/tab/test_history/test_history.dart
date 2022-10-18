@@ -173,9 +173,9 @@ class _TestHistoryState extends State<TestHistory>
             return TestDataFrame(
               x: DateTime.fromMillisecondsSinceEpoch(test.takenDate),
               y: test.testScore,
-              studyMode: StudyModesUtil.mapStudyMode(test.studyMode),
+              studyMode: StudyModes.values[test.studyMode],
               wordsOnTest: test.kanjiInTest,
-              mode: TestsUtils.mapTestMode(test.testMode ?? 0),
+              mode: Tests.values[test.testMode ?? 0],
             );
           }),
           graphName: "success".tr(),

@@ -81,9 +81,3 @@ extension StudyModesExt on StudyModes {
     }
   }
 }
-
-// TODO: Remove
-class StudyModesUtil {
-  /// Maps the integer received from the source to a StudyModes. Based on [map]
-  static StudyModes mapStudyMode(int map) => StudyModes.values[map];
-}

@@ -74,9 +74,3 @@ extension TestsExt on Tests {
     }
   }
 }
-
-// TODO: Remove
-class TestsUtils {
-  /// Maps the int received from the source to a Tests. Based on [map]
-  static Tests mapTestMode(int map) => Tests.values[map];
-}

@@ -182,7 +182,7 @@ class MigrationUtils {
       final List<Test> tests =
           List.generate(res.length, (i) => Test.fromJson(res[i]));
       for (var t in tests) {
-        switch (TestsUtils.mapTestMode(t.testMode ?? -1)) {
+        switch (Tests.values[t.testMode ?? -1]) {
           case Tests.lists:
             counters[0] += 1;
             break;
@@ -230,7 +230,7 @@ class MigrationUtils {
       int wc = 0, redc = 0, recc = 0, lc = 0, sc = 0;
 
       for (var test in t) {
-        switch (StudyModesUtil.mapStudyMode(test.studyMode)) {
+        switch (StudyModes.values[test.studyMode]) {
           case StudyModes.writing:
             w += test.testScore;
             wc += 1;

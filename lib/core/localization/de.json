@@ -361,7 +361,7 @@
   "settings_general_kanji_list": "Gruppenstatistiken nach Wort",
   "settings_general_kanji_list_description": "Wenn diese Funktion aktiviert ist, wird bei allen KanLists-Wörtern der Mittelwert über alle Studienmodi hinweg angezeigt, anstatt zwischen ihnen zu wechseln.",
   "tests": "Tests",
-  "specific_test_accuracy_label": "Erfolgsquote beim Test",
+  "specific_accuracy_label": "Gesamtgenauigkeitsquote",
   "success": "Erfolgsquote",
   "words_by_category": "Gesamtzahl der Wörter nach Kategorie",
   "history_tests_header": "Gesamtgenauigkeit der Tests auf der Grundlage von Filtern",

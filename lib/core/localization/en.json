@@ -361,7 +361,7 @@
   "settings_general_kanji_list": "Group statistics by word",
   "settings_general_kanji_list_description": "When active, all KanLists words will show the mean accross all study modes instead of swipping between them",
   "tests": "Tests",
-  "specific_test_accuracy_label": "Accuracy Rate on Test",
+  "specific_accuracy_label": "Total Accuracy Rate",
   "success": "Accuracy Rate",
   "words_by_category": "Total Numbers of Words by Category",
   "history_tests_header": "Total Accuracy of Tests based on Filters",

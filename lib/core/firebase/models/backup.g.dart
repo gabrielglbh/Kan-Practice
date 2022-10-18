@@ -15,7 +15,7 @@ BackUp _$BackUpFromJson(Map<String, dynamic> json) => BackUp(
           .toList(),
       testData: TestData.fromJson(json['testData'] as Map<String, dynamic>),
       testSpecData: (json['testSpecData'] as List<dynamic>)
-          .map((e) => TestSpecificData.fromJson(e as Map<String, dynamic>))
+          .map((e) => SpecificData.fromJson(e as Map<String, dynamic>))
           .toList(),
       folders: (json['folders'] as List<dynamic>)
           .map((e) => Folder.fromJson(e as Map<String, dynamic>))

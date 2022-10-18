@@ -7,7 +7,7 @@ import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
 import 'package:kanpractice/ui/pages/statistics/widgets/stats_header.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_data_frame.dart';
-import 'package:kanpractice/ui/pages/statistics/widgets/test_spec_bottom_sheet.dart';
+import 'package:kanpractice/ui/pages/statistics/widgets/spec_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_bar_chart.dart';
 
 class TestStats extends StatefulWidget {
@@ -86,7 +86,7 @@ class _TestStatsState extends State<TestStats>
     return KPBarChart(
       enableTooltip: false,
       isHorizontalChart: true,
-      heightRatio: 2.3,
+      heightRatio: 2.5,
       animationDuration: 0,
       graphName: "tests".tr(),
       onBarTapped: (model) async {
@@ -94,7 +94,7 @@ class _TestStatsState extends State<TestStats>
           final mode = Tests.values[model.pointIndex ?? -1];
           final data = await TestQueries.instance.getSpecificTestData(mode);
           // ignore: use_build_context_synchronously
-          TestSpecBottomSheet.show(context, mode, data);
+          SpecBottomSheet.show(context, mode.name, data);
         }
       },
       dataSource: List.generate(Tests.values.length, (index) {

@@ -2,7 +2,7 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/test_data.dart';
 import 'package:kanpractice/core/database/models/test_result.dart';
-import 'package:kanpractice/core/database/models/test_specific_data.dart';
+import 'package:kanpractice/core/database/models/specific_data.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:sqflite/sqflite.dart';
@@ -216,7 +216,7 @@ class MigrationUtils {
     }
   }
 
-  Future<TestSpecificData> _getTestSpecificStudyModeAccuracies(
+  Future<SpecificData> _getTestSpecificStudyModeAccuracies(
     Database db,
     Tests mode,
   ) async {
@@ -224,7 +224,7 @@ class MigrationUtils {
       final res = await db.query(TestTableFields.testTable,
           where: "${TestTableFields.testModeField}=?", whereArgs: [mode.index]);
       List<Test> t = List.generate(res.length, (i) => Test.fromJson(res[i]));
-      if (t.isEmpty) return TestSpecificData.empty;
+      if (t.isEmpty) return SpecificData.empty;
 
       double w = 0, red = 0, rec = 0, l = 0, s = 0;
       int wc = 0, redc = 0, recc = 0, lc = 0, sc = 0;
@@ -254,7 +254,7 @@ class MigrationUtils {
         }
       }
 
-      return TestSpecificData(
+      return SpecificData(
         id: mode.index,
         totalWritingCount: wc,
         totalReadingCount: redc,
@@ -268,7 +268,7 @@ class MigrationUtils {
         totalWinRateSpeaking: sc == 0 ? 0 : s / sc,
       );
     } catch (err) {
-      return TestSpecificData.empty;
+      return SpecificData.empty;
     }
   }
 }

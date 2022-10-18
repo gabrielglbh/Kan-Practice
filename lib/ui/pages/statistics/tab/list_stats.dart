@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/types/kanji_categories.dart';
 import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
 import 'package:kanpractice/ui/pages/statistics/widgets/stats_header.dart';
+import 'package:kanpractice/ui/pages/statistics/widgets/spec_bottom_sheet.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_bar_chart.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_data_frame.dart';
 import 'package:kanpractice/ui/widgets/graphs/kp_radial_graph.dart';
@@ -67,7 +69,17 @@ class _ListStatsState extends State<ListStats>
           graphName: "kanji_category_label".tr(),
           animationDuration: 0,
           heightRatio: 3,
+          enableTooltip: false,
           isHorizontalChart: true,
+          onBarTapped: (model) async {
+            if (model.dataPoints?.isNotEmpty == true) {
+              final mode = KanjiCategory.values[model.pointIndex ?? -1];
+              final data =
+                  await KanjiQueries.instance.getSpecificCategoryData(mode);
+              // ignore: use_build_context_synchronously
+              SpecBottomSheet.show(context, mode.category, data);
+            }
+          },
           dataSource: List.generate(
             KanjiCategory.values.length,
             (index) => DataFrame(

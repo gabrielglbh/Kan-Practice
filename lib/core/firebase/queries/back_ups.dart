@@ -6,7 +6,7 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/models/rel_folder_kanlist.dart';
 import 'package:kanpractice/core/database/models/test_data.dart';
-import 'package:kanpractice/core/database/models/test_specific_data.dart';
+import 'package:kanpractice/core/database/models/specific_data.dart';
 import 'package:kanpractice/core/database/queries/back_up_queries.dart';
 import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
@@ -90,7 +90,7 @@ class BackUpRecords {
     List<Kanji> kanji = await KanjiQueries.instance.getAllKanji();
     List<KanjiList> lists = await ListQueries.instance.getAllLists();
     TestData testData = await TestQueries.instance.getTestDataFromDb();
-    List<TestSpecificData> testSpecData = [];
+    List<SpecificData> testSpecData = [];
 
     /// Remove from the back up the empty specs
     if (testData.selectionTestData.id != -1) {
@@ -268,7 +268,7 @@ class BackUpRecords {
       List<Folder> backUpFolders = [];
       List<RelFolderKanList> backUpRelFolderKanList = [];
       TestData backUpTestData = TestData.empty;
-      List<TestSpecificData> backUpTestSpecData = [];
+      List<SpecificData> backUpTestSpecData = [];
 
       if (kanjiSnapshot.size > 0 && listsSnapshot.size > 0) {
         for (int x = 0; x < kanjiSnapshot.size; x++) {
@@ -298,8 +298,8 @@ class BackUpRecords {
 
       if (testSpecDataSnapshot.size > 0) {
         for (int x = 0; x < testSpecDataSnapshot.size; x++) {
-          backUpTestSpecData.add(
-              TestSpecificData.fromJson(testSpecDataSnapshot.docs[x].data()));
+          backUpTestSpecData
+              .add(SpecificData.fromJson(testSpecDataSnapshot.docs[x].data()));
         }
       }
 
@@ -415,10 +415,9 @@ class BackUpRecords {
               .collection(collection)
               .doc(user?.uid)
               .collection(testSpecsLabel)
-              .doc(
-                  TestSpecificData.fromJson(testSpecDataSnapshot.docs[x].data())
-                      .id
-                      .toString()));
+              .doc(SpecificData.fromJson(testSpecDataSnapshot.docs[x].data())
+                  .id
+                  .toString()));
           batch = await _reinitializeBatch(batch, x);
         }
       }

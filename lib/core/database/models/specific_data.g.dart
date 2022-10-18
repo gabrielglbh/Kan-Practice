@@ -1,13 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'test_specific_data.dart';
+part of 'specific_data.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-TestSpecificData _$TestSpecificDataFromJson(Map<String, dynamic> json) =>
-    TestSpecificData(
+SpecificData _$SpecificDataFromJson(Map<String, dynamic> json) => SpecificData(
       id: json['id'] as int,
       totalWritingCount: json['totalWritingCount'] as int,
       totalReadingCount: json['totalReadingCount'] as int,
@@ -22,7 +21,7 @@ TestSpecificData _$TestSpecificDataFromJson(Map<String, dynamic> json) =>
       totalWinRateSpeaking: (json['totalWinRateSpeaking'] as num).toDouble(),
     );
 
-Map<String, dynamic> _$TestSpecificDataToJson(TestSpecificData instance) =>
+Map<String, dynamic> _$SpecificDataToJson(SpecificData instance) =>
     <String, dynamic>{
       'id': instance.id,
       'totalWritingCount': instance.totalWritingCount,

@@ -2,7 +2,7 @@ import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/test_data.dart';
 import 'package:kanpractice/core/database/models/test_result.dart';
-import 'package:kanpractice/core/database/models/test_specific_data.dart';
+import 'package:kanpractice/core/database/models/specific_data.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/study_modes_filters.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
@@ -129,7 +129,7 @@ class TestQueries {
     }
   }
 
-  Future<TestSpecificData> getSpecificTestData(Tests mode) async {
+  Future<SpecificData> getSpecificTestData(Tests mode) async {
     if (_database != null) {
       try {
         final res = await _database?.query(
@@ -138,16 +138,16 @@ class TestQueries {
           whereArgs: [mode.index],
         );
         if (res != null) {
-          return TestSpecificData.fromJson(res[0]);
+          return SpecificData.fromJson(res[0]);
         } else {
-          return TestSpecificData.empty;
+          return SpecificData.empty;
         }
       } catch (err) {
         print(err.toString());
-        return TestSpecificData.empty;
+        return SpecificData.empty;
       }
     } else {
-      return TestSpecificData.empty;
+      return SpecificData.empty;
     }
   }
 
@@ -179,7 +179,7 @@ class TestQueries {
           TestData rawTestData = TestData.fromJson(res[0]);
           for (var t in Tests.values) {
             final rawSpec = await getSpecificTestData(t);
-            if (rawSpec != TestSpecificData.empty) {
+            if (rawSpec != SpecificData.empty) {
               rawTestData = rawTestData.copyWith(rawSpec);
             }
           }
@@ -346,7 +346,7 @@ class TestQueries {
   Future<void> _updateSpecificTestStats(Test test) async {
     final raw = await getSpecificTestData(Tests.values[test.testMode!]);
 
-    if (raw != TestSpecificData.empty) {
+    if (raw != SpecificData.empty) {
       late Map<String, num> map;
 
       switch (StudyModes.values[test.studyMode]) {
@@ -412,7 +412,7 @@ class TestQueries {
       final m = StudyModes.values[test.studyMode];
       await _database?.insert(
         TestSpecificDataTableFields.testDataTable,
-        TestSpecificData(
+        SpecificData(
           id: test.testMode!,
           totalWritingCount: m == StudyModes.writing ? 1 : 0,
           totalReadingCount: m == StudyModes.reading ? 1 : 0,

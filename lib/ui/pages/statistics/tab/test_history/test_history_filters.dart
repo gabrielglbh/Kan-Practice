@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/study_modes_filters.dart';
 import 'package:kanpractice/core/types/test_modes_filters.dart';
 import 'package:kanpractice/ui/consts.dart';
@@ -7,6 +8,7 @@ import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/ui/pages/statistics/tab/test_history/test_history.dart';
 import 'package:kanpractice/ui/widgets/kp_button.dart';
 import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class TestHistoryFilters extends StatefulWidget {
   final TestHistoryArgs data;
@@ -18,6 +20,7 @@ class TestHistoryFilters extends StatefulWidget {
 
 class _TestHistoryFiltersState extends State<TestHistoryFilters> {
   late DateTime _firstDate, _lastDate;
+  List<_ChartData> studyModesAllIcon = [];
   TestFilters _testsFilter = TestFilters.all;
   StudyModeFilters _modesFilter = StudyModeFilters.all;
 
@@ -34,6 +37,14 @@ class _TestHistoryFiltersState extends State<TestHistoryFilters> {
     _lastDate = widget.data.lastDate;
     _testsFilter = widget.data.testFilters;
     _modesFilter = widget.data.modeFilters;
+    studyModesAllIcon = List.generate(
+      StudyModes.values.length,
+      (i) => _ChartData(
+        '$i',
+        100 / StudyModes.values.length,
+        StudyModes.values[i].color,
+      ),
+    );
     super.initState();
   }
 
@@ -99,8 +110,11 @@ class _TestHistoryFiltersState extends State<TestHistoryFilters> {
                                     value: filter.nameAbbr,
                                     child: Row(
                                       children: [
-                                        Icon(filter.icon),
-                                        const SizedBox(width: 8),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: Margins.margin12),
+                                          child: Icon(filter.icon),
+                                        ),
                                         Text(filter.nameAbbr),
                                       ],
                                     )))
@@ -143,15 +157,39 @@ class _TestHistoryFiltersState extends State<TestHistoryFilters> {
                                     value: mode.mode,
                                     child: Row(
                                       children: [
-                                        Container(
-                                          width: Margins.margin16,
-                                          height: Margins.margin16,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: mode.color,
+                                        if (mode != StudyModeFilters.all)
+                                          Container(
+                                            width: Margins.margin16,
+                                            height: Margins.margin16,
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: Margins.margin12),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: mode.color,
+                                            ),
+                                          )
+                                        else
+                                          SizedBox(
+                                            width: 40,
+                                            height: 40,
+                                            child: SfCircularChart(
+                                              tooltipBehavior: TooltipBehavior(
+                                                enable: false,
+                                              ),
+                                              series: <CircularSeries>[
+                                                PieSeries<_ChartData, String>(
+                                                  animationDuration: 0,
+                                                  dataSource: studyModesAllIcon,
+                                                  pointColorMapper: (data, _) =>
+                                                      data.color,
+                                                  xValueMapper: (data, _) =>
+                                                      data.x,
+                                                  yValueMapper: (data, _) =>
+                                                      data.y,
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(width: 8),
                                         Text(mode.mode),
                                       ],
                                     )))
@@ -187,4 +225,11 @@ class _TestHistoryFiltersState extends State<TestHistoryFilters> {
       ),
     );
   }
+}
+
+class _ChartData {
+  _ChartData(this.x, this.y, this.color);
+  final String x;
+  final double y;
+  final Color color;
 }

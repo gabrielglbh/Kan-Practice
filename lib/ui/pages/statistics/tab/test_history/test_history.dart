@@ -135,7 +135,7 @@ class _TestHistoryState extends State<TestHistory>
             ),
             const Divider(),
             StatsHeader(
-              title: "${"stats_tests_total_acc".tr()} • ",
+              title: "stats_tests_total_acc".tr(),
               value: GeneralUtils.getFixedPercentageAsString(
                   widget.s.test.totalTestAccuracy),
             ),

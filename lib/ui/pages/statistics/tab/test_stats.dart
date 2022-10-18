@@ -27,7 +27,7 @@ class _TestStatsState extends State<TestStats>
     return ListView(
       children: [
         StatsHeader(
-          title: "${"stats_tests".tr()} • ",
+          title: "stats_tests".tr(),
           value: widget.s.test.totalTests.toString(),
         ),
         KPBarChart(

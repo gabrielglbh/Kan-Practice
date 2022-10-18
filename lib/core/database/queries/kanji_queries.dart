@@ -15,7 +15,7 @@ class KanjiQueries {
   }
 
   static final KanjiQueries _instance = KanjiQueries._();
-  static final int categoryId = -9999;
+  static const int categoryId = -9999;
 
   /// Singleton instance of [KanjiQueries]
   static KanjiQueries get instance => _instance;

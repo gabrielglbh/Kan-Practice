@@ -30,7 +30,7 @@ class _ListStatsState extends State<ListStats>
     return ListView(
       children: [
         StatsHeader(
-          title: "${"stats_words".tr()} • ",
+          title: "stats_words".tr(),
           value: "${widget.s.totalLists} ${"stats_words_lists".tr()}",
         ),
         _countLabel(context, widget.s.totalKanji.toString()),

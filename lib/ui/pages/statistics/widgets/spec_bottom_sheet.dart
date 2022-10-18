@@ -62,10 +62,10 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
             children: [
               const KPDragContainer(),
               StatsHeader(
-                title: _isCategory ? "# ${widget.title}" : "${widget.title} • ",
-                value: _isCategory ? "" : total.toString(),
+                title: _isCategory ? "# ${widget.title}" : widget.title,
+                value: _isCategory ? null : total.toString(),
                 verticalVisualDensity: -4,
-                textAlign: TextAlign.center,
+                align: MainAxisAlignment.center,
               ),
               Column(
                 mainAxisSize: MainAxisSize.min,
@@ -130,8 +130,8 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                       ),
                     ),
                   StatsHeader(
-                    title: "${"specific_accuracy_label".tr()} • ",
-                    textAlign: TextAlign.center,
+                    title: "specific_accuracy_label".tr(),
+                    align: MainAxisAlignment.center,
                     verticalVisualDensity: -4,
                     value: GeneralUtils.getFixedPercentageAsString(
                         aggregate / StudyModes.values.length),

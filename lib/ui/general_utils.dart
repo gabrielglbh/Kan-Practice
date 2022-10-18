@@ -204,11 +204,6 @@ class GeneralUtils {
     );
   }
 
-  static String parseDate(DateTime date) {
-    final format = DateFormat('dd/MM/yyyy');
-    return format.format(date);
-  }
-
   static Future<DateTimeRange?> showRangeTimeDialog(
     BuildContext context,
     DateTime firstDate,

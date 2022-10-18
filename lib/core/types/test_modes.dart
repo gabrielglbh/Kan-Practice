@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 /// When adding a new test, be aware of the need to update the DB
 /// [TestDataTableFields] and [TestSpecificDataTableFields] along
 /// the [TestQueries] and [BackUpQueries] queries.  Dont forget
-/// the switch checks in the base code (see Usages on [Tests])
+/// the switch checks in the base code (see Usages on [Tests]).
+/// Also, add them to [TestFilters]
 
 enum Tests { lists, blitz, time, numbers, less, categories, folder, daily }
 
@@ -74,6 +75,7 @@ extension TestsExt on Tests {
   }
 }
 
+// TODO: Remove
 class TestsUtils {
   /// Maps the int received from the source to a Tests. Based on [map]
   static Tests mapTestMode(int map) => Tests.values[map];

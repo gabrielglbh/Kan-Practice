@@ -361,12 +361,18 @@
   "settings_general_kanji_list": "Group statistics by word",
   "settings_general_kanji_list_description": "When active, all KanLists words will show the mean accross all study modes instead of swipping between them",
   "tests": "Tests",
-  "specific_test_accuracy_label": "Success Rate on Test",
-  "success": "Success Rate",
+  "specific_test_accuracy_label": "Accuracy Rate on Test",
+  "success": "Accuracy Rate",
   "words_by_category": "Total Numbers of Words by Category",
-  "history_tests_header": "Total Success of Tests on the Chosen Dates",
+  "history_tests_header": "Total Accuracy of Tests based on Filters",
   "date_picker_helper": "Choose a Range",
   "date_picker_start_hint": "Initial Date",
   "date_picker_end_hint": "End Date",
-  "date_picker_save": "Save"
+  "date_picker_save": "Save",
+  "history_tests_filter": "Filters",
+  "all_filter": "All",
+  "filter_select_dates_label": "Date range",
+  "filter_select_test_type_label": "Test type",
+  "filter_select_study_mode_label": "Study mode",
+  "filter_apply": "Apply"
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 
+/// TODO When adding a new study mode, be sure to update [StudyModeFilters] too
 enum StudyModes { writing, reading, recognition, listening, speaking }
 
 extension StudyModesExt on StudyModes {
@@ -81,6 +82,7 @@ extension StudyModesExt on StudyModes {
   }
 }
 
+// TODO: Remove
 class StudyModesUtil {
   /// Maps the integer received from the source to a StudyModes. Based on [map]
   static StudyModes mapStudyMode(int map) => StudyModes.values[map];

@@ -29,6 +29,7 @@ class KPCartesianChart<T> extends StatelessWidget {
   final DateTimeIntervalType intervalType;
   final ZoomPanBehavior? zoomPanBehavior;
   final int markerThreshold;
+  final double? height;
   const KPCartesianChart({
     Key? key,
     required this.dataSource,
@@ -36,11 +37,13 @@ class KPCartesianChart<T> extends StatelessWidget {
     this.intervalType = DateTimeIntervalType.auto,
     this.zoomPanBehavior,
     this.markerThreshold = 200,
+    this.height,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      height: height,
       child: SfCartesianChart(
         tooltipBehavior: TooltipBehavior(
           enable: true,

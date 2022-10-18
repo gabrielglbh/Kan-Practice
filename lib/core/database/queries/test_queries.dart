@@ -4,7 +4,9 @@ import 'package:kanpractice/core/database/models/test_data.dart';
 import 'package:kanpractice/core/database/models/test_result.dart';
 import 'package:kanpractice/core/database/models/test_specific_data.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
+import 'package:kanpractice/core/types/study_modes_filters.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
+import 'package:kanpractice/core/types/test_modes_filters.dart';
 import 'package:sqflite/sqflite.dart';
 
 class TestQueries {
@@ -65,15 +67,33 @@ class TestQueries {
 
   /// Query to get all [Test] from the db using lazy loading. It will
   /// retrieve the tests performed between [initial] and [last].
-  Future<List<Test>> getTests(DateTime initial, DateTime last) async {
+  Future<List<Test>> getTests(
+    DateTime initial,
+    DateTime last,
+    TestFilters testFilter,
+    StudyModeFilters modesFilter,
+  ) async {
     if (_database != null) {
       try {
         final initialMs = initial.millisecondsSinceEpoch;
         final lastMs = last.millisecondsSinceEpoch;
+        String testFilterQuery = "";
+        String modeFilterQuery = "";
+
+        if (testFilter != TestFilters.all) {
+          testFilterQuery =
+              "AND ${TestTableFields.testModeField} == ${testFilter.index - 1}";
+        }
+
+        if (modesFilter != StudyModeFilters.all) {
+          modeFilterQuery =
+              "AND ${TestTableFields.studyModeField} == ${modesFilter.index - 1}";
+        }
+
         List<Map<String, dynamic>>? res = await _database?.rawQuery(
           "SELECT * FROM ${TestTableFields.testTable} "
           "WHERE ${TestTableFields.takenDateField} >= $initialMs "
-          "AND ${TestTableFields.takenDateField} <= $lastMs",
+          "AND ${TestTableFields.takenDateField} <= $lastMs $testFilterQuery $modeFilterQuery",
         );
         if (res != null) {
           return List.generate(res.length, (i) => Test.fromJson(res[i]));

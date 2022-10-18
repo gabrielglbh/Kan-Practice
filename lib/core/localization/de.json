@@ -364,9 +364,15 @@
   "specific_test_accuracy_label": "Erfolgsquote beim Test",
   "success": "Erfolgsquote",
   "words_by_category": "Gesamtzahl der Wörter nach Kategorie",
-  "history_tests_header": "Gesamterfolg der Tests an den gewählten Daten",
+  "history_tests_header": "Gesamtgenauigkeit der Tests auf der Grundlage von Filtern",
   "date_picker_helper": "Wählen Sie einen Bereich",
   "date_picker_start_hint": "Anfangsdatum",
   "date_picker_end_hint": "Enddatum",
-  "date_picker_save": "Speichern"
+  "date_picker_save": "Speichern",
+  "history_tests_filter": "Filter",
+  "all_filter": "Alle",
+  "filter_select_dates_label": "Datumsbereich",
+  "filter_select_test_type_label": "Testart",
+  "filter_select_study_mode_label": "Studienmodus",
+  "filter_apply": "Anwenden"
 }

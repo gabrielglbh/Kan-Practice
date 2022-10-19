@@ -14,6 +14,7 @@ class KPBarChart extends StatelessWidget {
   final ChartAxis? axysType;
   final String tooltip;
   final String graphName;
+  final double animationDuration;
   const KPBarChart({
     Key? key,
     required this.dataSource,
@@ -24,6 +25,7 @@ class KPBarChart extends StatelessWidget {
     this.isHorizontalChart = false,
     this.axysType,
     this.tooltip = "",
+    this.animationDuration = 1000,
   }) : super(key: key);
 
   bool get _isWinRateChart => tooltip == "%";
@@ -48,7 +50,7 @@ class KPBarChart extends StatelessWidget {
           series: <ChartSeries<DataFrame, String>>[
             !isHorizontalChart
                 ? ColumnSeries<DataFrame, String>(
-                    animationDuration: 1000,
+                    animationDuration: animationDuration,
                     name: graphName,
                     dataSource: dataSource,
                     pointColorMapper: (DataFrame data, _) => data.color,
@@ -62,7 +64,7 @@ class KPBarChart extends StatelessWidget {
                         : null,
                   )
                 : BarSeries<DataFrame, String>(
-                    animationDuration: 1000,
+                    animationDuration: animationDuration,
                     name: graphName,
                     dataSource: dataSource,
                     pointColorMapper: (DataFrame data, _) => data.color,

@@ -27,18 +27,23 @@ class KPCartesianChart<T> extends StatelessWidget {
   final List<TestDataFrame> dataSource;
   final String graphName;
   final DateTimeIntervalType intervalType;
+  final ZoomPanBehavior? zoomPanBehavior;
+  final int markerThreshold;
+  final double? height;
   const KPCartesianChart({
     Key? key,
     required this.dataSource,
     required this.graphName,
     this.intervalType = DateTimeIntervalType.auto,
+    this.zoomPanBehavior,
+    this.markerThreshold = 200,
+    this.height,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: CustomSizes.defaultSizeWinRateBarChart * 4,
-      width: MediaQuery.of(context).size.width - Margins.margin48,
+      height: height,
       child: SfCartesianChart(
         tooltipBehavior: TooltipBehavior(
           enable: true,
@@ -47,11 +52,7 @@ class KPCartesianChart<T> extends StatelessWidget {
                 source: dataSource[pointIndex],
               )),
         ),
-        zoomPanBehavior: ZoomPanBehavior(
-          enablePinching: true,
-          enablePanning: true,
-          enableDoubleTapZooming: true,
-        ),
+        zoomPanBehavior: zoomPanBehavior,
         onMarkerRender: (args) {
           final point = args.pointIndex;
           args.color = point == null ? null : dataSource[point].studyMode.color;
@@ -65,22 +66,22 @@ class KPCartesianChart<T> extends StatelessWidget {
         primaryYAxis: NumericAxis(maximum: 120, minimum: 0, interval: 20),
         series: <ChartSeries<TestDataFrame, DateTime>>[
           LineSeries<TestDataFrame, DateTime>(
-            animationDuration: 1500,
+            animationDuration: 0,
             name: graphName,
             dataSource: dataSource,
             enableTooltip: true,
-            markerSettings: const MarkerSettings(
+            markerSettings: MarkerSettings(
               isVisible: true,
               color: Colors.white,
-              width: 18,
-              height: 18,
+              width: dataSource.length > markerThreshold ? 9 : 14,
+              height: dataSource.length > markerThreshold ? 9 : 14,
             ),
             xValueMapper: (TestDataFrame data, _) => data.x,
             yValueMapper: (TestDataFrame data, _) =>
                 data.y == DatabaseConstants.emptyWinRate
                     ? 0
                     : GeneralUtils.getFixedPercentage(data.y),
-            color: CustomColors.secondaryDarkerColor,
+            color: CustomColors.secondaryColor,
           )
         ],
       ),

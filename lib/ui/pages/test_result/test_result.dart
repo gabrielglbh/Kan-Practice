@@ -62,8 +62,7 @@ class _TestResultState extends State<TestResult> {
           ),
           WinRateChart(
             winRate: widget.args.score,
-            backgroundColor:
-                StudyModesUtil.mapStudyMode(widget.args.studyMode).color,
+            backgroundColor: StudyModes.values[widget.args.studyMode].color,
             size: MediaQuery.of(context).size.width / 2.5,
             rateSize: ChartSize.large,
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/ui/consts.dart';
 import 'package:kanpractice/ui/pages/statistics/bloc/stats_bloc.dart';
 import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -105,6 +106,7 @@ class _StatisticsPageState extends State<StatisticsPage>
     return Column(
       children: [
         TabBar(controller: _controller, tabs: _tabs),
+        const SizedBox(height: Margins.margin16),
         Expanded(
           child: TabBarView(
             controller: _controller,

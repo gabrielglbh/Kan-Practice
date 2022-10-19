@@ -1,33 +1,38 @@
 import 'package:flutter/material.dart';
 
 class StatsHeader extends StatelessWidget {
-  final TextAlign? textAlign;
+  final MainAxisAlignment? align;
   final String title;
-  final String value;
+  final String? value;
   final double verticalVisualDensity;
   const StatsHeader({
     super.key,
     required this.title,
-    this.value = "",
-    this.textAlign,
+    this.value,
+    this.align,
     this.verticalVisualDensity = 0,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-        visualDensity: VisualDensity(vertical: verticalVisualDensity),
-        title: RichText(
-          textAlign: textAlign ?? TextAlign.start,
-          text: TextSpan(children: [
-            TextSpan(text: title, style: Theme.of(context).textTheme.headline6),
-            TextSpan(
-                text: value,
+      visualDensity: VisualDensity(vertical: verticalVisualDensity),
+      title: Row(
+        mainAxisAlignment: align ?? MainAxisAlignment.start,
+        children: [
+          Flexible(
+            child: Text(title, style: Theme.of(context).textTheme.headline6),
+          ),
+          if (value != null)
+            Text("  •  ", style: Theme.of(context).textTheme.headline6),
+          if (value != null)
+            Text(value!,
                 style: Theme.of(context)
                     .textTheme
                     .headline6
                     ?.copyWith(fontWeight: FontWeight.normal))
-          ]),
-        ));
+        ],
+      ),
+    );
   }
 }

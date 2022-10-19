@@ -11,12 +11,15 @@ import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
 import 'package:kanpractice/ui/pages/dictionary/bloc/dict_bloc.dart';
 import 'package:kanpractice/ui/pages/dictionary/dictionary.dart';
 import 'package:kanpractice/ui/pages/firebase_login/login.dart';
+import 'package:kanpractice/ui/pages/statistics/tab/test_history/test_history_filters.dart';
+import 'package:kanpractice/ui/pages/statistics/tab/test_history/test_history_landscape.dart';
 import 'package:kanpractice/ui/pages/home/home.dart';
 import 'package:kanpractice/ui/pages/jisho/arguments.dart';
 import 'package:kanpractice/ui/pages/jisho/jisho.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/bloc/details_bloc.dart';
 import 'package:kanpractice/ui/pages/kanji_list_details/list_details.dart';
 import 'package:kanpractice/ui/pages/kanji_list_on_folder/kanji_list_on_folder.dart';
+import 'package:kanpractice/ui/pages/statistics/tab/test_history/test_history.dart';
 import 'package:kanpractice/ui/pages/study_modes/listening.dart';
 import 'package:kanpractice/ui/pages/study_modes/reading.dart';
 import 'package:kanpractice/ui/pages/study_modes/recognition.dart';
@@ -98,6 +101,16 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
               create: (_) =>
                   WordHistoryBloc()..add(const WordHistoryEventLoading()),
               child: const WordHistoryPage()));
+    case KanPracticePages.historyTestExpandedPage:
+      return CupertinoPageRoute(builder: (_) {
+        TestHistoryArgs data = settings.arguments as TestHistoryArgs;
+        return TestHistoryExpanded(data: data);
+      });
+    case KanPracticePages.historyTestFiltersPage:
+      return CupertinoPageRoute(builder: (_) {
+        TestHistoryArgs data = settings.arguments as TestHistoryArgs;
+        return TestHistoryFilters(data: data);
+      });
   }
   return null;
 }

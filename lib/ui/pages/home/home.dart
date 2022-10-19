@@ -190,6 +190,16 @@ class _HomePageState extends State<HomePage>
       icon:
           const Icon(Icons.update_rounded, color: CustomColors.secondaryColor),
     );
+    final dictHistory = IconButton(
+      onPressed: () {
+        Navigator.of(context).pushNamed(KanPracticePages.historyWordPage);
+      },
+      icon: const Icon(Icons.history_rounded),
+    );
+
+    final dictionaryAppBarIcons =
+        _newVersion.isNotEmpty ? [updateIcon, dictHistory] : [dictHistory];
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<KanjiListBloc>(
@@ -254,16 +264,7 @@ class _HomePageState extends State<HomePage>
                   ? _newVersion.isNotEmpty
                       ? [updateIcon]
                       : null
-                  : [
-                      updateIcon,
-                      IconButton(
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushNamed(KanPracticePages.historyWordPage);
-                        },
-                        icon: const Icon(Icons.history_rounded),
-                      ),
-                    ],
+                  : dictionaryAppBarIcons,
               bottomNavigationWidget: HomeBottomNavigation(
                 tutorialKeys: [kanList, dictionary, actions, market, settings],
                 currentPage: _currentPage,

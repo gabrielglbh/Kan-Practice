@@ -4,7 +4,7 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/models/rel_folder_kanlist.dart';
 import 'package:kanpractice/core/database/models/test_data.dart';
-import 'package:kanpractice/core/database/models/test_specific_data.dart';
+import 'package:kanpractice/core/database/models/specific_data.dart';
 
 part 'backup.g.dart';
 
@@ -13,7 +13,7 @@ class BackUp {
   final List<KanjiList> lists;
   final List<Kanji> kanji;
   final TestData testData;
-  final List<TestSpecificData> testSpecData;
+  final List<SpecificData> testSpecData;
   final List<Folder> folders;
   final List<RelFolderKanList> relFolderKanList;
   final int lastUpdated;

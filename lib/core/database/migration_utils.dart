@@ -2,7 +2,7 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/test_data.dart';
 import 'package:kanpractice/core/database/models/test_result.dart';
-import 'package:kanpractice/core/database/models/test_specific_data.dart';
+import 'package:kanpractice/core/database/models/specific_data.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:sqflite/sqflite.dart';
@@ -182,7 +182,7 @@ class MigrationUtils {
       final List<Test> tests =
           List.generate(res.length, (i) => Test.fromJson(res[i]));
       for (var t in tests) {
-        switch (TestsUtils.mapTestMode(t.testMode ?? -1)) {
+        switch (Tests.values[t.testMode ?? -1]) {
           case Tests.lists:
             counters[0] += 1;
             break;
@@ -216,7 +216,7 @@ class MigrationUtils {
     }
   }
 
-  Future<TestSpecificData> _getTestSpecificStudyModeAccuracies(
+  Future<SpecificData> _getTestSpecificStudyModeAccuracies(
     Database db,
     Tests mode,
   ) async {
@@ -224,13 +224,13 @@ class MigrationUtils {
       final res = await db.query(TestTableFields.testTable,
           where: "${TestTableFields.testModeField}=?", whereArgs: [mode.index]);
       List<Test> t = List.generate(res.length, (i) => Test.fromJson(res[i]));
-      if (t.isEmpty) return TestSpecificData.empty;
+      if (t.isEmpty) return SpecificData.empty;
 
       double w = 0, red = 0, rec = 0, l = 0, s = 0;
       int wc = 0, redc = 0, recc = 0, lc = 0, sc = 0;
 
       for (var test in t) {
-        switch (StudyModesUtil.mapStudyMode(test.studyMode)) {
+        switch (StudyModes.values[test.studyMode]) {
           case StudyModes.writing:
             w += test.testScore;
             wc += 1;
@@ -254,7 +254,7 @@ class MigrationUtils {
         }
       }
 
-      return TestSpecificData(
+      return SpecificData(
         id: mode.index,
         totalWritingCount: wc,
         totalReadingCount: redc,
@@ -268,7 +268,7 @@ class MigrationUtils {
         totalWinRateSpeaking: sc == 0 ? 0 : s / sc,
       );
     } catch (err) {
-      return TestSpecificData.empty;
+      return SpecificData.empty;
     }
   }
 }

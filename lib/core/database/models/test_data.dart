@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/database/models/test_specific_data.dart';
+import 'package:kanpractice/core/database/models/specific_data.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 
 part 'test_data.g.dart';
@@ -22,28 +22,28 @@ class TestData {
   final double testTotalWinRateSpeaking;
   final int selectionTests;
   @JsonKey(ignore: true)
-  final TestSpecificData selectionTestData;
+  final SpecificData selectionTestData;
   final int blitzTests;
   @JsonKey(ignore: true)
-  final TestSpecificData blitzTestData;
+  final SpecificData blitzTestData;
   final int remembranceTests;
   @JsonKey(ignore: true)
-  final TestSpecificData remembranceTestData;
+  final SpecificData remembranceTestData;
   final int numberTests;
   @JsonKey(ignore: true)
-  final TestSpecificData numberTestData;
+  final SpecificData numberTestData;
   final int lessPctTests;
   @JsonKey(ignore: true)
-  final TestSpecificData lessPctTestData;
+  final SpecificData lessPctTestData;
   final int categoryTests;
   @JsonKey(ignore: true)
-  final TestSpecificData categoryTestData;
+  final SpecificData categoryTestData;
   final int folderTests;
   @JsonKey(ignore: true)
-  final TestSpecificData folderTestData;
+  final SpecificData folderTestData;
   final int dailyTests;
   @JsonKey(ignore: true)
-  final TestSpecificData dailyTestData;
+  final SpecificData dailyTestData;
 
   const TestData({
     this.statsId = TestDataTableFields.statsMainId,
@@ -67,18 +67,18 @@ class TestData {
     required this.categoryTests,
     required this.folderTests,
     required this.dailyTests,
-    this.selectionTestData = TestSpecificData.empty,
-    this.blitzTestData = TestSpecificData.empty,
-    this.remembranceTestData = TestSpecificData.empty,
-    this.numberTestData = TestSpecificData.empty,
-    this.lessPctTestData = TestSpecificData.empty,
-    this.categoryTestData = TestSpecificData.empty,
-    this.folderTestData = TestSpecificData.empty,
-    this.dailyTestData = TestSpecificData.empty,
+    this.selectionTestData = SpecificData.empty,
+    this.blitzTestData = SpecificData.empty,
+    this.remembranceTestData = SpecificData.empty,
+    this.numberTestData = SpecificData.empty,
+    this.lessPctTestData = SpecificData.empty,
+    this.categoryTestData = SpecificData.empty,
+    this.folderTestData = SpecificData.empty,
+    this.dailyTestData = SpecificData.empty,
   });
 
-  TestData copyWith(TestSpecificData testSpecs) {
-    final test = TestsUtils.mapTestMode(testSpecs.id);
+  TestData copyWith(SpecificData testSpecs) {
+    final test = Tests.values[testSpecs.id];
     return TestData(
       totalTests: totalTests,
       totalTestAccuracy: totalTestAccuracy,

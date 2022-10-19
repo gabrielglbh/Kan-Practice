@@ -1,6 +1,7 @@
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
+import 'package:kanpractice/core/database/models/specific_data.dart';
 import 'package:kanpractice/core/types/kanji_categories.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
@@ -14,6 +15,7 @@ class KanjiQueries {
   }
 
   static final KanjiQueries _instance = KanjiQueries._();
+  static const int categoryId = -9999;
 
   /// Singleton instance of [KanjiQueries]
   static KanjiQueries get instance => _instance;
@@ -227,6 +229,53 @@ class KanjiQueries {
       }
     } else {
       return [];
+    }
+  }
+
+  Future<SpecificData> getSpecificCategoryData(KanjiCategory mode) async {
+    if (_database != null) {
+      try {
+        final res = await _database?.query(
+          KanjiTableFields.kanjiTable,
+          where: "${KanjiTableFields.categoryField}=?",
+          whereArgs: [mode.index],
+        );
+        if (res != null) {
+          final list = List.generate(res.length, (i) => Kanji.fromJson(res[i]));
+          double writing = 0,
+              reading = 0,
+              recognition = 0,
+              listening = 0,
+              speaking = 0;
+          for (var kanji in list) {
+            writing += kanji.winRateWriting;
+            reading += kanji.winRateReading;
+            recognition += kanji.winRateRecognition;
+            listening += kanji.winRateListening;
+            speaking += kanji.winRateSpeaking;
+          }
+          return SpecificData(
+            id: categoryId,
+            totalWritingCount: list.length,
+            totalReadingCount: 0,
+            totalRecognitionCount: 0,
+            totalListeningCount: 0,
+            totalSpeakingCount: 0,
+            totalWinRateWriting: writing / list.length,
+            totalWinRateReading: reading / list.length,
+            totalWinRateRecognition: recognition / list.length,
+            totalWinRateListening: listening / list.length,
+            totalWinRateSpeaking: speaking / list.length,
+          );
+        } else {
+          return SpecificData.empty;
+        }
+      } catch (err) {
+        print(err.toString());
+        return SpecificData.empty;
+      }
+    } else {
+      return SpecificData.empty;
     }
   }
 

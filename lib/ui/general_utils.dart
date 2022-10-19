@@ -203,4 +203,44 @@ class GeneralUtils {
       },
     );
   }
+
+  static Future<DateTimeRange?> showRangeTimeDialog(
+    BuildContext context,
+    DateTime firstDate,
+    DateTime lastDate,
+  ) async {
+    final dialogColor = Theme.of(context).brightness == Brightness.light
+        ? Colors.black
+        : Colors.white;
+    late DateTimeRange? range;
+    await showDateRangePicker(
+      context: context,
+      initialDateRange: DateTimeRange(start: firstDate, end: lastDate),
+      initialEntryMode: DatePickerEntryMode.calendarOnly,
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now(),
+      locale: context.locale,
+      helpText: 'date_picker_helper'.tr(),
+      fieldStartHintText: 'date_picker_start_hint'.tr(),
+      fieldEndHintText: 'date_picker_end_hint'.tr(),
+      saveText: 'date_picker_save'.tr(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            primaryColor: CustomColors.secondaryColor,
+            splashColor: CustomColors.secondaryColor,
+            colorScheme: ColorScheme.fromSwatch().copyWith(
+              primary: CustomColors.secondaryColor,
+              onPrimary: dialogColor,
+              surface: CustomColors.secondaryColor,
+              onSurface: dialogColor,
+              secondary: CustomColors.secondaryColor,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    ).then((value) => range = value);
+    return range;
+  }
 }

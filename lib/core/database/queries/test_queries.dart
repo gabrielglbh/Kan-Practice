@@ -2,9 +2,11 @@ import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/test_data.dart';
 import 'package:kanpractice/core/database/models/test_result.dart';
-import 'package:kanpractice/core/database/models/test_specific_data.dart';
+import 'package:kanpractice/core/database/models/specific_data.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
+import 'package:kanpractice/core/types/study_modes_filters.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
+import 'package:kanpractice/core/types/test_modes_filters.dart';
 import 'package:sqflite/sqflite.dart';
 
 class TestQueries {
@@ -65,15 +67,33 @@ class TestQueries {
 
   /// Query to get all [Test] from the db using lazy loading. It will
   /// retrieve the tests performed between [initial] and [last].
-  Future<List<Test>> getTests(DateTime initial, DateTime last) async {
+  Future<List<Test>> getTests(
+    DateTime initial,
+    DateTime last,
+    TestFilters testFilter,
+    StudyModeFilters modesFilter,
+  ) async {
     if (_database != null) {
       try {
         final initialMs = initial.millisecondsSinceEpoch;
         final lastMs = last.millisecondsSinceEpoch;
+        String testFilterQuery = "";
+        String modeFilterQuery = "";
+
+        if (testFilter != TestFilters.all) {
+          testFilterQuery =
+              "AND ${TestTableFields.testModeField} == ${testFilter.index - 1}";
+        }
+
+        if (modesFilter != StudyModeFilters.all) {
+          modeFilterQuery =
+              "AND ${TestTableFields.studyModeField} == ${modesFilter.index - 1}";
+        }
+
         List<Map<String, dynamic>>? res = await _database?.rawQuery(
           "SELECT * FROM ${TestTableFields.testTable} "
           "WHERE ${TestTableFields.takenDateField} >= $initialMs "
-          "AND ${TestTableFields.takenDateField} <= $lastMs",
+          "AND ${TestTableFields.takenDateField} <= $lastMs $testFilterQuery $modeFilterQuery",
         );
         if (res != null) {
           return List.generate(res.length, (i) => Test.fromJson(res[i]));
@@ -109,7 +129,7 @@ class TestQueries {
     }
   }
 
-  Future<TestSpecificData> getSpecificTestData(Tests mode) async {
+  Future<SpecificData> getSpecificTestData(Tests mode) async {
     if (_database != null) {
       try {
         final res = await _database?.query(
@@ -118,16 +138,16 @@ class TestQueries {
           whereArgs: [mode.index],
         );
         if (res != null) {
-          return TestSpecificData.fromJson(res[0]);
+          return SpecificData.fromJson(res[0]);
         } else {
-          return TestSpecificData.empty;
+          return SpecificData.empty;
         }
       } catch (err) {
         print(err.toString());
-        return TestSpecificData.empty;
+        return SpecificData.empty;
       }
     } else {
-      return TestSpecificData.empty;
+      return SpecificData.empty;
     }
   }
 
@@ -159,7 +179,7 @@ class TestQueries {
           TestData rawTestData = TestData.fromJson(res[0]);
           for (var t in Tests.values) {
             final rawSpec = await getSpecificTestData(t);
-            if (rawSpec != TestSpecificData.empty) {
+            if (rawSpec != SpecificData.empty) {
               rawTestData = rawTestData.copyWith(rawSpec);
             }
           }
@@ -207,7 +227,7 @@ class TestQueries {
   /// accuracy and the total tests accuracy using N*C + C' / N'
   Map<String, num> _getAdditionalParams(TestData curr, Test test) {
     final score = test.testScore;
-    switch (StudyModesUtil.mapStudyMode(test.studyMode)) {
+    switch (StudyModes.values[test.studyMode]) {
       case StudyModes.writing:
         final totalTests = curr.testTotalCountWriting + 1;
         final newAcc =
@@ -298,7 +318,7 @@ class TestQueries {
 
   /// Updates the count on test performed
   Map<String, num> _getTestParams(TestData curr, Test test) {
-    switch (TestsUtils.mapTestMode(test.testMode!)) {
+    switch (Tests.values[test.testMode!]) {
       case Tests.lists:
         return {
           TestDataTableFields.selectionTestsField: curr.selectionTests + 1
@@ -324,13 +344,12 @@ class TestQueries {
 
   /// Updates the [test] specific stats using N*C + C' / N'
   Future<void> _updateSpecificTestStats(Test test) async {
-    final raw =
-        await getSpecificTestData(TestsUtils.mapTestMode(test.testMode!));
+    final raw = await getSpecificTestData(Tests.values[test.testMode!]);
 
-    if (raw != TestSpecificData.empty) {
+    if (raw != SpecificData.empty) {
       late Map<String, num> map;
 
-      switch (StudyModesUtil.mapStudyMode(test.studyMode)) {
+      switch (StudyModes.values[test.studyMode]) {
         case StudyModes.writing:
           final count = raw.totalWritingCount + 1;
           map = {
@@ -390,10 +409,10 @@ class TestQueries {
         whereArgs: [raw.id],
       );
     } else {
-      final m = StudyModesUtil.mapStudyMode(test.studyMode);
+      final m = StudyModes.values[test.studyMode];
       await _database?.insert(
         TestSpecificDataTableFields.testDataTable,
-        TestSpecificData(
+        SpecificData(
           id: test.testMode!,
           totalWritingCount: m == StudyModes.writing ? 1 : 0,
           totalReadingCount: m == StudyModes.reading ? 1 : 0,

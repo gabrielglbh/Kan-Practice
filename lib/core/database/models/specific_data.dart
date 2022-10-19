@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'test_specific_data.g.dart';
+part 'specific_data.g.dart';
 
 @JsonSerializable()
-class TestSpecificData {
+class SpecificData {
   final int id;
   final int totalWritingCount;
   final int totalReadingCount;
@@ -16,7 +16,7 @@ class TestSpecificData {
   final double totalWinRateListening;
   final double totalWinRateSpeaking;
 
-  const TestSpecificData({
+  const SpecificData({
     required this.id,
     required this.totalWritingCount,
     required this.totalReadingCount,
@@ -31,7 +31,7 @@ class TestSpecificData {
   });
 
   /// Empty instance of [BackUp]
-  static const TestSpecificData empty = TestSpecificData(
+  static const SpecificData empty = SpecificData(
     id: -1,
     totalWritingCount: 0,
     totalReadingCount: 0,
@@ -45,7 +45,7 @@ class TestSpecificData {
     totalWinRateSpeaking: 0,
   );
 
-  factory TestSpecificData.fromJson(Map<String, dynamic> json) =>
-      _$TestSpecificDataFromJson(json);
-  Map<String, dynamic> toJson() => _$TestSpecificDataToJson(this);
+  factory SpecificData.fromJson(Map<String, dynamic> json) =>
+      _$SpecificDataFromJson(json);
+  Map<String, dynamic> toJson() => _$SpecificDataToJson(this);
 }

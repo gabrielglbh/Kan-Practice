@@ -23,7 +23,7 @@ class TestListEventLoading extends TestListEvent {
   });
 
   @override
-  List<Object> get props => [initial, last, modesFilter, modesFilter];
+  List<Object> get props => [initial, last, testFilter, modesFilter];
 }
 
 class TestListEventRemoving extends TestListEvent {}

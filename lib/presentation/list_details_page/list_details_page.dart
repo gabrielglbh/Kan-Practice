@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/list_details/list_details_bloc.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
-import 'package:kanpractice/core/routing/pages.dart';
+import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/core/tutorial/tutorial_manager.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/core/types/coach_tutorial_parts.dart';

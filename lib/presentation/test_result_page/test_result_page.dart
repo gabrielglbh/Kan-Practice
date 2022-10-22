@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/queries/test_queries.dart';
-import 'package:kanpractice/core/routing/pages.dart';
+import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/test_result/test_result.dart';

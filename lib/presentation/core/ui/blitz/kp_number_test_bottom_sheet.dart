@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
-import 'package:kanpractice/core/routing/pages.dart';
+import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/core/types/number_ranges.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/core/types/study_modes.dart';

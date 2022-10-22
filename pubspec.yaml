@@ -67,6 +67,6 @@ flutter:
   uses-material-design: true
   assets:
     - assets/icon/icon.png
-    - lib/core/localization/
+    - lib/presentation/core/localization/
     - assets/model/
     - assets/initialData/

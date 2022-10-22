@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/database/models/list.dart';
+import 'package:kanpractice/domain/list/list.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -33,15 +33,15 @@ class InitialQueries {
         final Map<String, dynamic> kanLists = jsonDecode(initialKanLists);
         final List<dynamic> listsNonCasted = kanLists["Lists"];
         final List<dynamic> kanjiNonCasted = kanLists["Kanji"];
-        final List<KanjiList> lists = [];
-        final List<Kanji> kanji = [];
+        final List<WordList> lists = [];
+        final List<Word> kanji = [];
 
         /// Cast the JSON to the proper type
         for (var item in listsNonCasted) {
-          lists.add(KanjiList.fromJson(item));
+          lists.add(WordList.fromJson(item));
         }
         for (var item in kanjiNonCasted) {
-          kanji.add(Kanji.fromJson(item));
+          kanji.add(Word.fromJson(item));
         }
 
         /// Order matters as kanji depends on lists.
@@ -49,13 +49,13 @@ class InitialQueries {
 
         /// For all KanLists and Kanji, set the last updated field to current time
         for (int x = 0; x < lists.length; x++) {
-          final KanjiList k = lists[x]
+          final WordList k = lists[x]
               .copyWithUpdatedDate(lastUpdated: Utils.getCurrentMilliseconds());
           batch?.insert(KanListTableFields.listsTable, k.toJson(),
               conflictAlgorithm: ConflictAlgorithm.replace);
         }
         for (int x = 0; x < kanji.length; x++) {
-          final Kanji k = kanji[x].copyWithUpdatedDate(
+          final Word k = kanji[x].copyWithUpdatedDate(
               dateAdded: Utils.getCurrentMilliseconds(),
               dateLastShown: Utils.getCurrentMilliseconds());
           batch?.insert(KanjiTableFields.kanjiTable, k.toJson(),

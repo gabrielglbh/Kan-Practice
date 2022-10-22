@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 import 'package:kanpractice/presentation/test_result_page/arguments.dart';
@@ -55,7 +55,7 @@ class StudyModeUpdateHandler {
                   Navigator.of(context).pop();
                 } else if (isTestFinished) {
                   final navigator = Navigator.of(context);
-                  Map<String, List<Map<Kanji, double>>>? studyList;
+                  Map<String, List<Map<Word, double>>>? studyList;
 
                   /// If the test was a number test, just go to the result page with
                   /// a null study list to not show anything.
@@ -164,13 +164,13 @@ class StudyModeUpdateHandler {
         toUpdate = {KanjiTableFields.winRateSpeakingField: actualScore};
         break;
     }
-    return await KanjiQueries.instance.updateKanji(
+    return await WordQueries.instance.updateKanji(
         args.studyList[index].listName, args.studyList[index].kanji, toUpdate);
   }
 
-  static Map<String, List<Map<Kanji, double>>> _getMapOfKanjiInTest(
-      List<Kanji> studyList, List<double> testScores) {
-    Map<String, List<Map<Kanji, double>>> orderedMap = {};
+  static Map<String, List<Map<Word, double>>> _getMapOfKanjiInTest(
+      List<Word> studyList, List<double> testScores) {
+    Map<String, List<Map<Word, double>>> orderedMap = {};
     for (var kanji in studyList) {
       orderedMap[kanji.listName] = [];
     }
@@ -184,7 +184,7 @@ class StudyModeUpdateHandler {
       ModeArguments args) async {
     /// Map for storing the overall scores on each appearing list on the test
     Map<String, double> overallScore = {};
-    Map<String, List<Kanji>> orderedMap = {};
+    Map<String, List<Word>> orderedMap = {};
 
     /// Populate the Kanji arrays by their name in the orderedMap. It will look like this:
     /// {
@@ -204,7 +204,7 @@ class StudyModeUpdateHandler {
     for (int x = 0; x < orderedMap.keys.toList().length; x++) {
       String kanListName = orderedMap.keys.toList()[x];
       orderedMap[kanListName] =
-          await KanjiQueries.instance.getAllKanjiFromList(kanListName);
+          await WordQueries.instance.getAllKanjiFromList(kanListName);
     }
 
     /// Calculate the overall score for each list on the treated map
@@ -257,7 +257,7 @@ class StudyModeUpdateHandler {
 
     /// Get the kanji from the DB rather than the args instance as the args
     /// instance does not have the updated values
-    List<Kanji> kanji = await KanjiQueries.instance
+    List<Word> kanji = await WordQueries.instance
         .getAllKanjiFromList(args.studyList[0].listName);
     for (var k in kanji) {
       switch (args.mode) {

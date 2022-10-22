@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/add_folder/add_folder_bloc.dart';
-import 'package:kanpractice/core/database/models/list.dart';
+import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_kanlist_grid.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
@@ -21,7 +21,7 @@ class AddFolderPage extends StatefulWidget {
 class _AddFolderPageState extends State<AddFolderPage> {
   late TextEditingController _tc;
   late FocusNode _fn;
-  List<KanjiList> _availableLists = [];
+  List<WordList> _availableLists = [];
   final Map<String, bool> _selectedLists = {};
 
   @override

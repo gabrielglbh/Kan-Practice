@@ -7,7 +7,7 @@ import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/statistics_page/model/stats.dart';
+import 'package:kanpractice/domain/stats/stats.dart';
 import 'package:kanpractice/presentation/statistics_page/tab/list_stats_tab.dart';
 import 'package:kanpractice/presentation/statistics_page/tab/test_history_tab/test_history_tab.dart';
 import 'package:kanpractice/presentation/statistics_page/tab/test_stats_tab.dart';

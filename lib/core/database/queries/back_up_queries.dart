@@ -1,7 +1,7 @@
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/migration_utils.dart';
-import 'package:kanpractice/core/firebase/models/backup.dart';
+import 'package:kanpractice/domain/backup/backup.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:easy_localization/easy_localization.dart';
 

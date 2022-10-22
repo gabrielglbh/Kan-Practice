@@ -12,7 +12,7 @@ class MarketStateLoading extends MarketState {}
 class MarketStateSearching extends MarketState {}
 
 class MarketStateLoaded extends MarketState {
-  final List<MarketList> lists;
+  final List<Market> lists;
 
   const MarketStateLoaded({this.lists = const []});
 

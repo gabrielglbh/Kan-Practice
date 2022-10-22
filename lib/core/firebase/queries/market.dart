@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/market_queries.dart';
 import 'package:kanpractice/core/firebase/firebase.dart';
-import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
 import 'package:collection/collection.dart';
+import 'package:kanpractice/domain/list/list.dart';
+import 'package:kanpractice/domain/market/market.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 
@@ -42,7 +42,7 @@ class MarketRecords {
     }
   }
 
-  /// Query to get all [MarketList] from Firebase with an optional [order] and [filter].
+  /// Query to get all [Market] from Firebase with an optional [order] and [filter].
   /// If anything goes wrong, an empty list will be returned.
   ///
   /// The offset is the last document id retrieved from Firebase. This is kept
@@ -51,7 +51,7 @@ class MarketRecords {
   ///
   /// If [query] is not null, the user is searching for lists, thus appending a
   /// where clause to the retrieval method is performed.
-  Future<List<MarketList>> getLists(
+  Future<List<Market>> getLists(
       {MarketFilters filter = MarketFilters.all,
       bool descending = true,
       required String offsetDocumentId,
@@ -59,7 +59,7 @@ class MarketRecords {
       String? query,
       bool filterByMine = false}) async {
     try {
-      final List<MarketList> lists = [];
+      final List<Market> lists = [];
       late QuerySnapshot<Map<String, dynamic>> snapshot;
 
       /// QuerySnapshot instances must be completed within itself, thus this conditional
@@ -81,7 +81,7 @@ class MarketRecords {
             snapshot = await _ref
                 .collection(collection)
                 .startAfterDocument(startFrom)
-                .where(MarketList.uidField, isEqualTo: _auth.currentUser?.uid)
+                .where(Market.uidField, isEqualTo: _auth.currentUser?.uid)
                 .limit(LazyLoadingLimits.kanList)
                 .get();
           }
@@ -98,7 +98,7 @@ class MarketRecords {
           } else {
             snapshot = await _ref
                 .collection(collection)
-                .where(MarketList.uidField, isEqualTo: _auth.currentUser?.uid)
+                .where(Market.uidField, isEqualTo: _auth.currentUser?.uid)
                 .limit(LazyLoadingLimits.kanList)
                 .get();
           }
@@ -115,8 +115,7 @@ class MarketRecords {
           if (!filterByMine) {
             snapshot = await _ref
                 .collection(collection)
-                .where(MarketList.keywordsField,
-                    arrayContains: query.toLowerCase())
+                .where(Market.keywordsField, arrayContains: query.toLowerCase())
                 .startAfterDocument(startFrom)
                 .limit(LazyLoadingLimits.kanList)
                 .get();
@@ -124,9 +123,8 @@ class MarketRecords {
             snapshot = await _ref
                 .collection(collection)
                 .startAfterDocument(startFrom)
-                .where(MarketList.keywordsField,
-                    arrayContains: query.toLowerCase())
-                .where(MarketList.uidField, isEqualTo: _auth.currentUser?.uid)
+                .where(Market.keywordsField, arrayContains: query.toLowerCase())
+                .where(Market.uidField, isEqualTo: _auth.currentUser?.uid)
                 .limit(LazyLoadingLimits.kanList)
                 .get();
           }
@@ -134,16 +132,14 @@ class MarketRecords {
           if (!filterByMine) {
             snapshot = await _ref
                 .collection(collection)
-                .where(MarketList.keywordsField,
-                    arrayContains: query.toLowerCase())
+                .where(Market.keywordsField, arrayContains: query.toLowerCase())
                 .limit(LazyLoadingLimits.kanList)
                 .get();
           } else {
             snapshot = await _ref
                 .collection(collection)
-                .where(MarketList.uidField, isEqualTo: _auth.currentUser?.uid)
-                .where(MarketList.keywordsField,
-                    arrayContains: query.toLowerCase())
+                .where(Market.uidField, isEqualTo: _auth.currentUser?.uid)
+                .where(Market.keywordsField, arrayContains: query.toLowerCase())
                 .limit(LazyLoadingLimits.kanList)
                 .get();
           }
@@ -157,7 +153,7 @@ class MarketRecords {
         }
 
         for (int x = 0; x < snapshot.size; x++) {
-          lists.add(MarketList.fromJson(snapshot.docs[x].data()));
+          lists.add(Market.fromJson(snapshot.docs[x].data()));
           if (x == snapshot.size - 1) {
             onLastQueriedDocument(snapshot.docs[x].id);
           }
@@ -178,8 +174,8 @@ class MarketRecords {
   ///
   /// In order to be able to upload to the market place, AN USER MUST BE AUTHENTICATED,
   /// else, -2 will be returned
-  Future<int> uploadToMarketPlace(String name, KanjiList list,
-      List<Kanji> kanji, String description) async {
+  Future<int> uploadToMarketPlace(
+      String name, WordList list, List<Word> kanji, String description) async {
     User? user = _auth.currentUser;
     await user?.reload();
 
@@ -198,8 +194,8 @@ class MarketRecords {
           return -3;
         }
 
-        /// Initialize MarketList, KanList and Kanjis
-        final MarketList resetList = MarketList(
+        /// Initialize Market, KanList and Kanjis
+        final Market resetList = Market(
                 name: name,
                 words: kanji.length,
                 uid: user.uid,
@@ -208,8 +204,8 @@ class MarketRecords {
                 uploadedToMarket: Utils.getCurrentMilliseconds())
             .copyWithKeywords();
 
-        final KanjiList raw = list.copyWithReset();
-        final List<Kanji> resetKanji = [];
+        final WordList raw = list.copyWithReset();
+        final List<Word> resetKanji = [];
         for (var k in kanji) {
           resetKanji.add(k.copyWithReset());
         }
@@ -265,16 +261,16 @@ class MarketRecords {
             .collection(kanjiLabel)
             .get();
 
-        late KanjiList backUpList;
-        List<Kanji> backUpKanji = [];
+        late WordList backUpList;
+        List<Word> backUpKanji = [];
 
         /// Apply the transform to the POJO
         if (kanjiSnapshot.size > 0 && listSnapshot.size > 0) {
-          backUpList = KanjiList.fromJson(listSnapshot.docs[0].data());
+          backUpList = WordList.fromJson(listSnapshot.docs[0].data());
           backUpList = backUpList.copyWithReset();
 
           for (int x = 0; x < kanjiSnapshot.size; x++) {
-            backUpKanji.add(Kanji.fromJson(kanjiSnapshot.docs[x].data()));
+            backUpKanji.add(Word.fromJson(kanjiSnapshot.docs[x].data()));
           }
         }
 
@@ -282,7 +278,7 @@ class MarketRecords {
         final ref = _ref.collection(collection).doc(id);
         await _ref.runTransaction((transaction) async {
           transaction
-              .update(ref, {MarketList.downloadField: FieldValue.increment(1)});
+              .update(ref, {Market.downloadField: FieldValue.increment(1)});
         });
 
         /// Merge it on the DB
@@ -307,11 +303,11 @@ class MarketRecords {
     } else {
       try {
         /// Get all sub collections from the Market List
-        final marketList = _ref.collection(collection).doc(id);
+        final market = _ref.collection(collection).doc(id);
 
         /// If the user is not the author of the list, exit
         if (_auth.currentUser?.uid !=
-            (await marketList.get()).get(MarketList.uidField)) {
+            (await market.get()).get(Market.uidField)) {
           return "market_need_to_be_author".tr();
         }
 
@@ -334,7 +330,7 @@ class MarketRecords {
           for (var x = 0; x < kanjiSnapshot.size; x++) {
             transaction.delete((kanjiSnapshot.docs[x].reference));
           }
-          transaction.delete(marketList);
+          transaction.delete(market);
         });
         return "";
       } catch (err) {
@@ -357,23 +353,23 @@ class MarketRecords {
       return "market_need_auth".tr();
     } else {
       try {
-        /// Get MarketList document
-        final marketListDoc = _ref.collection(collection).doc(id);
-        final marketListData = await marketListDoc.get();
+        /// Get Market document
+        final marketDoc = _ref.collection(collection).doc(id);
+        final marketData = await marketDoc.get();
 
-        if (marketListData.exists) {
+        if (marketData.exists) {
           /// Use transaction to avoid race errors
           /// We use nested access to properly update the rating system
           await _ref.runTransaction((transaction) async {
-            final doc = await transaction.get(marketListDoc);
+            final doc = await transaction.get(marketDoc);
             if (doc.exists) {
               /// Update the current rating map with the new or already rated user score
-              transaction.update(marketListDoc,
-                  {"${MarketList.ratingMapField}.${user.uid}": rate});
+              transaction.update(
+                  marketDoc, {"${Market.ratingMapField}.${user.uid}": rate});
 
               /// Get the number of entries in the map and calculate the average
               final ratings =
-                  doc.get(MarketList.ratingMapField) as Map<String, dynamic>;
+                  doc.get(Market.ratingMapField) as Map<String, dynamic>;
               ratings[user.uid] = rate;
               final ratingsValues = ratings.values.toList().cast<double>();
 
@@ -385,7 +381,7 @@ class MarketRecords {
               }
 
               /// Update the rating double field
-              transaction.update(marketListDoc, {MarketList.ratingField: mean});
+              transaction.update(marketDoc, {Market.ratingField: mean});
             }
           });
         } else {

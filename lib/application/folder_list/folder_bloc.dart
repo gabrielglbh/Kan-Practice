@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kanpractice/core/database/models/folder.dart';
 import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/types/folder_filters.dart';
+import 'package:kanpractice/domain/folder/folder.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 part 'folder_event.dart';

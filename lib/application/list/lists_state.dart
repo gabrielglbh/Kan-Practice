@@ -12,7 +12,7 @@ class ListStateLoading extends ListState {}
 class ListStateSearching extends ListState {}
 
 class ListStateLoaded extends ListState {
-  final List<KanjiList> lists;
+  final List<WordList> lists;
 
   const ListStateLoaded({this.lists = const []});
 

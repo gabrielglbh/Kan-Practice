@@ -8,7 +8,7 @@ abstract class WordDetailsEvent extends Equatable {
 }
 
 class WordDetailsEventLoading extends WordDetailsEvent {
-  final Kanji kanji;
+  final Word kanji;
 
   const WordDetailsEventLoading(this.kanji);
 
@@ -17,7 +17,7 @@ class WordDetailsEventLoading extends WordDetailsEvent {
 }
 
 class WordDetailsEventDelete extends WordDetailsEvent {
-  final Kanji? kanji;
+  final Word? kanji;
 
   const WordDetailsEventDelete(this.kanji);
 

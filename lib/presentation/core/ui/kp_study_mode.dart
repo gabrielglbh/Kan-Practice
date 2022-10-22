@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
@@ -17,7 +17,7 @@ class KPTestStudyMode extends StatelessWidget {
   /// If [list] is null, the list must be loaded upon the mode selection (BLITZ or REMEMBRANCE or LESS %).
   ///
   /// If it is not null, the list must come from (SELECTION OR CATEGORY TEST).
-  final List<Kanji>? list;
+  final List<Word>? list;
 
   /// Name of the test being performed
   final String testName;
@@ -45,7 +45,7 @@ class KPTestStudyMode extends StatelessWidget {
       required this.testName})
       : super(key: key);
 
-  Future<List<Kanji>> _loadTest(StudyModes mode) async {
+  Future<List<Word>> _loadTest(StudyModes mode) async {
     String? listName = practiceList;
 
     /// Get all the list of all kanji and perform a 20 kanji random sublist
@@ -55,13 +55,13 @@ class KPTestStudyMode extends StatelessWidget {
       if (type == Tests.folder || (type == Tests.blitz && folder != null)) {
         if (folder == null) return [];
 
-        List<Kanji> list =
+        List<Word> list =
             await FolderQueries.instance.getAllKanjiOnListsOnFolder([folder!]);
         list.shuffle();
         return list;
       }
       if ((type == Tests.time || type == Tests.less) && folder != null) {
-        List<Kanji> list =
+        List<Word> list =
             await FolderQueries.instance.getAllKanjiOnListsOnFolder(
           [folder!],
           mode: mode,
@@ -71,8 +71,8 @@ class KPTestStudyMode extends StatelessWidget {
       }
 
       /// Else, just get all Kanji
-      List<Kanji> list =
-          await KanjiQueries.instance.getAllKanji(mode: mode, type: type);
+      List<Word> list =
+          await WordQueries.instance.getAllKanji(mode: mode, type: type);
 
       /// If it is a remembrance or less % test, do NOT shuffle the list
       if (type != Tests.time && type != Tests.less) list.shuffle();
@@ -82,8 +82,8 @@ class KPTestStudyMode extends StatelessWidget {
     /// If the listName is not empty, it means that the user wants to have
     /// a Blitz Test on a certain KanList defined in "listName"
     else {
-      List<Kanji> list =
-          await KanjiQueries.instance.getAllKanjiFromList(listName);
+      List<Word> list =
+          await WordQueries.instance.getAllKanjiFromList(listName);
       list.shuffle();
       return list;
     }
@@ -152,7 +152,7 @@ class KPTestStudyMode extends StatelessWidget {
         title2: mode.mode,
         color: mode.color,
         onTap: () async {
-          List<Kanji>? l = list;
+          List<Word>? l = list;
           final navigator = Navigator.of(context);
           if (l != null) {
             if (l.isEmpty) {
@@ -162,7 +162,7 @@ class KPTestStudyMode extends StatelessWidget {
               await _decideOnMode(navigator, l, mode);
             }
           } else {
-            List<Kanji> l = await _loadTest(mode);
+            List<Word> l = await _loadTest(mode);
             if (l.isEmpty) {
               navigator.pop();
               // ignore: use_build_context_synchronously
@@ -176,14 +176,14 @@ class KPTestStudyMode extends StatelessWidget {
 
   Future<void> _decideOnMode(
     NavigatorState navigator,
-    List<Kanji> l,
+    List<Word> l,
     StudyModes mode,
   ) async {
     final displayTestName = type.name;
     final kanjiInTest =
         StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
             KPSizes.numberOfKanjiInTest;
-    List<Kanji> sortedList =
+    List<Word> sortedList =
         l.sublist(0, l.length < kanjiInTest ? l.length : kanjiInTest);
     navigator.pop(); // Dismiss this bottom sheet
     navigator.pop(); // Dismiss the tests bottom sheet

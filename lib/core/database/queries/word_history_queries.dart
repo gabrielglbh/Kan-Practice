@@ -1,6 +1,6 @@
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/database/models/word_history.dart';
+import 'package:kanpractice/domain/word_history/word_history.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:sqflite/sqflite.dart';

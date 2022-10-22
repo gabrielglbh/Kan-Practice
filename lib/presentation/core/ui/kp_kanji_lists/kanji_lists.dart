@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/folder_details/folder_details_bloc.dart';
 import 'package:kanpractice/application/list/lists_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
+import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_kanji_lists/widgets/kanji_list_tile.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
@@ -12,12 +12,12 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class KPKanjiLists extends StatefulWidget {
+class KPWordLists extends StatefulWidget {
   final Function() removeFocus;
   final Function() onScrolledToBottom;
   final String? folder;
   final bool withinFolder;
-  const KPKanjiLists({
+  const KPWordLists({
     Key? key,
     required this.removeFocus,
     required this.onScrolledToBottom,
@@ -26,10 +26,10 @@ class KPKanjiLists extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<KPKanjiLists> createState() => _KPKanjiListsState();
+  State<KPWordLists> createState() => _KPWordListsState();
 }
 
-class _KPKanjiListsState extends State<KPKanjiLists>
+class _KPWordListsState extends State<KPWordLists>
     with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
 
@@ -213,7 +213,7 @@ class _KPKanjiListsState extends State<KPKanjiLists>
     );
   }
 
-  Widget _content(List<KanjiList> lists) {
+  Widget _content(List<WordList> lists) {
     return Expanded(
       child: RefreshIndicator(
         onRefresh: () => _addLoadingEvent(reset: true),
@@ -225,7 +225,7 @@ class _KPKanjiListsState extends State<KPKanjiLists>
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           padding: const EdgeInsets.only(bottom: KPMargins.margin24),
           itemBuilder: (context, k) {
-            return KanjiListTile(
+            return WordListTile(
               item: lists[k],
               onTap: widget.removeFocus,
               withinFolder: widget.withinFolder,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
+import 'package:kanpractice/domain/list/list.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/ui/kp_kanji_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
@@ -10,8 +10,8 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 class KanjiItem extends StatelessWidget {
   final bool aggregateStats;
   final String listName;
-  final KanjiList list;
-  final Kanji kanji;
+  final WordList list;
+  final Word kanji;
   final StudyModes selectedMode;
   final Function() onRemoval;
   final Function() onTap;
@@ -30,7 +30,7 @@ class KanjiItem extends StatelessWidget {
     required this.onShowModal,
   }) : super(key: key);
 
-  double _getProperKanjiWinRate(Kanji kanji) {
+  double _getProperKanjiWinRate(Word kanji) {
     if (aggregateStats) {
       final writing = (kanji.winRateWriting == DatabaseConstants.emptyWinRate
           ? 0

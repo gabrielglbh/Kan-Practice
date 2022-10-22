@@ -1,13 +1,13 @@
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/database/models/folder.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/database/models/list.dart';
-import 'package:kanpractice/core/database/models/rel_folder_kanlist.dart';
 import 'package:kanpractice/core/types/folder_filters.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
+import 'package:kanpractice/domain/folder/folder.dart';
+import 'package:kanpractice/domain/list/list.dart';
+import 'package:kanpractice/domain/relation_folder_list/relation_folder_list.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -106,9 +106,9 @@ class FolderQueries {
     }
   }
 
-  /// Get the full list of [KanjiList] related to a certain [Folder]. The pagination
+  /// Get the full list of [WordList] related to a certain [Folder]. The pagination
   /// is perfomed within the list_queries.dart file.
-  Future<List<KanjiList>> getAllListsOnFolder(
+  Future<List<WordList>> getAllListsOnFolder(
     String folder, {
     KanListFilters filter = KanListFilters.all,
     String order = "DESC",
@@ -134,7 +134,7 @@ class FolderQueries {
             "ORDER BY R.${filter.filter} $order "
             "$limitParsed $offsetParsed");
         if (res != null) {
-          return List.generate(res.length, (i) => KanjiList.fromJson(res[i]));
+          return List.generate(res.length, (i) => WordList.fromJson(res[i]));
         }
         return [];
       } catch (err) {
@@ -146,11 +146,11 @@ class FolderQueries {
     }
   }
 
-  /// Get the full list of [Kanji] related to a certain [Folder] from all [KanjiList]
+  /// Get the full list of [Kanji] related to a certain [Folder] from all [WordList]
   /// appearing on it. [mode], [type] and [category] serves as helper variables to
   /// order and query different words within the Folder to perform tests
   /// (Blitz, remembrance, less % and category).
-  Future<List<Kanji>> getAllKanjiOnListsOnFolder(List<String> folders,
+  Future<List<Word>> getAllKanjiOnListsOnFolder(List<String> folders,
       {StudyModes? mode, Tests? type, int? category}) async {
     if (_database != null) {
       try {
@@ -289,7 +289,7 @@ class FolderQueries {
 
         final res = await _database?.rawQuery(query);
         if (res != null) {
-          return List.generate(res.length, (i) => Kanji.fromJson(res[i]));
+          return List.generate(res.length, (i) => Word.fromJson(res[i]));
         }
         return [];
       } catch (err) {
@@ -301,10 +301,9 @@ class FolderQueries {
     }
   }
 
-  /// Get the full list of [KanjiList] related to a certain [Folder] with a matching query.
+  /// Get the full list of [WordList] related to a certain [Folder] with a matching query.
   /// The pagination is perfomed within the list_queries.dart file.
-  Future<List<KanjiList>> getAllListsOnFolderOnQuery(
-      String query, String folder,
+  Future<List<WordList>> getAllListsOnFolderOnQuery(String query, String folder,
       {int? offset, int? limit}) async {
     if (_database != null) {
       try {
@@ -328,7 +327,7 @@ class FolderQueries {
             "ORDER BY ${KanListTableFields.lastUpdatedField} DESC "
             "$limitParsed $offsetParsed");
         if (res != null) {
-          return List.generate(res.length, (i) => KanjiList.fromJson(res[i]));
+          return List.generate(res.length, (i) => WordList.fromJson(res[i]));
         }
         return [];
       } catch (err) {
@@ -372,7 +371,7 @@ class FolderQueries {
       try {
         await _database?.insert(
           KanListFolderRelationTableFields.relTable,
-          RelFolderKanList(folder: folder, kanListName: list).toJson(),
+          RelationFolderList(folder: folder, kanListName: list).toJson(),
           conflictAlgorithm: ConflictAlgorithm.ignore,
         );
         return 0;
@@ -405,15 +404,15 @@ class FolderQueries {
     }
   }
 
-  /// Get all available relations [Folder]-[RelFolderKanList] for backup purposes
-  Future<List<RelFolderKanList>> getFolderRelation() async {
+  /// Get all available relations [Folder]-[RelationFolderList] for backup purposes
+  Future<List<RelationFolderList>> getFolderRelation() async {
     if (_database != null) {
       try {
         final res =
             await _database?.query(KanListFolderRelationTableFields.relTable);
         if (res != null) {
           return List.generate(
-              res.length, (i) => RelFolderKanList.fromJson(res[i]));
+              res.length, (i) => RelationFolderList.fromJson(res[i]));
         }
         return [];
       } catch (err) {

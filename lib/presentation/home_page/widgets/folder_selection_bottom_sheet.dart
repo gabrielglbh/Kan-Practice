@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/folder_list/folder_bloc.dart';
-import 'package:kanpractice/core/database/models/folder.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/domain/folder/folder.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
@@ -34,7 +34,7 @@ class FolderSelectionBottomSheet extends StatefulWidget {
 class _FolderSelectionBottomSheetState
     extends State<FolderSelectionBottomSheet> {
   final FolderBloc _bloc = FolderBloc();
-  List<Kanji> _kanji = [];
+  List<Word> _kanji = [];
   final List<String> _selectedFolders = [];
   String _selectedFormattedFolder = "";
 

@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
+import 'package:kanpractice/domain/list/list.dart';
 
 part 'add_folder_event.dart';
 part 'add_folder_state.dart';

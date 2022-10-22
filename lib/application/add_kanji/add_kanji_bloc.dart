@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
+import 'package:kanpractice/domain/word/word.dart';
 
 part 'add_kanji_event.dart';
 part 'add_kanji_state.dart';
@@ -12,7 +12,7 @@ class AddKanjiBloc extends Bloc<AddKanjiEvent, AddKanjiState> {
     on<AddKanjiEventIdle>((event, emit) {});
 
     on<AddKanjiEventUpdate>((event, emit) async {
-      final code = await KanjiQueries.instance
+      final code = await WordQueries.instance
           .updateKanji(event.listName, event.kanjiPk, event.parameters);
       if (code == 0) {
         emit(AddKanjiStateDoneUpdating());
@@ -27,7 +27,7 @@ class AddKanjiBloc extends Bloc<AddKanjiEvent, AddKanjiState> {
 
     on<AddKanjiEventCreate>((event, emit) async {
       emit(AddKanjiStateLoading());
-      final code = await KanjiQueries.instance.createKanji(event.kanji);
+      final code = await WordQueries.instance.createKanji(event.kanji);
       if (code == 0) {
         emit(AddKanjiStateDoneCreating(exitMode: event.exitMode));
       } else if (code == -1) {

@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/models/specific_data.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
+import 'package:kanpractice/domain/specific_data/specific_data.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_bar_chart.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_radial_graph.dart';
@@ -37,7 +37,7 @@ class SpecBottomSheet extends StatefulWidget {
 }
 
 class _SpecBottomSheetState extends State<SpecBottomSheet> {
-  bool get _isCategory => widget.data.id == KanjiQueries.categoryId;
+  bool get _isCategory => widget.data.id == WordQueries.categoryId;
 
   @override
   Widget build(BuildContext context) {

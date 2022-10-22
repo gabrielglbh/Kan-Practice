@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -11,7 +11,7 @@ import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
 class PracticeListBottomSheet extends StatefulWidget {
   final String listName;
-  final List<Kanji> list;
+  final List<Word> list;
   const PracticeListBottomSheet({
     Key? key,
     required this.listName,
@@ -21,7 +21,7 @@ class PracticeListBottomSheet extends StatefulWidget {
   /// Creates and calls the [BottomSheet] with the content for a regular list practice
   /// when the GROUP mode is active only
   static Future<void> show(
-      BuildContext context, String listName, List<Kanji> list) async {
+      BuildContext context, String listName, List<Word> list) async {
     await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -103,7 +103,7 @@ class _PracticeListBottomSheetState extends State<PracticeListBottomSheet> {
     );
   }
 
-  Future<void> _decideOnMode(List<Kanji> l, StudyModes mode) async {
+  Future<void> _decideOnMode(List<Word> l, StudyModes mode) async {
     final navigator = Navigator.of(context);
     await navigator
         .pushNamed(

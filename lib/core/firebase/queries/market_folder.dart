@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:kanpractice/core/database/models/folder.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/database/models/list.dart';
-import 'package:kanpractice/core/database/models/rel_folder_kanlist.dart';
 import 'package:kanpractice/core/database/queries/market_queries.dart';
 import 'package:kanpractice/core/firebase/firebase.dart';
-import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/firebase/queries/market.dart';
+import 'package:kanpractice/domain/folder/folder.dart';
+import 'package:kanpractice/domain/list/list.dart';
+import 'package:kanpractice/domain/market/market.dart';
+import 'package:kanpractice/domain/relation_folder_list/relation_folder_list.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class MarketFolderRecords {
@@ -46,8 +46,8 @@ class MarketFolderRecords {
   Future<int> uploadToMarketPlace(
     String name,
     Folder folder,
-    List<KanjiList> lists,
-    List<Kanji> kanji,
+    List<WordList> lists,
+    List<Word> kanji,
     String description,
   ) async {
     User? user = _auth.currentUser;
@@ -69,8 +69,8 @@ class MarketFolderRecords {
           return -3;
         }
 
-        /// Initialize MarketList, KanList and Kanjis
-        final MarketList market = MarketList(
+        /// Initialize Market, KanList and Kanjis
+        final Market market = Market(
           name: name,
           words: kanji.length,
           uid: user.uid,
@@ -81,16 +81,16 @@ class MarketFolderRecords {
         ).copyWithKeywords();
 
         final Folder resetFolder = folder.copyWithReset();
-        final List<RelFolderKanList> relations = [];
-        final List<KanjiList> resetLists = [];
+        final List<RelationFolderList> relations = [];
+        final List<WordList> resetLists = [];
         for (var k in lists) {
           resetLists.add(k.copyWithReset());
-          relations.add(RelFolderKanList(
+          relations.add(RelationFolderList(
             folder: folder.folder,
             kanListName: k.name,
           ));
         }
-        final List<Kanji> resetKanji = [];
+        final List<Word> resetKanji = [];
         for (var k in kanji) {
           resetKanji.add(k.copyWithReset());
         }
@@ -177,24 +177,24 @@ class MarketFolderRecords {
             .get();
 
         late Folder backUpFolder;
-        List<RelFolderKanList> backUpRelations = [];
-        List<KanjiList> backUpList = [];
-        List<Kanji> backUpKanji = [];
+        List<RelationFolderList> backUpRelations = [];
+        List<WordList> backUpList = [];
+        List<Word> backUpKanji = [];
 
         /// Apply the transform to the POJO
         backUpFolder = Folder.fromJson(folderSnapshot.docs.first.data());
         if (relationSnapshot.size > 0) {
           for (var m in relationSnapshot.docs) {
-            backUpRelations.add(RelFolderKanList.fromJson(m.data()));
+            backUpRelations.add(RelationFolderList.fromJson(m.data()));
           }
         }
         if (kanjiSnapshot.size > 0 && listSnapshot.size > 0) {
           for (var m in listSnapshot.docs) {
-            backUpList.add(KanjiList.fromJson(m.data()).copyWithReset());
+            backUpList.add(WordList.fromJson(m.data()).copyWithReset());
           }
 
           for (var m in kanjiSnapshot.docs) {
-            backUpKanji.add(Kanji.fromJson(m.data()));
+            backUpKanji.add(Word.fromJson(m.data()));
           }
         }
 
@@ -202,7 +202,7 @@ class MarketFolderRecords {
         final ref = _ref.collection(collection).doc(id);
         await _ref.runTransaction((transaction) async {
           transaction
-              .update(ref, {MarketList.downloadField: FieldValue.increment(1)});
+              .update(ref, {Market.downloadField: FieldValue.increment(1)});
         });
 
         /// Merge it on the DB
@@ -229,11 +229,11 @@ class MarketFolderRecords {
         final collection = MarketRecords.instance.collection;
 
         /// Get all sub collections from the Market List
-        final marketList = _ref.collection(collection).doc(id);
+        final market = _ref.collection(collection).doc(id);
 
         /// If the user is not the author of the list, exit
         if (_auth.currentUser?.uid !=
-            (await marketList.get()).get(MarketList.uidField)) {
+            (await market.get()).get(Market.uidField)) {
           return "market_need_to_be_author".tr();
         }
 
@@ -270,7 +270,7 @@ class MarketFolderRecords {
           for (var x in kanjiSnapshot.docs) {
             transaction.delete((x.reference));
           }
-          transaction.delete(marketList);
+          transaction.delete(market);
         });
         return "";
       } catch (err) {

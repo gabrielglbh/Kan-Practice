@@ -61,7 +61,7 @@ class ListEventCreate extends ListEvent {
 }
 
 class ListEventDelete extends ListEvent {
-  final KanjiList list;
+  final WordList list;
 
   /// Maintains the filter applied by the user for loading new lists
   final KanListFilters filter;

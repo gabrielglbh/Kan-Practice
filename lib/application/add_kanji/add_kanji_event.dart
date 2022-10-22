@@ -10,7 +10,7 @@ abstract class AddKanjiEvent extends Equatable {
 class AddKanjiEventIdle extends AddKanjiEvent {}
 
 class AddKanjiEventCreate extends AddKanjiEvent {
-  final Kanji kanji;
+  final Word kanji;
   final bool exitMode;
 
   const AddKanjiEventCreate({required this.kanji, required this.exitMode});

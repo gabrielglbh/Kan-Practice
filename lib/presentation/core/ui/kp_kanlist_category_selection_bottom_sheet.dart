@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/types/kanji_categories.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_kanji_category_list.dart';
@@ -33,18 +33,16 @@ class KPKanListCategorySelectionBottomSheet extends StatefulWidget {
 
 class _KPKanListCategorySelectionBottomSheetState
     extends State<KPKanListCategorySelectionBottomSheet> {
-  List<Kanji> _kanji = [];
+  List<Word> _kanji = [];
   KanjiCategory _selectedCategory = KanjiCategory.noun;
 
   bool _selectionMode = false;
   bool _onListEmpty = false;
 
-  Future<List<Kanji>> _loadKanjiFromListSelection(
-      KanjiCategory category) async {
-    List<Kanji> list = [];
+  Future<List<Word>> _loadKanjiFromListSelection(KanjiCategory category) async {
+    List<Word> list = [];
     if (widget.folder == null) {
-      list =
-          await KanjiQueries.instance.getKanjiBasedOnCategory(category.index);
+      list = await WordQueries.instance.getKanjiBasedOnCategory(category.index);
     } else {
       list = await FolderQueries.instance.getAllKanjiOnListsOnFolder(
         [widget.folder!],
@@ -125,7 +123,7 @@ class _KPKanListCategorySelectionBottomSheetState
           title1: "study_bottom_sheet_button_label_ext".tr(),
           title2: "study_bottom_sheet_button_label".tr(),
           onTap: () async {
-            final List<Kanji> k =
+            final List<Word> k =
                 await _loadKanjiFromListSelection(_selectedCategory);
             if (k.isNotEmpty) {
               _kanji = k;

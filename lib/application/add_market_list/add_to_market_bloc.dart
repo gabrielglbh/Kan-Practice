@@ -37,7 +37,7 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
           if (event.type == MarketListType.list) {
             final list = await ListQueries.instance.getList(event.name);
             final kanji =
-                await KanjiQueries.instance.getAllKanjiFromList(event.name);
+                await WordQueries.instance.getAllKanjiFromList(event.name);
 
             if (kanji.isEmpty) {
               emit(AddToMarketStateFailure("add_to_market_kanji_empty".tr()));

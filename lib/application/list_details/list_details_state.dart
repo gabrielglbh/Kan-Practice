@@ -13,7 +13,7 @@ class ListDetailStateSearching extends ListDetailState {}
 
 class ListDetailStateLoadedPractice extends ListDetailState {
   final StudyModes mode;
-  final List<Kanji> list;
+  final List<Word> list;
 
   const ListDetailStateLoadedPractice(this.mode, this.list);
 
@@ -22,7 +22,7 @@ class ListDetailStateLoadedPractice extends ListDetailState {
 }
 
 class ListDetailStateLoaded extends ListDetailState {
-  final List<Kanji> list;
+  final List<Word> list;
   final String name;
 
   const ListDetailStateLoaded(this.list, this.name);

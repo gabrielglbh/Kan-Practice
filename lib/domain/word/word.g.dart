@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'kanji.dart';
+part of 'word.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Kanji _$KanjiFromJson(Map<String, dynamic> json) => Kanji(
+Word _$WordFromJson(Map<String, dynamic> json) => Word(
       kanji: json['kanji'] as String,
       listName: json['name'] as String,
       meaning: json['meaning'] as String,
@@ -31,7 +31,7 @@ Kanji _$KanjiFromJson(Map<String, dynamic> json) => Kanji(
       category: json['category'] as int? ?? 0,
     );
 
-Map<String, dynamic> _$KanjiToJson(Kanji instance) => <String, dynamic>{
+Map<String, dynamic> _$WordToJson(Word instance) => <String, dynamic>{
       'kanji': instance.kanji,
       'name': instance.listName,
       'meaning': instance.meaning,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/models/folder.dart';
-import 'package:kanpractice/core/database/models/list.dart';
+import 'package:kanpractice/domain/folder/folder.dart';
+import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KPKanListGrid<T> extends StatelessWidget {
@@ -12,7 +12,7 @@ class KPKanListGrid<T> extends StatelessWidget {
     required this.onTap,
     required this.items,
     required this.isSelected,
-  })  : assert(items is List<Folder> || items is List<KanjiList>),
+  })  : assert(items is List<Folder> || items is List<WordList>),
         super(key: key);
 
   @override
@@ -22,8 +22,8 @@ class KPKanListGrid<T> extends StatelessWidget {
           crossAxisCount: 4, childAspectRatio: 2),
       itemCount: items.length,
       itemBuilder: (context, index) {
-        String name = items[index] is KanjiList
-            ? (items[index] as KanjiList).name
+        String name = items[index] is WordList
+            ? (items[index] as WordList).name
             : (items[index] as Folder).folder;
         return Padding(
           padding: const EdgeInsets.all(KPMargins.margin4),

@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kanpractice/core/database/models/word_history.dart';
 import 'package:kanpractice/core/database/queries/word_history_queries.dart';
+import 'package:kanpractice/domain/word_history/word_history.dart';
 
 part 'word_history_event.dart';
 part 'word_history_state.dart';

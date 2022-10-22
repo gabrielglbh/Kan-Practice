@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -32,8 +32,8 @@ class PracticeFolderBottomSheet extends StatefulWidget {
 }
 
 class _PracticeFolderBottomSheetState extends State<PracticeFolderBottomSheet> {
-  Future<List<Kanji>> _loadPractice(StudyModes mode) async {
-    List<Kanji> list = await FolderQueries.instance
+  Future<List<Word>> _loadPractice(StudyModes mode) async {
+    List<Word> list = await FolderQueries.instance
         .getAllKanjiOnListsOnFolder([widget.folder]);
     list.shuffle();
     return list;
@@ -104,7 +104,7 @@ class _PracticeFolderBottomSheetState extends State<PracticeFolderBottomSheet> {
       color: mode.color,
       onTap: () async {
         final navigator = Navigator.of(context);
-        List<Kanji> l = await _loadPractice(mode);
+        List<Word> l = await _loadPractice(mode);
         if (l.isEmpty) {
           // ignore: use_build_context_synchronously
           Utils.getSnackBar(context, "study_modes_empty".tr());
@@ -117,13 +117,13 @@ class _PracticeFolderBottomSheetState extends State<PracticeFolderBottomSheet> {
 
   Future<void> _decideOnMode(
     NavigatorState navigator,
-    List<Kanji> l,
+    List<Word> l,
     StudyModes mode,
   ) async {
     final kanjiInTest =
         StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
             KPSizes.numberOfKanjiInTest;
-    List<Kanji> sortedList =
+    List<Word> sortedList =
         l.sublist(0, l.length < kanjiInTest ? l.length : kanjiInTest);
     navigator.pop(); // Dismiss this bottom sheet
 

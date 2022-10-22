@@ -12,7 +12,7 @@ class FolderDetailsStateLoading extends FolderDetailsState {}
 class FolderDetailsStateSearching extends FolderDetailsState {}
 
 class FolderDetailsStateLoaded extends FolderDetailsState {
-  final List<KanjiList> lists;
+  final List<WordList> lists;
 
   const FolderDetailsStateLoaded({this.lists = const []});
 
@@ -21,7 +21,7 @@ class FolderDetailsStateLoaded extends FolderDetailsState {
 }
 
 class FolderDetailsStateTestLoaded extends FolderDetailsState {
-  final List<KanjiList> lists;
+  final List<WordList> lists;
 
   const FolderDetailsStateTestLoaded({this.lists = const []});
 

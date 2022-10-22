@@ -1,4 +1,4 @@
-import 'package:kanpractice/core/database/models/kanji.dart';
+import 'package:kanpractice/domain/word/word.dart';
 
 class TestResultArguments {
   final double score;
@@ -6,7 +6,7 @@ class TestResultArguments {
   final int studyMode;
   final int testMode;
   final String listsName;
-  final Map<String, List<Map<Kanji, double>>>? studyList;
+  final Map<String, List<Map<Word, double>>>? studyList;
 
   TestResultArguments(
       {required this.score,

@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/core/utils/tts.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/ui/kp_learning_header_animation.dart';
 import 'package:kanpractice/presentation/core/ui/kp_learning_header_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_list_percentage_indicator.dart';
@@ -38,7 +38,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
   final List<double> _testScores = [];
 
   /// Widget auxiliary variable
-  final List<Kanji> _studyList = [];
+  final List<Word> _studyList = [];
 
   @override
   void initState() {
@@ -114,7 +114,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
     } else {
       /// Updates the dateLastShown attribute of the finished word AND
       /// the current specific last shown mode attribute
-      await KanjiQueries.instance
+      await WordQueries.instance
           .updateKanji(_studyList[_macro].listName, _studyList[_macro].kanji, {
         KanjiTableFields.dateLastShown: Utils.getCurrentMilliseconds(),
         KanjiTableFields.dateLastShownListening: Utils.getCurrentMilliseconds()

@@ -1,11 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/domain/list/list.dart';
+import 'package:kanpractice/domain/word/word.dart';
 
 part 'word_details_event.dart';
 part 'word_details_state.dart';
@@ -16,7 +16,7 @@ class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
     on<WordDetailsEventLoading>((event, emit) async {
       try {
         emit(WordDetailsStateLoading());
-        final kanji = await KanjiQueries.instance
+        final kanji = await WordQueries.instance
             .getKanji(event.kanji.listName, event.kanji.kanji);
         emit(WordDetailsStateLoaded(kanji: kanji));
       } on Exception {
@@ -28,11 +28,11 @@ class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
       final k = event.kanji;
       if (state is WordDetailsStateLoaded && k != null) {
         final int code =
-            await KanjiQueries.instance.removeKanji(k.listName, k.kanji);
+            await WordQueries.instance.removeKanji(k.listName, k.kanji);
         if (code == 0) {
-          KanjiList kanList = await ListQueries.instance.getList(k.listName);
-          List<Kanji> list =
-              await KanjiQueries.instance.getAllKanjiFromList(k.listName);
+          WordList kanList = await ListQueries.instance.getList(k.listName);
+          List<Word> list =
+              await WordQueries.instance.getAllKanjiFromList(k.listName);
 
           /// Update for each mode the overall score again. Issue: #10
           ///

@@ -53,7 +53,7 @@ class FolderDetailsEventSearching extends FolderDetailsEvent {
 
 class FolderDetailsEventDelete extends FolderDetailsEvent {
   final String folder;
-  final KanjiList list;
+  final WordList list;
 
   /// Maintains the filter applied by the user for loading new lists
   final KanListFilters filter;

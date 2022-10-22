@@ -1,14 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/firebase/queries/authentication.dart';
+import 'package:kanpractice/domain/market/market.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/market_page/widgets/market_list_rating.dart';
 
 class MarketListTile extends StatelessWidget {
-  final MarketList list;
+  final Market list;
   final Function(String, bool) onDownload;
   final Function(String, bool) onRemove;
   final bool isManaging;

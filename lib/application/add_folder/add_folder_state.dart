@@ -23,7 +23,7 @@ class AddFolderStateLoading extends AddFolderState {}
 class AddFolderStateSuccess extends AddFolderState {}
 
 class AddFolderStateAvailableKanLists extends AddFolderState {
-  final List<KanjiList> lists;
+  final List<WordList> lists;
   final Map<String, bool> alreadyAdded;
 
   const AddFolderStateAvailableKanLists(this.lists, this.alreadyAdded);

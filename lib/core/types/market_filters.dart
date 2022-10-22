@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/core/firebase/models/market_list.dart';
+import 'package:kanpractice/domain/market/market.dart';
 
 enum MarketFilters { mine, all, downloads, rating, words }
 
@@ -22,28 +22,28 @@ extension MarketFiltersExtensions on MarketFilters {
   String get filter {
     switch (this) {
       case MarketFilters.all:
-        return MarketList.uploadedToMarketField;
+        return Market.uploadedToMarketField;
       case MarketFilters.downloads:
-        return MarketList.downloadField;
+        return Market.downloadField;
       case MarketFilters.rating:
-        return MarketList.ratingField;
+        return Market.ratingField;
       case MarketFilters.words:
-        return MarketList.numberOfWordsField;
+        return Market.numberOfWordsField;
       case MarketFilters.mine:
-        return MarketList.uidField;
+        return Market.uidField;
     }
   }
 }
 
 class MarketFiltersUtils {
   static MarketFilters getFilterFrom(String f) {
-    if (f == MarketList.uploadedToMarketField) {
+    if (f == Market.uploadedToMarketField) {
       return MarketFilters.all;
-    } else if (f == MarketList.downloadField) {
+    } else if (f == Market.downloadField) {
       return MarketFilters.downloads;
-    } else if (f == MarketList.ratingField) {
+    } else if (f == Market.ratingField) {
       return MarketFilters.rating;
-    } else if (f == MarketList.uidField) {
+    } else if (f == Market.uidField) {
       return MarketFilters.mine;
     } else {
       return MarketFilters.words;

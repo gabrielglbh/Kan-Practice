@@ -1,12 +1,12 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/number_ranges.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -34,7 +34,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
   final List<Ranges> _selectedLists = [];
   int _kanjiInTest = KPSizes.numberOfKanjiInTest;
 
-  List<Kanji> _loadBlitzTest() {
+  List<Word> _loadBlitzTest() {
     /// If no range is selected, 0 to 10K will be taken
     int min = Ranges.from0to1K.min;
     int max = Ranges.from1Kto10K.max;
@@ -49,7 +49,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
 
     return List.generate(_kanjiInTest, (n) {
       String num = (min + random.nextInt((max + 1) - min)).toString();
-      return Kanji(
+      return Word(
           kanji: num, pronunciation: num, meaning: num, listName: "Numbers");
     });
   }
@@ -135,7 +135,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
             title2: "number_bottom_sheet_begin".tr(),
             width: true,
             onTap: () async {
-              List<Kanji> list = _loadBlitzTest();
+              List<Word> list = _loadBlitzTest();
               if (list.isEmpty) {
                 Navigator.of(context).pop();
                 Utils.getSnackBar(context, "study_modes_empty".tr());

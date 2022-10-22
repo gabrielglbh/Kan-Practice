@@ -5,7 +5,7 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 part 'list.g.dart';
 
 @JsonSerializable()
-class KanjiList {
+class WordList {
   final String name;
   double totalWinRateWriting;
   double totalWinRateReading;
@@ -14,7 +14,7 @@ class KanjiList {
   double totalWinRateSpeaking;
   final int lastUpdated;
 
-  KanjiList(
+  WordList(
       {required this.name,
       this.totalWinRateWriting = DatabaseConstants.emptyWinRate,
       this.totalWinRateReading = DatabaseConstants.emptyWinRate,
@@ -23,14 +23,14 @@ class KanjiList {
       this.totalWinRateSpeaking = DatabaseConstants.emptyWinRate,
       required this.lastUpdated});
 
-  /// Empty [KanjiList]
-  static final KanjiList empty = KanjiList(name: "", lastUpdated: 0);
+  /// Empty [WordList]
+  static final WordList empty = WordList(name: "", lastUpdated: 0);
 
-  factory KanjiList.fromJson(Map<String, dynamic> json) =>
-      _$KanjiListFromJson(json);
-  Map<String, dynamic> toJson() => _$KanjiListToJson(this);
+  factory WordList.fromJson(Map<String, dynamic> json) =>
+      _$WordListFromJson(json);
+  Map<String, dynamic> toJson() => _$WordListToJson(this);
 
-  KanjiList copyWithUpdatedDate({int? lastUpdated}) => KanjiList(
+  WordList copyWithUpdatedDate({int? lastUpdated}) => WordList(
       name: name,
       totalWinRateWriting: totalWinRateWriting,
       totalWinRateReading: totalWinRateReading,
@@ -39,7 +39,7 @@ class KanjiList {
       totalWinRateSpeaking: totalWinRateSpeaking,
       lastUpdated: lastUpdated ?? this.lastUpdated);
 
-  KanjiList copyWithReset() => KanjiList(
+  WordList copyWithReset() => WordList(
       name: name,
       totalWinRateWriting: DatabaseConstants.emptyWinRate,
       totalWinRateReading: DatabaseConstants.emptyWinRate,

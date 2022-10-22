@@ -8,10 +8,10 @@ part of 'backup.dart';
 
 BackUp _$BackUpFromJson(Map<String, dynamic> json) => BackUp(
       lists: (json['lists'] as List<dynamic>)
-          .map((e) => KanjiList.fromJson(e as Map<String, dynamic>))
+          .map((e) => WordList.fromJson(e as Map<String, dynamic>))
           .toList(),
       kanji: (json['kanji'] as List<dynamic>)
-          .map((e) => Kanji.fromJson(e as Map<String, dynamic>))
+          .map((e) => Word.fromJson(e as Map<String, dynamic>))
           .toList(),
       testData: TestData.fromJson(json['testData'] as Map<String, dynamic>),
       testSpecData: (json['testSpecData'] as List<dynamic>)
@@ -21,7 +21,7 @@ BackUp _$BackUpFromJson(Map<String, dynamic> json) => BackUp(
           .map((e) => Folder.fromJson(e as Map<String, dynamic>))
           .toList(),
       relFolderKanList: (json['relFolderKanList'] as List<dynamic>)
-          .map((e) => RelFolderKanList.fromJson(e as Map<String, dynamic>))
+          .map((e) => RelationFolderList.fromJson(e as Map<String, dynamic>))
           .toList(),
       lastUpdated: json['lastUpdated'] as int,
     );

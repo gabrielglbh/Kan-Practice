@@ -113,7 +113,7 @@ class _FolderDetailsPageState extends State<FolderDetailsPage> {
                     },
                   ),
                   Expanded(
-                    child: KPKanjiLists(
+                    child: KPWordLists(
                       folder: widget.folder,
                       withinFolder: true,
                       removeFocus: () => _searchBarFn.unfocus(),

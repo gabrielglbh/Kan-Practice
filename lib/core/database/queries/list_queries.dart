@@ -1,8 +1,8 @@
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
+import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -18,7 +18,7 @@ class ListQueries {
   /// Singleton instance of [ListQueries]
   static ListQueries get instance => _instance;
 
-  /// Creates a [KanjiList] and inserts it to the db.
+  /// Creates a [WordList] and inserts it to the db.
   /// Returns an integer depending on the error given:
   ///
   /// 0: All good.
@@ -32,7 +32,7 @@ class ListQueries {
         if (name.trim().isEmpty) return -1;
         await _database?.insert(
             KanListTableFields.listsTable,
-            KanjiList(name: name, lastUpdated: Utils.getCurrentMilliseconds())
+            WordList(name: name, lastUpdated: Utils.getCurrentMilliseconds())
                 .toJson());
         return 0;
       } catch (err) {
@@ -44,9 +44,9 @@ class ListQueries {
     }
   }
 
-  /// Query to get all [KanjiList] from the db with an optional [order] and [filter].
+  /// Query to get all [WordList] from the db with an optional [order] and [filter].
   /// If anything goes wrong, an empty list will be returned.
-  Future<List<KanjiList>> getAllLists(
+  Future<List<WordList>> getAllLists(
       {KanListFilters filter = KanListFilters.all,
       String order = "DESC",
       int? limit,
@@ -59,7 +59,7 @@ class ListQueries {
             limit: limit,
             offset: (offset != null && limit != null) ? offset * limit : null);
         if (res != null) {
-          return List.generate(res.length, (i) => KanjiList.fromJson(res![i]));
+          return List.generate(res.length, (i) => WordList.fromJson(res![i]));
         } else {
           return [];
         }
@@ -72,7 +72,7 @@ class ListQueries {
     }
   }
 
-  /// Query to get all [KanjiList] from the db to return the count.
+  /// Query to get all [WordList] from the db to return the count.
   Future<int> getTotalListCount() async {
     if (_database != null) {
       try {
@@ -92,7 +92,7 @@ class ListQueries {
     }
   }
 
-  /// Query the [KanjiList] with the best scoring overall and the worst one.
+  /// Query the [WordList] with the best scoring overall and the worst one.
   /// Returns the name of the list: FIRST -> best , SECOND -> worst
   Future<List<String>> getBestAndWorstList() async {
     if (_database != null) {
@@ -100,8 +100,8 @@ class ListQueries {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.query(KanListTableFields.listsTable);
         if (res != null) {
-          final List<KanjiList> l =
-              List.generate(res.length, (i) => KanjiList.fromJson(res![i]));
+          final List<WordList> l =
+              List.generate(res.length, (i) => WordList.fromJson(res![i]));
           List<String> listNames = [];
           List<double> listAcc = [];
           for (var list in l) {
@@ -132,10 +132,10 @@ class ListQueries {
     }
   }
 
-  /// Query to get all [KanjiList] from the db based on a [query] that will match:
+  /// Query to get all [WordList] from the db based on a [query] that will match:
   /// list name, kanji, meaning and pronunciation.
   /// If anything goes wrong, an empty list will be returned.
-  Future<List<KanjiList>> getListsMatchingQuery(String query,
+  Future<List<WordList>> getListsMatchingQuery(String query,
       {required int offset, required int limit}) async {
     if (_database != null) {
       try {
@@ -155,7 +155,7 @@ class ListQueries {
             "ORDER BY ${KanListTableFields.lastUpdatedField} DESC "
             "LIMIT $limit OFFSET ${offset * limit}");
         if (res != null) {
-          return List.generate(res.length, (i) => KanjiList.fromJson(res![i]));
+          return List.generate(res.length, (i) => WordList.fromJson(res![i]));
         } else {
           return [];
         }
@@ -168,29 +168,29 @@ class ListQueries {
     }
   }
 
-  /// Query to get a [KanjiList] based on its [name].
-  /// If anything goes wrong, a [KanjiList.empty] will be returned.
-  Future<KanjiList> getList(String name) async {
+  /// Query to get a [WordList] based on its [name].
+  /// If anything goes wrong, a [WordList.empty] will be returned.
+  Future<WordList> getList(String name) async {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.query(KanListTableFields.listsTable,
             where: "${KanjiTableFields.listNameField}=?", whereArgs: [name]);
         if (res != null) {
-          return KanjiList.fromJson(res[0]);
+          return WordList.fromJson(res[0]);
         } else {
-          return KanjiList.empty;
+          return WordList.empty;
         }
       } catch (err) {
         print(err.toString());
-        return KanjiList.empty;
+        return WordList.empty;
       }
     } else {
-      return KanjiList.empty;
+      return WordList.empty;
     }
   }
 
-  /// Gets a [KanjiList] and removes it from the db.
+  /// Gets a [WordList] and removes it from the db.
   /// Returns an integer depending on the error given:
   ///
   /// 0: All good.
@@ -213,7 +213,7 @@ class ListQueries {
     }
   }
 
-  /// Creates a [KanjiList] and updates it to the db.
+  /// Creates a [WordList] and updates it to the db.
   /// Returns an integer depending on the error given:
   ///
   /// 0: All good.

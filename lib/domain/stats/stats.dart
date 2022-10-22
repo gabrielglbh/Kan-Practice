@@ -1,4 +1,4 @@
-import 'package:kanpractice/core/database/models/test_data.dart';
+import 'package:kanpractice/domain/test_data/test_data.dart';
 
 class KanPracticeStats {
   final int totalLists;

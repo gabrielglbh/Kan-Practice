@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'market_list.g.dart';
+part 'market.g.dart';
 
 @JsonSerializable()
-class MarketList {
+class Market {
   static const uidField = "uid";
   static const listNameField = "name";
   static const numberOfWordsField = "words";
@@ -37,7 +37,7 @@ class MarketList {
   final int uploadedToMarket;
   final bool isFolder;
 
-  MarketList({
+  Market({
     required this.words,
     required this.uid,
     required this.name,
@@ -51,15 +51,14 @@ class MarketList {
     this.isFolder = false,
   });
 
-  /// Empty [MarketList]
-  static final MarketList empty =
-      MarketList(name: "", uid: "", words: 0, description: "", author: "");
+  /// Empty [Market]
+  static final Market empty =
+      Market(name: "", uid: "", words: 0, description: "", author: "");
 
-  factory MarketList.fromJson(Map<String, dynamic> json) =>
-      _$MarketListFromJson(json);
-  Map<String, dynamic> toJson() => _$MarketListToJson(this);
+  factory Market.fromJson(Map<String, dynamic> json) => _$MarketFromJson(json);
+  Map<String, dynamic> toJson() => _$MarketToJson(this);
 
-  MarketList copyWithKeywords() {
+  Market copyWithKeywords() {
     List<String> k = [];
 
     /// Set as keywords the individual words and the compendium of aggregated
@@ -72,7 +71,7 @@ class MarketList {
     for (int x = 0; x < name.length; x++) {
       k.add(name.substring(0, x + 1).toLowerCase());
     }
-    return MarketList(
+    return Market(
       name: name,
       uid: uid,
       words: words,

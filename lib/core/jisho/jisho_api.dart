@@ -1,4 +1,4 @@
-import 'package:kanpractice/core/jisho/models/jisho_data.dart';
+import 'package:kanpractice/domain/dictionary_details/dictionary_details_example.dart';
 import 'package:unofficial_jisho_api/api.dart' as jisho;
 
 class JishoAPI {

@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kanpractice/core/database/models/test_result.dart';
 import 'package:kanpractice/core/database/queries/test_queries.dart';
 import 'package:kanpractice/core/types/study_modes_filters.dart';
 import 'package:kanpractice/core/types/test_modes_filters.dart';
+import 'package:kanpractice/domain/test_result/test_result.dart';
 
 part 'test_history_event.dart';
 part 'test_history_state.dart';

@@ -1,9 +1,9 @@
-import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
+import 'package:kanpractice/domain/word/word.dart';
 
 class ModeArguments {
-  final List<Kanji> studyList;
+  final List<Word> studyList;
   final bool isTest;
   final StudyModes mode;
   final Tests testMode;

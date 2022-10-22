@@ -1,7 +1,7 @@
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/migration_utils.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/database/models/test_result.dart';
+import 'package:kanpractice/domain/test_result/test_result.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Migrations extends MigrationUtils {
@@ -173,8 +173,8 @@ class Migrations extends MigrationUtils {
     List<Map<String, dynamic>>? res =
         await db.query(KanjiTableFields.kanjiTable);
     if (res.isNotEmpty) {
-      List<Kanji> kanji =
-          List.generate(res.length, (i) => Kanji.fromJson(res[i]));
+      List<Word> kanji =
+          List.generate(res.length, (i) => Word.fromJson(res[i]));
       final batch = db.batch();
       for (int x = 0; x < kanji.length; x++) {
         batchUpdateDateLastShown(batch, kanji[x]);

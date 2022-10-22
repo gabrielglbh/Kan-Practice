@@ -6,7 +6,7 @@ part of 'list.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-KanjiList _$KanjiListFromJson(Map<String, dynamic> json) => KanjiList(
+WordList _$WordListFromJson(Map<String, dynamic> json) => WordList(
       name: json['name'] as String,
       totalWinRateWriting: (json['totalWinRateWriting'] as num?)?.toDouble() ??
           DatabaseConstants.emptyWinRate,
@@ -24,7 +24,7 @@ KanjiList _$KanjiListFromJson(Map<String, dynamic> json) => KanjiList(
       lastUpdated: json['lastUpdated'] as int,
     );
 
-Map<String, dynamic> _$KanjiListToJson(KanjiList instance) => <String, dynamic>{
+Map<String, dynamic> _$WordListToJson(WordList instance) => <String, dynamic>{
       'name': instance.name,
       'totalWinRateWriting': instance.totalWinRateWriting,
       'totalWinRateReading': instance.totalWinRateReading,

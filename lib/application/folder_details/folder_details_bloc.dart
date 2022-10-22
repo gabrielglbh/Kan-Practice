@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
+import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 part 'folder_details_event.dart';
@@ -12,10 +12,10 @@ part 'folder_details_state.dart';
 class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
   FolderDetailsBloc() : super(FolderDetailsStateLoading()) {
     /// Maintain the list for pagination purposes
-    List<KanjiList> list = [];
+    List<WordList> list = [];
 
     /// Maintain the list for pagination purposes on search
-    List<KanjiList> searchList = [];
+    List<WordList> searchList = [];
     const int limit = LazyLoadingLimits.kanList;
 
     /// Loading offset for normal pagination
@@ -36,8 +36,8 @@ class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
         /// For every time we want to retrieve data, we need to instantiate
         /// a new list in order for Equatable to trigger and perform a change
         /// of state. After, add to list the elements for the next iteration.
-        List<KanjiList> fullList = List.of(list);
-        final List<KanjiList> pagination =
+        List<WordList> fullList = List.of(list);
+        final List<WordList> pagination =
             await FolderQueries.instance.getAllListsOnFolder(
           event.folder,
           filter: event.filter,
@@ -57,7 +57,7 @@ class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
     on<FolderForTestEventLoading>((event, emit) async {
       try {
         emit(FolderDetailsStateLoading());
-        final List<KanjiList> lists =
+        final List<WordList> lists =
             await FolderQueries.instance.getAllListsOnFolder(event.folder);
         emit(FolderDetailsStateTestLoaded(lists: lists));
       } on Exception {
@@ -77,8 +77,8 @@ class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
         /// For every time we want to retrieve data, we need to instantiate
         /// a new list in order for Equatable to trigger and perform a change
         /// of state. After, add to list the elements for the next iteration.
-        List<KanjiList> fullList = List.of(searchList);
-        final List<KanjiList> pagination =
+        List<WordList> fullList = List.of(searchList);
+        final List<WordList> pagination =
             await FolderQueries.instance.getAllListsOnFolderOnQuery(
           event.query,
           event.folder,
@@ -102,7 +102,7 @@ class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
             .removeKanListToFolder(event.folder, name);
         if (code == 0) {
           emit(FolderDetailsStateLoading());
-          List<KanjiList> newList =
+          List<WordList> newList =
               await _getNewAllListsAndUpdateLazyLoadingState(
             event.folder,
             event.filter,
@@ -120,12 +120,12 @@ class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
     });
   }
 
-  Future<List<KanjiList>> _getNewAllListsAndUpdateLazyLoadingState(
+  Future<List<WordList>> _getNewAllListsAndUpdateLazyLoadingState(
       String folder, KanListFilters filter, bool order,
-      {required int limit, required List<KanjiList> l}) async {
+      {required int limit, required List<WordList> l}) async {
     /// When creating or removing a new list, reset any pagination offset
     /// to load up from the start
-    final List<KanjiList> lists =
+    final List<WordList> lists =
         await FolderQueries.instance.getAllListsOnFolder(
       folder,
       filter: filter,

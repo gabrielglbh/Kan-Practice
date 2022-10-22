@@ -1,12 +1,12 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -35,9 +35,9 @@ class DailyBottomSheet extends StatelessWidget {
             KPSizes.numberOfKanjiInTest;
 
     final today = await Utils.parseTodayDate(context);
-    List<Kanji> list = [];
+    List<Word> list = [];
     if (folder == null) {
-      list = await KanjiQueries.instance.getDailyKanjis(randomStudyMode);
+      list = await WordQueries.instance.getDailyKanjis(randomStudyMode);
     } else {
       list = await FolderQueries.instance.getAllKanjiOnListsOnFolder(
         [folder!],
@@ -45,7 +45,7 @@ class DailyBottomSheet extends StatelessWidget {
         mode: randomStudyMode,
       );
     }
-    List<Kanji> sortedList =
+    List<Word> sortedList =
         list.sublist(0, list.length < kanjiInTest ? list.length : kanjiInTest);
 
     navigator.pop(); // Dismiss this bottom sheet

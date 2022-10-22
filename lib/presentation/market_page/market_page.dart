@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
-import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
+import 'package:kanpractice/domain/market/market.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -39,7 +39,7 @@ class _MarketPageState extends State<MarketPage>
 
     final filterText =
         StorageManager.readData(StorageManager.filtersOnMarket) ??
-            MarketList.uploadedToMarketField;
+            Market.uploadedToMarketField;
     _currentAppliedFilter = MarketFiltersUtils.getFilterFrom(filterText);
 
     _currentAppliedOrder =

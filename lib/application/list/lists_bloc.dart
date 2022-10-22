@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
+import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 part 'lists_event.dart';
@@ -12,10 +12,10 @@ part 'lists_state.dart';
 class ListBloc extends Bloc<ListEvent, ListState> {
   ListBloc() : super(ListStateLoading()) {
     /// Maintain the list for pagination purposes
-    List<KanjiList> list = [];
+    List<WordList> list = [];
 
     /// Maintain the list for pagination purposes on search
-    List<KanjiList> searchList = [];
+    List<WordList> searchList = [];
     const int limit = LazyLoadingLimits.kanList;
 
     /// Loading offset for normal pagination
@@ -36,8 +36,8 @@ class ListBloc extends Bloc<ListEvent, ListState> {
         /// For every time we want to retrieve data, we need to instantiate
         /// a new list in order for Equatable to trigger and perform a change
         /// of state. After, add to list the elements for the next iteration.
-        List<KanjiList> fullList = List.of(list);
-        final List<KanjiList> pagination = await ListQueries.instance
+        List<WordList> fullList = List.of(list);
+        final List<WordList> pagination = await ListQueries.instance
             .getAllLists(
                 filter: event.filter,
                 order: _getSelectedOrder(event.order),
@@ -55,7 +55,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<ListForTestEventLoading>((event, emit) async {
       try {
         emit(ListStateLoading());
-        final List<KanjiList> lists = await ListQueries.instance.getAllLists();
+        final List<WordList> lists = await ListQueries.instance.getAllLists();
         emit(ListStateLoaded(lists: lists));
       } on Exception {
         emit(ListStateFailure());
@@ -74,8 +74,8 @@ class ListBloc extends Bloc<ListEvent, ListState> {
         /// For every time we want to retrieve data, we need to instantiate
         /// a new list in order for Equatable to trigger and perform a change
         /// of state. After, add to list the elements for the next iteration.
-        List<KanjiList> fullList = List.of(searchList);
-        final List<KanjiList> pagination = await ListQueries.instance
+        List<WordList> fullList = List.of(searchList);
+        final List<WordList> pagination = await ListQueries.instance
             .getListsMatchingQuery(event.query,
                 offset: loadingTimesForSearch, limit: limit);
         fullList.addAll(pagination);
@@ -93,7 +93,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
         final code = await ListQueries.instance.removeList(name);
         if (code == 0) {
           emit(ListStateLoading());
-          List<KanjiList> newList =
+          List<WordList> newList =
               await _getNewAllListsAndUpdateLazyLoadingState(
                   event.filter, event.order,
                   limit: limit, l: list);
@@ -112,7 +112,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
         final code = await ListQueries.instance.createList(name);
         if (code == 0) {
           emit(ListStateLoading());
-          List<KanjiList> newList = [];
+          List<WordList> newList = [];
           if (event.useLazyLoading) {
             newList = await _getNewAllListsAndUpdateLazyLoadingState(
                 event.filter, event.order,
@@ -130,12 +130,12 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     });
   }
 
-  Future<List<KanjiList>> _getNewAllListsAndUpdateLazyLoadingState(
+  Future<List<WordList>> _getNewAllListsAndUpdateLazyLoadingState(
       KanListFilters filter, bool order,
-      {required int limit, required List<KanjiList> l}) async {
+      {required int limit, required List<WordList> l}) async {
     /// When creating or removing a new list, reset any pagination offset
     /// to load up from the start
-    final List<KanjiList> lists = await ListQueries.instance.getAllLists(
+    final List<WordList> lists = await ListQueries.instance.getAllLists(
         filter: filter,
         order: _getSelectedOrder(order),
         limit: limit,

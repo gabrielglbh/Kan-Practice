@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/list_details/list_details_bloc.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/tutorial/tutorial_manager.dart';
@@ -10,6 +8,8 @@ import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/core/types/coach_tutorial_parts.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/domain/list/list.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/add_word_page/arguments.dart';
 import 'package:kanpractice/presentation/core/ui/blitz/kp_blitz_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/ui/folder_list_bottom_sheet.dart';
@@ -27,7 +27,7 @@ import 'package:kanpractice/presentation/list_details_page/widgets/practice_on_l
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
 class ListDetailsPage extends StatefulWidget {
-  final KanjiList list;
+  final WordList list;
   const ListDetailsPage({Key? key, required this.list}) : super(key: key);
 
   @override
@@ -400,7 +400,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 5, childAspectRatio: 2),
       itemBuilder: (context, k) {
-        Kanji? kanji = state.list[k];
+        Word? kanji = state.list[k];
         return KanjiItem(
           aggregateStats: _aggrStats,
           index: k,

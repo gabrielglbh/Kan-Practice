@@ -1,10 +1,10 @@
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/database/models/test_data.dart';
-import 'package:kanpractice/core/database/models/test_result.dart';
-import 'package:kanpractice/core/database/models/specific_data.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
+import 'package:kanpractice/domain/specific_data/specific_data.dart';
+import 'package:kanpractice/domain/test_data/test_data.dart';
+import 'package:kanpractice/domain/test_result/test_result.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:sqflite/sqflite.dart';
 
 class MigrationUtils {
@@ -37,7 +37,7 @@ class MigrationUtils {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  batchUpdateDateLastShown(Batch? batch, Kanji kanji) {
+  batchUpdateDateLastShown(Batch? batch, Word kanji) {
     batch?.update(KanjiTableFields.kanjiTable,
         {KanjiTableFields.dateLastShown: kanji.dateAdded},
         where: "${KanjiTableFields.kanjiField}=?",

@@ -4,7 +4,7 @@ class KPSizes {
   static const double defaultSizeDragContainerHeight = 5;
   static const double defaultSizeLearningExtContainer = 20;
   static const double defaultSizeLearningModeBar = 32;
-  static const double defaultResultKanjiListOnTest = 40;
+  static const double defaultResultWordListOnTest = 40;
   static const double defaultSizeSearchBarIcons = 50;
   static const double defaultJishoAPIContainer = 52;
   static const double defaultSizeFiltersList = 60;

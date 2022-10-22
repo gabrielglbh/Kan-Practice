@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/word_history/word_history_bloc.dart';
-import 'package:kanpractice/core/database/models/word_history.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/domain/word_history/word_history.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';

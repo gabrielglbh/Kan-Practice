@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kanpractice/core/database/models/list.dart';
+import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KPSearchBar extends StatefulWidget {
@@ -39,7 +39,7 @@ class KPSearchBar extends StatefulWidget {
 class _KPSearchBarState extends State<KPSearchBar> {
   TextEditingController? _controller;
 
-  final List<KanjiList> _filteredLists = [];
+  final List<WordList> _filteredLists = [];
   bool _hasFocus = false;
   bool _showCursor = false;
 

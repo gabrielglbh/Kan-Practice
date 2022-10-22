@@ -2,7 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kanpractice/core/database/queries/word_history_queries.dart';
 import 'package:kanpractice/core/jisho/jisho_api.dart';
-import 'package:kanpractice/core/jisho/models/jisho_data.dart';
+import 'package:kanpractice/domain/dictionary_details/dictionary_details_data.dart';
+import 'package:kanpractice/domain/dictionary_details/dictionary_details_example.dart';
 import 'package:unofficial_jisho_api/api.dart' as jisho;
 
 part 'dictionary_details_event.dart';

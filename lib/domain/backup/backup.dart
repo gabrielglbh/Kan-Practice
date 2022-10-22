@@ -1,21 +1,21 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kanpractice/core/database/models/folder.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/database/models/list.dart';
-import 'package:kanpractice/core/database/models/rel_folder_kanlist.dart';
-import 'package:kanpractice/core/database/models/test_data.dart';
-import 'package:kanpractice/core/database/models/specific_data.dart';
+import 'package:kanpractice/domain/folder/folder.dart';
+import 'package:kanpractice/domain/list/list.dart';
+import 'package:kanpractice/domain/relation_folder_list/relation_folder_list.dart';
+import 'package:kanpractice/domain/specific_data/specific_data.dart';
+import 'package:kanpractice/domain/test_data/test_data.dart';
+import 'package:kanpractice/domain/word/word.dart';
 
 part 'backup.g.dart';
 
 @JsonSerializable()
 class BackUp {
-  final List<KanjiList> lists;
-  final List<Kanji> kanji;
+  final List<WordList> lists;
+  final List<Word> kanji;
   final TestData testData;
   final List<SpecificData> testSpecData;
   final List<Folder> folders;
-  final List<RelFolderKanList> relFolderKanList;
+  final List<RelationFolderList> relFolderKanList;
   final int lastUpdated;
 
   static const String kanjiLabel = "kanji";

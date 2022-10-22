@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/database/models/folder.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/database/models/list.dart';
-import 'package:kanpractice/core/database/models/rel_folder_kanlist.dart';
 import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
+import 'package:kanpractice/domain/folder/folder.dart';
+import 'package:kanpractice/domain/list/list.dart';
+import 'package:kanpractice/domain/relation_folder_list/relation_folder_list.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class MarketQueries {
@@ -24,8 +24,7 @@ class MarketQueries {
   /// Installs the list from the market into the user's private DB.
   /// It uses IGNORE conflict algorithm: if the List or Kanji exists already, it will
   /// ignore the insertion and commence the next one.
-  Future<String> mergeMarketListIntoDb(
-      KanjiList list, List<Kanji> kanji) async {
+  Future<String> mergeMarketListIntoDb(WordList list, List<Word> kanji) async {
     if (_database != null) {
       try {
         /// Check if the list is already installed
@@ -62,9 +61,9 @@ class MarketQueries {
   /// exists already, it will ignore the insertion and commence the next one.
   Future<String> mergeMarketFolderIntoDb(
     Folder folder,
-    List<RelFolderKanList> relations,
-    List<KanjiList> lists,
-    List<Kanji> kanji,
+    List<RelationFolderList> relations,
+    List<WordList> lists,
+    List<Word> kanji,
   ) async {
     if (_database != null) {
       try {

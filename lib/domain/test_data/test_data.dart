@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/database/models/specific_data.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
+import 'package:kanpractice/domain/specific_data/specific_data.dart';
 
 part 'test_data.g.dart';
 

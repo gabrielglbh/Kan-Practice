@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/list/lists_bloc.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
@@ -33,7 +33,7 @@ class KanListSelectionBottomSheet extends StatefulWidget {
 class _KanListSelectionBottomSheetState
     extends State<KanListSelectionBottomSheet> {
   final ListBloc _bloc = ListBloc();
-  List<Kanji> _kanji = [];
+  List<Word> _kanji = [];
   final List<String> _selectedLists = [];
   String _selectedFormattedLists = "";
 
@@ -41,7 +41,7 @@ class _KanListSelectionBottomSheetState
   bool _onListEmpty = false;
 
   Future<void> _loadKanjiFromListSelection(List<String> lists) async {
-    _kanji = await KanjiQueries.instance.getKanjiBasedOnSelectedLists(lists);
+    _kanji = await WordQueries.instance.getKanjiBasedOnSelectedLists(lists);
     _kanji.shuffle();
 
     /// Keep the list names all the way to the Test Result page in a formatted way

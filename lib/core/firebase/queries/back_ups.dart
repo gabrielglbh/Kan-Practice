@@ -1,20 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:kanpractice/core/database/models/folder.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/database/models/list.dart';
-import 'package:kanpractice/core/database/models/rel_folder_kanlist.dart';
-import 'package:kanpractice/core/database/models/test_data.dart';
-import 'package:kanpractice/core/database/models/specific_data.dart';
 import 'package:kanpractice/core/database/queries/back_up_queries.dart';
 import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:kanpractice/core/database/queries/test_queries.dart';
 import 'package:kanpractice/core/firebase/firebase.dart';
-import 'package:kanpractice/core/firebase/models/backup.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/domain/backup/backup.dart';
+import 'package:kanpractice/domain/folder/folder.dart';
+import 'package:kanpractice/domain/list/list.dart';
+import 'package:kanpractice/domain/relation_folder_list/relation_folder_list.dart';
+import 'package:kanpractice/domain/specific_data/specific_data.dart';
+import 'package:kanpractice/domain/test_data/test_data.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class BackUpRecords {
@@ -87,8 +87,8 @@ class BackUpRecords {
     User? user = _auth.currentUser;
     await user?.reload();
 
-    List<Kanji> kanji = await KanjiQueries.instance.getAllKanji();
-    List<KanjiList> lists = await ListQueries.instance.getAllLists();
+    List<Word> kanji = await WordQueries.instance.getAllKanji();
+    List<WordList> lists = await ListQueries.instance.getAllLists();
     TestData testData = await TestQueries.instance.getTestDataFromDb();
     List<SpecificData> testSpecData = [];
 
@@ -119,7 +119,7 @@ class BackUpRecords {
     }
 
     List<Folder> folders = await FolderQueries.instance.getAllFolders();
-    List<RelFolderKanList> relFolderKanList =
+    List<RelationFolderList> relFolderKanList =
         await FolderQueries.instance.getFolderRelation();
     int date = Utils.getCurrentMilliseconds();
 
@@ -263,19 +263,19 @@ class BackUpRecords {
           .collection(relFolderKanListLabel)
           .get();
 
-      List<Kanji> backUpKanji = [];
-      List<KanjiList> backUpLists = [];
+      List<Word> backUpKanji = [];
+      List<WordList> backUpLists = [];
       List<Folder> backUpFolders = [];
-      List<RelFolderKanList> backUpRelFolderKanList = [];
+      List<RelationFolderList> backUpRelationFolderList = [];
       TestData backUpTestData = TestData.empty;
       List<SpecificData> backUpTestSpecData = [];
 
       if (kanjiSnapshot.size > 0 && listsSnapshot.size > 0) {
         for (int x = 0; x < kanjiSnapshot.size; x++) {
-          backUpKanji.add(Kanji.fromJson(kanjiSnapshot.docs[x].data()));
+          backUpKanji.add(Word.fromJson(kanjiSnapshot.docs[x].data()));
         }
         for (int x = 0; x < listsSnapshot.size; x++) {
-          backUpLists.add(KanjiList.fromJson(listsSnapshot.docs[x].data()));
+          backUpLists.add(WordList.fromJson(listsSnapshot.docs[x].data()));
         }
       }
 
@@ -291,7 +291,7 @@ class BackUpRecords {
 
       if (relFolderKanListSnapshot.size > 0) {
         for (int x = 0; x < relFolderKanListSnapshot.size; x++) {
-          backUpRelFolderKanList.add(RelFolderKanList.fromJson(
+          backUpRelationFolderList.add(RelationFolderList.fromJson(
               relFolderKanListSnapshot.docs[x].data()));
         }
       }
@@ -309,7 +309,7 @@ class BackUpRecords {
         testData: backUpTestData,
         testSpecData: backUpTestSpecData,
         folders: backUpFolders,
-        relFolderKanList: backUpRelFolderKanList,
+        relFolderKanList: backUpRelationFolderList,
         lastUpdated: 0,
       ));
     } catch (err) {
@@ -363,7 +363,7 @@ class BackUpRecords {
               .collection(collection)
               .doc(user?.uid)
               .collection(kanjiLabel)
-              .doc(Kanji.fromJson(kanjiSnapshot.docs[x].data()).kanji));
+              .doc(Word.fromJson(kanjiSnapshot.docs[x].data()).kanji));
           batch = await _reinitializeBatch(batch, x);
         }
         for (int x = 0; x < listsSnapshot.size; x++) {
@@ -371,7 +371,7 @@ class BackUpRecords {
               .collection(collection)
               .doc(user?.uid)
               .collection(listsLabel)
-              .doc(KanjiList.fromJson(listsSnapshot.docs[x].data()).name));
+              .doc(WordList.fromJson(listsSnapshot.docs[x].data()).name));
           batch = await _reinitializeBatch(batch, x);
         }
       }

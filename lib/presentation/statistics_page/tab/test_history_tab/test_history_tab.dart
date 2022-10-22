@@ -12,7 +12,7 @@ import 'package:kanpractice/presentation/core/ui/graphs/kp_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
-import 'package:kanpractice/presentation/statistics_page/model/stats.dart';
+import 'package:kanpractice/domain/stats/stats.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/stats_header.dart';
 
 class TestHistoryArgs {

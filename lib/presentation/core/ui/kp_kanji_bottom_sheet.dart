@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/word_details/word_details_bloc.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/routing/pages.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
@@ -18,7 +18,7 @@ import 'package:easy_localization/easy_localization.dart';
 class KPKanjiBottomSheet extends StatelessWidget {
   /// Kanji object to be displayed
   final String listName;
-  final Kanji? kanji;
+  final Word? kanji;
   final Function()? onRemove;
   final Function()? onTap;
   const KPKanjiBottomSheet(
@@ -32,7 +32,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
   /// Creates and calls the [BottomSheet] with the content for displaying the data
   /// of the current selected kanji
   static Future<String?> show(
-      BuildContext context, String listName, Kanji? kanji,
+      BuildContext context, String listName, Word? kanji,
       {Function()? onRemove, Function()? onTap}) async {
     return await showModalBottomSheet(
         context: context,
@@ -62,7 +62,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
                   const KPDragContainer(),
                   BlocProvider<WordDetailsBloc>(
                     create: (_) => WordDetailsBloc()
-                      ..add(WordDetailsEventLoading(kanji ?? Kanji.empty)),
+                      ..add(WordDetailsEventLoading(kanji ?? Word.empty)),
                     child: BlocConsumer<WordDetailsBloc, WordDetailsState>(
                       listener: (context, state) {
                         if (state is WordDetailsStateFailure) {
@@ -101,7 +101,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _body(BuildContext context, Kanji updatedKanji) {
+  Widget _body(BuildContext context, Word updatedKanji) {
     return Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -164,7 +164,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
         ]);
   }
 
-  Widget _header(BuildContext context, Kanji updatedKanji) {
+  Widget _header(BuildContext context, Word updatedKanji) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
         child: Row(
@@ -192,7 +192,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
         ));
   }
 
-  Widget _lastTimeShownWidget(BuildContext context, Kanji updatedKanji) {
+  Widget _lastTimeShownWidget(BuildContext context, Word updatedKanji) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
         child: ExpansionTile(
@@ -222,7 +222,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
   }
 
   Widget _lastSeenOnModes(
-      BuildContext context, Kanji updatedKanji, StudyModes mode) {
+      BuildContext context, Word updatedKanji, StudyModes mode) {
     int? date = 0;
     String parsedDate = "-";
     switch (mode) {

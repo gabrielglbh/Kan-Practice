@@ -6,7 +6,7 @@ import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_bar_chart.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/statistics_page/model/stats.dart';
+import 'package:kanpractice/domain/stats/stats.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/spec_bottom_sheet.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/stats_header.dart';
 

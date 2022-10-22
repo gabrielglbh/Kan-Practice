@@ -2,10 +2,10 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 
-part 'kanji.g.dart';
+part 'word.g.dart';
 
 @JsonSerializable()
-class Kanji {
+class Word {
   final String kanji;
   @JsonKey(name: KanjiTableFields.listNameField)
   final String listName;
@@ -25,7 +25,7 @@ class Kanji {
   final int dateLastShownSpeaking;
   final int category;
 
-  const Kanji(
+  const Word(
       {required this.kanji,
       required this.listName,
       required this.meaning,
@@ -44,14 +44,14 @@ class Kanji {
       this.dateLastShownSpeaking = 0,
       this.category = 0});
 
-  /// Empty [Kanji]
-  static const Kanji empty =
-      Kanji(kanji: "", listName: "", meaning: "", pronunciation: "");
+  /// Empty [Word]
+  static const Word empty =
+      Word(kanji: "", listName: "", meaning: "", pronunciation: "");
 
-  factory Kanji.fromJson(Map<String, dynamic> json) => _$KanjiFromJson(json);
-  Map<String, dynamic> toJson() => _$KanjiToJson(this);
+  factory Word.fromJson(Map<String, dynamic> json) => _$WordFromJson(json);
+  Map<String, dynamic> toJson() => _$WordToJson(this);
 
-  Kanji copyWithUpdatedDate({int? dateAdded, int? dateLastShown}) => Kanji(
+  Word copyWithUpdatedDate({int? dateAdded, int? dateLastShown}) => Word(
       kanji: kanji,
       listName: listName,
       meaning: meaning,
@@ -70,7 +70,7 @@ class Kanji {
       dateLastShown: dateLastShown ?? this.dateLastShown,
       category: category);
 
-  Kanji copyWithReset() => Kanji(
+  Word copyWithReset() => Word(
       kanji: kanji,
       listName: listName,
       meaning: meaning,

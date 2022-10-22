@@ -1,26 +1,26 @@
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/database/models/specific_data.dart';
 import 'package:kanpractice/core/types/kanji_categories.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
+import 'package:kanpractice/domain/specific_data/specific_data.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:sqflite/sqflite.dart';
 
-class KanjiQueries {
+class WordQueries {
   Database? _database;
 
-  KanjiQueries._() {
+  WordQueries._() {
     _database = CustomDatabase.instance.database;
   }
 
-  static final KanjiQueries _instance = KanjiQueries._();
+  static final WordQueries _instance = WordQueries._();
   static const int categoryId = -9999;
 
-  /// Singleton instance of [KanjiQueries]
-  static KanjiQueries get instance => _instance;
+  /// Singleton instance of [WordQueries]
+  static WordQueries get instance => _instance;
 
-  /// Creates a [Kanji] and inserts it to the db.
+  /// Creates a [Word] and inserts it to the db.
   /// Returns an integer depending on the error given:
   ///
   /// 0: All good.
@@ -28,7 +28,7 @@ class KanjiQueries {
   /// 1: Error during insertion.
   ///
   /// 2: Database is not created.
-  Future<int> createKanji(Kanji kanji) async {
+  Future<int> createKanji(Word kanji) async {
     if (_database != null) {
       try {
         await _database?.insert(KanjiTableFields.kanjiTable, kanji.toJson());
@@ -42,7 +42,7 @@ class KanjiQueries {
     }
   }
 
-  Future<List<Kanji>> getDailyKanjis(StudyModes mode) async {
+  Future<List<Word>> getDailyKanjis(StudyModes mode) async {
     if (_database != null) {
       try {
         String query = "";
@@ -75,7 +75,7 @@ class KanjiQueries {
         }
         final res = await _database?.rawQuery(query);
         if (res != null) {
-          return List.generate(res.length, (i) => Kanji.fromJson(res[i]));
+          return List.generate(res.length, (i) => Word.fromJson(res[i]));
         } else {
           return [];
         }
@@ -96,7 +96,7 @@ class KanjiQueries {
   ///
   /// [type] serves as a control variable to order all the kanji by
   /// their last shown parameter or worst accuracy parameter. See [Tests].
-  Future<List<Kanji>> getAllKanji({StudyModes? mode, Tests? type}) async {
+  Future<List<Word>> getAllKanji({StudyModes? mode, Tests? type}) async {
     if (_database != null) {
       try {
         String query = "";
@@ -161,7 +161,7 @@ class KanjiQueries {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.rawQuery(query);
         if (res != null) {
-          return List.generate(res.length, (i) => Kanji.fromJson(res![i]));
+          return List.generate(res.length, (i) => Word.fromJson(res![i]));
         } else {
           return [];
         }
@@ -177,7 +177,7 @@ class KanjiQueries {
   /// Query to get all kanji available in the current db based on a chain of [listNames]
   /// that the user has previously selected.
   /// If anything goes wrong, an empty list will be returned.
-  Future<List<Kanji>> getKanjiBasedOnSelectedLists(
+  Future<List<Word>> getKanjiBasedOnSelectedLists(
       List<String> listNames) async {
     if (_database != null) {
       try {
@@ -195,7 +195,7 @@ class KanjiQueries {
         res = await _database?.query(KanjiTableFields.kanjiTable,
             where: whereClause, whereArgs: listNames);
         if (res != null) {
-          return List.generate(res.length, (i) => Kanji.fromJson(res![i]));
+          return List.generate(res.length, (i) => Word.fromJson(res![i]));
         } else {
           return [];
         }
@@ -211,7 +211,7 @@ class KanjiQueries {
   /// Query to get all kanji available in the current db based on their category
   /// that the user has previously selected.
   /// If anything goes wrong, an empty list will be returned.
-  Future<List<Kanji>> getKanjiBasedOnCategory(int category) async {
+  Future<List<Word>> getKanjiBasedOnCategory(int category) async {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
@@ -219,7 +219,7 @@ class KanjiQueries {
             where: "${KanjiTableFields.categoryField}=?",
             whereArgs: [category]);
         if (res != null) {
-          return List.generate(res.length, (i) => Kanji.fromJson(res![i]));
+          return List.generate(res.length, (i) => Word.fromJson(res![i]));
         } else {
           return [];
         }
@@ -241,7 +241,7 @@ class KanjiQueries {
           whereArgs: [mode.index],
         );
         if (res != null) {
-          final list = List.generate(res.length, (i) => Kanji.fromJson(res[i]));
+          final list = List.generate(res.length, (i) => Word.fromJson(res[i]));
           double writing = 0,
               reading = 0,
               recognition = 0,
@@ -281,7 +281,7 @@ class KanjiQueries {
 
   /// Query to get all kanji available in the current db within a list with the name [listName].
   /// If anything goes wrong, an empty list will be returned.
-  Future<List<Kanji>> getAllKanjiFromList(String listName,
+  Future<List<Word>> getAllKanjiFromList(String listName,
       {int? offset, int? limit}) async {
     if (_database != null) {
       try {
@@ -294,7 +294,7 @@ class KanjiQueries {
             offset:
                 (offset != null && limit != null) ? (offset * limit) : null);
         if (res != null) {
-          return List.generate(res.length, (i) => Kanji.fromJson(res![i]));
+          return List.generate(res.length, (i) => Word.fromJson(res![i]));
         } else {
           return [];
         }
@@ -307,10 +307,10 @@ class KanjiQueries {
     }
   }
 
-  /// Query to get all [Kanji] from the db based on a [query] that will match:
+  /// Query to get all [Word] from the db based on a [query] that will match:
   /// kanji, meaning and pronunciation.
   /// If anything goes wrong, an empty list will be returned.
-  Future<List<Kanji>> getKanjiMatchingQuery(String query, String listName,
+  Future<List<Word>> getKanjiMatchingQuery(String query, String listName,
       {required int offset, required int limit}) async {
     if (_database != null) {
       try {
@@ -324,7 +324,7 @@ class KanjiQueries {
             "ORDER BY ${KanjiTableFields.dateAddedField} ASC "
             "LIMIT $limit OFFSET ${offset * limit}");
         if (res != null) {
-          return List.generate(res.length, (i) => Kanji.fromJson(res![i]));
+          return List.generate(res.length, (i) => Word.fromJson(res![i]));
         } else {
           return [];
         }
@@ -338,9 +338,9 @@ class KanjiQueries {
   }
 
   /// Query to get all kanji available in the current db within a list with the name [listName]
-  /// that enables Spatial Learning: ordering in ASC order the [Kanji] with less winRate.
+  /// that enables Spatial Learning: ordering in ASC order the [Word] with less winRate.
   /// If anything goes wrong, an empty list will be returned.
-  Future<List<Kanji>> getAllKanjiForPractice(
+  Future<List<Word>> getAllKanjiForPractice(
       String listName, StudyModes mode) async {
     if (_database != null) {
       try {
@@ -378,7 +378,7 @@ class KanjiQueries {
             break;
         }
         if (res != null) {
-          return List.generate(res.length, (i) => Kanji.fromJson(res![i]));
+          return List.generate(res.length, (i) => Word.fromJson(res![i]));
         } else {
           return [];
         }
@@ -391,7 +391,7 @@ class KanjiQueries {
     }
   }
 
-  /// Query to get the count of [Kanji] on the whole database
+  /// Query to get the count of [Word] on the whole database
   Future<int> getTotalKanjiCount() async {
     if (_database != null) {
       try {
@@ -411,18 +411,18 @@ class KanjiQueries {
     }
   }
 
-  /// Query to get the total win rates of all [Kanji] on the whole database
+  /// Query to get the total win rates of all [Word] on the whole database
   ///
-  /// Returns an emptied [Kanji] with the sole purpose to store the values of
+  /// Returns an emptied [Word] with the sole purpose to store the values of
   /// the win rates
-  Future<Kanji> getTotalKanjiWinRates() async {
+  Future<Word> getTotalKanjiWinRates() async {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.query(KanjiTableFields.kanjiTable);
         if (res != null) {
-          List<Kanji> l =
-              List.generate(res.length, (i) => Kanji.fromJson(res![i]));
+          List<Word> l =
+              List.generate(res.length, (i) => Word.fromJson(res![i]));
           final int total = l.length;
           double writing = 0;
           double reading = 0;
@@ -448,7 +448,7 @@ class KanjiQueries {
                 ? 0
                 : kanji.winRateSpeaking);
           }
-          return Kanji(
+          return Word(
               meaning: '',
               pronunciation: '',
               listName: '',
@@ -459,14 +459,14 @@ class KanjiQueries {
               winRateListening: listening == 0 ? 0 : listening / total,
               winRateSpeaking: speaking == 0 ? 0 : speaking / total);
         } else {
-          return Kanji.empty;
+          return Word.empty;
         }
       } catch (err) {
         print(err.toString());
-        return Kanji.empty;
+        return Word.empty;
       }
     } else {
-      return Kanji.empty;
+      return Word.empty;
     }
   }
 
@@ -493,9 +493,9 @@ class KanjiQueries {
     }
   }
 
-  /// Query to get a [Kanji] based on a [listName] and its definition [kanji].
+  /// Query to get a [Word] based on a [listName] and its definition [Word].
   /// If anything goes wrong, a [Kanji.empty] will be returned.
-  Future<Kanji> getKanji(String listName, String kanji) async {
+  Future<Word> getKanji(String listName, String kanji) async {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
@@ -504,20 +504,20 @@ class KanjiQueries {
                 "${KanjiTableFields.listNameField}=? AND ${KanjiTableFields.kanjiField}=?",
             whereArgs: [listName, kanji]);
         if (res != null) {
-          return Kanji.fromJson(res[0]);
+          return Word.fromJson(res[0]);
         } else {
-          return Kanji.empty;
+          return Word.empty;
         }
       } catch (err) {
         print(err.toString());
-        return Kanji.empty;
+        return Word.empty;
       }
     } else {
-      return Kanji.empty;
+      return Word.empty;
     }
   }
 
-  /// Gets a [Kanji] and removes it from the db.
+  /// Gets a [Word] and removes it from the db.
   /// Returns an integer depending on the error given:
   ///
   /// 0: All good.
@@ -542,7 +542,7 @@ class KanjiQueries {
     }
   }
 
-  /// Gets a [Kanji] and updates it on the db.
+  /// Gets a [Word] and updates it on the db.
   /// Returns an integer depending on the error given:
   ///
   /// 0: All good.

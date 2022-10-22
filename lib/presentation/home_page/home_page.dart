@@ -6,7 +6,6 @@ import 'package:kanpractice/application/list/lists_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
 import 'package:kanpractice/application/settings/settings_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/firebase/queries/back_ups.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
@@ -17,6 +16,7 @@ import 'package:kanpractice/core/types/home_types.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
 import 'package:kanpractice/core/types/tab_types.dart';
+import 'package:kanpractice/domain/market/market.dart';
 import 'package:kanpractice/presentation/core/ui/kp_kanji_lists/kanji_lists.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/ui/kp_search_bar.dart';
@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage>
 
     final filterMarketText =
         StorageManager.readData(StorageManager.filtersOnMarket) ??
-            MarketList.uploadedToMarketField;
+            Market.uploadedToMarketField;
     _currentAppliedMarketFilter =
         MarketFiltersUtils.getFilterFrom(filterMarketText);
     _currentAppliedMarketOrder =
@@ -352,7 +352,7 @@ class _HomePageState extends State<HomePage>
         TabBarView(
           controller: _tabController,
           children: [
-            KPKanjiLists(
+            KPWordLists(
               key: lists,
               removeFocus: () => _searchBarFn.unfocus(),
               onScrolledToBottom: () {

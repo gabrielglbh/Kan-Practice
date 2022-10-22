@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/routing/pages.dart';
+import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class KanjiListTile extends StatelessWidget {
-  /// [KanjiList] item to paint as a Tile.
-  final KanjiList item;
+class WordListTile extends StatelessWidget {
+  /// [WordList] item to paint as a Tile.
+  final WordList item;
 
-  /// Action to perform when tapping on a [KanjiList], in addition to navigating to kanji_list_details
+  /// Action to perform when tapping on a [WordList], in addition to navigating to kanji_list_details
   final Function onTap;
 
-  /// Action to perform when removing a [KanjiList]
+  /// Action to perform when removing a [WordList]
   final Function onRemoval;
 
-  /// Tells the widget that [this] is a [KanjiList] within a Folder
+  /// Tells the widget that [this] is a [WordList] within a Folder
   final bool withinFolder;
-  const KanjiListTile({
+  const WordListTile({
     Key? key,
     required this.item,
     required this.onTap,

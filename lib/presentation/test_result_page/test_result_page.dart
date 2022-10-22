@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/models/kanji.dart';
-import 'package:kanpractice/core/database/models/test_result.dart';
 import 'package:kanpractice/core/database/queries/test_queries.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/domain/test_result/test_result.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_win_rate_chart.dart';
 import 'package:kanpractice/presentation/core/ui/kp_action_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_kanji_bottom_sheet.dart';
@@ -144,7 +144,7 @@ class _TestResultPageState extends State<TestResultPage> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: widget.args.studyList?[listName]?.length,
                 itemBuilder: (context, inner) {
-                  Kanji? kanji =
+                  Word? kanji =
                       widget.args.studyList?[listName]?[inner].keys.first;
                   double? testScore =
                       widget.args.studyList?[listName]?[inner].values.first;
@@ -158,7 +158,7 @@ class _TestResultPageState extends State<TestResultPage> {
     );
   }
 
-  Widget _kanjiElement(BuildContext context, Kanji? kanji, double? testScore) {
+  Widget _kanjiElement(BuildContext context, Word? kanji, double? testScore) {
     return Container(
       width: KPSizes.defaultSizeKanjiItemOnResultTest,
       margin: const EdgeInsets.only(

@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 
 part 'folder.g.dart';
 
@@ -19,6 +19,6 @@ class Folder {
   Folder copyWithUpdatedDate({int? lastUpdated}) =>
       Folder(folder: folder, lastUpdated: lastUpdated ?? this.lastUpdated);
 
-  Folder copyWithReset() => Folder(
-      folder: folder, lastUpdated: GeneralUtils.getCurrentMilliseconds());
+  Folder copyWithReset() =>
+      Folder(folder: folder, lastUpdated: Utils.getCurrentMilliseconds());
 }

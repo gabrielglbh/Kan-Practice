@@ -57,7 +57,7 @@ class KPBlitzBottomSheet extends StatelessWidget {
     final folderTitle = folder != null ? ": $folder" : "";
     final kanjiInTest =
         StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
-            CustomSizes.numberOfKanjiInTest;
+            KPSizes.numberOfKanjiInTest;
     final type = remembranceTest
         ? Tests.time
         : lessPctTest
@@ -104,14 +104,16 @@ class KPBlitzBottomSheet extends StatelessWidget {
               const KPDragContainer(),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    vertical: Margins.margin8, horizontal: Margins.margin32),
+                    vertical: KPMargins.margin8,
+                    horizontal: KPMargins.margin32),
                 child: Text("$title$folderTitle",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    vertical: Margins.margin8, horizontal: Margins.margin32),
+                    vertical: KPMargins.margin8,
+                    horizontal: KPMargins.margin32),
                 child: Text("$kanjiInTest $description",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyText1),

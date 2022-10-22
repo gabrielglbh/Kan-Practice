@@ -66,7 +66,8 @@ class _FolderSelectionBottomSheetState
               const KPDragContainer(),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    vertical: Margins.margin8, horizontal: Margins.margin32),
+                    vertical: KPMargins.margin8,
+                    horizontal: KPMargins.margin32),
                 child: Text("study_folder_bottom_sheet_title".tr(),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6),
@@ -106,7 +107,7 @@ class _FolderSelectionBottomSheetState
                             constraints: BoxConstraints(
                                 maxHeight:
                                     MediaQuery.of(context).size.height / 2.5),
-                            margin: const EdgeInsets.all(Margins.margin8),
+                            margin: const EdgeInsets.all(KPMargins.margin8),
                             child: _listSelection(state));
                       } else {
                         return const SizedBox();

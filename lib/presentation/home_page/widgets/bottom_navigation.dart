@@ -69,7 +69,7 @@ class HomeBottomNavigation extends StatelessWidget {
         height: 42,
         color: Colors.transparent,
         child: Icon(type.icon,
-            color: selectedColor ? CustomColors.secondaryColor : color),
+            color: selectedColor ? KPColors.secondaryColor : color),
       ),
     );
   }

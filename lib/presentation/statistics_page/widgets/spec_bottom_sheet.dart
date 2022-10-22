@@ -8,7 +8,7 @@ import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/stats_header.dart';
 
 class SpecBottomSheet extends StatefulWidget {
@@ -114,7 +114,7 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                   else
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: Margins.margin8),
+                          horizontal: KPMargins.margin8),
                       alignment: Alignment.center,
                       child: FittedBox(
                         fit: BoxFit.contain,
@@ -124,8 +124,8 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                               .textTheme
                               .headline3
                               ?.copyWith(
-                                  fontSize: FontSizes.fontSize32 +
-                                      FontSizes.fontSize16),
+                                  fontSize: KPFontSizes.fontSize32 +
+                                      KPFontSizes.fontSize16),
                         ),
                       ),
                     ),
@@ -133,12 +133,12 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                     title: "specific_accuracy_label".tr(),
                     align: MainAxisAlignment.center,
                     verticalVisualDensity: -4,
-                    value: GeneralUtils.getFixedPercentageAsString(
+                    value: Utils.getFixedPercentageAsString(
                         aggregate / StudyModes.values.length),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: Margins.margin24),
+                        horizontal: KPMargins.margin24),
                     child: KPRadialGraph(
                       animationDuration: 0,
                       writing: widget.data.totalWinRateWriting,
@@ -148,7 +148,7 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                       speaking: widget.data.totalWinRateSpeaking,
                     ),
                   ),
-                  const SizedBox(height: Margins.margin24)
+                  const SizedBox(height: KPMargins.margin24)
                 ],
               ),
             ],

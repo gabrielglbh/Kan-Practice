@@ -142,20 +142,20 @@ class _KPKanjiListsState extends State<KPKanjiLists>
             : Colors.black);
 
     return SizedBox(
-        height: CustomSizes.defaultSizeFiltersList,
+        height: KPSizes.defaultSizeFiltersList,
         child: ListView.builder(
             itemCount: KanListFilters.values.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: Margins.margin2),
+                    const EdgeInsets.symmetric(horizontal: KPMargins.margin2),
                 child: ChoiceChip(
                   label: Text(KanListFilters.values[index].label),
                   avatar: _currentAppliedFilter.index != index ? null : icon,
-                  pressElevation: Margins.margin4,
+                  pressElevation: KPMargins.margin4,
                   padding:
-                      const EdgeInsets.symmetric(horizontal: Margins.margin8),
+                      const EdgeInsets.symmetric(horizontal: KPMargins.margin8),
                   onSelected: (bool selected) => _onFilterSelected(index),
                   selected: _currentAppliedFilter.index == index,
                 ),
@@ -217,13 +217,13 @@ class _KPKanjiListsState extends State<KPKanjiLists>
     return Expanded(
       child: RefreshIndicator(
         onRefresh: () => _addLoadingEvent(reset: true),
-        color: CustomColors.secondaryColor,
+        color: KPColors.secondaryColor,
         child: ListView.builder(
           key: const PageStorageKey<String>('kanListListsController'),
           controller: _scrollController,
           itemCount: lists.length,
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          padding: const EdgeInsets.only(bottom: Margins.margin24),
+          padding: const EdgeInsets.only(bottom: KPMargins.margin24),
           itemBuilder: (context, k) {
             return KanjiListTile(
               item: lists[k],

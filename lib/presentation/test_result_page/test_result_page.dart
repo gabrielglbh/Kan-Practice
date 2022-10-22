@@ -10,7 +10,7 @@ import 'package:kanpractice/presentation/core/ui/kp_action_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_kanji_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/test_result_page/arguments.dart';
 
 class TestResultPage extends StatefulWidget {
@@ -33,7 +33,7 @@ class _TestResultPageState extends State<TestResultPage> {
         studyMode: widget.args.studyMode,
         testMode: widget.args.testMode,
         kanjiLists: widget.args.listsName,
-        takenDate: GeneralUtils.getCurrentMilliseconds());
+        takenDate: Utils.getCurrentMilliseconds());
     await TestQueries.instance.createTest(test);
     await TestQueries.instance.updateStats(test);
   }
@@ -50,7 +50,7 @@ class _TestResultPageState extends State<TestResultPage> {
     return KPScaffold(
       onWillPop: () async => false,
       automaticallyImplyLeading: false,
-      toolbarHeight: Margins.margin32,
+      toolbarHeight: KPMargins.margin32,
       appBarTitle: null,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -64,10 +64,10 @@ class _TestResultPageState extends State<TestResultPage> {
             winRate: widget.args.score,
             backgroundColor: StudyModes.values[widget.args.studyMode].color,
             size: MediaQuery.of(context).size.width / 2.5,
-            rateSize: ChartSize.large,
+            rateSize: KPChartSize.large,
           ),
           Padding(
-            padding: const EdgeInsets.only(bottom: Margins.margin8),
+            padding: const EdgeInsets.only(bottom: KPMargins.margin8),
             child: Text("test_result_disclaimer".tr(),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyText1),
@@ -82,10 +82,11 @@ class _TestResultPageState extends State<TestResultPage> {
                 child: Row(
                   children: [
                     Icon(Icons.track_changes_rounded,
-                        color: CustomColors.getSecondaryColor(context)),
+                        color: KPColors.getSecondaryColor(context)),
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: Margins.margin16),
+                        padding:
+                            const EdgeInsets.only(left: KPMargins.margin16),
                         child: Text("test_result_do_test_button_label".tr(),
                             maxLines: 2,
                             style: Theme.of(context).textTheme.bodyText1),
@@ -96,8 +97,8 @@ class _TestResultPageState extends State<TestResultPage> {
               ),
               Switch(
                 value: _performAnotherTest,
-                activeColor: CustomColors.secondaryDarkerColor,
-                activeTrackColor: CustomColors.secondaryColor,
+                activeColor: KPColors.secondaryDarkerColor,
+                activeTrackColor: KPColors.secondaryColor,
                 onChanged: (value) =>
                     setState(() => _performAnotherTest = value),
               ),
@@ -105,7 +106,7 @@ class _TestResultPageState extends State<TestResultPage> {
           ),
           KPActionButton(
               label: "test_result_save_button_label".tr(),
-              vertical: Margins.margin16,
+              vertical: KPMargins.margin16,
               onTap: () {
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     KanPracticePages.homePage, (route) => false,
@@ -118,7 +119,7 @@ class _TestResultPageState extends State<TestResultPage> {
 
   Widget _kanjiOnTest() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
+      padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin8),
       child: ListView.builder(
         itemCount: widget.args.studyList?.keys.toList().length,
         itemBuilder: (context, index) {
@@ -126,7 +127,8 @@ class _TestResultPageState extends State<TestResultPage> {
           return Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
+                padding:
+                    const EdgeInsets.symmetric(vertical: KPMargins.margin8),
                 child: Text(
                     "$listName (${widget.args.studyList?[listName]?.length}):",
                     overflow: TextOverflow.ellipsis,
@@ -158,28 +160,27 @@ class _TestResultPageState extends State<TestResultPage> {
 
   Widget _kanjiElement(BuildContext context, Kanji? kanji, double? testScore) {
     return Container(
-      width: CustomSizes.defaultSizeKanjiItemOnResultTest,
+      width: KPSizes.defaultSizeKanjiItemOnResultTest,
       margin: const EdgeInsets.only(
-          left: Margins.margin4,
-          right: Margins.margin4,
-          bottom: Margins.margin4,
-          top: Margins.margin4),
+          left: KPMargins.margin4,
+          right: KPMargins.margin4,
+          bottom: KPMargins.margin4,
+          top: KPMargins.margin4),
       decoration: BoxDecoration(
-        color: GeneralUtils.getColorBasedOnWinRate(testScore ?? 0),
-        borderRadius:
-            const BorderRadius.all(Radius.circular(CustomRadius.radius8)),
+        color: Utils.getColorBasedOnWinRate(testScore ?? 0),
+        borderRadius: const BorderRadius.all(Radius.circular(KPRadius.radius8)),
         boxShadow: const [
           BoxShadow(
               color: Colors.grey,
               offset: Offset(0, 0.5),
-              blurRadius: CustomRadius.radius4)
+              blurRadius: KPRadius.radius4)
         ],
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
             borderRadius:
-                const BorderRadius.all(Radius.circular(CustomRadius.radius8)),
+                const BorderRadius.all(Radius.circular(KPRadius.radius8)),
             onTap: () async {
               await KPKanjiBottomSheet.show(
                   context, (kanji?.listName ?? ""), kanji);
@@ -187,7 +188,7 @@ class _TestResultPageState extends State<TestResultPage> {
             // _createDialogForDeletingKanji(context, kanji.kanji),,
             child: Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: Margins.margin2),
+                    const EdgeInsets.symmetric(horizontal: KPMargins.margin2),
                 child: FittedBox(
                   fit: BoxFit.contain,
                   child: Text((kanji?.kanji ?? ""),

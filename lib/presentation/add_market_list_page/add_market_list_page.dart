@@ -9,7 +9,7 @@ import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/ui/kp_text_form.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class AddMarketListPage extends StatefulWidget {
   const AddMarketListPage({Key? key}) : super(key: key);
@@ -85,7 +85,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
             child: BlocConsumer<AddToMarketBloc, AddToMarketState>(
               listener: (context, state) {
                 if (state is AddToMarketStateFailure) {
-                  GeneralUtils.getSnackBar(context, state.message);
+                  Utils.getSnackBar(context, state.message);
                 }
                 if (state is AddToMarketStateGetUser) {
                   _tcUser.text = state.name;
@@ -99,11 +99,12 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                     children: [
                       Padding(
                         padding:
-                            const EdgeInsets.only(bottom: Margins.margin16),
+                            const EdgeInsets.only(bottom: KPMargins.margin16),
                         child: Row(
                           children: [
                             const Padding(
-                              padding: EdgeInsets.only(right: Margins.margin8),
+                              padding:
+                                  EdgeInsets.only(right: KPMargins.margin8),
                               child: Icon(Icons.info_outline_rounded),
                             ),
                             Expanded(
@@ -123,7 +124,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                       ),
                       Padding(
                         padding:
-                            const EdgeInsets.only(bottom: Margins.margin16),
+                            const EdgeInsets.only(bottom: KPMargins.margin16),
                         child: Card(
                           child: ListTile(
                             title: Text(_listSelection),
@@ -182,10 +183,10 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                       child: Column(
                     children: [
                       Icon(Icons.check_circle_rounded,
-                          color: CustomColors.getSecondaryColor(context),
-                          size: CustomSizes.maxHeightValidationCircle),
+                          color: KPColors.getSecondaryColor(context),
+                          size: KPSizes.maxHeightValidationCircle),
                       Padding(
-                        padding: const EdgeInsets.all(Margins.margin16),
+                        padding: const EdgeInsets.all(KPMargins.margin16),
                         child: Text("add_to_market_successfully_created".tr(),
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.bodyText1),

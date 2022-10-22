@@ -9,7 +9,7 @@ import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/ui/kp_tts_icon_button.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
 import 'package:kanpractice/core/types/kanji_categories.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
@@ -47,7 +47,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final maxHeight = MediaQuery.of(context).size.height - Margins.margin64;
+    final maxHeight = MediaQuery.of(context).size.height - KPMargins.margin64;
     return BottomSheet(
       enableDrag: false,
       constraints: BoxConstraints(maxHeight: maxHeight),
@@ -55,7 +55,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
       builder: (context) {
         return Wrap(children: [
           Padding(
-              padding: const EdgeInsets.all(Margins.margin8),
+              padding: const EdgeInsets.all(KPMargins.margin8),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -66,7 +66,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
                     child: BlocConsumer<WordDetailsBloc, WordDetailsState>(
                       listener: (context, state) {
                         if (state is WordDetailsStateFailure) {
-                          GeneralUtils.getSnackBar(context, state.error);
+                          Utils.getSnackBar(context, state.error);
                         }
                         if (state is WordDetailsStateRemoved) {
                           if (onRemove != null) onRemove!();
@@ -84,7 +84,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
                               height: MediaQuery.of(context).size.height / 2,
                               alignment: Alignment.center,
                               margin: const EdgeInsets.symmetric(
-                                  horizontal: Margins.margin16),
+                                  horizontal: KPMargins.margin16),
                               child: Text(state.error));
                         } else if (state is WordDetailsStateLoaded) {
                           return _body(context, state.kanji);
@@ -108,7 +108,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
         children: [
           _header(context, updatedKanji),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
+            padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
             child: FittedBox(
               fit: BoxFit.contain,
               child: Text(updatedKanji.kanji,
@@ -122,10 +122,10 @@ class KPKanjiBottomSheet extends StatelessWidget {
           Flexible(
             child: Padding(
               padding: const EdgeInsets.only(
-                  top: Margins.margin4,
-                  bottom: Margins.margin4,
-                  right: Margins.margin16,
-                  left: Margins.margin16),
+                  top: KPMargins.margin4,
+                  bottom: KPMargins.margin4,
+                  right: KPMargins.margin16,
+                  left: KPMargins.margin16),
               child: RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(children: [
@@ -166,7 +166,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
 
   Widget _header(BuildContext context, Kanji updatedKanji) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
+        padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -179,7 +179,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
               },
             ),
             SizedBox(
-              height: Margins.margin24,
+              height: KPMargins.margin24,
               child: FittedBox(
                 fit: BoxFit.contain,
                 child: Text(updatedKanji.pronunciation,
@@ -194,18 +194,18 @@ class KPKanjiBottomSheet extends StatelessWidget {
 
   Widget _lastTimeShownWidget(BuildContext context, Kanji updatedKanji) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
+        padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
         child: ExpansionTile(
-            iconColor: CustomColors.secondaryColor,
-            textColor: CustomColors.secondaryColor,
+            iconColor: KPColors.secondaryColor,
+            textColor: KPColors.secondaryColor,
             tilePadding: const EdgeInsets.all(0),
             title: FittedBox(
                 fit: BoxFit.contain,
                 child: Text(
                     "${"created_label".tr()} "
-                    "${GeneralUtils.parseDateMilliseconds(context, updatedKanji.dateAdded)} • "
+                    "${Utils.parseDateMilliseconds(context, updatedKanji.dateAdded)} • "
                     "${"last_seen_label".tr()} "
-                    "${GeneralUtils.parseDateMilliseconds(context, updatedKanji.dateLastShown)}",
+                    "${Utils.parseDateMilliseconds(context, updatedKanji.dateLastShown)}",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyText2)),
             children: [
@@ -244,15 +244,15 @@ class KPKanjiBottomSheet extends StatelessWidget {
     }
     if (date != 0) {
       parsedDate =
-          "${"last_seen_label".tr()} ${GeneralUtils.parseDateMilliseconds(context, date)}";
+          "${"last_seen_label".tr()} ${Utils.parseDateMilliseconds(context, date)}";
     }
 
     return Container(
-      height: Margins.margin24,
+      height: KPMargins.margin24,
       padding: const EdgeInsets.only(
-          left: Margins.margin8,
-          right: Margins.margin16,
-          bottom: Margins.margin8),
+          left: KPMargins.margin8,
+          right: KPMargins.margin16,
+          bottom: KPMargins.margin8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

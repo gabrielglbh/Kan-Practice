@@ -15,7 +15,7 @@ import 'package:kanpractice/presentation/core/ui/kp_study_mode_app_bar.dart';
 import 'package:kanpractice/presentation/core/ui/kp_tts_icon_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_validation_buttons.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 import 'package:kanpractice/presentation/study_modes/utils/study_mode_update_handler.dart';
 
@@ -116,9 +116,8 @@ class _ListeningStudyState extends State<ListeningStudy> {
       /// the current specific last shown mode attribute
       await KanjiQueries.instance
           .updateKanji(_studyList[_macro].listName, _studyList[_macro].kanji, {
-        KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds(),
-        KanjiTableFields.dateLastShownListening:
-            GeneralUtils.getCurrentMilliseconds()
+        KanjiTableFields.dateLastShown: Utils.getCurrentMilliseconds(),
+        KanjiTableFields.dateLastShownListening: Utils.getCurrentMilliseconds()
       });
 
       /// Add the current virgin score to the test scores...
@@ -140,7 +139,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
     return KPScaffold(
         onWillPop: () async {
           if (widget.args.testMode == Tests.daily) {
-            GeneralUtils.getSnackBar(context, "daily_test_cannot_go_back".tr());
+            Utils.getSnackBar(context, "daily_test_cannot_go_back".tr());
             return false;
           }
 
@@ -162,8 +161,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
           ),
           if (!widget.args.isTest)
             IconButton(
-              onPressed: () =>
-                  GeneralUtils.showSpatialRepetitionDisclaimer(context),
+              onPressed: () => Utils.showSpatialRepetitionDisclaimer(context),
               icon: const Icon(Icons.info_outline_rounded),
             )
         ],
@@ -197,7 +195,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
         maintainAnimation: true,
         maintainState: true,
         child: KPLearningHeaderContainer(
-          height: CustomSizes.defaultSizeLearningExtContainer + Margins.margin8,
+          height: KPSizes.defaultSizeLearningExtContainer + KPMargins.margin8,
           text: _studyList[_macro].pronunciation,
         ),
       ),
@@ -205,12 +203,12 @@ class _ListeningStudyState extends State<ListeningStudy> {
           visible: !_showWord,
           child: TTSIconButton(
               kanji: _studyList[_macro].pronunciation,
-              iconSize: Margins.margin64 + Margins.margin4)),
+              iconSize: KPMargins.margin64 + KPMargins.margin4)),
       Visibility(
         visible: _showWord,
         child: KPLearningHeaderContainer(
-          fontSize: FontSizes.fontSize64,
-          height: CustomSizes.listStudyHeight,
+          fontSize: KPFontSizes.fontSize64,
+          height: KPSizes.listStudyHeight,
           text: _studyList[_macro].kanji,
         ),
       ),
@@ -220,9 +218,9 @@ class _ListeningStudyState extends State<ListeningStudy> {
         maintainAnimation: true,
         maintainState: true,
         child: KPLearningHeaderContainer(
-          height: CustomSizes.defaultSizeLearningExtContainer,
+          height: KPSizes.defaultSizeLearningExtContainer,
           text: _studyList[_macro].meaning,
-          top: Margins.margin8,
+          top: KPMargins.margin8,
         ),
       )
     ];

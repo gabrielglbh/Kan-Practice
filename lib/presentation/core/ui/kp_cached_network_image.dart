@@ -20,7 +20,7 @@ class KPCachedNetworkImage extends StatelessWidget {
         errorWidget: (context, error, _) => Center(
               child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: Margins.margin8),
+                      const EdgeInsets.symmetric(horizontal: KPMargins.margin8),
                   child: Text(errorMessage)),
             ));
   }

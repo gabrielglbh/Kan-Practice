@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 
 part 'list.g.dart';
 
@@ -46,5 +46,5 @@ class KanjiList {
       totalWinRateRecognition: DatabaseConstants.emptyWinRate,
       totalWinRateListening: DatabaseConstants.emptyWinRate,
       totalWinRateSpeaking: DatabaseConstants.emptyWinRate,
-      lastUpdated: GeneralUtils.getCurrentMilliseconds());
+      lastUpdated: Utils.getCurrentMilliseconds());
 }

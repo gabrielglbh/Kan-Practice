@@ -22,7 +22,7 @@ class KPButton extends StatelessWidget {
   const KPButton(
       {Key? key,
       this.width = false,
-      this.color = CustomColors.secondaryColor,
+      this.color = KPColors.secondaryColor,
       this.title1,
       required this.title2,
       required this.onTap,
@@ -32,31 +32,31 @@ class KPButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width != false ? CustomSizes.customButtonWidth : null,
+      width: width != false ? KPSizes.customButtonWidth : null,
       alignment: Alignment.center,
-      margin: const EdgeInsets.all(Margins.margin8),
+      margin: const EdgeInsets.all(KPMargins.margin8),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(CustomRadius.radius16),
+        borderRadius: BorderRadius.circular(KPRadius.radius16),
         color: color,
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: () => onTap(),
-          borderRadius: BorderRadius.circular(CustomRadius.radius16),
+          borderRadius: BorderRadius.circular(KPRadius.radius16),
           child: Container(
-            width: width != false ? CustomSizes.customButtonWidth : null,
+            width: width != false ? KPSizes.customButtonWidth : null,
             alignment: Alignment.center,
-            margin: const EdgeInsets.all(Margins.margin8),
+            margin: const EdgeInsets.all(KPMargins.margin8),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(CustomRadius.radius16)),
+                borderRadius: BorderRadius.circular(KPRadius.radius16)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Visibility(
                   visible: title1 != null,
                   child: Padding(
-                    padding: const EdgeInsets.only(bottom: Margins.margin8),
+                    padding: const EdgeInsets.only(bottom: KPMargins.margin8),
                     child: Text(title1 ?? "",
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.headline6?.copyWith(
@@ -66,7 +66,7 @@ class KPButton extends StatelessWidget {
                 Visibility(
                   visible: title1 == null && icon != null,
                   child: Padding(
-                      padding: const EdgeInsets.only(bottom: Margins.margin8),
+                      padding: const EdgeInsets.only(bottom: KPMargins.margin8),
                       child: Icon(icon, color: Colors.white)),
                 ),
                 FittedBox(

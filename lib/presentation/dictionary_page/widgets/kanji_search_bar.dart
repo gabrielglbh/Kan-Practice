@@ -22,10 +22,10 @@ class KanjiSearchBar extends StatelessWidget {
     required this.onRemoveLast,
     required this.onChange,
     this.enabled = false,
-    this.top = Margins.margin8,
+    this.top = KPMargins.margin8,
     this.bottom = 0,
-    this.left = Margins.margin8,
-    this.right = Margins.margin8,
+    this.left = KPMargins.margin8,
+    this.right = KPMargins.margin8,
   }) : super(key: key);
 
   @override
@@ -35,7 +35,7 @@ class KanjiSearchBar extends StatelessWidget {
           EdgeInsets.only(left: left, right: right, top: top, bottom: bottom),
       child: Column(children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(bottom: Margins.margin8),
+          padding: const EdgeInsets.only(bottom: KPMargins.margin8),
           child: _searchBar(),
         )
       ]),
@@ -52,20 +52,20 @@ class KanjiSearchBar extends StatelessWidget {
         onChanged: onChange,
         decoration: InputDecoration(
             contentPadding: const EdgeInsets.only(
-                top: Margins.margin24,
-                bottom: Margins.margin16,
-                left: Margins.margin16,
-                right: Margins.margin64 + Margins.margin18),
+                top: KPMargins.margin24,
+                bottom: KPMargins.margin16,
+                left: KPMargins.margin16,
+                right: KPMargins.margin64 + KPMargins.margin18),
             hintText: hint,
             filled: false),
       ),
       Positioned(
-        bottom: Margins.margin4,
-        right: Margins.margin32 + Margins.margin8,
+        bottom: KPMargins.margin4,
+        right: KPMargins.margin32 + KPMargins.margin8,
         child: _removeLast(),
       ),
       Positioned(
-        bottom: Margins.margin4,
+        bottom: KPMargins.margin4,
         right: 0,
         child: _clear(),
       ),
@@ -74,10 +74,10 @@ class KanjiSearchBar extends StatelessWidget {
 
   SizedBox _removeLast() {
     return SizedBox(
-        width: CustomSizes.defaultSizeSearchBarIcons,
-        height: CustomSizes.defaultSizeSearchBarIcons,
+        width: KPSizes.defaultSizeSearchBarIcons,
+        height: KPSizes.defaultSizeSearchBarIcons,
         child: InkWell(
-          borderRadius: BorderRadius.circular(CustomRadius.radius32),
+          borderRadius: BorderRadius.circular(KPRadius.radius32),
           onTap: () => onRemoveLast(),
           child: const Icon(Icons.backspace_rounded),
         ));
@@ -85,10 +85,10 @@ class KanjiSearchBar extends StatelessWidget {
 
   SizedBox _clear() {
     return SizedBox(
-        width: CustomSizes.defaultSizeSearchBarIcons,
-        height: CustomSizes.defaultSizeSearchBarIcons,
+        width: KPSizes.defaultSizeSearchBarIcons,
+        height: KPSizes.defaultSizeSearchBarIcons,
         child: InkWell(
-          borderRadius: BorderRadius.circular(CustomRadius.radius32),
+          borderRadius: BorderRadius.circular(KPRadius.radius32),
           onTap: () => onClear(),
           child: const Icon(Icons.clear),
         ));

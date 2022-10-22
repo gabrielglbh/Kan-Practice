@@ -23,11 +23,11 @@ class TutorialCoach {
       switch (_part) {
         case CoachTutorialParts.kanList:
           if (y == 1) align = ContentAlign.bottom;
-          if (y == 0) offset = const Offset(0, Margins.margin64);
+          if (y == 0) offset = const Offset(0, KPMargins.margin64);
           break;
         case CoachTutorialParts.details:
           if (y != 0) align = ContentAlign.bottom;
-          if (y == 0) offset = const Offset(0, Margins.margin64);
+          if (y == 0) offset = const Offset(0, KPMargins.margin64);
           break;
       }
 
@@ -35,7 +35,7 @@ class TutorialCoach {
           identify: markers[y].currentWidget?.toString(),
           keyTarget: markers[y],
           shape: _part.shape[y],
-          paddingFocus: Margins.margin8,
+          paddingFocus: KPMargins.margin8,
           contents: [
             TargetContent(
                 align: align,
@@ -45,7 +45,7 @@ class TutorialCoach {
                     margin: part == CoachTutorialParts.details &&
                             y == markers.length - 1
                         ? const EdgeInsets.only(
-                            top: Margins.margin64 + Margins.margin32)
+                            top: KPMargins.margin64 + KPMargins.margin32)
                         : null,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -70,7 +70,7 @@ class TutorialCoach {
     await Future.delayed(const Duration(seconds: 1), () {
       TutorialCoachMark(
         targets: _targets,
-        colorShadow: CustomColors.secondaryDarkerColor,
+        colorShadow: KPColors.secondaryDarkerColor,
         focusAnimationDuration: const Duration(milliseconds: 200),
         opacityShadow: 0.9,
         hideSkip: true,

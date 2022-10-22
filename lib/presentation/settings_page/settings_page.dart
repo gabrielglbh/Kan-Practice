@@ -6,7 +6,7 @@ import 'package:kanpractice/application/settings/settings_bloc.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/settings_page/widgets/change_kanji_test.dart';
 import 'package:kanpractice/presentation/settings_page/widgets/change_theme.dart';
 import 'package:kanpractice/presentation/settings_page/widgets/copyrigh_info.dart';
@@ -24,7 +24,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   bool _aggStats = false;
   bool _toggleAffect = false;
-  int _kanjiInTest = CustomSizes.numberOfKanjiInTest;
+  int _kanjiInTest = KPSizes.numberOfKanjiInTest;
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _SettingsPageState extends State<SettingsPage> {
         StorageManager.readData(StorageManager.kanListListVisualization);
     _kanjiInTest =
         StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
-            CustomSizes.numberOfKanjiInTest;
+            KPSizes.numberOfKanjiInTest;
     context.read<SettingsBloc>().add(SettingsLoadingBackUpDate(context));
     super.initState();
   }
@@ -48,7 +48,7 @@ class _SettingsPageState extends State<SettingsPage> {
           title: Text("settings_information_rating".tr()),
           trailing: const Icon(Icons.link),
           onTap: () async {
-            await GeneralUtils.launch(context, "google_play_link".tr());
+            await Utils.launch(context, "google_play_link".tr());
           },
         ),
         const Divider(),
@@ -58,10 +58,10 @@ class _SettingsPageState extends State<SettingsPage> {
           trailing: const Icon(Icons.link),
           onTap: () async {
             try {
-              await GeneralUtils.launch(
+              await Utils.launch(
                   context, "https://github.com/gabrielglbh/Kan-Practice");
             } catch (err) {
-              GeneralUtils.getSnackBar(
+              Utils.getSnackBar(
                   context, "settings_information_rating_failed".tr());
             }
           },
@@ -81,15 +81,15 @@ class _SettingsPageState extends State<SettingsPage> {
               color: Colors.lightBlueAccent),
           title: Text("settings_general_toggle".tr()),
           subtitle: Padding(
-              padding: const EdgeInsets.only(top: Margins.margin8),
+              padding: const EdgeInsets.only(top: KPMargins.margin8),
               child: Text("settings_general_toggle_sub".tr(),
                   style: Theme.of(context)
                       .textTheme
                       .bodyText2
                       ?.copyWith(color: Colors.grey.shade500))),
           trailing: Switch(
-            activeColor: CustomColors.secondaryDarkerColor,
-            activeTrackColor: CustomColors.secondaryColor,
+            activeColor: KPColors.secondaryDarkerColor,
+            activeTrackColor: KPColors.secondaryColor,
             inactiveThumbColor: Brightness.light == Theme.of(context).brightness
                 ? Colors.grey[600]
                 : Colors.white,
@@ -112,15 +112,15 @@ class _SettingsPageState extends State<SettingsPage> {
               const Icon(Icons.group_work_rounded, color: Colors.orangeAccent),
           title: Text("settings_general_kanji_list".tr()),
           subtitle: Padding(
-              padding: const EdgeInsets.only(top: Margins.margin8),
+              padding: const EdgeInsets.only(top: KPMargins.margin8),
               child: Text("settings_general_kanji_list_description".tr(),
                   style: Theme.of(context)
                       .textTheme
                       .bodyText2
                       ?.copyWith(color: Colors.grey.shade500))),
           trailing: Switch(
-            activeColor: CustomColors.secondaryDarkerColor,
-            activeTrackColor: CustomColors.secondaryColor,
+            activeColor: KPColors.secondaryDarkerColor,
+            activeTrackColor: KPColors.secondaryColor,
             inactiveThumbColor: Brightness.light == Theme.of(context).brightness
                 ? Colors.grey[600]
                 : Colors.white,
@@ -199,7 +199,7 @@ class _SettingsPageState extends State<SettingsPage> {
         ListTile(
           leading: const Icon(Icons.star, color: Colors.green),
           title: Text("settings_general_versionNotes".tr()),
-          onTap: () async => await GeneralUtils.showVersionNotes(context),
+          onTap: () async => await Utils.showVersionNotes(context),
         ),
         const Divider(),
         ListTile(
@@ -225,8 +225,8 @@ class _SettingsPageState extends State<SettingsPage> {
                           applicationName: "KanPractice",
                           applicationVersion: snapshot.data?.version,
                           applicationIcon: SizedBox(
-                              width: CustomSizes.appIcon,
-                              height: CustomSizes.appIcon,
+                              width: KPSizes.appIcon,
+                              height: KPSizes.appIcon,
                               child: Image.asset("assets/icon/icon.png")),
                         );
                       });
@@ -235,14 +235,13 @@ class _SettingsPageState extends State<SettingsPage> {
             }),
         const Divider(),
         Padding(
-          padding: const EdgeInsets.only(bottom: Margins.margin48),
+          padding: const EdgeInsets.only(bottom: KPMargins.margin48),
           child: ListTile(
               leading: const Icon(Icons.privacy_tip),
               title: Text("settings_information_terms_label".tr()),
               trailing: const Icon(Icons.link),
               onTap: () async {
-                await GeneralUtils.launch(
-                    context, "https://kanpractice.web.app");
+                await Utils.launch(context, "https://kanpractice.web.app");
               }),
         ),
       ],

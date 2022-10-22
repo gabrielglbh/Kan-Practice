@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 
 part 'kanji.g.dart';
 
@@ -80,12 +80,12 @@ class Kanji {
       winRateRecognition: DatabaseConstants.emptyWinRate,
       winRateListening: DatabaseConstants.emptyWinRate,
       winRateSpeaking: DatabaseConstants.emptyWinRate,
-      dateLastShownWriting: GeneralUtils.getCurrentMilliseconds(),
-      dateLastShownReading: GeneralUtils.getCurrentMilliseconds(),
-      dateLastShownRecognition: GeneralUtils.getCurrentMilliseconds(),
-      dateLastShownListening: GeneralUtils.getCurrentMilliseconds(),
-      dateLastShownSpeaking: GeneralUtils.getCurrentMilliseconds(),
+      dateLastShownWriting: Utils.getCurrentMilliseconds(),
+      dateLastShownReading: Utils.getCurrentMilliseconds(),
+      dateLastShownRecognition: Utils.getCurrentMilliseconds(),
+      dateLastShownListening: Utils.getCurrentMilliseconds(),
+      dateLastShownSpeaking: Utils.getCurrentMilliseconds(),
       dateAdded: dateAdded,
-      dateLastShown: GeneralUtils.getCurrentMilliseconds(),
+      dateLastShown: Utils.getCurrentMilliseconds(),
       category: category);
 }

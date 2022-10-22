@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class CopyrightInfo extends StatelessWidget {
@@ -18,7 +18,7 @@ class CopyrightInfo extends StatelessWidget {
   }
 
   Future<void> _launch(BuildContext context, String url) async {
-    await GeneralUtils.launch(context, url);
+    await Utils.launch(context, url);
   }
 
   @override
@@ -28,25 +28,26 @@ class CopyrightInfo extends StatelessWidget {
         onClosing: () => {},
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-                topRight: Radius.circular(CustomRadius.radius16),
-                topLeft: Radius.circular(CustomRadius.radius16))),
+                topRight: Radius.circular(KPRadius.radius16),
+                topLeft: Radius.circular(KPRadius.radius16))),
         builder: (context) {
           return Wrap(children: [
             Padding(
-              padding: const EdgeInsets.all(Margins.margin8),
+              padding: const EdgeInsets.all(KPMargins.margin8),
               child: Column(
                 children: [
                   const KPDragContainer(),
                   Align(
                       alignment: Alignment.center,
                       child: Padding(
-                        padding: const EdgeInsets.only(bottom: Margins.margin8),
+                        padding:
+                            const EdgeInsets.only(bottom: KPMargins.margin8),
                         child: Text("settings_information_about_label".tr(),
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.headline5),
                       )),
                   Padding(
-                    padding: const EdgeInsets.only(top: Margins.margin8),
+                    padding: const EdgeInsets.only(top: KPMargins.margin8),
                     child: RichText(
                       text: TextSpan(children: [
                         TextSpan(
@@ -91,7 +92,7 @@ class CopyrightInfo extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: Margins.margin16),
+                    padding: const EdgeInsets.only(top: KPMargins.margin16),
                     child: RichText(
                       text: TextSpan(children: [
                         TextSpan(
@@ -120,7 +121,7 @@ class CopyrightInfo extends StatelessWidget {
                     ),
                   ),
                   Container(
-                      margin: const EdgeInsets.only(bottom: Margins.margin32))
+                      margin: const EdgeInsets.only(bottom: KPMargins.margin32))
                 ],
               ),
             ),

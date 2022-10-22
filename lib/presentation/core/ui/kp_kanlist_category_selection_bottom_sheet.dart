@@ -70,7 +70,8 @@ class _KPKanListCategorySelectionBottomSheetState
               const KPDragContainer(),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    vertical: Margins.margin8, horizontal: Margins.margin32),
+                    vertical: KPMargins.margin8,
+                    horizontal: KPMargins.margin32),
                 child: Text(
                     "${"categories_test_bottom_sheet_title".tr()}$folder",
                     textAlign: TextAlign.center,
@@ -98,7 +99,7 @@ class _KPKanListCategorySelectionBottomSheetState
               Visibility(
                 visible: !_selectionMode,
                 child: Container(
-                  margin: const EdgeInsets.all(Margins.margin8),
+                  margin: const EdgeInsets.all(KPMargins.margin8),
                   child: _categorySelection(),
                 ),
               )

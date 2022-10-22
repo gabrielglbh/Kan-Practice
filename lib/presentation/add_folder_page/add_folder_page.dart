@@ -8,7 +8,7 @@ import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/ui/kp_text_form.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class AddFolderPage extends StatefulWidget {
   final String? folder;
@@ -78,7 +78,7 @@ class _AddFolderPageState extends State<AddFolderPage> {
         child: BlocConsumer<AddFolderBloc, AddFolderState>(
           listener: (context, state) {
             if (state is AddFolderStateFailure) {
-              GeneralUtils.getSnackBar(context, state.message);
+              Utils.getSnackBar(context, state.message);
             }
             if (state is AddFolderStateSuccess) {
               Navigator.of(context).pop();
@@ -151,8 +151,8 @@ class _AddFolderPageState extends State<AddFolderPage> {
   Widget _headline(String title) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-        vertical: Margins.margin16,
-        horizontal: Margins.margin8,
+        vertical: KPMargins.margin16,
+        horizontal: KPMargins.margin8,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

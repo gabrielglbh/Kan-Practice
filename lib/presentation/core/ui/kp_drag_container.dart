@@ -9,11 +9,11 @@ class KPDragContainer extends StatelessWidget {
     return Align(
       alignment: Alignment.center,
       child: Container(
-        width: CustomSizes.defaultSizeDragContainerWidth,
-        height: CustomSizes.defaultSizeDragContainerHeight,
-        margin: const EdgeInsets.symmetric(vertical: Margins.margin8),
+        width: KPSizes.defaultSizeDragContainerWidth,
+        height: KPSizes.defaultSizeDragContainerHeight,
+        margin: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(CustomRadius.radius16),
+            borderRadius: BorderRadius.circular(KPRadius.radius16),
             color: Colors.grey),
       ),
     );

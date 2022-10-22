@@ -6,7 +6,7 @@ import 'package:kanpractice/core/types/test_modes_filters.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/statistics_page/tab/test_history_tab/test_history_tab.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -55,9 +55,9 @@ class _TestHistoryFiltersState extends State<TestHistoryFilters> {
       appBarTitle: "history_tests_filter".tr(),
       child: Padding(
         padding: const EdgeInsets.only(
-          bottom: Margins.margin24,
-          left: Margins.margin12,
-          right: Margins.margin12,
+          bottom: KPMargins.margin24,
+          left: KPMargins.margin12,
+          right: KPMargins.margin12,
         ),
         child: Column(
           children: [
@@ -73,9 +73,8 @@ class _TestHistoryFiltersState extends State<TestHistoryFilters> {
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     onTap: () async {
-                      DateTimeRange? range =
-                          await GeneralUtils.showRangeTimeDialog(
-                              context, _firstDate, _lastDate);
+                      DateTimeRange? range = await Utils.showRangeTimeDialog(
+                          context, _firstDate, _lastDate);
                       setState(() {
                         _firstDate = range?.start ?? _firstDate;
                         _lastDate = range?.end
@@ -86,17 +85,17 @@ class _TestHistoryFiltersState extends State<TestHistoryFilters> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                      top: Margins.margin8,
-                      bottom: Margins.margin8,
-                      right: Margins.margin8,
+                      top: KPMargins.margin8,
+                      bottom: KPMargins.margin8,
+                      right: KPMargins.margin8,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Flexible(
                           child: Padding(
-                            padding:
-                                const EdgeInsets.only(right: Margins.margin16),
+                            padding: const EdgeInsets.only(
+                                right: KPMargins.margin16),
                             child: Text("filter_select_test_type_label".tr(),
                                 style: Theme.of(context).textTheme.headline6),
                           ),
@@ -112,7 +111,7 @@ class _TestHistoryFiltersState extends State<TestHistoryFilters> {
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.symmetric(
-                                              horizontal: Margins.margin12),
+                                              horizontal: KPMargins.margin12),
                                           child: Icon(filter.icon),
                                         ),
                                         Text(filter.nameAbbr),
@@ -133,17 +132,17 @@ class _TestHistoryFiltersState extends State<TestHistoryFilters> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                      top: Margins.margin8,
-                      bottom: Margins.margin8,
-                      right: Margins.margin8,
+                      top: KPMargins.margin8,
+                      bottom: KPMargins.margin8,
+                      right: KPMargins.margin8,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Flexible(
                           child: Padding(
-                            padding:
-                                const EdgeInsets.only(right: Margins.margin16),
+                            padding: const EdgeInsets.only(
+                                right: KPMargins.margin16),
                             child: Text("filter_select_study_mode_label".tr(),
                                 style: Theme.of(context).textTheme.headline6),
                           ),
@@ -159,10 +158,10 @@ class _TestHistoryFiltersState extends State<TestHistoryFilters> {
                                       children: [
                                         if (mode != StudyModeFilters.all)
                                           Container(
-                                            width: Margins.margin16,
-                                            height: Margins.margin16,
+                                            width: KPMargins.margin16,
+                                            height: KPMargins.margin16,
                                             margin: const EdgeInsets.symmetric(
-                                                horizontal: Margins.margin12),
+                                                horizontal: KPMargins.margin12),
                                             decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                               color: mode.color,

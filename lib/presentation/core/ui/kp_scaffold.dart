@@ -28,7 +28,7 @@ class KPScaffold extends StatelessWidget {
       required this.child,
       this.floatingActionButton,
       this.centerTitle = false,
-      this.toolbarHeight = CustomSizes.appBarHeight,
+      this.toolbarHeight = KPSizes.appBarHeight,
       this.automaticallyImplyLeading = true,
       this.resizeToAvoidBottomInset = false,
       this.bottomNavigationWidget,
@@ -77,6 +77,6 @@ class KPScaffold extends StatelessWidget {
   }
 
   Widget _child() => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
+      padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin8),
       child: child);
 }

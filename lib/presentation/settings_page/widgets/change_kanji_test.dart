@@ -23,13 +23,13 @@ class ChangeKanjiInTest extends StatefulWidget {
 }
 
 class _ChangeKanjiInTestState extends State<ChangeKanjiInTest> {
-  int _kanjiInTest = CustomSizes.numberOfKanjiInTest;
+  int _kanjiInTest = KPSizes.numberOfKanjiInTest;
 
   @override
   void initState() {
     _kanjiInTest =
         StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
-            CustomSizes.numberOfKanjiInTest;
+            KPSizes.numberOfKanjiInTest;
     super.initState();
   }
 
@@ -40,13 +40,13 @@ class _ChangeKanjiInTestState extends State<ChangeKanjiInTest> {
         onClosing: () => {},
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-                topRight: Radius.circular(CustomRadius.radius16),
-                topLeft: Radius.circular(CustomRadius.radius16))),
+                topRight: Radius.circular(KPRadius.radius16),
+                topLeft: Radius.circular(KPRadius.radius16))),
         builder: (context) {
           return Wrap(
             children: [
               Padding(
-                padding: const EdgeInsets.all(Margins.margin8),
+                padding: const EdgeInsets.all(KPMargins.margin8),
                 child: Column(
                   children: [
                     const KPDragContainer(),
@@ -54,7 +54,7 @@ class _ChangeKanjiInTestState extends State<ChangeKanjiInTest> {
                         alignment: Alignment.center,
                         child: Padding(
                           padding:
-                              const EdgeInsets.only(bottom: Margins.margin8),
+                              const EdgeInsets.only(bottom: KPMargins.margin8),
                           child: Text("change_kanji_in_test_selection".tr(),
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.headline5),
@@ -69,7 +69,7 @@ class _ChangeKanjiInTestState extends State<ChangeKanjiInTest> {
   }
 
   _onTileSelected(int? val) {
-    setState(() => _kanjiInTest = val ?? CustomSizes.numberOfKanjiInTest);
+    setState(() => _kanjiInTest = val ?? KPSizes.numberOfKanjiInTest);
     Navigator.of(context).pop(_kanjiInTest);
   }
 
@@ -80,25 +80,25 @@ class _ChangeKanjiInTestState extends State<ChangeKanjiInTest> {
             title: const Text("30"),
             value: 30,
             groupValue: _kanjiInTest,
-            activeColor: CustomColors.secondaryColor,
+            activeColor: KPColors.secondaryColor,
             onChanged: _onTileSelected),
         RadioListTile<int>(
             title: const Text("40"),
             value: 40,
             groupValue: _kanjiInTest,
-            activeColor: CustomColors.secondaryColor,
+            activeColor: KPColors.secondaryColor,
             onChanged: _onTileSelected),
         RadioListTile<int>(
             title: const Text("50"),
             value: 50,
             groupValue: _kanjiInTest,
-            activeColor: CustomColors.secondaryColor,
+            activeColor: KPColors.secondaryColor,
             onChanged: _onTileSelected),
         RadioListTile<int>(
             title: const Text("60"),
             value: 60,
             groupValue: _kanjiInTest,
-            activeColor: CustomColors.secondaryColor,
+            activeColor: KPColors.secondaryColor,
             onChanged: _onTileSelected),
       ],
     );

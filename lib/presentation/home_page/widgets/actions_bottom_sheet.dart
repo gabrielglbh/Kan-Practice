@@ -39,20 +39,21 @@ class ActionsBottomSheet extends StatelessWidget {
               const KPDragContainer(),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    vertical: Margins.margin8, horizontal: Margins.margin32),
+                    vertical: KPMargins.margin8,
+                    horizontal: KPMargins.margin32),
                 child: Text("bottom_nav_actions".tr(),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6),
               ),
               Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: Margins.margin16),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: KPMargins.margin16),
                   child: Column(
                     children: [
                       ListTile(
                         title: Text("bottom_actions_create_test".tr()),
                         leading: const Icon(Icons.track_changes_rounded,
-                            color: CustomColors.secondaryColor),
+                            color: KPColors.secondaryColor),
                         onTap: () async {
                           Navigator.of(context).pop();
                           await KPTestBottomSheet.show(context);
@@ -93,7 +94,7 @@ class ActionsBottomSheet extends StatelessWidget {
                           navigator.pop();
                         },
                       ),
-                      const SizedBox(height: Margins.margin24)
+                      const SizedBox(height: KPMargins.margin24)
                     ],
                   )),
             ],

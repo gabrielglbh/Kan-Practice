@@ -4,7 +4,7 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class TestDataFrame {
@@ -80,8 +80,8 @@ class KPCartesianChart<T> extends StatelessWidget {
             yValueMapper: (TestDataFrame data, _) =>
                 data.y == DatabaseConstants.emptyWinRate
                     ? 0
-                    : GeneralUtils.getFixedPercentage(data.y),
-            color: CustomColors.secondaryColor,
+                    : Utils.getFixedPercentage(data.y),
+            color: KPColors.secondaryColor,
           )
         ],
       ),
@@ -107,12 +107,12 @@ class _KPCartesianChartTooltip extends StatelessWidget {
     final format = DateFormat('MMM dd, HH:mm');
     final mode = source.mode.nameAbbr;
     final date = format.format(source.x);
-    final rate = GeneralUtils.getFixedPercentageAsString(source.y);
+    final rate = Utils.getFixedPercentageAsString(source.y);
     return Container(
-      padding: const EdgeInsets.all(Margins.margin8),
+      padding: const EdgeInsets.all(KPMargins.margin8),
       decoration: BoxDecoration(
         color: tooltipColor,
-        borderRadius: BorderRadius.circular(CustomRadius.radius8),
+        borderRadius: BorderRadius.circular(KPRadius.radius8),
       ),
       child: FittedBox(
         fit: BoxFit.scaleDown,
@@ -143,30 +143,31 @@ class _KPCartesianChartTooltip extends StatelessWidget {
                     )
                   ],
                 ),
-                const SizedBox(width: Margins.margin4),
+                const SizedBox(width: KPMargins.margin4),
                 Text(source.studyMode.mode,
                     textAlign: TextAlign.center,
                     style: Theme.of(context)
                         .textTheme
                         .bodyMedium
                         ?.copyWith(color: tooltipTextColor)),
-                const SizedBox(width: Margins.margin4),
+                const SizedBox(width: KPMargins.margin4),
                 Text(mode,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: tooltipTextColor, fontWeight: FontWeight.bold)),
               ],
             ),
-            const SizedBox(height: Margins.margin8),
+            const SizedBox(height: KPMargins.margin8),
             Container(width: 128, height: 1, color: tooltipTextColor),
-            const SizedBox(height: Margins.margin8),
+            const SizedBox(height: KPMargins.margin8),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Margins.margin4),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: KPMargins.margin4),
               child: Row(
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: Margins.margin4),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: KPMargins.margin4),
                     child: Text("$date:",
                         textAlign: TextAlign.center,
                         style: Theme.of(context)

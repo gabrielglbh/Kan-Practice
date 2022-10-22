@@ -10,7 +10,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
 class KPNumberTestBottomSheet extends StatefulWidget {
@@ -32,7 +32,7 @@ class KPNumberTestBottomSheet extends StatefulWidget {
 
 class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
   final List<Ranges> _selectedLists = [];
-  int _kanjiInTest = CustomSizes.numberOfKanjiInTest;
+  int _kanjiInTest = KPSizes.numberOfKanjiInTest;
 
   List<Kanji> _loadBlitzTest() {
     /// If no range is selected, 0 to 10K will be taken
@@ -58,7 +58,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
   void initState() {
     _kanjiInTest =
         StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
-            CustomSizes.numberOfKanjiInTest;
+            KPSizes.numberOfKanjiInTest;
     super.initState();
   }
 
@@ -75,14 +75,16 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
               const KPDragContainer(),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    vertical: Margins.margin8, horizontal: Margins.margin32),
+                    vertical: KPMargins.margin8,
+                    horizontal: KPMargins.margin32),
                 child: Text("number_bottom_sheet_title".tr(),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    vertical: Margins.margin8, horizontal: Margins.margin32),
+                    vertical: KPMargins.margin8,
+                    horizontal: KPMargins.margin32),
                 child: Text(
                     "$_kanjiInTest "
                     "${"number_bottom_sheet_content".tr()}",
@@ -98,13 +100,13 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
                 itemBuilder: (context, index) {
                   Ranges range = Ranges.values[index];
                   return Padding(
-                    padding: const EdgeInsets.only(right: Margins.margin8),
+                    padding: const EdgeInsets.only(right: KPMargins.margin8),
                     child: ActionChip(
                         label: Text(range.label),
-                        pressElevation: Margins.margin4,
+                        pressElevation: KPMargins.margin4,
                         backgroundColor: _selectedLists.contains(range)
-                            ? CustomColors.secondaryDarkerColor
-                            : CustomColors.secondaryColor,
+                            ? KPColors.secondaryDarkerColor
+                            : KPColors.secondaryColor,
                         onPressed: () {
                           setState(() {
                             if (_selectedLists.contains(range)) {
@@ -136,7 +138,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
               List<Kanji> list = _loadBlitzTest();
               if (list.isEmpty) {
                 Navigator.of(context).pop();
-                GeneralUtils.getSnackBar(context, "study_modes_empty".tr());
+                Utils.getSnackBar(context, "study_modes_empty".tr());
               } else {
                 Navigator.of(context).pop(); // Dismiss this bottom sheet
                 Navigator.of(context).pop(); // Dismiss the tests bottom sheet

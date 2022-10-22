@@ -8,7 +8,7 @@ import 'package:kanpractice/core/types/market_filters.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/market_page/widgets/market_list_tile.dart';
 
 class MarketPage extends StatefulWidget {
@@ -116,9 +116,9 @@ class _MarketPageState extends State<MarketPage>
         _filterChips(),
         BlocConsumer<MarketBloc, MarketState>(listener: (context, state) {
           if (state is MarketStateSuccess) {
-            GeneralUtils.getSnackBar(context, state.message);
+            Utils.getSnackBar(context, state.message);
           } else if (state is MarketStateFailure) {
-            GeneralUtils.getSnackBar(context, state.message);
+            Utils.getSnackBar(context, state.message);
           }
         }, builder: (context, state) {
           if (state is MarketStateLoading || state is MarketStateSearching) {
@@ -141,14 +141,14 @@ class _MarketPageState extends State<MarketPage>
             : Colors.black);
 
     return SizedBox(
-        height: CustomSizes.defaultSizeFiltersList,
+        height: KPSizes.defaultSizeFiltersList,
         child: ListView.builder(
             itemCount: MarketFilters.values.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: Margins.margin2),
+                    const EdgeInsets.symmetric(horizontal: KPMargins.margin2),
                 child: ChoiceChip(
                   label: Text(MarketFilters.values[index].label),
                   avatar: _currentAppliedFilter == MarketFilters.mine
@@ -156,9 +156,9 @@ class _MarketPageState extends State<MarketPage>
                       : _currentAppliedFilter.index != index
                           ? null
                           : icon,
-                  pressElevation: Margins.margin4,
+                  pressElevation: KPMargins.margin4,
                   padding:
-                      const EdgeInsets.symmetric(horizontal: Margins.margin8),
+                      const EdgeInsets.symmetric(horizontal: KPMargins.margin8),
                   onSelected: (bool selected) => _onFilterSelected(index),
                   selected: _currentAppliedFilter.index == index,
                 ),
@@ -182,14 +182,14 @@ class _MarketPageState extends State<MarketPage>
           : Expanded(
               child: RefreshIndicator(
                 onRefresh: () => _addLoadingEvent(reset: true),
-                color: CustomColors.secondaryColor,
+                color: KPColors.secondaryColor,
                 child: ListView.builder(
                     key: const PageStorageKey<String>('marketListsController'),
                     controller: _scrollController,
                     itemCount: state.lists.length,
                     keyboardDismissBehavior:
                         ScrollViewKeyboardDismissBehavior.onDrag,
-                    padding: const EdgeInsets.only(bottom: Margins.margin24),
+                    padding: const EdgeInsets.only(bottom: KPMargins.margin24),
                     itemBuilder: (context, k) {
                       return MarketListTile(
                         list: state.lists[k],

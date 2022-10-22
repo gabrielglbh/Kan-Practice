@@ -13,15 +13,16 @@ class SingleKanjiLookUpList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: CustomSizes.defaultJishoAPIContainer,
+      height: KPSizes.defaultJishoAPIContainer,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: kanjiList?.length,
         itemBuilder: (context, index) {
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Margins.margin4),
+            padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin4),
             child: ActionChip(
-              padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: KPMargins.margin8),
               onPressed: () {
                 Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
                     arguments: DictionaryDetailsArguments(

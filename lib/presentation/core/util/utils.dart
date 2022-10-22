@@ -15,7 +15,7 @@ extension StringExtension on String {
 }
 
 /// Class that contains useful methods for all classes to use
-class GeneralUtils {
+class Utils {
   /// Returns the color based on the given [winRate]
   static Color getColorBasedOnWinRate(double winRate) {
     if (winRate >= 0 && winRate <= 0.1) {
@@ -107,7 +107,7 @@ class GeneralUtils {
         SnackBar(
           content: Row(children: [
             const Padding(
-              padding: EdgeInsets.only(right: Margins.margin8),
+              padding: EdgeInsets.only(right: KPMargins.margin8),
               child: Icon(Icons.info_rounded, color: Colors.white),
             ),
             Expanded(child: Text(message)),
@@ -227,14 +227,14 @@ class GeneralUtils {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            primaryColor: CustomColors.secondaryColor,
-            splashColor: CustomColors.secondaryColor,
+            primaryColor: KPColors.secondaryColor,
+            splashColor: KPColors.secondaryColor,
             colorScheme: ColorScheme.fromSwatch().copyWith(
-              primary: CustomColors.secondaryColor,
+              primary: KPColors.secondaryColor,
               onPrimary: dialogColor,
-              surface: CustomColors.secondaryColor,
+              surface: KPColors.secondaryColor,
               onSurface: dialogColor,
-              secondary: CustomColors.secondaryColor,
+              secondary: KPColors.secondaryColor,
             ),
           ),
           child: child!,

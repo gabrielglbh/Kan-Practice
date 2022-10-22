@@ -11,7 +11,7 @@ class InfoChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Margins.margin4),
+      padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin4),
       child: Chip(
         backgroundColor: type.color,
         label: Text(

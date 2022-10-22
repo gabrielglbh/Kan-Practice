@@ -12,7 +12,7 @@ import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/ui/kp_test_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class FolderListPage extends StatefulWidget {
   final Function() removeFocus;
@@ -126,20 +126,20 @@ class _FolderListPageState extends State<FolderListPage>
             : Colors.black);
 
     return SizedBox(
-        height: CustomSizes.defaultSizeFiltersList,
+        height: KPSizes.defaultSizeFiltersList,
         child: ListView.builder(
             itemCount: FolderFilters.values.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: Margins.margin2),
+                    const EdgeInsets.symmetric(horizontal: KPMargins.margin2),
                 child: ChoiceChip(
                   label: Text(FolderFilters.values[index].label),
                   avatar: _currentAppliedFilter.index != index ? null : icon,
-                  pressElevation: Margins.margin4,
+                  pressElevation: KPMargins.margin4,
                   padding:
-                      const EdgeInsets.symmetric(horizontal: Margins.margin8),
+                      const EdgeInsets.symmetric(horizontal: KPMargins.margin8),
                   onSelected: (bool selected) => _onFilterSelected(index),
                   selected: _currentAppliedFilter.index == index,
                 ),
@@ -168,7 +168,7 @@ class _FolderListPageState extends State<FolderListPage>
               : Expanded(
                   child: RefreshIndicator(
                     onRefresh: () => _addLoadingEvent(reset: true),
-                    color: CustomColors.secondaryColor,
+                    color: KPColors.secondaryColor,
                     child: ListView.separated(
                         key: const PageStorageKey<String>(
                             'folderListsController'),
@@ -177,11 +177,11 @@ class _FolderListPageState extends State<FolderListPage>
                         keyboardDismissBehavior:
                             ScrollViewKeyboardDismissBehavior.onDrag,
                         padding:
-                            const EdgeInsets.only(bottom: Margins.margin24),
+                            const EdgeInsets.only(bottom: KPMargins.margin24),
                         separatorBuilder: (_, __) => const Divider(),
                         itemBuilder: (context, k) {
                           final folder = state.lists[k];
-                          final date = GeneralUtils.parseDateMilliseconds(
+                          final date = Utils.parseDateMilliseconds(
                               context, folder.lastUpdated);
                           return _tile(bloc, folder, date);
                         }),
@@ -236,7 +236,7 @@ class _FolderListPageState extends State<FolderListPage>
           await KPTestBottomSheet.show(context, folder: folder.folder);
         },
         icon: const Icon(Icons.track_changes_rounded,
-            color: CustomColors.secondaryColor),
+            color: KPColors.secondaryColor),
       ),
     );
   }

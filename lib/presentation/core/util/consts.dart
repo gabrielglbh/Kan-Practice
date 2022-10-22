@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomSizes {
+class KPSizes {
   static const double defaultSizeDragContainerHeight = 5;
   static const double defaultSizeLearningExtContainer = 20;
   static const double defaultSizeLearningModeBar = 32;
@@ -37,13 +37,13 @@ class LazyLoadingLimits {
   static const int wordHistory = 20;
 }
 
-class ChartSize {
+class KPChartSize {
   static const double small = 8;
   static const double medium = 12;
   static const double large = 32;
 }
 
-class Margins {
+class KPMargins {
   static const double margin2 = 2;
   static const double margin4 = 4;
   static const double margin8 = 8;
@@ -58,7 +58,7 @@ class Margins {
   static const double margin64 = 64;
 }
 
-class FontSizes {
+class KPFontSizes {
   static const double fontSize12 = 12;
   static const double fontSize14 = 14;
   static const double fontSize16 = 16;
@@ -70,7 +70,7 @@ class FontSizes {
   static const double fontSize64 = 64;
 }
 
-class CustomRadius {
+class KPRadius {
   static const double radius4 = 4;
   static const double radius8 = 8;
   static const double radius16 = 16;
@@ -78,7 +78,7 @@ class CustomRadius {
   static const double radius32 = 32;
 }
 
-class CustomAnimations {
+class KPAnimations {
   static const double dxCardInfo = 2;
 
   static const int kanjiItemDuration = 25;
@@ -87,7 +87,7 @@ class CustomAnimations {
   static const int ms400 = 400;
 }
 
-class CustomColors {
+class KPColors {
   static Color getSecondaryColor(BuildContext context) =>
       Theme.of(context).brightness == Brightness.light
           ? secondaryDarkerColor

@@ -30,15 +30,15 @@ class SingleKanjiResult extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-            height: Margins.margin32,
-            margin: const EdgeInsets.all(Margins.margin8),
+            height: KPMargins.margin32,
+            margin: const EdgeInsets.all(KPMargins.margin8),
             child: _chips()),
         Visibility(
           visible: data?.strokeOrderGifUri != null,
           child: Container(
-            height: CustomSizes.defaultJishoGIF,
+            height: KPSizes.defaultJishoGIF,
             alignment: Alignment.center,
-            margin: const EdgeInsets.symmetric(vertical: Margins.margin8),
+            margin: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
             child: KPCachedNetworkImage(
               url: data?.strokeOrderGifUri ?? "",
               errorMessage: "jisho_gif_not_loaded".tr(),
@@ -136,7 +136,7 @@ class SingleKanjiResult extends StatelessWidget {
           Visibility(
               visible: example != null && example.isNotEmpty,
               child: Padding(
-                  padding: const EdgeInsets.only(top: Margins.margin8),
+                  padding: const EdgeInsets.only(top: KPMargins.margin8),
                   child: _exampleExpansionTile(context, example))),
         ],
       ),
@@ -155,7 +155,7 @@ class SingleKanjiResult extends StatelessWidget {
     List<Widget> res = [];
     for (int i = 0; i < (example?.length ?? 0); i++) {
       res.add(Padding(
-        padding: EdgeInsets.only(top: i != 0 ? Margins.margin16 : 0),
+        padding: EdgeInsets.only(top: i != 0 ? KPMargins.margin16 : 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

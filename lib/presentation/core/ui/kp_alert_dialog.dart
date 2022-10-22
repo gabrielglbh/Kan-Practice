@@ -35,8 +35,7 @@ class KPDialog extends StatelessWidget {
     return AlertDialog(
       title: title,
       shape: const RoundedRectangleBorder(
-          borderRadius:
-              BorderRadius.all(Radius.circular(CustomRadius.radius16))),
+          borderRadius: BorderRadius.all(Radius.circular(KPRadius.radius16))),
       content: Wrap(children: [content]),
       actions: [
         Visibility(
@@ -46,8 +45,7 @@ class KPDialog extends StatelessWidget {
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.grey),
                 shape: MaterialStateProperty.all<OutlinedBorder>(
                     RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(CustomRadius.radius8))),
+                        borderRadius: BorderRadius.circular(KPRadius.radius8))),
               ),
               onPressed: () => Navigator.of(context).pop(),
               child: Text("back_button_label".tr(),
@@ -61,8 +59,7 @@ class KPDialog extends StatelessWidget {
               backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
               shape: MaterialStateProperty.all<OutlinedBorder>(
                   RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(CustomRadius.radius8))),
+                      borderRadius: BorderRadius.circular(KPRadius.radius8))),
             ),
             onPressed: () async {
               if (popDialog) Navigator.of(context).pop();

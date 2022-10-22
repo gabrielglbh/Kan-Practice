@@ -42,7 +42,8 @@ class _FolderListBottomSheetState extends State<FolderListBottomSheet> {
               const KPDragContainer(),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    vertical: Margins.margin8, horizontal: Margins.margin32),
+                    vertical: KPMargins.margin8,
+                    horizontal: KPMargins.margin32),
                 child: Text(
                     widget.name != null
                         ? "add_to_folder_from_list_title".tr()
@@ -73,11 +74,11 @@ class _FolderListBottomSheetState extends State<FolderListBottomSheet> {
                           constraints: BoxConstraints(
                               maxHeight:
                                   MediaQuery.of(context).size.height / 3),
-                          margin: const EdgeInsets.all(Margins.margin8),
+                          margin: const EdgeInsets.all(KPMargins.margin8),
                           child: state.lists.isEmpty
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      vertical: Margins.margin24),
+                                      vertical: KPMargins.margin24),
                                   child: Text("folder_list_empty".tr()),
                                 )
                               : _listSelection(state));

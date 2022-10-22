@@ -24,7 +24,7 @@ class ExamplePhrases extends StatelessWidget {
 
   Widget _displayExamplePhrases(BuildContext context, List<KanjiExample> data) {
     return Container(
-        padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
+        padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
         child: CustomExpansionTile(
             label: "${"jisho_resultData_phrases_label".tr()} (${data.length})",
             children: _listViewOfExamples(context, data)));
@@ -35,7 +35,7 @@ class ExamplePhrases extends StatelessWidget {
     List<Widget> res = [];
     for (int i = 0; i < data.length; i++) {
       res.add(Padding(
-        padding: EdgeInsets.only(top: i != 0 ? Margins.margin16 : 0),
+        padding: EdgeInsets.only(top: i != 0 ? KPMargins.margin16 : 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -47,7 +47,7 @@ class ExamplePhrases extends StatelessWidget {
                     .headline6
                     ?.copyWith(fontWeight: FontWeight.w500)),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: Margins.margin4),
+              padding: const EdgeInsets.symmetric(vertical: KPMargins.margin4),
               child: ScrollableText(
                   label: "(${data[i].kana})",
                   style: Theme.of(context).textTheme.bodyText2),
@@ -57,9 +57,9 @@ class ExamplePhrases extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyText2),
             const Padding(
               padding: EdgeInsets.only(
-                  right: Margins.margin64,
-                  left: Margins.margin64,
-                  top: Margins.margin8),
+                  right: KPMargins.margin64,
+                  left: KPMargins.margin64,
+                  top: KPMargins.margin8),
               child: Divider(thickness: 2),
             )
           ],

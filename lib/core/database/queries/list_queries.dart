@@ -3,7 +3,7 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ListQueries {
@@ -32,9 +32,7 @@ class ListQueries {
         if (name.trim().isEmpty) return -1;
         await _database?.insert(
             KanListTableFields.listsTable,
-            KanjiList(
-                    name: name,
-                    lastUpdated: GeneralUtils.getCurrentMilliseconds())
+            KanjiList(name: name, lastUpdated: Utils.getCurrentMilliseconds())
                 .toJson());
         return 0;
       } catch (err) {

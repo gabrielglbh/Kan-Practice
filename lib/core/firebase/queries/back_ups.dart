@@ -15,7 +15,7 @@ import 'package:kanpractice/core/database/queries/test_queries.dart';
 import 'package:kanpractice/core/firebase/firebase.dart';
 import 'package:kanpractice/core/firebase/models/backup.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class BackUpRecords {
   late FirebaseFirestore _ref;
@@ -121,7 +121,7 @@ class BackUpRecords {
     List<Folder> folders = await FolderQueries.instance.getAllFolders();
     List<RelFolderKanList> relFolderKanList =
         await FolderQueries.instance.getFolderRelation();
-    int date = GeneralUtils.getCurrentMilliseconds();
+    int date = Utils.getCurrentMilliseconds();
 
     if (lists.isEmpty) {
       return "backup_firebase_createBackUp_listEmpty".tr();
@@ -443,7 +443,7 @@ class BackUpRecords {
         int date = snapshot.get("lastUpdated");
         return "${"backup_firebase_getLastUpdated_successful".tr()} "
             // ignore: use_build_context_synchronously
-            "${GeneralUtils.parseDateMilliseconds(context, date)}";
+            "${Utils.parseDateMilliseconds(context, date)}";
       } else {
         return "backup_firebase_getLastUpdated_noBackUp".tr();
       }

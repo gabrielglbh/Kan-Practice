@@ -36,7 +36,7 @@ class WordResult extends StatelessWidget {
               label:
                   "${"jisho_phraseData_show_meanings".tr()} (${phrase.length - 1})",
               paddingHorizontal:
-                  const EdgeInsets.symmetric(horizontal: Margins.margin16),
+                  const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
               children: _listViewMoreMeanings(context)),
         ),
       ],
@@ -60,14 +60,15 @@ class WordResult extends StatelessWidget {
         Visibility(
           visible: data == null && phrase.isNotEmpty,
           child: Container(
-              height: Margins.margin32,
-              margin: const EdgeInsets.all(Margins.margin8),
+              height: KPMargins.margin32,
+              margin: const EdgeInsets.all(KPMargins.margin8),
               child: _chips(index)),
         ),
         Visibility(
             visible: data == null && index == 0,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

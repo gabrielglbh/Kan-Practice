@@ -2,7 +2,7 @@ import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/word_history.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:sqflite/sqflite.dart';
 
 class WordHistoryQueries {
@@ -33,7 +33,7 @@ class WordHistoryQueries {
             WordHistoryFields.historyTable,
             WordHistory(
               word: word,
-              searchedOn: GeneralUtils.getCurrentMilliseconds(),
+              searchedOn: Utils.getCurrentMilliseconds(),
             ).toJson());
         return 0;
       } catch (err) {

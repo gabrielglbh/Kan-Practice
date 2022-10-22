@@ -14,9 +14,9 @@ class JishoInfoTile extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          height: needsHeight ? CustomSizes.defaultJishoAPIContainer : null,
-          margin: const EdgeInsets.symmetric(vertical: Margins.margin8),
-          padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
+          height: needsHeight ? KPSizes.defaultJishoAPIContainer : null,
+          margin: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
+          padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start, children: children),
         ),

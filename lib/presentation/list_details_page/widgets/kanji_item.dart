@@ -5,7 +5,7 @@ import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/ui/kp_kanji_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class KanjiItem extends StatelessWidget {
   final bool aggregateStats;
@@ -73,25 +73,24 @@ class KanjiItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: CustomAnimations.ms300),
-      padding: const EdgeInsets.all(Margins.margin2),
-      margin: const EdgeInsets.all(Margins.margin4),
+      duration: const Duration(milliseconds: KPAnimations.ms300),
+      padding: const EdgeInsets.all(KPMargins.margin2),
+      margin: const EdgeInsets.all(KPMargins.margin4),
       decoration: BoxDecoration(
-          color: GeneralUtils.getColorBasedOnWinRate(
-              _getProperKanjiWinRate(kanji)),
+          color: Utils.getColorBasedOnWinRate(_getProperKanjiWinRate(kanji)),
           borderRadius:
-              const BorderRadius.all(Radius.circular(CustomRadius.radius8)),
+              const BorderRadius.all(Radius.circular(KPRadius.radius8)),
           boxShadow: const [
             BoxShadow(
                 color: Colors.grey,
                 offset: Offset(0, 3),
-                blurRadius: CustomRadius.radius4)
+                blurRadius: KPRadius.radius4)
           ]),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           borderRadius:
-              const BorderRadius.all(Radius.circular(CustomRadius.radius8)),
+              const BorderRadius.all(Radius.circular(KPRadius.radius8)),
           onTap: () async {
             onShowModal();
             await KPKanjiBottomSheet.show(context, listName, kanji,
@@ -100,7 +99,7 @@ class KanjiItem extends StatelessWidget {
           child: Container(
               decoration: const BoxDecoration(
                   borderRadius:
-                      BorderRadius.all(Radius.circular(CustomRadius.radius8))),
+                      BorderRadius.all(Radius.circular(KPRadius.radius8))),
               child: FittedBox(
                 fit: BoxFit.contain,
                 child: Text(kanji.kanji,

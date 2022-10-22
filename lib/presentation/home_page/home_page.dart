@@ -22,7 +22,7 @@ import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/ui/kp_search_bar.dart';
 import 'package:kanpractice/presentation/core/ui/kp_test_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
 import 'package:kanpractice/presentation/dictionary_page/dictionary_page.dart';
 import 'package:kanpractice/presentation/folder_list_page/folder_list_page.dart';
@@ -184,10 +184,9 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     final updateIcon = IconButton(
       onPressed: () async {
-        await GeneralUtils.showVersionNotes(context, version: _newVersion);
+        await Utils.showVersionNotes(context, version: _newVersion);
       },
-      icon:
-          const Icon(Icons.update_rounded, color: CustomColors.secondaryColor),
+      icon: const Icon(Icons.update_rounded, color: KPColors.secondaryColor),
     );
     final dictHistory = IconButton(
       onPressed: () {

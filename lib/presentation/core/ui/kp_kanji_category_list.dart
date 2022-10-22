@@ -30,11 +30,11 @@ class KPKanjiCategoryList extends StatelessWidget {
           child: Container(
               decoration: BoxDecoration(
                   color: selected(index)
-                      ? CustomColors.secondaryDarkerColor
-                      : CustomColors.secondaryColor,
-                  borderRadius: BorderRadius.circular(CustomRadius.radius16)),
+                      ? KPColors.secondaryDarkerColor
+                      : KPColors.secondaryColor,
+                  borderRadius: BorderRadius.circular(KPRadius.radius16)),
               margin: const EdgeInsets.symmetric(
-                  horizontal: Margins.margin4, vertical: Margins.margin2),
+                  horizontal: KPMargins.margin4, vertical: KPMargins.margin2),
               alignment: Alignment.center,
               child: Text(KanjiCategory.values[index].category,
                   style: Theme.of(context)

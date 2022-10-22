@@ -43,9 +43,9 @@ class KPValidationButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.only(top: 64, bottom: Margins.margin16),
+        padding: const EdgeInsets.only(top: 64, bottom: KPMargins.margin16),
         child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: CustomAnimations.ms300),
+            duration: const Duration(milliseconds: KPAnimations.ms300),
             switchInCurve: Curves.easeOut,
             switchOutCurve: Curves.easeOut,
             child: trigger ? _validation() : _submit()),
@@ -60,14 +60,13 @@ class KPValidationButtons extends StatelessWidget {
           begin: Offset(
 
               /// For side ways animation --> same dx as LearningHeaderAnimation
-              side ? CustomAnimations.dxCardInfo : 0,
+              side ? KPAnimations.dxCardInfo : 0,
               side ? 0 : -0.3),
           end: Offset.zero),
       curve: Curves.easeOut,
       duration: Duration(
-          milliseconds: side
-              ? CustomAnimations.ms400
-              : CustomAnimations.ms200 * duration),
+          milliseconds:
+              side ? KPAnimations.ms400 : KPAnimations.ms200 * duration),
       builder: (context, offset, child) {
         return FractionalTranslation(
             translation: offset as Offset, child: child);
@@ -81,10 +80,10 @@ class KPValidationButtons extends StatelessWidget {
     return _animation(
         side: true,
         child: SizedBox(
-          height: CustomSizes.customButtonHeight,
+          height: KPSizes.customButtonHeight,
           child: KPActionButton(
-              vertical: Margins.margin12,
-              horizontal: Margins.margin8,
+              vertical: KPMargins.margin12,
+              horizontal: KPMargins.margin8,
               label: submitLabel,
               onTap: onSubmit),
         ));
@@ -104,8 +103,8 @@ class KPValidationButtons extends StatelessWidget {
             duration: 1,
             child: KPActionButton(
               label: "wrong_button_label".tr(),
-              horizontal: Margins.margin4,
-              vertical: Margins.margin4,
+              horizontal: KPMargins.margin4,
+              vertical: KPMargins.margin4,
               onTap: () async => await wrongAction(0),
               color: Colors.red[700]!,
             )),
@@ -113,8 +112,8 @@ class KPValidationButtons extends StatelessWidget {
             duration: 2,
             child: KPActionButton(
               label: "mid_wrong_button_label".tr(),
-              horizontal: Margins.margin4,
-              vertical: Margins.margin4,
+              horizontal: KPMargins.margin4,
+              vertical: KPMargins.margin4,
               onTap: () async => await midWrongAction(0.33),
               color: Colors.yellow[800]!,
             )),
@@ -122,8 +121,8 @@ class KPValidationButtons extends StatelessWidget {
             duration: 3,
             child: KPActionButton(
               label: "mid_perfect_button_label".tr(),
-              horizontal: Margins.margin4,
-              vertical: Margins.margin4,
+              horizontal: KPMargins.margin4,
+              vertical: KPMargins.margin4,
               onTap: () async => await midPerfectAction(0.66),
               color: Colors.green[300]!,
             )),
@@ -131,8 +130,8 @@ class KPValidationButtons extends StatelessWidget {
             duration: 4,
             child: KPActionButton(
               label: "perfect_button_label".tr(),
-              horizontal: Margins.margin4,
-              vertical: Margins.margin4,
+              horizontal: KPMargins.margin4,
+              vertical: KPMargins.margin4,
               onTap: () async => await perfectAction(1),
               color: Colors.green[700]!,
             ))

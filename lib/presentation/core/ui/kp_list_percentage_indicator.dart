@@ -13,10 +13,10 @@ class KPListPercentageIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return LinearPercentIndicator(
       percent: value,
-      backgroundColor: CustomColors.secondaryColor,
-      progressColor: CustomColors.secondaryDarkerColor,
+      backgroundColor: KPColors.secondaryColor,
+      progressColor: KPColors.secondaryDarkerColor,
       lineHeight: 30,
-      barRadius: const Radius.circular(CustomRadius.radius8),
+      barRadius: const Radius.circular(KPRadius.radius8),
       animation: true,
       animationDuration: 1000,
       animateFromLastPercent: true,

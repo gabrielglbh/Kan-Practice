@@ -100,7 +100,7 @@ class DictionaryDetailsPage extends StatelessWidget {
                   visible: state.data.example.isNotEmpty,
                   child: ExamplePhrases(data: state.data.example)),
               Container(
-                height: Margins.margin32,
+                height: KPMargins.margin32,
                 color: Colors.transparent,
               )
             ],
@@ -113,14 +113,14 @@ class DictionaryDetailsPage extends StatelessWidget {
   Widget _nothingFound() {
     return Center(
         child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
+            padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
             child: Text("DictionaryDetails_no_match".tr(),
                 textAlign: TextAlign.center)));
   }
 
   Widget _poweredByDictionaryDetails() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
+      padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
       child: Chip(
         backgroundColor: Colors.green[200],
         label: Text("DictionaryDetails_resultData_powered_by".tr(),

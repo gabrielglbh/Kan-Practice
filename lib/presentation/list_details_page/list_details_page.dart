@@ -21,7 +21,7 @@ import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/ui/kp_search_bar.dart';
 import 'package:kanpractice/presentation/core/ui/kp_text_form.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/list_details_page/widgets/kanji_item.dart';
 import 'package:kanpractice/presentation/list_details_page/widgets/practice_on_list_bottom_sheet.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
@@ -113,7 +113,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
       _selectedMode = newMode;
     });
     _tabController?.animateTo(newMode.index,
-        duration: const Duration(milliseconds: CustomAnimations.ms300),
+        duration: const Duration(milliseconds: KPAnimations.ms300),
         curve: Curves.easeInOut);
   }
 
@@ -292,7 +292,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
                   await _goToPractice(state);
                 } else if (state is ListDetailStateFailure) {
                   if (state.error.isNotEmpty) {
-                    GeneralUtils.getSnackBar(context, state.error);
+                    Utils.getSnackBar(context, state.error);
                   }
                 } else if (state is ListDetailStateLoaded) {
                   if (StorageManager.readData(
@@ -335,7 +335,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
       children: [
         if (!_aggrStats)
           Padding(
-            padding: const EdgeInsets.only(bottom: Margins.margin8),
+            padding: const EdgeInsets.only(bottom: KPMargins.margin8),
             child: TabBar(
                 controller: _tabController,
                 tabs: List.generate(StudyModes.values.length, (index) {

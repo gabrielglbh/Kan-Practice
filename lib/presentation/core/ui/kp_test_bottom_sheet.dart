@@ -44,14 +44,15 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
               const KPDragContainer(),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    vertical: Margins.margin8, horizontal: Margins.margin32),
+                    vertical: KPMargins.margin8,
+                    horizontal: KPMargins.margin32),
                 child: Text("test_selection_label".tr(),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6),
               ),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: Margins.margin16),
+                    const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
                 child: GridView(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
@@ -91,7 +92,7 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                             }
                           })),
               ),
-              Container(height: Margins.margin16)
+              Container(height: KPMargins.margin16)
             ],
           ),
         ]);

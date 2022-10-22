@@ -14,7 +14,7 @@ import 'package:kanpractice/presentation/core/ui/kp_study_mode_app_bar.dart';
 import 'package:kanpractice/presentation/core/ui/kp_tts_icon_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_validation_buttons.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 import 'package:kanpractice/presentation/study_modes/utils/study_mode_update_handler.dart';
 
@@ -104,9 +104,8 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
     /// the current specific last shown mode attribute
     await KanjiQueries.instance
         .updateKanji(_studyList[_macro].listName, _studyList[_macro].kanji, {
-      KanjiTableFields.dateLastShown: GeneralUtils.getCurrentMilliseconds(),
-      KanjiTableFields.dateLastShownRecognition:
-          GeneralUtils.getCurrentMilliseconds()
+      KanjiTableFields.dateLastShown: Utils.getCurrentMilliseconds(),
+      KanjiTableFields.dateLastShownRecognition: Utils.getCurrentMilliseconds()
     });
 
     /// Add the current virgin score to the test scores...
@@ -144,7 +143,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
     return KPScaffold(
         onWillPop: () async {
           if (widget.args.testMode == Tests.daily) {
-            GeneralUtils.getSnackBar(context, "daily_test_cannot_go_back".tr());
+            Utils.getSnackBar(context, "daily_test_cannot_go_back".tr());
             return false;
           }
 
@@ -166,8 +165,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
           ),
           if (!widget.args.isTest)
             IconButton(
-              onPressed: () =>
-                  GeneralUtils.showSpatialRepetitionDisclaimer(context),
+              onPressed: () => Utils.showSpatialRepetitionDisclaimer(context),
               icon: const Icon(Icons.info_outline_rounded),
             )
         ],
@@ -196,16 +194,16 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
   List<Widget> _header() {
     return [
       KPLearningHeaderContainer(
-          height: CustomSizes.defaultSizeLearningExtContainer + Margins.margin8,
+          height: KPSizes.defaultSizeLearningExtContainer + KPMargins.margin8,
           text: _getProperPronunciation()),
       KPLearningHeaderContainer(
-          fontSize: FontSizes.fontSize64,
-          height: CustomSizes.listStudyHeight,
+          fontSize: KPFontSizes.fontSize64,
+          height: KPSizes.listStudyHeight,
           text: _studyList[_macro].kanji),
       KPLearningHeaderContainer(
-        height: CustomSizes.defaultSizeLearningExtContainer,
+        height: KPSizes.defaultSizeLearningExtContainer,
         text: _getProperMeaning(),
-        top: Margins.margin8,
+        top: KPMargins.margin8,
         fontWeight: FontWeight.bold,
       ),
     ];

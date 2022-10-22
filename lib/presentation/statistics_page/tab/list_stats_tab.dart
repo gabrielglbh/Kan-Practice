@@ -35,7 +35,7 @@ class _ListStatsState extends State<ListStats>
         ),
         _countLabel(context, widget.stats.totalKanji.toString()),
         Padding(
-            padding: const EdgeInsets.only(top: Margins.margin16),
+            padding: const EdgeInsets.only(top: KPMargins.margin16),
             child: KPRadialGraph(
               animationDuration: 0,
               writing: widget.stats.totalWinRateWriting,
@@ -87,18 +87,18 @@ class _ListStatsState extends State<ListStats>
             (index) => DataFrame(
               x: KanjiCategory.values[index].category,
               y: widget.stats.totalCategoryCounts[index].toDouble(),
-              color: CustomColors.secondaryColor,
+              color: KPColors.secondaryColor,
             ),
           ),
         ),
-        const SizedBox(height: Margins.margin32)
+        const SizedBox(height: KPMargins.margin32)
       ],
     );
   }
 
   Widget _countLabel(BuildContext context, String count) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
+      padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin8),
       alignment: Alignment.center,
       child: FittedBox(
         fit: BoxFit.contain,

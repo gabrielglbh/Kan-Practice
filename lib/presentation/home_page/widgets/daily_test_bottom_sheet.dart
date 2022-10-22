@@ -10,7 +10,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
 class DailyBottomSheet extends StatelessWidget {
@@ -32,9 +32,9 @@ class DailyBottomSheet extends StatelessWidget {
         StudyModes.values[Random().nextInt(StudyModes.values.length)];
     final kanjiInTest =
         StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
-            CustomSizes.numberOfKanjiInTest;
+            KPSizes.numberOfKanjiInTest;
 
-    final today = await GeneralUtils.parseTodayDate(context);
+    final today = await Utils.parseTodayDate(context);
     List<Kanji> list = [];
     if (folder == null) {
       list = await KanjiQueries.instance.getDailyKanjis(randomStudyMode);
@@ -85,7 +85,8 @@ class DailyBottomSheet extends StatelessWidget {
               const KPDragContainer(),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    vertical: Margins.margin8, horizontal: Margins.margin32),
+                    vertical: KPMargins.margin8,
+                    horizontal: KPMargins.margin32),
                 child: Text("${"daily_test_bottom_sheet_title".tr()}$title",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6),
@@ -96,12 +97,13 @@ class DailyBottomSheet extends StatelessWidget {
                         true,
                 child: Container(
                   margin: const EdgeInsets.symmetric(
-                      vertical: Margins.margin8, horizontal: Margins.margin24),
+                      vertical: KPMargins.margin8,
+                      horizontal: KPMargins.margin24),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       const Padding(
-                        padding: EdgeInsets.only(right: Margins.margin16),
+                        padding: EdgeInsets.only(right: KPMargins.margin16),
                         child: Icon(Icons.auto_graph_rounded,
                             color: Colors.lightBlueAccent),
                       ),
@@ -112,7 +114,7 @@ class DailyBottomSheet extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyText1,
                       )),
                       const Padding(
-                        padding: EdgeInsets.only(left: Margins.margin16),
+                        padding: EdgeInsets.only(left: KPMargins.margin16),
                         child: Icon(Icons.auto_graph_rounded,
                             color: Colors.lightBlueAccent),
                       ),
@@ -122,7 +124,8 @@ class DailyBottomSheet extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    vertical: Margins.margin8, horizontal: Margins.margin32),
+                    vertical: KPMargins.margin8,
+                    horizontal: KPMargins.margin32),
                 child: Text("daily_test_description".tr(),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyText1),

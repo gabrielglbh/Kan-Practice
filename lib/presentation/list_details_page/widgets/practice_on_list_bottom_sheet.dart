@@ -6,7 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
 class PracticeListBottomSheet extends StatefulWidget {
@@ -49,7 +49,8 @@ class _PracticeListBottomSheetState extends State<PracticeListBottomSheet> {
               const KPDragContainer(),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    vertical: Margins.margin8, horizontal: Margins.margin32),
+                    vertical: KPMargins.margin8,
+                    horizontal: KPMargins.margin32),
                 child: Text(
                     "${"list_details_practice_button_label".tr()}: ${widget.listName}",
                     textAlign: TextAlign.center,
@@ -59,9 +60,9 @@ class _PracticeListBottomSheetState extends State<PracticeListBottomSheet> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(
-                      right: Margins.margin16,
-                      left: Margins.margin16,
-                      bottom: Margins.margin8,
+                      right: KPMargins.margin16,
+                      left: KPMargins.margin16,
+                      bottom: KPMargins.margin8,
                     ),
                     child: GridView.builder(
                       itemCount: StudyModes.values.length,
@@ -93,7 +94,7 @@ class _PracticeListBottomSheetState extends State<PracticeListBottomSheet> {
       onTap: () async {
         if (widget.list.isEmpty) {
           // ignore: use_build_context_synchronously
-          GeneralUtils.getSnackBar(context, "study_modes_empty".tr());
+          Utils.getSnackBar(context, "study_modes_empty".tr());
         } else {
           widget.list.shuffle();
           await _decideOnMode(widget.list, mode);

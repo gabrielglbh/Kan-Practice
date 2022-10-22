@@ -78,7 +78,7 @@ class _FolderDetailsPageState extends State<FolderDetailsPage> {
                         folder: widget.folder);
                   },
                   icon: const Icon(Icons.track_changes_rounded,
-                      color: CustomColors.secondaryColor),
+                      color: KPColors.secondaryColor),
                 ),
                 IconButton(
                   icon: const Icon(Icons.auto_awesome_motion_rounded),
@@ -97,7 +97,7 @@ class _FolderDetailsPageState extends State<FolderDetailsPage> {
                     controller: _searchTextController,
                     hint: TabType.kanlist.searchBarHint,
                     focus: _searchBarFn,
-                    right: Margins.margin12,
+                    right: KPMargins.margin12,
                     onQuery: (String query) {
                       /// Everytime the user queries, reset the query itself and
                       /// the pagination index

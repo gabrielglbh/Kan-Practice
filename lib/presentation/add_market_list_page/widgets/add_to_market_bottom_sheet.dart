@@ -43,7 +43,8 @@ class _AddToMarketBottomSheetState extends State<AddToMarketBottomSheet> {
               const KPDragContainer(),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    vertical: Margins.margin8, horizontal: Margins.margin32),
+                    vertical: KPMargins.margin8,
+                    horizontal: KPMargins.margin32),
                 child: Text("add_to_market_select_list".tr(),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6),
@@ -65,7 +66,7 @@ class _AddToMarketBottomSheetState extends State<AddToMarketBottomSheet> {
                           constraints: BoxConstraints(
                               maxHeight:
                                   MediaQuery.of(context).size.height / 3),
-                          margin: const EdgeInsets.all(Margins.margin8),
+                          margin: const EdgeInsets.all(KPMargins.margin8),
                           child: ListView.separated(
                             separatorBuilder: (context, index) =>
                                 const Divider(),

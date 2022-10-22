@@ -85,7 +85,7 @@ class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
       child: Scaffold(
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(Margins.margin8),
+            padding: const EdgeInsets.all(KPMargins.margin8),
             child: BlocProvider<TestHistoryBloc>(
               create: (_) => TestHistoryBloc()
                 ..add(TestHistoryEventLoading(
@@ -126,7 +126,7 @@ class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
                         ),
                         Positioned(
                           top: 0,
-                          right: Margins.margin64,
+                          right: KPMargins.margin64,
                           child: TextButton(
                             onPressed: () async {
                               await _applyFilters(blocContext);
@@ -146,7 +146,7 @@ class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
                         ),
                         Positioned(
                           top: 0,
-                          right: Margins.margin8,
+                          right: KPMargins.margin8,
                           child: IconButton(
                             onPressed: () {
                               Navigator.of(context).pop(

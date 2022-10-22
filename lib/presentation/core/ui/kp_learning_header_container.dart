@@ -11,7 +11,7 @@ class KPLearningHeaderContainer extends StatelessWidget {
   final double? horizontal;
   const KPLearningHeaderContainer(
       {Key? key,
-      this.fontSize = FontSizes.fontSize24,
+      this.fontSize = KPFontSizes.fontSize24,
       required this.height,
       required this.text,
       this.top = 0,

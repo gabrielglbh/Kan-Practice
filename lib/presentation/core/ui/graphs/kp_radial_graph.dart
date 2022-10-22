@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart' as gauge;
@@ -24,7 +24,7 @@ class KPRadialGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size.width / 3;
     return SizedBox(
-      height: CustomSizes.defaultSizeWinRateChart,
+      height: KPSizes.defaultSizeWinRateChart,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -87,7 +87,8 @@ class KPRadialGraph extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               itemCount: StudyModes.values.length,
               shrinkWrap: true,
-              padding: const EdgeInsets.symmetric(horizontal: Margins.margin12),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: KPMargins.margin12),
               itemBuilder: (context, index) {
                 double rate = 0;
                 switch (StudyModes.values[index]) {
@@ -114,8 +115,8 @@ class KPRadialGraph extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: SizedBox(
-                        width: Margins.margin8,
-                        height: Margins.margin12,
+                        width: KPMargins.margin8,
+                        height: KPMargins.margin12,
                         child: gauge.SfRadialGauge(
                           enableLoadingAnimation: false,
                           axes: <gauge.RadialAxis>[
@@ -147,7 +148,7 @@ class KPRadialGraph extends StatelessWidget {
                             child: Text(
                               "${StudyModes.values[index].mode}:",
                               style:
-                                  const TextStyle(fontSize: Margins.margin12),
+                                  const TextStyle(fontSize: KPMargins.margin12),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -155,11 +156,10 @@ class KPRadialGraph extends StatelessWidget {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               rate != DatabaseConstants.emptyWinRate
-                                  ? GeneralUtils.getFixedPercentageAsString(
-                                      rate)
+                                  ? Utils.getFixedPercentageAsString(rate)
                                   : "0%",
                               style: TextStyle(
-                                  fontSize: Margins.margin12,
+                                  fontSize: KPMargins.margin12,
                                   fontWeight: FontWeight.bold,
                                   color: Theme.of(context).brightness ==
                                           Brightness.light

@@ -8,7 +8,7 @@ import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
 class KPTestStudyMode extends StatelessWidget {
@@ -101,12 +101,13 @@ class KPTestStudyMode extends StatelessWidget {
                       true,
               child: Container(
                   margin: const EdgeInsets.symmetric(
-                      vertical: Margins.margin8, horizontal: Margins.margin24),
+                      vertical: KPMargins.margin8,
+                      horizontal: KPMargins.margin24),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       const Padding(
-                        padding: EdgeInsets.only(right: Margins.margin16),
+                        padding: EdgeInsets.only(right: KPMargins.margin16),
                         child: Icon(Icons.auto_graph_rounded,
                             color: Colors.lightBlueAccent),
                       ),
@@ -117,7 +118,7 @@ class KPTestStudyMode extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyText1,
                       )),
                       const Padding(
-                        padding: EdgeInsets.only(left: Margins.margin16),
+                        padding: EdgeInsets.only(left: KPMargins.margin16),
                         child: Icon(Icons.auto_graph_rounded,
                             color: Colors.lightBlueAccent),
                       ),
@@ -126,9 +127,9 @@ class KPTestStudyMode extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                right: Margins.margin16,
-                left: Margins.margin16,
-                bottom: Margins.margin8,
+                right: KPMargins.margin16,
+                left: KPMargins.margin16,
+                bottom: KPMargins.margin8,
               ),
               child: GridView.builder(
                 itemCount: StudyModes.values.length,
@@ -156,7 +157,7 @@ class KPTestStudyMode extends StatelessWidget {
           if (l != null) {
             if (l.isEmpty) {
               Navigator.of(context).pop();
-              GeneralUtils.getSnackBar(context, "study_modes_empty".tr());
+              Utils.getSnackBar(context, "study_modes_empty".tr());
             } else {
               await _decideOnMode(navigator, l, mode);
             }
@@ -165,7 +166,7 @@ class KPTestStudyMode extends StatelessWidget {
             if (l.isEmpty) {
               navigator.pop();
               // ignore: use_build_context_synchronously
-              GeneralUtils.getSnackBar(context, "study_modes_empty".tr());
+              Utils.getSnackBar(context, "study_modes_empty".tr());
             } else {
               await _decideOnMode(navigator, l, mode);
             }
@@ -181,7 +182,7 @@ class KPTestStudyMode extends StatelessWidget {
     final displayTestName = type.name;
     final kanjiInTest =
         StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
-            CustomSizes.numberOfKanjiInTest;
+            KPSizes.numberOfKanjiInTest;
     List<Kanji> sortedList =
         l.sublist(0, l.length < kanjiInTest ? l.length : kanjiInTest);
     navigator.pop(); // Dismiss this bottom sheet

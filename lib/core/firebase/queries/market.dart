@@ -9,7 +9,7 @@ import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
 import 'package:collection/collection.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class MarketRecords {
   late FirebaseFirestore _ref;
@@ -205,7 +205,7 @@ class MarketRecords {
                 uid: user.uid,
                 author: user.displayName ?? "",
                 description: description,
-                uploadedToMarket: GeneralUtils.getCurrentMilliseconds())
+                uploadedToMarket: Utils.getCurrentMilliseconds())
             .copyWithKeywords();
 
         final KanjiList raw = list.copyWithReset();

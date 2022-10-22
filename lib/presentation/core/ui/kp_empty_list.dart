@@ -23,7 +23,7 @@ class KPEmptyList extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Margins.margin16),
+          padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
           child: Text(message, textAlign: TextAlign.center),
         ),
         Container(),
@@ -34,7 +34,7 @@ class KPEmptyList extends StatelessWidget {
                 horizontal: MediaQuery.of(context).size.width / 5),
             child: KPButton(
                 title2: "load_failed_try_again_button_label".tr(),
-                color: CustomColors.secondaryColor,
+                color: KPColors.secondaryColor,
                 onTap: onRefresh),
           ),
         )

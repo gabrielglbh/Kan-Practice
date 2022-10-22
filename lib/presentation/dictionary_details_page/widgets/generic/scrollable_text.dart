@@ -24,7 +24,7 @@ class ScrollableText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: paddingTop
-          ? const EdgeInsets.only(top: Margins.margin8)
+          ? const EdgeInsets.only(top: KPMargins.margin8)
           : EdgeInsets.zero,
       alignment: Alignment.centerLeft,
       child: Text(

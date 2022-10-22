@@ -8,7 +8,7 @@ import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
 
 class WordHistoryPage extends StatefulWidget {
@@ -109,8 +109,8 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
         itemCount: state.list.length,
         itemBuilder: (context, k) {
           WordHistory wordHistory = state.list[k];
-          final date = GeneralUtils.parseDateMilliseconds(
-              context, wordHistory.searchedOn);
+          final date =
+              Utils.parseDateMilliseconds(context, wordHistory.searchedOn);
           return ListTile(
             onTap: () {
               Navigator.of(context).pushNamed(KanPracticePages.jishoPage,

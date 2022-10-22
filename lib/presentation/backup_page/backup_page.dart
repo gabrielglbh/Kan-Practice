@@ -6,7 +6,7 @@ import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class BackUpPage extends StatelessWidget {
   final String uid;
@@ -21,10 +21,10 @@ class BackUpPage extends StatelessWidget {
           child: BlocConsumer<BackUpBloc, BackUpState>(
             listener: (context, state) {
               if (state is BackUpStateFailure) {
-                GeneralUtils.getSnackBar(context, state.message);
+                Utils.getSnackBar(context, state.message);
               }
               if (state is BackUpStateSuccess) {
-                GeneralUtils.getSnackBar(context, state.message);
+                Utils.getSnackBar(context, state.message);
                 Navigator.of(context).pop(); // Go to manage account, pop
                 Navigator.of(context).pop(); // Go to settings, pop
               }
@@ -51,8 +51,7 @@ class BackUpPage extends StatelessWidget {
                         leading: const Icon(Icons.delete),
                         title: Text("backup_removal_tile".tr(),
                             style: TextStyle(
-                                color:
-                                    CustomColors.getSecondaryColor(context))),
+                                color: KPColors.getSecondaryColor(context))),
                         onTap: () => _createDialogForRemovingBackUp(context),
                       ),
                     ],

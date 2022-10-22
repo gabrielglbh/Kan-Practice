@@ -86,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                     onEditingComplete: () => newPasswordFn.requestFocus(),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: Margins.margin16),
+                    padding: const EdgeInsets.only(top: KPMargins.margin16),
                     child: KPTextForm(
                       hint: 'login_changePasswordDialog_hint'.tr(),
                       header: 'login_changePasswordDialog_new_header'.tr(),
@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
               content: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(bottom: Margins.margin16),
+                    padding: const EdgeInsets.only(bottom: KPMargins.margin16),
                     child: Text("login_removeAccountDialog_content".tr(),
                         style: Theme.of(context).textTheme.bodyText1),
                   ),
@@ -205,10 +205,10 @@ class _LoginPageState extends State<LoginPage> {
     return Column(
       children: [
         Icon(Icons.info_outline_rounded,
-            color: CustomColors.getSecondaryColor(context)),
+            color: KPColors.getSecondaryColor(context)),
         Padding(
           padding: const EdgeInsets.only(
-              top: Margins.margin16, bottom: Margins.margin16),
+              top: KPMargins.margin16, bottom: KPMargins.margin16),
           child: Text("login_formDisclaimer".tr(),
               style: Theme.of(context).textTheme.bodyText1),
         ),
@@ -220,7 +220,7 @@ class _LoginPageState extends State<LoginPage> {
             focusNode: _emailFocus,
             onEditingComplete: () => _passwordFocus?.requestFocus()),
         Padding(
-          padding: const EdgeInsets.only(top: Margins.margin32),
+          padding: const EdgeInsets.only(top: KPMargins.margin32),
           child: KPTextForm(
               header: "login_password_header".tr(),
               hint: "login_password_hint".tr(),
@@ -234,16 +234,16 @@ class _LoginPageState extends State<LoginPage> {
         Visibility(
           visible: state.error != "",
           child: Padding(
-            padding: const EdgeInsets.all(Margins.margin16),
+            padding: const EdgeInsets.all(KPMargins.margin16),
             child: Text("login_authentication_failed".tr(),
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1
-                    ?.copyWith(color: CustomColors.getSecondaryColor(context))),
+                    ?.copyWith(color: KPColors.getSecondaryColor(context))),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: Margins.margin16),
+          padding: const EdgeInsets.only(top: KPMargins.margin16),
           child: ElevatedButton(
             onPressed: () => _handleLogin(bloc),
             child: Text("login_form_positive".tr(),
@@ -259,7 +259,7 @@ class _LoginPageState extends State<LoginPage> {
             }
           }),
           child: Padding(
-            padding: const EdgeInsets.all(Margins.margin16),
+            padding: const EdgeInsets.all(KPMargins.margin16),
             child: Text(
               _mode == SignMode.login
                   ? SignMode.signup.name
@@ -280,19 +280,19 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
       children: [
         Icon(Icons.check_circle_rounded,
-            color: CustomColors.getSecondaryColor(context),
-            size: CustomSizes.maxHeightValidationCircle),
+            color: KPColors.getSecondaryColor(context),
+            size: KPSizes.maxHeightValidationCircle),
         Padding(
-          padding: const EdgeInsets.all(Margins.margin16),
+          padding: const EdgeInsets.all(KPMargins.margin16),
           child: Text(
               "${"login_current_account_logged".tr()} ${state.user.email}.",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyText1),
         ),
         SizedBox(
-          height: CustomSizes.appBarHeight,
+          height: KPSizes.appBarHeight,
           child: Padding(
-            padding: const EdgeInsets.all(Margins.margin16),
+            padding: const EdgeInsets.all(KPMargins.margin16),
             child: ElevatedButton(
               onPressed: () => Navigator.of(context).pushNamed(
                   KanPracticePages.backUpPage,
@@ -328,12 +328,11 @@ class _LoginPageState extends State<LoginPage> {
         ),
         const Divider(),
         Padding(
-          padding: const EdgeInsets.only(bottom: Margins.margin32),
+          padding: const EdgeInsets.only(bottom: KPMargins.margin32),
           child: ListTile(
             leading: const Icon(Icons.delete),
             title: Text("login_removeAccountDialog_title".tr(),
-                style:
-                    TextStyle(color: CustomColors.getSecondaryColor(context))),
+                style: TextStyle(color: KPColors.getSecondaryColor(context))),
             onTap: () => _removeAccountDialog(bloc),
           ),
         ),
@@ -346,10 +345,10 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
       children: [
         Icon(Icons.check_circle_rounded,
-            color: CustomColors.getSecondaryColor(context),
-            size: CustomSizes.maxHeightValidationCircle),
+            color: KPColors.getSecondaryColor(context),
+            size: KPSizes.maxHeightValidationCircle),
         Padding(
-          padding: const EdgeInsets.all(Margins.margin16),
+          padding: const EdgeInsets.all(KPMargins.margin16),
           child: Text(state.message,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyText1),

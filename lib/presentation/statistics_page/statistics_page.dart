@@ -107,7 +107,7 @@ class _StatisticsPageState extends State<StatisticsPage>
     return Column(
       children: [
         TabBar(controller: _controller, tabs: _tabs),
-        const SizedBox(height: Margins.margin16),
+        const SizedBox(height: KPMargins.margin16),
         Expanded(
           child: TabBarView(
             controller: _controller,

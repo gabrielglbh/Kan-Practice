@@ -14,7 +14,7 @@ class JishoHeader extends StatelessWidget {
         Visibility(
           visible: guideline,
           child: const Padding(
-            padding: EdgeInsets.only(right: Margins.margin8),
+            padding: EdgeInsets.only(right: KPMargins.margin8),
             child: Icon(Icons.subdirectory_arrow_right_rounded),
           ),
         ),

@@ -13,7 +13,7 @@ import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_kanji_category_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class AddToKanListBottomSheet extends StatefulWidget {
   final String? kanji;
@@ -61,13 +61,12 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
         pronunciation: reading,
         category: category.index,
         listName: listName,
-        dateAdded: GeneralUtils.getCurrentMilliseconds(),
-        dateLastShown: GeneralUtils.getCurrentMilliseconds()));
+        dateAdded: Utils.getCurrentMilliseconds(),
+        dateLastShown: Utils.getCurrentMilliseconds()));
     if (code == 0) {
       if (!mounted) return;
       Navigator.of(context).pop();
-      GeneralUtils.getSnackBar(
-          context, "add_kanji_createKanji_successful".tr());
+      Utils.getSnackBar(context, "add_kanji_createKanji_successful".tr());
     } else if (code == -1) {
       setState(() => _error = "add_kanji_createKanji_failed_insertion".tr());
     } else {
@@ -88,7 +87,8 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
               const KPDragContainer(),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    vertical: Margins.margin8, horizontal: Margins.margin32),
+                    vertical: KPMargins.margin8,
+                    horizontal: KPMargins.margin32),
                 child: Text("dict_jisho_add_kanji_bottom_sheet_title".tr(),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6),
@@ -97,13 +97,14 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
                 visible: _error.isNotEmpty,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                      vertical: Margins.margin8, horizontal: Margins.margin32),
+                      vertical: KPMargins.margin8,
+                      horizontal: KPMargins.margin32),
                   child: Text(_error,
                       textAlign: TextAlign.center,
                       style: Theme.of(context)
                           .textTheme
                           .button
-                          ?.copyWith(color: CustomColors.secondaryColor)),
+                          ?.copyWith(color: KPColors.secondaryColor)),
                 ),
               ),
               BlocProvider<ListBloc>(
@@ -123,7 +124,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
                           constraints: BoxConstraints(
                               maxHeight:
                                   MediaQuery.of(context).size.height / 2),
-                          margin: const EdgeInsets.all(Margins.margin8),
+                          margin: const EdgeInsets.all(KPMargins.margin8),
                           child: _listSelection(state));
                     } else {
                       return Container();

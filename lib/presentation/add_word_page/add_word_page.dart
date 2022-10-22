@@ -11,7 +11,7 @@ import 'package:kanpractice/presentation/core/ui/kp_kanji_category_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/ui/kp_text_form.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
 
 class AddWordPage extends StatefulWidget {
@@ -70,8 +70,8 @@ class _AddWordPageState extends State<AddWordPage> {
           meaning: _meaningController?.text ?? "",
           listName: widget.args.listName,
           category: _currentCategory.index,
-          dateAdded: GeneralUtils.getCurrentMilliseconds(),
-          dateLastShown: GeneralUtils.getCurrentMilliseconds(),
+          dateAdded: Utils.getCurrentMilliseconds(),
+          dateLastShown: Utils.getCurrentMilliseconds(),
         )));
   }
 
@@ -96,7 +96,7 @@ class _AddWordPageState extends State<AddWordPage> {
         _meaningController?.text.trim().isNotEmpty == true) {
       execute();
     } else {
-      GeneralUtils.getSnackBar(context, "add_kanji_validateKanji_failed".tr());
+      Utils.getSnackBar(context, "add_kanji_validateKanji_failed".tr());
     }
   }
 
@@ -166,7 +166,7 @@ class _AddWordPageState extends State<AddWordPage> {
         ],
         child: SingleChildScrollView(
           child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
+              padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
               child: _builder()),
         ),
       ),
@@ -189,7 +189,7 @@ class _AddWordPageState extends State<AddWordPage> {
         } else if (state is AddKanjiStateDoneUpdating) {
           Navigator.of(context).pop(0);
         } else if (state is AddKanjiStateFailure) {
-          GeneralUtils.getSnackBar(context, state.message);
+          Utils.getSnackBar(context, state.message);
         }
       },
       child: _body(),
@@ -226,7 +226,7 @@ class _AddWordPageState extends State<AddWordPage> {
           onEditingComplete: () => _pronunciationFocus?.requestFocus(),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: Margins.margin16),
+          padding: const EdgeInsets.only(top: KPMargins.margin16),
           child: KPTextForm(
             controller: _pronunciationController,
             focusNode: _pronunciationFocus,
@@ -236,11 +236,11 @@ class _AddWordPageState extends State<AddWordPage> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: Margins.margin16),
+          padding: const EdgeInsets.only(top: KPMargins.margin16),
           child: _categorySelection(),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: Margins.margin16),
+          padding: const EdgeInsets.only(top: KPMargins.margin16),
           child: BlocBuilder<AddKanjiBloc, AddKanjiState>(
             builder: (context, state) => KPTextForm(
               controller: _meaningController,
@@ -275,7 +275,7 @@ class _AddWordPageState extends State<AddWordPage> {
       children: [
         Padding(
           padding: const EdgeInsets.only(
-              bottom: Margins.margin16, left: Margins.margin8),
+              bottom: KPMargins.margin16, left: KPMargins.margin8),
           child: Text("kanji_category_label".tr(),
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.headline6),

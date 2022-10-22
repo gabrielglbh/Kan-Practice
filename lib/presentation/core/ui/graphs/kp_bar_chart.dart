@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class KPBarChart extends StatelessWidget {
@@ -33,10 +33,10 @@ class KPBarChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: Margins.margin8),
+      padding: const EdgeInsets.only(right: KPMargins.margin8),
       child: SizedBox(
-        height: CustomSizes.defaultSizeWinRateBarChart * heightRatio,
-        width: MediaQuery.of(context).size.width - Margins.margin48,
+        height: KPSizes.defaultSizeWinRateBarChart * heightRatio,
+        width: MediaQuery.of(context).size.width - KPMargins.margin48,
         child: SfCartesianChart(
           tooltipBehavior: TooltipBehavior(enable: enableTooltip),
           primaryXAxis: CategoryAxis(
@@ -72,7 +72,7 @@ class KPBarChart extends StatelessWidget {
                     yValueMapper: (DataFrame data, _) => _isWinRateChart
                         ? data.y == DatabaseConstants.emptyWinRate
                             ? 0
-                            : GeneralUtils.getFixedPercentage(data.y)
+                            : Utils.getFixedPercentage(data.y)
                         : data.y,
                     onPointTap: onBarTapped != null
                         ? (details) {

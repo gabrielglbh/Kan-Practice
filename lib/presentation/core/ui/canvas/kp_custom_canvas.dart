@@ -75,7 +75,7 @@ class _KPCustomCanvasState extends State<KPCustomCanvas> {
   Widget build(BuildContext context) {
     /// We subtract 32 padding to the size as we have an inherent 16 - 16
     /// padding on the sides on the parent
-    final double size = MediaQuery.of(context).size.width - Margins.margin32;
+    final double size = MediaQuery.of(context).size.width - KPMargins.margin32;
     return SizedBox(
       width: size,
       height: size,
@@ -93,7 +93,7 @@ class _KPCustomCanvasState extends State<KPCustomCanvas> {
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(CustomRadius.radius16),
+                    borderRadius: BorderRadius.circular(KPRadius.radius16),
                     color: Theme.of(context).brightness == Brightness.light
                         ? Colors.grey[300]
                         : Colors.grey[600],
@@ -116,26 +116,26 @@ class _KPCustomCanvasState extends State<KPCustomCanvas> {
   _actionIcon(
       {required Function() action,
       required IconData icon,
-      double? left = Margins.margin16,
-      double? right = Margins.margin16}) {
+      double? left = KPMargins.margin16,
+      double? right = KPMargins.margin16}) {
     return Visibility(
       visible: widget.allowEdit,
       child: Positioned(
-          top: Margins.margin8,
+          top: KPMargins.margin8,
           left: left,
           right: right,
           child: GestureDetector(
               onTap: action,
               child: Container(
-                height: CustomSizes.defaultSizeSearchBarIcons,
-                width: CustomSizes.defaultSizeSearchBarIcons,
+                height: KPSizes.defaultSizeSearchBarIcons,
+                width: KPSizes.defaultSizeSearchBarIcons,
                 decoration: BoxDecoration(
                     color: Theme.of(context).brightness == Brightness.light
                         ? Colors.white
                         : Colors.black,
-                    borderRadius: BorderRadius.circular(CustomRadius.radius16)),
+                    borderRadius: BorderRadius.circular(KPRadius.radius16)),
                 child: Icon(icon,
-                    size: FontSizes.fontSize32,
+                    size: KPFontSizes.fontSize32,
                     color: Theme.of(context).brightness == Brightness.light
                         ? Colors.black
                         : Colors.white),

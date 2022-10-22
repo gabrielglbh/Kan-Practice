@@ -6,7 +6,7 @@ import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:sqflite/sqflite.dart';
 
 class InitialQueries {
@@ -49,15 +49,15 @@ class InitialQueries {
 
         /// For all KanLists and Kanji, set the last updated field to current time
         for (int x = 0; x < lists.length; x++) {
-          final KanjiList k = lists[x].copyWithUpdatedDate(
-              lastUpdated: GeneralUtils.getCurrentMilliseconds());
+          final KanjiList k = lists[x]
+              .copyWithUpdatedDate(lastUpdated: Utils.getCurrentMilliseconds());
           batch?.insert(KanListTableFields.listsTable, k.toJson(),
               conflictAlgorithm: ConflictAlgorithm.replace);
         }
         for (int x = 0; x < kanji.length; x++) {
           final Kanji k = kanji[x].copyWithUpdatedDate(
-              dateAdded: GeneralUtils.getCurrentMilliseconds(),
-              dateLastShown: GeneralUtils.getCurrentMilliseconds());
+              dateAdded: Utils.getCurrentMilliseconds(),
+              dateLastShown: Utils.getCurrentMilliseconds());
           batch?.insert(KanjiTableFields.kanjiTable, k.toJson(),
               conflictAlgorithm: ConflictAlgorithm.replace);
         }

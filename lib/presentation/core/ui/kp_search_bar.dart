@@ -27,8 +27,8 @@ class KPSearchBar extends StatefulWidget {
       required this.focus,
       this.top = 0,
       this.bottom = 0,
-      this.left = Margins.margin8,
-      this.right = Margins.margin8,
+      this.left = KPMargins.margin8,
+      this.right = KPMargins.margin8,
       this.controller})
       : super(key: key);
 
@@ -65,7 +65,7 @@ class _KPSearchBarState extends State<KPSearchBar> {
             bottom: widget.bottom),
         child: Column(children: <Widget>[
           Padding(
-              padding: const EdgeInsets.only(bottom: Margins.margin8),
+              padding: const EdgeInsets.only(bottom: KPMargins.margin8),
               child: _searchBar())
         ]));
   }
@@ -81,10 +81,10 @@ class _KPSearchBarState extends State<KPSearchBar> {
           showCursor: _showCursor,
           decoration: InputDecoration(
               contentPadding: const EdgeInsets.only(
-                  top: Margins.margin24,
-                  bottom: Margins.margin16,
-                  left: Margins.margin48,
-                  right: Margins.margin48),
+                  top: KPMargins.margin24,
+                  bottom: KPMargins.margin16,
+                  left: KPMargins.margin48,
+                  right: KPMargins.margin48),
               hintText: widget.hint,
               filled: false),
           onTap: () {
@@ -105,11 +105,11 @@ class _KPSearchBarState extends State<KPSearchBar> {
             _hideKeyboard();
           },
         ),
-        Positioned(bottom: Margins.margin4, left: 0, child: _back()),
+        Positioned(bottom: KPMargins.margin4, left: 0, child: _back()),
         Visibility(
           visible: _hasFocus,
           child: Positioned(
-            bottom: Margins.margin4,
+            bottom: KPMargins.margin4,
             right: 0,
             child: _clear(),
           ),
@@ -120,10 +120,10 @@ class _KPSearchBarState extends State<KPSearchBar> {
 
   SizedBox _back() {
     return SizedBox(
-        width: CustomSizes.defaultSizeSearchBarIcons,
-        height: CustomSizes.defaultSizeSearchBarIcons,
+        width: KPSizes.defaultSizeSearchBarIcons,
+        height: KPSizes.defaultSizeSearchBarIcons,
         child: InkWell(
-          borderRadius: BorderRadius.circular(CustomRadius.radius32),
+          borderRadius: BorderRadius.circular(KPRadius.radius32),
           onTap: () {
             if (_hasFocus) {
               widget.onExitSearch();
@@ -142,10 +142,10 @@ class _KPSearchBarState extends State<KPSearchBar> {
 
   SizedBox _clear() {
     return SizedBox(
-        width: CustomSizes.defaultSizeSearchBarIcons,
-        height: CustomSizes.defaultSizeSearchBarIcons,
+        width: KPSizes.defaultSizeSearchBarIcons,
+        height: KPSizes.defaultSizeSearchBarIcons,
         child: InkWell(
-          borderRadius: BorderRadius.circular(CustomRadius.radius32),
+          borderRadius: BorderRadius.circular(KPRadius.radius32),
           onTap: () {
             setState(() {
               _clearSearch();

@@ -23,7 +23,7 @@ Future<void> _initSharedPreferences() async {
   }
   if (StorageManager.readData(StorageManager.numberOfKanjiInTest) == null) {
     StorageManager.saveData(
-        StorageManager.numberOfKanjiInTest, CustomSizes.numberOfKanjiInTest);
+        StorageManager.numberOfKanjiInTest, KPSizes.numberOfKanjiInTest);
   }
 
   /// Breaking change with 2.1.0: if themeMode in shared preferences is bool

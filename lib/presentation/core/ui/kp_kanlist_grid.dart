@@ -26,19 +26,20 @@ class KPKanListGrid<T> extends StatelessWidget {
             ? (items[index] as KanjiList).name
             : (items[index] as Folder).folder;
         return Padding(
-          padding: const EdgeInsets.all(Margins.margin4),
+          padding: const EdgeInsets.all(KPMargins.margin4),
           child: GestureDetector(
             onTap: () {
               onTap(name);
             },
             child: Container(
               alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(horizontal: Margins.margin4),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: KPMargins.margin4),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(CustomRadius.radius16),
+                borderRadius: BorderRadius.circular(KPRadius.radius16),
                 color: isSelected(name)
-                    ? CustomColors.secondaryDarkerColor
-                    : CustomColors.secondaryColor,
+                    ? KPColors.secondaryDarkerColor
+                    : KPColors.secondaryColor,
               ),
               child: FittedBox(
                 fit: BoxFit.contain,

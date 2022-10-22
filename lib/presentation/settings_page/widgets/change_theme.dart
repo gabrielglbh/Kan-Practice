@@ -36,13 +36,13 @@ class _ChangeAppThemeState extends State<ChangeAppTheme> {
         onClosing: () => {},
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-                topRight: Radius.circular(CustomRadius.radius16),
-                topLeft: Radius.circular(CustomRadius.radius16))),
+                topRight: Radius.circular(KPRadius.radius16),
+                topLeft: Radius.circular(KPRadius.radius16))),
         builder: (context) {
           return Wrap(
             children: [
               Padding(
-                padding: const EdgeInsets.all(Margins.margin8),
+                padding: const EdgeInsets.all(KPMargins.margin8),
                 child: Column(
                   children: [
                     const KPDragContainer(),
@@ -50,7 +50,7 @@ class _ChangeAppThemeState extends State<ChangeAppTheme> {
                         alignment: Alignment.center,
                         child: Padding(
                           padding:
-                              const EdgeInsets.only(bottom: Margins.margin8),
+                              const EdgeInsets.only(bottom: KPMargins.margin8),
                           child: Text("settings_toggle_theme".tr(),
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.headline5),
@@ -77,19 +77,19 @@ class _ChangeAppThemeState extends State<ChangeAppTheme> {
             title: Text("settings_theme_system".tr()),
             value: ThemeMode.system,
             groupValue: _mode,
-            activeColor: CustomColors.secondaryColor,
+            activeColor: KPColors.secondaryColor,
             onChanged: _onTileSelected),
         RadioListTile<ThemeMode>(
             title: Text("settings_theme_light".tr()),
             value: ThemeMode.light,
             groupValue: _mode,
-            activeColor: CustomColors.secondaryColor,
+            activeColor: KPColors.secondaryColor,
             onChanged: _onTileSelected),
         RadioListTile<ThemeMode>(
             title: Text("settings_theme_dark".tr()),
             value: ThemeMode.dark,
             groupValue: _mode,
-            activeColor: CustomColors.secondaryColor,
+            activeColor: KPColors.secondaryColor,
             onChanged: _onTileSelected),
       ],
     );

@@ -9,7 +9,7 @@ import 'package:kanpractice/core/database/queries/market_queries.dart';
 import 'package:kanpractice/core/firebase/firebase.dart';
 import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/firebase/queries/market.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class MarketFolderRecords {
   late FirebaseFirestore _ref;
@@ -76,7 +76,7 @@ class MarketFolderRecords {
           uid: user.uid,
           author: user.displayName ?? "",
           description: description,
-          uploadedToMarket: GeneralUtils.getCurrentMilliseconds(),
+          uploadedToMarket: Utils.getCurrentMilliseconds(),
           isFolder: true,
         ).copyWithKeywords();
 

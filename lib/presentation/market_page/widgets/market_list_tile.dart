@@ -4,7 +4,7 @@ import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/firebase/queries/authentication.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/market_page/widgets/market_list_rating.dart';
 
 class MarketListTile extends StatelessWidget {
@@ -25,7 +25,7 @@ class MarketListTile extends StatelessWidget {
     return Card(
       child: ListTile(
           title: Padding(
-            padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
+            padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
             child: _header(context),
           ),
           subtitle: Row(
@@ -33,7 +33,7 @@ class MarketListTile extends StatelessWidget {
             children: [
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: Margins.margin8),
+                  padding: const EdgeInsets.only(bottom: KPMargins.margin8),
                   child: _subtitle(context),
                 ),
               ),
@@ -54,9 +54,9 @@ class MarketListTile extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline5),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: Margins.margin8),
+              padding: const EdgeInsets.only(left: KPMargins.margin8),
               child: Text(
-                  "${"created_label".tr()} ${GeneralUtils.parseDateMilliseconds(context, list.uploadedToMarket)}",
+                  "${"created_label".tr()} ${Utils.parseDateMilliseconds(context, list.uploadedToMarket)}",
                   style: Theme.of(context).textTheme.subtitle2),
             ),
           ],
@@ -81,9 +81,9 @@ class MarketListTile extends StatelessWidget {
                         .headline6
                         ?.copyWith(fontWeight: FontWeight.w500)),
                 const Padding(
-                    padding: EdgeInsets.only(left: Margins.margin4),
+                    padding: EdgeInsets.only(left: KPMargins.margin4),
                     child: Icon(Icons.star_rounded,
-                        color: CustomColors.secondaryColor)),
+                        color: KPColors.secondaryColor)),
               ],
             )
           ],
@@ -98,7 +98,7 @@ class MarketListTile extends StatelessWidget {
       children: [
         Text(list.description, overflow: TextOverflow.ellipsis, maxLines: 5),
         Padding(
-          padding: const EdgeInsets.only(top: Margins.margin8),
+          padding: const EdgeInsets.only(top: KPMargins.margin8),
           child: Row(
             children: [
               Text("${"market_filter_words".tr()}: ${list.words}",
@@ -106,7 +106,7 @@ class MarketListTile extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyText2),
               if (list.isFolder)
                 Padding(
-                  padding: const EdgeInsets.only(left: Margins.margin8),
+                  padding: const EdgeInsets.only(left: KPMargins.margin8),
                   child: Icon(
                     Icons.folder_rounded,
                     color: Colors.grey.shade500,
@@ -123,7 +123,7 @@ class MarketListTile extends StatelessWidget {
           children: [
             Expanded(
               child: Transform.translate(
-                  offset: const Offset(-Margins.margin4, 0),
+                  offset: const Offset(-KPMargins.margin4, 0),
                   child: MarketListRating(
                     listId: list.name,
                     initialRating:
@@ -132,7 +132,7 @@ class MarketListTile extends StatelessWidget {
             ),
             IconButton(
                 onPressed: () => onDownload(list.name, list.isFolder),
-                splashRadius: CustomRadius.radius24,
+                splashRadius: KPRadius.radius24,
                 icon: const Icon(Icons.download_rounded)),
             if (isManaging)
               IconButton(
@@ -148,7 +148,7 @@ class MarketListTile extends StatelessWidget {
                                   onRemove(list.name, list.isFolder));
                         });
                   },
-                  splashRadius: CustomRadius.radius24,
+                  splashRadius: KPRadius.radius24,
                   icon: const Icon(Icons.highlight_remove)),
           ],
         ),

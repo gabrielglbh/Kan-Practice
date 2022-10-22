@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:kanpractice/application/rate/rate_bloc.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class MarketListRating extends StatelessWidget {
   final String listId;
@@ -18,7 +18,7 @@ class MarketListRating extends StatelessWidget {
       child: BlocConsumer<RateBloc, RateState>(
         listener: (context, state) {
           if (state is RateStateFailure) {
-            GeneralUtils.getSnackBar(context, state.message);
+            Utils.getSnackBar(context, state.message);
           }
         },
         builder: (context, state) {
@@ -35,10 +35,10 @@ class MarketListRating extends StatelessWidget {
       direction: Axis.horizontal,
       allowHalfRating: true,
       itemCount: 5,
-      itemSize: Margins.margin32,
+      itemSize: KPMargins.margin32,
       glow: false,
       itemBuilder: (context, _) =>
-          const Icon(Icons.star_rounded, color: CustomColors.secondaryColor),
+          const Icon(Icons.star_rounded, color: KPColors.secondaryColor),
       onRatingUpdate: (rate) {
         context.read<RateBloc>().add(RateEventUpdate(listId, rate));
       },

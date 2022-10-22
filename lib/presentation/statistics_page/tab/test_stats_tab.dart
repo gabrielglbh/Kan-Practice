@@ -77,7 +77,7 @@ class _TestStatsState extends State<TestStats>
         StatsHeader(title: "stats_tests_by_type".tr()),
         _info,
         _expandedTestCount(context, widget.stats),
-        const SizedBox(height: Margins.margin32)
+        const SizedBox(height: KPMargins.margin32)
       ],
     );
   }
@@ -103,49 +103,49 @@ class _TestStatsState extends State<TestStats>
             return DataFrame(
               x: Tests.lists.nameAbbr,
               y: s.test.selectionTests.toDouble(),
-              color: CustomColors.secondaryColor,
+              color: KPColors.secondaryColor,
             );
           case Tests.blitz:
             return DataFrame(
               x: Tests.blitz.nameAbbr,
               y: s.test.blitzTests.toDouble(),
-              color: CustomColors.secondaryColor,
+              color: KPColors.secondaryColor,
             );
           case Tests.time:
             return DataFrame(
               x: Tests.time.nameAbbr,
               y: s.test.remembranceTests.toDouble(),
-              color: CustomColors.secondaryColor,
+              color: KPColors.secondaryColor,
             );
           case Tests.numbers:
             return DataFrame(
               x: Tests.numbers.nameAbbr,
               y: s.test.numberTests.toDouble(),
-              color: CustomColors.secondaryColor,
+              color: KPColors.secondaryColor,
             );
           case Tests.less:
             return DataFrame(
               x: Tests.less.nameAbbr,
               y: s.test.lessPctTests.toDouble(),
-              color: CustomColors.secondaryColor,
+              color: KPColors.secondaryColor,
             );
           case Tests.categories:
             return DataFrame(
               x: Tests.categories.nameAbbr,
               y: s.test.categoryTests.toDouble(),
-              color: CustomColors.secondaryColor,
+              color: KPColors.secondaryColor,
             );
           case Tests.folder:
             return DataFrame(
               x: Tests.folder.nameAbbr,
               y: s.test.folderTests.toDouble(),
-              color: CustomColors.secondaryColor,
+              color: KPColors.secondaryColor,
             );
           case Tests.daily:
             return DataFrame(
               x: Tests.daily.nameAbbr,
               y: s.test.dailyTests.toDouble(),
-              color: CustomColors.secondaryColor,
+              color: KPColors.secondaryColor,
             );
         }
       }),
@@ -154,14 +154,14 @@ class _TestStatsState extends State<TestStats>
 
   Widget get _info => Padding(
         padding: const EdgeInsets.only(
-          left: Margins.margin16,
-          right: Margins.margin16,
-          bottom: Margins.margin8,
+          left: KPMargins.margin16,
+          right: KPMargins.margin16,
+          bottom: KPMargins.margin8,
         ),
         child: Row(
           children: [
             const Padding(
-              padding: EdgeInsets.only(right: Margins.margin8),
+              padding: EdgeInsets.only(right: KPMargins.margin8),
               child: Icon(Icons.info_rounded, size: 16, color: Colors.grey),
             ),
             Flexible(

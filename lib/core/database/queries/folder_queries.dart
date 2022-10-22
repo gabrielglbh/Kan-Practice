@@ -8,7 +8,7 @@ import 'package:kanpractice/core/types/folder_filters.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:sqflite/sqflite.dart';
 
 class FolderQueries {
@@ -40,7 +40,7 @@ class FolderQueries {
             FolderTableFields.folderTable,
             Folder(
               folder: name,
-              lastUpdated: GeneralUtils.getCurrentMilliseconds(),
+              lastUpdated: Utils.getCurrentMilliseconds(),
             ).toJson());
         for (var l in kanLists) {
           int code = await moveKanListToFolder(name, l);

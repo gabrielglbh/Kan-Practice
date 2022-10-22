@@ -11,7 +11,7 @@ import 'package:kanpractice/presentation/core/ui/graphs/kp_cartesian_chart.dart'
 import 'package:kanpractice/presentation/core/ui/graphs/kp_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/statistics_page/model/stats.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/stats_header.dart';
 
@@ -130,17 +130,17 @@ class _TestHistoryState extends State<TestHistory>
               ],
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
+              padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
               child: _body(state),
             ),
             const Divider(),
             StatsHeader(
               title: "stats_tests_total_acc".tr(),
-              value: GeneralUtils.getFixedPercentageAsString(
+              value: Utils.getFixedPercentageAsString(
                   widget.stats.test.totalTestAccuracy),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
+              padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
               child: KPRadialGraph(
                 animationDuration: 0,
                 writing: widget.stats.test.testTotalWinRateWriting,
@@ -150,7 +150,7 @@ class _TestHistoryState extends State<TestHistory>
                 speaking: widget.stats.test.testTotalWinRateSpeaking,
               ),
             ),
-            const SizedBox(height: Margins.margin32)
+            const SizedBox(height: KPMargins.margin32)
           ],
         ),
       ),
@@ -164,10 +164,10 @@ class _TestHistoryState extends State<TestHistory>
       return const KPProgressIndicator();
     } else if (state is TestHistoryStateLoaded) {
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
+        padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin8),
         child: KPCartesianChart(
           markerThreshold: 30,
-          height: CustomSizes.defaultSizeWinRateChart * 3,
+          height: KPSizes.defaultSizeWinRateChart * 3,
           dataSource: List.generate(state.list.length, (index) {
             final test = state.list[index];
             return TestDataFrame(

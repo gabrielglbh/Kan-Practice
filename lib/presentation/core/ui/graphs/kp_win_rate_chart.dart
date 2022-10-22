@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class WinRateChart extends StatelessWidget {
@@ -38,12 +38,12 @@ class WinRateChart extends StatelessWidget {
       {Key? key,
       this.title,
       required this.winRate,
-      this.size = CustomSizes.defaultSizeWinRateChart,
+      this.size = KPSizes.defaultSizeWinRateChart,
       this.rateSize,
-      this.backgroundColor = CustomColors.secondaryColor,
+      this.backgroundColor = KPColors.secondaryColor,
       this.chartColor = Colors.white,
       this.showGaugeAnnotation = true,
-      this.padding = const EdgeInsets.all(Margins.margin8),
+      this.padding = const EdgeInsets.all(KPMargins.margin8),
       this.widthLine = 0.1,
       this.pointerOffset = 0.1})
       : super(key: key);
@@ -77,7 +77,7 @@ class WinRateChart extends StatelessWidget {
                           positionFactor: 0.5,
                           angle: 90,
                           widget: Text(
-                              GeneralUtils.getFixedPercentageAsString(
+                              Utils.getFixedPercentageAsString(
                                   winRate == DatabaseConstants.emptyWinRate
                                       ? 0
                                       : winRate),

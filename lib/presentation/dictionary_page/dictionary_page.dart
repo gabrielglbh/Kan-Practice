@@ -12,7 +12,7 @@ import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart'
 import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
 import 'package:kanpractice/presentation/dictionary_page/widgets/kanji_search_bar.dart';
 
-import '../core/util/general_utils.dart';
+import '../core/util/utils.dart';
 
 class DictionaryPage extends StatefulWidget {
   final DictionaryArguments args;
@@ -77,13 +77,13 @@ class _DictionaryPageState extends State<DictionaryPage>
             if (state is DictStateLoading)
               const Center(
                   child: Padding(
-                padding: EdgeInsets.all(Margins.margin16),
+                padding: EdgeInsets.all(KPMargins.margin16),
                 child: KPProgressIndicator(),
               ))
             else if (state is DictStateFailure)
               Center(
                   child: Padding(
-                padding: const EdgeInsets.all(Margins.margin16),
+                padding: const EdgeInsets.all(KPMargins.margin16),
                 child: Text("dict_model_not_loaded".tr(),
                     style: Theme.of(context).textTheme.bodyText2),
               ))
@@ -91,8 +91,8 @@ class _DictionaryPageState extends State<DictionaryPage>
               Column(
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: Margins.margin8),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: KPMargins.margin8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -174,13 +174,13 @@ class _DictionaryPageState extends State<DictionaryPage>
   Widget _searchWidget(bool canSearchEitherWay) {
     return GestureDetector(
       child: AnimatedContainer(
-        width: canSearchEitherWay ? CustomSizes.defaultSizeSearchBarIcons : 0,
-        height: CustomSizes.defaultSizeSearchBarIcons,
+        width: canSearchEitherWay ? KPSizes.defaultSizeSearchBarIcons : 0,
+        height: KPSizes.defaultSizeSearchBarIcons,
         duration: const Duration(milliseconds: 400),
         margin: EdgeInsets.symmetric(
-            horizontal: canSearchEitherWay ? Margins.margin8 : 0),
+            horizontal: canSearchEitherWay ? KPMargins.margin8 : 0),
         decoration: const BoxDecoration(
-            shape: BoxShape.circle, color: CustomColors.secondaryColor),
+            shape: BoxShape.circle, color: KPColors.secondaryColor),
         child: Icon(
           widget.args.searchInJisho ? Icons.search : Icons.done,
           color: Colors.white,
@@ -200,7 +200,7 @@ class _DictionaryPageState extends State<DictionaryPage>
             Navigator.of(context).pop(text);
           }
         } else {
-          GeneralUtils.getSnackBar(context, "dict_search_empty".tr());
+          Utils.getSnackBar(context, "dict_search_empty".tr());
         }
       },
     );
@@ -208,7 +208,7 @@ class _DictionaryPageState extends State<DictionaryPage>
 
   SizedBox _predictions(DictStateLoaded state) {
     return SizedBox(
-      height: CustomSizes.defaultSizeFiltersList,
+      height: KPSizes.defaultSizeFiltersList,
       child: ListView.builder(
         itemCount: state.predictions.length,
         scrollDirection: Axis.horizontal,
@@ -216,18 +216,18 @@ class _DictionaryPageState extends State<DictionaryPage>
           final String kanji = state.predictions[index].label.substring(0, 1);
           final double score = state.predictions[index].score;
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Margins.margin2),
+            padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin2),
             child: ActionChip(
                 label: Text(
                   kanji,
                   style: TextStyle(
-                      fontSize: FontSizes.fontSize18,
-                      color: GeneralUtils.getTextColorBasedOnScore(score)),
+                      fontSize: KPFontSizes.fontSize18,
+                      color: Utils.getTextColorBasedOnScore(score)),
                 ),
                 padding:
-                    const EdgeInsets.symmetric(horizontal: Margins.margin8),
-                backgroundColor: GeneralUtils.getColorBasedOnScore(score),
-                pressElevation: Margins.margin2,
+                    const EdgeInsets.symmetric(horizontal: KPMargins.margin8),
+                backgroundColor: Utils.getColorBasedOnScore(score),
+                pressElevation: KPMargins.margin2,
                 onPressed: () {
                   FocusManager.instance.primaryFocus?.unfocus();
                   _searchBarTextController.text += kanji;

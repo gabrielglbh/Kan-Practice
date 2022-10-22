@@ -76,9 +76,9 @@ class KPTextForm extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(
-              bottom: Margins.margin16,
-              right: Margins.margin8,
-              left: Margins.margin8),
+              bottom: KPMargins.margin16,
+              right: KPMargins.margin8,
+              left: KPMargins.margin8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

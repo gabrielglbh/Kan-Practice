@@ -4,7 +4,7 @@ import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class KanjiListTile extends StatelessWidget {
@@ -29,7 +29,7 @@ class KanjiListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final date = GeneralUtils.parseDateMilliseconds(context, item.lastUpdated);
+    final date = Utils.parseDateMilliseconds(context, item.lastUpdated);
     return Card(
       child: ListTile(
         onTap: () {
@@ -45,7 +45,7 @@ class KanjiListTile extends StatelessWidget {
           }
         },
         title: Padding(
-          padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
+          padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

@@ -9,7 +9,7 @@ import 'package:kanpractice/core/firebase/queries/messaging.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/theme/theme_manager.dart';
+import 'package:kanpractice/presentation/core/util/theme/theme_manager.dart';
 import 'core/routing/routes.dart';
 
 Future<void> _initSharedPreferences() async {

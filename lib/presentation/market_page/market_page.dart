@@ -1,28 +1,28 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/market/market_bloc.dart';
 import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
-import 'package:kanpractice/ui/general_utils.dart';
-import 'package:kanpractice/ui/pages/market/bloc/market_bloc.dart';
-import 'package:kanpractice/ui/pages/market/widgets/market_list_tile.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
-import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
+import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/market_page/widgets/market_list_tile.dart';
 
-class MarketPlace extends StatefulWidget {
+class MarketPage extends StatefulWidget {
   final Function() onScrolledToBottom;
   final Function() removeFocus;
-  const MarketPlace(
+  const MarketPage(
       {Key? key, required this.removeFocus, required this.onScrolledToBottom})
       : super(key: key);
 
   @override
-  State<MarketPlace> createState() => _MarketPlaceState();
+  State<MarketPage> createState() => _MarketPageState();
 }
 
-class _MarketPlaceState extends State<MarketPlace>
+class _MarketPageState extends State<MarketPage>
     with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
 

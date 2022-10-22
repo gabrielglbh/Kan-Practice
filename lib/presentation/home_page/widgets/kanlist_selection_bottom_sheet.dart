@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/list/lists_bloc.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
-import 'package:kanpractice/ui/widgets/kp_kanji_lists/bloc/lists_bloc.dart';
-import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
-import 'package:kanpractice/ui/widgets/kp_kanlist_grid.dart';
-import 'package:kanpractice/ui/widgets/kp_study_mode.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/widgets/kp_button.dart';
-import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
-import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/presentation/core/ui/kp_button.dart';
+import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
+import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
+import 'package:kanpractice/presentation/core/ui/kp_kanlist_grid.dart';
+import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/ui/kp_study_mode.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KanListSelectionBottomSheet extends StatefulWidget {
   const KanListSelectionBottomSheet({Key? key}) : super(key: key);
@@ -32,7 +32,7 @@ class KanListSelectionBottomSheet extends StatefulWidget {
 
 class _KanListSelectionBottomSheetState
     extends State<KanListSelectionBottomSheet> {
-  final KanjiListBloc _bloc = KanjiListBloc();
+  final ListBloc _bloc = ListBloc();
   List<Kanji> _kanji = [];
   final List<String> _selectedLists = [];
   String _selectedFormattedLists = "";
@@ -89,19 +89,18 @@ class _KanListSelectionBottomSheetState
               Visibility(
                 visible: !_selectionMode,
                 child: BlocProvider(
-                  create: (_) =>
-                      _bloc..add(const KanjiListForTestEventLoading()),
-                  child: BlocBuilder<KanjiListBloc, KanjiListState>(
+                  create: (_) => _bloc..add(const ListForTestEventLoading()),
+                  child: BlocBuilder<ListBloc, ListState>(
                     builder: (context, state) {
-                      if (state is KanjiListStateFailure) {
+                      if (state is ListStateFailure) {
                         return KPEmptyList(
                             showTryButton: true,
-                            onRefresh: () => _bloc
-                              ..add(const KanjiListForTestEventLoading()),
+                            onRefresh: () =>
+                                _bloc..add(const ListForTestEventLoading()),
                             message: "study_bottom_sheet_load_failed".tr());
-                      } else if (state is KanjiListStateLoading) {
+                      } else if (state is ListStateLoading) {
                         return const KPProgressIndicator();
-                      } else if (state is KanjiListStateLoaded) {
+                      } else if (state is ListStateLoaded) {
                         return Container(
                             constraints: BoxConstraints(
                                 maxHeight:
@@ -122,7 +121,7 @@ class _KanListSelectionBottomSheetState
     );
   }
 
-  Column _listSelection(KanjiListStateLoaded state) {
+  Column _listSelection(ListStateLoaded state) {
     return Column(
       children: [
         Expanded(

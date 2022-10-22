@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/add_kanji/add_kanji_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/kanji_categories.dart';
-import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
-import 'package:kanpractice/ui/pages/add_kanji/bloc/add_kanji_bloc.dart';
-import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/general_utils.dart';
-import 'package:kanpractice/ui/widgets/kp_text_form.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/ui/widgets/kp_kanji_category_list.dart';
-import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
+import 'package:kanpractice/presentation/add_word_page/arguments.dart';
+import 'package:kanpractice/presentation/core/ui/kp_kanji_category_list.dart';
+import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/ui/kp_text_form.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
 
-class AddKanjiPage extends StatefulWidget {
-  final AddKanjiArgs args;
-  const AddKanjiPage({Key? key, required this.args}) : super(key: key);
+class AddWordPage extends StatefulWidget {
+  final AddWordArgs args;
+  const AddWordPage({Key? key, required this.args}) : super(key: key);
 
   @override
-  State<AddKanjiPage> createState() => _AddKanjiPageState();
+  State<AddWordPage> createState() => _AddWordPageState();
 }
 
-class _AddKanjiPageState extends State<AddKanjiPage> {
+class _AddWordPageState extends State<AddWordPage> {
   TextEditingController? _kanjiController;
   FocusNode? _kanjiFocus;
   TextEditingController? _pronunciationController;

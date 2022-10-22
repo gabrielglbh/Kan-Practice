@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/list/lists_bloc.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/jisho/models/jisho_data.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
-import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/kanji_categories.dart';
-import 'package:kanpractice/ui/widgets/kp_kanji_lists/bloc/lists_bloc.dart';
-import 'package:kanpractice/ui/widgets/kp_create_kanlist_dialog.dart';
-import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
-import 'package:kanpractice/ui/widgets/kp_kanji_category_list.dart';
-import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/presentation/core/ui/kp_create_kanlist_dialog.dart';
+import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
+import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
+import 'package:kanpractice/presentation/core/ui/kp_kanji_category_list.dart';
+import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
 
 class AddToKanListBottomSheet extends StatefulWidget {
   final String? kanji;
@@ -39,7 +39,7 @@ class AddToKanListBottomSheet extends StatefulWidget {
 }
 
 class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
-  final KanjiListBloc _bloc = KanjiListBloc();
+  final ListBloc _bloc = ListBloc();
   KanjiCategory _category = KanjiCategory.noun;
   String _error = "";
 
@@ -106,19 +106,19 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
                           ?.copyWith(color: CustomColors.secondaryColor)),
                 ),
               ),
-              BlocProvider<KanjiListBloc>(
-                create: (_) => _bloc..add(const KanjiListForTestEventLoading()),
-                child: BlocBuilder<KanjiListBloc, KanjiListState>(
+              BlocProvider<ListBloc>(
+                create: (_) => _bloc..add(const ListForTestEventLoading()),
+                child: BlocBuilder<ListBloc, ListState>(
                   builder: (context, state) {
-                    if (state is KanjiListStateFailure) {
+                    if (state is ListStateFailure) {
                       return KPEmptyList(
                           showTryButton: true,
                           onRefresh: () =>
-                              _bloc..add(const KanjiListForTestEventLoading()),
+                              _bloc..add(const ListForTestEventLoading()),
                           message: "study_bottom_sheet_load_failed".tr());
-                    } else if (state is KanjiListStateLoading) {
+                    } else if (state is ListStateLoading) {
                       return const KPProgressIndicator();
-                    } else if (state is KanjiListStateLoaded) {
+                    } else if (state is ListStateLoaded) {
                       return Container(
                           constraints: BoxConstraints(
                               maxHeight:
@@ -138,7 +138,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
     );
   }
 
-  Widget _listSelection(KanjiListStateLoaded state) {
+  Widget _listSelection(ListStateLoaded state) {
     return Column(
       children: [
         Expanded(
@@ -153,7 +153,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
         ListTile(
           onTap: () =>
               KPCreateKanListDialog.show(context, onSubmit: (String name) {
-            _bloc.add(KanjiListEventCreate(name,
+            _bloc.add(ListEventCreate(name,
                 filter: KanListFilters.all,
                 order: false,
                 useLazyLoading: false));

@@ -1,40 +1,40 @@
 part of 'list_details_bloc.dart';
 
-class KanjiListDetailState extends Equatable {
-  const KanjiListDetailState();
+class ListDetailState extends Equatable {
+  const ListDetailState();
 
   @override
   List<Object?> get props => [];
 }
 
-class KanjiListDetailStateLoading extends KanjiListDetailState {}
+class ListDetailStateLoading extends ListDetailState {}
 
-class KanjiListDetailStateSearching extends KanjiListDetailState {}
+class ListDetailStateSearching extends ListDetailState {}
 
-class KanjiListDetailStateLoadedPractice extends KanjiListDetailState {
+class ListDetailStateLoadedPractice extends ListDetailState {
   final StudyModes mode;
   final List<Kanji> list;
 
-  const KanjiListDetailStateLoadedPractice(this.mode, this.list);
+  const ListDetailStateLoadedPractice(this.mode, this.list);
 
   @override
   List<Object> get props => [list, mode];
 }
 
-class KanjiListDetailStateLoaded extends KanjiListDetailState {
+class ListDetailStateLoaded extends ListDetailState {
   final List<Kanji> list;
   final String name;
 
-  const KanjiListDetailStateLoaded(this.list, this.name);
+  const ListDetailStateLoaded(this.list, this.name);
 
   @override
   List<Object> get props => [list, name];
 }
 
-class KanjiListDetailStateFailure extends KanjiListDetailState {
+class ListDetailStateFailure extends ListDetailState {
   final String error;
 
-  const KanjiListDetailStateFailure({this.error = ""});
+  const ListDetailStateFailure({this.error = ""});
 
   @override
   List<Object> get props => [error];

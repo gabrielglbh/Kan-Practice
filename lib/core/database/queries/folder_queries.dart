@@ -8,7 +8,7 @@ import 'package:kanpractice/core/types/folder_filters.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
-import 'package:kanpractice/ui/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
 import 'package:sqflite/sqflite.dart';
 
 class FolderQueries {

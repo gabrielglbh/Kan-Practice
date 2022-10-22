@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class TestDataFrame {

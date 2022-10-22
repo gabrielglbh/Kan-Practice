@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/theme/theme_manager.dart';
-import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class ChangeAppTheme extends StatefulWidget {

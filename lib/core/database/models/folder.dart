@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kanpractice/ui/general_utils.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
 
 part 'folder.g.dart';
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:kanpractice/ui/general_utils.dart';
-import 'package:kanpractice/ui/pages/market/rate_bloc/rate_bloc.dart';
-import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/application/rate/rate_bloc.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
 
 class MarketListRating extends StatelessWidget {
   final String listId;

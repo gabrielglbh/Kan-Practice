@@ -14,8 +14,8 @@ import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:kanpractice/core/database/queries/test_queries.dart';
 import 'package:kanpractice/core/firebase/firebase.dart';
 import 'package:kanpractice/core/firebase/models/backup.dart';
-import 'package:kanpractice/ui/general_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
 
 class BackUpRecords {
   late FirebaseFirestore _ref;

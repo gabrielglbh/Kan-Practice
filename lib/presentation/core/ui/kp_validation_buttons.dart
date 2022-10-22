@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/widgets/kp_action_button.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/presentation/core/ui/kp_action_button.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KPValidationButtons extends StatelessWidget {
   /// Whether to show the validation buttons or the submit one

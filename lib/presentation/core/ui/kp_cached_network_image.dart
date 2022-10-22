@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KPCachedNetworkImage extends StatelessWidget {
   final String url;

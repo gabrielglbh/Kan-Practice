@@ -5,7 +5,7 @@ import 'package:kanpractice/core/database/models/test_data.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:kanpractice/core/database/queries/test_queries.dart';
-import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
+import 'package:kanpractice/presentation/statistics_page/model/stats.dart';
 
 part 'stats_event.dart';
 part 'stats_state.dart';

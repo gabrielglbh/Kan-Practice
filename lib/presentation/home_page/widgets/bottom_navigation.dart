@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/types/home_types.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/pages/home/widgets/actions_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/home_page/widgets/actions_bottom_sheet.dart';
 
 class HomeBottomNavigation extends StatelessWidget {
   final Function(HomeType) onPageChanged;

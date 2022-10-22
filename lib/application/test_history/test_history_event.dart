@@ -1,21 +1,21 @@
-part of 'test_bloc.dart';
+part of 'test_history_bloc.dart';
 
-abstract class TestListEvent extends Equatable {
-  const TestListEvent();
+abstract class TestHistoryEvent extends Equatable {
+  const TestHistoryEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class TestListEventIdle extends TestListEvent {}
+class TestHistoryEventIdle extends TestHistoryEvent {}
 
-class TestListEventLoading extends TestListEvent {
+class TestHistoryEventLoading extends TestHistoryEvent {
   final DateTime initial;
   final DateTime last;
   final TestFilters testFilter;
   final StudyModeFilters modesFilter;
 
-  const TestListEventLoading({
+  const TestHistoryEventLoading({
     required this.initial,
     required this.last,
     this.testFilter = TestFilters.all,
@@ -26,4 +26,4 @@ class TestListEventLoading extends TestListEvent {
   List<Object> get props => [initial, last, testFilter, modesFilter];
 }
 
-class TestListEventRemoving extends TestListEvent {}
+class TestHistoryEventRemoving extends TestHistoryEvent {}

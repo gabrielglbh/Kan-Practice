@@ -3,25 +3,25 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/test_result.dart';
 import 'package:kanpractice/core/database/queries/test_queries.dart';
 import 'package:kanpractice/core/routing/pages.dart';
-import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
-import 'package:kanpractice/ui/pages/test_result/arguments.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/widgets/kp_action_button.dart';
-import 'package:kanpractice/ui/widgets/kanji_bottom_sheet/kp_kanji_bottom_sheet.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_win_rate_chart.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_win_rate_chart.dart';
+import 'package:kanpractice/presentation/core/ui/kp_action_button.dart';
+import 'package:kanpractice/presentation/core/ui/kp_kanji_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/test_result_page/arguments.dart';
 
-class TestResult extends StatefulWidget {
+class TestResultPage extends StatefulWidget {
   final TestResultArguments args;
-  const TestResult({Key? key, required this.args}) : super(key: key);
+  const TestResultPage({Key? key, required this.args}) : super(key: key);
 
   @override
-  State<TestResult> createState() => _TestResultState();
+  State<TestResultPage> createState() => _TestResultPageState();
 }
 
-class _TestResultState extends State<TestResult> {
+class _TestResultPageState extends State<TestResultPage> {
   bool _performAnotherTest = false;
 
   /// Saves the current test on the database on the initialization of the current

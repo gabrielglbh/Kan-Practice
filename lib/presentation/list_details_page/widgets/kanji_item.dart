@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
-import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
-import 'package:kanpractice/ui/widgets/kanji_bottom_sheet/kp_kanji_bottom_sheet.dart';
-import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/presentation/core/ui/kp_kanji_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
 
 class KanjiItem extends StatelessWidget {
   final bool aggregateStats;

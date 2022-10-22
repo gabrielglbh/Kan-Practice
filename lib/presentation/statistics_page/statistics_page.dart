@@ -1,16 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/pages/statistics/bloc/stats_bloc.dart';
-import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/ui/pages/statistics/tab/list_stats.dart';
-import 'package:kanpractice/ui/pages/statistics/tab/test_history/bloc/test_bloc.dart';
-import 'package:kanpractice/ui/pages/statistics/tab/test_history/test_history.dart';
-import 'package:kanpractice/ui/pages/statistics/tab/test_stats.dart';
-import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
-import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
-import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
+import 'package:kanpractice/application/statistics/stats_bloc.dart';
+import 'package:kanpractice/application/test_history/test_history_bloc.dart';
+import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
+import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/statistics_page/model/stats.dart';
+import 'package:kanpractice/presentation/statistics_page/tab/list_stats_tab.dart';
+import 'package:kanpractice/presentation/statistics_page/tab/test_history_tab/test_history_tab.dart';
+import 'package:kanpractice/presentation/statistics_page/tab/test_stats_tab.dart';
 
 class StatisticsPage extends StatefulWidget {
   const StatisticsPage({Key? key}) : super(key: key);
@@ -39,7 +39,7 @@ class _StatisticsPageState extends State<StatisticsPage>
               positiveButtonText:
                   "test_history_showRemoveTestsDialog_positive".tr(),
               onPositive: () =>
-                  bloc.read<TestListBloc>().add(TestListEventRemoving()),
+                  bloc.read<TestHistoryBloc>().add(TestHistoryEventRemoving()),
             ));
   }
 
@@ -70,13 +70,14 @@ class _StatisticsPageState extends State<StatisticsPage>
       providers: [
         BlocProvider(
             create: (_) => StatisticsBloc()..add(StatisticsEventLoading())),
-        BlocProvider(create: (_) => TestListBloc()..add(TestListEventIdle())),
+        BlocProvider(
+            create: (_) => TestHistoryBloc()..add(TestHistoryEventIdle())),
       ],
       child: KPScaffold(
         appBarTitle: "settings_general_statistics".tr(),
         appBarActions: [
           if (_controller.index == _tabs.length - 1)
-            BlocBuilder<TestListBloc, TestListState>(
+            BlocBuilder<TestHistoryBloc, TestHistoryState>(
               builder: (context, state) {
                 return IconButton(
                   icon: const Icon(Icons.clear_all_rounded),
@@ -101,7 +102,7 @@ class _StatisticsPageState extends State<StatisticsPage>
   }
 
   Widget _body(BuildContext context, StatisticsLoaded state) {
-    final KanPracticeStats s = state.stats;
+    final KanPracticeStats stats = state.stats;
 
     return Column(
       children: [
@@ -111,9 +112,9 @@ class _StatisticsPageState extends State<StatisticsPage>
           child: TabBarView(
             controller: _controller,
             children: [
-              ListStats(s: s),
-              TestStats(s: s),
-              TestHistory(s: s),
+              ListStats(stats: stats),
+              TestStats(stats: stats),
+              TestHistory(stats: stats),
             ],
           ),
         ),

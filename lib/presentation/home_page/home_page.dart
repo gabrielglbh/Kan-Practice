@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/dictionary/dict_bloc.dart';
+import 'package:kanpractice/application/folder_list/folder_bloc.dart';
+import 'package:kanpractice/application/list/lists_bloc.dart';
+import 'package:kanpractice/application/market/market_bloc.dart';
+import 'package:kanpractice/application/settings/settings_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/firebase/models/market_list.dart';
 import 'package:kanpractice/core/firebase/queries/back_ups.dart';
@@ -12,23 +17,18 @@ import 'package:kanpractice/core/types/home_types.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
 import 'package:kanpractice/core/types/tab_types.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/general_utils.dart';
-import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
-import 'package:kanpractice/ui/pages/dictionary/bloc/dict_bloc.dart';
-import 'package:kanpractice/ui/pages/dictionary/dictionary.dart';
-import 'package:kanpractice/ui/pages/folder_lists/bloc/folder_bloc.dart';
-import 'package:kanpractice/ui/pages/folder_lists/folder_list.dart';
-import 'package:kanpractice/ui/pages/home/widgets/bottom_navigation.dart';
-import 'package:kanpractice/ui/pages/settings/bloc/settings_bloc.dart';
-import 'package:kanpractice/ui/pages/settings/settings.dart';
-import 'package:kanpractice/ui/widgets/kp_test_bottom_sheet.dart';
-import 'package:kanpractice/ui/widgets/kp_kanji_lists/bloc/lists_bloc.dart';
-import 'package:kanpractice/ui/widgets/kp_kanji_lists/kanji_lists.dart';
-import 'package:kanpractice/ui/pages/market/bloc/market_bloc.dart';
-import 'package:kanpractice/ui/pages/market/market.dart';
-import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
-import 'package:kanpractice/ui/widgets/kp_search_bar.dart';
+import 'package:kanpractice/presentation/core/ui/kp_kanji_lists/kanji_lists.dart';
+import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/ui/kp_search_bar.dart';
+import 'package:kanpractice/presentation/core/ui/kp_test_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
+import 'package:kanpractice/presentation/dictionary_page/dictionary_page.dart';
+import 'package:kanpractice/presentation/folder_list_page/folder_list_page.dart';
+import 'package:kanpractice/presentation/home_page/widgets/bottom_navigation.dart';
+import 'package:kanpractice/presentation/market_page/market_page.dart';
+import 'package:kanpractice/presentation/settings_page/settings_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class HomePage extends StatefulWidget {
@@ -119,15 +119,14 @@ class _HomePageState extends State<HomePage>
     super.initState();
   }
 
-  _addKanjiListLoadingEvent(BuildContext c, {bool reset = true}) =>
-      c.read<KanjiListBloc>().add(KanjiListEventLoading(
+  _addListLoadingEvent(BuildContext c, {bool reset = true}) =>
+      c.read<ListBloc>().add(ListEventLoading(
           filter: _currentAppliedFilter,
           order: _currentAppliedOrder,
           reset: reset));
 
-  _addKanjiListSearchingEvent(BuildContext c, String query,
-          {bool reset = true}) =>
-      c.read<KanjiListBloc>().add(KanjiListEventSearching(query, reset: reset));
+  _addListSearchingEvent(BuildContext c, String query, {bool reset = true}) =>
+      c.read<ListBloc>().add(ListEventSearching(query, reset: reset));
 
   _addFolderListLoadingEvent(BuildContext c, {bool reset = true}) =>
       c.read<FolderBloc>().add(FolderEventLoading(
@@ -158,7 +157,7 @@ class _HomePageState extends State<HomePage>
 
   _resetLists(BuildContext c1, BuildContext c2, BuildContext c3) {
     if (_currentPage == HomeType.kanlist) {
-      if (_currentTab == TabType.kanlist) return _addKanjiListLoadingEvent(c1);
+      if (_currentTab == TabType.kanlist) return _addListLoadingEvent(c1);
       return _addFolderListLoadingEvent(c2);
     }
     return _addMarketLoadingEvent(c3);
@@ -202,9 +201,9 @@ class _HomePageState extends State<HomePage>
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider<KanjiListBloc>(
-          create: (_) => KanjiListBloc()
-            ..add(KanjiListEventLoading(
+        BlocProvider<ListBloc>(
+          create: (_) => ListBloc()
+            ..add(ListEventLoading(
               filter: _currentAppliedFilter,
               order: _currentAppliedOrder,
               reset: true,
@@ -224,9 +223,9 @@ class _HomePageState extends State<HomePage>
           create: (_) => SettingsBloc()..add(SettingsIdle()),
         )
       ],
-      child: BlocConsumer<KanjiListBloc, KanjiListState>(
+      child: BlocConsumer<ListBloc, ListState>(
         listener: (context, state) async {
-          if (state is KanjiListStateLoaded) {
+          if (state is ListStateLoaded) {
             if (StorageManager.readData(
                     StorageManager.haveSeenKanListCoachMark) ==
                 false) {
@@ -283,7 +282,7 @@ class _HomePageState extends State<HomePage>
                   if (name == "__folder") {
                     _addFolderListLoadingEvent(cFolder);
                   } else {
-                    c.read<KanjiListBloc>().add(KanjiListEventCreate(name,
+                    c.read<ListBloc>().add(ListEventCreate(name,
                         filter: _currentAppliedFilter,
                         order: _currentAppliedOrder));
                   }
@@ -303,7 +302,7 @@ class _HomePageState extends State<HomePage>
                         _query = query;
                         if (_currentPage == HomeType.kanlist) {
                           if (_currentTab == TabType.kanlist) {
-                            return _addKanjiListSearchingEvent(c, query);
+                            return _addListSearchingEvent(c, query);
                           }
                           return _addFolderListSearchingEvent(cFolder, query);
                         }
@@ -323,7 +322,7 @@ class _HomePageState extends State<HomePage>
                             controller: _tabController,
                             onTap: (tab) {
                               if (tab == 0) {
-                                _addKanjiListLoadingEvent(c);
+                                _addListLoadingEvent(c);
                                 return;
                               }
                               _addFolderListLoadingEvent(cFolder);
@@ -359,12 +358,12 @@ class _HomePageState extends State<HomePage>
               removeFocus: () => _searchBarFn.unfocus(),
               onScrolledToBottom: () {
                 if (_query.isNotEmpty) {
-                  return _addKanjiListSearchingEvent(c, _query, reset: false);
+                  return _addListSearchingEvent(c, _query, reset: false);
                 }
-                return _addKanjiListLoadingEvent(c, reset: false);
+                return _addListLoadingEvent(c, reset: false);
               },
             ),
-            FolderList(
+            FolderListPage(
               removeFocus: () => _searchBarFn.unfocus(),
               onScrolledToBottom: () {
                 if (_query.isNotEmpty) {
@@ -376,7 +375,7 @@ class _HomePageState extends State<HomePage>
           ],
         ),
         const DictionaryPage(args: DictionaryArguments(searchInJisho: true)),
-        MarketPlace(
+        MarketPage(
           removeFocus: () => _searchBarFn.unfocus(),
           onScrolledToBottom: () {
             if (_query.isNotEmpty) {
@@ -385,7 +384,7 @@ class _HomePageState extends State<HomePage>
             return _addMarketLoadingEvent(cM, reset: false);
           },
         ),
-        const Settings()
+        const SettingsPage()
       ],
     );
   }

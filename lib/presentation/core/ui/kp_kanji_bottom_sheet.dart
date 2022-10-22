@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/word_details/word_details_bloc.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/routing/pages.dart';
-import 'package:kanpractice/ui/general_utils.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_radial_graph.dart';
+import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
+import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
+import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/ui/kp_tts_icon_button.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
 import 'package:kanpractice/core/types/kanji_categories.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
-import 'package:kanpractice/ui/pages/jisho/arguments.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_radial_graph.dart';
-import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
-import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
-import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
-import 'package:kanpractice/ui/widgets/kp_tts_icon_button.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/ui/widgets/kanji_bottom_sheet/bloc/kanji_bs_bloc.dart';
 
 class KPKanjiBottomSheet extends StatelessWidget {
   /// Kanji object to be displayed
@@ -60,33 +60,33 @@ class KPKanjiBottomSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const KPDragContainer(),
-                  BlocProvider<KanjiBSBloc>(
-                    create: (_) => KanjiBSBloc()
-                      ..add(KanjiBSEventLoading(kanji ?? Kanji.empty)),
-                    child: BlocConsumer<KanjiBSBloc, KanjiBSState>(
+                  BlocProvider<WordDetailsBloc>(
+                    create: (_) => WordDetailsBloc()
+                      ..add(WordDetailsEventLoading(kanji ?? Kanji.empty)),
+                    child: BlocConsumer<WordDetailsBloc, WordDetailsState>(
                       listener: (context, state) {
-                        if (state is KanjiBSStateFailure) {
+                        if (state is WordDetailsStateFailure) {
                           GeneralUtils.getSnackBar(context, state.error);
                         }
-                        if (state is KanjiBSStateRemoved) {
+                        if (state is WordDetailsStateRemoved) {
                           if (onRemove != null) onRemove!();
                         }
                       },
                       builder: (context, state) {
-                        if (state is KanjiBSStateLoading) {
+                        if (state is WordDetailsStateLoading) {
                           return Center(
                               child: SizedBox(
                                   height:
                                       MediaQuery.of(context).size.height / 2,
                                   child: const KPProgressIndicator()));
-                        } else if (state is KanjiBSStateFailure) {
+                        } else if (state is WordDetailsStateFailure) {
                           return Container(
                               height: MediaQuery.of(context).size.height / 2,
                               alignment: Alignment.center,
                               margin: const EdgeInsets.symmetric(
                                   horizontal: Margins.margin16),
                               child: Text(state.error));
-                        } else if (state is KanjiBSStateLoaded) {
+                        } else if (state is WordDetailsStateLoaded) {
                           return _body(context, state.kanji);
                         } else {
                           return Container();
@@ -174,7 +174,8 @@ class KPKanjiBottomSheet extends StatelessWidget {
               icon: const Icon(Icons.menu_book_rounded),
               onPressed: () {
                 Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
-                    arguments: JishoArguments(kanji: updatedKanji.kanji));
+                    arguments:
+                        DictionaryDetailsArguments(kanji: updatedKanji.kanji));
               },
             ),
             SizedBox(
@@ -297,7 +298,9 @@ class KPKanjiBottomSheet extends StatelessWidget {
                           "kanji_bottom_sheet_removeKanji_positive".tr(),
                       onPositive: () {
                         Navigator.of(context).pop();
-                        bloc.read<KanjiBSBloc>().add(KanjiBSEventDelete(kanji));
+                        bloc
+                            .read<WordDetailsBloc>()
+                            .add(WordDetailsEventDelete(kanji));
                         if (onRemove != null) onRemove!();
                       }));
             },

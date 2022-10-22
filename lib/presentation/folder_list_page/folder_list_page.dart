@@ -1,31 +1,31 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/folder_list/folder_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/folder.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/folder_filters.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/general_utils.dart';
-import 'package:kanpractice/ui/pages/folder_lists/bloc/folder_bloc.dart';
-import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
-import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
-import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
-import 'package:kanpractice/ui/widgets/kp_test_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
+import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
+import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/ui/kp_test_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
 
-class FolderList extends StatefulWidget {
+class FolderListPage extends StatefulWidget {
   final Function() removeFocus;
   final Function() onScrolledToBottom;
-  const FolderList(
+  const FolderListPage(
       {Key? key, required this.removeFocus, required this.onScrolledToBottom})
       : super(key: key);
 
   @override
-  State<FolderList> createState() => _FolderListState();
+  State<FolderListPage> createState() => _FolderListPageState();
 }
 
-class _FolderListState extends State<FolderList>
+class _FolderListPageState extends State<FolderListPage>
     with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KPActionButton extends StatelessWidget {
   /// Label to put on the button

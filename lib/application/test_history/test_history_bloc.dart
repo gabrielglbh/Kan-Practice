@@ -5,14 +5,14 @@ import 'package:kanpractice/core/database/queries/test_queries.dart';
 import 'package:kanpractice/core/types/study_modes_filters.dart';
 import 'package:kanpractice/core/types/test_modes_filters.dart';
 
-part 'test_event.dart';
-part 'test_state.dart';
+part 'test_history_event.dart';
+part 'test_history_state.dart';
 
-class TestListBloc extends Bloc<TestListEvent, TestListState> {
-  TestListBloc() : super(TestListStateLoading()) {
-    on<TestListEventIdle>((_, __) {});
+class TestHistoryBloc extends Bloc<TestHistoryEvent, TestHistoryState> {
+  TestHistoryBloc() : super(TestHistoryStateLoading()) {
+    on<TestHistoryEventIdle>((_, __) {});
 
-    on<TestListEventLoading>((event, emit) async {
+    on<TestHistoryEventLoading>((event, emit) async {
       try {
         final tests = await TestQueries.instance.getTests(
           event.initial,
@@ -20,23 +20,23 @@ class TestListBloc extends Bloc<TestListEvent, TestListState> {
           event.testFilter,
           event.modesFilter,
         );
-        emit(TestListStateLoaded(tests));
+        emit(TestHistoryStateLoaded(tests));
       } on Exception {
-        emit(TestListStateFailure());
+        emit(TestHistoryStateFailure());
       }
     });
 
-    on<TestListEventRemoving>((event, emit) async {
+    on<TestHistoryEventRemoving>((event, emit) async {
       try {
-        emit(TestListStateLoading());
+        emit(TestHistoryStateLoading());
         final int code = await TestQueries.instance.removeTests();
         if (code == 0) {
-          emit(const TestListStateLoaded([]));
+          emit(const TestHistoryStateLoaded([]));
         } else {
-          emit(TestListStateFailure());
+          emit(TestHistoryStateFailure());
         }
       } on Exception {
-        emit(TestListStateFailure());
+        emit(TestHistoryStateFailure());
       }
     });
   }

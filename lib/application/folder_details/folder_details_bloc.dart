@@ -3,14 +3,14 @@ import 'package:equatable/equatable.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
-import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
 
-part 'kl_folder_event.dart';
-part 'kl_folder_state.dart';
+part 'folder_details_event.dart';
+part 'folder_details_state.dart';
 
 /// This bloc is used in Folders.dart, jisho.dart and add_marketlist.dart.
-class KLFolderBloc extends Bloc<KLFolderEvent, KLFolderState> {
-  KLFolderBloc() : super(KLFolderStateLoading()) {
+class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
+  FolderDetailsBloc() : super(FolderDetailsStateLoading()) {
     /// Maintain the list for pagination purposes
     List<KanjiList> list = [];
 
@@ -24,11 +24,11 @@ class KLFolderBloc extends Bloc<KLFolderEvent, KLFolderState> {
     /// Loading offset for search bar list pagination
     int loadingTimesForSearch = 0;
 
-    on<KLFolderEventLoading>((event, emit) async {
+    on<FolderDetailsEventLoading>((event, emit) async {
       try {
         loadingTimesForSearch = 0;
         if (event.reset) {
-          emit(KLFolderStateLoading());
+          emit(FolderDetailsStateLoading());
           list.clear();
           loadingTimes = 0;
         }
@@ -48,28 +48,28 @@ class KLFolderBloc extends Bloc<KLFolderEvent, KLFolderState> {
         fullList.addAll(pagination);
         list.addAll(pagination);
         loadingTimes += 1;
-        emit(KLFolderStateLoaded(lists: fullList));
+        emit(FolderDetailsStateLoaded(lists: fullList));
       } on Exception {
-        emit(KLFolderStateFailure());
+        emit(FolderDetailsStateFailure());
       }
     });
 
     on<FolderForTestEventLoading>((event, emit) async {
       try {
-        emit(KLFolderStateLoading());
+        emit(FolderDetailsStateLoading());
         final List<KanjiList> lists =
             await FolderQueries.instance.getAllListsOnFolder(event.folder);
-        emit(KLFolderStateTestLoaded(lists: lists));
+        emit(FolderDetailsStateTestLoaded(lists: lists));
       } on Exception {
-        emit(KLFolderStateFailure());
+        emit(FolderDetailsStateFailure());
       }
     });
 
-    on<KLFolderEventSearching>((event, emit) async {
+    on<FolderDetailsEventSearching>((event, emit) async {
       try {
         loadingTimes = 0;
         if (event.reset) {
-          emit(KLFolderStateLoading());
+          emit(FolderDetailsStateLoading());
           searchList.clear();
           loadingTimesForSearch = 0;
         }
@@ -88,20 +88,20 @@ class KLFolderBloc extends Bloc<KLFolderEvent, KLFolderState> {
         fullList.addAll(pagination);
         searchList.addAll(pagination);
         loadingTimesForSearch += 1;
-        emit(KLFolderStateLoaded(lists: fullList));
+        emit(FolderDetailsStateLoaded(lists: fullList));
       } on Exception {
-        emit(KLFolderStateFailure());
+        emit(FolderDetailsStateFailure());
       }
     });
 
-    on<KLFolderEventDelete>((event, emit) async {
-      if (state is KLFolderStateLoaded) {
+    on<FolderDetailsEventDelete>((event, emit) async {
+      if (state is FolderDetailsStateLoaded) {
         String name = event.list.name;
 
         final code = await FolderQueries.instance
             .removeKanListToFolder(event.folder, name);
         if (code == 0) {
-          emit(KLFolderStateLoading());
+          emit(FolderDetailsStateLoading());
           List<KanjiList> newList =
               await _getNewAllListsAndUpdateLazyLoadingState(
             event.folder,
@@ -114,7 +114,7 @@ class KLFolderBloc extends Bloc<KLFolderEvent, KLFolderState> {
           /// Reset offsets
           loadingTimes = 0;
           loadingTimesForSearch = 0;
-          emit(KLFolderStateLoaded(lists: newList));
+          emit(FolderDetailsStateLoaded(lists: newList));
         }
       }
     });

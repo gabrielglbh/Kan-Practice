@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/test_history/test_history_bloc.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/study_modes_filters.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/core/types/test_modes_filters.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/general_utils.dart';
-import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
-import 'package:kanpractice/ui/pages/statistics/tab/test_history/bloc/test_bloc.dart';
-import 'package:kanpractice/ui/pages/statistics/widgets/stats_header.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_cartesian_chart.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_radial_graph.dart';
-import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_cartesian_chart.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_radial_graph.dart';
+import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/statistics_page/model/stats.dart';
+import 'package:kanpractice/presentation/statistics_page/widgets/stats_header.dart';
 
 class TestHistoryArgs {
   final DateTime firstDate, lastDate;
@@ -29,8 +29,8 @@ class TestHistoryArgs {
 }
 
 class TestHistory extends StatefulWidget {
-  final KanPracticeStats s;
-  const TestHistory({super.key, required this.s});
+  final KanPracticeStats stats;
+  const TestHistory({super.key, required this.stats});
 
   @override
   State<TestHistory> createState() => _TestHistoryState();
@@ -51,7 +51,7 @@ class _TestHistoryState extends State<TestHistory>
         _modesFilter = filters.modeFilters;
       });
       // ignore: use_build_context_synchronously
-      context.read<TestListBloc>().add(TestListEventLoading(
+      context.read<TestHistoryBloc>().add(TestHistoryEventLoading(
             initial: _firstDate,
             last: _lastDate,
             testFilter: _testsFilter,
@@ -67,15 +67,15 @@ class _TestHistoryState extends State<TestHistory>
     _firstDate = parsedNow;
     _lastDate = parsedNow.add(const Duration(hours: 23, minutes: 59));
     context
-        .read<TestListBloc>()
-        .add(TestListEventLoading(initial: _firstDate, last: _lastDate));
+        .read<TestHistoryBloc>()
+        .add(TestHistoryEventLoading(initial: _firstDate, last: _lastDate));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocBuilder<TestListBloc, TestListState>(
+    return BlocBuilder<TestHistoryBloc, TestHistoryState>(
       builder: (context, state) => SingleChildScrollView(
         child: Column(
           children: [
@@ -137,17 +137,17 @@ class _TestHistoryState extends State<TestHistory>
             StatsHeader(
               title: "stats_tests_total_acc".tr(),
               value: GeneralUtils.getFixedPercentageAsString(
-                  widget.s.test.totalTestAccuracy),
+                  widget.stats.test.totalTestAccuracy),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: Margins.margin8),
               child: KPRadialGraph(
                 animationDuration: 0,
-                writing: widget.s.test.testTotalWinRateWriting,
-                reading: widget.s.test.testTotalWinRateReading,
-                recognition: widget.s.test.testTotalWinRateRecognition,
-                listening: widget.s.test.testTotalWinRateListening,
-                speaking: widget.s.test.testTotalWinRateSpeaking,
+                writing: widget.stats.test.testTotalWinRateWriting,
+                reading: widget.stats.test.testTotalWinRateReading,
+                recognition: widget.stats.test.testTotalWinRateRecognition,
+                listening: widget.stats.test.testTotalWinRateListening,
+                speaking: widget.stats.test.testTotalWinRateSpeaking,
               ),
             ),
             const SizedBox(height: Margins.margin32)
@@ -157,12 +157,12 @@ class _TestHistoryState extends State<TestHistory>
     );
   }
 
-  _body(TestListState state) {
-    if (state is TestListStateFailure) {
+  _body(TestHistoryState state) {
+    if (state is TestHistoryStateFailure) {
       return Center(child: Text("test_history_load_failed".tr()));
-    } else if (state is TestListStateLoading) {
+    } else if (state is TestHistoryStateLoading) {
       return const KPProgressIndicator();
-    } else if (state is TestListStateLoaded) {
+    } else if (state is TestHistoryStateLoaded) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: Margins.margin8),
         child: KPCartesianChart(

@@ -1,27 +1,27 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/folder_details/folder_details_bloc.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
 import 'package:kanpractice/core/types/tab_types.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/pages/kanji_list_on_folder/widgets/practice_on_folder.dart';
-import 'package:kanpractice/ui/pages/kanji_list_on_folder/bloc/kl_folder_bloc.dart';
-import 'package:kanpractice/ui/widgets/kp_button.dart';
-import 'package:kanpractice/ui/widgets/kp_kanji_lists/kanji_lists.dart';
-import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
-import 'package:kanpractice/ui/widgets/kp_search_bar.dart';
-import 'package:kanpractice/ui/widgets/kp_test_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/ui/kp_button.dart';
+import 'package:kanpractice/presentation/core/ui/kp_kanji_lists/kanji_lists.dart';
+import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/ui/kp_search_bar.dart';
+import 'package:kanpractice/presentation/core/ui/kp_test_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/folder_details_page/widgets/practice_on_folder.dart';
 
-class KanListOnFolderPage extends StatefulWidget {
+class FolderDetailsPage extends StatefulWidget {
   final String folder;
-  const KanListOnFolderPage({Key? key, required this.folder}) : super(key: key);
+  const FolderDetailsPage({Key? key, required this.folder}) : super(key: key);
 
   @override
-  State<KanListOnFolderPage> createState() => _KanListOnFolderPageState();
+  State<FolderDetailsPage> createState() => _FolderDetailsPageState();
 }
 
-class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
+class _FolderDetailsPageState extends State<FolderDetailsPage> {
   late FocusNode _searchBarFn;
   late TextEditingController _searchTextController;
   bool _searchHasFocus = false;
@@ -36,29 +36,29 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
     super.initState();
   }
 
-  KLFolderEventLoading _addListLoadingEvent({bool reset = true}) =>
-      KLFolderEventLoading(
+  FolderDetailsEventLoading _addListLoadingEvent({bool reset = true}) =>
+      FolderDetailsEventLoading(
         folder: widget.folder,
         filter: KanListFilters.all,
         order: true,
         reset: reset,
       );
 
-  KLFolderEventSearching _addListSearchingEvent(String query,
+  FolderDetailsEventSearching _addListSearchingEvent(String query,
           {bool reset = true}) =>
-      KLFolderEventSearching(query, widget.folder, reset: reset);
+      FolderDetailsEventSearching(query, widget.folder, reset: reset);
 
   _resetList(BuildContext context) {
-    context.read<KLFolderBloc>().add(_addListLoadingEvent());
+    context.read<FolderDetailsBloc>().add(_addListLoadingEvent());
   }
 
   _focusListener() => _searchHasFocus = _searchBarFn.hasFocus;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<KLFolderBloc>(
-      create: (_) => KLFolderBloc()..add(_addListLoadingEvent()),
-      child: BlocBuilder<KLFolderBloc, KLFolderState>(
+    return BlocProvider<FolderDetailsBloc>(
+      create: (_) => FolderDetailsBloc()..add(_addListLoadingEvent()),
+      child: BlocBuilder<FolderDetailsBloc, FolderDetailsState>(
         builder: (context, state) {
           return KPScaffold(
               onWillPop: () async {
@@ -83,7 +83,7 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
                 IconButton(
                   icon: const Icon(Icons.auto_awesome_motion_rounded),
                   onPressed: () async {
-                    final bloc = context.read<KLFolderBloc>();
+                    final bloc = context.read<FolderDetailsBloc>();
                     await Navigator.of(context).pushNamed(
                         KanPracticePages.folderAddPage,
                         arguments: widget.folder);
@@ -103,7 +103,7 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
                       /// the pagination index
                       _query = query;
                       context
-                          .read<KLFolderBloc>()
+                          .read<FolderDetailsBloc>()
                           .add(_addListSearchingEvent(query));
                     },
                     onExitSearch: () {
@@ -120,14 +120,14 @@ class _KanListOnFolderPageState extends State<KanListOnFolderPage> {
                       onScrolledToBottom: () {
                         /// If the query is empty, use the pagination for search bar
                         if (_query.isNotEmpty) {
-                          context.read<KLFolderBloc>().add(
+                          context.read<FolderDetailsBloc>().add(
                               _addListSearchingEvent(_query, reset: false));
                         }
 
                         /// Else use the normal pagination
                         else {
                           context
-                              .read<KLFolderBloc>()
+                              .read<FolderDetailsBloc>()
                               .add(_addListLoadingEvent(reset: false));
                         }
                       },

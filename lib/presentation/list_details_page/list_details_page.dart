@@ -1,40 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/list_details/list_details_bloc.dart';
 import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/tutorial/tutorial_manager.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
-import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/coach_tutorial_parts.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
-import 'package:kanpractice/ui/pages/add_kanji/arguments.dart';
-import 'package:kanpractice/ui/pages/kanji_list_details/bloc/details_bloc.dart';
-import 'package:kanpractice/ui/pages/kanji_list_details/widgets/kanji_item.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/pages/kanji_list_details/widgets/practice_on_list_bottom_sheet.dart';
-import 'package:kanpractice/ui/pages/study_modes/utils/mode_arguments.dart';
-import 'package:kanpractice/ui/widgets/folder_list_bottom_sheet.dart';
-import 'package:kanpractice/ui/widgets/blitz/kp_blitz_bottom_sheet.dart';
-import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
-import 'package:kanpractice/ui/widgets/kp_button.dart';
-import 'package:kanpractice/ui/widgets/kp_search_bar.dart';
-import 'package:kanpractice/ui/widgets/kp_text_form.dart';
-import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
-import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
+import 'package:kanpractice/presentation/add_word_page/arguments.dart';
+import 'package:kanpractice/presentation/core/ui/blitz/kp_blitz_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/ui/folder_list_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
+import 'package:kanpractice/presentation/core/ui/kp_button.dart';
+import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
+import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/ui/kp_search_bar.dart';
+import 'package:kanpractice/presentation/core/ui/kp_text_form.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/list_details_page/widgets/kanji_item.dart';
+import 'package:kanpractice/presentation/list_details_page/widgets/practice_on_list_bottom_sheet.dart';
+import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
-class KanjiListDetails extends StatefulWidget {
+class ListDetailsPage extends StatefulWidget {
   final KanjiList list;
-  const KanjiListDetails({Key? key, required this.list}) : super(key: key);
+  const ListDetailsPage({Key? key, required this.list}) : super(key: key);
 
   @override
-  State<KanjiListDetails> createState() => _KanjiListDetailsState();
+  State<ListDetailsPage> createState() => _ListDetailsPageState();
 }
 
-class _KanjiListDetailsState extends State<KanjiListDetails>
+class _ListDetailsPageState extends State<ListDetailsPage>
     with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
 
@@ -151,19 +151,19 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
 
   _addLoadingEvent({bool reset = false}) {
     return context
-        .read<KanjiListDetailBloc>()
-        .add(KanjiEventLoading(_listName, reset: reset));
+        .read<ListDetailBloc>()
+        .add(ListDetailEventLoading(_listName, reset: reset));
   }
 
   _addSearchingEvent(String query, {bool reset = false}) {
     return context
-        .read<KanjiListDetailBloc>()
-        .add(KanjiEventSearching(query, _listName, reset: reset));
+        .read<ListDetailBloc>()
+        .add(ListDetailEventSearching(query, _listName, reset: reset));
   }
 
   _updateName(BuildContext bloc, String name) {
     if (name.isNotEmpty) {
-      bloc.read<KanjiListDetailBloc>().add(UpdateKanList(name, _listName));
+      bloc.read<ListDetailBloc>().add(ListDetailUpdateName(name, _listName));
     }
   }
 
@@ -193,7 +193,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
         });
   }
 
-  Future<void> _goToPractice(KanjiListDetailStateLoadedPractice state) async {
+  Future<void> _goToPractice(ListDetailStateLoadedPractice state) async {
     await Navigator.of(context)
         .pushNamed(state.mode.page,
             arguments: ModeArguments(
@@ -222,9 +222,9 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
           return true;
         }
       },
-      appBarTitle: BlocBuilder<KanjiListDetailBloc, KanjiListDetailState>(
+      appBarTitle: BlocBuilder<ListDetailBloc, ListDetailState>(
         builder: (context, state) {
-          if (state is KanjiListDetailStateLoaded) {
+          if (state is ListDetailStateLoaded) {
             _listName = state.name;
             return FittedBox(
                 fit: BoxFit.fitWidth,
@@ -259,7 +259,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
               onPressed: () async {
                 await Navigator.of(context)
                     .pushNamed(KanPracticePages.addKanjiPage,
-                        arguments: AddKanjiArgs(listName: _listName))
+                        arguments: AddWordArgs(listName: _listName))
                     .then((code) => _addLoadingEvent(reset: true));
               },
               icon: const Icon(Icons.add),
@@ -285,16 +285,16 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
             },
           ),
           Expanded(
-            child: BlocConsumer<KanjiListDetailBloc, KanjiListDetailState>(
+            child: BlocConsumer<ListDetailBloc, ListDetailState>(
               key: vocabulary,
               listener: (context, state) async {
-                if (state is KanjiListDetailStateLoadedPractice) {
+                if (state is ListDetailStateLoadedPractice) {
                   await _goToPractice(state);
-                } else if (state is KanjiListDetailStateFailure) {
+                } else if (state is ListDetailStateFailure) {
                   if (state.error.isNotEmpty) {
                     GeneralUtils.getSnackBar(context, state.error);
                   }
-                } else if (state is KanjiListDetailStateLoaded) {
+                } else if (state is ListDetailStateLoaded) {
                   if (StorageManager.readData(
                           StorageManager.haveSeenKanListDetailCoachMark) ==
                       false) {
@@ -307,14 +307,14 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
                 }
               },
               builder: (context, state) {
-                if (state is KanjiListDetailStateLoaded) {
+                if (state is ListDetailStateLoaded) {
                   _listName = state.name;
                   return _body(context, state);
-                } else if (state is KanjiListDetailStateLoading ||
-                    state is KanjiListDetailStateSearching ||
-                    state is KanjiListDetailStateLoadedPractice) {
+                } else if (state is ListDetailStateLoading ||
+                    state is ListDetailStateSearching ||
+                    state is ListDetailStateLoadedPractice) {
                   return const KPProgressIndicator();
-                } else if (state is KanjiListDetailStateFailure) {
+                } else if (state is ListDetailStateFailure) {
                   return KPEmptyList(
                       showTryButton: true,
                       onRefresh: () => _addLoadingEvent(reset: true),
@@ -330,7 +330,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
     );
   }
 
-  Column _body(BuildContext bloc, KanjiListDetailStateLoaded state) {
+  Column _body(BuildContext bloc, ListDetailStateLoaded state) {
     return Column(
       children: [
         if (!_aggrStats)
@@ -378,14 +378,14 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
                 );
               }
               bloc
-                  .read<KanjiListDetailBloc>()
-                  .add(KanjiEventLoadUpPractice(_listName, _selectedMode));
+                  .read<ListDetailBloc>()
+                  .add(ListDetailEventLoadUpPractice(_listName, _selectedMode));
             }),
       ],
     );
   }
 
-  Widget _kanjiList(KanjiListDetailStateLoaded state) {
+  Widget _kanjiList(ListDetailStateLoaded state) {
     if (state.list.isEmpty) {
       return KPEmptyList(
           showTryButton: true,
@@ -412,7 +412,7 @@ class _KanjiListDetailsState extends State<KanjiListDetails>
           onTap: () async {
             await Navigator.of(context)
                 .pushNamed(KanPracticePages.addKanjiPage,
-                    arguments: AddKanjiArgs(listName: _listName, kanji: kanji))
+                    arguments: AddWordArgs(listName: _listName, kanji: kanji))
                 .then((code) {
               if (code == 0) _addLoadingEvent(reset: true);
             });

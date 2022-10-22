@@ -2,26 +2,26 @@ import 'package:app_settings/app_settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/settings/settings_bloc.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
-import 'package:kanpractice/ui/general_utils.dart';
-import 'package:kanpractice/ui/pages/settings/bloc/settings_bloc.dart';
-import 'package:kanpractice/ui/pages/settings/widgets/change_kanji_test.dart';
-import 'package:kanpractice/ui/pages/settings/widgets/change_theme.dart';
-import 'package:kanpractice/ui/pages/settings/widgets/copyrigh_info.dart';
-import 'package:kanpractice/ui/pages/settings/widgets/dev_info.dart';
-import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/settings_page/widgets/change_kanji_test.dart';
+import 'package:kanpractice/presentation/settings_page/widgets/change_theme.dart';
+import 'package:kanpractice/presentation/settings_page/widgets/copyrigh_info.dart';
+import 'package:kanpractice/presentation/settings_page/widgets/dev_info.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class Settings extends StatefulWidget {
-  const Settings({Key? key}) : super(key: key);
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({Key? key}) : super(key: key);
 
   @override
-  State<Settings> createState() => _SettingsState();
+  State<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingsPageState extends State<SettingsPage> {
   bool _aggStats = false;
   bool _toggleAffect = false;
   int _kanjiInTest = CustomSizes.numberOfKanjiInTest;

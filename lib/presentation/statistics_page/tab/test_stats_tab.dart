@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/queries/test_queries.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
-import 'package:kanpractice/ui/pages/statistics/widgets/stats_header.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_data_frame.dart';
-import 'package:kanpractice/ui/pages/statistics/widgets/spec_bottom_sheet.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_bar_chart.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_bar_chart.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/statistics_page/model/stats.dart';
+import 'package:kanpractice/presentation/statistics_page/widgets/spec_bottom_sheet.dart';
+import 'package:kanpractice/presentation/statistics_page/widgets/stats_header.dart';
 
 class TestStats extends StatefulWidget {
-  final KanPracticeStats s;
-  const TestStats({super.key, required this.s});
+  final KanPracticeStats stats;
+  const TestStats({super.key, required this.stats});
 
   @override
   State<TestStats> createState() => _TestStatsState();
@@ -28,7 +28,7 @@ class _TestStatsState extends State<TestStats>
       children: [
         StatsHeader(
           title: "stats_tests".tr(),
-          value: widget.s.test.totalTests.toString(),
+          value: widget.stats.test.totalTests.toString(),
         ),
         KPBarChart(
           graphName: "tests".tr(),
@@ -36,35 +36,35 @@ class _TestStatsState extends State<TestStats>
           dataSource: List.generate(StudyModes.values.length, (index) {
             switch (StudyModes.values[index]) {
               case StudyModes.writing:
-                final v = widget.s.test.testTotalCountWriting;
+                final v = widget.stats.test.testTotalCountWriting;
                 return DataFrame(
                   x: StudyModes.writing.mode,
                   y: v.toDouble(),
                   color: StudyModes.writing.color,
                 );
               case StudyModes.reading:
-                final v = widget.s.test.testTotalCountReading;
+                final v = widget.stats.test.testTotalCountReading;
                 return DataFrame(
                   x: StudyModes.reading.mode,
                   y: v.toDouble(),
                   color: StudyModes.reading.color,
                 );
               case StudyModes.recognition:
-                final v = widget.s.test.testTotalCountRecognition;
+                final v = widget.stats.test.testTotalCountRecognition;
                 return DataFrame(
                   x: StudyModes.recognition.mode,
                   y: v.toDouble(),
                   color: StudyModes.recognition.color,
                 );
               case StudyModes.listening:
-                final v = widget.s.test.testTotalCountListening;
+                final v = widget.stats.test.testTotalCountListening;
                 return DataFrame(
                   x: StudyModes.listening.mode,
                   y: v.toDouble(),
                   color: StudyModes.listening.color,
                 );
               case StudyModes.speaking:
-                final v = widget.s.test.testTotalCountSpeaking;
+                final v = widget.stats.test.testTotalCountSpeaking;
                 return DataFrame(
                   x: StudyModes.speaking.mode,
                   y: v.toDouble(),
@@ -76,7 +76,7 @@ class _TestStatsState extends State<TestStats>
         const Divider(),
         StatsHeader(title: "stats_tests_by_type".tr()),
         _info,
-        _expandedTestCount(context, widget.s),
+        _expandedTestCount(context, widget.stats),
         const SizedBox(height: Margins.margin32)
       ],
     );

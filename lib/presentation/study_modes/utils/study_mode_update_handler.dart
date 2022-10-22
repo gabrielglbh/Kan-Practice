@@ -6,10 +6,10 @@ import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
-import 'package:kanpractice/ui/pages/study_modes/utils/mode_arguments.dart';
-import 'package:kanpractice/ui/pages/test_result/arguments.dart';
-import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
+import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
+import 'package:kanpractice/presentation/test_result_page/arguments.dart';
 
 /// Handler class to help evade boiler plate code when managing the calculation
 /// of scores in every mode

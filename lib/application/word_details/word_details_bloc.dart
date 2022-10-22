@@ -7,26 +7,26 @@ import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-part 'kanji_bs_event.dart';
-part 'kanji_bs_state.dart';
+part 'word_details_event.dart';
+part 'word_details_state.dart';
 
 /// This bloc is used in kanji_lists.dart and jisho.dart
-class KanjiBSBloc extends Bloc<KanjiBSEvent, KanjiBSState> {
-  KanjiBSBloc() : super(KanjiBSStateLoading()) {
-    on<KanjiBSEventLoading>((event, emit) async {
+class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
+  WordDetailsBloc() : super(WordDetailsStateLoading()) {
+    on<WordDetailsEventLoading>((event, emit) async {
       try {
-        emit(KanjiBSStateLoading());
+        emit(WordDetailsStateLoading());
         final kanji = await KanjiQueries.instance
             .getKanji(event.kanji.listName, event.kanji.kanji);
-        emit(KanjiBSStateLoaded(kanji: kanji));
+        emit(WordDetailsStateLoaded(kanji: kanji));
       } on Exception {
-        emit(const KanjiBSStateFailure(error: ":("));
+        emit(const WordDetailsStateFailure(error: ":("));
       }
     });
 
-    on<KanjiBSEventDelete>((event, emit) async {
+    on<WordDetailsEventDelete>((event, emit) async {
       final k = event.kanji;
-      if (state is KanjiBSStateLoaded && k != null) {
+      if (state is WordDetailsStateLoaded && k != null) {
         final int code =
             await KanjiQueries.instance.removeKanji(k.listName, k.kanji);
         if (code == 0) {
@@ -93,19 +93,19 @@ class KanjiBSBloc extends Bloc<KanjiBSEvent, KanjiBSState> {
               KanListTableFields.totalWinRateListeningField: lisNewScore
             });
           }
-          emit(KanjiBSStateRemoved());
+          emit(WordDetailsStateRemoved());
         } else if (code == 1) {
-          emit(KanjiBSStateFailure(
+          emit(WordDetailsStateFailure(
               error:
                   "kanji_bottom_sheet_createDialogForDeletingKanji_removal_failed"
                       .tr()));
         } else {
-          emit(KanjiBSStateFailure(
+          emit(WordDetailsStateFailure(
               error: "kanji_bottom_sheet_createDialogForDeletingKanji_failed"
                   .tr()));
         }
       } else {
-        emit(KanjiBSStateFailure(
+        emit(WordDetailsStateFailure(
             error:
                 "kanji_bottom_sheet_createDialogForDeletingKanji_removal_failed"
                     .tr()));

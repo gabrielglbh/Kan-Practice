@@ -2,16 +2,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/test_history/test_history_bloc.dart';
 import 'package:kanpractice/core/routing/pages.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/study_modes_filters.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/core/types/test_modes_filters.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/pages/statistics/tab/test_history/bloc/test_bloc.dart';
-import 'package:kanpractice/ui/pages/statistics/tab/test_history/test_history.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_cartesian_chart.dart';
-import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_cartesian_chart.dart';
+import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/statistics_page/tab/test_history_tab/test_history_tab.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class TestHistoryExpanded extends StatefulWidget {
@@ -64,7 +64,7 @@ class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
         _modesFilter = filters.modeFilters;
       });
       // ignore: use_build_context_synchronously
-      blocContext.read<TestListBloc>().add(TestListEventLoading(
+      blocContext.read<TestHistoryBloc>().add(TestHistoryEventLoading(
             initial: _firstDate,
             last: _lastDate,
             testFilter: _testsFilter,
@@ -86,21 +86,21 @@ class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(Margins.margin8),
-            child: BlocProvider<TestListBloc>(
-              create: (_) => TestListBloc()
-                ..add(TestListEventLoading(
+            child: BlocProvider<TestHistoryBloc>(
+              create: (_) => TestHistoryBloc()
+                ..add(TestHistoryEventLoading(
                   initial: _firstDate,
                   last: _lastDate,
                   testFilter: _testsFilter,
                   modesFilter: _modesFilter,
                 )),
-              child: BlocBuilder<TestListBloc, TestListState>(
+              child: BlocBuilder<TestHistoryBloc, TestHistoryState>(
                 builder: (blocContext, state) {
-                  if (state is TestListStateFailure) {
+                  if (state is TestHistoryStateFailure) {
                     return Center(child: Text("test_history_load_failed".tr()));
-                  } else if (state is TestListStateLoading) {
+                  } else if (state is TestHistoryStateLoading) {
                     return const KPProgressIndicator();
-                  } else if (state is TestListStateLoaded) {
+                  } else if (state is TestHistoryStateLoaded) {
                     return Stack(
                       alignment: Alignment.centerRight,
                       children: [

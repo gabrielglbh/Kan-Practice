@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
-import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
-import 'package:kanpractice/ui/widgets/kp_study_mode.dart';
-import 'package:kanpractice/ui/consts.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
+import 'package:kanpractice/presentation/core/ui/kp_study_mode.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KPBlitzBottomSheet extends StatelessWidget {
   /// String defining if the user wants to perform a Blitz Test on a practice

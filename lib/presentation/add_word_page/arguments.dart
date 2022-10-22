@@ -1,7 +1,7 @@
 import 'package:kanpractice/core/database/models/kanji.dart';
 
-class AddKanjiArgs {
+class AddWordArgs {
   final String listName;
   final Kanji? kanji;
-  const AddKanjiArgs({required this.listName, this.kanji});
+  const AddWordArgs({required this.listName, this.kanji});
 }

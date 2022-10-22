@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/specific_data.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
-import 'package:kanpractice/ui/general_utils.dart';
-import 'package:kanpractice/ui/pages/statistics/widgets/stats_header.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_data_frame.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_bar_chart.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_radial_graph.dart';
-import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
-import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_bar_chart.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_radial_graph.dart';
+import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/statistics_page/widgets/stats_header.dart';
 
 class SpecBottomSheet extends StatefulWidget {
   final String title;

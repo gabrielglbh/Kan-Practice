@@ -2,17 +2,17 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/types/kanji_categories.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/pages/statistics/model/stats.dart';
-import 'package:kanpractice/ui/pages/statistics/widgets/stats_header.dart';
-import 'package:kanpractice/ui/pages/statistics/widgets/spec_bottom_sheet.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_bar_chart.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_data_frame.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_radial_graph.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_bar_chart.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_radial_graph.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/statistics_page/model/stats.dart';
+import 'package:kanpractice/presentation/statistics_page/widgets/spec_bottom_sheet.dart';
+import 'package:kanpractice/presentation/statistics_page/widgets/stats_header.dart';
 
 class ListStats extends StatefulWidget {
-  final KanPracticeStats s;
-  const ListStats({super.key, required this.s});
+  final KanPracticeStats stats;
+  const ListStats({super.key, required this.stats});
 
   @override
   State<ListStats> createState() => _ListStatsState();
@@ -31,18 +31,18 @@ class _ListStatsState extends State<ListStats>
       children: [
         StatsHeader(
           title: "stats_words".tr(),
-          value: "${widget.s.totalLists} ${"stats_words_lists".tr()}",
+          value: "${widget.stats.totalLists} ${"stats_words_lists".tr()}",
         ),
-        _countLabel(context, widget.s.totalKanji.toString()),
+        _countLabel(context, widget.stats.totalKanji.toString()),
         Padding(
             padding: const EdgeInsets.only(top: Margins.margin16),
             child: KPRadialGraph(
               animationDuration: 0,
-              writing: widget.s.totalWinRateWriting,
-              reading: widget.s.totalWinRateReading,
-              recognition: widget.s.totalWinRateRecognition,
-              listening: widget.s.totalWinRateListening,
-              speaking: widget.s.totalWinRateSpeaking,
+              writing: widget.stats.totalWinRateWriting,
+              reading: widget.stats.totalWinRateReading,
+              recognition: widget.stats.totalWinRateRecognition,
+              listening: widget.stats.totalWinRateListening,
+              speaking: widget.stats.totalWinRateSpeaking,
             )),
         const Divider(),
         Row(
@@ -51,14 +51,16 @@ class _ListStatsState extends State<ListStats>
               child: ListTile(
                 title: Text("stats_best_list".tr(),
                     textAlign: TextAlign.center, style: boldTheme),
-                subtitle: Text(widget.s.bestList, textAlign: TextAlign.center),
+                subtitle:
+                    Text(widget.stats.bestList, textAlign: TextAlign.center),
               ),
             ),
             Expanded(
               child: ListTile(
                 title: Text("stats_worst_list".tr(),
                     textAlign: TextAlign.center, style: boldTheme),
-                subtitle: Text(widget.s.worstList, textAlign: TextAlign.center),
+                subtitle:
+                    Text(widget.stats.worstList, textAlign: TextAlign.center),
               ),
             )
           ],
@@ -84,7 +86,7 @@ class _ListStatsState extends State<ListStats>
             KanjiCategory.values.length,
             (index) => DataFrame(
               x: KanjiCategory.values[index].category,
-              y: widget.s.totalCategoryCounts[index].toDouble(),
+              y: widget.stats.totalCategoryCounts[index].toDouble(),
               color: CustomColors.secondaryColor,
             ),
           ),

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/study_modes_filters.dart';
 import 'package:kanpractice/core/types/test_modes_filters.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/general_utils.dart';
-import 'package:kanpractice/ui/pages/statistics/tab/test_history/test_history.dart';
-import 'package:kanpractice/ui/widgets/kp_button.dart';
-import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/ui/kp_button.dart';
+import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/statistics_page/tab/test_history_tab/test_history_tab.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class TestHistoryFilters extends StatefulWidget {

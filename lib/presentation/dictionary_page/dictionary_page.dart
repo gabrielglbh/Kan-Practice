@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image/image.dart' as im;
+import 'package:kanpractice/application/dictionary/dict_bloc.dart';
 import 'package:kanpractice/core/routing/pages.dart';
-import 'package:kanpractice/ui/general_utils.dart';
-import 'package:kanpractice/ui/pages/dictionary/arguments.dart';
-import 'package:kanpractice/ui/pages/dictionary/bloc/dict_bloc.dart';
-import 'package:kanpractice/ui/pages/dictionary/widgets/kanji_search_bar.dart';
-import 'package:kanpractice/ui/pages/jisho/arguments.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
-import 'package:kanpractice/ui/widgets/canvas/kp_custom_canvas.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/ui/canvas/kp_custom_canvas.dart';
+import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
+import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
+import 'package:kanpractice/presentation/dictionary_page/widgets/kanji_search_bar.dart';
+
+import '../core/util/general_utils.dart';
 
 class DictionaryPage extends StatefulWidget {
   final DictionaryArguments args;
@@ -193,7 +194,8 @@ class _DictionaryPageState extends State<DictionaryPage>
           /// If the user is adding words, pop and send the predicted word back
           if (widget.args.searchInJisho) {
             Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
-                arguments: JishoArguments(kanji: text, fromDictionary: true));
+                arguments: DictionaryDetailsArguments(
+                    kanji: text, fromDictionary: true));
           } else {
             Navigator.of(context).pop(text);
           }

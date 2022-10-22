@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/routing/pages.dart';
-import 'package:kanpractice/ui/general_utils.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/widgets/graphs/kp_radial_graph.dart';
-import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_radial_graph.dart';
+import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class KanjiListTile extends StatelessWidget {

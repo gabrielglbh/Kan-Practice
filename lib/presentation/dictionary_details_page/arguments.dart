@@ -1,6 +1,7 @@
-class JishoArguments {
+class DictionaryDetailsArguments {
   final String? kanji;
   final bool fromDictionary;
 
-  JishoArguments({required this.kanji, this.fromDictionary = false});
+  DictionaryDetailsArguments(
+      {required this.kanji, this.fromDictionary = false});
 }

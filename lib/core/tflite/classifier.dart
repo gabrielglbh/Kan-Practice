@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:image/image.dart' as i;
 import 'package:collection/collection.dart';
-import 'package:kanpractice/ui/widgets/canvas/kp_custom_canvas.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 

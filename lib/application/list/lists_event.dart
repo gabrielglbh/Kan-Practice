@@ -1,13 +1,13 @@
 part of 'lists_bloc.dart';
 
-abstract class KanjiListEvent extends Equatable {
-  const KanjiListEvent();
+abstract class ListEvent extends Equatable {
+  const ListEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class KanjiListEventLoading extends KanjiListEvent {
+class ListEventLoading extends ListEvent {
   /// Maintains the filter applied by the user for loading new lists
   final KanListFilters filter;
 
@@ -17,33 +17,33 @@ class KanjiListEventLoading extends KanjiListEvent {
   /// Whether to reset the counter for the offset on the lazy loading or not
   final bool reset;
 
-  const KanjiListEventLoading(
+  const ListEventLoading(
       {required this.filter, required this.order, this.reset = false});
 
   @override
   List<Object> get props => [filter, order, reset];
 }
 
-class KanjiListForTestEventLoading extends KanjiListEvent {
-  const KanjiListForTestEventLoading();
+class ListForTestEventLoading extends ListEvent {
+  const ListForTestEventLoading();
 
   @override
   List<Object> get props => [];
 }
 
-class KanjiListEventSearching extends KanjiListEvent {
+class ListEventSearching extends ListEvent {
   final String query;
 
   /// Whether to reset the counter for the offset on the lazy loading or not
   final bool reset;
 
-  const KanjiListEventSearching(this.query, {this.reset = false});
+  const ListEventSearching(this.query, {this.reset = false});
 
   @override
   List<Object> get props => [query, reset];
 }
 
-class KanjiListEventCreate extends KanjiListEvent {
+class ListEventCreate extends ListEvent {
   final String name;
 
   /// Maintains the filter applied by the user for loading new lists
@@ -53,14 +53,14 @@ class KanjiListEventCreate extends KanjiListEvent {
   final bool order;
   final bool useLazyLoading;
 
-  const KanjiListEventCreate(this.name,
+  const ListEventCreate(this.name,
       {required this.filter, required this.order, this.useLazyLoading = true});
 
   @override
   List<Object> get props => [name, filter, order, useLazyLoading];
 }
 
-class KanjiListEventDelete extends KanjiListEvent {
+class ListEventDelete extends ListEvent {
   final KanjiList list;
 
   /// Maintains the filter applied by the user for loading new lists
@@ -69,8 +69,7 @@ class KanjiListEventDelete extends KanjiListEvent {
   /// Maintains the order applied by the user for loading new lists
   final bool order;
 
-  const KanjiListEventDelete(this.list,
-      {required this.filter, required this.order});
+  const ListEventDelete(this.list, {required this.filter, required this.order});
 
   @override
   List<Object> get props => [list, filter, order];

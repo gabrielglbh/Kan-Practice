@@ -3,14 +3,14 @@ import 'package:equatable/equatable.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
-import 'package:kanpractice/ui/consts.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
 
 part 'lists_event.dart';
 part 'lists_state.dart';
 
-/// This bloc is used in kanjilists.dart, jisho.dart and add_marketlist.dart.
-class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
-  KanjiListBloc() : super(KanjiListStateLoading()) {
+/// This bloc is used in ListS.dart, jisho.dart and add_marketlist.dart.
+class ListBloc extends Bloc<ListEvent, ListState> {
+  ListBloc() : super(ListStateLoading()) {
     /// Maintain the list for pagination purposes
     List<KanjiList> list = [];
 
@@ -24,11 +24,11 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
     /// Loading offset for search bar list pagination
     int loadingTimesForSearch = 0;
 
-    on<KanjiListEventLoading>((event, emit) async {
+    on<ListEventLoading>((event, emit) async {
       try {
         loadingTimesForSearch = 0;
         if (event.reset) {
-          emit(KanjiListStateLoading());
+          emit(ListStateLoading());
           list.clear();
           loadingTimes = 0;
         }
@@ -46,27 +46,27 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
         fullList.addAll(pagination);
         list.addAll(pagination);
         loadingTimes += 1;
-        emit(KanjiListStateLoaded(lists: fullList));
+        emit(ListStateLoaded(lists: fullList));
       } on Exception {
-        emit(KanjiListStateFailure());
+        emit(ListStateFailure());
       }
     });
 
-    on<KanjiListForTestEventLoading>((event, emit) async {
+    on<ListForTestEventLoading>((event, emit) async {
       try {
-        emit(KanjiListStateLoading());
+        emit(ListStateLoading());
         final List<KanjiList> lists = await ListQueries.instance.getAllLists();
-        emit(KanjiListStateLoaded(lists: lists));
+        emit(ListStateLoaded(lists: lists));
       } on Exception {
-        emit(KanjiListStateFailure());
+        emit(ListStateFailure());
       }
     });
 
-    on<KanjiListEventSearching>((event, emit) async {
+    on<ListEventSearching>((event, emit) async {
       try {
         loadingTimes = 0;
         if (event.reset) {
-          emit(KanjiListStateLoading());
+          emit(ListStateLoading());
           searchList.clear();
           loadingTimesForSearch = 0;
         }
@@ -81,18 +81,18 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
         fullList.addAll(pagination);
         searchList.addAll(pagination);
         loadingTimesForSearch += 1;
-        emit(KanjiListStateLoaded(lists: fullList));
+        emit(ListStateLoaded(lists: fullList));
       } on Exception {
-        emit(KanjiListStateFailure());
+        emit(ListStateFailure());
       }
     });
 
-    on<KanjiListEventDelete>((event, emit) async {
-      if (state is KanjiListStateLoaded) {
+    on<ListEventDelete>((event, emit) async {
+      if (state is ListStateLoaded) {
         String name = event.list.name;
         final code = await ListQueries.instance.removeList(name);
         if (code == 0) {
-          emit(KanjiListStateLoading());
+          emit(ListStateLoading());
           List<KanjiList> newList =
               await _getNewAllListsAndUpdateLazyLoadingState(
                   event.filter, event.order,
@@ -101,17 +101,17 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
           /// Reset offsets
           loadingTimes = 0;
           loadingTimesForSearch = 0;
-          emit(KanjiListStateLoaded(lists: newList));
+          emit(ListStateLoaded(lists: newList));
         }
       }
     });
 
-    on<KanjiListEventCreate>((event, emit) async {
-      if (state is KanjiListStateLoaded) {
+    on<ListEventCreate>((event, emit) async {
+      if (state is ListStateLoaded) {
         String? name = event.name;
         final code = await ListQueries.instance.createList(name);
         if (code == 0) {
-          emit(KanjiListStateLoading());
+          emit(ListStateLoading());
           List<KanjiList> newList = [];
           if (event.useLazyLoading) {
             newList = await _getNewAllListsAndUpdateLazyLoadingState(
@@ -124,7 +124,7 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
           /// Reset offsets
           loadingTimes = 0;
           loadingTimesForSearch = 0;
-          emit(KanjiListStateLoaded(lists: newList));
+          emit(ListStateLoaded(lists: newList));
         }
       }
     });
@@ -141,7 +141,7 @@ class KanjiListBloc extends Bloc<KanjiListEvent, KanjiListState> {
         limit: limit,
         offset: 0);
 
-    /// Clear the list and repopulate it with the newest items for KanjiListEventLoading
+    /// Clear the list and repopulate it with the newest items for ListEventLoading
     /// to work properly for the next offset
     l.clear();
     l.addAll(lists);

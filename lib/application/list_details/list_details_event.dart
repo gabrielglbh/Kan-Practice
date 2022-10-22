@@ -1,48 +1,48 @@
 part of 'list_details_bloc.dart';
 
-abstract class KanjiListDetailEvent extends Equatable {
-  const KanjiListDetailEvent();
+abstract class ListDetailEvent extends Equatable {
+  const ListDetailEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class KanjiEventLoading extends KanjiListDetailEvent {
+class ListDetailEventLoading extends ListDetailEvent {
   final String list;
   final bool reset;
 
-  const KanjiEventLoading(this.list, {this.reset = false});
+  const ListDetailEventLoading(this.list, {this.reset = false});
 
   @override
   List<Object> get props => [list, reset];
 }
 
-class KanjiEventSearching extends KanjiListDetailEvent {
+class ListDetailEventSearching extends ListDetailEvent {
   final String query;
   final String list;
   final bool reset;
 
-  const KanjiEventSearching(this.query, this.list, {this.reset = false});
+  const ListDetailEventSearching(this.query, this.list, {this.reset = false});
 
   @override
   List<Object> get props => [query, list, reset];
 }
 
-class KanjiEventLoadUpPractice extends KanjiListDetailEvent {
+class ListDetailEventLoadUpPractice extends ListDetailEvent {
   final StudyModes studyMode;
   final String list;
 
-  const KanjiEventLoadUpPractice(this.list, this.studyMode);
+  const ListDetailEventLoadUpPractice(this.list, this.studyMode);
 
   @override
   List<Object> get props => [list, studyMode];
 }
 
-class UpdateKanList extends KanjiListDetailEvent {
+class ListDetailUpdateName extends ListDetailEvent {
   final String name;
   final String og;
 
-  const UpdateKanList(this.name, this.og);
+  const ListDetailUpdateName(this.name, this.og);
 
   @override
   List<Object> get props => [name, og];

@@ -1,14 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/add_folder/add_folder_bloc.dart';
 import 'package:kanpractice/core/database/models/list.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/general_utils.dart';
-import 'package:kanpractice/ui/pages/add_folder/bloc/add_folder_bloc.dart';
-import 'package:kanpractice/ui/widgets/kp_kanlist_grid.dart';
-import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
-import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
-import 'package:kanpractice/ui/widgets/kp_text_form.dart';
+import 'package:kanpractice/presentation/core/ui/kp_kanlist_grid.dart';
+import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/ui/kp_text_form.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
 
 class AddFolderPage extends StatefulWidget {
   final String? folder;

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kana_kit/kana_kit.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
@@ -5,19 +6,18 @@ import 'package:kanpractice/core/database/models/kanji.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
-import 'package:kanpractice/ui/general_utils.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/pages/study_modes/utils/mode_arguments.dart';
-import 'package:kanpractice/ui/pages/study_modes/utils/study_mode_update_handler.dart';
-import 'package:kanpractice/ui/widgets/kp_learning_header_animation.dart';
-import 'package:kanpractice/ui/widgets/kp_learning_header_container.dart';
-import 'package:kanpractice/ui/widgets/kp_list_percentage_indicator.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/ui/widgets/kp_study_mode_app_bar.dart';
-import 'package:kanpractice/ui/widgets/kp_tts_icon_button.dart';
-import 'package:kanpractice/ui/widgets/kp_validation_buttons.dart';
-import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/ui/kp_learning_header_animation.dart';
+import 'package:kanpractice/presentation/core/ui/kp_learning_header_container.dart';
+import 'package:kanpractice/presentation/core/ui/kp_list_percentage_indicator.dart';
+import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/ui/kp_study_mode_app_bar.dart';
+import 'package:kanpractice/presentation/core/ui/kp_tts_icon_button.dart';
+import 'package:kanpractice/presentation/core/ui/kp_validation_buttons.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
+import 'package:kanpractice/presentation/study_modes/utils/study_mode_update_handler.dart';
 
 class ReadingStudy extends StatefulWidget {
   final ModeArguments args;

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../../../ui/consts.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
 
 const Color _primary = Colors.white;
 final Color _cardColor = Colors.grey.shade200;

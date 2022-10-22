@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/ui/widgets/kp_kanji_lists/bloc/lists_bloc.dart';
-import 'package:kanpractice/ui/widgets/kp_drag_container.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
-import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/application/list/lists_bloc.dart';
+import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
+import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
+import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class AddToMarketBottomSheet extends StatefulWidget {
   const AddToMarketBottomSheet({Key? key}) : super(key: key);
@@ -28,7 +28,7 @@ class AddToMarketBottomSheet extends StatefulWidget {
 }
 
 class _AddToMarketBottomSheetState extends State<AddToMarketBottomSheet> {
-  final KanjiListBloc _bloc = KanjiListBloc();
+  final ListBloc _bloc = ListBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -48,19 +48,19 @@ class _AddToMarketBottomSheetState extends State<AddToMarketBottomSheet> {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6),
               ),
-              BlocProvider<KanjiListBloc>(
-                create: (_) => _bloc..add(const KanjiListForTestEventLoading()),
-                child: BlocBuilder<KanjiListBloc, KanjiListState>(
+              BlocProvider<ListBloc>(
+                create: (_) => _bloc..add(const ListForTestEventLoading()),
+                child: BlocBuilder<ListBloc, ListState>(
                   builder: (context, state) {
-                    if (state is KanjiListStateFailure) {
+                    if (state is ListStateFailure) {
                       return KPEmptyList(
                           showTryButton: true,
                           onRefresh: () =>
-                              _bloc..add(const KanjiListForTestEventLoading()),
+                              _bloc..add(const ListForTestEventLoading()),
                           message: "kanji_lists_load_failed".tr());
-                    } else if (state is KanjiListStateLoading) {
+                    } else if (state is ListStateLoading) {
                       return const KPProgressIndicator();
-                    } else if (state is KanjiListStateLoaded) {
+                    } else if (state is ListStateLoaded) {
                       return Container(
                           constraints: BoxConstraints(
                               maxHeight:

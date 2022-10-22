@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/word_history/word_history_bloc.dart';
 import 'package:kanpractice/core/database/models/word_history.dart';
 import 'package:kanpractice/core/routing/pages.dart';
-import 'package:kanpractice/ui/general_utils.dart';
-import 'package:kanpractice/ui/pages/jisho/arguments.dart';
-import 'package:kanpractice/ui/pages/word_history/bloc/word_history_bloc.dart';
-import 'package:kanpractice/ui/widgets/kp_alert_dialog.dart';
-import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
-import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/ui/widgets/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
+import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
+import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/util/general_utils.dart';
+import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
 
 class WordHistoryPage extends StatefulWidget {
   const WordHistoryPage({Key? key}) : super(key: key);
@@ -114,7 +114,7 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
           return ListTile(
             onTap: () {
               Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
-                  arguments: JishoArguments(
+                  arguments: DictionaryDetailsArguments(
                       kanji: wordHistory.word, fromDictionary: true));
             },
             title: Text(wordHistory.word,

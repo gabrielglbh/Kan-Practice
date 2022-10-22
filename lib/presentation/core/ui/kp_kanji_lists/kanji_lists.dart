@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/folder_details/folder_details_bloc.dart';
+import 'package:kanpractice/application/list/lists_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/database/models/list.dart';
 import 'package:kanpractice/core/preferences/store_manager.dart';
-import 'package:kanpractice/ui/pages/kanji_list_on_folder/bloc/kl_folder_bloc.dart';
-import 'package:kanpractice/ui/widgets/kp_kanji_lists/bloc/lists_bloc.dart';
+import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
+import 'package:kanpractice/presentation/core/ui/kp_kanji_lists/widgets/kanji_list_tile.dart';
+import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/core/types/kanlist_filters.dart';
-import 'package:kanpractice/ui/widgets/kp_kanji_lists/widgets/kanji_list_tile.dart';
-import 'package:kanpractice/ui/widgets/kp_empty_list.dart';
-import 'package:kanpractice/ui/consts.dart';
-import 'package:kanpractice/ui/widgets/kp_progress_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class KPKanjiLists extends StatefulWidget {
@@ -76,14 +76,14 @@ class _KPKanjiListsState extends State<KPKanjiLists>
 
   _addLoadingEvent({bool reset = false}) {
     if (widget.folder == null) {
-      return context.read<KanjiListBloc>()
-        ..add(KanjiListEventLoading(
+      return context.read<ListBloc>()
+        ..add(ListEventLoading(
             filter: _currentAppliedFilter,
             order: _currentAppliedOrder,
             reset: reset));
     }
-    return context.read<KLFolderBloc>()
-      ..add(KLFolderEventLoading(
+    return context.read<FolderDetailsBloc>()
+      ..add(FolderDetailsEventLoading(
           folder: widget.folder!,
           filter: _currentAppliedFilter,
           order: _currentAppliedOrder,
@@ -165,17 +165,16 @@ class _KPKanjiListsState extends State<KPKanjiLists>
 
   BlocBuilder _lists() {
     if (widget.folder == null) {
-      return BlocBuilder<KanjiListBloc, KanjiListState>(
+      return BlocBuilder<ListBloc, ListState>(
         builder: (context, state) {
-          if (state is KanjiListStateFailure) {
+          if (state is ListStateFailure) {
             return KPEmptyList(
                 showTryButton: true,
                 onRefresh: () => _addLoadingEvent(reset: true),
                 message: "kanji_lists_load_failed".tr());
-          } else if (state is KanjiListStateLoading ||
-              state is KanjiListStateSearching) {
+          } else if (state is ListStateLoading || state is ListStateSearching) {
             return const Expanded(child: KPProgressIndicator());
-          } else if (state is KanjiListStateLoaded) {
+          } else if (state is ListStateLoaded) {
             return state.lists.isEmpty
                 ? Expanded(
                     child: KPEmptyList(
@@ -189,17 +188,17 @@ class _KPKanjiListsState extends State<KPKanjiLists>
         },
       );
     }
-    return BlocBuilder<KLFolderBloc, KLFolderState>(
+    return BlocBuilder<FolderDetailsBloc, FolderDetailsState>(
       builder: (context, state) {
-        if (state is KLFolderStateFailure) {
+        if (state is FolderDetailsStateFailure) {
           return KPEmptyList(
               showTryButton: true,
               onRefresh: () => _addLoadingEvent(reset: true),
               message: "kanji_lists_load_failed".tr());
-        } else if (state is KLFolderEventLoading ||
-            state is KLFolderStateSearching) {
+        } else if (state is FolderDetailsEventLoading ||
+            state is FolderDetailsStateSearching) {
           return const Expanded(child: KPProgressIndicator());
-        } else if (state is KLFolderStateLoaded) {
+        } else if (state is FolderDetailsStateLoaded) {
           return state.lists.isEmpty
               ? Expanded(
                   child: KPEmptyList(
@@ -232,14 +231,14 @@ class _KPKanjiListsState extends State<KPKanjiLists>
               withinFolder: widget.withinFolder,
               onRemoval: () {
                 if (widget.folder == null) {
-                  context.read<KanjiListBloc>().add(KanjiListEventDelete(
+                  context.read<ListBloc>().add(ListEventDelete(
                         lists[k],
                         filter: _currentAppliedFilter,
                         order: _currentAppliedOrder,
                       ));
                 } else {
-                  context.read<KLFolderBloc>().add(
-                        KLFolderEventDelete(
+                  context.read<FolderDetailsBloc>().add(
+                        FolderDetailsEventDelete(
                           widget.folder!,
                           lists[k],
                           filter: _currentAppliedFilter,

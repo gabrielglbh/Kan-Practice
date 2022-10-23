@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/test_category_selection/test_category_selection_bloc.dart';
 import 'package:kanpractice/presentation/core/types/word_categories.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/domain/word/word.dart';
-import 'package:kanpractice/infrastructure/folder/folder_repository_impl.dart';
-import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
@@ -34,27 +33,8 @@ class KPKanListCategorySelectionBottomSheet extends StatefulWidget {
 
 class _KPKanListCategorySelectionBottomSheetState
     extends State<KPKanListCategorySelectionBottomSheet> {
-  List<Word> _kanji = [];
   WordCategory _selectedCategory = WordCategory.noun;
-
-  bool _selectionMode = false;
   bool _onListEmpty = false;
-
-  Future<List<Word>> _loadKanjiFromListSelection(WordCategory category) async {
-    List<Word> list = [];
-    if (widget.folder == null) {
-      list = await getIt<WordRepositoryImpl>()
-          .getWordsBasedOnCategory(category.index);
-    } else {
-      list = await getIt<FolderRepositoryImpl>().getAllWordsOnListsOnFolder(
-        [widget.folder!],
-        type: Tests.categories,
-        category: category.index,
-      );
-    }
-    list.shuffle();
-    return list;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,79 +43,94 @@ class _KPKanListCategorySelectionBottomSheetState
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        return Wrap(children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const KPDragContainer(),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: KPMargins.margin8,
-                    horizontal: KPMargins.margin32),
-                child: Text(
-                    "${"categories_test_bottom_sheet_title".tr()}$folder",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6),
-              ),
-              Visibility(
-                visible: _onListEmpty,
-                child: Text("categories_test_bottom_sheet_error".tr(),
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6
-                        ?.copyWith(fontWeight: FontWeight.w400)),
-              ),
-              Visibility(
-                visible: _selectionMode,
-                child: KPTestStudyMode(
-                  list: _kanji,
-                  type: Tests.categories,
-                  testName: widget.folder == null
-                      ? "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category}"
-                      : "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category} - ${widget.folder}",
+        return BlocProvider(
+          create: (context) => getIt<TestCategorySelectionBloc>(),
+          child: BlocConsumer<TestCategorySelectionBloc,
+              TestCategorySelectionState>(
+            listener: ((context, state) {
+              if (state is TestCategorySelectionStateLoadedList) {
+                setState(() {
+                  if (state.words.isEmpty) {
+                    _onListEmpty = true;
+                  } else {
+                    _onListEmpty = false;
+                  }
+                });
+              }
+            }),
+            builder: (context, state) {
+              return Wrap(children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const KPDragContainer(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: KPMargins.margin8,
+                          horizontal: KPMargins.margin32),
+                      child: Text(
+                          "${"categories_test_bottom_sheet_title".tr()}$folder",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.headline6),
+                    ),
+                    Visibility(
+                      visible: _onListEmpty,
+                      child: Text("categories_test_bottom_sheet_error".tr(),
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline6
+                              ?.copyWith(fontWeight: FontWeight.w400)),
+                    ),
+                    Visibility(
+                      visible: state is TestCategorySelectionStateLoadedList,
+                      child: KPTestStudyMode(
+                        list: (state as TestCategorySelectionStateLoadedList)
+                            .words,
+                        type: Tests.categories,
+                        testName: widget.folder == null
+                            ? "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category}"
+                            : "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category} - ${widget.folder}",
+                      ),
+                    ),
+                    Visibility(
+                      visible: state is TestCategorySelectionStateIdle,
+                      child: Container(
+                        margin: const EdgeInsets.all(KPMargins.margin8),
+                        child: Column(
+                          children: [
+                            KPKanjiCategoryList(
+                              selected: (index) =>
+                                  index == _selectedCategory.index,
+                              onSelected: (index) => setState(() {
+                                _selectedCategory = WordCategory.values[index];
+                                _onListEmpty = false;
+                              }),
+                            ),
+                            KPButton(
+                              width: true,
+                              title1:
+                                  "study_bottom_sheet_button_label_ext".tr(),
+                              title2: "study_bottom_sheet_button_label".tr(),
+                              onTap: () async {
+                                getIt<TestCategorySelectionBloc>().add(
+                                  TestCategorySelectionEventLoadList(
+                                      category: _selectedCategory,
+                                      folder: widget.folder),
+                                );
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-              ),
-              Visibility(
-                visible: !_selectionMode,
-                child: Container(
-                  margin: const EdgeInsets.all(KPMargins.margin8),
-                  child: _categorySelection(),
-                ),
-              )
-            ],
+              ]);
+            },
           ),
-        ]);
+        );
       },
-    );
-  }
-
-  Column _categorySelection() {
-    return Column(
-      children: [
-        KPKanjiCategoryList(
-          selected: (index) => index == _selectedCategory.index,
-          onSelected: (index) => setState(() {
-            _selectedCategory = WordCategory.values[index];
-            _onListEmpty = false;
-          }),
-        ),
-        KPButton(
-          width: true,
-          title1: "study_bottom_sheet_button_label_ext".tr(),
-          title2: "study_bottom_sheet_button_label".tr(),
-          onTap: () async {
-            final List<Word> k =
-                await _loadKanjiFromListSelection(_selectedCategory);
-            if (k.isNotEmpty) {
-              _kanji = k;
-              setState(() => _selectionMode = true);
-            } else {
-              setState(() => _onListEmpty = true);
-            }
-          },
-        )
-      ],
     );
   }
 }

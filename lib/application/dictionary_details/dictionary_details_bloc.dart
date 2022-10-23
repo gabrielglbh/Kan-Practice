@@ -1,11 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:kanpractice/domain/dictionary_details/i_dictionary_details_repository.dart';
 import 'package:kanpractice/domain/dictionary_details/word_data.dart';
 import 'package:kanpractice/domain/dictionary_details/word_example.dart';
-import 'package:kanpractice/infrastructure/dictionary_details/dictionary_details_repository_impl.dart';
-import 'package:kanpractice/infrastructure/word_history/word_history_repository_impl.dart';
-import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/domain/word_history/i_word_history_repository.dart';
 import 'package:unofficial_jisho_api/api.dart' as jisho;
 
 part 'dictionary_details_event.dart';
@@ -14,11 +13,17 @@ part 'dictionary_details_state.dart';
 @lazySingleton
 class DictionaryDetailsBloc
     extends Bloc<DictionaryDetailsEvent, DictionaryDetailsState> {
-  DictionaryDetailsBloc() : super(DictionaryDetailsStateLoading()) {
+  final IDictionaryDetailsRepository _dictionaryDetailsRepository;
+  final IWordHistoryRepository _wordHistoryRepository;
+
+  DictionaryDetailsBloc(
+    this._dictionaryDetailsRepository,
+    this._wordHistoryRepository,
+  ) : super(DictionaryDetailsStateLoading()) {
     on<DictionaryDetailsLoadingEvent>((event, emit) async {
       emit(DictionaryDetailsStateLoading());
       try {
-        final infra = getIt<DictionaryDetailsRepositoryImpl>();
+        final infra = _dictionaryDetailsRepository;
         jisho.KanjiResultData? resultData = await infra.searchWord(event.kanji);
         List<jisho.JishoResult> resultPhrase =
             await infra.searchPhrase(event.kanji);
@@ -39,7 +44,7 @@ class DictionaryDetailsBloc
     });
 
     on<DictionaryDetailsEventAddToHistory>((event, emit) async {
-      await getIt<WordHistoryRepositoryImpl>().addWordToHistory(event.word);
+      await _wordHistoryRepository.addWordToHistory(event.word);
     });
   }
 }

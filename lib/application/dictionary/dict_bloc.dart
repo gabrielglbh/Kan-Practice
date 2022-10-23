@@ -2,8 +2,7 @@ import 'package:image/image.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/infrastructure/classifier/classifier_repository_impl.dart';
-import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/domain/classifier/i_classifier_repository.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 
@@ -12,7 +11,9 @@ part 'dict_state.dart';
 
 @lazySingleton
 class DictBloc extends Bloc<DictEvent, DictState> {
-  DictBloc() : super(DictStateLoading()) {
+  final IClassifierRepository _classifierRepository;
+
+  DictBloc(this._classifierRepository) : super(DictStateLoading()) {
     on<DictEventIdle>((_, __) {});
 
     on<DictEventStart>((event, emit) async {
@@ -21,7 +22,7 @@ class DictBloc extends Bloc<DictEvent, DictState> {
 
         /// Instantiate the classifier once the page has been animated in
         await Future.delayed(const Duration(milliseconds: 500), () async {
-          await getIt<ClassifierRepositoryImpl>().loadModel();
+          await _classifierRepository.loadModel();
         });
         emit(const DictStateLoaded());
       } on Exception {
@@ -32,8 +33,7 @@ class DictBloc extends Bloc<DictEvent, DictState> {
     on<DictEventLoading>((event, emit) async {
       try {
         emit(DictStateLoading());
-        List<Category> categories =
-            getIt<ClassifierRepositoryImpl>().predict(event.image);
+        List<Category> categories = _classifierRepository.predict(event.image);
         categories =
             categories.getRange(0, KPSizes.numberOfPredictedKanji).toList();
         emit(DictStateLoaded(categories));

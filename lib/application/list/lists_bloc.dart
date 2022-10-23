@@ -2,9 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/core/types/wordlist_filters.dart';
+import 'package:kanpractice/domain/list/i_list_repository.dart';
 import 'package:kanpractice/domain/list/list.dart';
-import 'package:kanpractice/infrastructure/list/list_repository_impl.dart';
-import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 part 'lists_event.dart';
@@ -13,7 +12,9 @@ part 'lists_state.dart';
 /// This bloc is used in ListS.dart, jisho.dart and add_marketlist.dart.
 @lazySingleton
 class ListBloc extends Bloc<ListEvent, ListState> {
-  ListBloc() : super(ListStateLoading()) {
+  final IListRepository _listRepository;
+
+  ListBloc(this._listRepository) : super(ListStateLoading()) {
     /// Maintain the list for pagination purposes
     List<WordList> list = [];
 
@@ -40,12 +41,11 @@ class ListBloc extends Bloc<ListEvent, ListState> {
         /// a new list in order for Equatable to trigger and perform a change
         /// of state. After, add to list the elements for the next iteration.
         List<WordList> fullList = List.of(list);
-        final List<WordList> pagination = await getIt<ListRepositoryImpl>()
-            .getAllLists(
-                filter: event.filter,
-                order: _getSelectedOrder(event.order),
-                limit: limit,
-                offset: loadingTimes);
+        final List<WordList> pagination = await _listRepository.getAllLists(
+            filter: event.filter,
+            order: _getSelectedOrder(event.order),
+            limit: limit,
+            offset: loadingTimes);
         fullList.addAll(pagination);
         list.addAll(pagination);
         loadingTimes += 1;
@@ -58,8 +58,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<ListForTestEventLoading>((event, emit) async {
       try {
         emit(ListStateLoading());
-        final List<WordList> lists =
-            await getIt<ListRepositoryImpl>().getAllLists();
+        final List<WordList> lists = await _listRepository.getAllLists();
         emit(ListStateLoaded(lists: lists));
       } on Exception {
         emit(ListStateFailure());
@@ -79,8 +78,8 @@ class ListBloc extends Bloc<ListEvent, ListState> {
         /// a new list in order for Equatable to trigger and perform a change
         /// of state. After, add to list the elements for the next iteration.
         List<WordList> fullList = List.of(searchList);
-        final List<WordList> pagination = await getIt<ListRepositoryImpl>()
-            .getListsMatchingQuery(event.query,
+        final List<WordList> pagination =
+            await _listRepository.getListsMatchingQuery(event.query,
                 offset: loadingTimesForSearch, limit: limit);
         fullList.addAll(pagination);
         searchList.addAll(pagination);
@@ -94,7 +93,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<ListEventDelete>((event, emit) async {
       if (state is ListStateLoaded) {
         String name = event.list.name;
-        final code = await getIt<ListRepositoryImpl>().removeList(name);
+        final code = await _listRepository.removeList(name);
         if (code == 0) {
           emit(ListStateLoading());
           List<WordList> newList =
@@ -113,7 +112,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<ListEventCreate>((event, emit) async {
       if (state is ListStateLoaded) {
         String? name = event.name;
-        final code = await getIt<ListRepositoryImpl>().createList(name);
+        final code = await _listRepository.createList(name);
         if (code == 0) {
           emit(ListStateLoading());
           List<WordList> newList = [];
@@ -122,7 +121,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
                 event.filter, event.order,
                 limit: limit, l: list);
           } else {
-            newList = await getIt<ListRepositoryImpl>().getAllLists();
+            newList = await _listRepository.getAllLists();
           }
 
           /// Reset offsets
@@ -139,7 +138,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
       {required int limit, required List<WordList> l}) async {
     /// When creating or removing a new list, reset any pagination offset
     /// to load up from the start
-    final List<WordList> lists = await getIt<ListRepositoryImpl>().getAllLists(
+    final List<WordList> lists = await _listRepository.getAllLists(
         filter: filter,
         order: _getSelectedOrder(order),
         limit: limit,

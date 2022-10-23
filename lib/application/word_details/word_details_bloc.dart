@@ -3,11 +3,10 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/domain/list/i_list_repository.dart';
 import 'package:kanpractice/domain/list/list.dart';
+import 'package:kanpractice/domain/word/i_word_repository.dart';
 import 'package:kanpractice/domain/word/word.dart';
-import 'package:kanpractice/infrastructure/list/list_repository_impl.dart';
-import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
-import 'package:kanpractice/injection.dart';
 
 part 'word_details_event.dart';
 part 'word_details_state.dart';
@@ -15,12 +14,18 @@ part 'word_details_state.dart';
 /// This bloc is used in kanji_lists.dart and jisho.dart
 @lazySingleton
 class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
-  WordDetailsBloc() : super(WordDetailsStateLoading()) {
+  final IListRepository _listRepository;
+  final IWordRepository _wordRepository;
+
+  WordDetailsBloc(
+    this._listRepository,
+    this._wordRepository,
+  ) : super(WordDetailsStateLoading()) {
     on<WordDetailsEventLoading>((event, emit) async {
       try {
         emit(WordDetailsStateLoading());
-        final kanji = await getIt<WordRepositoryImpl>()
-            .getWord(event.word.listName, event.word.word);
+        final kanji =
+            await _wordRepository.getWord(event.word.listName, event.word.word);
         emit(WordDetailsStateLoaded(kanji: kanji));
       } on Exception {
         emit(const WordDetailsStateFailure(error: ":("));
@@ -30,12 +35,11 @@ class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
     on<WordDetailsEventDelete>((event, emit) async {
       final k = event.word;
       if (state is WordDetailsStateLoaded && k != null) {
-        final int code =
-            await getIt<WordRepositoryImpl>().removeWord(k.listName, k.word);
+        final int code = await _wordRepository.removeWord(k.listName, k.word);
         if (code == 0) {
-          WordList list = await getIt<ListRepositoryImpl>().getList(k.listName);
+          WordList list = await _listRepository.getList(k.listName);
           List<Word> words =
-              await getIt<WordRepositoryImpl>().getAllWordsFromList(k.listName);
+              await _wordRepository.getAllWordsFromList(k.listName);
 
           /// Update for each mode the overall score again. Issue: #10
           ///
@@ -45,7 +49,7 @@ class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
           ///
           /// If list is empty, update all values to -1.
           if (words.isEmpty) {
-            await getIt<ListRepositoryImpl>().updateList(k.listName, {
+            await _listRepository.updateList(k.listName, {
               ListTableFields.totalWinRateWritingField:
                   DatabaseConstants.emptyWinRate,
               ListTableFields.totalWinRateReadingField:
@@ -89,7 +93,7 @@ class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
               lisNewScore = partialScore / words.length;
             }
 
-            await getIt<ListRepositoryImpl>().updateList(k.listName, {
+            await _listRepository.updateList(k.listName, {
               ListTableFields.totalWinRateWritingField: wNewScore,
               ListTableFields.totalWinRateReadingField: readNewScore,
               ListTableFields.totalWinRateRecognitionField: recNewScore,

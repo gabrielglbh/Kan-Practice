@@ -2,18 +2,19 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/infrastructure/backup/backup_repository_impl.dart';
-import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/domain/backup/i_backup_repository.dart';
 
 part 'backup_event.dart';
 part 'backup_state.dart';
 
 @lazySingleton
 class BackUpBloc extends Bloc<BackUpEvent, BackUpState> {
-  BackUpBloc() : super(BackUpStateIdle()) {
+  final IBackupRepository _backupRepository;
+
+  BackUpBloc(this._backupRepository) : super(BackUpStateIdle()) {
     on<BackUpLoadingCreateBackUp>((event, emit) async {
       emit(BackUpStateLoading());
-      final error = await getIt<BackupRepositoryImpl>().createBackUp();
+      final error = await _backupRepository.createBackUp();
       if (error == "") {
         emit(BackUpStateSuccess(
             message: "backup_bloc_creation_successful".tr()));
@@ -25,7 +26,7 @@ class BackUpBloc extends Bloc<BackUpEvent, BackUpState> {
 
     on<BackUpLoadingMergeBackUp>((event, emit) async {
       emit(BackUpStateLoading());
-      final error = await getIt<BackupRepositoryImpl>().restoreBackUp();
+      final error = await _backupRepository.restoreBackUp();
       if (error == "") {
         emit(BackUpStateSuccess(message: "backup_bloc_merge_successful".tr()));
       } else {
@@ -36,7 +37,7 @@ class BackUpBloc extends Bloc<BackUpEvent, BackUpState> {
 
     on<BackUpLoadingRemoveBackUp>((event, emit) async {
       emit(BackUpStateLoading());
-      final error = await getIt<BackupRepositoryImpl>().removeBackUp();
+      final error = await _backupRepository.removeBackUp();
       if (error == "") {
         emit(
             BackUpStateSuccess(message: "backup_bloc_removal_successful".tr()));

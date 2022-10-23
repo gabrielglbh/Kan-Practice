@@ -3,21 +3,32 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/core/types/market_list_type.dart';
-import 'package:kanpractice/infrastructure/auth/auth_repository_impl.dart';
-import 'package:kanpractice/infrastructure/folder/folder_repository_impl.dart';
-import 'package:kanpractice/infrastructure/list/list_repository_impl.dart';
-import 'package:kanpractice/infrastructure/market/market_repository_impl.dart';
-import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
-import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/domain/auth/i_auth_repository.dart';
+import 'package:kanpractice/domain/folder/i_folder_repository.dart';
+import 'package:kanpractice/domain/list/i_list_repository.dart';
+import 'package:kanpractice/domain/market/i_market_repository.dart';
+import 'package:kanpractice/domain/word/i_word_repository.dart';
 
 part 'add_to_market_event.dart';
 part 'add_to_market_state.dart';
 
 @lazySingleton
 class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
-  AddToMarketBloc() : super(AddToMarketStateInitial()) {
+  final IAuthRepository _authRepository;
+  final IMarketRepository _marketRepository;
+  final IWordRepository _wordRepository;
+  final IListRepository _listRepository;
+  final IFolderRepository _folderRepository;
+
+  AddToMarketBloc(
+    this._authRepository,
+    this._marketRepository,
+    this._wordRepository,
+    this._listRepository,
+    this._folderRepository,
+  ) : super(AddToMarketStateInitial()) {
     on<AddToMarketEventIdle>((event, emit) {
-      final user = getIt<AuthRepositoryImpl>().getUser();
+      final user = _authRepository.getUser();
       emit(AddToMarketStateGetUser(
           user?.displayName ?? user?.email?.split("@")[0] ?? ""));
     });
@@ -29,26 +40,22 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
         emit(AddToMarketStateFailure("add_to_market_validation_failed".tr()));
       } else {
         bool updated = true;
-        if (event.author !=
-            getIt<AuthRepositoryImpl>().getUser()?.displayName) {
-          updated =
-              await getIt<AuthRepositoryImpl>().updateUserName(event.author);
+        if (event.author != _authRepository.getUser()?.displayName) {
+          updated = await _authRepository.updateUserName(event.author);
         }
 
         if (event.author.isEmpty || !updated) {
           emit(AddToMarketStateFailure("add_to_market_validation_failed".tr()));
         } else {
           if (event.type == MarketListType.list) {
-            final list = await getIt<ListRepositoryImpl>().getList(event.name);
-            final kanji = await getIt<WordRepositoryImpl>()
-                .getAllWordsFromList(event.name);
+            final list = await _listRepository.getList(event.name);
+            final kanji = await _wordRepository.getAllWordsFromList(event.name);
 
             if (kanji.isEmpty) {
               emit(AddToMarketStateFailure("add_to_market_kanji_empty".tr()));
             } else {
-              final res = await getIt<MarketRepositoryImpl>()
-                  .uploadListToMarketPlace(
-                      event.listNameForMarket, list, kanji, event.description);
+              final res = await _marketRepository.uploadListToMarketPlace(
+                  event.listNameForMarket, list, kanji, event.description);
               if (res == 0) {
                 emit(AddToMarketStateSuccess());
               } else if (res == -2) {
@@ -63,19 +70,21 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
               }
             }
           } else {
-            final folder =
-                await getIt<FolderRepositoryImpl>().getFolder(event.name);
-            final lists = await getIt<FolderRepositoryImpl>()
-                .getAllListsOnFolder(event.name);
-            final kanji = await getIt<FolderRepositoryImpl>()
+            final folder = await _folderRepository.getFolder(event.name);
+            final lists =
+                await _folderRepository.getAllListsOnFolder(event.name);
+            final kanji = await _folderRepository
                 .getAllWordsOnListsOnFolder([event.name]);
 
             if (kanji.isEmpty) {
               emit(AddToMarketStateFailure("add_to_market_kanji_empty".tr()));
             } else {
-              final res = await getIt<MarketRepositoryImpl>()
-                  .uploadFolderToMarketPlace(event.listNameForMarket, folder,
-                      lists, kanji, event.description);
+              final res = await _marketRepository.uploadFolderToMarketPlace(
+                  event.listNameForMarket,
+                  folder,
+                  lists,
+                  kanji,
+                  event.description);
               if (res == 0) {
                 emit(AddToMarketStateSuccess());
               } else if (res == -2) {

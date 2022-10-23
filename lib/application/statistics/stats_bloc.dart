@@ -1,35 +1,37 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:kanpractice/domain/list/i_list_repository.dart';
 import 'package:kanpractice/domain/stats/stats.dart';
+import 'package:kanpractice/domain/test_data/i_test_data_repository.dart';
 import 'package:kanpractice/domain/test_data/test_data.dart';
+import 'package:kanpractice/domain/word/i_word_repository.dart';
 import 'package:kanpractice/domain/word/word.dart';
-import 'package:kanpractice/infrastructure/list/list_repository_impl.dart';
-import 'package:kanpractice/infrastructure/test_data/test_data_repository_impl.dart';
-import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
-import 'package:kanpractice/injection.dart';
 
 part 'stats_event.dart';
 part 'stats_state.dart';
 
 @lazySingleton
 class StatisticsBloc extends Bloc<StatsEvent, StatsState> {
-  StatisticsBloc() : super(StatisticsLoading()) {
+  final IListRepository _listRepository;
+  final IWordRepository _wordRepository;
+  final ITestDataRepository _testDataRepository;
+
+  StatisticsBloc(
+    this._listRepository,
+    this._wordRepository,
+    this._testDataRepository,
+  ) : super(StatisticsLoading()) {
     on<StatisticsEventLoading>((event, emit) async {
       emit(StatisticsLoading());
 
-      final int totalLists =
-          await getIt<ListRepositoryImpl>().getTotalListCount();
-      final int totalWords =
-          await getIt<WordRepositoryImpl>().getTotalWordCount();
-      final Word winRates =
-          await getIt<WordRepositoryImpl>().getTotalWordsWinRates();
-      final List<String> lists =
-          await getIt<ListRepositoryImpl>().getBestAndWorstList();
-      final TestData test =
-          await getIt<TestDataRepositoryImpl>().getTestDataFromDb();
+      final int totalLists = await _listRepository.getTotalListCount();
+      final int totalWords = await _wordRepository.getTotalWordCount();
+      final Word winRates = await _wordRepository.getTotalWordsWinRates();
+      final List<String> lists = await _listRepository.getBestAndWorstList();
+      final TestData test = await _testDataRepository.getTestDataFromDb();
       final List<int> totalCategoryCounts =
-          await getIt<WordRepositoryImpl>().getWordsFromCategory();
+          await _wordRepository.getWordsFromCategory();
 
       emit(StatisticsLoaded(
         stats: KanPracticeStats(

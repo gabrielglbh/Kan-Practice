@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/types/kanji_categories.dart';
+import 'package:kanpractice/core/types/word_categories.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KPKanjiCategoryList extends StatelessWidget {
@@ -24,7 +24,7 @@ class KPKanjiCategoryList extends StatelessWidget {
       shrinkWrap: true,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3, childAspectRatio: 2.8),
-      children: List.generate(KanjiCategory.values.length, (index) {
+      children: List.generate(WordCategory.values.length, (index) {
         return GestureDetector(
           onTap: () => onSelected(index),
           child: Container(
@@ -36,7 +36,7 @@ class KPKanjiCategoryList extends StatelessWidget {
               margin: const EdgeInsets.symmetric(
                   horizontal: KPMargins.margin4, vertical: KPMargins.margin2),
               alignment: Alignment.center,
-              child: Text(KanjiCategory.values[index].category,
+              child: Text(WordCategory.values[index].category,
                   style: Theme.of(context)
                       .textTheme
                       .bodyText2

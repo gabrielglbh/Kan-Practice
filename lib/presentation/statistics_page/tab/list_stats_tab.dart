@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
-import 'package:kanpractice/core/types/kanji_categories.dart';
+import 'package:kanpractice/core/types/word_categories.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_bar_chart.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_radial_graph.dart';
@@ -75,7 +75,7 @@ class _ListStatsState extends State<ListStats>
           isHorizontalChart: true,
           onBarTapped: (model) async {
             if (model.dataPoints?.isNotEmpty == true) {
-              final mode = KanjiCategory.values[model.pointIndex ?? -1];
+              final mode = WordCategory.values[model.pointIndex ?? -1];
               final data =
                   await WordQueries.instance.getSpecificCategoryData(mode);
               // ignore: use_build_context_synchronously
@@ -83,9 +83,9 @@ class _ListStatsState extends State<ListStats>
             }
           },
           dataSource: List.generate(
-            KanjiCategory.values.length,
+            WordCategory.values.length,
             (index) => DataFrame(
-              x: KanjiCategory.values[index].category,
+              x: WordCategory.values[index].category,
               y: widget.stats.totalCategoryCounts[index].toDouble(),
               color: KPColors.secondaryColor,
             ),

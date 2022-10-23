@@ -1,7 +1,7 @@
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-enum KanListFilters {
+enum WordListFilters {
   all,
   alphabetically,
   writing,
@@ -11,62 +11,62 @@ enum KanListFilters {
   speaking
 }
 
-extension KanListFiltersExtensions on KanListFilters {
+extension KanListFiltersExtensions on WordListFilters {
   String get label {
     switch (this) {
-      case KanListFilters.all:
+      case WordListFilters.all:
         return "filters_all".tr();
-      case KanListFilters.alphabetically:
+      case WordListFilters.alphabetically:
         return "ABC";
-      case KanListFilters.writing:
+      case WordListFilters.writing:
         return "${"study_modes_writing".tr()} %";
-      case KanListFilters.reading:
+      case WordListFilters.reading:
         return "${"study_modes_reading".tr()} %";
-      case KanListFilters.recognition:
+      case WordListFilters.recognition:
         return "${"study_modes_recognition".tr()} %";
-      case KanListFilters.listening:
+      case WordListFilters.listening:
         return "${"study_modes_listening".tr()} %";
-      case KanListFilters.speaking:
+      case WordListFilters.speaking:
         return "${"study_modes_speaking".tr()} %";
     }
   }
 
   String get filter {
     switch (this) {
-      case KanListFilters.writing:
+      case WordListFilters.writing:
         return KanListTableFields.totalWinRateWritingField;
-      case KanListFilters.reading:
+      case WordListFilters.reading:
         return KanListTableFields.totalWinRateReadingField;
-      case KanListFilters.recognition:
+      case WordListFilters.recognition:
         return KanListTableFields.totalWinRateRecognitionField;
-      case KanListFilters.listening:
+      case WordListFilters.listening:
         return KanListTableFields.totalWinRateListeningField;
-      case KanListFilters.speaking:
+      case WordListFilters.speaking:
         return KanListTableFields.totalWinRateSpeakingField;
-      case KanListFilters.all:
+      case WordListFilters.all:
         return KanListTableFields.lastUpdatedField;
-      case KanListFilters.alphabetically:
+      case WordListFilters.alphabetically:
         return KanListTableFields.nameField;
     }
   }
 }
 
 class KanListFiltersUtils {
-  static KanListFilters getFilterFrom(String f) {
+  static WordListFilters getFilterFrom(String f) {
     if (f == KanListTableFields.lastUpdatedField) {
-      return KanListFilters.all;
+      return WordListFilters.all;
     } else if (f == KanListTableFields.nameField) {
-      return KanListFilters.alphabetically;
+      return WordListFilters.alphabetically;
     } else if (f == KanListTableFields.totalWinRateWritingField) {
-      return KanListFilters.writing;
+      return WordListFilters.writing;
     } else if (f == KanListTableFields.totalWinRateReadingField) {
-      return KanListFilters.reading;
+      return WordListFilters.reading;
     } else if (f == KanListTableFields.totalWinRateRecognitionField) {
-      return KanListFilters.recognition;
+      return WordListFilters.recognition;
     } else if (f == KanListTableFields.totalWinRateListeningField) {
-      return KanListFilters.listening;
+      return WordListFilters.listening;
     } else {
-      return KanListFilters.speaking;
+      return WordListFilters.speaking;
     }
   }
 }

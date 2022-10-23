@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kanpractice/core/database/queries/list_queries.dart';
-import 'package:kanpractice/core/types/kanlist_filters.dart';
+import 'package:kanpractice/core/types/wordlist_filters.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
@@ -131,7 +131,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
   }
 
   Future<List<WordList>> _getNewAllListsAndUpdateLazyLoadingState(
-      KanListFilters filter, bool order,
+      WordListFilters filter, bool order,
       {required int limit, required List<WordList> l}) async {
     /// When creating or removing a new list, reset any pagination offset
     /// to load up from the start

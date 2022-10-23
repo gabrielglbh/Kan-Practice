@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/domain/dictionary_details/dictionary_details_example.dart';
+import 'package:kanpractice/domain/dictionary_details/word_example.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/widgets/generic/custom_expansion_tile.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/widgets/generic/scrollable_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class ExamplePhrases extends StatelessWidget {
-  final List<KanjiExample> data;
+  final List<WordExample> data;
   const ExamplePhrases({Key? key, required this.data}) : super(key: key);
 
   @override
@@ -22,7 +22,7 @@ class ExamplePhrases extends StatelessWidget {
     );
   }
 
-  Widget _displayExamplePhrases(BuildContext context, List<KanjiExample> data) {
+  Widget _displayExamplePhrases(BuildContext context, List<WordExample> data) {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
         child: CustomExpansionTile(
@@ -31,7 +31,7 @@ class ExamplePhrases extends StatelessWidget {
   }
 
   List<Widget> _listViewOfExamples(
-      BuildContext context, List<KanjiExample> data) {
+      BuildContext context, List<WordExample> data) {
     List<Widget> res = [];
     for (int i = 0; i < data.length; i++) {
       res.add(Padding(

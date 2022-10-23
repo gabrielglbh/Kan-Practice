@@ -1,4 +1,4 @@
-import 'package:kanpractice/domain/dictionary_details/dictionary_details_example.dart';
+import 'package:kanpractice/domain/dictionary_details/word_example.dart';
 import 'package:unofficial_jisho_api/api.dart' as jisho;
 
 class JishoAPI {
@@ -22,11 +22,11 @@ class JishoAPI {
     return data;
   }
 
-  Future<List<KanjiExample>> searchForExample(String kanji) async {
+  Future<List<WordExample>> searchForExample(String kanji) async {
     jisho.ExampleResults res = await jisho.searchForExamples(kanji);
-    List<KanjiExample> examples = [];
+    List<WordExample> examples = [];
     for (var example in res.results) {
-      examples.add(KanjiExample(
+      examples.add(WordExample(
           kanji: example.kanji,
           kana: example.kana,
           english: example.english,

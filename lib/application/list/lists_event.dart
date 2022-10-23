@@ -9,7 +9,7 @@ abstract class ListEvent extends Equatable {
 
 class ListEventLoading extends ListEvent {
   /// Maintains the filter applied by the user for loading new lists
-  final KanListFilters filter;
+  final WordListFilters filter;
 
   /// Maintains the order applied by the user for loading new lists
   final bool order;
@@ -47,7 +47,7 @@ class ListEventCreate extends ListEvent {
   final String name;
 
   /// Maintains the filter applied by the user for loading new lists
-  final KanListFilters filter;
+  final WordListFilters filter;
 
   /// Maintains the order applied by the user for loading new lists
   final bool order;
@@ -64,7 +64,7 @@ class ListEventDelete extends ListEvent {
   final WordList list;
 
   /// Maintains the filter applied by the user for loading new lists
-  final KanListFilters filter;
+  final WordListFilters filter;
 
   /// Maintains the order applied by the user for loading new lists
   final bool order;

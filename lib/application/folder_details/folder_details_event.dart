@@ -11,7 +11,7 @@ class FolderDetailsEventLoading extends FolderDetailsEvent {
   final String folder;
 
   /// Maintains the filter applied by the user for loading new lists
-  final KanListFilters filter;
+  final WordListFilters filter;
 
   /// Maintains the order applied by the user for loading new lists
   final bool order;
@@ -56,7 +56,7 @@ class FolderDetailsEventDelete extends FolderDetailsEvent {
   final WordList list;
 
   /// Maintains the filter applied by the user for loading new lists
-  final KanListFilters filter;
+  final WordListFilters filter;
 
   /// Maintains the order applied by the user for loading new lists
   final bool order;

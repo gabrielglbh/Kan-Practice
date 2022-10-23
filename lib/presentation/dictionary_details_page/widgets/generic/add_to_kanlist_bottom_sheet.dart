@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/list/lists_bloc.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
-import 'package:kanpractice/domain/dictionary_details/dictionary_details_data.dart';
-import 'package:kanpractice/core/types/kanlist_filters.dart';
-import 'package:kanpractice/core/types/kanji_categories.dart';
+import 'package:kanpractice/domain/dictionary_details/word_data.dart';
+import 'package:kanpractice/core/types/wordlist_filters.dart';
+import 'package:kanpractice/core/types/word_categories.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/ui/kp_create_kanlist_dialog.dart';
@@ -17,14 +17,14 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class AddToKanListBottomSheet extends StatefulWidget {
   final String? kanji;
-  final KanjiData data;
+  final WordData data;
   const AddToKanListBottomSheet(
       {Key? key, required this.kanji, required this.data})
       : super(key: key);
 
   /// Creates and calls the [BottomSheet] with the content for a regular test
   static Future<String?> callAddToKanListBottomSheet(
-      BuildContext context, String? kanji, KanjiData data) async {
+      BuildContext context, String? kanji, WordData data) async {
     return await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -40,11 +40,11 @@ class AddToKanListBottomSheet extends StatefulWidget {
 
 class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
   final ListBloc _bloc = ListBloc();
-  KanjiCategory _category = KanjiCategory.noun;
+  WordCategory _category = WordCategory.noun;
   String _error = "";
 
   Future<void> _addWordToKanList(
-      BuildContext context, KanjiCategory category, String listName) async {
+      BuildContext context, WordCategory category, String listName) async {
     String? wordMeaning =
         widget.data.resultPhrase[0].senses[0].englishDefinitions[0];
     String? wordReading = widget.data.resultPhrase[0].japanese[0].reading ?? "";
@@ -147,7 +147,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
             hasScrollablePhysics: true,
             selected: (index) => _category.index == index,
             onSelected: (index) {
-              setState(() => _category = KanjiCategory.values[index]);
+              setState(() => _category = WordCategory.values[index]);
             },
           ),
         ),
@@ -155,7 +155,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
           onTap: () =>
               KPCreateKanListDialog.show(context, onSubmit: (String name) {
             _bloc.add(ListEventCreate(name,
-                filter: KanListFilters.all,
+                filter: WordListFilters.all,
                 order: false,
                 useLazyLoading: false));
           }),

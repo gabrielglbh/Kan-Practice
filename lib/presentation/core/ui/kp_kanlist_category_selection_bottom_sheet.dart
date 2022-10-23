@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/queries/folder_queries.dart';
 import 'package:kanpractice/core/database/queries/kanji_queries.dart';
-import 'package:kanpractice/core/types/kanji_categories.dart';
+import 'package:kanpractice/core/types/word_categories.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
@@ -34,12 +34,12 @@ class KPKanListCategorySelectionBottomSheet extends StatefulWidget {
 class _KPKanListCategorySelectionBottomSheetState
     extends State<KPKanListCategorySelectionBottomSheet> {
   List<Word> _kanji = [];
-  KanjiCategory _selectedCategory = KanjiCategory.noun;
+  WordCategory _selectedCategory = WordCategory.noun;
 
   bool _selectionMode = false;
   bool _onListEmpty = false;
 
-  Future<List<Word>> _loadKanjiFromListSelection(KanjiCategory category) async {
+  Future<List<Word>> _loadKanjiFromListSelection(WordCategory category) async {
     List<Word> list = [];
     if (widget.folder == null) {
       list = await WordQueries.instance.getKanjiBasedOnCategory(category.index);
@@ -114,7 +114,7 @@ class _KPKanListCategorySelectionBottomSheetState
         KPKanjiCategoryList(
           selected: (index) => index == _selectedCategory.index,
           onSelected: (index) => setState(() {
-            _selectedCategory = KanjiCategory.values[index];
+            _selectedCategory = WordCategory.values[index];
             _onListEmpty = false;
           }),
         ),

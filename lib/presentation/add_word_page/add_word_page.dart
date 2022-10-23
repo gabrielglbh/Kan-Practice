@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/add_kanji/add_kanji_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
-import 'package:kanpractice/core/types/kanji_categories.dart';
+import 'package:kanpractice/core/types/word_categories.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/add_word_page/arguments.dart';
@@ -30,7 +30,7 @@ class _AddWordPageState extends State<AddWordPage> {
   TextEditingController? _meaningController;
   FocusNode? _meaningFocus;
 
-  KanjiCategory _currentCategory = KanjiCategory.noun;
+  WordCategory _currentCategory = WordCategory.noun;
 
   @override
   void initState() {
@@ -45,7 +45,7 @@ class _AddWordPageState extends State<AddWordPage> {
       _kanjiController?.text = kanji.kanji.toString();
       _pronunciationController?.text = kanji.pronunciation.toString();
       _meaningController?.text = kanji.meaning.toString();
-      _currentCategory = KanjiCategory.values[kanji.category];
+      _currentCategory = WordCategory.values[kanji.category];
     }
     super.initState();
   }
@@ -283,7 +283,7 @@ class _AddWordPageState extends State<AddWordPage> {
         KPKanjiCategoryList(
             selected: (index) => index == _currentCategory.index,
             onSelected: (index) =>
-                setState(() => _currentCategory = KanjiCategory.values[index]))
+                setState(() => _currentCategory = WordCategory.values[index]))
       ],
     );
   }

@@ -1,7 +1,7 @@
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/types/folder_filters.dart';
-import 'package:kanpractice/core/types/kanlist_filters.dart';
+import 'package:kanpractice/core/types/wordlist_filters.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
@@ -110,7 +110,7 @@ class FolderQueries {
   /// is perfomed within the list_queries.dart file.
   Future<List<WordList>> getAllListsOnFolder(
     String folder, {
-    KanListFilters filter = KanListFilters.all,
+    WordListFilters filter = WordListFilters.all,
     String order = "DESC",
     int? offset,
     int? limit,

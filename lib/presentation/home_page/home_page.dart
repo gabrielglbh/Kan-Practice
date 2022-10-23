@@ -13,7 +13,7 @@ import 'package:kanpractice/core/tutorial/tutorial_manager.dart';
 import 'package:kanpractice/core/types/coach_tutorial_parts.dart';
 import 'package:kanpractice/core/types/folder_filters.dart';
 import 'package:kanpractice/core/types/home_types.dart';
-import 'package:kanpractice/core/types/kanlist_filters.dart';
+import 'package:kanpractice/core/types/wordlist_filters.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
 import 'package:kanpractice/core/types/tab_types.dart';
 import 'package:kanpractice/domain/market/market.dart';
@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage>
   late TextEditingController _searchTextController;
   bool _searchHasFocus = false;
 
-  KanListFilters _currentAppliedFilter = KanListFilters.all;
+  WordListFilters _currentAppliedFilter = WordListFilters.all;
   bool _currentAppliedOrder = true;
   FolderFilters _currentAppliedFolderFilter = FolderFilters.all;
   bool _currentAppliedFolderOrder = true;

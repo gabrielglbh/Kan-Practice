@@ -1,6 +1,6 @@
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/types/kanji_categories.dart';
+import 'package:kanpractice/core/types/word_categories.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/domain/specific_data/specific_data.dart';
@@ -232,7 +232,7 @@ class WordQueries {
     }
   }
 
-  Future<SpecificData> getSpecificCategoryData(KanjiCategory mode) async {
+  Future<SpecificData> getSpecificCategoryData(WordCategory mode) async {
     if (_database != null) {
       try {
         final res = await _database?.query(
@@ -471,15 +471,15 @@ class WordQueries {
   }
 
   Future<List<int>> getKanjiFromCategory() async {
-    List<int> empty = List.generate(KanjiCategory.values.length, (index) => 0);
+    List<int> empty = List.generate(WordCategory.values.length, (index) => 0);
     if (_database != null) {
       try {
         List<int> count = [];
-        for (int k = 0; k < KanjiCategory.values.length; k++) {
+        for (int k = 0; k < WordCategory.values.length; k++) {
           List<Map<String, dynamic>>? res = await _database?.query(
             KanjiTableFields.kanjiTable,
             where: "${KanjiTableFields.categoryField}=?",
-            whereArgs: [KanjiCategory.values[k].index],
+            whereArgs: [WordCategory.values[k].index],
           );
           count.add(res != null ? res.length : 0);
         }

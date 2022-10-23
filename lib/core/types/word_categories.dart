@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 
-enum KanjiCategory {
+enum WordCategory {
   noun,
   pronoun,
   verb,
@@ -13,28 +13,28 @@ enum KanjiCategory {
   interjection
 }
 
-extension KanjiCategoryExt on KanjiCategory {
+extension KanjiCategoryExt on WordCategory {
   String get category {
     switch (this) {
-      case KanjiCategory.noun:
+      case WordCategory.noun:
         return "kanji_category_noun".tr();
-      case KanjiCategory.pronoun:
+      case WordCategory.pronoun:
         return "kanji_category_pronoun".tr();
-      case KanjiCategory.verb:
+      case WordCategory.verb:
         return "kanji_category_verb".tr();
-      case KanjiCategory.adjective:
+      case WordCategory.adjective:
         return "kanji_category_adjective".tr();
-      case KanjiCategory.adverb:
+      case WordCategory.adverb:
         return "kanji_category_adverb".tr();
-      case KanjiCategory.expression:
+      case WordCategory.expression:
         return "kanji_category_expression".tr();
-      case KanjiCategory.counter:
+      case WordCategory.counter:
         return "kanji_category_counter".tr();
-      case KanjiCategory.preposition:
+      case WordCategory.preposition:
         return "kanji_category_preposition".tr();
-      case KanjiCategory.conjunction:
+      case WordCategory.conjunction:
         return "kanji_category_conjunction".tr();
-      case KanjiCategory.interjection:
+      case WordCategory.interjection:
         return "kanji_category_interjection".tr();
     }
   }

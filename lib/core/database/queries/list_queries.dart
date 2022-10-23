@@ -1,6 +1,6 @@
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/types/kanlist_filters.dart';
+import 'package:kanpractice/core/types/wordlist_filters.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
@@ -47,7 +47,7 @@ class ListQueries {
   /// Query to get all [WordList] from the db with an optional [order] and [filter].
   /// If anything goes wrong, an empty list will be returned.
   Future<List<WordList>> getAllLists(
-      {KanListFilters filter = KanListFilters.all,
+      {WordListFilters filter = WordListFilters.all,
       String order = "DESC",
       int? limit,
       int? offset}) async {

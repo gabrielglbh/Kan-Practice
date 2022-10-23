@@ -9,7 +9,7 @@ import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_kanji_lists/widgets/kanji_list_tile.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/core/types/kanlist_filters.dart';
+import 'package:kanpractice/core/types/wordlist_filters.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class KPWordLists extends StatefulWidget {
@@ -36,7 +36,7 @@ class _KPWordListsState extends State<KPWordLists>
   /// This variable keeps track of the actual filter applied. The value is
   /// saved into the shared preferences when a filter is applied.
   /// This value is then restored upon new session.
-  KanListFilters _currentAppliedFilter = KanListFilters.all;
+  WordListFilters _currentAppliedFilter = WordListFilters.all;
 
   /// This variable keeps track of the order applied on the current filter only:
   /// true --> DESC or false --> ASC. The value is saved into the shared preferences when a filter
@@ -111,7 +111,7 @@ class _KPWordListsState extends State<KPWordLists>
 
     /// Change the current applied filter based on the index selected on the ChoiceChip
     /// and change the value on _filterValues map to reflect the change on the UI
-    _currentAppliedFilter = KanListFilters.values[index];
+    _currentAppliedFilter = WordListFilters.values[index];
 
     /// Adds the loading event to the bloc builder to load the new specified list
     _addLoadingEvent(reset: true);
@@ -144,14 +144,14 @@ class _KPWordListsState extends State<KPWordLists>
     return SizedBox(
         height: KPSizes.defaultSizeFiltersList,
         child: ListView.builder(
-            itemCount: KanListFilters.values.length,
+            itemCount: WordListFilters.values.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: KPMargins.margin2),
                 child: ChoiceChip(
-                  label: Text(KanListFilters.values[index].label),
+                  label: Text(WordListFilters.values[index].label),
                   avatar: _currentAppliedFilter.index != index ? null : icon,
                   pressElevation: KPMargins.margin4,
                   padding:

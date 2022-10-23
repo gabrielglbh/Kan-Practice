@@ -8,7 +8,7 @@ class DictionaryDetailsState extends Equatable {
 }
 
 class DictionaryDetailsStateLoaded extends DictionaryDetailsState {
-  final KanjiData data;
+  final WordData data;
 
   const DictionaryDetailsStateLoaded({required this.data});
 

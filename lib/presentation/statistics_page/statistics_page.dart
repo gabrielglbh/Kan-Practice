@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/statistics/stats_bloc.dart';
 import 'package:kanpractice/application/test_history/test_history_bloc.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
@@ -69,9 +70,11 @@ class _StatisticsPageState extends State<StatisticsPage>
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (_) => StatisticsBloc()..add(StatisticsEventLoading())),
+            create: (_) =>
+                getIt<StatisticsBloc>()..add(StatisticsEventLoading())),
         BlocProvider(
-            create: (_) => TestHistoryBloc()..add(TestHistoryEventIdle())),
+            create: (_) =>
+                getIt<TestHistoryBloc>()..add(TestHistoryEventIdle())),
       ],
       child: KPScaffold(
         appBarTitle: "settings_general_statistics".tr(),

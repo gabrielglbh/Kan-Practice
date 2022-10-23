@@ -34,7 +34,6 @@ class FolderSelectionBottomSheet extends StatefulWidget {
 
 class _FolderSelectionBottomSheetState
     extends State<FolderSelectionBottomSheet> {
-  final FolderBloc _bloc = FolderBloc();
   List<Word> _kanji = [];
   final List<String> _selectedFolders = [];
   String _selectedFormattedFolder = "";
@@ -93,14 +92,15 @@ class _FolderSelectionBottomSheetState
               Visibility(
                 visible: !_selectionMode,
                 child: BlocProvider(
-                  create: (_) => _bloc..add(FolderForTestEventLoading()),
+                  create: (_) =>
+                      getIt<FolderBloc>()..add(FolderForTestEventLoading()),
                   child: BlocBuilder<FolderBloc, FolderState>(
                     builder: (context, state) {
                       if (state is FolderStateFailure) {
                         return KPEmptyList(
                             showTryButton: true,
-                            onRefresh: () =>
-                                _bloc..add(FolderForTestEventLoading()),
+                            onRefresh: () => getIt<FolderBloc>()
+                              ..add(FolderForTestEventLoading()),
                             message: "study_bottom_sheet_load_failed".tr());
                       } else if (state is FolderStateLoading) {
                         return const KPProgressIndicator();

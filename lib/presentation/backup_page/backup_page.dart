@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
@@ -17,7 +18,7 @@ class BackUpPage extends StatelessWidget {
     return KPScaffold(
         appBarTitle: "backup_title".tr(),
         child: BlocProvider<BackUpBloc>(
-          create: (_) => BackUpBloc()..add(BackUpIdle()),
+          create: (_) => getIt<BackUpBloc>()..add(BackUpIdle()),
           child: BlocConsumer<BackUpBloc, BackUpState>(
             listener: (context, state) {
               if (state is BackUpStateFailure) {
@@ -63,9 +64,9 @@ class BackUpPage extends StatelessWidget {
         ));
   }
 
-  _createDialogForCreatingBackUp(BuildContext bloc) {
+  _createDialogForCreatingBackUp(BuildContext context) {
     showDialog(
-        context: bloc,
+        context: context,
         builder: (context) => StatefulBuilder(
               builder: (context, setState) {
                 return KPDialog(
@@ -74,35 +75,35 @@ class BackUpPage extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyText1),
                   positiveButtonText: "backup_creation_dialog_positive".tr(),
                   onPositive: () =>
-                      bloc.read<BackUpBloc>().add(BackUpLoadingCreateBackUp()),
+                      getIt<BackUpBloc>().add(BackUpLoadingCreateBackUp()),
                 );
               },
             ));
   }
 
-  _createDialogForMergingBackUp(BuildContext bloc) {
+  _createDialogForMergingBackUp(BuildContext context) {
     showDialog(
-        context: bloc,
+        context: context,
         builder: (context) => KPDialog(
               title: Text("backup_merge_dialog_title".tr()),
               content: Text("backup_merge_dialog_content".tr(),
                   style: Theme.of(context).textTheme.bodyText1),
               positiveButtonText: "backup_merge_dialog_positive".tr(),
               onPositive: () =>
-                  bloc.read<BackUpBloc>().add(BackUpLoadingMergeBackUp()),
+                  getIt<BackUpBloc>().add(BackUpLoadingMergeBackUp()),
             ));
   }
 
-  _createDialogForRemovingBackUp(BuildContext bloc) {
+  _createDialogForRemovingBackUp(BuildContext context) {
     showDialog(
-        context: bloc,
+        context: context,
         builder: (context) => KPDialog(
               title: Text("backup_removal_dialog_title".tr()),
               content: Text("backup_removal_dialog_content".tr(),
                   style: Theme.of(context).textTheme.bodyText1),
               positiveButtonText: "backup_removal_dialog_positive".tr(),
               onPositive: () =>
-                  bloc.read<BackUpBloc>().add(BackUpLoadingRemoveBackUp()),
+                  getIt<BackUpBloc>().add(BackUpLoadingRemoveBackUp()),
             ));
   }
 }

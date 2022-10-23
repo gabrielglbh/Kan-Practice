@@ -4,7 +4,7 @@ import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/infrastructure/folder/folder_repository_impl.dart';
-import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
@@ -121,9 +121,9 @@ class _PracticeFolderBottomSheetState extends State<PracticeFolderBottomSheet> {
     List<Word> l,
     StudyModes mode,
   ) async {
-    final kanjiInTest = getIt<PreferencesRepositoryImpl>()
-            .readData(SharedKeys.numberOfKanjiInTest) ??
-        KPSizes.numberOfKanjiInTest;
+    final kanjiInTest =
+        getIt<PreferencesService>().readData(SharedKeys.numberOfKanjiInTest) ??
+            KPSizes.numberOfKanjiInTest;
     List<Word> sortedList =
         l.sublist(0, l.length < kanjiInTest ? l.length : kanjiInTest);
     navigator.pop(); // Dismiss this bottom sheet

@@ -5,7 +5,7 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/domain/word/word.dart';
-import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_learning_header_animation.dart';
@@ -117,8 +117,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
 
     /// Add the current virgin score to the test scores...
     if (widget.args.isTest) {
-      if (getIt<PreferencesRepositoryImpl>()
-              .readData(SharedKeys.affectOnPractice) ??
+      if (getIt<PreferencesService>().readData(SharedKeys.affectOnPractice) ??
           false) {
         await StudyModeUpdateHandler.calculateScore(widget.args, score, _macro);
       }

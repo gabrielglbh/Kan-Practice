@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
+import 'package:kanpractice/application/services/text_to_speech_service.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/domain/word/word.dart';
-import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
-import 'package:kanpractice/infrastructure/text_to_speech/text_to_speech_repository_impl.dart';
 import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_learning_header_animation.dart';
@@ -46,8 +46,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
     _studyList.addAll(widget.args.studyList);
 
     /// Execute the TTS when passing to the next kanji
-    getIt<TextToSpeechRepositoryImpl>()
-        .speakWord(_studyList[_macro].pronunciation);
+    getIt<TextToSpeechService>().speakWord(_studyList[_macro].pronunciation);
     super.initState();
   }
 
@@ -79,7 +78,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
           });
 
           /// Execute the TTS when passing to the next kanji
-          await getIt<TextToSpeechRepositoryImpl>()
+          await getIt<TextToSpeechService>()
               .speakWord(_studyList[_macro].pronunciation);
         }
 
@@ -124,8 +123,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
 
       /// Add the current virgin score to the test scores...
       if (widget.args.isTest) {
-        if (getIt<PreferencesRepositoryImpl>()
-                .readData(SharedKeys.affectOnPractice) ??
+        if (getIt<PreferencesService>().readData(SharedKeys.affectOnPractice) ??
             false) {
           await StudyModeUpdateHandler.calculateScore(
               widget.args, score, _macro);

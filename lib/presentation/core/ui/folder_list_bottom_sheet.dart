@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/application/folder_list/folder_bloc.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
@@ -52,7 +53,8 @@ class _FolderListBottomSheetState extends State<FolderListBottomSheet> {
                     style: Theme.of(context).textTheme.headline6),
               ),
               BlocProvider<FolderBloc>(
-                create: (_) => FolderBloc()..add(FolderForTestEventLoading()),
+                create: (_) =>
+                    getIt<FolderBloc>()..add(FolderForTestEventLoading()),
                 child: BlocConsumer<FolderBloc, FolderState>(
                   listener: (context, state) {
                     if (state is FolderStateAddedList) {
@@ -104,8 +106,7 @@ class _FolderListBottomSheetState extends State<FolderListBottomSheet> {
         return ListTile(
           onTap: () {
             if (widget.name != null) {
-              context
-                  .read<FolderBloc>()
+              getIt<FolderBloc>()
                   .add(FolderEventAddSingleList(widget.name!, listName));
             } else {
               Navigator.of(context).pop(listName);

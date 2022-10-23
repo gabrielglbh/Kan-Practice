@@ -33,7 +33,6 @@ class KanListSelectionBottomSheet extends StatefulWidget {
 
 class _KanListSelectionBottomSheetState
     extends State<KanListSelectionBottomSheet> {
-  final ListBloc _bloc = ListBloc();
   List<Word> _kanji = [];
   final List<String> _selectedLists = [];
   String _selectedFormattedLists = "";
@@ -92,14 +91,15 @@ class _KanListSelectionBottomSheetState
               Visibility(
                 visible: !_selectionMode,
                 child: BlocProvider(
-                  create: (_) => _bloc..add(const ListForTestEventLoading()),
+                  create: (_) =>
+                      getIt<ListBloc>()..add(const ListForTestEventLoading()),
                   child: BlocBuilder<ListBloc, ListState>(
                     builder: (context, state) {
                       if (state is ListStateFailure) {
                         return KPEmptyList(
                             showTryButton: true,
-                            onRefresh: () =>
-                                _bloc..add(const ListForTestEventLoading()),
+                            onRefresh: () => getIt<ListBloc>()
+                              ..add(const ListForTestEventLoading()),
                             message: "study_bottom_sheet_load_failed".tr());
                       } else if (state is ListStateLoading) {
                         return const KPProgressIndicator();

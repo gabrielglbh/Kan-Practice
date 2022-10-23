@@ -40,7 +40,6 @@ class AddToKanListBottomSheet extends StatefulWidget {
 }
 
 class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
-  final ListBloc _bloc = ListBloc();
   WordCategory _category = WordCategory.noun;
   String _error = "";
 
@@ -109,14 +108,15 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
                 ),
               ),
               BlocProvider<ListBloc>(
-                create: (_) => _bloc..add(const ListForTestEventLoading()),
+                create: (_) =>
+                    getIt<ListBloc>()..add(const ListForTestEventLoading()),
                 child: BlocBuilder<ListBloc, ListState>(
                   builder: (context, state) {
                     if (state is ListStateFailure) {
                       return KPEmptyList(
                           showTryButton: true,
-                          onRefresh: () =>
-                              _bloc..add(const ListForTestEventLoading()),
+                          onRefresh: () => getIt<ListBloc>()
+                            ..add(const ListForTestEventLoading()),
                           message: "study_bottom_sheet_load_failed".tr());
                     } else if (state is ListStateLoading) {
                       return const KPProgressIndicator();
@@ -155,7 +155,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
         ListTile(
           onTap: () =>
               KPCreateKanListDialog.show(context, onSubmit: (String name) {
-            _bloc.add(ListEventCreate(name,
+            getIt<ListBloc>().add(ListEventCreate(name,
                 filter: WordListFilters.all,
                 order: false,
                 useLazyLoading: false));

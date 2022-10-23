@@ -5,7 +5,7 @@ import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/infrastructure/folder/folder_repository_impl.dart';
-import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
@@ -31,9 +31,9 @@ class DailyBottomSheet extends StatelessWidget {
     final navigator = Navigator.of(context);
     final randomStudyMode =
         StudyModes.values[Random().nextInt(StudyModes.values.length)];
-    final kanjiInTest = getIt<PreferencesRepositoryImpl>()
-            .readData(SharedKeys.numberOfKanjiInTest) ??
-        KPSizes.numberOfKanjiInTest;
+    final kanjiInTest =
+        getIt<PreferencesService>().readData(SharedKeys.numberOfKanjiInTest) ??
+            KPSizes.numberOfKanjiInTest;
 
     final today = await Utils.parseTodayDate(context);
     List<Word> list = [];
@@ -58,7 +58,7 @@ class DailyBottomSheet extends StatelessWidget {
     /// Save to SharedPreferences the current folder, if any, to manage
     /// proper navigation when finishing the test.
     /// See addPostFrameCallback() in init() in [HomePage]
-    getIt<PreferencesRepositoryImpl>()
+    getIt<PreferencesService>()
         .saveData(SharedKeys.folderWhenOnTest, folder ?? "");
     await navigator.pushNamed(
       randomStudyMode.page,
@@ -94,7 +94,7 @@ class DailyBottomSheet extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline6),
               ),
               Visibility(
-                visible: getIt<PreferencesRepositoryImpl>()
+                visible: getIt<PreferencesService>()
                         .readData(SharedKeys.affectOnPractice) ==
                     true,
                 child: Container(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/infrastructure/list/list_repository_impl.dart';
-import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
@@ -61,7 +61,7 @@ class StudyModeUpdateHandler {
                   /// If the test was a number test, just go to the result page with
                   /// a null study list to not show anything.
                   if (!args.isNumberTest) {
-                    if (getIt<PreferencesRepositoryImpl>()
+                    if (getIt<PreferencesService>()
                             .readData(SharedKeys.affectOnPractice) ??
                         false) {
                       await _updateScoreForTestsAffectingPractice(args);

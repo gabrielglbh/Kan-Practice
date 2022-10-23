@@ -2,19 +2,19 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:kanpractice/application/services/messaging_service.dart';
 import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/infrastructure/initial/initial_repository_impl.dart';
-import 'package:kanpractice/infrastructure/services/messaging_repository_impl.dart';
-import 'package:kanpractice/infrastructure/services/preferences_repository_impl.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/infrastructure/test_data/test_data_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/theme/theme_manager.dart';
+import 'package:kanpractice/presentation/core/theme/theme_manager.dart';
 import 'presentation/core/routing/routes.dart';
 
 Future<void> _initSharedPreferences() async {
-  final prefs = getIt<PreferencesRepositoryImpl>();
+  final prefs = getIt<PreferencesService>();
   if (prefs.readData(SharedKeys.affectOnPractice) == null) {
     prefs.saveData(SharedKeys.affectOnPractice, false);
   }
@@ -92,8 +92,8 @@ class _KanPracticeState extends State<KanPractice> {
   void initState() {
     ThemeManager.instance.addListenerTo(() => setState(() {}));
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      getIt<MessagingRepositoryImpl>().handler(context);
-      if (getIt<PreferencesRepositoryImpl>()
+      getIt<MessagingService>().handler(context);
+      if (getIt<PreferencesService>()
               .readData(SharedKeys.haveSeenKanListCoachMark) ==
           false) {
         await getIt<InitialRepositoryImpl>()

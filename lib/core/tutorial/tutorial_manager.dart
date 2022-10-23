@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/types/coach_tutorial_parts.dart';
-import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
@@ -79,11 +79,11 @@ class TutorialCoach {
         onFinish: () {
           switch (_part) {
             case CoachTutorialParts.kanList:
-              getIt<PreferencesRepositoryImpl>()
+              getIt<PreferencesService>()
                   .saveData(SharedKeys.haveSeenKanListCoachMark, true);
               break;
             case CoachTutorialParts.details:
-              getIt<PreferencesRepositoryImpl>()
+              getIt<PreferencesService>()
                   .saveData(SharedKeys.haveSeenKanListDetailCoachMark, true);
               break;
           }

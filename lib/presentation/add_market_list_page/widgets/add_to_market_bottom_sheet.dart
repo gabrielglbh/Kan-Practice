@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/application/list/lists_bloc.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
@@ -28,8 +29,6 @@ class AddToMarketBottomSheet extends StatefulWidget {
 }
 
 class _AddToMarketBottomSheetState extends State<AddToMarketBottomSheet> {
-  final ListBloc _bloc = ListBloc();
-
   @override
   Widget build(BuildContext context) {
     return BottomSheet(
@@ -50,14 +49,15 @@ class _AddToMarketBottomSheetState extends State<AddToMarketBottomSheet> {
                     style: Theme.of(context).textTheme.headline6),
               ),
               BlocProvider<ListBloc>(
-                create: (_) => _bloc..add(const ListForTestEventLoading()),
+                create: (_) =>
+                    getIt<ListBloc>()..add(const ListForTestEventLoading()),
                 child: BlocBuilder<ListBloc, ListState>(
                   builder: (context, state) {
                     if (state is ListStateFailure) {
                       return KPEmptyList(
                           showTryButton: true,
-                          onRefresh: () =>
-                              _bloc..add(const ListForTestEventLoading()),
+                          onRefresh: () => getIt<ListBloc>()
+                            ..add(const ListForTestEventLoading()),
                           message: "kanji_lists_load_failed".tr());
                     } else if (state is ListStateLoading) {
                       return const KPProgressIndicator();

@@ -7,7 +7,7 @@ import 'package:kanpractice/application/market/market_bloc.dart';
 import 'package:kanpractice/application/settings/settings_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/infrastructure/backup/backup_repository_impl.dart';
-import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/core/tutorial/tutorial_manager.dart';
@@ -80,38 +80,35 @@ class _HomePageState extends State<HomePage>
     _tabController.addListener(_onTabChanged);
 
     final filterText =
-        getIt<PreferencesRepositoryImpl>().readData(SharedKeys.filtersOnList) ??
+        getIt<PreferencesService>().readData(SharedKeys.filtersOnList) ??
             ListTableFields.lastUpdatedField;
     _currentAppliedFilter = KanListFiltersUtils.getFilterFrom(filterText);
     _currentAppliedOrder =
-        getIt<PreferencesRepositoryImpl>().readData(SharedKeys.orderOnList) ??
-            true;
+        getIt<PreferencesService>().readData(SharedKeys.orderOnList) ?? true;
 
-    final filterFolderText = getIt<PreferencesRepositoryImpl>()
-            .readData(SharedKeys.filtersOnFolder) ??
-        FolderTableFields.lastUpdatedField;
+    final filterFolderText =
+        getIt<PreferencesService>().readData(SharedKeys.filtersOnFolder) ??
+            FolderTableFields.lastUpdatedField;
     _currentAppliedFolderFilter =
         FolderFiltersUtils.getFilterFrom(filterFolderText);
     _currentAppliedFolderOrder =
-        getIt<PreferencesRepositoryImpl>().readData(SharedKeys.orderOnFolder) ??
-            true;
+        getIt<PreferencesService>().readData(SharedKeys.orderOnFolder) ?? true;
 
-    final filterMarketText = getIt<PreferencesRepositoryImpl>()
-            .readData(SharedKeys.filtersOnMarket) ??
-        Market.uploadedToMarketField;
+    final filterMarketText =
+        getIt<PreferencesService>().readData(SharedKeys.filtersOnMarket) ??
+            Market.uploadedToMarketField;
     _currentAppliedMarketFilter =
         MarketFiltersUtils.getFilterFrom(filterMarketText);
     _currentAppliedMarketOrder =
-        getIt<PreferencesRepositoryImpl>().readData(SharedKeys.orderOnMarket) ??
-            true;
+        getIt<PreferencesService>().readData(SharedKeys.orderOnMarket) ?? true;
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       /// Read folder from SharedPreferences, current selected folder for the latest
       /// test. If any, show that BS and navigate to that tab. Else just
       /// show the BS with all tests
       if (widget.showTestBottomSheet == true) {
-        String? folder = getIt<PreferencesRepositoryImpl>()
-            .readData(SharedKeys.folderWhenOnTest);
+        String? folder =
+            getIt<PreferencesService>().readData(SharedKeys.folderWhenOnTest);
         bool hasFolder = folder != null && folder.isNotEmpty;
         if (hasFolder) _tabController.animateTo(1);
         await KPTestBottomSheet.show(
@@ -124,33 +121,32 @@ class _HomePageState extends State<HomePage>
     super.initState();
   }
 
-  _addListLoadingEvent(BuildContext c, {bool reset = true}) =>
-      c.read<ListBloc>().add(ListEventLoading(
+  _addListLoadingEvent({bool reset = true}) =>
+      getIt<ListBloc>().add(ListEventLoading(
           filter: _currentAppliedFilter,
           order: _currentAppliedOrder,
           reset: reset));
 
-  _addListSearchingEvent(BuildContext c, String query, {bool reset = true}) =>
-      c.read<ListBloc>().add(ListEventSearching(query, reset: reset));
+  _addListSearchingEvent(String query, {bool reset = true}) =>
+      getIt<ListBloc>().add(ListEventSearching(query, reset: reset));
 
-  _addFolderListLoadingEvent(BuildContext c, {bool reset = true}) =>
-      c.read<FolderBloc>().add(FolderEventLoading(
+  _addFolderListLoadingEvent({bool reset = true}) =>
+      getIt<FolderBloc>().add(FolderEventLoading(
           filter: _currentAppliedFolderFilter,
           order: _currentAppliedFolderOrder,
           reset: reset));
 
-  _addFolderListSearchingEvent(BuildContext c, String query,
-          {bool reset = true}) =>
-      c.read<FolderBloc>().add(FolderEventSearching(query, reset: reset));
+  _addFolderListSearchingEvent(String query, {bool reset = true}) =>
+      getIt<FolderBloc>().add(FolderEventSearching(query, reset: reset));
 
-  _addMarketLoadingEvent(BuildContext c, {bool reset = true}) =>
-      c.read<MarketBloc>().add(MarketEventLoading(
+  _addMarketLoadingEvent({bool reset = true}) =>
+      getIt<MarketBloc>().add(MarketEventLoading(
           filter: _currentAppliedMarketFilter,
           order: _currentAppliedMarketOrder,
           reset: reset));
 
-  _addMarketSearchingEvent(BuildContext c, String query, {bool reset = true}) =>
-      c.read<MarketBloc>().add(MarketEventSearching(query,
+  _addMarketSearchingEvent(String query, {bool reset = true}) =>
+      getIt<MarketBloc>().add(MarketEventSearching(query,
           reset: reset,
           order: _currentAppliedMarketOrder,
           filter: _currentAppliedMarketFilter));
@@ -160,12 +156,12 @@ class _HomePageState extends State<HomePage>
   _onTabChanged() =>
       setState(() => _currentTab = TabType.values[_tabController.index]);
 
-  _resetLists(BuildContext c1, BuildContext c2, BuildContext c3) {
+  _resetLists() {
     if (_currentPage == HomeType.kanlist) {
-      if (_currentTab == TabType.kanlist) return _addListLoadingEvent(c1);
-      return _addFolderListLoadingEvent(c2);
+      if (_currentTab == TabType.kanlist) return _addListLoadingEvent();
+      return _addFolderListLoadingEvent();
     }
-    return _addMarketLoadingEvent(c3);
+    return _addMarketLoadingEvent();
   }
 
   Future<void> _getVersionNotice() async {
@@ -206,7 +202,7 @@ class _HomePageState extends State<HomePage>
     return MultiBlocProvider(
       providers: [
         BlocProvider<ListBloc>(
-          create: (_) => ListBloc()
+          create: (_) => getIt<ListBloc>()
             ..add(ListEventLoading(
               filter: _currentAppliedFilter,
               order: _currentAppliedOrder,
@@ -214,23 +210,23 @@ class _HomePageState extends State<HomePage>
             )),
         ),
         BlocProvider<FolderBloc>(
-          create: (_) => FolderBloc()
+          create: (_) => getIt<FolderBloc>()
             ..add(FolderEventLoading(
                 filter: _currentAppliedFolderFilter,
                 order: _currentAppliedFolderOrder,
                 reset: true)),
         ),
-        BlocProvider(create: (_) => DictBloc()..add(DictEventIdle())),
+        BlocProvider(create: (_) => getIt<DictBloc>()..add(DictEventIdle())),
         BlocProvider<MarketBloc>(
-            create: (_) => MarketBloc()..add(MarketEventIdle())),
+            create: (_) => getIt<MarketBloc>()..add(MarketEventIdle())),
         BlocProvider(
-          create: (_) => SettingsBloc()..add(SettingsIdle()),
+          create: (_) => getIt<SettingsBloc>()..add(SettingsIdle()),
         )
       ],
       child: BlocConsumer<ListBloc, ListState>(
         listener: (context, state) async {
           if (state is ListStateLoaded) {
-            if (getIt<PreferencesRepositoryImpl>()
+            if (getIt<PreferencesService>()
                     .readData(SharedKeys.haveSeenKanListCoachMark) ==
                 false) {
               _onTutorial = true;
@@ -255,7 +251,7 @@ class _HomePageState extends State<HomePage>
               onWillPop: () async {
                 if (_onTutorial) return false;
                 if (_searchHasFocus) {
-                  _resetLists(c, cFolder, cMarket);
+                  _resetLists();
                   _searchBarFn.unfocus();
                   return false;
                 } else {
@@ -278,13 +274,13 @@ class _HomePageState extends State<HomePage>
                     _searchTextController.text = "";
                     _controller.jumpToPage(type.page);
                     if (_currentPage == HomeType.market) {
-                      _addMarketLoadingEvent(cMarket);
+                      _addMarketLoadingEvent();
                     }
                   }
                 },
                 onShowActions: (name) {
                   if (name == "__folder") {
-                    _addFolderListLoadingEvent(cFolder);
+                    _addFolderListLoadingEvent();
                   } else {
                     c.read<ListBloc>().add(ListEventCreate(name,
                         filter: _currentAppliedFilter,
@@ -306,15 +302,15 @@ class _HomePageState extends State<HomePage>
                         _query = query;
                         if (_currentPage == HomeType.kanlist) {
                           if (_currentTab == TabType.kanlist) {
-                            return _addListSearchingEvent(c, query);
+                            return _addListSearchingEvent(query);
                           }
-                          return _addFolderListSearchingEvent(cFolder, query);
+                          return _addFolderListSearchingEvent(query);
                         }
-                        return _addMarketSearchingEvent(cMarket, query);
+                        return _addMarketSearchingEvent(query);
                       },
                       onExitSearch: () {
                         _query = "";
-                        _resetLists(c, cFolder, cMarket);
+                        _resetLists();
                       },
                     ),
                   Expanded(
@@ -326,10 +322,10 @@ class _HomePageState extends State<HomePage>
                             controller: _tabController,
                             onTap: (tab) {
                               if (tab == 0) {
-                                _addListLoadingEvent(c);
+                                _addListLoadingEvent();
                                 return;
                               }
-                              _addFolderListLoadingEvent(cFolder);
+                              _addFolderListLoadingEvent();
                             },
                             tabs: const [
                               Tab(icon: Icon(Icons.table_rows_rounded)),
@@ -362,18 +358,18 @@ class _HomePageState extends State<HomePage>
               removeFocus: () => _searchBarFn.unfocus(),
               onScrolledToBottom: () {
                 if (_query.isNotEmpty) {
-                  return _addListSearchingEvent(c, _query, reset: false);
+                  return _addListSearchingEvent(_query, reset: false);
                 }
-                return _addListLoadingEvent(c, reset: false);
+                return _addListLoadingEvent(reset: false);
               },
             ),
             FolderListPage(
               removeFocus: () => _searchBarFn.unfocus(),
               onScrolledToBottom: () {
                 if (_query.isNotEmpty) {
-                  return _addFolderListSearchingEvent(cF, _query, reset: false);
+                  return _addFolderListSearchingEvent(_query, reset: false);
                 }
-                return _addFolderListLoadingEvent(cF, reset: false);
+                return _addFolderListLoadingEvent(reset: false);
               },
             ),
           ],
@@ -383,9 +379,9 @@ class _HomePageState extends State<HomePage>
           removeFocus: () => _searchBarFn.unfocus(),
           onScrolledToBottom: () {
             if (_query.isNotEmpty) {
-              return _addMarketSearchingEvent(cM, _query, reset: false);
+              return _addMarketSearchingEvent(_query, reset: false);
             }
-            return _addMarketLoadingEvent(cM, reset: false);
+            return _addMarketLoadingEvent(reset: false);
           },
         ),
         const SettingsPage()

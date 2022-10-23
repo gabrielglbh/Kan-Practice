@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/test_history/test_history_bloc.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes_filters.dart';
@@ -46,7 +47,7 @@ class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
     super.dispose();
   }
 
-  Future<void> _applyFilters(BuildContext blocContext) async {
+  Future<void> _applyFilters() async {
     final filters = await Navigator.of(context).pushNamed(
       KanPracticePages.historyTestFiltersPage,
       arguments: TestHistoryArgs(
@@ -63,13 +64,12 @@ class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
         _testsFilter = filters.testFilters;
         _modesFilter = filters.modeFilters;
       });
-      // ignore: use_build_context_synchronously
-      blocContext.read<TestHistoryBloc>().add(TestHistoryEventLoading(
-            initial: _firstDate,
-            last: _lastDate,
-            testFilter: _testsFilter,
-            modesFilter: _modesFilter,
-          ));
+      getIt<TestHistoryBloc>().add(TestHistoryEventLoading(
+        initial: _firstDate,
+        last: _lastDate,
+        testFilter: _testsFilter,
+        modesFilter: _modesFilter,
+      ));
     }
   }
 
@@ -87,7 +87,7 @@ class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
           child: Padding(
             padding: const EdgeInsets.all(KPMargins.margin8),
             child: BlocProvider<TestHistoryBloc>(
-              create: (_) => TestHistoryBloc()
+              create: (_) => getIt<TestHistoryBloc>()
                 ..add(TestHistoryEventLoading(
                   initial: _firstDate,
                   last: _lastDate,
@@ -129,7 +129,7 @@ class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
                           right: KPMargins.margin64,
                           child: TextButton(
                             onPressed: () async {
-                              await _applyFilters(blocContext);
+                              await _applyFilters();
                             },
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(

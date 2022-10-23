@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/account_login/login_bloc.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/sign_in_mode.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -43,33 +44,33 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  _handleLogin(BuildContext bloc) {
+  _handleLogin() {
     String? email = _emailController?.text;
     String? password = _passwordController?.text;
     if (email != null && password != null) {
-      bloc.read<LoginBloc>().add(LoginSubmitting(_mode, email, password));
+      getIt<LoginBloc>().add(LoginSubmitting(_mode, email, password));
     }
   }
 
-  _changePassword(BuildContext bloc, String prevPass, String newPass) {
+  _changePassword(String prevPass, String newPass) {
     if (prevPass.isNotEmpty && newPass.isNotEmpty) {
-      bloc.read<LoginBloc>().add(ChangePassword(prevPass, newPass));
+      getIt<LoginBloc>().add(ChangePassword(prevPass, newPass));
     }
   }
 
-  _removeAccount(BuildContext bloc, String pass) {
+  _removeAccount(String pass) {
     if (pass.isNotEmpty) {
-      bloc.read<LoginBloc>().add(RemoveAccount(pass));
+      getIt<LoginBloc>().add(RemoveAccount(pass));
     }
   }
 
-  _changePasswordDialog(BuildContext bloc) {
+  _changePasswordDialog() {
     TextEditingController currPassword = TextEditingController();
     TextEditingController newPassword = TextEditingController();
     FocusNode currPasswordFn = FocusNode();
     FocusNode newPasswordFn = FocusNode();
     showDialog(
-        context: bloc,
+        context: context,
         builder: (context) {
           return KPDialog(
               title: Text("login_changePasswordDialog_title".tr()),
@@ -96,8 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                       obscure: true,
                       onEditingComplete: () {
                         Navigator.of(context).pop();
-                        _changePassword(
-                            bloc, currPassword.text, newPassword.text);
+                        _changePassword(currPassword.text, newPassword.text);
                       },
                     ),
                   )
@@ -105,15 +105,15 @@ class _LoginPageState extends State<LoginPage> {
               ),
               positiveButtonText: "login_changePasswordDialog_positive".tr(),
               onPositive: () =>
-                  _changePassword(bloc, currPassword.text, newPassword.text));
+                  _changePassword(currPassword.text, newPassword.text));
         });
   }
 
-  _removeAccountDialog(BuildContext bloc) {
+  _removeAccountDialog() {
     TextEditingController currPassword = TextEditingController();
     FocusNode currPasswordFn = FocusNode();
     showDialog(
-        context: bloc,
+        context: context,
         builder: (context) {
           return KPDialog(
               title: Text("login_removeAccountDialog_title".tr()),
@@ -133,20 +133,20 @@ class _LoginPageState extends State<LoginPage> {
                     obscure: true,
                     onEditingComplete: () {
                       Navigator.of(context).pop();
-                      _removeAccount(bloc, currPassword.text);
+                      _removeAccount(currPassword.text);
                     },
                   ),
                 ],
               ),
               positiveButtonText: "login_removeAccountDialog_positive".tr(),
-              onPositive: () => _removeAccount(bloc, currPassword.text));
+              onPositive: () => _removeAccount(currPassword.text));
         });
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<LoginBloc>(
-      create: (_) => LoginBloc()..add(LoginIdle()),
+      create: (_) => getIt<LoginBloc>()..add(LoginIdle()),
       child: KPScaffold(
           appBarTitle: BlocBuilder<LoginBloc, LoginState>(
             builder: (context, state) {
@@ -229,7 +229,7 @@ class _LoginPageState extends State<LoginPage> {
               controller: _passwordController,
               focusNode: _passwordFocus,
               action: TextInputAction.done,
-              onEditingComplete: () => _handleLogin(bloc)),
+              onEditingComplete: () => _handleLogin()),
         ),
         Visibility(
           visible: state.error != "",
@@ -245,7 +245,7 @@ class _LoginPageState extends State<LoginPage> {
         Padding(
           padding: const EdgeInsets.only(top: KPMargins.margin16),
           child: ElevatedButton(
-            onPressed: () => _handleLogin(bloc),
+            onPressed: () => _handleLogin(),
             child: Text("login_form_positive".tr(),
                 style: Theme.of(context).textTheme.button),
           ),
@@ -306,25 +306,25 @@ class _LoginPageState extends State<LoginPage> {
           title: Text("login_miscellaneous_title".tr(),
               style: Theme.of(context).textTheme.headline5),
         ),
-        _loggedUserActions(bloc)
+        _loggedUserActions()
       ],
     ));
   }
 
-  Column _loggedUserActions(BuildContext bloc) {
+  Column _loggedUserActions() {
     return Column(
       children: [
         const Divider(),
         ListTile(
           leading: const Icon(Icons.lock),
           title: Text("login_changePasswordDialog_title".tr()),
-          onTap: () => _changePasswordDialog(bloc),
+          onTap: () => _changePasswordDialog(),
         ),
         const Divider(),
         ListTile(
           leading: const Icon(Icons.logout),
           title: Text("login_close_session_title".tr()),
-          onTap: () => bloc.read<LoginBloc>().add(CloseSession()),
+          onTap: () => getIt<LoginBloc>().add(CloseSession()),
         ),
         const Divider(),
         Padding(
@@ -333,7 +333,7 @@ class _LoginPageState extends State<LoginPage> {
             leading: const Icon(Icons.delete),
             title: Text("login_removeAccountDialog_title".tr(),
                 style: TextStyle(color: KPColors.getSecondaryColor(context))),
-            onTap: () => _removeAccountDialog(bloc),
+            onTap: () => _removeAccountDialog(),
           ),
         ),
       ],

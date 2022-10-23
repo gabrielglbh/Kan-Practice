@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
 import 'package:kanpractice/presentation/core/types/market_filters.dart';
 import 'package:kanpractice/domain/market/market.dart';
-import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
@@ -38,14 +38,13 @@ class _MarketPageState extends State<MarketPage>
   void initState() {
     _scrollController.addListener(_scrollListener);
 
-    final filterText = getIt<PreferencesRepositoryImpl>()
-            .readData(SharedKeys.filtersOnMarket) ??
-        Market.uploadedToMarketField;
+    final filterText =
+        getIt<PreferencesService>().readData(SharedKeys.filtersOnMarket) ??
+            Market.uploadedToMarketField;
     _currentAppliedFilter = MarketFiltersUtils.getFilterFrom(filterText);
 
     _currentAppliedOrder =
-        getIt<PreferencesRepositoryImpl>().readData(SharedKeys.orderOnMarket) ??
-            true;
+        getIt<PreferencesService>().readData(SharedKeys.orderOnMarket) ?? true;
     super.initState();
   }
 
@@ -105,9 +104,9 @@ class _MarketPageState extends State<MarketPage>
     _addLoadingEvent(reset: true);
 
     /// Stores the new filter and order applied to shared preferences
-    getIt<PreferencesRepositoryImpl>()
+    getIt<PreferencesService>()
         .saveData(SharedKeys.filtersOnMarket, _currentAppliedFilter.filter);
-    getIt<PreferencesRepositoryImpl>()
+    getIt<PreferencesService>()
         .saveData(SharedKeys.orderOnMarket, _currentAppliedOrder);
   }
 

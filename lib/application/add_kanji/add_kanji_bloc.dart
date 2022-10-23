@@ -9,10 +9,10 @@ part 'add_kanji_event.dart';
 part 'add_kanji_state.dart';
 
 @lazySingleton
-class AddKanjiBloc extends Bloc<AddKanjiEvent, AddKanjiState> {
+class AddWordBloc extends Bloc<AddKanjiEvent, AddKanjiState> {
   final IWordRepository _wordyRepository;
 
-  AddKanjiBloc(this._wordyRepository) : super(AddKanjiStateIdle()) {
+  AddWordBloc(this._wordyRepository) : super(AddKanjiStateIdle()) {
     on<AddKanjiEventIdle>((event, emit) {});
 
     on<AddKanjiEventUpdate>((event, emit) async {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/word_details/word_details_bloc.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_radial_graph.dart';
@@ -61,7 +62,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
                 children: [
                   const KPDragContainer(),
                   BlocProvider<WordDetailsBloc>(
-                    create: (_) => WordDetailsBloc()
+                    create: (_) => getIt<WordDetailsBloc>()
                       ..add(WordDetailsEventLoading(kanji ?? Word.empty)),
                     child: BlocConsumer<WordDetailsBloc, WordDetailsState>(
                       listener: (context, state) {
@@ -298,8 +299,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
                           "kanji_bottom_sheet_removeKanji_positive".tr(),
                       onPositive: () {
                         Navigator.of(context).pop();
-                        bloc
-                            .read<WordDetailsBloc>()
+                        getIt<WordDetailsBloc>()
                             .add(WordDetailsEventDelete(kanji));
                         if (onRemove != null) onRemove!();
                       }));

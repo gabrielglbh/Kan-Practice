@@ -4,7 +4,7 @@ import 'package:kanpractice/application/folder_details/folder_details_bloc.dart'
 import 'package:kanpractice/application/list/lists_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/domain/list/list.dart';
-import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_kanji_lists/widgets/kanji_list_tile.dart';
@@ -49,14 +49,13 @@ class _KPWordListsState extends State<KPWordLists>
     _scrollController.addListener(_scrollListener);
 
     if (widget.folder == null) {
-      final filterText = getIt<PreferencesRepositoryImpl>()
-              .readData(SharedKeys.filtersOnList) ??
-          ListTableFields.lastUpdatedField;
+      final filterText =
+          getIt<PreferencesService>().readData(SharedKeys.filtersOnList) ??
+              ListTableFields.lastUpdatedField;
       _currentAppliedFilter = KanListFiltersUtils.getFilterFrom(filterText);
 
       _currentAppliedOrder =
-          getIt<PreferencesRepositoryImpl>().readData(SharedKeys.orderOnList) ??
-              true;
+          getIt<PreferencesService>().readData(SharedKeys.orderOnList) ?? true;
     }
     super.initState();
   }
@@ -120,9 +119,9 @@ class _KPWordListsState extends State<KPWordLists>
 
     /// Stores the new filter and order applied to shared preferences
     if (widget.folder == null) {
-      getIt<PreferencesRepositoryImpl>()
+      getIt<PreferencesService>()
           .saveData(SharedKeys.filtersOnList, _currentAppliedFilter.filter);
-      getIt<PreferencesRepositoryImpl>()
+      getIt<PreferencesService>()
           .saveData(SharedKeys.orderOnList, _currentAppliedOrder);
     }
   }

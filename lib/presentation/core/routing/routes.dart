@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/dictionary/dict_bloc.dart';
 import 'package:kanpractice/application/list_details/list_details_bloc.dart';
 import 'package:kanpractice/application/word_history/word_history_bloc.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/account_login_page/account_login_page.dart';
@@ -44,8 +45,8 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       WordList list = settings.arguments as WordList;
       return CupertinoPageRoute(
           builder: (_) => BlocProvider<ListDetailBloc>(
-              create: (_) =>
-                  ListDetailBloc()..add(ListDetailEventLoading(list.name)),
+              create: (_) => getIt<ListDetailBloc>()
+                ..add(ListDetailEventLoading(list.name)),
               child: ListDetailsPage(list: list)));
     case KanPracticePages.addKanjiPage:
       AddWordArgs args = settings.arguments as AddWordArgs;
@@ -83,7 +84,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       DictionaryArguments args = settings.arguments as DictionaryArguments;
       return CupertinoPageRoute(
           builder: (_) => BlocProvider<DictBloc>(
-                create: (context) => DictBloc(),
+                create: (context) => getIt<DictBloc>(),
                 child: DictionaryPage(args: args),
               ));
     case KanPracticePages.statisticsPage:
@@ -100,8 +101,8 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case KanPracticePages.historyWordPage:
       return CupertinoPageRoute(
           builder: (_) => BlocProvider<WordHistoryBloc>(
-              create: (_) =>
-                  WordHistoryBloc()..add(const WordHistoryEventLoading()),
+              create: (_) => getIt<WordHistoryBloc>()
+                ..add(const WordHistoryEventLoading()),
               child: const WordHistoryPage()));
     case KanPracticePages.historyTestExpandedPage:
       return CupertinoPageRoute(builder: (_) {

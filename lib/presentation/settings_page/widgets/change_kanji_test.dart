@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -28,9 +28,9 @@ class _ChangeKanjiInTestState extends State<ChangeKanjiInTest> {
 
   @override
   void initState() {
-    _kanjiInTest = getIt<PreferencesRepositoryImpl>()
-            .readData(SharedKeys.numberOfKanjiInTest) ??
-        KPSizes.numberOfKanjiInTest;
+    _kanjiInTest =
+        getIt<PreferencesService>().readData(SharedKeys.numberOfKanjiInTest) ??
+            KPSizes.numberOfKanjiInTest;
     super.initState();
   }
 

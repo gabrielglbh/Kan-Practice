@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/settings/settings_bloc.dart';
-import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -29,13 +29,13 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   void initState() {
-    _toggleAffect = getIt<PreferencesRepositoryImpl>()
-        .readData(SharedKeys.affectOnPractice);
-    _aggStats = getIt<PreferencesRepositoryImpl>()
+    _toggleAffect =
+        getIt<PreferencesService>().readData(SharedKeys.affectOnPractice);
+    _aggStats = getIt<PreferencesService>()
         .readData(SharedKeys.kanListListVisualization);
-    _kanjiInTest = getIt<PreferencesRepositoryImpl>()
-            .readData(SharedKeys.numberOfKanjiInTest) ??
-        KPSizes.numberOfKanjiInTest;
+    _kanjiInTest =
+        getIt<PreferencesService>().readData(SharedKeys.numberOfKanjiInTest) ??
+            KPSizes.numberOfKanjiInTest;
     context.read<SettingsBloc>().add(SettingsLoadingBackUpDate(context));
     super.initState();
   }
@@ -97,14 +97,14 @@ class _SettingsPageState extends State<SettingsPage> {
                 : Colors.white,
             inactiveTrackColor: Colors.grey,
             onChanged: (bool value) {
-              getIt<PreferencesRepositoryImpl>()
+              getIt<PreferencesService>()
                   .saveData(SharedKeys.affectOnPractice, value);
               setState(() => _toggleAffect = value);
             },
             value: _toggleAffect,
           ),
           onTap: () async {
-            getIt<PreferencesRepositoryImpl>()
+            getIt<PreferencesService>()
                 .saveData(SharedKeys.affectOnPractice, !_toggleAffect);
             setState(() => _toggleAffect = !_toggleAffect);
           },
@@ -129,14 +129,14 @@ class _SettingsPageState extends State<SettingsPage> {
                 : Colors.white,
             inactiveTrackColor: Colors.grey,
             onChanged: (bool value) {
-              getIt<PreferencesRepositoryImpl>()
+              getIt<PreferencesService>()
                   .saveData(SharedKeys.kanListListVisualization, value);
               setState(() => _aggStats = value);
             },
             value: _aggStats,
           ),
           onTap: () async {
-            getIt<PreferencesRepositoryImpl>()
+            getIt<PreferencesService>()
                 .saveData(SharedKeys.kanListListVisualization, !_aggStats);
             setState(() => _aggStats = !_aggStats);
           },
@@ -154,7 +154,7 @@ class _SettingsPageState extends State<SettingsPage> {
             final newValue = await ChangeKanjiInTest.show(context);
             if (newValue != null) {
               setState(() => _kanjiInTest = newValue);
-              getIt<PreferencesRepositoryImpl>()
+              getIt<PreferencesService>()
                   .saveData(SharedKeys.numberOfKanjiInTest, _kanjiInTest);
             }
           },

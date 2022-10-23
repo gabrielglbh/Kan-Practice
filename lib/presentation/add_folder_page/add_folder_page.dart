@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/add_folder/add_folder_bloc.dart';
 import 'package:kanpractice/domain/list/list.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_kanlist_grid.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
@@ -42,7 +43,8 @@ class _AddFolderPageState extends State<AddFolderPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AddFolderBloc()..add(AddFolderEventIdle(widget.folder)),
+      create: (_) =>
+          getIt<AddFolderBloc>()..add(AddFolderEventIdle(widget.folder)),
       child: KPScaffold(
         resizeToAvoidBottomInset: true,
         appBarTitle: widget.folder != null
@@ -58,12 +60,10 @@ class _AddFolderPageState extends State<AddFolderPage> {
                 return IconButton(
                   onPressed: () {
                     if (widget.folder != null) {
-                      context
-                          .read<AddFolderBloc>()
-                          .add(AddFolderEventOnListAddition(
-                            widget.folder!,
-                            _selectedLists,
-                          ));
+                      getIt<AddFolderBloc>().add(AddFolderEventOnListAddition(
+                        widget.folder!,
+                        _selectedLists,
+                      ));
                     } else {
                       context.read<AddFolderBloc>().add(
                           AddFolderEventOnUpload(_tc.text, _selectedLists));

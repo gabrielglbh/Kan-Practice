@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/add_market_list/add_to_market_bloc.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/types/market_list_type.dart';
 import 'package:kanpractice/presentation/add_market_list_page/widgets/add_to_market_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/ui/folder_list_bottom_sheet.dart';
@@ -53,7 +54,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => AddToMarketBloc()..add(AddToMarketEventIdle()),
+        create: (_) => getIt<AddToMarketBloc>()..add(AddToMarketEventIdle()),
         child: KPScaffold(
           resizeToAvoidBottomInset: true,
           appBarTitle: "add_to_market_title".tr(),
@@ -66,15 +67,13 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                 } else {
                   return IconButton(
                       onPressed: () {
-                        context
-                            .read<AddToMarketBloc>()
-                            .add(AddToMarketEventOnUpload(
-                              _selectedType,
-                              _listSelection,
-                              _tc.text,
-                              _tcUser.text,
-                              _tcList.text,
-                            ));
+                        getIt<AddToMarketBloc>().add(AddToMarketEventOnUpload(
+                          _selectedType,
+                          _listSelection,
+                          _tc.text,
+                          _tcUser.text,
+                          _tcList.text,
+                        ));
                       },
                       icon: const Icon(Icons.check));
                 }

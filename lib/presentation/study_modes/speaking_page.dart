@@ -4,7 +4,7 @@ import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
-import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_learning_header_animation.dart';
@@ -112,8 +112,7 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
 
     /// Add the current virgin score to the test scores...
     if (widget.args.isTest) {
-      if (getIt<PreferencesRepositoryImpl>()
-              .readData(SharedKeys.affectOnPractice) ??
+      if (getIt<PreferencesService>().readData(SharedKeys.affectOnPractice) ??
           false) {
         await StudyModeUpdateHandler.calculateScore(widget.args, score, _macro);
       }

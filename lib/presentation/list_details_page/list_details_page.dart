@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/list_details/list_details_bloc.dart';
-import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/core/tutorial/tutorial_manager.dart';
@@ -67,7 +67,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
     _searchBarFn?.addListener(_focusListener);
     _scrollController.addListener(_scrollListener);
     _listName = widget.list.name;
-    _aggrStats = getIt<PreferencesRepositoryImpl>()
+    _aggrStats = getIt<PreferencesService>()
         .readData(SharedKeys.kanListListVisualization);
     super.initState();
   }
@@ -296,7 +296,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
                     Utils.getSnackBar(context, state.error);
                   }
                 } else if (state is ListDetailStateLoaded) {
-                  if (getIt<PreferencesRepositoryImpl>().readData(
+                  if (getIt<PreferencesService>().readData(
                           SharedKeys.haveSeenKanListDetailCoachMark) ==
                       false) {
                     _onTutorial = true;

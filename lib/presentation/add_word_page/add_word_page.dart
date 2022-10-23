@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/add_kanji/add_kanji_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/word_categories.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -61,8 +62,8 @@ class _AddWordPageState extends State<AddWordPage> {
     super.dispose();
   }
 
-  Future<void> _createKanji(BuildContext bloc, {bool exit = true}) async {
-    bloc.read<AddKanjiBloc>().add(AddKanjiEventCreate(
+  Future<void> _createKanji({bool exit = true}) async {
+    getIt<AddWordBloc>().add(AddKanjiEventCreate(
         exitMode: exit,
         kanji: Word(
           word: _kanjiController?.text ?? "",
@@ -75,18 +76,17 @@ class _AddWordPageState extends State<AddWordPage> {
         )));
   }
 
-  Future<void> _updateKanji(BuildContext bloc) async {
+  Future<void> _updateKanji() async {
     Word? k = widget.args.word;
     if (k != null) {
-      bloc
-          .read<AddKanjiBloc>()
+      getIt<AddWordBloc>()
           .add(AddKanjiEventUpdate(widget.args.listName, k.word, parameters: {
-            WordTableFields.wordField: _kanjiController?.text ?? "",
-            WordTableFields.pronunciationField:
-                _pronunciationController?.text ?? "",
-            WordTableFields.meaningField: _meaningController?.text ?? "",
-            WordTableFields.categoryField: _currentCategory.index
-          }));
+        WordTableFields.wordField: _kanjiController?.text ?? "",
+        WordTableFields.pronunciationField:
+            _pronunciationController?.text ?? "",
+        WordTableFields.meaningField: _meaningController?.text ?? "",
+        WordTableFields.categoryField: _currentCategory.index
+      }));
     }
   }
 
@@ -108,8 +108,8 @@ class _AddWordPageState extends State<AddWordPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AddKanjiBloc>(
-      create: (_) => AddKanjiBloc()..add(AddKanjiEventIdle()),
+    return BlocProvider<AddWordBloc>(
+      create: (_) => getIt<AddWordBloc>()..add(AddKanjiEventIdle()),
       child: KPScaffold(
         resizeToAvoidBottomInset: true,
         appBarTitle: widget.args.word != null
@@ -139,26 +139,26 @@ class _AddWordPageState extends State<AddWordPage> {
               }
             },
           ),
-          BlocBuilder<AddKanjiBloc, AddKanjiState>(
+          BlocBuilder<AddWordBloc, AddKanjiState>(
             builder: (context, state) => Visibility(
               visible: widget.args.word == null,
               child: IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () {
-                  _validateKanji(() => _createKanji(context, exit: false));
+                  _validateKanji(() => _createKanji(exit: false));
                 },
               ),
             ),
           ),
-          BlocBuilder<AddKanjiBloc, AddKanjiState>(
+          BlocBuilder<AddWordBloc, AddKanjiState>(
               builder: (context, state) => IconButton(
                     icon: const Icon(Icons.check_rounded),
                     onPressed: () {
                       _validateKanji(() {
                         if (widget.args.word != null) {
-                          _updateKanji(context);
+                          _updateKanji();
                         } else {
-                          _createKanji(context);
+                          _createKanji();
                         }
                       });
                     },
@@ -174,7 +174,7 @@ class _AddWordPageState extends State<AddWordPage> {
   }
 
   BlocListener _builder() {
-    return BlocListener<AddKanjiBloc, AddKanjiState>(
+    return BlocListener<AddWordBloc, AddKanjiState>(
       listener: (context, state) {
         if (state is AddKanjiStateDoneCreating) {
           /// If exit is true, only one kanji should be created and exit
@@ -241,7 +241,7 @@ class _AddWordPageState extends State<AddWordPage> {
         ),
         Padding(
           padding: const EdgeInsets.only(top: KPMargins.margin16),
-          child: BlocBuilder<AddKanjiBloc, AddKanjiState>(
+          child: BlocBuilder<AddWordBloc, AddKanjiState>(
             builder: (context, state) => KPTextForm(
               controller: _meaningController,
               focusNode: _meaningFocus,
@@ -256,9 +256,9 @@ class _AddWordPageState extends State<AddWordPage> {
                 /// more words
                 _validateKanji(() {
                   if (widget.args.word == null) {
-                    _createKanji(context, exit: false);
+                    _createKanji(exit: false);
                   } else {
-                    _updateKanji(context);
+                    _updateKanji();
                   }
                 });
               },

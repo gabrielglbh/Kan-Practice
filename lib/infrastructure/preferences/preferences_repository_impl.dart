@@ -1,6 +1,7 @@
+import 'package:kanpractice/domain/preferences/i_preferences_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class StorageManager {
+class SharedKeys {
   static const String themeMode = "themeMode";
   static const String filtersOnList = "listFilters";
   static const String filtersOnFolder = "folderFilters";
@@ -16,27 +17,15 @@ class StorageManager {
       "haveSeenKanListDetailCoachMark";
   static const String numberOfKanjiInTest = "numberOfKanjiInTest";
   static const String folderWhenOnTest = "folderWhenOnTest";
+}
 
-  static StorageManager? _storageUtils;
-  static SharedPreferences? _preferences;
+class PreferencesRepositoryImpl implements IPreferencesRepository {
+  final SharedPreferences? _preferences;
 
-  /// Creates a singleton for the shared preferences
-  static Future<StorageManager?> getInstance() async {
-    if (_storageUtils == null) {
-      var sec = StorageManager._();
-      await sec._init();
-      _storageUtils = sec;
-    }
-    return _storageUtils;
-  }
+  PreferencesRepositoryImpl(this._preferences);
 
-  StorageManager._();
-
-  Future _init() async => _preferences = await SharedPreferences.getInstance();
-
-  /// Saves a dynamic [value] [String], [int] or [bool] into the Shared Preferences
-  /// with a defined [key]
-  static saveData(String key, dynamic value) {
+  @override
+  saveData(String key, dynamic value) {
     if (value is int) {
       _preferences?.setInt(key, value);
     } else if (value is String) {
@@ -48,6 +37,6 @@ class StorageManager {
     }
   }
 
-  /// Reads the data from the Share Preferences based on the given [key]
-  static dynamic readData(String key) => _preferences?.get(key);
+  @override
+  dynamic readData(String key) => _preferences?.get(key);
 }

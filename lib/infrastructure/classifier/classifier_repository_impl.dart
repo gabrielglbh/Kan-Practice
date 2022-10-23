@@ -1,11 +1,13 @@
 import 'dart:io';
+
+import 'package:collection/collection.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:image/image.dart' as i;
-import 'package:collection/collection.dart';
+import 'package:kanpractice/domain/classifier/i_classifier_repository.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 
-class Classifier {
+class ClassifierRepositoryImpl implements IClassifierRepository {
   late Interpreter interpreter;
 
   final String _labelsFileName = 'assets/model/etlcb_9b_labels.txt';
@@ -17,17 +19,13 @@ class Classifier {
 
   late List<String> labels;
 
-  Classifier() {
-    _loadModel();
+  ClassifierRepositoryImpl() {
+    loadModel();
     _loadLabels();
   }
 
-  /// Initializes the TFLite interpreter on android.
-  ///
-  /// Uses NnAPI for devices with Android API >= 27. Otherwise uses the
-  /// GPUDelegate. If it is detected that the apps runs on an emulator CPU mode
-  /// is used
-  Future<void> _loadModel() async {
+  @override
+  Future<void> loadModel() async {
     Interpreter interpreter;
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
@@ -52,17 +50,7 @@ class Classifier {
     print('Interpreter loaded successfully');
   }
 
-  Future<void> _loadLabels() async {
-    labels = await FileUtil.loadLabels(_labelsFileName);
-    if (labels.length == _labelsLength) {
-      print('Labels loaded successfully');
-    } else {
-      print('Unable to load labels');
-    }
-  }
-
-  /// Takes an image from [KPCustomCanvas] to fit in to the interpreter's model
-  /// See the implementation to understand it better.
+  @override
   List<Category> predict(i.Image image) {
     /// Resizes the image to its actual size to fit model's input shape
     final resizedImage = i.copyResize(image, width: width, height: height);
@@ -107,6 +95,15 @@ class Classifier {
     return categories;
   }
 
+  Future<void> _loadLabels() async {
+    labels = await FileUtil.loadLabels(_labelsFileName);
+    if (labels.length == _labelsLength) {
+      print('Labels loaded successfully');
+    } else {
+      print('Unable to load labels');
+    }
+  }
+
   /// Initializes the interpreter with NPU acceleration for Android.
   Future<Interpreter> _nnapiInterpreter() async {
     final options = InterpreterOptions()..useNnApiForAndroid = true;
@@ -149,6 +146,4 @@ class Classifier {
       return 1;
     }
   }
-
-  close() => interpreter.close();
 }

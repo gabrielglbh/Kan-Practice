@@ -4,7 +4,6 @@ import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
 import 'package:kanpractice/domain/list/list.dart';
-import 'package:kanpractice/domain/relation_folder_list/relation_folder_list.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:sqflite/sqlite_api.dart';
 
@@ -20,7 +19,8 @@ abstract class IFolderRepository {
   Future<int> createFolder(String name, {List<String> lists = const []});
 
   /// Merges words from the backup
-  Future<int> mergeFolders(
+  Future<Batch?> mergeFolders(
+    Batch? batch,
     List<Folder> folders,
     ConflictAlgorithm conflictAlgorithm,
   ); // TODO: Conlict - replace on backup, ignore on market
@@ -60,8 +60,6 @@ abstract class IFolderRepository {
     required int offset,
     required int limit,
   });
-  Future<int> moveListToFolder(String folder, String list);
-  Future<int> removeListOfFolder(String folder, String list);
 
   /// Gets a [Folder] and removes it from the db.
   /// Returns an integer depending on the error given:

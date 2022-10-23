@@ -1,6 +1,6 @@
 import 'package:kanpractice/core/types/wordlist_filters.dart';
 import 'package:kanpractice/domain/list/list.dart';
-import 'package:sqflite/sql.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 abstract class IListRepository {
   /// Creates a [WordList] and inserts it to the db.
@@ -14,7 +14,8 @@ abstract class IListRepository {
   Future<int> createList(String name);
 
   /// Merges lists from the backup
-  Future<int> mergeLists(
+  Future<Batch?> mergeLists(
+    Batch? batch,
     List<WordList> lists,
     ConflictAlgorithm conflictAlgorithm,
   ); // TODO: Conflict - Replace on backup,  Ignore on market merge

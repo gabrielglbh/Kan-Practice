@@ -1,7 +1,5 @@
-import 'package:kanpractice/core/types/word_categories.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
-import 'package:kanpractice/domain/specific_data/specific_data.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:sqflite/sqlite_api.dart';
 
@@ -17,7 +15,8 @@ abstract class IWordRepository {
   Future<int> createWord(Word word);
 
   /// Merges words from the backup or market
-  Future<int> mergeWords(
+  Future<Batch?> mergeWords(
+    Batch? batch,
     List<Word> words,
     ConflictAlgorithm conflictAlgorithm,
   ); // TODO: Replace on backup and ignore on market
@@ -57,16 +56,15 @@ abstract class IWordRepository {
   ///
   /// [type] serves as a control variable to order all the Word by
   /// their last shown parameter or worst accuracy parameter. See [Tests].
-  Future<List<Word>> getAllWord({StudyModes? mode, Tests? type});
+  Future<List<Word>> getAllWords({StudyModes? mode, Tests? type});
   Future<List<Word>> getWordBasedOnSelectedLists(List<String> listNames);
-  Future<List<Word>> getWordBasedOnCategory(int category);
-  Future<SpecificData> getSpecificCategoryData(WordCategory mode);
+  Future<List<Word>> getWordsBasedOnCategory(int category);
   Future<List<Word>> getAllWordFromList(
     String listName, {
     int? offset,
     int? limit,
   });
-  Future<List<Word>> getWordMatchingQuery(
+  Future<List<Word>> getWordsMatchingQuery(
     String query,
     String listName, {
     required int offset,
@@ -76,8 +74,8 @@ abstract class IWordRepository {
   /// Query to get all Word available in the current db within a list with the name [listName]
   /// that enables Spatial Learning: ordering in ASC order the [Word] with less winRate.
   /// If anything goes wrong, an empty list will be returned.
-  Future<List<Word>> getAllWordForPractice(String listName, StudyModes mode);
+  Future<List<Word>> getAllWordsForPractice(String listName, StudyModes mode);
   Future<int> getTotalWordCount();
-  Future<Word> getTotalWordWinRates();
-  Future<List<int>> getWordFromCategory();
+  Future<Word> getTotalWordsWinRates();
+  Future<List<int>> getWordsFromCategory();
 }

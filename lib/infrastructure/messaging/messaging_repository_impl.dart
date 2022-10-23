@@ -1,11 +1,17 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:kanpractice/domain/messaging/i_messaging_repository.dart';
 import 'package:kanpractice/presentation/home_page/widgets/daily_test_bottom_sheet.dart';
 
-class MessagingHandler {
-  static Future<void> handler(BuildContext context) async {
-    final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+class MessagingRepositoryImpl implements IMessagingRepository {
+  final FlutterLocalNotificationsPlugin _localNotifications;
+  final FirebaseMessaging _messaging;
+
+  MessagingRepositoryImpl(this._localNotifications, this._messaging);
+
+  @override
+  Future<void> handler(BuildContext context) async {
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
       'high_importance_channel', // Same as in the Manifest
       'High Importance Notifications',
@@ -13,12 +19,12 @@ class MessagingHandler {
     );
 
     // Create and register channel
-    await flutterLocalNotificationsPlugin
+    await _localNotifications
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
-    FirebaseMessaging.instance.getToken().then((String? token) {
+    _messaging.getToken().then((String? token) {
       assert(token != null);
       print(token);
     });
@@ -36,7 +42,7 @@ class MessagingHandler {
       // If `onMessage` is triggered with a notification, construct our own
       // local notification to show to users using the created channel.
       if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
+        _localNotifications.show(
             notification.hashCode,
             notification.title,
             notification.body,

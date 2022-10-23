@@ -1,4 +1,4 @@
-import 'package:kanpractice/core/types/wordlist_filters.dart';
+import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:sqflite/sqlite_api.dart';
 

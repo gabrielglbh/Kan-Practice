@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/types/study_modes.dart';
-import 'package:kanpractice/core/types/study_modes_filters.dart';
-import 'package:kanpractice/core/types/test_modes_filters.dart';
+import 'package:kanpractice/presentation/core/types/study_modes.dart';
+import 'package:kanpractice/presentation/core/types/study_modes_filters.dart';
+import 'package:kanpractice/presentation/core/types/test_modes_filters.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';

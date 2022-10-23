@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
-import 'package:kanpractice/core/types/market_filters.dart';
+import 'package:kanpractice/presentation/core/types/market_filters.dart';
 import 'package:kanpractice/domain/market/i_market_repository.dart';
 import 'package:kanpractice/domain/relation_folder_list/relation_folder_list.dart';
 import 'package:kanpractice/domain/word/word.dart';

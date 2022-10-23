@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/types/word_categories.dart';
+import 'package:kanpractice/presentation/core/types/word_categories.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KPKanjiCategoryList extends StatelessWidget {

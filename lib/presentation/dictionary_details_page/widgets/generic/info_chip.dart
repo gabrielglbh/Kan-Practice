@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/types/chip_type.dart';
+import 'package:kanpractice/presentation/core/types/chip_type.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class InfoChip extends StatelessWidget {

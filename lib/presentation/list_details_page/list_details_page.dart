@@ -5,9 +5,9 @@ import 'package:kanpractice/infrastructure/preferences/preferences_repository_im
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/core/tutorial/tutorial_manager.dart';
-import 'package:kanpractice/core/types/test_modes.dart';
-import 'package:kanpractice/core/types/coach_tutorial_parts.dart';
-import 'package:kanpractice/core/types/study_modes.dart';
+import 'package:kanpractice/presentation/core/types/test_modes.dart';
+import 'package:kanpractice/presentation/core/types/coach_tutorial_parts.dart';
+import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/domain/word/word.dart';

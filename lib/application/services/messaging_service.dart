@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/domain/messaging/i_messaging_repository.dart';
+import 'package:kanpractice/domain/services/i_messaging_repository.dart';
 
 @injectable
 class MessagingService {

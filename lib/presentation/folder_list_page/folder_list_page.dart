@@ -6,7 +6,7 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
-import 'package:kanpractice/core/types/folder_filters.dart';
+import 'package:kanpractice/presentation/core/types/folder_filters.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';

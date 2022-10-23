@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/core/types/sign_in_mode.dart';
+import 'package:kanpractice/presentation/core/types/sign_in_mode.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/auth/i_auth_repository.dart';
 

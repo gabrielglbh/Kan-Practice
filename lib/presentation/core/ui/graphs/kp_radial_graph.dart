@@ -3,7 +3,7 @@ import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
-import 'package:kanpractice/core/types/study_modes.dart';
+import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart' as gauge;
 

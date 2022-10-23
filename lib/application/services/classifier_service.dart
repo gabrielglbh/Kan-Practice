@@ -1,6 +1,6 @@
 import 'package:image/image.dart';
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/domain/classifier/i_classifier_repository.dart';
+import 'package:kanpractice/domain/services/i_classifier_repository.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 
 @injectable

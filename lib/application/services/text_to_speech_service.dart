@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/domain/text_to_speech/i_text_to_speech_repository.dart';
+import 'package:kanpractice/domain/services/i_text_to_speech_repository.dart';
 
 @injectable
 class TextToSpeechService {

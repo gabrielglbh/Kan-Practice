@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/add_market_list/add_to_market_bloc.dart';
-import 'package:kanpractice/core/types/market_list_type.dart';
+import 'package:kanpractice/presentation/core/types/market_list_type.dart';
 import 'package:kanpractice/presentation/add_market_list_page/widgets/add_to_market_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/ui/folder_list_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';

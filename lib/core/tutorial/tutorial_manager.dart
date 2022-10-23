@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/types/coach_tutorial_parts.dart';
+import 'package:kanpractice/presentation/core/types/coach_tutorial_parts.dart';
 import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';

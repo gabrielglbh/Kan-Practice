@@ -4,7 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:image/image.dart' as i;
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/domain/classifier/i_classifier_repository.dart';
+import 'package:kanpractice/domain/services/i_classifier_repository.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 

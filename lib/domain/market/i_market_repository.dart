@@ -1,4 +1,4 @@
-import 'package:kanpractice/core/types/market_filters.dart';
+import 'package:kanpractice/presentation/core/types/market_filters.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/domain/market/market.dart';

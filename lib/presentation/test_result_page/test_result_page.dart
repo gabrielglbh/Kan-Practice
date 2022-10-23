@@ -3,7 +3,7 @@ import 'package:kanpractice/infrastructure/test_data/test_data_repository_impl.d
 import 'package:kanpractice/infrastructure/test_result/test_result_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
-import 'package:kanpractice/core/types/study_modes.dart';
+import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/test_result/test_result.dart';
 import 'package:kanpractice/domain/word/word.dart';

@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/types/study_modes.dart';
-import 'package:kanpractice/core/types/test_modes.dart';
+import 'package:kanpractice/presentation/core/types/study_modes.dart';
+import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/infrastructure/specific_data/specific_data_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_bar_chart.dart';

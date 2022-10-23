@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/domain/preferences/i_preferences_repository.dart';
+import 'package:kanpractice/domain/services/i_preferences_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedKeys {

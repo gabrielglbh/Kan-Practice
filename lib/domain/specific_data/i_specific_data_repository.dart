@@ -1,5 +1,5 @@
-import 'package:kanpractice/core/types/test_modes.dart';
-import 'package:kanpractice/core/types/word_categories.dart';
+import 'package:kanpractice/presentation/core/types/test_modes.dart';
+import 'package:kanpractice/presentation/core/types/word_categories.dart';
 import 'package:kanpractice/domain/specific_data/specific_data.dart';
 import 'package:kanpractice/domain/test_result/test_result.dart';
 import 'package:sqflite/sqlite_api.dart';

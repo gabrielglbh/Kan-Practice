@@ -11,8 +11,8 @@ import 'package:kanpractice/presentation/core/ui/kp_tts_icon_button.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
-import 'package:kanpractice/core/types/word_categories.dart';
-import 'package:kanpractice/core/types/study_modes.dart';
+import 'package:kanpractice/presentation/core/types/word_categories.dart';
+import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class KPKanjiBottomSheet extends StatelessWidget {

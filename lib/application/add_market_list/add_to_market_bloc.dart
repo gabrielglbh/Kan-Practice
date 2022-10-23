@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/core/types/market_list_type.dart';
+import 'package:kanpractice/presentation/core/types/market_list_type.dart';
 import 'package:kanpractice/domain/auth/i_auth_repository.dart';
 import 'package:kanpractice/domain/folder/i_folder_repository.dart';
 import 'package:kanpractice/domain/list/i_list_repository.dart';

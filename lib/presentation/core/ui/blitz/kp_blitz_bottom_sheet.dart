@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/types/test_modes.dart';
+import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
 import 'package:kanpractice/injection.dart';

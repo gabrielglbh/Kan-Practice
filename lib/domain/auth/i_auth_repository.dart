@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:kanpractice/core/types/sign_in_mode.dart';
+import 'package:kanpractice/presentation/core/types/sign_in_mode.dart';
 
 abstract class IAuthRepository {
   /// Handles the log in with Firebase based on an [email] and [password]. The [mode]

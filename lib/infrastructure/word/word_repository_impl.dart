@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/types/word_categories.dart';
-import 'package:kanpractice/core/types/test_modes.dart';
-import 'package:kanpractice/core/types/study_modes.dart';
+import 'package:kanpractice/presentation/core/types/word_categories.dart';
+import 'package:kanpractice/presentation/core/types/test_modes.dart';
+import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/domain/word/i_word_repository.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:sqflite/sqlite_api.dart';

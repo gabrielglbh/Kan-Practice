@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
-import 'package:kanpractice/core/types/market_filters.dart';
+import 'package:kanpractice/presentation/core/types/market_filters.dart';
 import 'package:kanpractice/domain/market/market.dart';
 import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
 import 'package:kanpractice/injection.dart';

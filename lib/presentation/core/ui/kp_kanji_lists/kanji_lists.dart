@@ -10,7 +10,7 @@ import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_kanji_lists/widgets/kanji_list_tile.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/core/types/wordlist_filters.dart';
+import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class KPWordLists extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/types/study_modes.dart';
-import 'package:kanpractice/core/types/wordlist_filters.dart';
+import 'package:kanpractice/presentation/core/types/study_modes.dart';
+import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:kanpractice/domain/list/i_list_repository.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';

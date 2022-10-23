@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/types/study_modes.dart';
-import 'package:kanpractice/core/types/test_modes.dart';
+import 'package:kanpractice/presentation/core/types/study_modes.dart';
+import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';

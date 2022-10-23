@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/core/types/folder_filters.dart';
+import 'package:kanpractice/presentation/core/types/folder_filters.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
 import 'package:kanpractice/domain/folder/i_folder_repository.dart';
 import 'package:kanpractice/domain/relation_folder_list/i_relation_folder_list_repository.dart';

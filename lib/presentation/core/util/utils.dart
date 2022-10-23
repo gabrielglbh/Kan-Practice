@@ -1,7 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:kanpractice/infrastructure/backup/backup_repository_impl.dart';
-import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -142,12 +140,12 @@ class Utils {
             "en"));
   }
 
-  static Future<void> showVersionNotes(BuildContext context,
-      {String? version}) async {
+  static Future<void> showVersionNotes(
+    BuildContext context, {
+    String? version,
+    List<String> notes = const [],
+  }) async {
     PackageInfo pi = await PackageInfo.fromPlatform();
-    List<String> notes =
-        // ignore: use_build_context_synchronously
-        await getIt<BackupRepositoryImpl>().getVersionNotes(context);
     Text child = const Text("");
     String versionNotes = "";
     if (notes.isNotEmpty) {

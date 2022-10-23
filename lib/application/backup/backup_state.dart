@@ -31,9 +31,10 @@ class BackUpStateLoading extends BackUpState {}
 
 class BackUpStateVersionRetrieved extends BackUpState {
   final String version;
+  final List<String> notes;
 
-  const BackUpStateVersionRetrieved(this.version);
+  const BackUpStateVersionRetrieved(this.version, this.notes);
 
   @override
-  List<Object> get props => [version];
+  List<Object> get props => [version, notes];
 }

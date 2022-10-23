@@ -68,6 +68,7 @@ class _HomePageState extends State<HomePage>
   String _query = "";
   bool _onTutorial = false;
   String _newVersion = "";
+  List<String> _notes = [];
 
   @override
   void initState() {
@@ -177,7 +178,8 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     final updateIcon = IconButton(
       onPressed: () async {
-        await Utils.showVersionNotes(context, version: _newVersion);
+        await Utils.showVersionNotes(context,
+            version: _newVersion, notes: _notes);
       },
       icon: const Icon(Icons.update_rounded, color: KPColors.secondaryColor),
     );
@@ -209,7 +211,7 @@ class _HomePageState extends State<HomePage>
                 reset: true)),
         ),
         BlocProvider(
-          create: (_) => getIt<BackUpBloc>()..add(BackUpGetVersion()),
+          create: (_) => getIt<BackUpBloc>()..add(BackUpGetVersion(context)),
         ),
         BlocProvider(create: (_) => getIt<DictBloc>()..add(DictEventIdle())),
         BlocProvider<MarketBloc>(
@@ -223,6 +225,7 @@ class _HomePageState extends State<HomePage>
           if (state is BackUpStateVersionRetrieved) {
             setState(() {
               _newVersion = state.version;
+              _notes = state.notes;
             });
           }
         },

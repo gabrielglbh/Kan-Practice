@@ -17,7 +17,7 @@ class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
       try {
         emit(WordDetailsStateLoading());
         final kanji = await WordQueries.instance
-            .getKanji(event.kanji.listName, event.kanji.kanji);
+            .getKanji(event.word.listName, event.word.word);
         emit(WordDetailsStateLoaded(kanji: kanji));
       } on Exception {
         emit(const WordDetailsStateFailure(error: ":("));
@@ -25,13 +25,13 @@ class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
     });
 
     on<WordDetailsEventDelete>((event, emit) async {
-      final k = event.kanji;
+      final k = event.word;
       if (state is WordDetailsStateLoaded && k != null) {
         final int code =
-            await WordQueries.instance.removeKanji(k.listName, k.kanji);
+            await WordQueries.instance.removeKanji(k.listName, k.word);
         if (code == 0) {
-          WordList kanList = await ListQueries.instance.getList(k.listName);
-          List<Word> list =
+          WordList list = await ListQueries.instance.getList(k.listName);
+          List<Word> words =
               await WordQueries.instance.getAllKanjiFromList(k.listName);
 
           /// Update for each mode the overall score again. Issue: #10
@@ -41,56 +41,56 @@ class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
           /// It takes into account the empty values.
           ///
           /// If list is empty, update all values to -1.
-          if (list.isEmpty) {
+          if (words.isEmpty) {
             await ListQueries.instance.updateList(k.listName, {
-              KanListTableFields.totalWinRateWritingField:
+              ListTableFields.totalWinRateWritingField:
                   DatabaseConstants.emptyWinRate,
-              KanListTableFields.totalWinRateReadingField:
+              ListTableFields.totalWinRateReadingField:
                   DatabaseConstants.emptyWinRate,
-              KanListTableFields.totalWinRateRecognitionField:
+              ListTableFields.totalWinRateRecognitionField:
                   DatabaseConstants.emptyWinRate,
-              KanListTableFields.totalWinRateListeningField:
+              ListTableFields.totalWinRateListeningField:
                   DatabaseConstants.emptyWinRate
             });
           } else {
-            double wNewScore = kanList.totalWinRateWriting;
-            double readNewScore = kanList.totalWinRateReading;
-            double recNewScore = kanList.totalWinRateRecognition;
-            double lisNewScore = kanList.totalWinRateListening;
+            double wNewScore = list.totalWinRateWriting;
+            double readNewScore = list.totalWinRateReading;
+            double recNewScore = list.totalWinRateRecognition;
+            double lisNewScore = list.totalWinRateListening;
 
             if (k.winRateWriting != DatabaseConstants.emptyWinRate) {
               /// Get the y value: total length of list prior to removal of
               /// kanji multiplied by the overall win rate
-              double y = (list.length + 1) * kanList.totalWinRateWriting;
+              double y = (words.length + 1) * list.totalWinRateWriting;
 
               /// Subtract the winRate of the removed kanji to y
               double partialScore = y - k.winRateWriting;
 
               /// Calculate the new overall score with the partialScore divided
               /// by the list without the kanji
-              wNewScore = partialScore / list.length;
+              wNewScore = partialScore / words.length;
             }
             if (k.winRateReading != DatabaseConstants.emptyWinRate) {
-              double y = (list.length + 1) * kanList.totalWinRateReading;
+              double y = (words.length + 1) * list.totalWinRateReading;
               double partialScore = y - k.winRateReading;
-              readNewScore = partialScore / list.length;
+              readNewScore = partialScore / words.length;
             }
             if (k.winRateRecognition != DatabaseConstants.emptyWinRate) {
-              double y = (list.length + 1) * kanList.totalWinRateRecognition;
+              double y = (words.length + 1) * list.totalWinRateRecognition;
               double partialScore = y - k.winRateRecognition;
-              recNewScore = partialScore / list.length;
+              recNewScore = partialScore / words.length;
             }
             if (k.winRateListening != DatabaseConstants.emptyWinRate) {
-              double y = (list.length + 1) * kanList.totalWinRateListening;
+              double y = (words.length + 1) * list.totalWinRateListening;
               double partialScore = y - k.winRateListening;
-              lisNewScore = partialScore / list.length;
+              lisNewScore = partialScore / words.length;
             }
 
             await ListQueries.instance.updateList(k.listName, {
-              KanListTableFields.totalWinRateWritingField: wNewScore,
-              KanListTableFields.totalWinRateReadingField: readNewScore,
-              KanListTableFields.totalWinRateRecognitionField: recNewScore,
-              KanListTableFields.totalWinRateListeningField: lisNewScore
+              ListTableFields.totalWinRateWritingField: wNewScore,
+              ListTableFields.totalWinRateReadingField: readNewScore,
+              ListTableFields.totalWinRateRecognitionField: recNewScore,
+              ListTableFields.totalWinRateListeningField: lisNewScore
             });
           }
           emit(WordDetailsStateRemoved());

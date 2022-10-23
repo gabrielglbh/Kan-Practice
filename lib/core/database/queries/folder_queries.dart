@@ -121,16 +121,16 @@ class FolderQueries {
         final offsetParsed =
             offset != null && limit != null ? "OFFSET ${offset * limit}" : "";
         final res = await _database?.rawQuery(
-            "SELECT DISTINCT R.${KanListTableFields.nameField}, "
-            "R.${KanListTableFields.totalWinRateWritingField}, "
-            "R.${KanListTableFields.totalWinRateReadingField}, "
-            "R.${KanListTableFields.totalWinRateRecognitionField}, "
-            "R.${KanListTableFields.totalWinRateListeningField}, "
-            "R.${KanListTableFields.totalWinRateSpeakingField}, "
-            "R.${KanListTableFields.lastUpdatedField} "
-            "FROM ${KanListFolderRelationTableFields.relTable} L JOIN ${KanListTableFields.listsTable} R "
-            "ON L.${KanListFolderRelationTableFields.kanListNameField}=R.${KanListTableFields.nameField} "
-            "WHERE L.${KanListFolderRelationTableFields.nameField} LIKE '$folder' "
+            "SELECT DISTINCT R.${ListTableFields.nameField}, "
+            "R.${ListTableFields.totalWinRateWritingField}, "
+            "R.${ListTableFields.totalWinRateReadingField}, "
+            "R.${ListTableFields.totalWinRateRecognitionField}, "
+            "R.${ListTableFields.totalWinRateListeningField}, "
+            "R.${ListTableFields.totalWinRateSpeakingField}, "
+            "R.${ListTableFields.lastUpdatedField} "
+            "FROM ${RelationFolderListTableFields.relTable} L JOIN ${ListTableFields.listsTable} R "
+            "ON L.${RelationFolderListTableFields.listNameField}=R.${ListTableFields.nameField} "
+            "WHERE L.${RelationFolderListTableFields.nameField} LIKE '$folder' "
             "ORDER BY R.${filter.filter} $order "
             "$limitParsed $offsetParsed");
         if (res != null) {
@@ -160,40 +160,39 @@ class FolderQueries {
         /// Build up the where clauses from the listName
         for (var folder in folders) {
           whereClause +=
-              "${KanListFolderRelationTableFields.nameField} LIKE '$folder' OR ";
+              "${RelationFolderListTableFields.nameField} LIKE '$folder' OR ";
         }
 
         /// Clean up the String
         whereClause = whereClause.substring(0, whereClause.length - 4);
 
-        final joinSelection =
-            "SELECT DISTINCT K.${KanjiTableFields.kanjiField}, "
-            "K.${KanjiTableFields.listNameField}, "
-            "K.${KanjiTableFields.meaningField}, "
-            "K.${KanjiTableFields.pronunciationField}, "
-            "K.${KanjiTableFields.winRateWritingField}, "
-            "K.${KanjiTableFields.winRateReadingField}, "
-            "K.${KanjiTableFields.winRateRecognitionField}, "
-            "K.${KanjiTableFields.winRateListeningField}, "
-            "K.${KanjiTableFields.winRateSpeakingField}, "
-            "K.${KanjiTableFields.dateAddedField}, "
-            "K.${KanjiTableFields.dateLastShown}, "
-            "K.${KanjiTableFields.dateLastShownWriting}, "
-            "K.${KanjiTableFields.dateLastShownReading}, "
-            "K.${KanjiTableFields.dateLastShownRecognition}, "
-            "K.${KanjiTableFields.dateLastShownListening}, "
-            "K.${KanjiTableFields.dateLastShownSpeaking}, "
-            "K.${KanjiTableFields.categoryField} "
-            "FROM ${KanListFolderRelationTableFields.relTable} L JOIN ${KanListTableFields.listsTable} R "
-            "ON L.${KanListFolderRelationTableFields.kanListNameField}=R.${KanListTableFields.nameField} "
-            "JOIN ${KanjiTableFields.kanjiTable} K "
-            "ON K.${KanjiTableFields.listNameField}=R.${KanListTableFields.nameField} "
+        final joinSelection = "SELECT DISTINCT K.${WordTableFields.wordField}, "
+            "K.${WordTableFields.listNameField}, "
+            "K.${WordTableFields.meaningField}, "
+            "K.${WordTableFields.pronunciationField}, "
+            "K.${WordTableFields.winRateWritingField}, "
+            "K.${WordTableFields.winRateReadingField}, "
+            "K.${WordTableFields.winRateRecognitionField}, "
+            "K.${WordTableFields.winRateListeningField}, "
+            "K.${WordTableFields.winRateSpeakingField}, "
+            "K.${WordTableFields.dateAddedField}, "
+            "K.${WordTableFields.dateLastShown}, "
+            "K.${WordTableFields.dateLastShownWriting}, "
+            "K.${WordTableFields.dateLastShownReading}, "
+            "K.${WordTableFields.dateLastShownRecognition}, "
+            "K.${WordTableFields.dateLastShownListening}, "
+            "K.${WordTableFields.dateLastShownSpeaking}, "
+            "K.${WordTableFields.categoryField} "
+            "FROM ${RelationFolderListTableFields.relTable} L JOIN ${ListTableFields.listsTable} R "
+            "ON L.${RelationFolderListTableFields.listNameField}=R.${ListTableFields.nameField} "
+            "JOIN ${WordTableFields.wordTable} K "
+            "ON K.${WordTableFields.listNameField}=R.${ListTableFields.nameField} "
             "WHERE $whereClause";
 
         if (type == Tests.categories) {
           if (category != null) {
             query =
-                "$joinSelection AND K.${KanjiTableFields.categoryField}=$category";
+                "$joinSelection AND K.${WordTableFields.categoryField}=$category";
           } else {
             return [];
           }
@@ -202,28 +201,28 @@ class FolderQueries {
             switch (mode) {
               case StudyModes.writing:
                 query =
-                    "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownWriting} ASC, "
-                    "K.${KanjiTableFields.winRateWritingField} ASC";
+                    "$joinSelection ORDER BY K.${WordTableFields.dateLastShownWriting} ASC, "
+                    "K.${WordTableFields.winRateWritingField} ASC";
                 break;
               case StudyModes.reading:
                 query =
-                    "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownReading} ASC, "
-                    "K.${KanjiTableFields.winRateReadingField} ASC";
+                    "$joinSelection ORDER BY K.${WordTableFields.dateLastShownReading} ASC, "
+                    "K.${WordTableFields.winRateReadingField} ASC";
                 break;
               case StudyModes.recognition:
                 query =
-                    "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownRecognition} ASC, "
-                    "K.${KanjiTableFields.winRateRecognitionField} ASC";
+                    "$joinSelection ORDER BY K.${WordTableFields.dateLastShownRecognition} ASC, "
+                    "K.${WordTableFields.winRateRecognitionField} ASC";
                 break;
               case StudyModes.listening:
                 query =
-                    "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownListening} ASC, "
-                    "K.${KanjiTableFields.winRateListeningField} ASC";
+                    "$joinSelection ORDER BY K.${WordTableFields.dateLastShownListening} ASC, "
+                    "K.${WordTableFields.winRateListeningField} ASC";
                 break;
               case StudyModes.speaking:
                 query =
-                    "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownSpeaking} ASC, "
-                    "K.${KanjiTableFields.winRateSpeakingField} ASC";
+                    "$joinSelection ORDER BY K.${WordTableFields.dateLastShownSpeaking} ASC, "
+                    "K.${WordTableFields.winRateSpeakingField} ASC";
                 break;
             }
           } else {
@@ -234,23 +233,23 @@ class FolderQueries {
             switch (mode) {
               case StudyModes.writing:
                 query =
-                    "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownWriting} ASC";
+                    "$joinSelection ORDER BY K.${WordTableFields.dateLastShownWriting} ASC";
                 break;
               case StudyModes.reading:
                 query =
-                    "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownReading} ASC";
+                    "$joinSelection ORDER BY K.${WordTableFields.dateLastShownReading} ASC";
                 break;
               case StudyModes.recognition:
                 query =
-                    "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownRecognition} ASC";
+                    "$joinSelection ORDER BY K.${WordTableFields.dateLastShownRecognition} ASC";
                 break;
               case StudyModes.listening:
                 query =
-                    "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownListening} ASC";
+                    "$joinSelection ORDER BY K.${WordTableFields.dateLastShownListening} ASC";
                 break;
               case StudyModes.speaking:
                 query =
-                    "$joinSelection ORDER BY K.${KanjiTableFields.dateLastShownSpeaking} ASC";
+                    "$joinSelection ORDER BY K.${WordTableFields.dateLastShownSpeaking} ASC";
                 break;
             }
           } else {
@@ -261,23 +260,23 @@ class FolderQueries {
             switch (mode) {
               case StudyModes.writing:
                 query =
-                    "$joinSelection ORDER BY K.${KanjiTableFields.winRateWritingField} ASC";
+                    "$joinSelection ORDER BY K.${WordTableFields.winRateWritingField} ASC";
                 break;
               case StudyModes.reading:
                 query =
-                    "$joinSelection ORDER BY K.${KanjiTableFields.winRateReadingField} ASC";
+                    "$joinSelection ORDER BY K.${WordTableFields.winRateReadingField} ASC";
                 break;
               case StudyModes.recognition:
                 query =
-                    "$joinSelection ORDER BY K.${KanjiTableFields.winRateRecognitionField} ASC";
+                    "$joinSelection ORDER BY K.${WordTableFields.winRateRecognitionField} ASC";
                 break;
               case StudyModes.listening:
                 query =
-                    "$joinSelection ORDER BY K.${KanjiTableFields.winRateListeningField} ASC";
+                    "$joinSelection ORDER BY K.${WordTableFields.winRateListeningField} ASC";
                 break;
               case StudyModes.speaking:
                 query =
-                    "$joinSelection ORDER BY K.${KanjiTableFields.winRateSpeakingField} ASC";
+                    "$joinSelection ORDER BY K.${WordTableFields.winRateSpeakingField} ASC";
                 break;
             }
           } else {
@@ -311,20 +310,20 @@ class FolderQueries {
         final offsetParsed =
             offset != null && limit != null ? "OFFSET ${offset * limit}" : "";
         final res = await _database?.rawQuery(
-            "SELECT DISTINCT R.${KanListTableFields.nameField}, "
-            "R.${KanListTableFields.totalWinRateWritingField}, "
-            "R.${KanListTableFields.totalWinRateReadingField}, "
-            "R.${KanListTableFields.totalWinRateRecognitionField}, "
-            "R.${KanListTableFields.totalWinRateListeningField}, "
-            "R.${KanListTableFields.totalWinRateSpeakingField}, "
-            "R.${KanListTableFields.lastUpdatedField} "
-            "FROM ${KanListFolderRelationTableFields.relTable} L JOIN ${KanListTableFields.listsTable} R "
-            "ON L.${KanListFolderRelationTableFields.kanListNameField}=R.${KanListTableFields.nameField} "
-            "JOIN ${KanjiTableFields.kanjiTable} K ON K.${KanjiTableFields.listNameField}=R.${KanListTableFields.nameField} "
-            "WHERE L.${KanListFolderRelationTableFields.nameField} LIKE '$folder' "
-            "AND (R.${KanListTableFields.nameField} LIKE '%$query%' OR K.${KanjiTableFields.meaningField} LIKE '%$query%' "
-            "OR K.${KanjiTableFields.kanjiField} LIKE '%$query%' OR K.${KanjiTableFields.pronunciationField} LIKE '%$query%') "
-            "ORDER BY ${KanListTableFields.lastUpdatedField} DESC "
+            "SELECT DISTINCT R.${ListTableFields.nameField}, "
+            "R.${ListTableFields.totalWinRateWritingField}, "
+            "R.${ListTableFields.totalWinRateReadingField}, "
+            "R.${ListTableFields.totalWinRateRecognitionField}, "
+            "R.${ListTableFields.totalWinRateListeningField}, "
+            "R.${ListTableFields.totalWinRateSpeakingField}, "
+            "R.${ListTableFields.lastUpdatedField} "
+            "FROM ${RelationFolderListTableFields.relTable} L JOIN ${ListTableFields.listsTable} R "
+            "ON L.${RelationFolderListTableFields.listNameField}=R.${ListTableFields.nameField} "
+            "JOIN ${WordTableFields.wordTable} K ON K.${WordTableFields.listNameField}=R.${ListTableFields.nameField} "
+            "WHERE L.${RelationFolderListTableFields.nameField} LIKE '$folder' "
+            "AND (R.${ListTableFields.nameField} LIKE '%$query%' OR K.${WordTableFields.meaningField} LIKE '%$query%' "
+            "OR K.${WordTableFields.wordField} LIKE '%$query%' OR K.${WordTableFields.pronunciationField} LIKE '%$query%') "
+            "ORDER BY ${ListTableFields.lastUpdatedField} DESC "
             "$limitParsed $offsetParsed");
         if (res != null) {
           return List.generate(res.length, (i) => WordList.fromJson(res[i]));
@@ -370,8 +369,8 @@ class FolderQueries {
     if (_database != null) {
       try {
         await _database?.insert(
-          KanListFolderRelationTableFields.relTable,
-          RelationFolderList(folder: folder, kanListName: list).toJson(),
+          RelationFolderListTableFields.relTable,
+          RelationFolderList(folder: folder, list: list).toJson(),
           conflictAlgorithm: ConflictAlgorithm.ignore,
         );
         return 0;
@@ -389,9 +388,9 @@ class FolderQueries {
     if (_database != null) {
       try {
         await _database?.delete(
-          KanListFolderRelationTableFields.relTable,
+          RelationFolderListTableFields.relTable,
           where:
-              "${KanListFolderRelationTableFields.kanListNameField}=? AND ${KanListFolderRelationTableFields.nameField}=?",
+              "${RelationFolderListTableFields.listNameField}=? AND ${RelationFolderListTableFields.nameField}=?",
           whereArgs: [list, folder],
         );
         return 0;
@@ -409,7 +408,7 @@ class FolderQueries {
     if (_database != null) {
       try {
         final res =
-            await _database?.query(KanListFolderRelationTableFields.relTable);
+            await _database?.query(RelationFolderListTableFields.relTable);
         if (res != null) {
           return List.generate(
               res.length, (i) => RelationFolderList.fromJson(res[i]));

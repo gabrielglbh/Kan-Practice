@@ -84,7 +84,7 @@ class _WritingStudyState extends State<WritingStudy> {
   }
 
   _initScoreArray(int x) {
-    String kanji = _studyList[x].kanji;
+    String kanji = _studyList[x].word;
     _score.add(0);
     _currentKanji.add([]);
     _maxScore.add(kanji.length.toDouble());
@@ -103,7 +103,7 @@ class _WritingStudyState extends State<WritingStudy> {
       /// And if the current _inner index is the last one of the word, go to the next word
       _showActualKanji = false;
       _inner++;
-      if (_inner == _studyList[_macro].kanji.length) _goNextKanji = true;
+      if (_inner == _studyList[_macro].word.length) _goNextKanji = true;
     });
 
     /// Empty the current canvas
@@ -158,7 +158,7 @@ class _WritingStudyState extends State<WritingStudy> {
     else {
       setState(() {
         _showActualKanji = true;
-        _currentKanji[_macro][_inner] = _studyList[_macro].kanji[_inner];
+        _currentKanji[_macro][_inner] = _studyList[_macro].word[_inner];
       });
     }
   }
@@ -184,9 +184,9 @@ class _WritingStudyState extends State<WritingStudy> {
     /// Updates the dateLastShown attribute of the finished word AND
     /// the current specific last shown mode attribute
     await WordQueries.instance
-        .updateKanji(_studyList[_macro].listName, _studyList[_macro].kanji, {
-      KanjiTableFields.dateLastShown: Utils.getCurrentMilliseconds(),
-      KanjiTableFields.dateLastShownWriting: Utils.getCurrentMilliseconds()
+        .updateKanji(_studyList[_macro].listName, _studyList[_macro].word, {
+      WordTableFields.dateLastShown: Utils.getCurrentMilliseconds(),
+      WordTableFields.dateLastShownWriting: Utils.getCurrentMilliseconds()
     });
     final double currentScore = _score[_macro] / _maxScore[_macro];
 
@@ -285,11 +285,11 @@ class _WritingStudyState extends State<WritingStudy> {
         height: finalHeight,
         child: ListView.builder(
           shrinkWrap: true,
-          itemCount: _studyList[_macro].kanji.length,
+          itemCount: _studyList[_macro].word.length,
           physics: const NeverScrollableScrollPhysics(),
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
-            String? kanji = _studyList[_macro].kanji;
+            String? kanji = _studyList[_macro].word;
             return Text(
                 _currentKanji[_macro][index] == _none ? _none : kanji[index],
                 style: TextStyle(

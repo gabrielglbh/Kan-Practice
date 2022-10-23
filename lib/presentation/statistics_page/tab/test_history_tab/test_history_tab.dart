@@ -174,7 +174,7 @@ class _TestHistoryState extends State<TestHistory>
               x: DateTime.fromMillisecondsSinceEpoch(test.takenDate),
               y: test.testScore,
               studyMode: StudyModes.values[test.studyMode],
-              wordsOnTest: test.kanjiInTest,
+              wordsOnTest: test.wordsInTest,
               mode: Tests.values[test.testMode ?? 0],
             );
           }),

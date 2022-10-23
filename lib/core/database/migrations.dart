@@ -85,27 +85,26 @@ class Migrations extends MigrationUtils {
   }
 
   Future<void> version7to8(Database db) async {
-    await db.rawQuery("ALTER TABLE ${KanjiTableFields.kanjiTable} "
-        "ADD COLUMN ${KanjiTableFields.winRateSpeakingField} INTEGER NOT NULL "
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.winRateSpeakingField} INTEGER NOT NULL "
         "DEFAULT ${DatabaseConstants.emptyWinRate.toString()}");
 
-    await db.rawQuery("ALTER TABLE ${KanjiTableFields.kanjiTable} "
-        "ADD COLUMN ${KanjiTableFields.dateLastShownSpeaking} INTEGER NOT NULL "
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.dateLastShownSpeaking} INTEGER NOT NULL "
         "DEFAULT 0");
 
-    await db.rawQuery("ALTER TABLE ${KanListTableFields.listsTable} "
-        "ADD COLUMN ${KanListTableFields.totalWinRateSpeakingField} INTEGER NOT NULL "
+    await db.rawQuery("ALTER TABLE ${ListTableFields.listsTable} "
+        "ADD COLUMN ${ListTableFields.totalWinRateSpeakingField} INTEGER NOT NULL "
         "DEFAULT ${DatabaseConstants.emptyWinRate.toString()}");
   }
 
   Future<void> version6to7(Database db) async {
-    await db.rawQuery(
-        "CREATE TABLE ${KanListFolderRelationTableFields.relTable}("
-        "${KanListFolderRelationTableFields.nameField} TEXT NOT NULL, "
-        "${KanListFolderRelationTableFields.kanListNameField} TEXT NOT NULL, "
-        "PRIMARY KEY(${KanListFolderRelationTableFields.nameField}, ${KanListFolderRelationTableFields.kanListNameField}), "
-        "FOREIGN KEY (${KanListFolderRelationTableFields.nameField}) REFERENCES ${FolderTableFields.folderTable}(${FolderTableFields.nameField}) ON DELETE CASCADE ON UPDATE CASCADE, "
-        "FOREIGN KEY (${KanListFolderRelationTableFields.kanListNameField}) REFERENCES ${KanListTableFields.listsTable}(${KanListTableFields.nameField}) ON DELETE CASCADE ON UPDATE CASCADE)");
+    await db.rawQuery("CREATE TABLE ${RelationFolderListTableFields.relTable}("
+        "${RelationFolderListTableFields.nameField} TEXT NOT NULL, "
+        "${RelationFolderListTableFields.listNameField} TEXT NOT NULL, "
+        "PRIMARY KEY(${RelationFolderListTableFields.nameField}, ${RelationFolderListTableFields.listNameField}), "
+        "FOREIGN KEY (${RelationFolderListTableFields.nameField}) REFERENCES ${FolderTableFields.folderTable}(${FolderTableFields.nameField}) ON DELETE CASCADE ON UPDATE CASCADE, "
+        "FOREIGN KEY (${RelationFolderListTableFields.listNameField}) REFERENCES ${ListTableFields.listsTable}(${ListTableFields.nameField}) ON DELETE CASCADE ON UPDATE CASCADE)");
 
     await db.rawQuery("CREATE TABLE ${FolderTableFields.folderTable}("
         "${FolderTableFields.nameField} TEXT NOT NULL PRIMARY KEY, "
@@ -136,42 +135,41 @@ class Migrations extends MigrationUtils {
   }
 
   Future<void> version4to5(Database db) async {
-    await db.rawQuery("ALTER TABLE ${KanjiTableFields.kanjiTable} "
-        "ADD COLUMN ${KanjiTableFields.categoryField} INTEGER NOT NULL "
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.categoryField} INTEGER NOT NULL "
         "DEFAULT 0");
   }
 
   Future<void> version3to4(Database db) async {
-    await db.rawQuery("ALTER TABLE ${KanjiTableFields.kanjiTable} "
-        "ADD COLUMN ${KanjiTableFields.dateLastShownWriting} INTEGER NOT NULL "
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.dateLastShownWriting} INTEGER NOT NULL "
         "DEFAULT 0");
-    await db.rawQuery("ALTER TABLE ${KanjiTableFields.kanjiTable} "
-        "ADD COLUMN ${KanjiTableFields.dateLastShownReading} INTEGER NOT NULL "
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.dateLastShownReading} INTEGER NOT NULL "
         "DEFAULT 0");
-    await db.rawQuery("ALTER TABLE ${KanjiTableFields.kanjiTable} "
-        "ADD COLUMN ${KanjiTableFields.dateLastShownRecognition} INTEGER NOT NULL "
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.dateLastShownRecognition} INTEGER NOT NULL "
         "DEFAULT 0");
-    await db.rawQuery("ALTER TABLE ${KanjiTableFields.kanjiTable} "
-        "ADD COLUMN ${KanjiTableFields.dateLastShownListening} INTEGER NOT NULL "
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.dateLastShownListening} INTEGER NOT NULL "
         "DEFAULT 0");
   }
 
   Future<void> version2to3(Database db) async {
-    await db.rawQuery("ALTER TABLE ${KanjiTableFields.kanjiTable} "
-        "ADD COLUMN ${KanjiTableFields.winRateListeningField} INTEGER NOT NULL "
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.winRateListeningField} INTEGER NOT NULL "
         "DEFAULT ${DatabaseConstants.emptyWinRate.toString()}");
-    await db.rawQuery("ALTER TABLE ${KanListTableFields.listsTable} "
-        "ADD COLUMN ${KanListTableFields.totalWinRateListeningField} INTEGER NOT NULL "
+    await db.rawQuery("ALTER TABLE ${ListTableFields.listsTable} "
+        "ADD COLUMN ${ListTableFields.totalWinRateListeningField} INTEGER NOT NULL "
         "DEFAULT ${DatabaseConstants.emptyWinRate.toString()}");
   }
 
   Future<void> version1to2(Database db) async {
-    await db.rawQuery("ALTER TABLE ${KanjiTableFields.kanjiTable} "
-        "ADD COLUMN ${KanjiTableFields.dateLastShown} INTEGER NOT NULL DEFAULT 0");
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.dateLastShown} INTEGER NOT NULL DEFAULT 0");
 
     /// If the user has already a database set up, fill dateLastShown with dateAdded
-    List<Map<String, dynamic>>? res =
-        await db.query(KanjiTableFields.kanjiTable);
+    List<Map<String, dynamic>>? res = await db.query(WordTableFields.wordTable);
     if (res.isNotEmpty) {
       List<Word> kanji =
           List.generate(res.length, (i) => Word.fromJson(res[i]));

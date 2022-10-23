@@ -223,7 +223,7 @@ class MarketRecords {
         batch = _ref.batch();
         for (int x = 0; x < resetKanji.length; x++) {
           final DocumentReference k =
-              doc.collection(kanjiLabel).doc(resetKanji[x].kanji);
+              doc.collection(kanjiLabel).doc(resetKanji[x].word);
           batch.set(k, resetKanji[x].toJson());
           batch = await _reinitializeBatch(batch, x);
         }

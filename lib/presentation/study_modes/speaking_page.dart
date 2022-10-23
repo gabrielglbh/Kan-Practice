@@ -104,9 +104,9 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
     /// Updates the dateLastShown attribute of the finished word AND
     /// the current specific last shown mode attribute
     await WordQueries.instance
-        .updateKanji(_studyList[_macro].listName, _studyList[_macro].kanji, {
-      KanjiTableFields.dateLastShown: Utils.getCurrentMilliseconds(),
-      KanjiTableFields.dateLastShownSpeaking: Utils.getCurrentMilliseconds()
+        .updateKanji(_studyList[_macro].listName, _studyList[_macro].word, {
+      WordTableFields.dateLastShown: Utils.getCurrentMilliseconds(),
+      WordTableFields.dateLastShownSpeaking: Utils.getCurrentMilliseconds()
     });
 
     /// Add the current virgin score to the test scores...
@@ -133,7 +133,7 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
   String _getProperKanji() {
     /// Based on the states, update the kanji
     if (_showInfo) {
-      return _studyList[_macro].kanji;
+      return _studyList[_macro].word;
     } else {
       return _none;
     }

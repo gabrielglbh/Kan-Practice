@@ -10,7 +10,7 @@ BackUp _$BackUpFromJson(Map<String, dynamic> json) => BackUp(
       lists: (json['lists'] as List<dynamic>)
           .map((e) => WordList.fromJson(e as Map<String, dynamic>))
           .toList(),
-      kanji: (json['kanji'] as List<dynamic>)
+      words: (json['words'] as List<dynamic>)
           .map((e) => Word.fromJson(e as Map<String, dynamic>))
           .toList(),
       testData: TestData.fromJson(json['testData'] as Map<String, dynamic>),
@@ -20,7 +20,7 @@ BackUp _$BackUpFromJson(Map<String, dynamic> json) => BackUp(
       folders: (json['folders'] as List<dynamic>)
           .map((e) => Folder.fromJson(e as Map<String, dynamic>))
           .toList(),
-      relFolderKanList: (json['relFolderKanList'] as List<dynamic>)
+      relationFolderList: (json['relationFolderList'] as List<dynamic>)
           .map((e) => RelationFolderList.fromJson(e as Map<String, dynamic>))
           .toList(),
       lastUpdated: json['lastUpdated'] as int,
@@ -28,10 +28,10 @@ BackUp _$BackUpFromJson(Map<String, dynamic> json) => BackUp(
 
 Map<String, dynamic> _$BackUpToJson(BackUp instance) => <String, dynamic>{
       'lists': instance.lists,
-      'kanji': instance.kanji,
+      'words': instance.words,
       'testData': instance.testData,
       'testSpecData': instance.testSpecData,
       'folders': instance.folders,
-      'relFolderKanList': instance.relFolderKanList,
+      'relationFolderList': instance.relationFolderList,
       'lastUpdated': instance.lastUpdated,
     };

@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage>
     _tabController.addListener(_onTabChanged);
 
     final filterText = StorageManager.readData(StorageManager.filtersOnList) ??
-        KanListTableFields.lastUpdatedField;
+        ListTableFields.lastUpdatedField;
     _currentAppliedFilter = KanListFiltersUtils.getFilterFrom(filterText);
     _currentAppliedOrder =
         StorageManager.readData(StorageManager.orderOnList) ?? true;

@@ -1,6 +1,6 @@
-class KanjiTableFields {
-  static const String kanjiTable = "KANJI_TABLE";
-  static const String kanjiField = "kanji";
+class WordTableFields {
+  static const String wordTable = "KANJI_TABLE";
+  static const String wordField = "kanji";
   static const String listNameField = "name";
   static const String meaningField = "meaning";
   static const String pronunciationField = "pronunciation";
@@ -19,7 +19,7 @@ class KanjiTableFields {
   static const String categoryField = "category";
 }
 
-class KanListTableFields {
+class ListTableFields {
   static const String listsTable = "LISTS_TABLE";
   static const String nameField = "name";
   static const String totalWinRateWritingField = "totalWinRateWriting";
@@ -41,10 +41,10 @@ class TestTableFields {
   static const String testModeField = "testMode";
 }
 
-class KanListFolderRelationTableFields {
+class RelationFolderListTableFields {
   static const String relTable = "FOLDER_RELATION_TABLE";
   static const String nameField = "folder";
-  static const String kanListNameField = "kanListName";
+  static const String listNameField = "kanListName";
 }
 
 class FolderTableFields {

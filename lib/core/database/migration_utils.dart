@@ -10,23 +10,23 @@ import 'package:sqflite/sqflite.dart';
 class MigrationUtils {
   batchUpdateTestMode(Batch? batch, Test test) {
     int testMode = 0;
-    if (test.kanjiLists == "Blitz") {
+    if (test.lists == "Blitz") {
       testMode = 1;
-    } else if (test.kanjiLists == "Recuerdo" ||
-        test.kanjiLists == "Remembrance" ||
-        test.kanjiLists == "Erinnerung") {
+    } else if (test.lists == "Recuerdo" ||
+        test.lists == "Remembrance" ||
+        test.lists == "Erinnerung") {
       testMode = 2;
-    } else if (test.kanjiLists == "Números aleatorios" ||
-        test.kanjiLists == "Random Numbers" ||
-        test.kanjiLists == "Zufallszahlen") {
+    } else if (test.lists == "Números aleatorios" ||
+        test.lists == "Random Numbers" ||
+        test.lists == "Zufallszahlen") {
       testMode = 3;
-    } else if (test.kanjiLists == "Menos %" ||
-        test.kanjiLists == "Less %" ||
-        test.kanjiLists == "Weniger %") {
+    } else if (test.lists == "Menos %" ||
+        test.lists == "Less %" ||
+        test.lists == "Weniger %") {
       testMode = 4;
-    } else if (test.kanjiLists.contains("Categoría: ", 0) ||
-        test.kanjiLists.contains("Category: ", 0) ||
-        test.kanjiLists.contains("Kategorie: ", 0)) {
+    } else if (test.lists.contains("Categoría: ", 0) ||
+        test.lists.contains("Category: ", 0) ||
+        test.lists.contains("Kategorie: ", 0)) {
       testMode = 5;
     }
 
@@ -37,11 +37,11 @@ class MigrationUtils {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  batchUpdateDateLastShown(Batch? batch, Word kanji) {
-    batch?.update(KanjiTableFields.kanjiTable,
-        {KanjiTableFields.dateLastShown: kanji.dateAdded},
-        where: "${KanjiTableFields.kanjiField}=?",
-        whereArgs: [kanji.kanji],
+  batchUpdateDateLastShown(Batch? batch, Word word) {
+    batch?.update(WordTableFields.wordTable,
+        {WordTableFields.dateLastShown: word.dateAdded},
+        where: "${WordTableFields.wordField}=?",
+        whereArgs: [word.word],
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 

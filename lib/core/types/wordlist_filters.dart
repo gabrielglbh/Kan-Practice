@@ -34,36 +34,36 @@ extension KanListFiltersExtensions on WordListFilters {
   String get filter {
     switch (this) {
       case WordListFilters.writing:
-        return KanListTableFields.totalWinRateWritingField;
+        return ListTableFields.totalWinRateWritingField;
       case WordListFilters.reading:
-        return KanListTableFields.totalWinRateReadingField;
+        return ListTableFields.totalWinRateReadingField;
       case WordListFilters.recognition:
-        return KanListTableFields.totalWinRateRecognitionField;
+        return ListTableFields.totalWinRateRecognitionField;
       case WordListFilters.listening:
-        return KanListTableFields.totalWinRateListeningField;
+        return ListTableFields.totalWinRateListeningField;
       case WordListFilters.speaking:
-        return KanListTableFields.totalWinRateSpeakingField;
+        return ListTableFields.totalWinRateSpeakingField;
       case WordListFilters.all:
-        return KanListTableFields.lastUpdatedField;
+        return ListTableFields.lastUpdatedField;
       case WordListFilters.alphabetically:
-        return KanListTableFields.nameField;
+        return ListTableFields.nameField;
     }
   }
 }
 
 class KanListFiltersUtils {
   static WordListFilters getFilterFrom(String f) {
-    if (f == KanListTableFields.lastUpdatedField) {
+    if (f == ListTableFields.lastUpdatedField) {
       return WordListFilters.all;
-    } else if (f == KanListTableFields.nameField) {
+    } else if (f == ListTableFields.nameField) {
       return WordListFilters.alphabetically;
-    } else if (f == KanListTableFields.totalWinRateWritingField) {
+    } else if (f == ListTableFields.totalWinRateWritingField) {
       return WordListFilters.writing;
-    } else if (f == KanListTableFields.totalWinRateReadingField) {
+    } else if (f == ListTableFields.totalWinRateReadingField) {
       return WordListFilters.reading;
-    } else if (f == KanListTableFields.totalWinRateRecognitionField) {
+    } else if (f == ListTableFields.totalWinRateRecognitionField) {
       return WordListFilters.recognition;
-    } else if (f == KanListTableFields.totalWinRateListeningField) {
+    } else if (f == ListTableFields.totalWinRateListeningField) {
       return WordListFilters.listening;
     } else {
       return WordListFilters.speaking;

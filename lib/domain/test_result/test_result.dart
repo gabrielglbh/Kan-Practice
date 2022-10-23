@@ -9,24 +9,24 @@ class Test {
   @JsonKey(name: TestTableFields.testScoreField)
   final double testScore;
   @JsonKey(name: TestTableFields.kanjiInTestField)
-  final int kanjiInTest;
-  final String kanjiLists;
+  final int wordsInTest;
+  final String lists;
   final int? testMode;
   final int studyMode;
 
   Test(
       {required this.takenDate,
       required this.testScore,
-      required this.kanjiLists,
-      required this.kanjiInTest,
+      required this.lists,
+      required this.wordsInTest,
       required this.studyMode,
       this.testMode = -1});
 
   /// Empty [Test]
   static final Test empty = Test(
       testScore: 0,
-      kanjiInTest: 0,
-      kanjiLists: "",
+      wordsInTest: 0,
+      lists: "",
       takenDate: 0,
       studyMode: 0,
       testMode: 0);

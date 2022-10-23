@@ -102,7 +102,7 @@ class KanjiItem extends StatelessWidget {
                       BorderRadius.all(Radius.circular(KPRadius.radius8))),
               child: FittedBox(
                 fit: BoxFit.contain,
-                child: Text(kanji.kanji,
+                child: Text(kanji.word,
                     textAlign: TextAlign.center,
                     style: Theme.of(context)
                         .textTheme

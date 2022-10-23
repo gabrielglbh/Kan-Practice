@@ -29,10 +29,10 @@ class _TestResultPageState extends State<TestResultPage> {
   Future<void> _saveTest() async {
     final test = Test(
         testScore: widget.args.score,
-        kanjiInTest: widget.args.kanji,
+        wordsInTest: widget.args.kanji,
         studyMode: widget.args.studyMode,
         testMode: widget.args.testMode,
-        kanjiLists: widget.args.listsName,
+        lists: widget.args.listsName,
         takenDate: Utils.getCurrentMilliseconds());
     await TestQueries.instance.createTest(test);
     await TestQueries.instance.updateStats(test);
@@ -191,7 +191,7 @@ class _TestResultPageState extends State<TestResultPage> {
                     const EdgeInsets.symmetric(horizontal: KPMargins.margin2),
                 child: FittedBox(
                   fit: BoxFit.contain,
-                  child: Text((kanji?.kanji ?? ""),
+                  child: Text((kanji?.word ?? ""),
                       textAlign: TextAlign.center,
                       style: Theme.of(context)
                           .textTheme

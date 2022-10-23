@@ -40,9 +40,9 @@ class _AddWordPageState extends State<AddWordPage> {
     _pronunciationFocus = FocusNode();
     _meaningController = TextEditingController();
     _meaningFocus = FocusNode();
-    Word? kanji = widget.args.kanji;
+    Word? kanji = widget.args.word;
     if (kanji != null) {
-      _kanjiController?.text = kanji.kanji.toString();
+      _kanjiController?.text = kanji.word.toString();
       _pronunciationController?.text = kanji.pronunciation.toString();
       _meaningController?.text = kanji.meaning.toString();
       _currentCategory = WordCategory.values[kanji.category];
@@ -65,7 +65,7 @@ class _AddWordPageState extends State<AddWordPage> {
     bloc.read<AddKanjiBloc>().add(AddKanjiEventCreate(
         exitMode: exit,
         kanji: Word(
-          kanji: _kanjiController?.text ?? "",
+          word: _kanjiController?.text ?? "",
           pronunciation: _pronunciationController?.text ?? "",
           meaning: _meaningController?.text ?? "",
           listName: widget.args.listName,
@@ -76,16 +76,16 @@ class _AddWordPageState extends State<AddWordPage> {
   }
 
   Future<void> _updateKanji(BuildContext bloc) async {
-    Word? k = widget.args.kanji;
+    Word? k = widget.args.word;
     if (k != null) {
       bloc
           .read<AddKanjiBloc>()
-          .add(AddKanjiEventUpdate(widget.args.listName, k.kanji, parameters: {
-            KanjiTableFields.kanjiField: _kanjiController?.text ?? "",
-            KanjiTableFields.pronunciationField:
+          .add(AddKanjiEventUpdate(widget.args.listName, k.word, parameters: {
+            WordTableFields.wordField: _kanjiController?.text ?? "",
+            WordTableFields.pronunciationField:
                 _pronunciationController?.text ?? "",
-            KanjiTableFields.meaningField: _meaningController?.text ?? "",
-            KanjiTableFields.categoryField: _currentCategory.index
+            WordTableFields.meaningField: _meaningController?.text ?? "",
+            WordTableFields.categoryField: _currentCategory.index
           }));
     }
   }
@@ -112,7 +112,7 @@ class _AddWordPageState extends State<AddWordPage> {
       create: (_) => AddKanjiBloc()..add(AddKanjiEventIdle()),
       child: KPScaffold(
         resizeToAvoidBottomInset: true,
-        appBarTitle: widget.args.kanji != null
+        appBarTitle: widget.args.word != null
             ? "add_kanji_update_title".tr()
             : "add_kanji_new_title".tr(),
         appBarActions: [
@@ -141,7 +141,7 @@ class _AddWordPageState extends State<AddWordPage> {
           ),
           BlocBuilder<AddKanjiBloc, AddKanjiState>(
             builder: (context, state) => Visibility(
-              visible: widget.args.kanji == null,
+              visible: widget.args.word == null,
               child: IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () {
@@ -155,7 +155,7 @@ class _AddWordPageState extends State<AddWordPage> {
                     icon: const Icon(Icons.check_rounded),
                     onPressed: () {
                       _validateKanji(() {
-                        if (widget.args.kanji != null) {
+                        if (widget.args.word != null) {
                           _updateKanji(context);
                         } else {
                           _createKanji(context);
@@ -221,7 +221,7 @@ class _AddWordPageState extends State<AddWordPage> {
               .textTheme
               .headline3
               ?.copyWith(fontWeight: FontWeight.bold),
-          autofocus: widget.args.kanji == null,
+          autofocus: widget.args.word == null,
           hint: "add_kanji_textForm_kanji_ext".tr(),
           onEditingComplete: () => _pronunciationFocus?.requestFocus(),
         ),
@@ -255,7 +255,7 @@ class _AddWordPageState extends State<AddWordPage> {
                 /// update it. Else, create the word, empty the fields and continue adding
                 /// more words
                 _validateKanji(() {
-                  if (widget.args.kanji == null) {
+                  if (widget.args.word == null) {
                     _createKanji(context, exit: false);
                   } else {
                     _updateKanji(context);

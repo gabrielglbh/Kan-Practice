@@ -31,7 +31,7 @@ class WordQueries {
   Future<int> createKanji(Word kanji) async {
     if (_database != null) {
       try {
-        await _database?.insert(KanjiTableFields.kanjiTable, kanji.toJson());
+        await _database?.insert(WordTableFields.wordTable, kanji.toJson());
         return 0;
       } catch (err) {
         print(err.toString());
@@ -48,29 +48,29 @@ class WordQueries {
         String query = "";
         switch (mode) {
           case StudyModes.writing:
-            query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                "ORDER BY ${KanjiTableFields.dateLastShownWriting} ASC, "
-                "${KanjiTableFields.winRateWritingField} ASC";
+            query = "SELECT * FROM ${WordTableFields.wordTable} "
+                "ORDER BY ${WordTableFields.dateLastShownWriting} ASC, "
+                "${WordTableFields.winRateWritingField} ASC";
             break;
           case StudyModes.reading:
-            query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                "ORDER BY ${KanjiTableFields.dateLastShownReading} ASC, "
-                "${KanjiTableFields.winRateReadingField} ASC";
+            query = "SELECT * FROM ${WordTableFields.wordTable} "
+                "ORDER BY ${WordTableFields.dateLastShownReading} ASC, "
+                "${WordTableFields.winRateReadingField} ASC";
             break;
           case StudyModes.recognition:
-            query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                "ORDER BY ${KanjiTableFields.dateLastShownRecognition} ASC, "
-                "${KanjiTableFields.winRateRecognitionField} ASC";
+            query = "SELECT * FROM ${WordTableFields.wordTable} "
+                "ORDER BY ${WordTableFields.dateLastShownRecognition} ASC, "
+                "${WordTableFields.winRateRecognitionField} ASC";
             break;
           case StudyModes.listening:
-            query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                "ORDER BY ${KanjiTableFields.dateLastShownListening} ASC, "
-                "${KanjiTableFields.winRateListeningField} ASC";
+            query = "SELECT * FROM ${WordTableFields.wordTable} "
+                "ORDER BY ${WordTableFields.dateLastShownListening} ASC, "
+                "${WordTableFields.winRateListeningField} ASC";
             break;
           case StudyModes.speaking:
-            query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                "ORDER BY ${KanjiTableFields.dateLastShownSpeaking} ASC, "
-                "${KanjiTableFields.winRateSpeakingField} ASC";
+            query = "SELECT * FROM ${WordTableFields.wordTable} "
+                "ORDER BY ${WordTableFields.dateLastShownSpeaking} ASC, "
+                "${WordTableFields.winRateSpeakingField} ASC";
             break;
         }
         final res = await _database?.rawQuery(query);
@@ -104,24 +104,24 @@ class WordQueries {
           if (mode != null) {
             switch (mode) {
               case StudyModes.writing:
-                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "ORDER BY ${KanjiTableFields.dateLastShownWriting} ASC";
+                query = "SELECT * FROM ${WordTableFields.wordTable} "
+                    "ORDER BY ${WordTableFields.dateLastShownWriting} ASC";
                 break;
               case StudyModes.reading:
-                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "ORDER BY ${KanjiTableFields.dateLastShownReading} ASC";
+                query = "SELECT * FROM ${WordTableFields.wordTable} "
+                    "ORDER BY ${WordTableFields.dateLastShownReading} ASC";
                 break;
               case StudyModes.recognition:
-                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "ORDER BY ${KanjiTableFields.dateLastShownRecognition} ASC";
+                query = "SELECT * FROM ${WordTableFields.wordTable} "
+                    "ORDER BY ${WordTableFields.dateLastShownRecognition} ASC";
                 break;
               case StudyModes.listening:
-                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "ORDER BY ${KanjiTableFields.dateLastShownListening} ASC";
+                query = "SELECT * FROM ${WordTableFields.wordTable} "
+                    "ORDER BY ${WordTableFields.dateLastShownListening} ASC";
                 break;
               case StudyModes.speaking:
-                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "ORDER BY ${KanjiTableFields.dateLastShownSpeaking} ASC";
+                query = "SELECT * FROM ${WordTableFields.wordTable} "
+                    "ORDER BY ${WordTableFields.dateLastShownSpeaking} ASC";
                 break;
             }
           } else {
@@ -131,31 +131,31 @@ class WordQueries {
           if (mode != null) {
             switch (mode) {
               case StudyModes.writing:
-                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "ORDER BY ${KanjiTableFields.winRateWritingField} ASC";
+                query = "SELECT * FROM ${WordTableFields.wordTable} "
+                    "ORDER BY ${WordTableFields.winRateWritingField} ASC";
                 break;
               case StudyModes.reading:
-                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "ORDER BY ${KanjiTableFields.winRateReadingField} ASC";
+                query = "SELECT * FROM ${WordTableFields.wordTable} "
+                    "ORDER BY ${WordTableFields.winRateReadingField} ASC";
                 break;
               case StudyModes.recognition:
-                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "ORDER BY ${KanjiTableFields.winRateRecognitionField} ASC";
+                query = "SELECT * FROM ${WordTableFields.wordTable} "
+                    "ORDER BY ${WordTableFields.winRateRecognitionField} ASC";
                 break;
               case StudyModes.listening:
-                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "ORDER BY ${KanjiTableFields.winRateListeningField} ASC";
+                query = "SELECT * FROM ${WordTableFields.wordTable} "
+                    "ORDER BY ${WordTableFields.winRateListeningField} ASC";
                 break;
               case StudyModes.speaking:
-                query = "SELECT * FROM ${KanjiTableFields.kanjiTable} "
-                    "ORDER BY ${KanjiTableFields.winRateSpeakingField} ASC";
+                query = "SELECT * FROM ${WordTableFields.wordTable} "
+                    "ORDER BY ${WordTableFields.winRateSpeakingField} ASC";
                 break;
             }
           } else {
             return [];
           }
         } else {
-          query = "SELECT * FROM ${KanjiTableFields.kanjiTable}";
+          query = "SELECT * FROM ${WordTableFields.wordTable}";
         }
 
         List<Map<String, dynamic>>? res = [];
@@ -185,14 +185,14 @@ class WordQueries {
 
         /// Build up the where clauses from the listName
         for (var x = 0; x < listNames.length; x++) {
-          whereClause += "${KanjiTableFields.listNameField}=? OR ";
+          whereClause += "${WordTableFields.listNameField}=? OR ";
         }
 
         /// Clean up the String
         whereClause = whereClause.substring(0, whereClause.length - 4);
         List<Map<String, dynamic>>? res = [];
 
-        res = await _database?.query(KanjiTableFields.kanjiTable,
+        res = await _database?.query(WordTableFields.wordTable,
             where: whereClause, whereArgs: listNames);
         if (res != null) {
           return List.generate(res.length, (i) => Word.fromJson(res![i]));
@@ -215,9 +215,8 @@ class WordQueries {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
-        res = await _database?.query(KanjiTableFields.kanjiTable,
-            where: "${KanjiTableFields.categoryField}=?",
-            whereArgs: [category]);
+        res = await _database?.query(WordTableFields.wordTable,
+            where: "${WordTableFields.categoryField}=?", whereArgs: [category]);
         if (res != null) {
           return List.generate(res.length, (i) => Word.fromJson(res![i]));
         } else {
@@ -236,8 +235,8 @@ class WordQueries {
     if (_database != null) {
       try {
         final res = await _database?.query(
-          KanjiTableFields.kanjiTable,
-          where: "${KanjiTableFields.categoryField}=?",
+          WordTableFields.wordTable,
+          where: "${WordTableFields.categoryField}=?",
           whereArgs: [mode.index],
         );
         if (res != null) {
@@ -286,10 +285,10 @@ class WordQueries {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
-        res = await _database?.query(KanjiTableFields.kanjiTable,
-            where: "${KanjiTableFields.listNameField}=?",
+        res = await _database?.query(WordTableFields.wordTable,
+            where: "${WordTableFields.listNameField}=?",
             whereArgs: [listName],
-            orderBy: "${KanjiTableFields.dateAddedField} ASC",
+            orderBy: "${WordTableFields.dateAddedField} ASC",
             limit: limit,
             offset:
                 (offset != null && limit != null) ? (offset * limit) : null);
@@ -316,12 +315,12 @@ class WordQueries {
       try {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.rawQuery("SELECT * "
-            "FROM ${KanjiTableFields.kanjiTable} "
-            "WHERE ${KanjiTableFields.listNameField} = '$listName' "
-            "AND (${KanjiTableFields.meaningField} LIKE '%$query%' "
-            "OR ${KanjiTableFields.kanjiField} LIKE '%$query%' "
-            "OR ${KanjiTableFields.pronunciationField} LIKE '%$query%') "
-            "ORDER BY ${KanjiTableFields.dateAddedField} ASC "
+            "FROM ${WordTableFields.wordTable} "
+            "WHERE ${WordTableFields.listNameField} = '$listName' "
+            "AND (${WordTableFields.meaningField} LIKE '%$query%' "
+            "OR ${WordTableFields.wordField} LIKE '%$query%' "
+            "OR ${WordTableFields.pronunciationField} LIKE '%$query%') "
+            "ORDER BY ${WordTableFields.dateAddedField} ASC "
             "LIMIT $limit OFFSET ${offset * limit}");
         if (res != null) {
           return List.generate(res.length, (i) => Word.fromJson(res![i]));
@@ -347,34 +346,34 @@ class WordQueries {
         List<Map<String, dynamic>>? res = [];
         switch (mode) {
           case StudyModes.writing:
-            res = await _database?.query(KanjiTableFields.kanjiTable,
-                where: "${KanjiTableFields.listNameField}=?",
+            res = await _database?.query(WordTableFields.wordTable,
+                where: "${WordTableFields.listNameField}=?",
                 whereArgs: [listName],
-                orderBy: "${KanjiTableFields.winRateWritingField} ASC");
+                orderBy: "${WordTableFields.winRateWritingField} ASC");
             break;
           case StudyModes.reading:
-            res = await _database?.query(KanjiTableFields.kanjiTable,
-                where: "${KanjiTableFields.listNameField}=?",
+            res = await _database?.query(WordTableFields.wordTable,
+                where: "${WordTableFields.listNameField}=?",
                 whereArgs: [listName],
-                orderBy: "${KanjiTableFields.winRateReadingField} ASC");
+                orderBy: "${WordTableFields.winRateReadingField} ASC");
             break;
           case StudyModes.recognition:
-            res = await _database?.query(KanjiTableFields.kanjiTable,
-                where: "${KanjiTableFields.listNameField}=?",
+            res = await _database?.query(WordTableFields.wordTable,
+                where: "${WordTableFields.listNameField}=?",
                 whereArgs: [listName],
-                orderBy: "${KanjiTableFields.winRateRecognitionField} ASC");
+                orderBy: "${WordTableFields.winRateRecognitionField} ASC");
             break;
           case StudyModes.listening:
-            res = await _database?.query(KanjiTableFields.kanjiTable,
-                where: "${KanjiTableFields.listNameField}=?",
+            res = await _database?.query(WordTableFields.wordTable,
+                where: "${WordTableFields.listNameField}=?",
                 whereArgs: [listName],
-                orderBy: "${KanjiTableFields.winRateListeningField} ASC");
+                orderBy: "${WordTableFields.winRateListeningField} ASC");
             break;
           case StudyModes.speaking:
-            res = await _database?.query(KanjiTableFields.kanjiTable,
-                where: "${KanjiTableFields.listNameField}=?",
+            res = await _database?.query(WordTableFields.wordTable,
+                where: "${WordTableFields.listNameField}=?",
                 whereArgs: [listName],
-                orderBy: "${KanjiTableFields.winRateSpeakingField} ASC");
+                orderBy: "${WordTableFields.winRateSpeakingField} ASC");
             break;
         }
         if (res != null) {
@@ -396,7 +395,7 @@ class WordQueries {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
-        res = await _database?.query(KanjiTableFields.kanjiTable);
+        res = await _database?.query(WordTableFields.wordTable);
         if (res != null) {
           return res.length;
         } else {
@@ -419,7 +418,7 @@ class WordQueries {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
-        res = await _database?.query(KanjiTableFields.kanjiTable);
+        res = await _database?.query(WordTableFields.wordTable);
         if (res != null) {
           List<Word> l =
               List.generate(res.length, (i) => Word.fromJson(res![i]));
@@ -452,7 +451,7 @@ class WordQueries {
               meaning: '',
               pronunciation: '',
               listName: '',
-              kanji: '',
+              word: '',
               winRateWriting: writing == 0 ? 0 : writing / total,
               winRateReading: reading == 0 ? 0 : reading / total,
               winRateRecognition: recognition == 0 ? 0 : recognition / total,
@@ -477,8 +476,8 @@ class WordQueries {
         List<int> count = [];
         for (int k = 0; k < WordCategory.values.length; k++) {
           List<Map<String, dynamic>>? res = await _database?.query(
-            KanjiTableFields.kanjiTable,
-            where: "${KanjiTableFields.categoryField}=?",
+            WordTableFields.wordTable,
+            where: "${WordTableFields.categoryField}=?",
             whereArgs: [WordCategory.values[k].index],
           );
           count.add(res != null ? res.length : 0);
@@ -499,9 +498,9 @@ class WordQueries {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
-        res = await _database?.query(KanjiTableFields.kanjiTable,
+        res = await _database?.query(WordTableFields.wordTable,
             where:
-                "${KanjiTableFields.listNameField}=? AND ${KanjiTableFields.kanjiField}=?",
+                "${WordTableFields.listNameField}=? AND ${WordTableFields.wordField}=?",
             whereArgs: [listName, kanji]);
         if (res != null) {
           return Word.fromJson(res[0]);
@@ -528,9 +527,9 @@ class WordQueries {
   Future<int> removeKanji(String listName, String kanji) async {
     if (_database != null) {
       try {
-        await _database?.delete(KanjiTableFields.kanjiTable,
+        await _database?.delete(WordTableFields.wordTable,
             where:
-                "${KanjiTableFields.listNameField}=? AND ${KanjiTableFields.kanjiField}=?",
+                "${WordTableFields.listNameField}=? AND ${WordTableFields.wordField}=?",
             whereArgs: [listName, kanji]);
         return 0;
       } catch (err) {
@@ -554,9 +553,9 @@ class WordQueries {
       String listName, String kanji, Map<String, dynamic> fields) async {
     if (_database != null) {
       try {
-        await _database?.update(KanjiTableFields.kanjiTable, fields,
+        await _database?.update(WordTableFields.wordTable, fields,
             where:
-                "${KanjiTableFields.listNameField}=? AND ${KanjiTableFields.kanjiField}=?",
+                "${WordTableFields.listNameField}=? AND ${WordTableFields.wordField}=?",
             whereArgs: [listName, kanji]);
         return 0;
       } catch (err) {

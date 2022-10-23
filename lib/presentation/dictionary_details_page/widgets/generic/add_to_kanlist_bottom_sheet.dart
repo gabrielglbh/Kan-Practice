@@ -55,7 +55,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
     String reading = singleKanjiReading ?? wordReading;
 
     final code = await WordQueries.instance.createKanji(Word(
-        kanji: widget.kanji ?? "",
+        word: widget.kanji ?? "",
         meaning:
             "${meaning[0].toUpperCase()}${meaning.substring(1).toLowerCase()}",
         pronunciation: reading,

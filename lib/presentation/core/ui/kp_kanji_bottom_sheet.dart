@@ -111,7 +111,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
             child: FittedBox(
               fit: BoxFit.contain,
-              child: Text(updatedKanji.kanji,
+              child: Text(updatedKanji.word,
                   textAlign: TextAlign.center,
                   style: Theme.of(context)
                       .textTheme
@@ -175,7 +175,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
                     arguments:
-                        DictionaryDetailsArguments(kanji: updatedKanji.kanji));
+                        DictionaryDetailsArguments(kanji: updatedKanji.word));
               },
             ),
             SizedBox(

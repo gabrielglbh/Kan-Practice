@@ -51,14 +51,14 @@ class InitialQueries {
         for (int x = 0; x < lists.length; x++) {
           final WordList k = lists[x]
               .copyWithUpdatedDate(lastUpdated: Utils.getCurrentMilliseconds());
-          batch?.insert(KanListTableFields.listsTable, k.toJson(),
+          batch?.insert(ListTableFields.listsTable, k.toJson(),
               conflictAlgorithm: ConflictAlgorithm.replace);
         }
         for (int x = 0; x < kanji.length; x++) {
           final Word k = kanji[x].copyWithUpdatedDate(
               dateAdded: Utils.getCurrentMilliseconds(),
               dateLastShown: Utils.getCurrentMilliseconds());
-          batch?.insert(KanjiTableFields.kanjiTable, k.toJson(),
+          batch?.insert(WordTableFields.wordTable, k.toJson(),
               conflictAlgorithm: ConflictAlgorithm.replace);
         }
 

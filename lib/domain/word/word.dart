@@ -6,8 +6,8 @@ part 'word.g.dart';
 
 @JsonSerializable()
 class Word {
-  final String kanji;
-  @JsonKey(name: KanjiTableFields.listNameField)
+  final String word;
+  @JsonKey(name: WordTableFields.listNameField)
   final String listName;
   final String meaning;
   final String pronunciation;
@@ -26,7 +26,7 @@ class Word {
   final int category;
 
   const Word(
-      {required this.kanji,
+      {required this.word,
       required this.listName,
       required this.meaning,
       required this.pronunciation,
@@ -46,13 +46,13 @@ class Word {
 
   /// Empty [Word]
   static const Word empty =
-      Word(kanji: "", listName: "", meaning: "", pronunciation: "");
+      Word(word: "", listName: "", meaning: "", pronunciation: "");
 
   factory Word.fromJson(Map<String, dynamic> json) => _$WordFromJson(json);
   Map<String, dynamic> toJson() => _$WordToJson(this);
 
   Word copyWithUpdatedDate({int? dateAdded, int? dateLastShown}) => Word(
-      kanji: kanji,
+      word: word,
       listName: listName,
       meaning: meaning,
       pronunciation: pronunciation,
@@ -71,7 +71,7 @@ class Word {
       category: category);
 
   Word copyWithReset() => Word(
-      kanji: kanji,
+      word: word,
       listName: listName,
       meaning: meaning,
       pronunciation: pronunciation,

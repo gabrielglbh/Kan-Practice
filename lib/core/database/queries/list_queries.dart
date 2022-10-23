@@ -31,7 +31,7 @@ class ListQueries {
       try {
         if (name.trim().isEmpty) return -1;
         await _database?.insert(
-            KanListTableFields.listsTable,
+            ListTableFields.listsTable,
             WordList(name: name, lastUpdated: Utils.getCurrentMilliseconds())
                 .toJson());
         return 0;
@@ -54,7 +54,7 @@ class ListQueries {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
-        res = await _database?.query(KanListTableFields.listsTable,
+        res = await _database?.query(ListTableFields.listsTable,
             orderBy: "${filter.filter} $order",
             limit: limit,
             offset: (offset != null && limit != null) ? offset * limit : null);
@@ -77,7 +77,7 @@ class ListQueries {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
-        res = await _database?.query(KanListTableFields.listsTable);
+        res = await _database?.query(ListTableFields.listsTable);
         if (res != null) {
           return res.length;
         } else {
@@ -98,7 +98,7 @@ class ListQueries {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
-        res = await _database?.query(KanListTableFields.listsTable);
+        res = await _database?.query(ListTableFields.listsTable);
         if (res != null) {
           final List<WordList> l =
               List.generate(res.length, (i) => WordList.fromJson(res![i]));
@@ -141,18 +141,18 @@ class ListQueries {
       try {
         List<Map<String, dynamic>>? res = [];
         res = await _database?.rawQuery(
-            "SELECT DISTINCT L.${KanListTableFields.nameField}, "
-            "L.${KanListTableFields.totalWinRateWritingField}, "
-            "L.${KanListTableFields.totalWinRateReadingField}, "
-            "L.${KanListTableFields.totalWinRateRecognitionField}, "
-            "L.${KanListTableFields.totalWinRateListeningField}, "
-            "L.${KanListTableFields.totalWinRateSpeakingField}, "
-            "L.${KanListTableFields.lastUpdatedField} "
-            "FROM ${KanListTableFields.listsTable} L JOIN ${KanjiTableFields.kanjiTable} K "
-            "ON K.${KanjiTableFields.listNameField}=L.${KanListTableFields.nameField} "
-            "WHERE L.${KanListTableFields.nameField} LIKE '%$query%' OR K.${KanjiTableFields.meaningField} LIKE '%$query%' "
-            "OR K.${KanjiTableFields.kanjiField} LIKE '%$query%' OR K.${KanjiTableFields.pronunciationField} LIKE '%$query%' "
-            "ORDER BY ${KanListTableFields.lastUpdatedField} DESC "
+            "SELECT DISTINCT L.${ListTableFields.nameField}, "
+            "L.${ListTableFields.totalWinRateWritingField}, "
+            "L.${ListTableFields.totalWinRateReadingField}, "
+            "L.${ListTableFields.totalWinRateRecognitionField}, "
+            "L.${ListTableFields.totalWinRateListeningField}, "
+            "L.${ListTableFields.totalWinRateSpeakingField}, "
+            "L.${ListTableFields.lastUpdatedField} "
+            "FROM ${ListTableFields.listsTable} L JOIN ${WordTableFields.wordTable} K "
+            "ON K.${WordTableFields.listNameField}=L.${ListTableFields.nameField} "
+            "WHERE L.${ListTableFields.nameField} LIKE '%$query%' OR K.${WordTableFields.meaningField} LIKE '%$query%' "
+            "OR K.${WordTableFields.wordField} LIKE '%$query%' OR K.${WordTableFields.pronunciationField} LIKE '%$query%' "
+            "ORDER BY ${ListTableFields.lastUpdatedField} DESC "
             "LIMIT $limit OFFSET ${offset * limit}");
         if (res != null) {
           return List.generate(res.length, (i) => WordList.fromJson(res![i]));
@@ -174,8 +174,8 @@ class ListQueries {
     if (_database != null) {
       try {
         List<Map<String, dynamic>>? res = [];
-        res = await _database?.query(KanListTableFields.listsTable,
-            where: "${KanjiTableFields.listNameField}=?", whereArgs: [name]);
+        res = await _database?.query(ListTableFields.listsTable,
+            where: "${WordTableFields.listNameField}=?", whereArgs: [name]);
         if (res != null) {
           return WordList.fromJson(res[0]);
         } else {
@@ -201,8 +201,8 @@ class ListQueries {
   Future<int> removeList(String name) async {
     if (_database != null) {
       try {
-        await _database?.delete(KanListTableFields.listsTable,
-            where: "${KanjiTableFields.listNameField}=?", whereArgs: [name]);
+        await _database?.delete(ListTableFields.listsTable,
+            where: "${WordTableFields.listNameField}=?", whereArgs: [name]);
         return 0;
       } catch (err) {
         print(err.toString());
@@ -224,8 +224,8 @@ class ListQueries {
   Future<int> updateList(String name, Map<String, dynamic> fields) async {
     if (_database != null) {
       try {
-        await _database?.update(KanListTableFields.listsTable, fields,
-            where: "${KanjiTableFields.listNameField}=?", whereArgs: [name]);
+        await _database?.update(ListTableFields.listsTable, fields,
+            where: "${WordTableFields.listNameField}=?", whereArgs: [name]);
         return 0;
       } catch (err) {
         print(err.toString());

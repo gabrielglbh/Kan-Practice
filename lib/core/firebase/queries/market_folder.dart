@@ -87,7 +87,7 @@ class MarketFolderRecords {
           resetLists.add(k.copyWithReset());
           relations.add(RelationFolderList(
             folder: folder.folder,
-            kanListName: k.name,
+            list: k.name,
           ));
         }
         final List<Word> resetKanji = [];
@@ -126,7 +126,7 @@ class MarketFolderRecords {
         for (int x = 0; x < resetKanji.length; x++) {
           final DocumentReference k = doc
               .collection(MarketRecords.instance.kanjiLabel)
-              .doc(resetKanji[x].kanji);
+              .doc(resetKanji[x].word);
           batch.set(k, resetKanji[x].toJson());
           batch = await _reinitializeBatch(batch, x);
         }

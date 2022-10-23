@@ -8,18 +8,18 @@ abstract class WordDetailsEvent extends Equatable {
 }
 
 class WordDetailsEventLoading extends WordDetailsEvent {
-  final Word kanji;
+  final Word word;
 
-  const WordDetailsEventLoading(this.kanji);
+  const WordDetailsEventLoading(this.word);
 
   @override
-  List<Object> get props => [kanji];
+  List<Object> get props => [word];
 }
 
 class WordDetailsEventDelete extends WordDetailsEvent {
-  final Word? kanji;
+  final Word? word;
 
-  const WordDetailsEventDelete(this.kanji);
+  const WordDetailsEventDelete(this.word);
 
   @override
   List<Object> get props => [];

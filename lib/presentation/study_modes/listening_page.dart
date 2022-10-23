@@ -115,9 +115,9 @@ class _ListeningStudyState extends State<ListeningStudy> {
       /// Updates the dateLastShown attribute of the finished word AND
       /// the current specific last shown mode attribute
       await WordQueries.instance
-          .updateKanji(_studyList[_macro].listName, _studyList[_macro].kanji, {
-        KanjiTableFields.dateLastShown: Utils.getCurrentMilliseconds(),
-        KanjiTableFields.dateLastShownListening: Utils.getCurrentMilliseconds()
+          .updateKanji(_studyList[_macro].listName, _studyList[_macro].word, {
+        WordTableFields.dateLastShown: Utils.getCurrentMilliseconds(),
+        WordTableFields.dateLastShownListening: Utils.getCurrentMilliseconds()
       });
 
       /// Add the current virgin score to the test scores...
@@ -209,7 +209,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
         child: KPLearningHeaderContainer(
           fontSize: KPFontSizes.fontSize64,
           height: KPSizes.listStudyHeight,
-          text: _studyList[_macro].kanji,
+          text: _studyList[_macro].word,
         ),
       ),
       Visibility(

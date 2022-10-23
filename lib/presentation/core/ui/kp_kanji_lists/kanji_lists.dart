@@ -50,7 +50,7 @@ class _KPWordListsState extends State<KPWordLists>
     if (widget.folder == null) {
       final filterText =
           StorageManager.readData(StorageManager.filtersOnList) ??
-              KanListTableFields.lastUpdatedField;
+              ListTableFields.lastUpdatedField;
       _currentAppliedFilter = KanListFiltersUtils.getFilterFrom(filterText);
 
       _currentAppliedOrder =

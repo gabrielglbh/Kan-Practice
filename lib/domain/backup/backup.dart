@@ -11,11 +11,11 @@ part 'backup.g.dart';
 @JsonSerializable()
 class BackUp {
   final List<WordList> lists;
-  final List<Word> kanji;
+  final List<Word> words;
   final TestData testData;
   final List<SpecificData> testSpecData;
   final List<Folder> folders;
-  final List<RelationFolderList> relFolderKanList;
+  final List<RelationFolderList> relationFolderList;
   final int lastUpdated;
 
   static const String kanjiLabel = "kanji";
@@ -28,21 +28,21 @@ class BackUp {
 
   const BackUp(
       {required this.lists,
-      required this.kanji,
+      required this.words,
       required this.testData,
       required this.testSpecData,
       required this.folders,
-      required this.relFolderKanList,
+      required this.relationFolderList,
       required this.lastUpdated});
 
   /// Empty instance of [BackUp]
   static const BackUp empty = BackUp(
     lists: [],
-    kanji: [],
+    words: [],
     testData: TestData.empty,
     testSpecData: [],
     folders: [],
-    relFolderKanList: [],
+    relationFolderList: [],
     lastUpdated: 0,
   );
 

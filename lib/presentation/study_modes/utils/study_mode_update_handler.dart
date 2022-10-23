@@ -125,7 +125,7 @@ class StudyModeUpdateHandler {
         } else {
           actualScore = (score + args.studyList[index].winRateWriting) / 2;
         }
-        toUpdate = {KanjiTableFields.winRateWritingField: actualScore};
+        toUpdate = {WordTableFields.winRateWritingField: actualScore};
         break;
       case StudyModes.reading:
         if (args.studyList[index].winRateReading ==
@@ -134,7 +134,7 @@ class StudyModeUpdateHandler {
         } else {
           actualScore = (score + args.studyList[index].winRateReading) / 2;
         }
-        toUpdate = {KanjiTableFields.winRateReadingField: actualScore};
+        toUpdate = {WordTableFields.winRateReadingField: actualScore};
         break;
       case StudyModes.recognition:
         if (args.studyList[index].winRateRecognition ==
@@ -143,7 +143,7 @@ class StudyModeUpdateHandler {
         } else {
           actualScore = (score + args.studyList[index].winRateRecognition) / 2;
         }
-        toUpdate = {KanjiTableFields.winRateRecognitionField: actualScore};
+        toUpdate = {WordTableFields.winRateRecognitionField: actualScore};
         break;
       case StudyModes.listening:
         if (args.studyList[index].winRateListening ==
@@ -152,7 +152,7 @@ class StudyModeUpdateHandler {
         } else {
           actualScore = (score + args.studyList[index].winRateListening) / 2;
         }
-        toUpdate = {KanjiTableFields.winRateListeningField: actualScore};
+        toUpdate = {WordTableFields.winRateListeningField: actualScore};
         break;
       case StudyModes.speaking:
         if (args.studyList[index].winRateSpeaking ==
@@ -161,11 +161,11 @@ class StudyModeUpdateHandler {
         } else {
           actualScore = (score + args.studyList[index].winRateSpeaking) / 2;
         }
-        toUpdate = {KanjiTableFields.winRateSpeakingField: actualScore};
+        toUpdate = {WordTableFields.winRateSpeakingField: actualScore};
         break;
     }
     return await WordQueries.instance.updateKanji(
-        args.studyList[index].listName, args.studyList[index].kanji, toUpdate);
+        args.studyList[index].listName, args.studyList[index].word, toUpdate);
   }
 
   static Map<String, List<Map<Word, double>>> _getMapOfKanjiInTest(
@@ -299,19 +299,19 @@ class StudyModeUpdateHandler {
     /// meaned out words in the KanList
     switch (args.mode) {
       case StudyModes.writing:
-        toUpdate = {KanListTableFields.totalWinRateWritingField: overall};
+        toUpdate = {ListTableFields.totalWinRateWritingField: overall};
         break;
       case StudyModes.reading:
-        toUpdate = {KanListTableFields.totalWinRateReadingField: overall};
+        toUpdate = {ListTableFields.totalWinRateReadingField: overall};
         break;
       case StudyModes.recognition:
-        toUpdate = {KanListTableFields.totalWinRateRecognitionField: overall};
+        toUpdate = {ListTableFields.totalWinRateRecognitionField: overall};
         break;
       case StudyModes.listening:
-        toUpdate = {KanListTableFields.totalWinRateListeningField: overall};
+        toUpdate = {ListTableFields.totalWinRateListeningField: overall};
         break;
       case StudyModes.speaking:
-        toUpdate = {KanListTableFields.totalWinRateSpeakingField: overall};
+        toUpdate = {ListTableFields.totalWinRateSpeakingField: overall};
         break;
     }
     await ListQueries.instance

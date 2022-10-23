@@ -79,7 +79,7 @@ class ListDetailBloc extends Bloc<ListDetailEvent, ListDetailState> {
     on<ListDetailUpdateName>((event, emit) async {
       emit(ListDetailStateLoading());
       final error = await ListQueries.instance
-          .updateList(event.og, {KanListTableFields.nameField: event.name});
+          .updateList(event.og, {ListTableFields.nameField: event.name});
       if (error == 0) {
         /// When updating the list's name, reset any pagination offset
         /// to load up from the start

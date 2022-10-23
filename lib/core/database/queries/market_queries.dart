@@ -36,11 +36,11 @@ class MarketQueries {
         /// Order matters as kanji depends on lists.
         /// Conflict algorithm allows us to ignore if the insertion if the list already exists.
         final batch = _database?.batch();
-        batch?.insert(KanListTableFields.listsTable, list.toJson(),
+        batch?.insert(ListTableFields.listsTable, list.toJson(),
             conflictAlgorithm: ConflictAlgorithm.ignore);
 
         for (int x = 0; x < kanji.length; x++) {
-          batch?.insert(KanjiTableFields.kanjiTable, kanji[x].toJson(),
+          batch?.insert(WordTableFields.wordTable, kanji[x].toJson(),
               conflictAlgorithm: ConflictAlgorithm.ignore);
         }
 
@@ -81,17 +81,17 @@ class MarketQueries {
         /// Order matters as kanji depends on lists.
         /// Conflict algorithm allows us to ignore if the insertion if the list already exists.
         for (var k in lists) {
-          batch?.insert(KanListTableFields.listsTable, k.toJson(),
+          batch?.insert(ListTableFields.listsTable, k.toJson(),
               conflictAlgorithm: ConflictAlgorithm.ignore);
         }
 
         for (var k in kanji) {
-          batch?.insert(KanjiTableFields.kanjiTable, k.toJson(),
+          batch?.insert(WordTableFields.wordTable, k.toJson(),
               conflictAlgorithm: ConflictAlgorithm.ignore);
         }
 
         for (var k in relations) {
-          batch?.insert(KanListFolderRelationTableFields.relTable, k.toJson(),
+          batch?.insert(RelationFolderListTableFields.relTable, k.toJson(),
               conflictAlgorithm: ConflictAlgorithm.ignore);
         }
 

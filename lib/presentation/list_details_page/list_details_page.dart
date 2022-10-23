@@ -412,7 +412,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
           onTap: () async {
             await Navigator.of(context)
                 .pushNamed(KanPracticePages.addKanjiPage,
-                    arguments: AddWordArgs(listName: _listName, kanji: kanji))
+                    arguments: AddWordArgs(listName: _listName, word: kanji))
                 .then((code) {
               if (code == 0) _addLoadingEvent(reset: true);
             });

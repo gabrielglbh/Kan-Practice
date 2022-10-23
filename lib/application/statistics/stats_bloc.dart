@@ -27,7 +27,7 @@ class StatisticsBloc extends Bloc<StatsEvent, StatsState> {
       emit(StatisticsLoaded(
         stats: KanPracticeStats(
           totalLists: totalLists,
-          totalKanji: totalKanji,
+          totalWords: totalKanji,
           totalWinRateWriting: winRates.winRateWriting,
           totalWinRateReading: winRates.winRateReading,
           totalWinRateRecognition: winRates.winRateRecognition,

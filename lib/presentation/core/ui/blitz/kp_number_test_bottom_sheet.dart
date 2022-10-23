@@ -50,7 +50,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
     return List.generate(_kanjiInTest, (n) {
       String num = (min + random.nextInt((max + 1) - min)).toString();
       return Word(
-          kanji: num, pronunciation: num, meaning: num, listName: "Numbers");
+          word: num, pronunciation: num, meaning: num, listName: "Numbers");
     });
   }
 

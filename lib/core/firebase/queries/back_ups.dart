@@ -137,7 +137,7 @@ class BackUpRecords {
               .collection(collection)
               .doc(user?.uid)
               .collection(kanjiLabel)
-              .doc(kanji[x].kanji);
+              .doc(kanji[x].word);
           batch?.set(doc, kanji[x].toJson());
           batch = await _reinitializeBatch(batch, x);
         }
@@ -305,11 +305,11 @@ class BackUpRecords {
 
       return await BackUpQueries.instance.mergeBackUp(BackUp(
         lists: backUpLists,
-        kanji: backUpKanji,
+        words: backUpKanji,
         testData: backUpTestData,
         testSpecData: backUpTestSpecData,
         folders: backUpFolders,
-        relFolderKanList: backUpRelationFolderList,
+        relationFolderList: backUpRelationFolderList,
         lastUpdated: 0,
       ));
     } catch (err) {
@@ -363,7 +363,7 @@ class BackUpRecords {
               .collection(collection)
               .doc(user?.uid)
               .collection(kanjiLabel)
-              .doc(Word.fromJson(kanjiSnapshot.docs[x].data()).kanji));
+              .doc(Word.fromJson(kanjiSnapshot.docs[x].data()).word));
           batch = await _reinitializeBatch(batch, x);
         }
         for (int x = 0; x < listsSnapshot.size; x++) {

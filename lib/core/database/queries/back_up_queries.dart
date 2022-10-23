@@ -18,7 +18,7 @@ class BackUpQueries {
   static BackUpQueries get instance => _instance;
 
   /// Merges the back up from Firebase to the local database.
-  /// It takes as parameter [kanji], [lists], [folders], [tests] and relations to be MERGED into the
+  /// It takes as parameter [word], [lists], [folders], [tests] and relations to be MERGED into the
   /// local db.
   Future<String> mergeBackUp(BackUp bu) async {
     if (_database != null) {
@@ -29,16 +29,16 @@ class BackUpQueries {
         final utils = MigrationUtils();
 
         for (int x = 0; x < bu.lists.length; x++) {
-          batch?.insert(KanListTableFields.listsTable, bu.lists[x].toJson(),
+          batch?.insert(ListTableFields.listsTable, bu.lists[x].toJson(),
               conflictAlgorithm: ConflictAlgorithm.replace);
         }
-        for (int x = 0; x < bu.kanji.length; x++) {
-          batch?.insert(KanjiTableFields.kanjiTable, bu.kanji[x].toJson(),
+        for (int x = 0; x < bu.words.length; x++) {
+          batch?.insert(WordTableFields.wordTable, bu.words[x].toJson(),
               conflictAlgorithm: ConflictAlgorithm.replace);
 
           /// If the backup has no dateLastShown set up, fill dateLastShown with dateAdded
-          if (bu.kanji[x].dateLastShown == 0) {
-            utils.batchUpdateDateLastShown(batch, bu.kanji[x]);
+          if (bu.words[x].dateLastShown == 0) {
+            utils.batchUpdateDateLastShown(batch, bu.words[x]);
           }
         }
 
@@ -50,9 +50,9 @@ class BackUpQueries {
         batch?.insert(TestDataTableFields.testDataTable, bu.testData.toJson(),
             conflictAlgorithm: ConflictAlgorithm.replace);
 
-        for (int x = 0; x < bu.relFolderKanList.length; x++) {
-          batch?.insert(KanListFolderRelationTableFields.relTable,
-              bu.relFolderKanList[x].toJson(),
+        for (int x = 0; x < bu.relationFolderList.length; x++) {
+          batch?.insert(RelationFolderListTableFields.relTable,
+              bu.relationFolderList[x].toJson(),
               conflictAlgorithm: ConflictAlgorithm.replace);
         }
 

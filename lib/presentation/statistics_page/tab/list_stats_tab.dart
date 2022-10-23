@@ -33,7 +33,7 @@ class _ListStatsState extends State<ListStats>
           title: "stats_words".tr(),
           value: "${widget.stats.totalLists} ${"stats_words_lists".tr()}",
         ),
-        _countLabel(context, widget.stats.totalKanji.toString()),
+        _countLabel(context, widget.stats.totalWords.toString()),
         Padding(
             padding: const EdgeInsets.only(top: KPMargins.margin16),
             child: KPRadialGraph(

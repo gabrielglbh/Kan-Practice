@@ -1,8 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/queries/test_queries.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
+import 'package:kanpractice/infrastructure/specific_data/specific_data_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_bar_chart.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -92,7 +93,8 @@ class _TestStatsState extends State<TestStats>
       onBarTapped: (model) async {
         if (model.dataPoints?.isNotEmpty == true) {
           final mode = Tests.values[model.pointIndex ?? -1];
-          final data = await TestQueries.instance.getSpecificTestData(mode);
+          final data = await getIt<SpecificDataRepositoryImpl>()
+              .getSpecificTestData(mode);
           // ignore: use_build_context_synchronously
           SpecBottomSheet.show(context, mode.name, data);
         }

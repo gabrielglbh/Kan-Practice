@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/preferences/store_manager.dart';
+import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/core/types/number_ranges.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
@@ -56,9 +57,9 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
 
   @override
   void initState() {
-    _kanjiInTest =
-        StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
-            KPSizes.numberOfKanjiInTest;
+    _kanjiInTest = getIt<PreferencesRepositoryImpl>()
+            .readData(SharedKeys.numberOfKanjiInTest) ??
+        KPSizes.numberOfKanjiInTest;
     super.initState();
   }
 

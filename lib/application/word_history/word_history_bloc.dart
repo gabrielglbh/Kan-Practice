@@ -1,11 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kanpractice/core/database/queries/word_history_queries.dart';
+import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/word_history/word_history.dart';
+import 'package:kanpractice/infrastructure/word_history/word_history_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 
 part 'word_history_event.dart';
 part 'word_history_state.dart';
 
+@lazySingleton
 class WordHistoryBloc extends Bloc<WordHistoryEvent, WordHistoryState> {
   WordHistoryBloc() : super(WordHistoryStateLoading()) {
     /// Maintain the history for pagination purposes
@@ -23,7 +26,7 @@ class WordHistoryBloc extends Bloc<WordHistoryEvent, WordHistoryState> {
         /// of state. After, add to history the elements for the next iteration.
         List<WordHistory> fullList = List.of(history);
         final List<WordHistory> pagination =
-            await WordHistoryQueries.instance.getHistory(event.offset);
+            await getIt<WordHistoryRepositoryImpl>().getHistory(event.offset);
         fullList.addAll(pagination);
         history.addAll(pagination);
         emit(WordHistoryStateLoaded(fullList));
@@ -35,7 +38,7 @@ class WordHistoryBloc extends Bloc<WordHistoryEvent, WordHistoryState> {
     on<WordHistoryEventRemoving>((event, emit) async {
       try {
         emit(WordHistoryStateLoading());
-        final int code = await WordHistoryQueries.instance.removeAll();
+        final int code = await getIt<WordHistoryRepositoryImpl>().removeAll();
         if (code == 0) {
           history.clear();
           emit(const WordHistoryStateLoaded([]));

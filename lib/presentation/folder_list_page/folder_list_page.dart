@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/folder_list/folder_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/preferences/store_manager.dart';
+import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/core/types/folder_filters.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
@@ -43,13 +44,14 @@ class _FolderListPageState extends State<FolderListPage>
   void initState() {
     _scrollController.addListener(_scrollListener);
 
-    final filterText =
-        StorageManager.readData(StorageManager.filtersOnFolder) ??
-            FolderTableFields.lastUpdatedField;
+    final filterText = getIt<PreferencesRepositoryImpl>()
+            .readData(SharedKeys.filtersOnFolder) ??
+        FolderTableFields.lastUpdatedField;
     _currentAppliedFilter = FolderFiltersUtils.getFilterFrom(filterText);
 
     _currentAppliedOrder =
-        StorageManager.readData(StorageManager.orderOnFolder) ?? true;
+        getIt<PreferencesRepositoryImpl>().readData(SharedKeys.orderOnFolder) ??
+            true;
     super.initState();
   }
 
@@ -103,9 +105,10 @@ class _FolderListPageState extends State<FolderListPage>
     _addLoadingEvent(reset: true);
 
     /// Stores the new filter and order applied to shared preferences
-    StorageManager.saveData(
-        StorageManager.filtersOnFolder, _currentAppliedFilter.filter);
-    StorageManager.saveData(StorageManager.orderOnFolder, _currentAppliedOrder);
+    getIt<PreferencesRepositoryImpl>()
+        .saveData(SharedKeys.filtersOnFolder, _currentAppliedFilter.filter);
+    getIt<PreferencesRepositoryImpl>()
+        .saveData(SharedKeys.orderOnFolder, _currentAppliedOrder);
   }
 
   @override

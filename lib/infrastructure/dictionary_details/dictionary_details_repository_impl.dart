@@ -1,7 +1,9 @@
+import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/dictionary_details/i_dictionary_details_repository.dart';
 import 'package:unofficial_jisho_api/api.dart' as jisho;
 import 'package:kanpractice/domain/dictionary_details/word_example.dart';
 
+@LazySingleton(as: IDictionaryDetailsRepository)
 class DictionaryDetailsRepositoryImpl implements IDictionaryDetailsRepository {
   @override
   Future<List<WordExample>> searchForExample(String word) async {

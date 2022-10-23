@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/preferences/store_manager.dart';
+import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 
 import 'dark.dart';
 import 'light.dart';
@@ -36,7 +37,8 @@ class ThemeNotifier with ChangeNotifier {
   }
 
   _getCurrentTheme() async {
-    String? mode = await StorageManager.readData(StorageManager.themeMode);
+    String? mode =
+        await getIt<PreferencesRepositoryImpl>().readData(SharedKeys.themeMode);
     if (mode != null) {
       activeMode = ThemeMode.values.asNameMap()[mode] ?? ThemeMode.system;
     }
@@ -48,7 +50,8 @@ class ThemeNotifier with ChangeNotifier {
   setMode(ThemeMode? mode) {
     if (mode != null) {
       activeMode = mode;
-      StorageManager.saveData(StorageManager.themeMode, activeMode.name);
+      getIt<PreferencesRepositoryImpl>()
+          .saveData(SharedKeys.themeMode, activeMode.name);
       notifyListeners();
     }
   }

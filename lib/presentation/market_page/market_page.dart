@@ -2,9 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
-import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
 import 'package:kanpractice/domain/market/market.dart';
+import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -37,13 +38,14 @@ class _MarketPageState extends State<MarketPage>
   void initState() {
     _scrollController.addListener(_scrollListener);
 
-    final filterText =
-        StorageManager.readData(StorageManager.filtersOnMarket) ??
-            Market.uploadedToMarketField;
+    final filterText = getIt<PreferencesRepositoryImpl>()
+            .readData(SharedKeys.filtersOnMarket) ??
+        Market.uploadedToMarketField;
     _currentAppliedFilter = MarketFiltersUtils.getFilterFrom(filterText);
 
     _currentAppliedOrder =
-        StorageManager.readData(StorageManager.orderOnMarket) ?? true;
+        getIt<PreferencesRepositoryImpl>().readData(SharedKeys.orderOnMarket) ??
+            true;
     super.initState();
   }
 
@@ -103,9 +105,10 @@ class _MarketPageState extends State<MarketPage>
     _addLoadingEvent(reset: true);
 
     /// Stores the new filter and order applied to shared preferences
-    StorageManager.saveData(
-        StorageManager.filtersOnMarket, _currentAppliedFilter.filter);
-    StorageManager.saveData(StorageManager.orderOnMarket, _currentAppliedOrder);
+    getIt<PreferencesRepositoryImpl>()
+        .saveData(SharedKeys.filtersOnMarket, _currentAppliedFilter.filter);
+    getIt<PreferencesRepositoryImpl>()
+        .saveData(SharedKeys.orderOnMarket, _currentAppliedOrder);
   }
 
   @override

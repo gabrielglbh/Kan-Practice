@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:kanpractice/core/database/database_consts.dart';
+import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
 import 'package:kanpractice/core/types/market_filters.dart';
@@ -18,6 +18,7 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:sqflite/sqlite_api.dart';
 
+@LazySingleton(as: IMarketRepository)
 class MarketRepositoryImpl implements IMarketRepository {
   final String collection = "Market";
   final String kanjiLabel = "Kanji";

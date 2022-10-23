@@ -1,19 +1,22 @@
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kanpractice/core/database/queries/kanji_queries.dart';
+import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/word/word.dart';
+import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 
 part 'add_kanji_event.dart';
 part 'add_kanji_state.dart';
 
+@lazySingleton
 class AddKanjiBloc extends Bloc<AddKanjiEvent, AddKanjiState> {
   AddKanjiBloc() : super(AddKanjiStateIdle()) {
     on<AddKanjiEventIdle>((event, emit) {});
 
     on<AddKanjiEventUpdate>((event, emit) async {
-      final code = await WordQueries.instance
-          .updateKanji(event.listName, event.kanjiPk, event.parameters);
+      final code = await getIt<WordRepositoryImpl>()
+          .updateWord(event.listName, event.kanjiPk, event.parameters);
       if (code == 0) {
         emit(AddKanjiStateDoneUpdating());
       } else if (code == -1) {
@@ -27,7 +30,7 @@ class AddKanjiBloc extends Bloc<AddKanjiEvent, AddKanjiState> {
 
     on<AddKanjiEventCreate>((event, emit) async {
       emit(AddKanjiStateLoading());
-      final code = await WordQueries.instance.createKanji(event.kanji);
+      final code = await getIt<WordRepositoryImpl>().createWord(event.kanji);
       if (code == 0) {
         emit(AddKanjiStateDoneCreating(exitMode: event.exitMode));
       } else if (code == -1) {

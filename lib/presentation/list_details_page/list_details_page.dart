@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/list_details/list_details_bloc.dart';
-import 'package:kanpractice/core/preferences/store_manager.dart';
+import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/core/tutorial/tutorial_manager.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
@@ -66,8 +67,8 @@ class _ListDetailsPageState extends State<ListDetailsPage>
     _searchBarFn?.addListener(_focusListener);
     _scrollController.addListener(_scrollListener);
     _listName = widget.list.name;
-    _aggrStats =
-        StorageManager.readData(StorageManager.kanListListVisualization);
+    _aggrStats = getIt<PreferencesRepositoryImpl>()
+        .readData(SharedKeys.kanListListVisualization);
     super.initState();
   }
 
@@ -295,8 +296,8 @@ class _ListDetailsPageState extends State<ListDetailsPage>
                     Utils.getSnackBar(context, state.error);
                   }
                 } else if (state is ListDetailStateLoaded) {
-                  if (StorageManager.readData(
-                          StorageManager.haveSeenKanListDetailCoachMark) ==
+                  if (getIt<PreferencesRepositoryImpl>().readData(
+                          SharedKeys.haveSeenKanListDetailCoachMark) ==
                       false) {
                     _onTutorial = true;
                     await TutorialCoach([vocabulary, actions, changeName],

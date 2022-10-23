@@ -1,12 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/database/queries/kanji_queries.dart';
-import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
-import 'package:kanpractice/core/utils/tts.dart';
 import 'package:kanpractice/domain/word/word.dart';
+import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/infrastructure/text_to_speech/text_to_speech_repository_impl.dart';
+import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_learning_header_animation.dart';
 import 'package:kanpractice/presentation/core/ui/kp_learning_header_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_list_percentage_indicator.dart';
@@ -45,7 +46,8 @@ class _ListeningStudyState extends State<ListeningStudy> {
     _studyList.addAll(widget.args.studyList);
 
     /// Execute the TTS when passing to the next kanji
-    TextToSpeech.instance.speakKanji(_studyList[_macro].pronunciation);
+    getIt<TextToSpeechRepositoryImpl>()
+        .speakWord(_studyList[_macro].pronunciation);
     super.initState();
   }
 
@@ -77,8 +79,8 @@ class _ListeningStudyState extends State<ListeningStudy> {
           });
 
           /// Execute the TTS when passing to the next kanji
-          await TextToSpeech.instance
-              .speakKanji(_studyList[_macro].pronunciation);
+          await getIt<TextToSpeechRepositoryImpl>()
+              .speakWord(_studyList[_macro].pronunciation);
         }
 
         /// If we ended the list, update the statistics to DB and exit
@@ -114,15 +116,17 @@ class _ListeningStudyState extends State<ListeningStudy> {
     } else {
       /// Updates the dateLastShown attribute of the finished word AND
       /// the current specific last shown mode attribute
-      await WordQueries.instance
-          .updateKanji(_studyList[_macro].listName, _studyList[_macro].word, {
+      await getIt<WordRepositoryImpl>()
+          .updateWord(_studyList[_macro].listName, _studyList[_macro].word, {
         WordTableFields.dateLastShown: Utils.getCurrentMilliseconds(),
         WordTableFields.dateLastShownListening: Utils.getCurrentMilliseconds()
       });
 
       /// Add the current virgin score to the test scores...
       if (widget.args.isTest) {
-        if (StorageManager.readData(StorageManager.affectOnPractice) ?? false) {
+        if (getIt<PreferencesRepositoryImpl>()
+                .readData(SharedKeys.affectOnPractice) ??
+            false) {
           await StudyModeUpdateHandler.calculateScore(
               widget.args, score, _macro);
         }
@@ -157,7 +161,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
         appBarActions: [
           Visibility(
             visible: _showWord,
-            child: TTSIconButton(kanji: _studyList[_macro].pronunciation),
+            child: TTSIconButton(word: _studyList[_macro].pronunciation),
           ),
           if (!widget.args.isTest)
             IconButton(
@@ -202,7 +206,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
       Visibility(
           visible: !_showWord,
           child: TTSIconButton(
-              kanji: _studyList[_macro].pronunciation,
+              word: _studyList[_macro].pronunciation,
               iconSize: KPMargins.margin64 + KPMargins.margin4)),
       Visibility(
         visible: _showWord,

@@ -1,6 +1,8 @@
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/text_to_speech/i_text_to_speech_repository.dart';
 
+@LazySingleton(as: ITextToSpeechRepository)
 class TextToSpeechRepositoryImpl implements ITextToSpeechRepository {
   final FlutterTts _tts;
 

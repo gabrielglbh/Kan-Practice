@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:image/image.dart' as i;
+import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/classifier/i_classifier_repository.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 
+@LazySingleton(as: IClassifierRepository)
 class ClassifierRepositoryImpl implements IClassifierRepository {
-  late Interpreter interpreter;
+  late Interpreter _interpreter;
 
   final String _labelsFileName = 'assets/model/etlcb_9b_labels.txt';
   final String _modelFileName = 'model/etlcb_9b_model.tflite';
@@ -18,11 +20,6 @@ class ClassifierRepositoryImpl implements IClassifierRepository {
   static const int height = 64;
 
   late List<String> labels;
-
-  ClassifierRepositoryImpl() {
-    loadModel();
-    _loadLabels();
-  }
 
   @override
   Future<void> loadModel() async {
@@ -46,7 +43,8 @@ class ClassifierRepositoryImpl implements IClassifierRepository {
     } catch (e) {
       interpreter = await _cpuInterpreter();
     }
-    this.interpreter = interpreter;
+    _interpreter = interpreter;
+    _loadLabels();
     print('Interpreter loaded successfully');
   }
 
@@ -70,11 +68,11 @@ class ClassifierRepositoryImpl implements IClassifierRepository {
     }
 
     TensorBuffer outputBuffer = TensorBuffer.createFixedSize(
-        interpreter.getOutputTensor(0).shape,
-        interpreter.getOutputTensor(0).type);
+        _interpreter.getOutputTensor(0).shape,
+        _interpreter.getOutputTensor(0).type);
 
     /// Run the interpreter on the given image
-    interpreter.run(inputImage, outputBuffer.getBuffer());
+    _interpreter.run(inputImage, outputBuffer.getBuffer());
 
     /// Normalize the output to go from 0 to 1 only
     final probabilityProcessor =

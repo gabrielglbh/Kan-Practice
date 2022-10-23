@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/backup/backup.dart';
 import 'package:kanpractice/domain/backup/i_backup_repository.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
@@ -19,6 +20,7 @@ import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:sqflite/sqlite_api.dart';
 
+@LazySingleton(as: IBackupRepository)
 class BackupRepositoryImpl implements IBackupRepository {
   final FirebaseFirestore _ref;
   final FirebaseAuth _auth;

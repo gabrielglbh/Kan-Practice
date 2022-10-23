@@ -59,7 +59,7 @@ abstract class IWordRepository {
   Future<List<Word>> getAllWords({StudyModes? mode, Tests? type});
   Future<List<Word>> getWordBasedOnSelectedLists(List<String> listNames);
   Future<List<Word>> getWordsBasedOnCategory(int category);
-  Future<List<Word>> getAllWordFromList(
+  Future<List<Word>> getAllWordsFromList(
     String listName, {
     int? offset,
     int? limit,

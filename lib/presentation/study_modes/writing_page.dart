@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/database/queries/kanji_queries.dart';
-import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
+import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/canvas/kp_custom_canvas.dart';
 import 'package:kanpractice/presentation/core/ui/kp_learning_header_animation.dart';
 import 'package:kanpractice/presentation/core/ui/kp_learning_header_container.dart';
@@ -183,8 +184,8 @@ class _WritingStudyState extends State<WritingStudy> {
   Future<int> _calculateKanjiScore() async {
     /// Updates the dateLastShown attribute of the finished word AND
     /// the current specific last shown mode attribute
-    await WordQueries.instance
-        .updateKanji(_studyList[_macro].listName, _studyList[_macro].word, {
+    await getIt<WordRepositoryImpl>()
+        .updateWord(_studyList[_macro].listName, _studyList[_macro].word, {
       WordTableFields.dateLastShown: Utils.getCurrentMilliseconds(),
       WordTableFields.dateLastShownWriting: Utils.getCurrentMilliseconds()
     });
@@ -192,7 +193,9 @@ class _WritingStudyState extends State<WritingStudy> {
 
     /// Add the current virgin score to the test scores...
     if (widget.args.isTest) {
-      if (StorageManager.readData(StorageManager.affectOnPractice) ?? false) {
+      if (getIt<PreferencesRepositoryImpl>()
+              .readData(SharedKeys.affectOnPractice) ??
+          false) {
         await StudyModeUpdateHandler.calculateScore(
             widget.args, currentScore, _macro);
       }
@@ -228,7 +231,7 @@ class _WritingStudyState extends State<WritingStudy> {
       appBarActions: [
         Visibility(
           visible: _goNextKanji,
-          child: TTSIconButton(kanji: _studyList[_macro].pronunciation),
+          child: TTSIconButton(word: _studyList[_macro].pronunciation),
         ),
         if (!widget.args.isTest)
           IconButton(

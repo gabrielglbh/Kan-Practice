@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/types/word_categories.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
@@ -6,6 +7,7 @@ import 'package:kanpractice/domain/word/i_word_repository.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:sqflite/sqlite_api.dart';
 
+@LazySingleton(as: IWordRepository)
 class WordRepositoryImpl implements IWordRepository {
   final Database _database;
 
@@ -138,7 +140,7 @@ class WordRepositoryImpl implements IWordRepository {
   }
 
   @override
-  Future<List<Word>> getAllWordFromList(String listName,
+  Future<List<Word>> getAllWordsFromList(String listName,
       {int? offset, int? limit}) async {
     try {
       List<Map<String, dynamic>>? res = [];

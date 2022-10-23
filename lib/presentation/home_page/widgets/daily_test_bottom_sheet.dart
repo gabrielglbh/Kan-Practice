@@ -1,12 +1,13 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/queries/folder_queries.dart';
-import 'package:kanpractice/core/database/queries/kanji_queries.dart';
-import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
+import 'package:kanpractice/infrastructure/folder/folder_repository_impl.dart';
+import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -30,16 +31,16 @@ class DailyBottomSheet extends StatelessWidget {
     final navigator = Navigator.of(context);
     final randomStudyMode =
         StudyModes.values[Random().nextInt(StudyModes.values.length)];
-    final kanjiInTest =
-        StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
-            KPSizes.numberOfKanjiInTest;
+    final kanjiInTest = getIt<PreferencesRepositoryImpl>()
+            .readData(SharedKeys.numberOfKanjiInTest) ??
+        KPSizes.numberOfKanjiInTest;
 
     final today = await Utils.parseTodayDate(context);
     List<Word> list = [];
     if (folder == null) {
-      list = await WordQueries.instance.getDailyKanjis(randomStudyMode);
+      list = await getIt<WordRepositoryImpl>().getDailyWords(randomStudyMode);
     } else {
-      list = await FolderQueries.instance.getAllKanjiOnListsOnFolder(
+      list = await getIt<FolderRepositoryImpl>().getAllWordsOnListsOnFolder(
         [folder!],
         type: Tests.daily,
         mode: randomStudyMode,
@@ -57,7 +58,8 @@ class DailyBottomSheet extends StatelessWidget {
     /// Save to SharedPreferences the current folder, if any, to manage
     /// proper navigation when finishing the test.
     /// See addPostFrameCallback() in init() in [HomePage]
-    StorageManager.saveData(StorageManager.folderWhenOnTest, folder ?? "");
+    getIt<PreferencesRepositoryImpl>()
+        .saveData(SharedKeys.folderWhenOnTest, folder ?? "");
     await navigator.pushNamed(
       randomStudyMode.page,
       arguments: ModeArguments(
@@ -92,9 +94,9 @@ class DailyBottomSheet extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline6),
               ),
               Visibility(
-                visible:
-                    StorageManager.readData(StorageManager.affectOnPractice) ==
-                        true,
+                visible: getIt<PreferencesRepositoryImpl>()
+                        .readData(SharedKeys.affectOnPractice) ==
+                    true,
                 child: Container(
                   margin: const EdgeInsets.symmetric(
                       vertical: KPMargins.margin8,

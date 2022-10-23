@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/queries/folder_queries.dart';
-import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
+import 'package:kanpractice/infrastructure/folder/folder_repository_impl.dart';
+import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -33,8 +34,8 @@ class PracticeFolderBottomSheet extends StatefulWidget {
 
 class _PracticeFolderBottomSheetState extends State<PracticeFolderBottomSheet> {
   Future<List<Word>> _loadPractice(StudyModes mode) async {
-    List<Word> list = await FolderQueries.instance
-        .getAllKanjiOnListsOnFolder([widget.folder]);
+    List<Word> list = await getIt<FolderRepositoryImpl>()
+        .getAllWordsOnListsOnFolder([widget.folder]);
     list.shuffle();
     return list;
   }
@@ -120,9 +121,9 @@ class _PracticeFolderBottomSheetState extends State<PracticeFolderBottomSheet> {
     List<Word> l,
     StudyModes mode,
   ) async {
-    final kanjiInTest =
-        StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
-            KPSizes.numberOfKanjiInTest;
+    final kanjiInTest = getIt<PreferencesRepositoryImpl>()
+            .readData(SharedKeys.numberOfKanjiInTest) ??
+        KPSizes.numberOfKanjiInTest;
     List<Word> sortedList =
         l.sublist(0, l.length < kanjiInTest ? l.length : kanjiInTest);
     navigator.pop(); // Dismiss this bottom sheet

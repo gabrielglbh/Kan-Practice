@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/types/test_modes_filters.dart';
 import 'package:kanpractice/core/types/study_modes_filters.dart';
@@ -5,6 +6,7 @@ import 'package:kanpractice/domain/test_result/i_test_repository.dart';
 import 'package:kanpractice/domain/test_result/test_result.dart';
 import 'package:sqflite/sqlite_api.dart';
 
+@LazySingleton(as: ITestRepository)
 class TestResultRepositoryImpl implements ITestRepository {
   final Database _database;
 

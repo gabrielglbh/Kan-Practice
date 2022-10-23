@@ -1,14 +1,18 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kanpractice/core/database/queries/folder_queries.dart';
+import 'package:injectable/injectable.dart';
 import 'package:kanpractice/core/types/wordlist_filters.dart';
 import 'package:kanpractice/domain/list/list.dart';
+import 'package:kanpractice/infrastructure/folder/folder_repository_impl.dart';
+import 'package:kanpractice/infrastructure/relation_folder_list/relation_folder_list_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 part 'folder_details_event.dart';
 part 'folder_details_state.dart';
 
 /// This bloc is used in Folders.dart, jisho.dart and add_marketlist.dart.
+@lazySingleton
 class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
   FolderDetailsBloc() : super(FolderDetailsStateLoading()) {
     /// Maintain the list for pagination purposes
@@ -38,7 +42,7 @@ class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
         /// of state. After, add to list the elements for the next iteration.
         List<WordList> fullList = List.of(list);
         final List<WordList> pagination =
-            await FolderQueries.instance.getAllListsOnFolder(
+            await getIt<FolderRepositoryImpl>().getAllListsOnFolder(
           event.folder,
           filter: event.filter,
           order: _getSelectedOrder(event.order),
@@ -57,8 +61,8 @@ class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
     on<FolderForTestEventLoading>((event, emit) async {
       try {
         emit(FolderDetailsStateLoading());
-        final List<WordList> lists =
-            await FolderQueries.instance.getAllListsOnFolder(event.folder);
+        final List<WordList> lists = await getIt<FolderRepositoryImpl>()
+            .getAllListsOnFolder(event.folder);
         emit(FolderDetailsStateTestLoaded(lists: lists));
       } on Exception {
         emit(FolderDetailsStateFailure());
@@ -79,7 +83,7 @@ class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
         /// of state. After, add to list the elements for the next iteration.
         List<WordList> fullList = List.of(searchList);
         final List<WordList> pagination =
-            await FolderQueries.instance.getAllListsOnFolderOnQuery(
+            await getIt<FolderRepositoryImpl>().getAllListsOnFolderOnQuery(
           event.query,
           event.folder,
           offset: loadingTimesForSearch,
@@ -98,8 +102,8 @@ class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
       if (state is FolderDetailsStateLoaded) {
         String name = event.list.name;
 
-        final code = await FolderQueries.instance
-            .removeKanListToFolder(event.folder, name);
+        final code = await getIt<RelationFolderListRepositoryImpl>()
+            .removeListToFolder(event.folder, name);
         if (code == 0) {
           emit(FolderDetailsStateLoading());
           List<WordList> newList =
@@ -126,7 +130,7 @@ class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
     /// When creating or removing a new list, reset any pagination offset
     /// to load up from the start
     final List<WordList> lists =
-        await FolderQueries.instance.getAllListsOnFolder(
+        await getIt<FolderRepositoryImpl>().getAllListsOnFolder(
       folder,
       filter: filter,
       order: _getSelectedOrder(order),

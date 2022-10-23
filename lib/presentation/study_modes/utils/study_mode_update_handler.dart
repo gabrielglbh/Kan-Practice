@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/database/queries/kanji_queries.dart';
-import 'package:kanpractice/core/database/queries/list_queries.dart';
-import 'package:kanpractice/core/preferences/store_manager.dart';
+import 'package:kanpractice/infrastructure/list/list_repository_impl.dart';
+import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -60,8 +61,8 @@ class StudyModeUpdateHandler {
                   /// If the test was a number test, just go to the result page with
                   /// a null study list to not show anything.
                   if (!args.isNumberTest) {
-                    if (StorageManager.readData(
-                            StorageManager.affectOnPractice) ??
+                    if (getIt<PreferencesRepositoryImpl>()
+                            .readData(SharedKeys.affectOnPractice) ??
                         false) {
                       await _updateScoreForTestsAffectingPractice(args);
                     }
@@ -164,7 +165,7 @@ class StudyModeUpdateHandler {
         toUpdate = {WordTableFields.winRateSpeakingField: actualScore};
         break;
     }
-    return await WordQueries.instance.updateKanji(
+    return await getIt<WordRepositoryImpl>().updateWord(
         args.studyList[index].listName, args.studyList[index].word, toUpdate);
   }
 
@@ -204,7 +205,7 @@ class StudyModeUpdateHandler {
     for (int x = 0; x < orderedMap.keys.toList().length; x++) {
       String kanListName = orderedMap.keys.toList()[x];
       orderedMap[kanListName] =
-          await WordQueries.instance.getAllKanjiFromList(kanListName);
+          await getIt<WordRepositoryImpl>().getAllWordsFromList(kanListName);
     }
 
     /// Calculate the overall score for each list on the treated map
@@ -257,8 +258,8 @@ class StudyModeUpdateHandler {
 
     /// Get the kanji from the DB rather than the args instance as the args
     /// instance does not have the updated values
-    List<Word> kanji = await WordQueries.instance
-        .getAllKanjiFromList(args.studyList[0].listName);
+    List<Word> kanji = await getIt<WordRepositoryImpl>()
+        .getAllWordsFromList(args.studyList[0].listName);
     for (var k in kanji) {
       switch (args.mode) {
         case StudyModes.writing:
@@ -314,7 +315,7 @@ class StudyModeUpdateHandler {
         toUpdate = {ListTableFields.totalWinRateSpeakingField: overall};
         break;
     }
-    await ListQueries.instance
+    await getIt<ListRepositoryImpl>()
         .updateList(kanListName ?? args.studyList[0].listName, toUpdate);
   }
 }

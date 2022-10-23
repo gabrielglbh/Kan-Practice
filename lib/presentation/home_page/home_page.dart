@@ -6,8 +6,9 @@ import 'package:kanpractice/application/list/lists_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
 import 'package:kanpractice/application/settings/settings_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/firebase/queries/back_ups.dart';
-import 'package:kanpractice/core/preferences/store_manager.dart';
+import 'package:kanpractice/infrastructure/backup/backup_repository_impl.dart';
+import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/core/tutorial/tutorial_manager.dart';
 import 'package:kanpractice/core/types/coach_tutorial_parts.dart';
@@ -78,35 +79,39 @@ class _HomePageState extends State<HomePage>
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_onTabChanged);
 
-    final filterText = StorageManager.readData(StorageManager.filtersOnList) ??
-        ListTableFields.lastUpdatedField;
+    final filterText =
+        getIt<PreferencesRepositoryImpl>().readData(SharedKeys.filtersOnList) ??
+            ListTableFields.lastUpdatedField;
     _currentAppliedFilter = KanListFiltersUtils.getFilterFrom(filterText);
     _currentAppliedOrder =
-        StorageManager.readData(StorageManager.orderOnList) ?? true;
+        getIt<PreferencesRepositoryImpl>().readData(SharedKeys.orderOnList) ??
+            true;
 
-    final filterFolderText =
-        StorageManager.readData(StorageManager.filtersOnFolder) ??
-            FolderTableFields.lastUpdatedField;
+    final filterFolderText = getIt<PreferencesRepositoryImpl>()
+            .readData(SharedKeys.filtersOnFolder) ??
+        FolderTableFields.lastUpdatedField;
     _currentAppliedFolderFilter =
         FolderFiltersUtils.getFilterFrom(filterFolderText);
     _currentAppliedFolderOrder =
-        StorageManager.readData(StorageManager.orderOnFolder) ?? true;
+        getIt<PreferencesRepositoryImpl>().readData(SharedKeys.orderOnFolder) ??
+            true;
 
-    final filterMarketText =
-        StorageManager.readData(StorageManager.filtersOnMarket) ??
-            Market.uploadedToMarketField;
+    final filterMarketText = getIt<PreferencesRepositoryImpl>()
+            .readData(SharedKeys.filtersOnMarket) ??
+        Market.uploadedToMarketField;
     _currentAppliedMarketFilter =
         MarketFiltersUtils.getFilterFrom(filterMarketText);
     _currentAppliedMarketOrder =
-        StorageManager.readData(StorageManager.orderOnMarket) ?? true;
+        getIt<PreferencesRepositoryImpl>().readData(SharedKeys.orderOnMarket) ??
+            true;
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       /// Read folder from SharedPreferences, current selected folder for the latest
       /// test. If any, show that BS and navigate to that tab. Else just
       /// show the BS with all tests
       if (widget.showTestBottomSheet == true) {
-        String? folder =
-            StorageManager.readData(StorageManager.folderWhenOnTest);
+        String? folder = getIt<PreferencesRepositoryImpl>()
+            .readData(SharedKeys.folderWhenOnTest);
         bool hasFolder = folder != null && folder.isNotEmpty;
         if (hasFolder) _tabController.animateTo(1);
         await KPTestBottomSheet.show(
@@ -164,7 +169,7 @@ class _HomePageState extends State<HomePage>
   }
 
   Future<void> _getVersionNotice() async {
-    String v = await BackUpRecords.instance.getVersion();
+    String v = await getIt<BackupRepositoryImpl>().getVersion();
     PackageInfo pi = await PackageInfo.fromPlatform();
     if (v != pi.version && v != "") setState(() => _newVersion = v);
   }
@@ -225,8 +230,8 @@ class _HomePageState extends State<HomePage>
       child: BlocConsumer<ListBloc, ListState>(
         listener: (context, state) async {
           if (state is ListStateLoaded) {
-            if (StorageManager.readData(
-                    StorageManager.haveSeenKanListCoachMark) ==
+            if (getIt<PreferencesRepositoryImpl>()
+                    .readData(SharedKeys.haveSeenKanListCoachMark) ==
                 false) {
               _onTutorial = true;
               await TutorialCoach([

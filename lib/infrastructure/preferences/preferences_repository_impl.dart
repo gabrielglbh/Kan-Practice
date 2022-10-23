@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/preferences/i_preferences_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,6 +20,7 @@ class SharedKeys {
   static const String folderWhenOnTest = "folderWhenOnTest";
 }
 
+@LazySingleton(as: IPreferencesRepository)
 class PreferencesRepositoryImpl implements IPreferencesRepository {
   final SharedPreferences? _preferences;
 

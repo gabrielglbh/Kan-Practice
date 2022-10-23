@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_study_mode.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -55,9 +56,9 @@ class KPBlitzBottomSheet extends StatelessWidget {
             ? "less_pct_bottom_sheet_title".tr()
             : "blitz_bottom_sheet_title".tr();
     final folderTitle = folder != null ? ": $folder" : "";
-    final kanjiInTest =
-        StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
-            KPSizes.numberOfKanjiInTest;
+    final kanjiInTest = getIt<PreferencesRepositoryImpl>()
+            .readData(SharedKeys.numberOfKanjiInTest) ??
+        KPSizes.numberOfKanjiInTest;
     final type = remembranceTest
         ? Tests.time
         : lessPctTest

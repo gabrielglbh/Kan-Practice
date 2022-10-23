@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/queries/folder_queries.dart';
-import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/core/types/word_categories.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
+import 'package:kanpractice/infrastructure/folder/folder_repository_impl.dart';
+import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_kanji_category_list.dart';
@@ -42,9 +43,10 @@ class _KPKanListCategorySelectionBottomSheetState
   Future<List<Word>> _loadKanjiFromListSelection(WordCategory category) async {
     List<Word> list = [];
     if (widget.folder == null) {
-      list = await WordQueries.instance.getKanjiBasedOnCategory(category.index);
+      list = await getIt<WordRepositoryImpl>()
+          .getWordsBasedOnCategory(category.index);
     } else {
-      list = await FolderQueries.instance.getAllKanjiOnListsOnFolder(
+      list = await getIt<FolderRepositoryImpl>().getAllWordsOnListsOnFolder(
         [widget.folder!],
         type: Tests.categories,
         category: category.index,

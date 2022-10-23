@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/wordlist_filters.dart';
@@ -6,6 +7,7 @@ import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:sqflite/sqlite_api.dart';
 
+@LazySingleton(as: IListRepository)
 class ListRepositoryImpl implements IListRepository {
   final Database _database;
 

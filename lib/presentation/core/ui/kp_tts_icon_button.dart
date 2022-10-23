@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/utils/tts.dart';
+import 'package:kanpractice/infrastructure/text_to_speech/text_to_speech_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 
 class TTSIconButton extends StatelessWidget {
-  final String? kanji;
+  final String? word;
   final double iconSize;
-  const TTSIconButton({Key? key, required this.kanji, this.iconSize = 24})
+  const TTSIconButton({Key? key, required this.word, this.iconSize = 24})
       : super(key: key);
 
   @override
@@ -13,7 +14,7 @@ class TTSIconButton extends StatelessWidget {
       icon: const Icon(Icons.volume_up_rounded),
       iconSize: iconSize,
       onPressed: () async {
-        await TextToSpeech.instance.speakKanji(kanji);
+        await getIt<TextToSpeechRepositoryImpl>().speakWord(word);
       },
     );
   }

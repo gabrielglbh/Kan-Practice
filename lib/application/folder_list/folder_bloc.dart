@@ -1,14 +1,18 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kanpractice/core/database/queries/folder_queries.dart';
+import 'package:injectable/injectable.dart';
 import 'package:kanpractice/core/types/folder_filters.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
+import 'package:kanpractice/infrastructure/folder/folder_repository_impl.dart';
+import 'package:kanpractice/infrastructure/relation_folder_list/relation_folder_list_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 part 'folder_event.dart';
 part 'folder_state.dart';
 
 /// This bloc is used in Folders.dart, jisho.dart and add_marketlist.dart.
+@lazySingleton
 class FolderBloc extends Bloc<FolderEvent, FolderState> {
   FolderBloc() : super(FolderStateLoading()) {
     /// Maintain the list for pagination purposes
@@ -37,7 +41,7 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
         /// a new list in order for Equatable to trigger and perform a change
         /// of state. After, add to list the elements for the next iteration.
         List<Folder> fullList = List.of(list);
-        final List<Folder> pagination = await FolderQueries.instance
+        final List<Folder> pagination = await getIt<FolderRepositoryImpl>()
             .getAllFolders(
                 filter: event.filter,
                 order: _getSelectedOrder(event.order),
@@ -65,7 +69,7 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
         /// a new list in order for Equatable to trigger and perform a change
         /// of state. After, add to list the elements for the next iteration.
         List<Folder> fullList = List.of(searchList);
-        final List<Folder> pagination = await FolderQueries.instance
+        final List<Folder> pagination = await getIt<FolderRepositoryImpl>()
             .getListsMatchingQuery(event.query,
                 offset: loadingTimesForSearch, limit: limit);
         fullList.addAll(pagination);
@@ -80,7 +84,8 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
     on<FolderForTestEventLoading>((event, emit) async {
       try {
         emit(FolderStateLoading());
-        final List<Folder> lists = await FolderQueries.instance.getAllFolders();
+        final List<Folder> lists =
+            await getIt<FolderRepositoryImpl>().getAllFolders();
         emit(FolderStateLoaded(lists: lists));
       } on Exception {
         emit(FolderStateFailure());
@@ -89,8 +94,8 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
 
     on<FolderEventAddSingleList>((event, emit) async {
       try {
-        final code = await FolderQueries.instance
-            .moveKanListToFolder(event.folder, event.name);
+        final code = await getIt<RelationFolderListRepositoryImpl>()
+            .moveListToFolder(event.folder, event.name);
         if (code != 0) throw Exception();
         emit(FolderStateAddedList());
       } catch (e) {
@@ -101,7 +106,7 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
     on<FolderEventDelete>((event, emit) async {
       if (state is FolderStateLoaded) {
         String name = event.list.folder;
-        final code = await FolderQueries.instance.removeFolder(name);
+        final code = await getIt<FolderRepositoryImpl>().removeFolder(name);
         if (code == 0) {
           emit(FolderStateLoading());
           List<Folder> newList = await _getNewAllListsAndUpdateLazyLoadingState(
@@ -119,7 +124,7 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
     on<FolderEventCreate>((event, emit) async {
       if (state is FolderStateLoaded) {
         String? name = event.name;
-        final code = await FolderQueries.instance.createFolder(name);
+        final code = await getIt<FolderRepositoryImpl>().createFolder(name);
         if (code == 0) {
           emit(FolderStateLoading());
           List<Folder> newList = [];
@@ -128,7 +133,7 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
                 event.filter, event.order,
                 limit: limit, l: list);
           } else {
-            newList = await FolderQueries.instance.getAllFolders();
+            newList = await getIt<FolderRepositoryImpl>().getAllFolders();
           }
 
           /// Reset offsets
@@ -145,11 +150,12 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
       {required int limit, required List<Folder> l}) async {
     /// When creating or removing a new list, reset any pagination offset
     /// to load up from the start
-    final List<Folder> lists = await FolderQueries.instance.getAllFolders(
-        filter: filter,
-        order: _getSelectedOrder(order),
-        limit: limit,
-        offset: 0);
+    final List<Folder> lists = await getIt<FolderRepositoryImpl>()
+        .getAllFolders(
+            filter: filter,
+            order: _getSelectedOrder(order),
+            limit: limit,
+            offset: 0);
 
     /// Clear the list and repopulate it with the newest items for FolderEventLoading
     /// to work properly for the next offset

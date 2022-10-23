@@ -1,7 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/firebase/queries/authentication.dart';
 import 'package:kanpractice/domain/market/market.dart';
+import 'package:kanpractice/infrastructure/auth/auth_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
@@ -126,8 +127,8 @@ class MarketListTile extends StatelessWidget {
                   offset: const Offset(-KPMargins.margin4, 0),
                   child: MarketListRating(
                     listId: list.name,
-                    initialRating:
-                        list.ratingMap[AuthRecords.instance.getUser()?.uid],
+                    initialRating: list
+                        .ratingMap[getIt<AuthRepositoryImpl>().getUser()?.uid],
                   )),
             ),
             IconButton(

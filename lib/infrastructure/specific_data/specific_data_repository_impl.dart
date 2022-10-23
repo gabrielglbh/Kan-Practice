@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
@@ -8,7 +9,9 @@ import 'package:kanpractice/domain/test_result/test_result.dart';
 import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
 import 'package:sqflite/sqlite_api.dart';
 
+@LazySingleton(as: ISpecificDataRepository)
 class SpecificDataRepositoryImpl implements ISpecificDataRepository {
+  static const categoryId = -9999;
   final Database _database;
 
   SpecificDataRepositoryImpl(this._database);
@@ -31,7 +34,7 @@ class SpecificDataRepositoryImpl implements ISpecificDataRepository {
         speaking += kanji.winRateSpeaking;
       }
       return SpecificData(
-        id: -9999,
+        id: categoryId,
         totalWritingCount: list.length,
         totalReadingCount: 0,
         totalRecognitionCount: 0,

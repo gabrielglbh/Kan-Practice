@@ -23,7 +23,7 @@ class DictionaryDetailsPage extends StatelessWidget {
     return KPScaffold(
         appBarTitle: args.kanji ?? "?",
         centerTitle: true,
-        appBarActions: [TTSIconButton(kanji: args.kanji)],
+        appBarActions: [TTSIconButton(word: args.kanji)],
         child: Column(
           children: [
             Expanded(

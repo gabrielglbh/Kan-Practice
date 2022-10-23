@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/folder_details/folder_details_bloc.dart';
 import 'package:kanpractice/application/list/lists_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/domain/list/list.dart';
+import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_kanji_lists/widgets/kanji_list_tile.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
@@ -48,13 +49,14 @@ class _KPWordListsState extends State<KPWordLists>
     _scrollController.addListener(_scrollListener);
 
     if (widget.folder == null) {
-      final filterText =
-          StorageManager.readData(StorageManager.filtersOnList) ??
-              ListTableFields.lastUpdatedField;
+      final filterText = getIt<PreferencesRepositoryImpl>()
+              .readData(SharedKeys.filtersOnList) ??
+          ListTableFields.lastUpdatedField;
       _currentAppliedFilter = KanListFiltersUtils.getFilterFrom(filterText);
 
       _currentAppliedOrder =
-          StorageManager.readData(StorageManager.orderOnList) ?? true;
+          getIt<PreferencesRepositoryImpl>().readData(SharedKeys.orderOnList) ??
+              true;
     }
     super.initState();
   }
@@ -118,9 +120,10 @@ class _KPWordListsState extends State<KPWordLists>
 
     /// Stores the new filter and order applied to shared preferences
     if (widget.folder == null) {
-      StorageManager.saveData(
-          StorageManager.filtersOnList, _currentAppliedFilter.filter);
-      StorageManager.saveData(StorageManager.orderOnList, _currentAppliedOrder);
+      getIt<PreferencesRepositoryImpl>()
+          .saveData(SharedKeys.filtersOnList, _currentAppliedFilter.filter);
+      getIt<PreferencesRepositoryImpl>()
+          .saveData(SharedKeys.orderOnList, _currentAppliedOrder);
     }
   }
 

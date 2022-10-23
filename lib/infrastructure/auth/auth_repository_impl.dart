@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:injectable/injectable.dart';
 import 'package:kanpractice/core/types/sign_in_mode.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kanpractice/domain/auth/i_auth_repository.dart';
 import 'package:kanpractice/infrastructure/backup/backup_repository_impl.dart';
 import 'package:sqflite/sqlite_api.dart';
 
+@LazySingleton(as: IAuthRepository)
 class AuthRepositoryImpl implements IAuthRepository {
   final FirebaseAuth _auth;
   final Database _database;

@@ -187,7 +187,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyText1),
               ),
             ),
-            TTSIconButton(kanji: updatedKanji.pronunciation)
+            TTSIconButton(word: updatedKanji.pronunciation)
           ],
         ));
   }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/queries/test_queries.dart';
+import 'package:kanpractice/infrastructure/test_data/test_data_repository_impl.dart';
+import 'package:kanpractice/infrastructure/test_result/test_result_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -34,8 +36,8 @@ class _TestResultPageState extends State<TestResultPage> {
         testMode: widget.args.testMode,
         lists: widget.args.listsName,
         takenDate: Utils.getCurrentMilliseconds());
-    await TestQueries.instance.createTest(test);
-    await TestQueries.instance.updateStats(test);
+    await getIt<TestResultRepositoryImpl>().createTest(test);
+    await getIt<TestDataRepositoryImpl>().updateStats(test);
   }
 
   @override

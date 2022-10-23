@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/queries/folder_queries.dart';
-import 'package:kanpractice/core/database/queries/kanji_queries.dart';
-import 'package:kanpractice/core/preferences/store_manager.dart';
 import 'package:kanpractice/core/types/study_modes.dart';
 import 'package:kanpractice/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
+import 'package:kanpractice/infrastructure/folder/folder_repository_impl.dart';
+import 'package:kanpractice/infrastructure/preferences/preferences_repository_impl.dart';
+import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
@@ -55,14 +56,14 @@ class KPTestStudyMode extends StatelessWidget {
       if (type == Tests.folder || (type == Tests.blitz && folder != null)) {
         if (folder == null) return [];
 
-        List<Word> list =
-            await FolderQueries.instance.getAllKanjiOnListsOnFolder([folder!]);
+        List<Word> list = await getIt<FolderRepositoryImpl>()
+            .getAllWordsOnListsOnFolder([folder!]);
         list.shuffle();
         return list;
       }
       if ((type == Tests.time || type == Tests.less) && folder != null) {
         List<Word> list =
-            await FolderQueries.instance.getAllKanjiOnListsOnFolder(
+            await getIt<FolderRepositoryImpl>().getAllWordsOnListsOnFolder(
           [folder!],
           mode: mode,
           type: type,
@@ -72,7 +73,7 @@ class KPTestStudyMode extends StatelessWidget {
 
       /// Else, just get all Kanji
       List<Word> list =
-          await WordQueries.instance.getAllKanji(mode: mode, type: type);
+          await getIt<WordRepositoryImpl>().getAllWords(mode: mode, type: type);
 
       /// If it is a remembrance or less % test, do NOT shuffle the list
       if (type != Tests.time && type != Tests.less) list.shuffle();
@@ -83,7 +84,7 @@ class KPTestStudyMode extends StatelessWidget {
     /// a Blitz Test on a certain KanList defined in "listName"
     else {
       List<Word> list =
-          await WordQueries.instance.getAllKanjiFromList(listName);
+          await getIt<WordRepositoryImpl>().getAllWordsFromList(listName);
       list.shuffle();
       return list;
     }
@@ -96,9 +97,9 @@ class KPTestStudyMode extends StatelessWidget {
         child: Column(
           children: [
             Visibility(
-              visible:
-                  StorageManager.readData(StorageManager.affectOnPractice) ==
-                      true,
+              visible: getIt<PreferencesRepositoryImpl>()
+                      .readData(SharedKeys.affectOnPractice) ==
+                  true,
               child: Container(
                   margin: const EdgeInsets.symmetric(
                       vertical: KPMargins.margin8,
@@ -180,9 +181,9 @@ class KPTestStudyMode extends StatelessWidget {
     StudyModes mode,
   ) async {
     final displayTestName = type.name;
-    final kanjiInTest =
-        StorageManager.readData(StorageManager.numberOfKanjiInTest) ??
-            KPSizes.numberOfKanjiInTest;
+    final kanjiInTest = getIt<PreferencesRepositoryImpl>()
+            .readData(SharedKeys.numberOfKanjiInTest) ??
+        KPSizes.numberOfKanjiInTest;
     List<Word> sortedList =
         l.sublist(0, l.length < kanjiInTest ? l.length : kanjiInTest);
     navigator.pop(); // Dismiss this bottom sheet
@@ -191,7 +192,8 @@ class KPTestStudyMode extends StatelessWidget {
     /// Save to SharedPreferences the current folder, if any, to manage
     /// proper navigation when finishing the test.
     /// See addPostFrameCallback() in init() in [HomePage]
-    StorageManager.saveData(StorageManager.folderWhenOnTest, folder ?? "");
+    getIt<PreferencesRepositoryImpl>()
+        .saveData(SharedKeys.folderWhenOnTest, folder ?? "");
 
     await navigator.pushNamed(
       mode.page,

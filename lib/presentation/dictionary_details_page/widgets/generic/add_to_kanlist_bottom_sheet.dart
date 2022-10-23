@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/list/lists_bloc.dart';
-import 'package:kanpractice/core/database/queries/kanji_queries.dart';
 import 'package:kanpractice/domain/dictionary_details/word_data.dart';
 import 'package:kanpractice/core/types/wordlist_filters.dart';
 import 'package:kanpractice/core/types/word_categories.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
+import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_create_kanlist_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
@@ -54,7 +55,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
     String meaning = singleKanjiMeaning ?? wordMeaning;
     String reading = singleKanjiReading ?? wordReading;
 
-    final code = await WordQueries.instance.createKanji(Word(
+    final code = await getIt<WordRepositoryImpl>().createWord(Word(
         word: widget.kanji ?? "",
         meaning:
             "${meaning[0].toUpperCase()}${meaning.substring(1).toLowerCase()}",

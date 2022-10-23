@@ -1,21 +1,24 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:kanpractice/core/firebase/queries/authentication.dart';
+import 'package:injectable/injectable.dart';
 import 'package:kanpractice/core/types/sign_in_mode.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/infrastructure/auth/auth_repository_impl.dart';
+import 'package:kanpractice/injection.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
+@lazySingleton
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(const LoginStateIdle()) {
     on<LoginSubmitting>((event, emit) async {
       emit(LoginStateLoading());
-      final error = await AuthRecords.instance
+      final error = await getIt<AuthRepositoryImpl>()
           .handleLogIn(event.mode, event.email, event.password);
       if (error == "") {
-        final user = AuthRecords.instance.getUser();
+        final user = getIt<AuthRepositoryImpl>().getUser();
         if (user != null) {
           emit(LoginStateSuccessful(user: user));
         } else {
@@ -27,7 +30,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     });
 
     on<LoginIdle>((event, emit) {
-      final user = AuthRecords.instance.getUser();
+      final user = getIt<AuthRepositoryImpl>().getUser();
       if (user != null) {
         emit(LoginStateSuccessful(user: user));
       } else {
@@ -37,12 +40,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     on<CloseSession>((event, emit) async {
       emit(LoginStateLoading());
-      final error = await AuthRecords.instance.closeSession();
+      final error = await getIt<AuthRepositoryImpl>().closeSession();
       if (error == 0) {
         emit(LoginStateLoggedOut(
             message: "login_bloc_close_session_successful".tr()));
       } else {
-        final user = AuthRecords.instance.getUser();
+        final user = getIt<AuthRepositoryImpl>().getUser();
         if (user != null) {
           emit(LoginStateSuccessful(user: user));
         } else {
@@ -53,12 +56,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     on<RemoveAccount>((event, emit) async {
       emit(LoginStateLoading());
-      final error = await AuthRecords.instance.deleteAccount(event.password);
+      final error =
+          await getIt<AuthRepositoryImpl>().deleteAccount(event.password);
       if (error == "") {
         emit(LoginStateLoggedOut(
             message: "login_bloc_remove_account_successful".tr()));
       } else {
-        final user = AuthRecords.instance.getUser();
+        final user = getIt<AuthRepositoryImpl>().getUser();
         if (user != null) {
           emit(LoginStateSuccessful(user: user));
         } else {
@@ -69,10 +73,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     on<ChangePassword>((event, emit) async {
       emit(LoginStateLoading());
-      final error = await AuthRecords.instance
+      final error = await getIt<AuthRepositoryImpl>()
           .changePassword(event.oldPassword, event.newPassword);
       if (error == "") {
-        final user = AuthRecords.instance.getUser();
+        final user = getIt<AuthRepositoryImpl>().getUser();
         if (user != null) {
           emit(LoginStateSuccessful(user: user));
         } else {

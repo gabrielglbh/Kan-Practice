@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kana_kit/kana_kit.dart';
-import 'package:kanpractice/core/database/database_consts.dart';
+import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
-import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_learning_header_animation.dart';
 import 'package:kanpractice/presentation/core/ui/kp_learning_header_container.dart';
@@ -107,23 +107,20 @@ class _ReadingStudyState extends State<ReadingStudy> {
   }
 
   Future<int> _calculateKanjiScore(double score) async {
-    /// Updates the dateLastShown attribute of the finished word AND
-    /// the current specific last shown mode attribute
-    await getIt<WordRepositoryImpl>()
-        .updateWord(_studyList[_macro].listName, _studyList[_macro].word, {
-      WordTableFields.dateLastShown: Utils.getCurrentMilliseconds(),
-      WordTableFields.dateLastShownReading: Utils.getCurrentMilliseconds()
-    });
+    getIt<StudyModeBloc>().add(StudyModeEventUpdateDateShown(
+        listName: _studyList[_macro].listName, word: _studyList[_macro].word));
 
     /// Add the current virgin score to the test scores...
     if (widget.args.isTest) {
       if (getIt<PreferencesService>().readData(SharedKeys.affectOnPractice) ??
           false) {
-        await StudyModeUpdateHandler.calculateScore(widget.args, score, _macro);
+        getIt<StudyModeBloc>().add(StudyModeEventCalculateScore(
+            widget.args.mode, _studyList[_macro], score));
       }
       _testScores.add(score);
     } else {
-      await StudyModeUpdateHandler.calculateScore(widget.args, score, _macro);
+      getIt<StudyModeBloc>().add(StudyModeEventCalculateScore(
+          widget.args.mode, _studyList[_macro], score));
     }
     return 0;
   }
@@ -158,55 +155,60 @@ class _ReadingStudyState extends State<ReadingStudy> {
 
   @override
   Widget build(BuildContext context) {
-    return KPScaffold(
-      onWillPop: () async {
-        if (widget.args.testMode == Tests.daily) {
-          Utils.getSnackBar(context, "daily_test_cannot_go_back".tr());
-          return false;
-        }
+    return BlocBuilder<StudyModeBloc, StudyModeState>(
+      builder: (context, state) {
+        return KPScaffold(
+          onWillPop: () async {
+            if (widget.args.testMode == Tests.daily) {
+              Utils.getSnackBar(context, "daily_test_cannot_go_back".tr());
+              return false;
+            }
 
-        return StudyModeUpdateHandler.handle(
-          context,
-          widget.args,
-          onPop: true,
-          lastIndex: _macro,
-        );
-      },
-      appBarTitle: StudyModeAppBar(
-          title: widget.args.studyModeHeaderDisplayName,
-          studyMode: widget.args.mode.mode),
-      centerTitle: true,
-      appBarActions: [
-        Visibility(
-          visible: _showPronunciation,
-          child: TTSIconButton(word: _studyList[_macro].pronunciation),
-        ),
-        if (!widget.args.isTest)
-          IconButton(
-            onPressed: () => Utils.showSpatialRepetitionDisclaimer(context),
-            icon: const Icon(Icons.info_outline_rounded),
-          )
-      ],
-      child: Column(
-        children: [
-          Column(
+            return StudyModeUpdateHandler.handle(
+              context,
+              widget.args,
+              onPop: true,
+              lastIndex: _macro,
+            );
+          },
+          appBarTitle: StudyModeAppBar(
+              title: widget.args.studyModeHeaderDisplayName,
+              studyMode: widget.args.mode.mode),
+          centerTitle: true,
+          appBarActions: [
+            Visibility(
+              visible: _showPronunciation,
+              child: TTSIconButton(word: _studyList[_macro].pronunciation),
+            ),
+            if (!widget.args.isTest)
+              IconButton(
+                onPressed: () => Utils.showSpatialRepetitionDisclaimer(context),
+                icon: const Icon(Icons.info_outline_rounded),
+              )
+          ],
+          child: Column(
             children: [
-              KPListPercentageIndicator(
-                  value: (_macro + 1) / _studyList.length),
-              KPLearningHeaderAnimation(id: _macro, children: _header()),
+              Column(
+                children: [
+                  KPListPercentageIndicator(
+                      value: (_macro + 1) / _studyList.length),
+                  KPLearningHeaderAnimation(id: _macro, children: _header()),
+                ],
+              ),
+              KPValidationButtons(
+                trigger: _showPronunciation,
+                submitLabel: "done_button_label".tr(),
+                wrongAction: (score) async => await _updateUIOnSubmit(score),
+                midWrongAction: (score) async => await _updateUIOnSubmit(score),
+                midPerfectAction: (score) async =>
+                    await _updateUIOnSubmit(score),
+                perfectAction: (score) async => await _updateUIOnSubmit(score),
+                onSubmit: () => setState(() => _showPronunciation = true),
+              ),
             ],
           ),
-          KPValidationButtons(
-            trigger: _showPronunciation,
-            submitLabel: "done_button_label".tr(),
-            wrongAction: (score) async => await _updateUIOnSubmit(score),
-            midWrongAction: (score) async => await _updateUIOnSubmit(score),
-            midPerfectAction: (score) async => await _updateUIOnSubmit(score),
-            perfectAction: (score) async => await _updateUIOnSubmit(score),
-            onSubmit: () => setState(() => _showPronunciation = true),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 

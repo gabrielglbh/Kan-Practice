@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/core/database/database_consts.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
-import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/canvas/kp_custom_canvas.dart';
 import 'package:kanpractice/presentation/core/ui/kp_learning_header_animation.dart';
@@ -182,95 +182,97 @@ class _WritingStudyState extends State<WritingStudy> {
   }
 
   Future<int> _calculateKanjiScore() async {
-    /// Updates the dateLastShown attribute of the finished word AND
-    /// the current specific last shown mode attribute
-    await getIt<WordRepositoryImpl>()
-        .updateWord(_studyList[_macro].listName, _studyList[_macro].word, {
-      WordTableFields.dateLastShown: Utils.getCurrentMilliseconds(),
-      WordTableFields.dateLastShownWriting: Utils.getCurrentMilliseconds()
-    });
+    getIt<StudyModeBloc>().add(StudyModeEventUpdateDateShown(
+        listName: _studyList[_macro].listName, word: _studyList[_macro].word));
     final double currentScore = _score[_macro] / _maxScore[_macro];
 
     /// Add the current virgin score to the test scores...
     if (widget.args.isTest) {
       if (getIt<PreferencesService>().readData(SharedKeys.affectOnPractice) ??
           false) {
-        await StudyModeUpdateHandler.calculateScore(
-            widget.args, currentScore, _macro);
+        getIt<StudyModeBloc>().add(StudyModeEventCalculateScore(
+            widget.args.mode, _studyList[_macro], currentScore));
       }
       _testScores.add(currentScore);
     } else {
-      await StudyModeUpdateHandler.calculateScore(
-          widget.args, currentScore, _macro);
+      getIt<StudyModeBloc>().add(StudyModeEventCalculateScore(
+          widget.args.mode, _studyList[_macro], currentScore));
     }
     return 0;
   }
 
   @override
   Widget build(BuildContext context) {
-    return KPScaffold(
-      onWillPop: () async {
-        if (widget.args.testMode == Tests.daily) {
-          Utils.getSnackBar(context, "daily_test_cannot_go_back".tr());
-          return false;
-        }
+    return BlocBuilder<StudyModeBloc, StudyModeState>(
+      builder: (context, state) {
+        return KPScaffold(
+          onWillPop: () async {
+            if (widget.args.testMode == Tests.daily) {
+              Utils.getSnackBar(context, "daily_test_cannot_go_back".tr());
+              return false;
+            }
 
-        return StudyModeUpdateHandler.handle(
-          context,
-          widget.args,
-          onPop: true,
-          lastIndex: _macro,
+            return StudyModeUpdateHandler.handle(
+              context,
+              widget.args,
+              onPop: true,
+              lastIndex: _macro,
+            );
+          },
+          setGestureDetector: false,
+          appBarTitle: StudyModeAppBar(
+              title: widget.args.studyModeHeaderDisplayName,
+              studyMode: widget.args.mode.mode),
+          centerTitle: true,
+          appBarActions: [
+            Visibility(
+              visible: _goNextKanji,
+              child: TTSIconButton(word: _studyList[_macro].pronunciation),
+            ),
+            if (!widget.args.isTest)
+              IconButton(
+                onPressed: () => Utils.showSpatialRepetitionDisclaimer(context),
+                icon: const Icon(Icons.info_outline_rounded),
+              )
+          ],
+          child: Column(
+            children: [
+              KPListPercentageIndicator(
+                  value: (_macro + 1) / _studyList.length),
+              KPLearningHeaderAnimation(id: _macro, children: _header()),
+              KPCustomCanvas(line: _line, allowEdit: !_showActualKanji),
+              WritingButtonsAnimations(
+                id: _macro,
+
+                /// Whenever a new kanji is shown, _inner will be 0. That's
+                /// the key to toggle the slide animation on the button.
+                triggerSlide: _inner == 0,
+                trigger: _showActualKanji,
+                submitLabel: _goNextKanji
+                    ? "writing_next_kanji_label".tr()
+                    : "done_button_label".tr(),
+                wrongAction: (score) async => await _updateUIOnSubmit(score),
+                midWrongAction: (score) async => await _updateUIOnSubmit(score),
+                midPerfectAction: (score) async =>
+                    await _updateUIOnSubmit(score),
+                perfectAction: (score) async => await _updateUIOnSubmit(score),
+                onSubmit: () {
+                  if (_macro <= _studyList.length - 1) {
+                    _resetKanji();
+                  } else {
+                    if (_line.isNotEmpty) {
+                      _resetKanji();
+                    } else {
+                      Utils.getSnackBar(
+                          context, "writing_validation_failed".tr());
+                    }
+                  }
+                },
+              )
+            ],
+          ),
         );
       },
-      setGestureDetector: false,
-      appBarTitle: StudyModeAppBar(
-          title: widget.args.studyModeHeaderDisplayName,
-          studyMode: widget.args.mode.mode),
-      centerTitle: true,
-      appBarActions: [
-        Visibility(
-          visible: _goNextKanji,
-          child: TTSIconButton(word: _studyList[_macro].pronunciation),
-        ),
-        if (!widget.args.isTest)
-          IconButton(
-            onPressed: () => Utils.showSpatialRepetitionDisclaimer(context),
-            icon: const Icon(Icons.info_outline_rounded),
-          )
-      ],
-      child: Column(
-        children: [
-          KPListPercentageIndicator(value: (_macro + 1) / _studyList.length),
-          KPLearningHeaderAnimation(id: _macro, children: _header()),
-          KPCustomCanvas(line: _line, allowEdit: !_showActualKanji),
-          WritingButtonsAnimations(
-            id: _macro,
-
-            /// Whenever a new kanji is shown, _inner will be 0. That's
-            /// the key to toggle the slide animation on the button.
-            triggerSlide: _inner == 0,
-            trigger: _showActualKanji,
-            submitLabel: _goNextKanji
-                ? "writing_next_kanji_label".tr()
-                : "done_button_label".tr(),
-            wrongAction: (score) async => await _updateUIOnSubmit(score),
-            midWrongAction: (score) async => await _updateUIOnSubmit(score),
-            midPerfectAction: (score) async => await _updateUIOnSubmit(score),
-            perfectAction: (score) async => await _updateUIOnSubmit(score),
-            onSubmit: () {
-              if (_macro <= _studyList.length - 1) {
-                _resetKanji();
-              } else {
-                if (_line.isNotEmpty) {
-                  _resetKanji();
-                } else {
-                  Utils.getSnackBar(context, "writing_validation_failed".tr());
-                }
-              }
-            },
-          )
-        ],
-      ),
     );
   }
 

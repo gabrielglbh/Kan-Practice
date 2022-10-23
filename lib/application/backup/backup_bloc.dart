@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/backup/i_backup_repository.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 part 'backup_event.dart';
 part 'backup_state.dart';
@@ -44,6 +45,14 @@ class BackUpBloc extends Bloc<BackUpEvent, BackUpState> {
       } else {
         emit(BackUpStateFailure(
             message: "${"backup_bloc_removal_failed".tr()} $error"));
+      }
+    });
+
+    on<BackUpGetVersion>((event, emit) async {
+      final version = await _backupRepository.getVersion();
+      PackageInfo pi = await PackageInfo.fromPlatform();
+      if (version != pi.version && version != "") {
+        emit(BackUpStateVersionRetrieved(version));
       }
     });
 

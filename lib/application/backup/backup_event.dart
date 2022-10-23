@@ -14,3 +14,5 @@ class BackUpLoadingMergeBackUp extends BackUpEvent {}
 class BackUpLoadingRemoveBackUp extends BackUpEvent {}
 
 class BackUpIdle extends BackUpEvent {}
+
+class BackUpGetVersion extends BackUpEvent {}

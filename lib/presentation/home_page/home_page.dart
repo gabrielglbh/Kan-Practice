@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/backup/backup_bloc.dart';
 import 'package:kanpractice/application/dictionary/dict_bloc.dart';
 import 'package:kanpractice/application/folder_list/folder_bloc.dart';
 import 'package:kanpractice/application/list/lists_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
 import 'package:kanpractice/application/settings/settings_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
-import 'package:kanpractice/infrastructure/backup/backup_repository_impl.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
@@ -30,7 +30,6 @@ import 'package:kanpractice/presentation/folder_list_page/folder_list_page.dart'
 import 'package:kanpractice/presentation/home_page/widgets/bottom_navigation.dart';
 import 'package:kanpractice/presentation/market_page/market_page.dart';
 import 'package:kanpractice/presentation/settings_page/settings_page.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 class HomePage extends StatefulWidget {
   final bool? showTestBottomSheet;
@@ -116,7 +115,6 @@ class _HomePageState extends State<HomePage>
           folder: hasFolder ? folder : null,
         );
       }
-      await _getVersionNotice();
     });
     super.initState();
   }
@@ -162,12 +160,6 @@ class _HomePageState extends State<HomePage>
       return _addFolderListLoadingEvent();
     }
     return _addMarketLoadingEvent();
-  }
-
-  Future<void> _getVersionNotice() async {
-    String v = await getIt<BackupRepositoryImpl>().getVersion();
-    PackageInfo pi = await PackageInfo.fromPlatform();
-    if (v != pi.version && v != "") setState(() => _newVersion = v);
   }
 
   @override
@@ -216,6 +208,9 @@ class _HomePageState extends State<HomePage>
                 order: _currentAppliedFolderOrder,
                 reset: true)),
         ),
+        BlocProvider(
+          create: (_) => getIt<BackUpBloc>()..add(BackUpGetVersion()),
+        ),
         BlocProvider(create: (_) => getIt<DictBloc>()..add(DictEventIdle())),
         BlocProvider<MarketBloc>(
             create: (_) => getIt<MarketBloc>()..add(MarketEventIdle())),
@@ -223,120 +218,135 @@ class _HomePageState extends State<HomePage>
           create: (_) => getIt<SettingsBloc>()..add(SettingsIdle()),
         )
       ],
-      child: BlocConsumer<ListBloc, ListState>(
-        listener: (context, state) async {
-          if (state is ListStateLoaded) {
-            if (getIt<PreferencesService>()
-                    .readData(SharedKeys.haveSeenKanListCoachMark) ==
-                false) {
-              _onTutorial = true;
-              await TutorialCoach([
-                lists,
-                folders,
-                kanList,
-                dictionary,
-                actions,
-                market,
-                settings,
-              ], CoachTutorialParts.kanList)
-                  .showTutorial(context, onEnd: () => _onTutorial = false);
-            }
+      child: BlocListener<BackUpBloc, BackUpState>(
+        listener: (context, state) {
+          if (state is BackUpStateVersionRetrieved) {
+            setState(() {
+              _newVersion = state.version;
+            });
           }
         },
-        builder: (c, state) => BlocBuilder<FolderBloc, FolderState>(
-          builder: (cFolder, stateFolder) =>
-              BlocBuilder<MarketBloc, MarketState>(
-            builder: (cMarket, stateMarket) => KPScaffold(
-              setGestureDetector: false,
-              onWillPop: () async {
-                if (_onTutorial) return false;
-                if (_searchHasFocus) {
-                  _resetLists();
-                  _searchBarFn.unfocus();
-                  return false;
-                } else {
-                  return true;
-                }
-              },
-              appBarTitle: _currentPage.appBarTitle,
-              appBarActions: _currentPage != HomeType.dictionary
-                  ? _newVersion.isNotEmpty
-                      ? [updateIcon]
-                      : null
-                  : dictionaryAppBarIcons,
-              bottomNavigationWidget: HomeBottomNavigation(
-                tutorialKeys: [kanList, dictionary, actions, market, settings],
-                currentPage: _currentPage,
-                onPageChanged: (type) {
-                  if (_currentPage != type && type != HomeType.actions) {
-                    setState(() => _currentPage = type);
+        child: BlocConsumer<ListBloc, ListState>(
+          listener: (context, state) async {
+            if (state is ListStateLoaded) {
+              if (getIt<PreferencesService>()
+                      .readData(SharedKeys.haveSeenKanListCoachMark) ==
+                  false) {
+                _onTutorial = true;
+                await TutorialCoach([
+                  lists,
+                  folders,
+                  kanList,
+                  dictionary,
+                  actions,
+                  market,
+                  settings,
+                ], CoachTutorialParts.kanList)
+                    .showTutorial(context, onEnd: () => _onTutorial = false);
+              }
+            }
+          },
+          builder: (c, state) => BlocBuilder<FolderBloc, FolderState>(
+            builder: (cFolder, stateFolder) =>
+                BlocBuilder<MarketBloc, MarketState>(
+              builder: (cMarket, stateMarket) => KPScaffold(
+                setGestureDetector: false,
+                onWillPop: () async {
+                  if (_onTutorial) return false;
+                  if (_searchHasFocus) {
+                    _resetLists();
                     _searchBarFn.unfocus();
-                    _searchTextController.text = "";
-                    _controller.jumpToPage(type.page);
-                    if (_currentPage == HomeType.market) {
-                      _addMarketLoadingEvent();
-                    }
-                  }
-                },
-                onShowActions: (name) {
-                  if (name == "__folder") {
-                    _addFolderListLoadingEvent();
+                    return false;
                   } else {
-                    c.read<ListBloc>().add(ListEventCreate(name,
-                        filter: _currentAppliedFilter,
-                        order: _currentAppliedOrder));
+                    return true;
                   }
                 },
-              ),
-              child: Column(
-                children: [
-                  if (HomeType.kanlist == _currentPage ||
-                      HomeType.market == _currentPage)
-                    KPSearchBar(
-                      controller: _searchTextController,
-                      hint: _currentPage == HomeType.market
-                          ? _currentPage.searchBarHint
-                          : _currentTab.searchBarHint,
-                      focus: _searchBarFn,
-                      onQuery: (String query) {
-                        _query = query;
-                        if (_currentPage == HomeType.kanlist) {
-                          if (_currentTab == TabType.kanlist) {
-                            return _addListSearchingEvent(query);
+                appBarTitle: _currentPage.appBarTitle,
+                appBarActions: _currentPage != HomeType.dictionary
+                    ? _newVersion.isNotEmpty
+                        ? [updateIcon]
+                        : null
+                    : dictionaryAppBarIcons,
+                bottomNavigationWidget: HomeBottomNavigation(
+                  tutorialKeys: [
+                    kanList,
+                    dictionary,
+                    actions,
+                    market,
+                    settings
+                  ],
+                  currentPage: _currentPage,
+                  onPageChanged: (type) {
+                    if (_currentPage != type && type != HomeType.actions) {
+                      setState(() => _currentPage = type);
+                      _searchBarFn.unfocus();
+                      _searchTextController.text = "";
+                      _controller.jumpToPage(type.page);
+                      if (_currentPage == HomeType.market) {
+                        _addMarketLoadingEvent();
+                      }
+                    }
+                  },
+                  onShowActions: (name) {
+                    if (name == "__folder") {
+                      _addFolderListLoadingEvent();
+                    } else {
+                      c.read<ListBloc>().add(ListEventCreate(name,
+                          filter: _currentAppliedFilter,
+                          order: _currentAppliedOrder));
+                    }
+                  },
+                ),
+                child: Column(
+                  children: [
+                    if (HomeType.kanlist == _currentPage ||
+                        HomeType.market == _currentPage)
+                      KPSearchBar(
+                        controller: _searchTextController,
+                        hint: _currentPage == HomeType.market
+                            ? _currentPage.searchBarHint
+                            : _currentTab.searchBarHint,
+                        focus: _searchBarFn,
+                        onQuery: (String query) {
+                          _query = query;
+                          if (_currentPage == HomeType.kanlist) {
+                            if (_currentTab == TabType.kanlist) {
+                              return _addListSearchingEvent(query);
+                            }
+                            return _addFolderListSearchingEvent(query);
                           }
-                          return _addFolderListSearchingEvent(query);
-                        }
-                        return _addMarketSearchingEvent(query);
-                      },
-                      onExitSearch: () {
-                        _query = "";
-                        _resetLists();
-                      },
+                          return _addMarketSearchingEvent(query);
+                        },
+                        onExitSearch: () {
+                          _query = "";
+                          _resetLists();
+                        },
+                      ),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          if (_currentPage == HomeType.kanlist)
+                            TabBar(
+                              key: folders,
+                              controller: _tabController,
+                              onTap: (tab) {
+                                if (tab == 0) {
+                                  _addListLoadingEvent();
+                                  return;
+                                }
+                                _addFolderListLoadingEvent();
+                              },
+                              tabs: const [
+                                Tab(icon: Icon(Icons.table_rows_rounded)),
+                                Tab(icon: Icon(Icons.folder_rounded)),
+                              ],
+                            ),
+                          Expanded(child: _body(c, cFolder, cMarket)),
+                        ],
+                      ),
                     ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        if (_currentPage == HomeType.kanlist)
-                          TabBar(
-                            key: folders,
-                            controller: _tabController,
-                            onTap: (tab) {
-                              if (tab == 0) {
-                                _addListLoadingEvent();
-                                return;
-                              }
-                              _addFolderListLoadingEvent();
-                            },
-                            tabs: const [
-                              Tab(icon: Icon(Icons.table_rows_rounded)),
-                              Tab(icon: Icon(Icons.folder_rounded)),
-                            ],
-                          ),
-                        Expanded(child: _body(c, cFolder, cMarket)),
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

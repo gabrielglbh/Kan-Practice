@@ -28,3 +28,12 @@ class BackUpStateSuccess extends BackUpState {
 }
 
 class BackUpStateLoading extends BackUpState {}
+
+class BackUpStateVersionRetrieved extends BackUpState {
+  final String version;
+
+  const BackUpStateVersionRetrieved(this.version);
+
+  @override
+  List<Object> get props => [version];
+}

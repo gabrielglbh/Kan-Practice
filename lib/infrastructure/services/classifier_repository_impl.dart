@@ -8,7 +8,7 @@ import 'package:kanpractice/domain/services/i_classifier_repository.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 
-@LazySingleton(as: IClassifierRepository)
+@injectable
 class ClassifierRepositoryImpl implements IClassifierRepository {
   late Interpreter _interpreter;
 

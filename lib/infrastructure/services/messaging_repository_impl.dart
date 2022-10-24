@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/services/i_messaging_repository.dart';
 import 'package:kanpractice/presentation/home_page/widgets/daily_test_bottom_sheet.dart';
 
-@LazySingleton(as: IMessagingRepository)
+@injectable
 class MessagingRepositoryImpl implements IMessagingRepository {
   final FlutterLocalNotificationsPlugin _localNotifications;
   final FirebaseMessaging _messaging;

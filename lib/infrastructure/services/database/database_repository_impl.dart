@@ -7,7 +7,7 @@ import 'package:kanpractice/domain/services/i_database_repository.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-@LazySingleton(as: IDatabaseRepository)
+@injectable
 class DatabaseRepositoryImpl implements IDatabaseRepository {
   final Database? _database;
 

@@ -2,7 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/services/i_preferences_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-@LazySingleton(as: IPreferencesRepository)
+@injectable
 class PreferencesRepositoryImpl implements IPreferencesRepository {
   final SharedPreferences? _preferences;
 

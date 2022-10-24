@@ -17,50 +17,47 @@ class BackUpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return KPScaffold(
         appBarTitle: "backup_title".tr(),
-        child: BlocProvider<BackUpBloc>(
-          create: (_) => getIt<BackUpBloc>()..add(BackUpIdle()),
-          child: BlocConsumer<BackUpBloc, BackUpState>(
-            listener: (context, state) {
-              if (state is BackUpStateFailure) {
-                Utils.getSnackBar(context, state.message);
-              }
-              if (state is BackUpStateSuccess) {
-                Utils.getSnackBar(context, state.message);
-                Navigator.of(context).pop(); // Go to manage account, pop
-                Navigator.of(context).pop(); // Go to settings, pop
-              }
-            },
-            builder: (context, state) {
-              if (state is BackUpStateLoading) {
-                return const KPProgressIndicator();
-              } else {
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ListTile(
-                          leading: const Icon(Icons.backup_rounded),
-                          title: Text("backup_creation_tile".tr()),
-                          onTap: () => _createDialogForCreatingBackUp(context)),
-                      const Divider(),
-                      ListTile(
-                        leading: const Icon(Icons.cloud_download),
-                        title: Text("backup_merge_tile".tr()),
-                        onTap: () => _createDialogForMergingBackUp(context),
-                      ),
-                      const Divider(),
-                      ListTile(
-                        leading: const Icon(Icons.delete),
-                        title: Text("backup_removal_tile".tr(),
-                            style: TextStyle(
-                                color: KPColors.getSecondaryColor(context))),
-                        onTap: () => _createDialogForRemovingBackUp(context),
-                      ),
-                    ],
-                  ),
-                );
-              }
-            },
-          ),
+        child: BlocConsumer<BackUpBloc, BackUpState>(
+          listener: (context, state) {
+            if (state is BackUpStateFailure) {
+              Utils.getSnackBar(context, state.message);
+            }
+            if (state is BackUpStateSuccess) {
+              Utils.getSnackBar(context, state.message);
+              Navigator.of(context).pop(); // Go to manage account, pop
+              Navigator.of(context).pop(); // Go to settings, pop
+            }
+          },
+          builder: (context, state) {
+            if (state is BackUpStateLoading) {
+              return const KPProgressIndicator();
+            } else {
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ListTile(
+                        leading: const Icon(Icons.backup_rounded),
+                        title: Text("backup_creation_tile".tr()),
+                        onTap: () => _createDialogForCreatingBackUp(context)),
+                    const Divider(),
+                    ListTile(
+                      leading: const Icon(Icons.cloud_download),
+                      title: Text("backup_merge_tile".tr()),
+                      onTap: () => _createDialogForMergingBackUp(context),
+                    ),
+                    const Divider(),
+                    ListTile(
+                      leading: const Icon(Icons.delete),
+                      title: Text("backup_removal_tile".tr(),
+                          style: TextStyle(
+                              color: KPColors.getSecondaryColor(context))),
+                      onTap: () => _createDialogForRemovingBackUp(context),
+                    ),
+                  ],
+                ),
+              );
+            }
+          },
         ));
   }
 

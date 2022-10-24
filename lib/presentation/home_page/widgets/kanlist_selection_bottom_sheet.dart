@@ -44,94 +44,85 @@ class _KanListSelectionBottomSheetState
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        return BlocProvider(
-          create: (context) => getIt<LoadTestListSelectionBloc>(),
-          child: BlocConsumer<LoadTestListSelectionBloc,
-              LoadTestListSelectionState>(
-            listener: (context, state) {
-              if (state is LoadTestListSelectionStateLoadedList) {
-                if (state.words.isEmpty) return;
+        return BlocConsumer<LoadTestListSelectionBloc,
+            LoadTestListSelectionState>(
+          listener: (context, state) {
+            if (state is LoadTestListSelectionStateLoadedList) {
+              if (state.words.isEmpty) return;
 
-                setState(() => _selectionMode = true);
+              setState(() => _selectionMode = true);
 
-                /// Keep the list names all the way to the Test Result page in a formatted way
-                for (var name in _selectedLists) {
-                  _selectedFormattedLists += "$name, ";
-                }
-                _selectedFormattedLists = _selectedFormattedLists.substring(
-                    0, _selectedFormattedLists.length - 2);
+              /// Keep the list names all the way to the Test Result page in a formatted way
+              for (var name in _selectedLists) {
+                _selectedFormattedLists += "$name, ";
               }
-            },
-            builder: (context, state) {
-              return Wrap(children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const KPDragContainer(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: KPMargins.margin8,
-                          horizontal: KPMargins.margin32),
-                      child: Text("study_bottom_sheet_title".tr(),
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headline6),
+              _selectedFormattedLists = _selectedFormattedLists.substring(
+                  0, _selectedFormattedLists.length - 2);
+            }
+          },
+          builder: (context, state) {
+            getIt<ListBloc>().add(const ListForTestEventLoading());
+            return Wrap(children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const KPDragContainer(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: KPMargins.margin8,
+                        horizontal: KPMargins.margin32),
+                    child: Text("study_bottom_sheet_title".tr(),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline6),
+                  ),
+                  Visibility(
+                    visible: _onListEmpty,
+                    child: Text("study_bottom_sheet_load_failed".tr(),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6
+                            ?.copyWith(fontWeight: FontWeight.w400)),
+                  ),
+                  Visibility(
+                    visible: _selectionMode &&
+                        (state is LoadTestListSelectionStateLoadedList),
+                    child: KPTestStudyMode(
+                      list:
+                          (state as LoadTestListSelectionStateLoadedList).words,
+                      type: Tests.lists,
+                      testName: _selectedFormattedLists,
                     ),
-                    Visibility(
-                      visible: _onListEmpty,
-                      child: Text("study_bottom_sheet_load_failed".tr(),
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6
-                              ?.copyWith(fontWeight: FontWeight.w400)),
+                  ),
+                  Visibility(
+                    visible: !_selectionMode,
+                    child: BlocBuilder<ListBloc, ListState>(
+                      builder: (context, state) {
+                        if (state is ListStateFailure) {
+                          return KPEmptyList(
+                              showTryButton: true,
+                              onRefresh: () => getIt<ListBloc>()
+                                ..add(const ListForTestEventLoading()),
+                              message: "study_bottom_sheet_load_failed".tr());
+                        } else if (state is ListStateLoading) {
+                          return const KPProgressIndicator();
+                        } else if (state is ListStateLoaded) {
+                          return Container(
+                              constraints: BoxConstraints(
+                                  maxHeight:
+                                      MediaQuery.of(context).size.height / 2.5),
+                              margin: const EdgeInsets.all(KPMargins.margin8),
+                              child: _listSelection(state));
+                        } else {
+                          return Container();
+                        }
+                      },
                     ),
-                    Visibility(
-                      visible: _selectionMode &&
-                          (state is LoadTestListSelectionStateLoadedList),
-                      child: KPTestStudyMode(
-                        list: (state as LoadTestListSelectionStateLoadedList)
-                            .words,
-                        type: Tests.lists,
-                        testName: _selectedFormattedLists,
-                      ),
-                    ),
-                    Visibility(
-                      visible: !_selectionMode,
-                      child: BlocProvider(
-                        create: (_) => getIt<ListBloc>()
-                          ..add(const ListForTestEventLoading()),
-                        child: BlocBuilder<ListBloc, ListState>(
-                          builder: (context, state) {
-                            if (state is ListStateFailure) {
-                              return KPEmptyList(
-                                  showTryButton: true,
-                                  onRefresh: () => getIt<ListBloc>()
-                                    ..add(const ListForTestEventLoading()),
-                                  message:
-                                      "study_bottom_sheet_load_failed".tr());
-                            } else if (state is ListStateLoading) {
-                              return const KPProgressIndicator();
-                            } else if (state is ListStateLoaded) {
-                              return Container(
-                                  constraints: BoxConstraints(
-                                      maxHeight:
-                                          MediaQuery.of(context).size.height /
-                                              2.5),
-                                  margin:
-                                      const EdgeInsets.all(KPMargins.margin8),
-                                  child: _listSelection(state));
-                            } else {
-                              return Container();
-                            }
-                          },
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ]);
-            },
-          ),
+                  )
+                ],
+              ),
+            ]);
+          },
         );
       },
     );

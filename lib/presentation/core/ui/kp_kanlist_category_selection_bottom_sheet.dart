@@ -44,94 +44,89 @@ class _KPKanListCategorySelectionBottomSheetState
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        return BlocProvider(
-          create: (context) => getIt<LoadTestCategorySelectionBloc>(),
-          child: BlocConsumer<LoadTestCategorySelectionBloc,
-              LoadTestCategorySelectionState>(
-            listener: ((context, state) {
-              if (state is LoadTestCategorySelectionStateLoadedList) {
-                setState(() {
-                  if (state.words.isNotEmpty) {
-                    _selectionMode = true;
-                  } else {
-                    _onListEmpty = true;
-                  }
-                });
-              }
-            }),
-            builder: (context, state) {
-              return Wrap(children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const KPDragContainer(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: KPMargins.margin8,
-                          horizontal: KPMargins.margin32),
-                      child: Text(
-                          "${"categories_test_bottom_sheet_title".tr()}$folder",
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headline6),
+        return BlocConsumer<LoadTestCategorySelectionBloc,
+            LoadTestCategorySelectionState>(
+          listener: ((context, state) {
+            if (state is LoadTestCategorySelectionStateLoadedList) {
+              setState(() {
+                if (state.words.isNotEmpty) {
+                  _selectionMode = true;
+                } else {
+                  _onListEmpty = true;
+                }
+              });
+            }
+          }),
+          builder: (context, state) {
+            return Wrap(children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const KPDragContainer(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: KPMargins.margin8,
+                        horizontal: KPMargins.margin32),
+                    child: Text(
+                        "${"categories_test_bottom_sheet_title".tr()}$folder",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline6),
+                  ),
+                  Visibility(
+                    visible: _onListEmpty,
+                    child: Text("categories_test_bottom_sheet_error".tr(),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6
+                            ?.copyWith(fontWeight: FontWeight.w400)),
+                  ),
+                  Visibility(
+                    visible: _selectionMode &&
+                        state is LoadTestCategorySelectionStateLoadedList,
+                    child: KPTestStudyMode(
+                      list: (state as LoadTestCategorySelectionStateLoadedList)
+                          .words,
+                      type: Tests.categories,
+                      testName: widget.folder == null
+                          ? "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category}"
+                          : "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category} - ${widget.folder}",
                     ),
-                    Visibility(
-                      visible: _onListEmpty,
-                      child: Text("categories_test_bottom_sheet_error".tr(),
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6
-                              ?.copyWith(fontWeight: FontWeight.w400)),
-                    ),
-                    Visibility(
-                      visible: _selectionMode &&
-                          state is LoadTestCategorySelectionStateLoadedList,
-                      child: KPTestStudyMode(
-                        list:
-                            (state as LoadTestCategorySelectionStateLoadedList)
-                                .words,
-                        type: Tests.categories,
-                        testName: widget.folder == null
-                            ? "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category}"
-                            : "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category} - ${widget.folder}",
+                  ),
+                  Visibility(
+                    visible: !_selectionMode,
+                    child: Container(
+                      margin: const EdgeInsets.all(KPMargins.margin8),
+                      child: Column(
+                        children: [
+                          KPKanjiCategoryList(
+                            selected: (index) =>
+                                index == _selectedCategory.index,
+                            onSelected: (index) => setState(() {
+                              _selectedCategory = WordCategory.values[index];
+                              _onListEmpty = false;
+                            }),
+                          ),
+                          KPButton(
+                            width: true,
+                            title1: "study_bottom_sheet_button_label_ext".tr(),
+                            title2: "study_bottom_sheet_button_label".tr(),
+                            onTap: () async {
+                              getIt<LoadTestCategorySelectionBloc>().add(
+                                LoadTestCategorySelectionEventLoadList(
+                                    category: _selectedCategory,
+                                    folder: widget.folder),
+                              );
+                            },
+                          )
+                        ],
                       ),
                     ),
-                    Visibility(
-                      visible: !_selectionMode,
-                      child: Container(
-                        margin: const EdgeInsets.all(KPMargins.margin8),
-                        child: Column(
-                          children: [
-                            KPKanjiCategoryList(
-                              selected: (index) =>
-                                  index == _selectedCategory.index,
-                              onSelected: (index) => setState(() {
-                                _selectedCategory = WordCategory.values[index];
-                                _onListEmpty = false;
-                              }),
-                            ),
-                            KPButton(
-                              width: true,
-                              title1:
-                                  "study_bottom_sheet_button_label_ext".tr(),
-                              title2: "study_bottom_sheet_button_label".tr(),
-                              onTap: () async {
-                                getIt<LoadTestCategorySelectionBloc>().add(
-                                  LoadTestCategorySelectionEventLoadList(
-                                      category: _selectedCategory,
-                                      folder: widget.folder),
-                                );
-                              },
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ]);
-            },
-          ),
+                  )
+                ],
+              ),
+            ]);
+          },
         );
       },
     );

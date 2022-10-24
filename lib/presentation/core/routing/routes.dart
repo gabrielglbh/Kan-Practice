@@ -1,10 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/application/dictionary/dict_bloc.dart';
-import 'package:kanpractice/application/list_details/list_details_bloc.dart';
-import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
-import 'package:kanpractice/application/word_history/word_history_bloc.dart';
-import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/account_login_page/account_login_page.dart';
@@ -44,49 +38,25 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
           builder: (_) => HomePage(showTestBottomSheet: showTestBottomSheet));
     case KanPracticePages.kanjiListDetailsPage:
       WordList list = settings.arguments as WordList;
-      return CupertinoPageRoute(
-          builder: (_) => BlocProvider<ListDetailBloc>(
-              create: (_) => getIt<ListDetailBloc>()
-                ..add(ListDetailEventLoading(list.name)),
-              child: ListDetailsPage(list: list)));
+      return CupertinoPageRoute(builder: (_) => ListDetailsPage(list: list));
     case KanPracticePages.addKanjiPage:
       AddWordArgs args = settings.arguments as AddWordArgs;
       return CupertinoPageRoute(builder: (_) => AddWordPage(args: args));
     case KanPracticePages.writingStudyPage:
       ModeArguments args = settings.arguments as ModeArguments;
-      return CupertinoPageRoute(
-          builder: (_) => BlocProvider(
-                create: (context) => getIt<StudyModeBloc>(),
-                child: WritingStudy(args: args),
-              ));
+      return CupertinoPageRoute(builder: (_) => WritingStudy(args: args));
     case KanPracticePages.readingStudyPage:
       ModeArguments args = settings.arguments as ModeArguments;
-      return CupertinoPageRoute(
-          builder: (_) => BlocProvider(
-                create: (context) => getIt<StudyModeBloc>(),
-                child: ReadingStudy(args: args),
-              ));
+      return CupertinoPageRoute(builder: (_) => ReadingStudy(args: args));
     case KanPracticePages.recognitionStudyPage:
       ModeArguments args = settings.arguments as ModeArguments;
-      return CupertinoPageRoute(
-          builder: (_) => BlocProvider(
-                create: (context) => getIt<StudyModeBloc>(),
-                child: RecognitionStudy(args: args),
-              ));
+      return CupertinoPageRoute(builder: (_) => RecognitionStudy(args: args));
     case KanPracticePages.listeningStudyPage:
       ModeArguments args = settings.arguments as ModeArguments;
-      return CupertinoPageRoute(
-          builder: (_) => BlocProvider(
-                create: (context) => getIt<StudyModeBloc>(),
-                child: ListeningStudy(args: args),
-              ));
+      return CupertinoPageRoute(builder: (_) => ListeningStudy(args: args));
     case KanPracticePages.speakingStudyPage:
       ModeArguments args = settings.arguments as ModeArguments;
-      return CupertinoPageRoute(
-          builder: (_) => BlocProvider(
-                create: (context) => getIt<StudyModeBloc>(),
-                child: SpeakingStudy(args: args),
-              ));
+      return CupertinoPageRoute(builder: (_) => SpeakingStudy(args: args));
     case KanPracticePages.testResultPage:
       TestResultArguments args = settings.arguments as TestResultArguments;
       return CupertinoPageRoute(builder: (_) => TestResultPage(args: args));
@@ -103,11 +73,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
           child: DictionaryDetailsPage(args: args));
     case KanPracticePages.dictionaryPage:
       DictionaryArguments args = settings.arguments as DictionaryArguments;
-      return CupertinoPageRoute(
-          builder: (_) => BlocProvider<DictBloc>(
-                create: (context) => getIt<DictBloc>(),
-                child: DictionaryPage(args: args),
-              ));
+      return CupertinoPageRoute(builder: (_) => DictionaryPage(args: args));
     case KanPracticePages.statisticsPage:
       return CupertinoPageRoute(builder: (_) => const StatisticsPage());
     case KanPracticePages.marketAddListPage:
@@ -120,11 +86,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return CupertinoPageRoute(
           builder: (_) => FolderDetailsPage(folder: folder));
     case KanPracticePages.historyWordPage:
-      return CupertinoPageRoute(
-          builder: (_) => BlocProvider<WordHistoryBloc>(
-              create: (_) => getIt<WordHistoryBloc>()
-                ..add(const WordHistoryEventLoading()),
-              child: const WordHistoryPage()));
+      return CupertinoPageRoute(builder: (_) => const WordHistoryPage());
     case KanPracticePages.historyTestExpandedPage:
       return CupertinoPageRoute(builder: (_) {
         TestHistoryArgs data = settings.arguments as TestHistoryArgs;

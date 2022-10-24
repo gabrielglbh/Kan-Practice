@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/folder_details/folder_details_bloc.dart';
 import 'package:kanpractice/application/list/lists_bloc.dart';
-import 'package:kanpractice/application/services/database/database_consts.dart';
+import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
@@ -77,13 +77,13 @@ class _KPWordListsState extends State<KPWordLists>
 
   _addLoadingEvent({bool reset = false}) {
     if (widget.folder == null) {
-      return context.read<ListBloc>()
+      return getIt<ListBloc>()
         ..add(ListEventLoading(
             filter: _currentAppliedFilter,
             order: _currentAppliedOrder,
             reset: reset));
     }
-    return context.read<FolderDetailsBloc>()
+    return getIt<FolderDetailsBloc>()
       ..add(FolderDetailsEventLoading(
           folder: widget.folder!,
           filter: _currentAppliedFilter,
@@ -233,20 +233,20 @@ class _KPWordListsState extends State<KPWordLists>
               withinFolder: widget.withinFolder,
               onRemoval: () {
                 if (widget.folder == null) {
-                  context.read<ListBloc>().add(ListEventDelete(
-                        lists[k],
-                        filter: _currentAppliedFilter,
-                        order: _currentAppliedOrder,
-                      ));
+                  getIt<ListBloc>().add(ListEventDelete(
+                    lists[k],
+                    filter: _currentAppliedFilter,
+                    order: _currentAppliedOrder,
+                  ));
                 } else {
-                  context.read<FolderDetailsBloc>().add(
-                        FolderDetailsEventDelete(
-                          widget.folder!,
-                          lists[k],
-                          filter: _currentAppliedFilter,
-                          order: _currentAppliedOrder,
-                        ),
-                      );
+                  getIt<FolderDetailsBloc>().add(
+                    FolderDetailsEventDelete(
+                      widget.folder!,
+                      lists[k],
+                      filter: _currentAppliedFilter,
+                      order: _currentAppliedOrder,
+                    ),
+                  );
                 }
                 _resetScroll();
               },

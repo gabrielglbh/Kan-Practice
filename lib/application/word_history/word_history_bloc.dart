@@ -11,8 +11,7 @@ part 'word_history_state.dart';
 class WordHistoryBloc extends Bloc<WordHistoryEvent, WordHistoryState> {
   final IWordHistoryRepository _wordHistoryRepository;
 
-  WordHistoryBloc(this._wordHistoryRepository)
-      : super(WordHistoryStateLoading()) {
+  WordHistoryBloc(this._wordHistoryRepository) : super(WordHistoryStateIdle()) {
     /// Maintain the history for pagination purposes
     List<WordHistory> history = [];
 

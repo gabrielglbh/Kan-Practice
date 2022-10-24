@@ -7,8 +7,6 @@ abstract class LoadTestDailyEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadTestDailyEventIdle extends LoadTestDailyEvent {}
-
 class LoadTestDailyEventLoadList extends LoadTestDailyEvent {
   final String? folder;
 

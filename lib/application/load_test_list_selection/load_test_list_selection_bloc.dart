@@ -17,8 +17,6 @@ class LoadTestListSelectionBloc
 
   LoadTestListSelectionBloc(this._wordRepository)
       : super(LoadTestListSelectionStateIdle()) {
-    on<LoadTestListSelectionEventIdle>((_, __) {});
-
     on<LoadTestListSelectionEventLoadList>((event, emit) async {
       List<Word> list =
           await _wordRepository.getWordBasedOnSelectedLists(event.lists);

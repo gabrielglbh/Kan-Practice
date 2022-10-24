@@ -7,7 +7,7 @@ part of 'word.dart';
 // **************************************************************************
 
 Word _$WordFromJson(Map<String, dynamic> json) => Word(
-      word: json['word'] as String,
+      word: json['kanji'] as String,
       listName: json['name'] as String,
       meaning: json['meaning'] as String,
       pronunciation: json['pronunciation'] as String,
@@ -32,7 +32,7 @@ Word _$WordFromJson(Map<String, dynamic> json) => Word(
     );
 
 Map<String, dynamic> _$WordToJson(Word instance) => <String, dynamic>{
-      'word': instance.word,
+      'kanji': instance.word,
       'name': instance.listName,
       'meaning': instance.meaning,
       'pronunciation': instance.pronunciation,

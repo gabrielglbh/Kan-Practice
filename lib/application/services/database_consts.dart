@@ -35,8 +35,8 @@ class TestTableFields {
   static const String testIdField = "id";
   static const String takenDateField = "takenDate";
   static const String testScoreField = "score";
-  static const String kanjiInTestField = "totalKanji";
-  static const String kanjiListsField = "kanjiLists";
+  static const String wordsInTestField = "totalKanji";
+  static const String wordsListsField = "kanjiLists";
   static const String studyModeField = "studyMode";
   static const String testModeField = "testMode";
 }

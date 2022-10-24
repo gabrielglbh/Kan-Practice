@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/application/services/database/database_consts.dart';
+import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/domain/word_history/i_word_history_repository.dart';
 import 'package:kanpractice/domain/word_history/word_history.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';

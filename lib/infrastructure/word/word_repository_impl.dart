@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/application/services/database/database_consts.dart';
+import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/presentation/core/types/word_categories.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
@@ -143,14 +143,14 @@ class WordRepositoryImpl implements IWordRepository {
   Future<List<Word>> getAllWordsFromList(String listName,
       {int? offset, int? limit}) async {
     try {
-      List<Map<String, dynamic>>? res = [];
-      res = await _database.query(WordTableFields.wordTable,
+      List<Map<String, dynamic>> res = await _database.query(
+          WordTableFields.wordTable,
           where: "${WordTableFields.listNameField}=?",
           whereArgs: [listName],
           orderBy: "${WordTableFields.dateAddedField} ASC",
           limit: limit,
           offset: (offset != null && limit != null) ? (offset * limit) : null);
-      return List.generate(res.length, (i) => Word.fromJson(res![i]));
+      return List.generate(res.length, (i) => Word.fromJson(res[i]));
     } catch (err) {
       print(err.toString());
       return [];

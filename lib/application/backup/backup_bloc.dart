@@ -59,9 +59,5 @@ class BackUpBloc extends Bloc<BackUpEvent, BackUpState> {
         emit(BackUpStateVersionRetrieved(version, notes));
       }
     });
-
-    on<BackUpIdle>((event, emit) {
-      emit(BackUpStateIdle());
-    });
   }
 }

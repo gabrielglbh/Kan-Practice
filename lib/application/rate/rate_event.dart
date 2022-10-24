@@ -7,8 +7,6 @@ abstract class RateEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class RateEventIdle extends RateEvent {}
-
 class RateEventUpdate extends RateEvent {
   final String id;
   final double rate;

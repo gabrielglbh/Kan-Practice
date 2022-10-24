@@ -19,7 +19,7 @@ class DictionaryDetailsBloc
   DictionaryDetailsBloc(
     this._dictionaryDetailsRepository,
     this._wordHistoryRepository,
-  ) : super(DictionaryDetailsStateLoading()) {
+  ) : super(DictionaryDetailsStateIdle()) {
     on<DictionaryDetailsLoadingEvent>((event, emit) async {
       emit(DictionaryDetailsStateLoading());
       try {

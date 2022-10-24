@@ -85,80 +85,77 @@ class _TestStatsState extends State<TestStats>
   }
 
   Widget _expandedTestCount(BuildContext context, KanPracticeStats s) {
-    return BlocProvider(
-      create: (context) => getIt<SpecificDataBloc>(),
-      child: BlocListener<SpecificDataBloc, SpecificDataState>(
-        listener: (context, state) {
-          if (state is SpecificDataStateGatheredTest) {
-            SpecBottomSheet.show(context, state.test.name, state.data);
+    return BlocListener<SpecificDataBloc, SpecificDataState>(
+      listener: (context, state) {
+        if (state is SpecificDataStateGatheredTest) {
+          SpecBottomSheet.show(context, state.test.name, state.data);
+        }
+      },
+      child: KPBarChart(
+        enableTooltip: false,
+        isHorizontalChart: true,
+        heightRatio: 2.5,
+        animationDuration: 0,
+        graphName: "tests".tr(),
+        onBarTapped: (model) async {
+          if (model.dataPoints?.isNotEmpty == true) {
+            final test = Tests.values[model.pointIndex ?? -1];
+            getIt<SpecificDataBloc>()
+                .add(SpecificDataEventGatherTest(test: test));
           }
         },
-        child: KPBarChart(
-          enableTooltip: false,
-          isHorizontalChart: true,
-          heightRatio: 2.5,
-          animationDuration: 0,
-          graphName: "tests".tr(),
-          onBarTapped: (model) async {
-            if (model.dataPoints?.isNotEmpty == true) {
-              final test = Tests.values[model.pointIndex ?? -1];
-              getIt<SpecificDataBloc>()
-                  .add(SpecificDataEventGatherTest(test: test));
-            }
-          },
-          dataSource: List.generate(Tests.values.length, (index) {
-            switch (Tests.values[index]) {
-              case Tests.lists:
-                return DataFrame(
-                  x: Tests.lists.nameAbbr,
-                  y: s.test.selectionTests.toDouble(),
-                  color: KPColors.secondaryColor,
-                );
-              case Tests.blitz:
-                return DataFrame(
-                  x: Tests.blitz.nameAbbr,
-                  y: s.test.blitzTests.toDouble(),
-                  color: KPColors.secondaryColor,
-                );
-              case Tests.time:
-                return DataFrame(
-                  x: Tests.time.nameAbbr,
-                  y: s.test.remembranceTests.toDouble(),
-                  color: KPColors.secondaryColor,
-                );
-              case Tests.numbers:
-                return DataFrame(
-                  x: Tests.numbers.nameAbbr,
-                  y: s.test.numberTests.toDouble(),
-                  color: KPColors.secondaryColor,
-                );
-              case Tests.less:
-                return DataFrame(
-                  x: Tests.less.nameAbbr,
-                  y: s.test.lessPctTests.toDouble(),
-                  color: KPColors.secondaryColor,
-                );
-              case Tests.categories:
-                return DataFrame(
-                  x: Tests.categories.nameAbbr,
-                  y: s.test.categoryTests.toDouble(),
-                  color: KPColors.secondaryColor,
-                );
-              case Tests.folder:
-                return DataFrame(
-                  x: Tests.folder.nameAbbr,
-                  y: s.test.folderTests.toDouble(),
-                  color: KPColors.secondaryColor,
-                );
-              case Tests.daily:
-                return DataFrame(
-                  x: Tests.daily.nameAbbr,
-                  y: s.test.dailyTests.toDouble(),
-                  color: KPColors.secondaryColor,
-                );
-            }
-          }),
-        ),
+        dataSource: List.generate(Tests.values.length, (index) {
+          switch (Tests.values[index]) {
+            case Tests.lists:
+              return DataFrame(
+                x: Tests.lists.nameAbbr,
+                y: s.test.selectionTests.toDouble(),
+                color: KPColors.secondaryColor,
+              );
+            case Tests.blitz:
+              return DataFrame(
+                x: Tests.blitz.nameAbbr,
+                y: s.test.blitzTests.toDouble(),
+                color: KPColors.secondaryColor,
+              );
+            case Tests.time:
+              return DataFrame(
+                x: Tests.time.nameAbbr,
+                y: s.test.remembranceTests.toDouble(),
+                color: KPColors.secondaryColor,
+              );
+            case Tests.numbers:
+              return DataFrame(
+                x: Tests.numbers.nameAbbr,
+                y: s.test.numberTests.toDouble(),
+                color: KPColors.secondaryColor,
+              );
+            case Tests.less:
+              return DataFrame(
+                x: Tests.less.nameAbbr,
+                y: s.test.lessPctTests.toDouble(),
+                color: KPColors.secondaryColor,
+              );
+            case Tests.categories:
+              return DataFrame(
+                x: Tests.categories.nameAbbr,
+                y: s.test.categoryTests.toDouble(),
+                color: KPColors.secondaryColor,
+              );
+            case Tests.folder:
+              return DataFrame(
+                x: Tests.folder.nameAbbr,
+                y: s.test.folderTests.toDouble(),
+                color: KPColors.secondaryColor,
+              );
+            case Tests.daily:
+              return DataFrame(
+                x: Tests.daily.nameAbbr,
+                y: s.test.dailyTests.toDouble(),
+                color: KPColors.secondaryColor,
+              );
+          }
+        }),
       ),
     );
   }

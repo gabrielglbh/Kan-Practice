@@ -36,6 +36,7 @@ class _FolderListBottomSheetState extends State<FolderListBottomSheet> {
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
+        getIt<FolderBloc>().add(FolderForTestEventLoading());
         return Wrap(children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -52,43 +53,38 @@ class _FolderListBottomSheetState extends State<FolderListBottomSheet> {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6),
               ),
-              BlocProvider<FolderBloc>(
-                create: (_) =>
-                    getIt<FolderBloc>()..add(FolderForTestEventLoading()),
-                child: BlocConsumer<FolderBloc, FolderState>(
-                  listener: (context, state) {
-                    if (state is FolderStateAddedList) {
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  builder: (context, state) {
-                    if (state is FolderStateFailure) {
-                      return KPEmptyList(
-                          showTryButton: true,
-                          onRefresh: () => context
-                              .read<FolderBloc>()
-                              .add(FolderForTestEventLoading()),
-                          message: "add_to_folder_from_list_error".tr());
-                    } else if (state is FolderStateLoading) {
-                      return const KPProgressIndicator();
-                    } else if (state is FolderStateLoaded) {
-                      return Container(
-                          constraints: BoxConstraints(
-                              maxHeight:
-                                  MediaQuery.of(context).size.height / 3),
-                          margin: const EdgeInsets.all(KPMargins.margin8),
-                          child: state.lists.isEmpty
-                              ? Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: KPMargins.margin24),
-                                  child: Text("folder_list_empty".tr()),
-                                )
-                              : _listSelection(state));
-                    } else {
-                      return const SizedBox();
-                    }
-                  },
-                ),
+              BlocConsumer<FolderBloc, FolderState>(
+                listener: (context, state) {
+                  if (state is FolderStateAddedList) {
+                    Navigator.of(context).pop();
+                  }
+                },
+                builder: (context, state) {
+                  if (state is FolderStateFailure) {
+                    return KPEmptyList(
+                        showTryButton: true,
+                        onRefresh: () => context
+                            .read<FolderBloc>()
+                            .add(FolderForTestEventLoading()),
+                        message: "add_to_folder_from_list_error".tr());
+                  } else if (state is FolderStateLoading) {
+                    return const KPProgressIndicator();
+                  } else if (state is FolderStateLoaded) {
+                    return Container(
+                        constraints: BoxConstraints(
+                            maxHeight: MediaQuery.of(context).size.height / 3),
+                        margin: const EdgeInsets.all(KPMargins.margin8),
+                        child: state.lists.isEmpty
+                            ? Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: KPMargins.margin24),
+                                child: Text("folder_list_empty".tr()),
+                              )
+                            : _listSelection(state));
+                  } else {
+                    return const SizedBox();
+                  }
+                },
               )
             ],
           ),

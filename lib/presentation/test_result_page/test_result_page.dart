@@ -48,81 +48,76 @@ class _TestResultPageState extends State<TestResultPage> {
       automaticallyImplyLeading: false,
       toolbarHeight: KPMargins.margin32,
       appBarTitle: null,
-      child: BlocProvider(
-        create: (context) => getIt<TestResultBloc>(),
-        child: BlocBuilder<TestResultBloc, TestResultState>(
-          builder: (context, state) {
-            if (state is TestResultStateSaving) {
-              return const Center(
-                child: KPProgressIndicator(),
-              );
-            }
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "test_result_title".tr(),
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-                WinRateChart(
-                  winRate: widget.args.score,
-                  backgroundColor:
-                      StudyModes.values[widget.args.studyMode].color,
-                  size: MediaQuery.of(context).size.width / 2.5,
-                  rateSize: KPChartSize.large,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: KPMargins.margin8),
-                  child: Text("test_result_disclaimer".tr(),
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyText1),
-                ),
-                Visibility(
-                    visible: widget.args.studyList != null,
-                    child: Expanded(child: _kanjiOnTest())),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Icon(Icons.track_changes_rounded,
-                              color: KPColors.getSecondaryColor(context)),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: KPMargins.margin16),
-                              child: Text(
-                                  "test_result_do_test_button_label".tr(),
-                                  maxLines: 2,
-                                  style: Theme.of(context).textTheme.bodyText1),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Switch(
-                      value: _performAnotherTest,
-                      activeColor: KPColors.secondaryDarkerColor,
-                      activeTrackColor: KPColors.secondaryColor,
-                      onChanged: (value) =>
-                          setState(() => _performAnotherTest = value),
-                    ),
-                  ],
-                ),
-                KPActionButton(
-                    label: "test_result_save_button_label".tr(),
-                    vertical: KPMargins.margin16,
-                    onTap: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          KanPracticePages.homePage, (route) => false,
-                          arguments: _performAnotherTest);
-                    }),
-              ],
+      child: BlocBuilder<TestResultBloc, TestResultState>(
+        builder: (context, state) {
+          if (state is TestResultStateSaving) {
+            return const Center(
+              child: KPProgressIndicator(),
             );
-          },
-        ),
+          }
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "test_result_title".tr(),
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline4,
+              ),
+              WinRateChart(
+                winRate: widget.args.score,
+                backgroundColor: StudyModes.values[widget.args.studyMode].color,
+                size: MediaQuery.of(context).size.width / 2.5,
+                rateSize: KPChartSize.large,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: KPMargins.margin8),
+                child: Text("test_result_disclaimer".tr(),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyText1),
+              ),
+              Visibility(
+                  visible: widget.args.studyList != null,
+                  child: Expanded(child: _kanjiOnTest())),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Icon(Icons.track_changes_rounded,
+                            color: KPColors.getSecondaryColor(context)),
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: KPMargins.margin16),
+                            child: Text("test_result_do_test_button_label".tr(),
+                                maxLines: 2,
+                                style: Theme.of(context).textTheme.bodyText1),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Switch(
+                    value: _performAnotherTest,
+                    activeColor: KPColors.secondaryDarkerColor,
+                    activeTrackColor: KPColors.secondaryColor,
+                    onChanged: (value) =>
+                        setState(() => _performAnotherTest = value),
+                  ),
+                ],
+              ),
+              KPActionButton(
+                  label: "test_result_save_button_label".tr(),
+                  vertical: KPMargins.margin16,
+                  onTap: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        KanPracticePages.homePage, (route) => false,
+                        arguments: _performAnotherTest);
+                  }),
+            ],
+          );
+        },
       ),
     );
   }

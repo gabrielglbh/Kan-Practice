@@ -69,6 +69,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
     _listName = widget.list.name;
     _aggrStats = getIt<PreferencesService>()
         .readData(SharedKeys.kanListListVisualization);
+    getIt<ListDetailBloc>().add(ListDetailEventLoading(widget.list.name));
     super.initState();
   }
 
@@ -151,20 +152,18 @@ class _ListDetailsPageState extends State<ListDetailsPage>
   }
 
   _addLoadingEvent({bool reset = false}) {
-    return context
-        .read<ListDetailBloc>()
+    return getIt<ListDetailBloc>()
         .add(ListDetailEventLoading(_listName, reset: reset));
   }
 
   _addSearchingEvent(String query, {bool reset = false}) {
-    return context
-        .read<ListDetailBloc>()
+    return getIt<ListDetailBloc>()
         .add(ListDetailEventSearching(query, _listName, reset: reset));
   }
 
-  _updateName(BuildContext bloc, String name) {
+  _updateName(String name) {
     if (name.isNotEmpty) {
-      bloc.read<ListDetailBloc>().add(ListDetailUpdateName(name, _listName));
+      getIt<ListDetailBloc>().add(ListDetailUpdateName(name, _listName));
     }
   }
 
@@ -185,12 +184,12 @@ class _ListDetailsPageState extends State<ListDetailsPage>
                 autofocus: true,
                 onEditingComplete: () {
                   Navigator.of(context).pop();
-                  _updateName(bloc, nameController.text);
+                  _updateName(nameController.text);
                 },
               ),
               positiveButtonText:
                   "list_details_updateKanListName_positive".tr(),
-              onPositive: () => _updateName(bloc, nameController.text));
+              onPositive: () => _updateName(nameController.text));
         });
   }
 
@@ -210,8 +209,6 @@ class _ListDetailsPageState extends State<ListDetailsPage>
 
   @override
   Widget build(BuildContext context) {
-    /// BlocProvider is defined at route level in order for the whole context of the
-    /// class to be accessible to the provider
     return KPScaffold(
       onWillPop: () async {
         if (_onTutorial) return false;
@@ -310,9 +307,10 @@ class _ListDetailsPageState extends State<ListDetailsPage>
               builder: (context, state) {
                 if (state is ListDetailStateLoaded) {
                   _listName = state.name;
-                  return _body(context, state);
+                  return _body(state);
                 } else if (state is ListDetailStateLoading ||
                     state is ListDetailStateSearching ||
+                    state is ListDetailStateIdle ||
                     state is ListDetailStateLoadedPractice) {
                   return const KPProgressIndicator();
                 } else if (state is ListDetailStateFailure) {
@@ -331,7 +329,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
     );
   }
 
-  Column _body(BuildContext bloc, ListDetailStateLoaded state) {
+  Column _body(ListDetailStateLoaded state) {
     return Column(
       children: [
         if (!_aggrStats)
@@ -378,8 +376,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
                   (value) => _addLoadingEvent(reset: true),
                 );
               }
-              bloc
-                  .read<ListDetailBloc>()
+              getIt<ListDetailBloc>()
                   .add(ListDetailEventLoadUpPractice(_listName, _selectedMode));
             }),
       ],

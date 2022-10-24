@@ -19,3 +19,5 @@ class DictionaryDetailsStateLoaded extends DictionaryDetailsState {
 class DictionaryDetailsStateLoading extends DictionaryDetailsState {}
 
 class DictionaryDetailsStateFailure extends DictionaryDetailsState {}
+
+class DictionaryDetailsStateIdle extends DictionaryDetailsState {}

@@ -35,6 +35,7 @@ class _AddToMarketBottomSheetState extends State<AddToMarketBottomSheet> {
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
+        getIt<ListBloc>().add(const ListForTestEventLoading());
         return Wrap(children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -48,43 +49,36 @@ class _AddToMarketBottomSheetState extends State<AddToMarketBottomSheet> {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6),
               ),
-              BlocProvider<ListBloc>(
-                create: (_) =>
-                    getIt<ListBloc>()..add(const ListForTestEventLoading()),
-                child: BlocBuilder<ListBloc, ListState>(
-                  builder: (context, state) {
-                    if (state is ListStateFailure) {
-                      return KPEmptyList(
-                          showTryButton: true,
-                          onRefresh: () => getIt<ListBloc>()
-                            ..add(const ListForTestEventLoading()),
-                          message: "kanji_lists_load_failed".tr());
-                    } else if (state is ListStateLoading) {
-                      return const KPProgressIndicator();
-                    } else if (state is ListStateLoaded) {
-                      return Container(
-                          constraints: BoxConstraints(
-                              maxHeight:
-                                  MediaQuery.of(context).size.height / 3),
-                          margin: const EdgeInsets.all(KPMargins.margin8),
-                          child: ListView.separated(
-                            separatorBuilder: (context, index) =>
-                                const Divider(),
-                            itemCount: state.lists.length,
-                            itemBuilder: (context, index) {
-                              String listName = state.lists[index].name;
-                              return ListTile(
-                                onTap: () =>
-                                    Navigator.of(context).pop(listName),
-                                title: Text(listName),
-                              );
-                            },
-                          ));
-                    } else {
-                      return Container();
-                    }
-                  },
-                ),
+              BlocBuilder<ListBloc, ListState>(
+                builder: (context, state) {
+                  if (state is ListStateFailure) {
+                    return KPEmptyList(
+                        showTryButton: true,
+                        onRefresh: () => getIt<ListBloc>()
+                          ..add(const ListForTestEventLoading()),
+                        message: "kanji_lists_load_failed".tr());
+                  } else if (state is ListStateLoading) {
+                    return const KPProgressIndicator();
+                  } else if (state is ListStateLoaded) {
+                    return Container(
+                        constraints: BoxConstraints(
+                            maxHeight: MediaQuery.of(context).size.height / 3),
+                        margin: const EdgeInsets.all(KPMargins.margin8),
+                        child: ListView.separated(
+                          separatorBuilder: (context, index) => const Divider(),
+                          itemCount: state.lists.length,
+                          itemBuilder: (context, index) {
+                            String listName = state.lists[index].name;
+                            return ListTile(
+                              onTap: () => Navigator.of(context).pop(listName),
+                              title: Text(listName),
+                            );
+                          },
+                        ));
+                  } else {
+                    return Container();
+                  }
+                },
               )
             ],
           ),

@@ -7,6 +7,8 @@ class TestHistoryState extends Equatable {
   List<Object?> get props => [];
 }
 
+class TestHistoryStateIdle extends TestHistoryState {}
+
 class TestHistoryStateLoading extends TestHistoryState {}
 
 class TestHistoryStateLoaded extends TestHistoryState {

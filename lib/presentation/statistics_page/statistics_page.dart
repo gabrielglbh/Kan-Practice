@@ -40,7 +40,7 @@ class _StatisticsPageState extends State<StatisticsPage>
               positiveButtonText:
                   "test_history_showRemoveTestsDialog_positive".tr(),
               onPositive: () =>
-                  bloc.read<TestHistoryBloc>().add(TestHistoryEventRemoving()),
+                  getIt<TestHistoryBloc>().add(TestHistoryEventRemoving()),
             ));
   }
 
@@ -55,6 +55,7 @@ class _StatisticsPageState extends State<StatisticsPage>
     _controller = TabController(
         initialIndex: _selectedTab, length: _tabs.length, vsync: this);
     _controller.addListener(_changedTab);
+    getIt<StatisticsBloc>().add(StatisticsEventLoading());
     super.initState();
   }
 
@@ -67,39 +68,29 @@ class _StatisticsPageState extends State<StatisticsPage>
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-            create: (_) =>
-                getIt<StatisticsBloc>()..add(StatisticsEventLoading())),
-        BlocProvider(
-            create: (_) =>
-                getIt<TestHistoryBloc>()..add(TestHistoryEventIdle())),
+    return KPScaffold(
+      appBarTitle: "settings_general_statistics".tr(),
+      appBarActions: [
+        if (_controller.index == _tabs.length - 1)
+          BlocBuilder<TestHistoryBloc, TestHistoryState>(
+            builder: (context, state) {
+              return IconButton(
+                icon: const Icon(Icons.clear_all_rounded),
+                onPressed: () => _showRemoveTestsDialog(context),
+              );
+            },
+          ),
       ],
-      child: KPScaffold(
-        appBarTitle: "settings_general_statistics".tr(),
-        appBarActions: [
-          if (_controller.index == _tabs.length - 1)
-            BlocBuilder<TestHistoryBloc, TestHistoryState>(
-              builder: (context, state) {
-                return IconButton(
-                  icon: const Icon(Icons.clear_all_rounded),
-                  onPressed: () => _showRemoveTestsDialog(context),
-                );
-              },
-            ),
-        ],
-        child: BlocBuilder<StatisticsBloc, StatsState>(
-          builder: (context, state) {
-            if (state is StatisticsLoaded) {
-              return _body(context, state);
-            } else if (state is StatisticsLoading) {
-              return const KPProgressIndicator();
-            } else {
-              return Container();
-            }
-          },
-        ),
+      child: BlocBuilder<StatisticsBloc, StatsState>(
+        builder: (context, state) {
+          if (state is StatisticsLoaded) {
+            return _body(context, state);
+          } else if (state is StatisticsLoading) {
+            return const KPProgressIndicator();
+          } else {
+            return Container();
+          }
+        },
       ),
     );
   }

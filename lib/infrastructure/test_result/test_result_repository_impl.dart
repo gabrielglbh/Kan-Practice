@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/application/services/database/database_consts.dart';
+import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/presentation/core/types/test_modes_filters.dart';
 import 'package:kanpractice/presentation/core/types/study_modes_filters.dart';
 import 'package:kanpractice/domain/test_result/i_test_repository.dart';

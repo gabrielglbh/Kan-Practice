@@ -5,7 +5,7 @@ import 'package:sqflite/sqlite_api.dart';
 abstract class ITestDataRepository {
   /// Merges Test Data Stats from the backup
   Batch? mergeTestData(
-    Batch? bathc,
+    Batch? batch,
     TestData data,
     ConflictAlgorithm conflictAlgorithm,
   );

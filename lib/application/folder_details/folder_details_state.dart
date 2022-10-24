@@ -7,6 +7,8 @@ class FolderDetailsState extends Equatable {
   List<Object?> get props => [];
 }
 
+class FolderDetailsStateIdle extends FolderDetailsState {}
+
 class FolderDetailsStateLoading extends FolderDetailsState {}
 
 class FolderDetailsStateSearching extends FolderDetailsState {}

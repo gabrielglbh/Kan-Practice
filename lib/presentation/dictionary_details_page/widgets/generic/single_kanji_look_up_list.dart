@@ -26,7 +26,7 @@ class SingleKanjiLookUpList extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
                     arguments: DictionaryDetailsArguments(
-                        kanji: kanjiList?[index],
+                        word: kanjiList?[index],
                         fromDictionary: fromDictionary));
               },
               label: Text(kanjiList?[index] ?? ""),

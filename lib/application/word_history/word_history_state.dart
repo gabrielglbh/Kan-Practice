@@ -7,6 +7,8 @@ class WordHistoryState extends Equatable {
   List<Object?> get props => [];
 }
 
+class WordHistoryStateIdle extends WordHistoryState {}
+
 class WordHistoryStateLoading extends WordHistoryState {}
 
 class WordHistoryStateLoaded extends WordHistoryState {

@@ -3,9 +3,36 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:kanpractice/application/add_folder/add_folder_bloc.dart';
+import 'package:kanpractice/application/add_market_list/add_to_market_bloc.dart';
+import 'package:kanpractice/application/add_word/add_word_bloc.dart';
+import 'package:kanpractice/application/auth/auth_bloc.dart';
+import 'package:kanpractice/application/backup/backup_bloc.dart';
+import 'package:kanpractice/application/dictionary/dict_bloc.dart';
+import 'package:kanpractice/application/dictionary_details/dictionary_details_bloc.dart';
+import 'package:kanpractice/application/folder_details/folder_details_bloc.dart';
+import 'package:kanpractice/application/folder_list/folder_bloc.dart';
 import 'package:kanpractice/application/initial/initial_bloc.dart';
+import 'package:kanpractice/application/list/lists_bloc.dart';
+import 'package:kanpractice/application/list_details/list_details_bloc.dart';
+import 'package:kanpractice/application/load_folder_practice/load_folder_practice_bloc.dart';
+import 'package:kanpractice/application/load_test/load_test_bloc.dart';
+import 'package:kanpractice/application/load_test_category_selection/load_test_category_selection_bloc.dart';
+import 'package:kanpractice/application/load_test_daily/load_test_daily_bloc.dart';
+import 'package:kanpractice/application/load_test_folder_selection/load_test_folder_selection_bloc.dart';
+import 'package:kanpractice/application/load_test_list_selection/load_test_list_selection_bloc.dart';
+import 'package:kanpractice/application/market/market_bloc.dart';
+import 'package:kanpractice/application/rate/rate_bloc.dart';
 import 'package:kanpractice/application/services/messaging_service.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
+import 'package:kanpractice/application/settings/settings_bloc.dart';
+import 'package:kanpractice/application/specific_data/specific_data_bloc.dart';
+import 'package:kanpractice/application/statistics/stats_bloc.dart';
+import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
+import 'package:kanpractice/application/test_history/test_history_bloc.dart';
+import 'package:kanpractice/application/test_result/test_result_bloc.dart';
+import 'package:kanpractice/application/word_details/word_details_bloc.dart';
+import 'package:kanpractice/application/word_history/word_history_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -71,7 +98,7 @@ class SetUpApp extends StatelessWidget {
         Locale("es"),
         Locale("de"),
       ],
-      path: "lib/core/localization",
+      path: "lib/presentation/core/localization",
       fallbackLocale: const Locale("en"),
       child: const KanPractice(),
     );
@@ -102,8 +129,37 @@ class _KanPracticeState extends State<KanPractice> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<InitialBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => getIt<InitialBloc>()),
+        BlocProvider(create: (_) => getIt<ListBloc>()),
+        BlocProvider(create: (_) => getIt<FolderBloc>()),
+        BlocProvider(create: (_) => getIt<BackUpBloc>()),
+        BlocProvider(create: (_) => getIt<DictBloc>()),
+        BlocProvider(create: (_) => getIt<MarketBloc>()),
+        BlocProvider(create: (_) => getIt<SettingsBloc>()),
+        BlocProvider(create: (_) => getIt<ListDetailBloc>()),
+        BlocProvider(create: (_) => getIt<StudyModeBloc>()),
+        BlocProvider(create: (_) => getIt<WordHistoryBloc>()),
+        BlocProvider(create: (_) => getIt<AuthBloc>()),
+        BlocProvider(create: (_) => getIt<AddFolderBloc>()),
+        BlocProvider(create: (_) => getIt<AddToMarketBloc>()),
+        BlocProvider(create: (_) => getIt<AddWordBloc>()),
+        BlocProvider(create: (_) => getIt<WordDetailsBloc>()),
+        BlocProvider(create: (_) => getIt<LoadTestCategorySelectionBloc>()),
+        BlocProvider(create: (_) => getIt<LoadTestBloc>()),
+        BlocProvider(create: (_) => getIt<DictionaryDetailsBloc>()),
+        BlocProvider(create: (_) => getIt<FolderDetailsBloc>()),
+        BlocProvider(create: (_) => getIt<LoadFolderPracticeBloc>()),
+        BlocProvider(create: (_) => getIt<LoadTestDailyBloc>()),
+        BlocProvider(create: (_) => getIt<LoadTestFolderSelectionBloc>()),
+        BlocProvider(create: (_) => getIt<LoadTestListSelectionBloc>()),
+        BlocProvider(create: (_) => getIt<RateBloc>()),
+        BlocProvider(create: (_) => getIt<StatisticsBloc>()),
+        BlocProvider(create: (_) => getIt<TestHistoryBloc>()),
+        BlocProvider(create: (_) => getIt<SpecificDataBloc>()),
+        BlocProvider(create: (_) => getIt<TestResultBloc>()),
+      ],
       child: BlocBuilder<InitialBloc, InitialState>(
         builder: (context, state) {
           return MaterialApp(

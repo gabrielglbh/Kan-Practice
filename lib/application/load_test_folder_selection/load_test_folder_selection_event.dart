@@ -7,8 +7,6 @@ abstract class LoadTestFolderSelectionEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadTestFolderSelectionEventIdle extends LoadTestFolderSelectionEvent {}
-
 class LoadTestFolderSelectionEventLoadList
     extends LoadTestFolderSelectionEvent {
   final List<String> folders;

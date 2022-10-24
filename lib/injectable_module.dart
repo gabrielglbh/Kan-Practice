@@ -6,7 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/application/services/database/database_consts.dart';
+import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/infrastructure/services/db_migration/migrations.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -91,8 +91,8 @@ abstract class InjectableModule {
             "${TestTableFields.testIdField} INTEGER PRIMARY KEY AUTOINCREMENT, "
             "${TestTableFields.takenDateField} INTEGER NOT NULL DEFAULT 0, "
             "${TestTableFields.testScoreField} INTEGER NOT NULL DEFAULT 0, "
-            "${TestTableFields.kanjiInTestField} INTEGER NOT NULL DEFAULT 0, "
-            "${TestTableFields.kanjiListsField} TEXT NOT NULL, "
+            "${TestTableFields.wordsInTestField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestTableFields.wordsListsField} TEXT NOT NULL, "
             "${TestTableFields.studyModeField} INTEGER NOT NULL DEFAULT 0, "
             "${TestTableFields.testModeField} INTEGER NOT NULL DEFAULT -1)");
 

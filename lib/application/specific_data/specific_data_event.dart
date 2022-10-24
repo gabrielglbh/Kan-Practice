@@ -7,8 +7,6 @@ abstract class SpecificDataEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class SpecificDataEventIdle extends SpecificDataEvent {}
-
 class SpecificDataEventGatherTest extends SpecificDataEvent {
   final Tests test;
 

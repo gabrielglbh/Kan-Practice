@@ -36,7 +36,7 @@ class _SettingsPageState extends State<SettingsPage> {
     _kanjiInTest =
         getIt<PreferencesService>().readData(SharedKeys.numberOfKanjiInTest) ??
             KPSizes.numberOfKanjiInTest;
-    context.read<SettingsBloc>().add(SettingsLoadingBackUpDate(context));
+    getIt<SettingsBloc>().add(SettingsLoadingBackUpDate(context));
     super.initState();
   }
 

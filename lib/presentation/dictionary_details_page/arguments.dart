@@ -1,7 +1,6 @@
 class DictionaryDetailsArguments {
-  final String? kanji;
+  final String? word;
   final bool fromDictionary;
 
-  DictionaryDetailsArguments(
-      {required this.kanji, this.fromDictionary = false});
+  DictionaryDetailsArguments({required this.word, this.fromDictionary = false});
 }

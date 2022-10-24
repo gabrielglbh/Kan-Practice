@@ -7,6 +7,8 @@ abstract class MarketState extends Equatable {
   List<Object> get props => [];
 }
 
+class MarketStateIdle extends MarketState {}
+
 class MarketStateLoading extends MarketState {}
 
 class MarketStateSearching extends MarketState {}

@@ -7,8 +7,6 @@ abstract class AddWordEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class AddWordEventIdle extends AddWordEvent {}
-
 class AddWordEventCreate extends AddWordEvent {
   final Word word;
   final bool exitMode;

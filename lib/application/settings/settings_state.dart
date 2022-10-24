@@ -17,3 +17,5 @@ class SettingsStateBackUpDateLoaded extends SettingsState {
 }
 
 class SettingsStateBackUpDateLoading extends SettingsState {}
+
+class SettingsStateIdle extends SettingsState {}

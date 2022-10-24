@@ -1,4 +1,4 @@
-import 'package:kanpractice/application/services/database/database_consts.dart';
+import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/infrastructure/services/db_migration/migration_utils.dart';
 import 'package:kanpractice/domain/test_result/test_result.dart';
 import 'package:kanpractice/domain/word/word.dart';

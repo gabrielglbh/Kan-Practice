@@ -37,6 +37,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
     _fnUser = FocusNode();
     _tcList = TextEditingController();
     _fnList = FocusNode();
+    getIt<AddToMarketBloc>().add(AddToMarketEventIdle());
     super.initState();
   }
 
@@ -53,150 +54,142 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (_) => getIt<AddToMarketBloc>()..add(AddToMarketEventIdle()),
-        child: KPScaffold(
-          resizeToAvoidBottomInset: true,
-          appBarTitle: "add_to_market_title".tr(),
-          appBarActions: [
-            BlocBuilder<AddToMarketBloc, AddToMarketState>(
-              builder: (context, state) {
-                if (state is AddToMarketStateLoading ||
-                    state is AddToMarketStateSuccess) {
-                  return const SizedBox();
-                } else {
-                  return IconButton(
-                      onPressed: () {
-                        getIt<AddToMarketBloc>().add(AddToMarketEventOnUpload(
-                          _selectedType,
-                          _listSelection,
-                          _tc.text,
-                          _tcUser.text,
-                          _tcList.text,
-                        ));
-                      },
-                      icon: const Icon(Icons.check));
-                }
-              },
-            )
-          ],
-          child: SingleChildScrollView(
-            child: BlocConsumer<AddToMarketBloc, AddToMarketState>(
-              listener: (context, state) {
-                if (state is AddToMarketStateFailure) {
-                  Utils.getSnackBar(context, state.message);
-                }
-                if (state is AddToMarketStateGetUser) {
-                  _tcUser.text = state.name;
-                }
-              },
-              builder: (context, state) {
-                if (state is AddToMarketStateInitial ||
-                    state is AddToMarketStateFailure ||
-                    state is AddToMarketStateGetUser) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(bottom: KPMargins.margin16),
-                        child: Row(
-                          children: [
-                            const Padding(
-                              padding:
-                                  EdgeInsets.only(right: KPMargins.margin8),
-                              child: Icon(Icons.info_outline_rounded),
-                            ),
-                            Expanded(
-                                child: Text(
-                                    "add_to_market_needs_registration".tr(),
-                                    style:
-                                        Theme.of(context).textTheme.bodyText1))
-                          ],
+    return KPScaffold(
+      resizeToAvoidBottomInset: true,
+      appBarTitle: "add_to_market_title".tr(),
+      appBarActions: [
+        BlocBuilder<AddToMarketBloc, AddToMarketState>(
+          builder: (context, state) {
+            if (state is AddToMarketStateLoading ||
+                state is AddToMarketStateSuccess) {
+              return const SizedBox();
+            } else {
+              return IconButton(
+                  onPressed: () {
+                    getIt<AddToMarketBloc>().add(AddToMarketEventOnUpload(
+                      _selectedType,
+                      _listSelection,
+                      _tc.text,
+                      _tcUser.text,
+                      _tcList.text,
+                    ));
+                  },
+                  icon: const Icon(Icons.check));
+            }
+          },
+        )
+      ],
+      child: SingleChildScrollView(
+        child: BlocConsumer<AddToMarketBloc, AddToMarketState>(
+          listener: (context, state) {
+            if (state is AddToMarketStateFailure) {
+              Utils.getSnackBar(context, state.message);
+            }
+            if (state is AddToMarketStateGetUser) {
+              _tcUser.text = state.name;
+            }
+          },
+          builder: (context, state) {
+            if (state is AddToMarketStateInitial ||
+                state is AddToMarketStateFailure ||
+                state is AddToMarketStateGetUser) {
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: KPMargins.margin16),
+                    child: Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(right: KPMargins.margin8),
+                          child: Icon(Icons.info_outline_rounded),
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          _radio(MarketListType.list),
-                          _radio(MarketListType.folder)
-                        ],
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(bottom: KPMargins.margin16),
-                        child: Card(
-                          child: ListTile(
-                            title: Text(_listSelection),
-                            onTap: () async {
-                              if (_selectedType == MarketListType.list) {
-                                String? list = await AddToMarketBottomSheet
-                                    .callAddToMarketBottomSheet(context);
-                                if (list != null && list.isNotEmpty) {
-                                  setState(() => _listSelection = list);
-                                  _tcList.text = _listSelection;
-                                }
-                              } else {
-                                String? folder =
-                                    await FolderListBottomSheet.show(
-                                        context, null);
-                                if (folder != null && folder.isNotEmpty) {
-                                  setState(() => _listSelection = folder);
-                                  _tcList.text = _listSelection;
-                                }
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                      KPTextForm(
-                          header: "add_to_market_list_name_label".tr(),
-                          hint: "add_to_market_list_name_hint".tr(),
-                          controller: _tcList,
-                          focusNode: _fnList,
-                          maxLines: 1,
-                          maxLength: 32,
-                          onEditingComplete: () => _fnUser.requestFocus()),
-                      KPTextForm(
-                          header: "add_to_market_username_label".tr(),
-                          hint: "add_to_market_username_hint".tr(),
-                          controller: _tcUser,
-                          focusNode: _fnUser,
-                          maxLines: 1,
-                          maxLength: 32,
-                          onEditingComplete: () => _fn.requestFocus()),
-                      KPTextForm(
-                          header: "add_to_market_description_label".tr(),
-                          hint: "add_to_market_description_hint".tr(),
-                          controller: _tc,
-                          focusNode: _fn,
-                          action: TextInputAction.done,
-                          maxLines: 5,
-                          maxLength: 140,
-                          onEditingComplete: () => _fn.unfocus())
-                    ],
-                  );
-                } else if (state is AddToMarketStateLoading) {
-                  return const KPProgressIndicator();
-                } else {
-                  return Center(
-                      child: Column(
+                        Expanded(
+                            child: Text("add_to_market_needs_registration".tr(),
+                                style: Theme.of(context).textTheme.bodyText1))
+                      ],
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Icon(Icons.check_circle_rounded,
-                          color: KPColors.getSecondaryColor(context),
-                          size: KPSizes.maxHeightValidationCircle),
-                      Padding(
-                        padding: const EdgeInsets.all(KPMargins.margin16),
-                        child: Text("add_to_market_successfully_created".tr(),
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.bodyText1),
-                      )
+                      _radio(MarketListType.list),
+                      _radio(MarketListType.folder)
                     ],
-                  ));
-                }
-              },
-            ),
-          ),
-        ));
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: KPMargins.margin16),
+                    child: Card(
+                      child: ListTile(
+                        title: Text(_listSelection),
+                        onTap: () async {
+                          if (_selectedType == MarketListType.list) {
+                            String? list = await AddToMarketBottomSheet
+                                .callAddToMarketBottomSheet(context);
+                            if (list != null && list.isNotEmpty) {
+                              setState(() => _listSelection = list);
+                              _tcList.text = _listSelection;
+                            }
+                          } else {
+                            String? folder =
+                                await FolderListBottomSheet.show(context, null);
+                            if (folder != null && folder.isNotEmpty) {
+                              setState(() => _listSelection = folder);
+                              _tcList.text = _listSelection;
+                            }
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                  KPTextForm(
+                      header: "add_to_market_list_name_label".tr(),
+                      hint: "add_to_market_list_name_hint".tr(),
+                      controller: _tcList,
+                      focusNode: _fnList,
+                      maxLines: 1,
+                      maxLength: 32,
+                      onEditingComplete: () => _fnUser.requestFocus()),
+                  KPTextForm(
+                      header: "add_to_market_username_label".tr(),
+                      hint: "add_to_market_username_hint".tr(),
+                      controller: _tcUser,
+                      focusNode: _fnUser,
+                      maxLines: 1,
+                      maxLength: 32,
+                      onEditingComplete: () => _fn.requestFocus()),
+                  KPTextForm(
+                      header: "add_to_market_description_label".tr(),
+                      hint: "add_to_market_description_hint".tr(),
+                      controller: _tc,
+                      focusNode: _fn,
+                      action: TextInputAction.done,
+                      maxLines: 5,
+                      maxLength: 140,
+                      onEditingComplete: () => _fn.unfocus())
+                ],
+              );
+            } else if (state is AddToMarketStateLoading) {
+              return const KPProgressIndicator();
+            } else {
+              return Center(
+                  child: Column(
+                children: [
+                  Icon(Icons.check_circle_rounded,
+                      color: KPColors.getSecondaryColor(context),
+                      size: KPSizes.maxHeightValidationCircle),
+                  Padding(
+                    padding: const EdgeInsets.all(KPMargins.margin16),
+                    child: Text("add_to_market_successfully_created".tr(),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyText1),
+                  )
+                ],
+              ));
+            }
+          },
+        ),
+      ),
+    );
   }
 
   Widget _radio(MarketListType type) {

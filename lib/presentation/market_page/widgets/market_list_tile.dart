@@ -95,6 +95,7 @@ class MarketListTile extends StatelessWidget {
   }
 
   Widget _subtitle(BuildContext context) {
+    getIt<AuthBloc>().add(AuthIdle());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -123,23 +124,20 @@ class MarketListTile extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyText2),
         Row(
           children: [
-            BlocProvider(
-              create: (context) => getIt<AuthBloc>(),
-              child: BlocBuilder<AuthBloc, AuthState>(
-                builder: (context, state) {
-                  if (state is AuthStateSuccessful) {
-                    return Expanded(
-                      child: Transform.translate(
-                          offset: const Offset(-KPMargins.margin4, 0),
-                          child: MarketListRating(
-                            listId: list.name,
-                            initialRating: list.ratingMap[state.user.uid],
-                          )),
-                    );
-                  }
-                  return const SizedBox();
-                },
-              ),
+            BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                if (state is AuthStateSuccessful) {
+                  return Expanded(
+                    child: Transform.translate(
+                        offset: const Offset(-KPMargins.margin4, 0),
+                        child: MarketListRating(
+                          listId: list.name,
+                          initialRating: list.ratingMap[state.user.uid],
+                        )),
+                  );
+                }
+                return const SizedBox();
+              },
             ),
             IconButton(
                 onPressed: () => onDownload(list.name, list.isFolder),

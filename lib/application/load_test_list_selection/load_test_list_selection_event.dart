@@ -7,8 +7,6 @@ abstract class LoadTestListSelectionEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadTestListSelectionEventIdle extends LoadTestListSelectionEvent {}
-
 class LoadTestListSelectionEventLoadList extends LoadTestListSelectionEvent {
   final List<String> lists;
 

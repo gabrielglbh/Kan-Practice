@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/add_word/add_word_bloc.dart';
-import 'package:kanpractice/application/services/database/database_consts.dart';
+import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/word_categories.dart';
@@ -108,67 +108,64 @@ class _AddWordPageState extends State<AddWordPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AddWordBloc>(
-      create: (_) => getIt<AddWordBloc>()..add(AddWordEventIdle()),
-      child: KPScaffold(
-        resizeToAvoidBottomInset: true,
-        appBarTitle: widget.args.word != null
-            ? "add_kanji_update_title".tr()
-            : "add_kanji_new_title".tr(),
-        appBarActions: [
-          IconButton(
-            icon: const Icon(Icons.create_rounded),
-            onPressed: () async {
-              _clearFocus();
+    return KPScaffold(
+      resizeToAvoidBottomInset: true,
+      appBarTitle: widget.args.word != null
+          ? "add_kanji_update_title".tr()
+          : "add_kanji_new_title".tr(),
+      appBarActions: [
+        IconButton(
+          icon: const Icon(Icons.create_rounded),
+          onPressed: () async {
+            _clearFocus();
 
-              /// If we are updating the kanji, pass over to the dictionary
-              /// the word
-              /// If not, just go to the next page
-              String? kanji = _kanjiController?.text;
-              final drawnWord = await Navigator.of(context).pushNamed(
-                  KanPracticePages.dictionaryPage,
-                  arguments:
-                      DictionaryArguments(searchInJisho: false, word: kanji));
+            /// If we are updating the kanji, pass over to the dictionary
+            /// the word
+            /// If not, just go to the next page
+            String? kanji = _kanjiController?.text;
+            final drawnWord = await Navigator.of(context).pushNamed(
+                KanPracticePages.dictionaryPage,
+                arguments:
+                    DictionaryArguments(searchInJisho: false, word: kanji));
 
-              /// We wait for the pop and update the _kanjiController with the
-              /// new drawn word. If it is empty, do not override the current
-              /// input word (if any)
-              final String? word = drawnWord as String?;
-              if (word != null && word.isNotEmpty) {
-                _kanjiController?.text = word;
-              }
-            },
-          ),
-          BlocBuilder<AddWordBloc, AddWordState>(
-            builder: (context, state) => Visibility(
-              visible: widget.args.word == null,
-              child: IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: () {
-                  _validateKanji(() => _createKanji(exit: false));
-                },
-              ),
+            /// We wait for the pop and update the _kanjiController with the
+            /// new drawn word. If it is empty, do not override the current
+            /// input word (if any)
+            final String? word = drawnWord as String?;
+            if (word != null && word.isNotEmpty) {
+              _kanjiController?.text = word;
+            }
+          },
+        ),
+        BlocBuilder<AddWordBloc, AddWordState>(
+          builder: (context, state) => Visibility(
+            visible: widget.args.word == null,
+            child: IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                _validateKanji(() => _createKanji(exit: false));
+              },
             ),
           ),
-          BlocBuilder<AddWordBloc, AddWordState>(
-              builder: (context, state) => IconButton(
-                    icon: const Icon(Icons.check_rounded),
-                    onPressed: () {
-                      _validateKanji(() {
-                        if (widget.args.word != null) {
-                          _updateKanji();
-                        } else {
-                          _createKanji();
-                        }
-                      });
-                    },
-                  ))
-        ],
-        child: SingleChildScrollView(
-          child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
-              child: _builder()),
         ),
+        BlocBuilder<AddWordBloc, AddWordState>(
+            builder: (context, state) => IconButton(
+                  icon: const Icon(Icons.check_rounded),
+                  onPressed: () {
+                    _validateKanji(() {
+                      if (widget.args.word != null) {
+                        _updateKanji();
+                      } else {
+                        _createKanji();
+                      }
+                    });
+                  },
+                ))
+      ],
+      child: SingleChildScrollView(
+        child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
+            child: _builder()),
       ),
     );
   }

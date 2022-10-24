@@ -17,8 +17,6 @@ class LoadTestFolderSelectionBloc
 
   LoadTestFolderSelectionBloc(this._folderRepository)
       : super(LoadTestFolderSelectionStateIdle()) {
-    on<LoadTestFolderSelectionEventIdle>((_, __) {});
-
     on<LoadTestFolderSelectionEventLoadList>((event, emit) async {
       List<Word> list =
           await _folderRepository.getAllWordsOnListsOnFolder(event.folders);

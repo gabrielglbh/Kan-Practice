@@ -10,9 +10,7 @@ part 'rate_state.dart';
 class RateBloc extends Bloc<RateEvent, RateState> {
   final IMarketRepository _marketRepository;
 
-  RateBloc(this._marketRepository) : super(RateInitial()) {
-    on<RateEventIdle>((event, emit) {});
-
+  RateBloc(this._marketRepository) : super(RateStateIdle()) {
     on<RateEventUpdate>((event, emit) async {
       emit(RateStateLoading());
       final res = await _marketRepository.rateList(event.id, event.rate);

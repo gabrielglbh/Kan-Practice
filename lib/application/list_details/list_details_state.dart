@@ -7,6 +7,8 @@ class ListDetailState extends Equatable {
   List<Object?> get props => [];
 }
 
+class ListDetailStateIdle extends ListDetailState {}
+
 class ListDetailStateLoading extends ListDetailState {}
 
 class ListDetailStateSearching extends ListDetailState {}

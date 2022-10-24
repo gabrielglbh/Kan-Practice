@@ -20,8 +20,6 @@ class LoadTestCategorySelectionBloc extends Bloc<LoadTestCategorySelectionEvent,
     this._wordRepository,
     this._folderRepository,
   ) : super(LoadTestCategorySelectionStateIdle()) {
-    on<LoadTestCategorySelectionEventIdle>((_, __) {});
-
     on<LoadTestCategorySelectionEventLoadList>((event, emit) async {
       List<Word> list = [];
       if (event.folder == null) {

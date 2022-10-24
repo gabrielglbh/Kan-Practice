@@ -7,8 +7,6 @@ abstract class TestResultEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class TestResultEventIdle extends TestResultEvent {}
-
 class TestResultEventSaveTest extends TestResultEvent {
   final Test test;
 

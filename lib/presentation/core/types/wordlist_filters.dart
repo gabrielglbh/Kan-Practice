@@ -1,4 +1,4 @@
-import 'package:kanpractice/application/services/database/database_consts.dart';
+import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 enum WordListFilters {

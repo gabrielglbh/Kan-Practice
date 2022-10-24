@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/folder_list/folder_bloc.dart';
-import 'package:kanpractice/application/services/database/database_consts.dart';
+import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
@@ -70,7 +70,7 @@ class _FolderListPageState extends State<FolderListPage>
   }
 
   _addLoadingEvent({bool reset = false}) {
-    return context.read<FolderBloc>()
+    return getIt<FolderBloc>()
       ..add(FolderEventLoading(
           filter: _currentAppliedFilter,
           order: _currentAppliedOrder,
@@ -216,11 +216,11 @@ class _FolderListPageState extends State<FolderListPage>
             positiveButtonText:
                 "kan_list_tile_createDialogForDeletingFolder_positive".tr(),
             onPositive: () {
-              bloc.read<FolderBloc>().add(FolderEventDelete(
-                    folder,
-                    filter: _currentAppliedFilter,
-                    order: _currentAppliedOrder,
-                  ));
+              getIt<FolderBloc>().add(FolderEventDelete(
+                folder,
+                filter: _currentAppliedFilter,
+                order: _currentAppliedOrder,
+              ));
               _resetScroll();
             },
           ),

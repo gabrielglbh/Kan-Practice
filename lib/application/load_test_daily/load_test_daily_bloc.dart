@@ -24,8 +24,6 @@ class LoadTestDailyBloc extends Bloc<LoadTestDailyEvent, LoadTestDailyState> {
     this._folderRepository,
     this._wordRepository,
   ) : super(LoadTestDailyStateIdle()) {
-    on<LoadTestDailyEventIdle>((_, __) {});
-
     on<LoadTestDailyEventLoadList>((event, emit) async {
       final randomStudyMode =
           StudyModes.values[Random().nextInt(StudyModes.values.length)];

@@ -7,6 +7,8 @@ class DictState extends Equatable {
   List<Object?> get props => [];
 }
 
+class DictStateIdle extends DictState {}
+
 class DictStateLoading extends DictState {}
 
 class DictStateLoaded extends DictState {

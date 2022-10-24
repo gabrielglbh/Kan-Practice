@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/application/services/database/database_consts.dart';
+import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
 import 'package:kanpractice/domain/relation_folder_list/i_relation_folder_list_repository.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';

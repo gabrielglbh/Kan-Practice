@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kanpractice/application/services/database/database_consts.dart';
+import 'package:kanpractice/application/services/database_consts.dart';
 
 part 'test_result.g.dart';
 
@@ -8,8 +8,9 @@ class Test {
   final int takenDate;
   @JsonKey(name: TestTableFields.testScoreField)
   final double testScore;
-  @JsonKey(name: TestTableFields.kanjiInTestField)
+  @JsonKey(name: TestTableFields.wordsInTestField)
   final int wordsInTest;
+  @JsonKey(name: TestTableFields.wordsListsField)
   final String lists;
   final int? testMode;
   final int studyMode;

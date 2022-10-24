@@ -39,69 +39,66 @@ class _PracticeFolderBottomSheetState extends State<PracticeFolderBottomSheet> {
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        return BlocProvider(
-          create: (context) => getIt<LoadFolderPracticeBloc>(),
-          child: BlocConsumer<LoadFolderPracticeBloc, LoadFolderPracticeState>(
-            listener: ((context, state) async {
-              if (state is LoadFolderPracticeStateLoadedList) {
-                if (state.words.isEmpty) {
-                  Utils.getSnackBar(context, "study_modes_empty".tr());
-                } else {
-                  await _decideOnMode(state.words, state.mode);
-                }
+        return BlocConsumer<LoadFolderPracticeBloc, LoadFolderPracticeState>(
+          listener: ((context, state) async {
+            if (state is LoadFolderPracticeStateLoadedList) {
+              if (state.words.isEmpty) {
+                Utils.getSnackBar(context, "study_modes_empty".tr());
+              } else {
+                await _decideOnMode(state.words, state.mode);
               }
-            }),
-            builder: (context, state) {
-              return Wrap(children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const KPDragContainer(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: KPMargins.margin8,
-                          horizontal: KPMargins.margin32),
-                      child: Text(
-                          "${"list_details_practice_button_label".tr()}: ${widget.folder}",
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headline6),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: KPMargins.margin8,
-                          horizontal: KPMargins.margin32),
-                      child: Text("folder_practice_title".tr(),
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyText1),
-                    ),
-                    Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            right: KPMargins.margin16,
-                            left: KPMargins.margin16,
-                            bottom: KPMargins.margin8,
-                          ),
-                          child: GridView.builder(
-                            itemCount: StudyModes.values.length,
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3, childAspectRatio: 1.2),
-                            itemBuilder: (context, index) {
-                              return _modeBasedButtons(
-                                  context, StudyModes.values[index]);
-                            },
-                          ),
+            }
+          }),
+          builder: (context, state) {
+            return Wrap(children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const KPDragContainer(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: KPMargins.margin8,
+                        horizontal: KPMargins.margin32),
+                    child: Text(
+                        "${"list_details_practice_button_label".tr()}: ${widget.folder}",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline6),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: KPMargins.margin8,
+                        horizontal: KPMargins.margin32),
+                    child: Text("folder_practice_title".tr(),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyText1),
+                  ),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          right: KPMargins.margin16,
+                          left: KPMargins.margin16,
+                          bottom: KPMargins.margin8,
                         ),
-                      ],
-                    )
-                  ],
-                ),
-              ]);
-            },
-          ),
+                        child: GridView.builder(
+                          itemCount: StudyModes.values.length,
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3, childAspectRatio: 1.2),
+                          itemBuilder: (context, index) {
+                            return _modeBasedButtons(
+                                context, StudyModes.values[index]);
+                          },
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ]);
+          },
         );
       },
     );

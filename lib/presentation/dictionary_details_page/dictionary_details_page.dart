@@ -14,45 +14,53 @@ import 'package:kanpractice/presentation/dictionary_details_page/widgets/generic
 import 'package:kanpractice/presentation/dictionary_details_page/widgets/single_kanji_result.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/widgets/word_result.dart';
 
-class DictionaryDetailsPage extends StatelessWidget {
+class DictionaryDetailsPage extends StatefulWidget {
   final DictionaryDetailsArguments args;
 
   const DictionaryDetailsPage({Key? key, required this.args}) : super(key: key);
 
   @override
+  State<DictionaryDetailsPage> createState() => _DictionaryDetailsPageState();
+}
+
+class _DictionaryDetailsPageState extends State<DictionaryDetailsPage> {
+  @override
+  void initState() {
+    getIt<DictionaryDetailsBloc>()
+        .add(DictionaryDetailsLoadingEvent(kanji: widget.args.word ?? ""));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return KPScaffold(
-        appBarTitle: args.kanji ?? "?",
+        appBarTitle: widget.args.word ?? "?",
         centerTitle: true,
-        appBarActions: [TTSIconButton(word: args.kanji)],
+        appBarActions: [TTSIconButton(word: widget.args.word)],
         child: Column(
           children: [
             Expanded(
-              child: BlocProvider<DictionaryDetailsBloc>(
-                create: (_) => getIt<DictionaryDetailsBloc>()
-                  ..add(DictionaryDetailsLoadingEvent(kanji: args.kanji ?? "")),
-                child:
-                    BlocConsumer<DictionaryDetailsBloc, DictionaryDetailsState>(
-                  listener: (context, state) {
-                    if (state is DictionaryDetailsStateLoaded &&
-                        args.kanji != null) {
-                      context.read<DictionaryDetailsBloc>().add(
-                          DictionaryDetailsEventAddToHistory(
-                              word: args.kanji!));
-                    }
-                  },
-                  builder: (context, state) {
-                    if (state is DictionaryDetailsStateLoading) {
-                      return const KPProgressIndicator();
-                    } else if (state is DictionaryDetailsStateFailure) {
-                      return _nothingFound();
-                    } else if (state is DictionaryDetailsStateLoaded) {
-                      return _content(context, state);
-                    } else {
-                      return Container();
-                    }
-                  },
-                ),
+              child:
+                  BlocConsumer<DictionaryDetailsBloc, DictionaryDetailsState>(
+                listener: (context, state) {
+                  if (state is DictionaryDetailsStateLoaded &&
+                      widget.args.word != null) {
+                    getIt<DictionaryDetailsBloc>().add(
+                        DictionaryDetailsEventAddToHistory(
+                            word: widget.args.word!));
+                  }
+                },
+                builder: (context, state) {
+                  if (state is DictionaryDetailsStateLoading) {
+                    return const KPProgressIndicator();
+                  } else if (state is DictionaryDetailsStateFailure) {
+                    return _nothingFound();
+                  } else if (state is DictionaryDetailsStateLoaded) {
+                    return _content(context, state);
+                  } else {
+                    return Container();
+                  }
+                },
               ),
             ),
             _poweredByDictionaryDetails(),
@@ -67,12 +75,12 @@ class DictionaryDetailsPage extends StatelessWidget {
           child: ListView(
             children: [
               Visibility(
-                visible: args.fromDictionary,
+                visible: widget.args.fromDictionary,
                 child: KPButton(
-                  title2: "dict_DictionaryDetails_add_kanji_label".tr(),
+                  title2: "dict_jisho_add_kanji_label".tr(),
                   onTap: () {
                     AddToKanListBottomSheet.callAddToKanListBottomSheet(
-                        context, args.kanji, state.data);
+                        context, widget.args.word, state.data);
                   },
                 ),
               ),
@@ -87,15 +95,15 @@ class DictionaryDetailsPage extends StatelessWidget {
                   child: SingleKanjiResult(
                     data: state.data.resultData,
                     phrase: state.data.resultPhrase,
-                    fromDictionary: args.fromDictionary,
+                    fromDictionary: widget.args.fromDictionary,
                   )),
               Visibility(
                   visible: state.data.resultPhrase.isNotEmpty,
                   child: WordResult(
-                    kanji: args.kanji,
+                    kanji: widget.args.word,
                     data: state.data.resultData,
                     phrase: state.data.resultPhrase,
-                    fromDictionary: args.fromDictionary,
+                    fromDictionary: widget.args.fromDictionary,
                   )),
               Visibility(
                   visible: state.data.example.isNotEmpty,
@@ -115,8 +123,7 @@ class DictionaryDetailsPage extends StatelessWidget {
     return Center(
         child: Container(
             padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
-            child: Text("DictionaryDetails_no_match".tr(),
-                textAlign: TextAlign.center)));
+            child: Text("jisho_no_match".tr(), textAlign: TextAlign.center)));
   }
 
   Widget _poweredByDictionaryDetails() {
@@ -124,7 +131,7 @@ class DictionaryDetailsPage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
       child: Chip(
         backgroundColor: Colors.green[200],
-        label: Text("DictionaryDetails_resultData_powered_by".tr(),
+        label: Text("jisho_resultData_powered_by".tr(),
             style: const TextStyle(color: Colors.black)),
       ),
     );

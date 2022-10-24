@@ -18,8 +18,6 @@ class LoadFolderPracticeBloc
 
   LoadFolderPracticeBloc(this._folderRepository)
       : super(LoadFolderPracticeStateIdle()) {
-    on<LoadFolderPracticeEventIdle>((_, __) {});
-
     on<LoadFolderPracticeEventLoadList>((event, emit) async {
       List<Word> list =
           await _folderRepository.getAllWordsOnListsOnFolder([event.folder]);

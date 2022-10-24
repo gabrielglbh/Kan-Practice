@@ -19,7 +19,7 @@ class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
   FolderDetailsBloc(
     this._folderRepository,
     this._relationFolderListRepository,
-  ) : super(FolderDetailsStateLoading()) {
+  ) : super(FolderDetailsStateIdle()) {
     /// Maintain the list for pagination purposes
     List<WordList> list = [];
 

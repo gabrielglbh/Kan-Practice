@@ -145,60 +145,57 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AuthBloc>(
-      create: (_) => getIt<AuthBloc>()..add(AuthIdle()),
-      child: KPScaffold(
-          appBarTitle: BlocBuilder<AuthBloc, AuthState>(
-            builder: (context, state) {
-              if (state is AuthStateSuccessful) {
-                return FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: Text("settings_account_label".tr()));
-              } else if (state is AuthStateIdle) {
-                return FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: Text(
-                        _mode == SignMode.login
-                            ? SignMode.login.name
-                            : SignMode.signup.name,
-                        style: Theme.of(context).appBarTheme.titleTextStyle));
-              } else {
-                return Container();
-              }
-            },
+    return KPScaffold(
+        appBarTitle: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            if (state is AuthStateSuccessful) {
+              return FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text("settings_account_label".tr()));
+            } else if (state is AuthStateIdle) {
+              return FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                      _mode == SignMode.login
+                          ? SignMode.login.name
+                          : SignMode.signup.name,
+                      style: Theme.of(context).appBarTheme.titleTextStyle));
+            } else {
+              return Container();
+            }
+          },
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              BlocConsumer<AuthBloc, AuthState>(
+                listener: (context, state) {
+                  /// Only pop automatically when closing session
+                  if (state is AuthStateLoggedOut) {
+                    if (state.message ==
+                        "login_bloc_close_session_successful".tr()) {
+                      Navigator.of(context).pop();
+                    }
+                  }
+                },
+                builder: (context, state) {
+                  if (state is AuthStateLoading) {
+                    return const KPProgressIndicator();
+                  } else if (state is AuthStateSuccessful) {
+                    return _successfulState(context, state);
+                  } else if (state is AuthStateIdle) {
+                    return _idleState(context, state);
+                  } else if (state is AuthStateLoggedOut) {
+                    return _loggedOut(state);
+                  } else {
+                    return Container();
+                  }
+                },
+              ),
+            ],
           ),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                BlocConsumer<AuthBloc, AuthState>(
-                  listener: (context, state) {
-                    /// Only pop automatically when closing session
-                    if (state is AuthStateLoggedOut) {
-                      if (state.message ==
-                          "login_bloc_close_session_successful".tr()) {
-                        Navigator.of(context).pop();
-                      }
-                    }
-                  },
-                  builder: (context, state) {
-                    if (state is AuthStateLoading) {
-                      return const KPProgressIndicator();
-                    } else if (state is AuthStateSuccessful) {
-                      return _successfulState(context, state);
-                    } else if (state is AuthStateIdle) {
-                      return _idleState(context, state);
-                    } else if (state is AuthStateLoggedOut) {
-                      return _loggedOut(state);
-                    } else {
-                      return Container();
-                    }
-                  },
-                ),
-              ],
-            ),
-          )),
-    );
+        ));
   }
 
   Column _idleState(BuildContext bloc, AuthStateIdle state) {

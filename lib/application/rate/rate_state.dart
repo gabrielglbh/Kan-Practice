@@ -7,7 +7,7 @@ abstract class RateState extends Equatable {
   List<Object> get props => [];
 }
 
-class RateInitial extends RateState {}
+class RateStateIdle extends RateState {}
 
 class RateStateLoading extends RateState {}
 

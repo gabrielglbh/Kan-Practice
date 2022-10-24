@@ -72,80 +72,79 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
   }
 
   @override
+  void initState() {
+    getIt<ListBloc>().add(const ListForTestEventLoading());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BottomSheet(
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        return BlocProvider(
-          create: (context) => getIt<AddWordBloc>(),
-          child: BlocListener<AddWordBloc, AddWordState>(
-            listener: (context, state) {
-              if (state is AddWordStateDoneCreating) {
-                Navigator.of(context).pop();
-                Utils.getSnackBar(
-                    context, "add_kanji_createKanji_successful".tr());
-              } else if (state is AddWordStateFailure) {
-                setState(() => _error = state.message);
-              }
-            },
-            child: Wrap(children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const KPDragContainer(),
-                  Padding(
+        return BlocListener<AddWordBloc, AddWordState>(
+          listener: (context, state) {
+            if (state is AddWordStateDoneCreating) {
+              Navigator.of(context).pop();
+              Utils.getSnackBar(
+                  context, "add_kanji_createKanji_successful".tr());
+            } else if (state is AddWordStateFailure) {
+              setState(() => _error = state.message);
+            }
+          },
+          child: Wrap(children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const KPDragContainer(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: KPMargins.margin8,
+                      horizontal: KPMargins.margin32),
+                  child: Text("dict_jisho_add_kanji_bottom_sheet_title".tr(),
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headline6),
+                ),
+                Visibility(
+                  visible: _error.isNotEmpty,
+                  child: Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: KPMargins.margin8,
                         horizontal: KPMargins.margin32),
-                    child: Text("dict_jisho_add_kanji_bottom_sheet_title".tr(),
+                    child: Text(_error,
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headline6),
+                        style: Theme.of(context)
+                            .textTheme
+                            .button
+                            ?.copyWith(color: KPColors.secondaryColor)),
                   ),
-                  Visibility(
-                    visible: _error.isNotEmpty,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: KPMargins.margin8,
-                          horizontal: KPMargins.margin32),
-                      child: Text(_error,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .button
-                              ?.copyWith(color: KPColors.secondaryColor)),
-                    ),
-                  ),
-                  BlocProvider<ListBloc>(
-                    create: (_) =>
-                        getIt<ListBloc>()..add(const ListForTestEventLoading()),
-                    child: BlocBuilder<ListBloc, ListState>(
-                      builder: (context, state) {
-                        if (state is ListStateFailure) {
-                          return KPEmptyList(
-                              showTryButton: true,
-                              onRefresh: () => getIt<ListBloc>()
-                                ..add(const ListForTestEventLoading()),
-                              message: "study_bottom_sheet_load_failed".tr());
-                        } else if (state is ListStateLoading) {
-                          return const KPProgressIndicator();
-                        } else if (state is ListStateLoaded) {
-                          return Container(
-                              constraints: BoxConstraints(
-                                  maxHeight:
-                                      MediaQuery.of(context).size.height / 2),
-                              margin: const EdgeInsets.all(KPMargins.margin8),
-                              child: _listSelection(state));
-                        } else {
-                          return Container();
-                        }
-                      },
-                    ),
-                  )
-                ],
-              ),
-            ]),
-          ),
+                ),
+                BlocBuilder<ListBloc, ListState>(
+                  builder: (context, state) {
+                    if (state is ListStateFailure) {
+                      return KPEmptyList(
+                          showTryButton: true,
+                          onRefresh: () => getIt<ListBloc>()
+                            ..add(const ListForTestEventLoading()),
+                          message: "study_bottom_sheet_load_failed".tr());
+                    } else if (state is ListStateLoading) {
+                      return const KPProgressIndicator();
+                    } else if (state is ListStateLoaded) {
+                      return Container(
+                          constraints: BoxConstraints(
+                              maxHeight:
+                                  MediaQuery.of(context).size.height / 2),
+                          margin: const EdgeInsets.all(KPMargins.margin8),
+                          child: _listSelection(state));
+                    } else {
+                      return Container();
+                    }
+                  },
+                )
+              ],
+            ),
+          ]),
         );
       },
     );

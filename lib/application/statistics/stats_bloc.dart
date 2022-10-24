@@ -21,7 +21,7 @@ class StatisticsBloc extends Bloc<StatsEvent, StatsState> {
     this._listRepository,
     this._wordRepository,
     this._testDataRepository,
-  ) : super(StatisticsLoading()) {
+  ) : super(StatisticsIdle()) {
     on<StatisticsEventLoading>((event, emit) async {
       emit(StatisticsLoading());
 

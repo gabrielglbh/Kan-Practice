@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/application/services/database/database_consts.dart';
+import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/list/i_list_repository.dart';
 import 'package:kanpractice/domain/list/list.dart';
@@ -20,7 +20,7 @@ class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
   WordDetailsBloc(
     this._listRepository,
     this._wordRepository,
-  ) : super(WordDetailsStateLoading()) {
+  ) : super(WordDetailsStateIdle()) {
     on<WordDetailsEventLoading>((event, emit) async {
       try {
         emit(WordDetailsStateLoading());

@@ -7,9 +7,6 @@ abstract class LoadTestCategorySelectionEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadTestCategorySelectionEventIdle
-    extends LoadTestCategorySelectionEvent {}
-
 class LoadTestCategorySelectionEventLoadList
     extends LoadTestCategorySelectionEvent {
   final WordCategory category;

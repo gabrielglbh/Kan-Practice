@@ -7,8 +7,6 @@ abstract class TestHistoryEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class TestHistoryEventIdle extends TestHistoryEvent {}
-
 class TestHistoryEventLoading extends TestHistoryEvent {
   final DateTime initial;
   final DateTime last;

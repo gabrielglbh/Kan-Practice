@@ -14,7 +14,7 @@ part 'market_state.dart';
 class MarketBloc extends Bloc<MarketEvent, MarketState> {
   final IMarketRepository _marketRepository;
 
-  MarketBloc(this._marketRepository) : super(MarketStateLoading()) {
+  MarketBloc(this._marketRepository) : super(MarketStateIdle()) {
     /// Maintain the list for pagination purposes
     List<Market> list = [];
 

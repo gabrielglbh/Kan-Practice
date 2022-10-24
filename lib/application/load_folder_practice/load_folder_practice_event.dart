@@ -7,8 +7,6 @@ abstract class LoadFolderPracticeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadFolderPracticeEventIdle extends LoadFolderPracticeEvent {}
-
 class LoadFolderPracticeEventLoadList extends LoadFolderPracticeEvent {
   final String folder;
   final StudyModes mode;

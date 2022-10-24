@@ -54,6 +54,8 @@ class KPKanjiBottomSheet extends StatelessWidget {
       constraints: BoxConstraints(maxHeight: maxHeight),
       onClosing: () {},
       builder: (context) {
+        getIt<WordDetailsBloc>()
+            .add(WordDetailsEventLoading(kanji ?? Word.empty));
         return Wrap(children: [
           Padding(
               padding: const EdgeInsets.all(KPMargins.margin8),
@@ -61,39 +63,34 @@ class KPKanjiBottomSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const KPDragContainer(),
-                  BlocProvider<WordDetailsBloc>(
-                    create: (_) => getIt<WordDetailsBloc>()
-                      ..add(WordDetailsEventLoading(kanji ?? Word.empty)),
-                    child: BlocConsumer<WordDetailsBloc, WordDetailsState>(
-                      listener: (context, state) {
-                        if (state is WordDetailsStateFailure) {
-                          Utils.getSnackBar(context, state.error);
-                        }
-                        if (state is WordDetailsStateRemoved) {
-                          if (onRemove != null) onRemove!();
-                        }
-                      },
-                      builder: (context, state) {
-                        if (state is WordDetailsStateLoading) {
-                          return Center(
-                              child: SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height / 2,
-                                  child: const KPProgressIndicator()));
-                        } else if (state is WordDetailsStateFailure) {
-                          return Container(
-                              height: MediaQuery.of(context).size.height / 2,
-                              alignment: Alignment.center,
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: KPMargins.margin16),
-                              child: Text(state.error));
-                        } else if (state is WordDetailsStateLoaded) {
-                          return _body(context, state.kanji);
-                        } else {
-                          return Container();
-                        }
-                      },
-                    ),
+                  BlocConsumer<WordDetailsBloc, WordDetailsState>(
+                    listener: (context, state) {
+                      if (state is WordDetailsStateFailure) {
+                        Utils.getSnackBar(context, state.error);
+                      }
+                      if (state is WordDetailsStateRemoved) {
+                        if (onRemove != null) onRemove!();
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is WordDetailsStateLoading) {
+                        return Center(
+                            child: SizedBox(
+                                height: MediaQuery.of(context).size.height / 2,
+                                child: const KPProgressIndicator()));
+                      } else if (state is WordDetailsStateFailure) {
+                        return Container(
+                            height: MediaQuery.of(context).size.height / 2,
+                            alignment: Alignment.center,
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: KPMargins.margin16),
+                            child: Text(state.error));
+                      } else if (state is WordDetailsStateLoaded) {
+                        return _body(context, state.kanji);
+                      } else {
+                        return Container();
+                      }
+                    },
                   ),
                 ],
               )),
@@ -176,7 +173,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
                     arguments:
-                        DictionaryDetailsArguments(kanji: updatedKanji.word));
+                        DictionaryDetailsArguments(word: updatedKanji.word));
               },
             ),
             SizedBox(

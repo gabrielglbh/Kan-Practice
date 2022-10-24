@@ -7,8 +7,6 @@ abstract class LoadTestEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadTestEventIdle extends LoadTestEvent {}
-
 class LoadTestEventLoadList extends LoadTestEvent {
   final String? folder;
   final StudyModes mode;

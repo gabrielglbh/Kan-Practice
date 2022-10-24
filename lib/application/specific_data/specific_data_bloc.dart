@@ -15,8 +15,6 @@ class SpecificDataBloc extends Bloc<SpecificDataEvent, SpecificDataState> {
 
   SpecificDataBloc(this._specificDataRepository)
       : super(SpecificDataStateIdle()) {
-    on<SpecificDataEventIdle>((_, __) {});
-
     on<SpecificDataEventGatherCategory>((event, emit) async {
       final data =
           await _specificDataRepository.getSpecificCategoryData(event.category);

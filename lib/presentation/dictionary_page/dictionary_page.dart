@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image/image.dart' as im;
 import 'package:kanpractice/application/dictionary/dict_bloc.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/ui/canvas/kp_custom_canvas.dart';
@@ -36,7 +37,7 @@ class _DictionaryPageState extends State<DictionaryPage>
     _searchBarTextController = TextEditingController();
     String? word = widget.args.word;
     if (word != null) _searchBarTextController.text = word;
-    context.read<DictBloc>().add(DictEventStart());
+    getIt<DictBloc>().add(DictEventStart());
     super.initState();
   }
 
@@ -121,9 +122,7 @@ class _DictionaryPageState extends State<DictionaryPage>
                     line: _line,
                     allowPrediction: true,
                     handleImage: (im.Image image) {
-                      context
-                          .read<DictBloc>()
-                          .add(DictEventLoading(image: image));
+                      getIt<DictBloc>().add(DictEventLoading(image: image));
                     },
                   ),
                 ],
@@ -195,7 +194,7 @@ class _DictionaryPageState extends State<DictionaryPage>
           if (widget.args.searchInJisho) {
             Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
                 arguments: DictionaryDetailsArguments(
-                    kanji: text, fromDictionary: true));
+                    word: text, fromDictionary: true));
           } else {
             Navigator.of(context).pop(text);
           }

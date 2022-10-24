@@ -11,8 +11,7 @@ part 'settings_state.dart';
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final IBackupRepository _backupRepository;
 
-  SettingsBloc(this._backupRepository)
-      : super(const SettingsStateBackUpDateLoaded()) {
+  SettingsBloc(this._backupRepository) : super(SettingsStateIdle()) {
     on<SettingsIdle>((_, __) {});
 
     on<SettingsLoadingBackUpDate>((event, emit) async {

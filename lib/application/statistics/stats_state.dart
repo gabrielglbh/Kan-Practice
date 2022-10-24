@@ -17,3 +17,5 @@ class StatisticsLoaded extends StatsState {
 }
 
 class StatisticsLoading extends StatsState {}
+
+class StatisticsIdle extends StatsState {}

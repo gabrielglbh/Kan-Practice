@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/test_history/test_history_bloc.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes_filters.dart';
@@ -51,12 +52,12 @@ class _TestHistoryState extends State<TestHistory>
         _modesFilter = filters.modeFilters;
       });
       // ignore: use_build_context_synchronously
-      context.read<TestHistoryBloc>().add(TestHistoryEventLoading(
-            initial: _firstDate,
-            last: _lastDate,
-            testFilter: _testsFilter,
-            modesFilter: _modesFilter,
-          ));
+      getIt<TestHistoryBloc>().add(TestHistoryEventLoading(
+        initial: _firstDate,
+        last: _lastDate,
+        testFilter: _testsFilter,
+        modesFilter: _modesFilter,
+      ));
     }
   }
 

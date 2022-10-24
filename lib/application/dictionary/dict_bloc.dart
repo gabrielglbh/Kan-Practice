@@ -13,9 +13,7 @@ part 'dict_state.dart';
 class DictBloc extends Bloc<DictEvent, DictState> {
   final IClassifierRepository _classifierRepository;
 
-  DictBloc(this._classifierRepository) : super(DictStateLoading()) {
-    on<DictEventIdle>((_, __) {});
-
+  DictBloc(this._classifierRepository) : super(DictStateIdle()) {
     on<DictEventStart>((event, emit) async {
       try {
         emit(DictStateLoading());

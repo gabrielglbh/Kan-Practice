@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
-import 'package:kanpractice/application/dictionary/dict_bloc.dart';
 import 'package:kanpractice/application/folder_list/folder_bloc.dart';
 import 'package:kanpractice/application/list/lists_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
-import 'package:kanpractice/application/settings/settings_bloc.dart';
-import 'package:kanpractice/application/services/database/database_consts.dart';
+import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
@@ -102,6 +100,20 @@ class _HomePageState extends State<HomePage>
     _currentAppliedMarketOrder =
         getIt<PreferencesService>().readData(SharedKeys.orderOnMarket) ?? true;
 
+    getIt<ListBloc>().add(ListEventLoading(
+      filter: _currentAppliedFilter,
+      order: _currentAppliedOrder,
+      reset: true,
+    ));
+
+    getIt<FolderBloc>().add(FolderEventLoading(
+      filter: _currentAppliedFolderFilter,
+      order: _currentAppliedFolderOrder,
+      reset: true,
+    ));
+
+    getIt<BackUpBloc>().add(BackUpGetVersion(context));
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       /// Read folder from SharedPreferences, current selected folder for the latest
       /// test. If any, show that BS and navigate to that tab. Else just
@@ -193,163 +205,129 @@ class _HomePageState extends State<HomePage>
     final dictionaryAppBarIcons =
         _newVersion.isNotEmpty ? [updateIcon, dictHistory] : [dictHistory];
 
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<ListBloc>(
-          create: (_) => getIt<ListBloc>()
-            ..add(ListEventLoading(
-              filter: _currentAppliedFilter,
-              order: _currentAppliedOrder,
-              reset: true,
-            )),
-        ),
-        BlocProvider<FolderBloc>(
-          create: (_) => getIt<FolderBloc>()
-            ..add(FolderEventLoading(
-                filter: _currentAppliedFolderFilter,
-                order: _currentAppliedFolderOrder,
-                reset: true)),
-        ),
-        BlocProvider(
-          create: (_) => getIt<BackUpBloc>()..add(BackUpGetVersion(context)),
-        ),
-        BlocProvider(create: (_) => getIt<DictBloc>()..add(DictEventIdle())),
-        BlocProvider<MarketBloc>(
-            create: (_) => getIt<MarketBloc>()..add(MarketEventIdle())),
-        BlocProvider(
-          create: (_) => getIt<SettingsBloc>()..add(SettingsIdle()),
-        )
-      ],
-      child: BlocListener<BackUpBloc, BackUpState>(
-        listener: (context, state) {
-          if (state is BackUpStateVersionRetrieved) {
-            setState(() {
-              _newVersion = state.version;
-              _notes = state.notes;
-            });
+    return BlocListener<BackUpBloc, BackUpState>(
+      listener: (context, state) {
+        if (state is BackUpStateVersionRetrieved) {
+          setState(() {
+            _newVersion = state.version;
+            _notes = state.notes;
+          });
+        }
+      },
+      child: BlocConsumer<ListBloc, ListState>(
+        listener: (context, state) async {
+          if (state is ListStateLoaded) {
+            if (getIt<PreferencesService>()
+                    .readData(SharedKeys.haveSeenKanListCoachMark) ==
+                false) {
+              _onTutorial = true;
+              await TutorialCoach([
+                lists,
+                folders,
+                kanList,
+                dictionary,
+                actions,
+                market,
+                settings,
+              ], CoachTutorialParts.kanList)
+                  .showTutorial(context, onEnd: () => _onTutorial = false);
+            }
           }
         },
-        child: BlocConsumer<ListBloc, ListState>(
-          listener: (context, state) async {
-            if (state is ListStateLoaded) {
-              if (getIt<PreferencesService>()
-                      .readData(SharedKeys.haveSeenKanListCoachMark) ==
-                  false) {
-                _onTutorial = true;
-                await TutorialCoach([
-                  lists,
-                  folders,
-                  kanList,
-                  dictionary,
-                  actions,
-                  market,
-                  settings,
-                ], CoachTutorialParts.kanList)
-                    .showTutorial(context, onEnd: () => _onTutorial = false);
-              }
-            }
-          },
-          builder: (c, state) => BlocBuilder<FolderBloc, FolderState>(
-            builder: (cFolder, stateFolder) =>
-                BlocBuilder<MarketBloc, MarketState>(
-              builder: (cMarket, stateMarket) => KPScaffold(
-                setGestureDetector: false,
-                onWillPop: () async {
-                  if (_onTutorial) return false;
-                  if (_searchHasFocus) {
-                    _resetLists();
+        builder: (c, state) => BlocBuilder<FolderBloc, FolderState>(
+          builder: (cFolder, stateFolder) =>
+              BlocBuilder<MarketBloc, MarketState>(
+            builder: (cMarket, stateMarket) => KPScaffold(
+              setGestureDetector: false,
+              onWillPop: () async {
+                if (_onTutorial) return false;
+                if (_searchHasFocus) {
+                  _resetLists();
+                  _searchBarFn.unfocus();
+                  return false;
+                } else {
+                  return true;
+                }
+              },
+              appBarTitle: _currentPage.appBarTitle,
+              appBarActions: _currentPage != HomeType.dictionary
+                  ? _newVersion.isNotEmpty
+                      ? [updateIcon]
+                      : null
+                  : dictionaryAppBarIcons,
+              bottomNavigationWidget: HomeBottomNavigation(
+                tutorialKeys: [kanList, dictionary, actions, market, settings],
+                currentPage: _currentPage,
+                onPageChanged: (type) {
+                  if (_currentPage != type && type != HomeType.actions) {
+                    setState(() => _currentPage = type);
                     _searchBarFn.unfocus();
-                    return false;
-                  } else {
-                    return true;
+                    _searchTextController.text = "";
+                    _controller.jumpToPage(type.page);
+                    if (_currentPage == HomeType.market) {
+                      _addMarketLoadingEvent();
+                    }
                   }
                 },
-                appBarTitle: _currentPage.appBarTitle,
-                appBarActions: _currentPage != HomeType.dictionary
-                    ? _newVersion.isNotEmpty
-                        ? [updateIcon]
-                        : null
-                    : dictionaryAppBarIcons,
-                bottomNavigationWidget: HomeBottomNavigation(
-                  tutorialKeys: [
-                    kanList,
-                    dictionary,
-                    actions,
-                    market,
-                    settings
-                  ],
-                  currentPage: _currentPage,
-                  onPageChanged: (type) {
-                    if (_currentPage != type && type != HomeType.actions) {
-                      setState(() => _currentPage = type);
-                      _searchBarFn.unfocus();
-                      _searchTextController.text = "";
-                      _controller.jumpToPage(type.page);
-                      if (_currentPage == HomeType.market) {
-                        _addMarketLoadingEvent();
-                      }
-                    }
-                  },
-                  onShowActions: (name) {
-                    if (name == "__folder") {
-                      _addFolderListLoadingEvent();
-                    } else {
-                      c.read<ListBloc>().add(ListEventCreate(name,
-                          filter: _currentAppliedFilter,
-                          order: _currentAppliedOrder));
-                    }
-                  },
-                ),
-                child: Column(
-                  children: [
-                    if (HomeType.kanlist == _currentPage ||
-                        HomeType.market == _currentPage)
-                      KPSearchBar(
-                        controller: _searchTextController,
-                        hint: _currentPage == HomeType.market
-                            ? _currentPage.searchBarHint
-                            : _currentTab.searchBarHint,
-                        focus: _searchBarFn,
-                        onQuery: (String query) {
-                          _query = query;
-                          if (_currentPage == HomeType.kanlist) {
-                            if (_currentTab == TabType.kanlist) {
-                              return _addListSearchingEvent(query);
-                            }
-                            return _addFolderListSearchingEvent(query);
+                onShowActions: (name) {
+                  if (name == "__folder") {
+                    _addFolderListLoadingEvent();
+                  } else {
+                    getIt<ListBloc>().add(ListEventCreate(name,
+                        filter: _currentAppliedFilter,
+                        order: _currentAppliedOrder));
+                  }
+                },
+              ),
+              child: Column(
+                children: [
+                  if (HomeType.kanlist == _currentPage ||
+                      HomeType.market == _currentPage)
+                    KPSearchBar(
+                      controller: _searchTextController,
+                      hint: _currentPage == HomeType.market
+                          ? _currentPage.searchBarHint
+                          : _currentTab.searchBarHint,
+                      focus: _searchBarFn,
+                      onQuery: (String query) {
+                        _query = query;
+                        if (_currentPage == HomeType.kanlist) {
+                          if (_currentTab == TabType.kanlist) {
+                            return _addListSearchingEvent(query);
                           }
-                          return _addMarketSearchingEvent(query);
-                        },
-                        onExitSearch: () {
-                          _query = "";
-                          _resetLists();
-                        },
-                      ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          if (_currentPage == HomeType.kanlist)
-                            TabBar(
-                              key: folders,
-                              controller: _tabController,
-                              onTap: (tab) {
-                                if (tab == 0) {
-                                  _addListLoadingEvent();
-                                  return;
-                                }
-                                _addFolderListLoadingEvent();
-                              },
-                              tabs: const [
-                                Tab(icon: Icon(Icons.table_rows_rounded)),
-                                Tab(icon: Icon(Icons.folder_rounded)),
-                              ],
-                            ),
-                          Expanded(child: _body(c, cFolder, cMarket)),
-                        ],
-                      ),
+                          return _addFolderListSearchingEvent(query);
+                        }
+                        return _addMarketSearchingEvent(query);
+                      },
+                      onExitSearch: () {
+                        _query = "";
+                        _resetLists();
+                      },
                     ),
-                  ],
-                ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        if (_currentPage == HomeType.kanlist)
+                          TabBar(
+                            key: folders,
+                            controller: _tabController,
+                            onTap: (tab) {
+                              if (tab == 0) {
+                                _addListLoadingEvent();
+                                return;
+                              }
+                              _addFolderListLoadingEvent();
+                            },
+                            tabs: const [
+                              Tab(icon: Icon(Icons.table_rows_rounded)),
+                              Tab(icon: Icon(Icons.folder_rounded)),
+                            ],
+                          ),
+                        Expanded(child: _body()),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -358,7 +336,7 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  PageView _body(BuildContext c, BuildContext cF, BuildContext cM) {
+  PageView _body() {
     return PageView(
       controller: _controller,
       physics: const NeverScrollableScrollPhysics(),

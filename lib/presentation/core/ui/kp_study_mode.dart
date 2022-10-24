@@ -48,80 +48,75 @@ class KPTestStudyMode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<LoadTestBloc>(),
-      child: BlocConsumer<LoadTestBloc, LoadTestState>(
-        listener: ((context, state) async {
-          if (state is LoadTestStateLoadedList) {
-            List<Word> list = state.words;
-            if (list.isEmpty) {
-              Navigator.of(context).pop();
-              Utils.getSnackBar(context, "study_modes_empty".tr());
-            } else {
-              await _decideOnMode(context, list, state.mode);
-            }
+    return BlocConsumer<LoadTestBloc, LoadTestState>(
+      listener: ((context, state) async {
+        if (state is LoadTestStateLoadedList) {
+          List<Word> list = state.words;
+          if (list.isEmpty) {
+            Navigator.of(context).pop();
+            Utils.getSnackBar(context, "study_modes_empty".tr());
+          } else {
+            await _decideOnMode(context, list, state.mode);
           }
-        }),
-        builder: (context, state) {
-          return Container(
-              alignment: Alignment.center,
-              child: Column(
-                children: [
-                  Visibility(
-                    visible: getIt<PreferencesService>()
-                            .readData(SharedKeys.affectOnPractice) ==
-                        true,
-                    child: Container(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: KPMargins.margin8,
-                            horizontal: KPMargins.margin24),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            const Padding(
-                              padding:
-                                  EdgeInsets.only(right: KPMargins.margin16),
-                              child: Icon(Icons.auto_graph_rounded,
-                                  color: Colors.lightBlueAccent),
-                            ),
-                            Expanded(
-                                child: Text(
-                              "settings_general_toggle".tr(),
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.bodyText1,
-                            )),
-                            const Padding(
-                              padding:
-                                  EdgeInsets.only(left: KPMargins.margin16),
-                              child: Icon(Icons.auto_graph_rounded,
-                                  color: Colors.lightBlueAccent),
-                            ),
-                          ],
-                        )),
+        }
+      }),
+      builder: (context, state) {
+        return Container(
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                Visibility(
+                  visible: getIt<PreferencesService>()
+                          .readData(SharedKeys.affectOnPractice) ==
+                      true,
+                  child: Container(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: KPMargins.margin8,
+                          horizontal: KPMargins.margin24),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(right: KPMargins.margin16),
+                            child: Icon(Icons.auto_graph_rounded,
+                                color: Colors.lightBlueAccent),
+                          ),
+                          Expanded(
+                              child: Text(
+                            "settings_general_toggle".tr(),
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodyText1,
+                          )),
+                          const Padding(
+                            padding: EdgeInsets.only(left: KPMargins.margin16),
+                            child: Icon(Icons.auto_graph_rounded,
+                                color: Colors.lightBlueAccent),
+                          ),
+                        ],
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    right: KPMargins.margin16,
+                    left: KPMargins.margin16,
+                    bottom: KPMargins.margin8,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      right: KPMargins.margin16,
-                      left: KPMargins.margin16,
-                      bottom: KPMargins.margin8,
-                    ),
-                    child: GridView.builder(
-                      itemCount: StudyModes.values.length,
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3, childAspectRatio: 1.2),
-                      itemBuilder: (context, index) {
-                        return _modeBasedButtons(
-                            context, StudyModes.values[index]);
-                      },
-                    ),
+                  child: GridView.builder(
+                    itemCount: StudyModes.values.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3, childAspectRatio: 1.2),
+                    itemBuilder: (context, index) {
+                      return _modeBasedButtons(
+                          context, StudyModes.values[index]);
+                    },
                   ),
-                ],
-              ));
-        },
-      ),
+                ),
+              ],
+            ));
+      },
     );
   }
 

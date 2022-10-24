@@ -22,8 +22,6 @@ class LoadTestBloc extends Bloc<LoadTestEvent, LoadTestState> {
     this._wordRepository,
     this._folderRepository,
   ) : super(LoadTestStateIdle()) {
-    on<LoadTestEventIdle>((_, __) {});
-
     on<LoadTestEventLoadList>((event, emit) async {
       List<Word> finalList = [];
 

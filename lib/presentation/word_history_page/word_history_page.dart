@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/word_history/word_history_bloc.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word_history/word_history.dart';
@@ -22,9 +23,9 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
   final ScrollController _scrollController = ScrollController();
   int _loadingTimes = 0;
 
-  _showRemoveHistorysDialog(BuildContext bloc) {
+  _showRemoveHistorysDialog() {
     showDialog(
-        context: bloc,
+        context: context,
         builder: (context) => KPDialog(
               title: Text("word_history_showRemoveHistorysDialog_title".tr()),
               content: Text(
@@ -33,7 +34,7 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
               positiveButtonText:
                   "word_history_showRemoveHistorysDialog_positive".tr(),
               onPositive: () =>
-                  bloc.read<WordHistoryBloc>().add(WordHistoryEventRemoving()),
+                  getIt<WordHistoryBloc>().add(WordHistoryEventRemoving()),
             ));
   }
 
@@ -52,6 +53,7 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
   @override
   void initState() {
     _scrollController.addListener(_scrollListener);
+    getIt<WordHistoryBloc>().add(const WordHistoryEventLoading());
     super.initState();
   }
 
@@ -64,15 +66,13 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    /// BlocProvider is defined at route level in order for the whole context of the
-    /// class to be accessible to the provider
     return KPScaffold(
       appBarTitle: "word_history_title".tr(),
       appBarActions: [
         BlocBuilder<WordHistoryBloc, WordHistoryState>(
           builder: (context, state) => IconButton(
             icon: const Icon(Icons.clear_all_rounded),
-            onPressed: () => _showRemoveHistorysDialog(context),
+            onPressed: () => _showRemoveHistorysDialog(),
           ),
         )
       ],
@@ -115,7 +115,7 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
             onTap: () {
               Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
                   arguments: DictionaryDetailsArguments(
-                      kanji: wordHistory.word, fromDictionary: true));
+                      word: wordHistory.word, fromDictionary: true));
             },
             title: Text(wordHistory.word,
                 style: Theme.of(context)

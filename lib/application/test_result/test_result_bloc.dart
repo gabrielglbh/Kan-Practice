@@ -17,8 +17,6 @@ class TestResultBloc extends Bloc<TestResultEvent, TestResultState> {
     this._testRepository,
     this._testDataRepository,
   ) : super(TestResultStateIdle()) {
-    on<TestResultEventIdle>((_, __) {});
-
     on<TestResultEventSaveTest>((event, emit) async {
       emit(TestResultStateSaving());
       await _testRepository.createTest(event.test);

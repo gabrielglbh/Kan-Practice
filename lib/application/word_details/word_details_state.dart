@@ -7,6 +7,8 @@ class WordDetailsState extends Equatable {
   List<Object?> get props => [];
 }
 
+class WordDetailsStateIdle extends WordDetailsState {}
+
 class WordDetailsStateLoading extends WordDetailsState {}
 
 class WordDetailsStateRemoved extends WordDetailsState {}

@@ -13,9 +13,7 @@ part 'test_history_state.dart';
 class TestHistoryBloc extends Bloc<TestHistoryEvent, TestHistoryState> {
   final ITestRepository _testRepository;
 
-  TestHistoryBloc(this._testRepository) : super(TestHistoryStateLoading()) {
-    on<TestHistoryEventIdle>((_, __) {});
-
+  TestHistoryBloc(this._testRepository) : super(TestHistoryStateIdle()) {
     on<TestHistoryEventLoading>((event, emit) async {
       try {
         final tests = await _testRepository.getTests(

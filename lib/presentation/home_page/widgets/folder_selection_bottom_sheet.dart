@@ -51,16 +51,16 @@ class _FolderSelectionBottomSheetState
               LoadTestFolderSelectionState>(
             listener: (context, state) {
               if (state is LoadTestFolderSelectionStateLoadedList) {
-                if (state.words.isNotEmpty) {
-                  setState(() => _selectionMode = true);
-                } else {
-                  /// Keep the list names all the way to the Test Result page in a formatted way
-                  for (var name in _selectedFolders) {
-                    _selectedFormattedFolder += "$name, ";
-                  }
-                  _selectedFormattedFolder = _selectedFormattedFolder.substring(
-                      0, _selectedFormattedFolder.length - 2);
+                if (state.words.isEmpty) return;
+
+                setState(() => _selectionMode = true);
+
+                /// Keep the list names all the way to the Test Result page in a formatted way
+                for (var name in _selectedFolders) {
+                  _selectedFormattedFolder += "$name, ";
                 }
+                _selectedFormattedFolder = _selectedFormattedFolder.substring(
+                    0, _selectedFormattedFolder.length - 2);
               }
             },
             builder: (context, state) {

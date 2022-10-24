@@ -1,7 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/auth/auth_bloc.dart';
 import 'package:kanpractice/domain/market/market.dart';
-import 'package:kanpractice/infrastructure/auth/auth_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -122,14 +123,23 @@ class MarketListTile extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyText2),
         Row(
           children: [
-            Expanded(
-              child: Transform.translate(
-                  offset: const Offset(-KPMargins.margin4, 0),
-                  child: MarketListRating(
-                    listId: list.name,
-                    initialRating: list
-                        .ratingMap[getIt<AuthRepositoryImpl>().getUser()?.uid],
-                  )),
+            BlocProvider(
+              create: (context) => getIt<AuthBloc>(),
+              child: BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  if (state is AuthStateSuccessful) {
+                    return Expanded(
+                      child: Transform.translate(
+                          offset: const Offset(-KPMargins.margin4, 0),
+                          child: MarketListRating(
+                            listId: list.name,
+                            initialRating: list.ratingMap[state.user.uid],
+                          )),
+                    );
+                  }
+                  return const SizedBox();
+                },
+              ),
             ),
             IconButton(
                 onPressed: () => onDownload(list.name, list.isFolder),

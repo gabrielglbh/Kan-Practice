@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/application/account_login/login_bloc.dart';
+import 'package:kanpractice/application/auth/auth_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/sign_in_mode.dart';
@@ -48,19 +48,19 @@ class _LoginPageState extends State<LoginPage> {
     String? email = _emailController?.text;
     String? password = _passwordController?.text;
     if (email != null && password != null) {
-      getIt<LoginBloc>().add(LoginSubmitting(_mode, email, password));
+      getIt<AuthBloc>().add(AuthSubmitting(_mode, email, password));
     }
   }
 
   _changePassword(String prevPass, String newPass) {
     if (prevPass.isNotEmpty && newPass.isNotEmpty) {
-      getIt<LoginBloc>().add(ChangePassword(prevPass, newPass));
+      getIt<AuthBloc>().add(ChangePassword(prevPass, newPass));
     }
   }
 
   _removeAccount(String pass) {
     if (pass.isNotEmpty) {
-      getIt<LoginBloc>().add(RemoveAccount(pass));
+      getIt<AuthBloc>().add(RemoveAccount(pass));
     }
   }
 
@@ -145,16 +145,16 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<LoginBloc>(
-      create: (_) => getIt<LoginBloc>()..add(LoginIdle()),
+    return BlocProvider<AuthBloc>(
+      create: (_) => getIt<AuthBloc>()..add(AuthIdle()),
       child: KPScaffold(
-          appBarTitle: BlocBuilder<LoginBloc, LoginState>(
+          appBarTitle: BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
-              if (state is LoginStateSuccessful) {
+              if (state is AuthStateSuccessful) {
                 return FittedBox(
                     fit: BoxFit.fitWidth,
                     child: Text("settings_account_label".tr()));
-              } else if (state is LoginStateIdle) {
+              } else if (state is AuthStateIdle) {
                 return FittedBox(
                     fit: BoxFit.fitWidth,
                     child: Text(
@@ -171,10 +171,10 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                BlocConsumer<LoginBloc, LoginState>(
+                BlocConsumer<AuthBloc, AuthState>(
                   listener: (context, state) {
                     /// Only pop automatically when closing session
-                    if (state is LoginStateLoggedOut) {
+                    if (state is AuthStateLoggedOut) {
                       if (state.message ==
                           "login_bloc_close_session_successful".tr()) {
                         Navigator.of(context).pop();
@@ -182,13 +182,13 @@ class _LoginPageState extends State<LoginPage> {
                     }
                   },
                   builder: (context, state) {
-                    if (state is LoginStateLoading) {
+                    if (state is AuthStateLoading) {
                       return const KPProgressIndicator();
-                    } else if (state is LoginStateSuccessful) {
+                    } else if (state is AuthStateSuccessful) {
                       return _successfulState(context, state);
-                    } else if (state is LoginStateIdle) {
+                    } else if (state is AuthStateIdle) {
                       return _idleState(context, state);
-                    } else if (state is LoginStateLoggedOut) {
+                    } else if (state is AuthStateLoggedOut) {
                       return _loggedOut(state);
                     } else {
                       return Container();
@@ -201,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Column _idleState(BuildContext bloc, LoginStateIdle state) {
+  Column _idleState(BuildContext bloc, AuthStateIdle state) {
     return Column(
       children: [
         Icon(Icons.info_outline_rounded,
@@ -275,7 +275,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Center _successfulState(BuildContext bloc, LoginStateSuccessful state) {
+  Center _successfulState(BuildContext bloc, AuthStateSuccessful state) {
     return Center(
         child: Column(
       children: [
@@ -324,7 +324,7 @@ class _LoginPageState extends State<LoginPage> {
         ListTile(
           leading: const Icon(Icons.logout),
           title: Text("login_close_session_title".tr()),
-          onTap: () => getIt<LoginBloc>().add(CloseSession()),
+          onTap: () => getIt<AuthBloc>().add(CloseSession()),
         ),
         const Divider(),
         Padding(
@@ -340,7 +340,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Center _loggedOut(LoginStateLoggedOut state) {
+  Center _loggedOut(AuthStateLoggedOut state) {
     return Center(
         child: Column(
       children: [

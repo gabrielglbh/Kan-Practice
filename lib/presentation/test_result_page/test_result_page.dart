@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/test_result/test_result_bloc.dart';
 import 'package:kanpractice/infrastructure/test_data/test_data_repository_impl.dart';
 import 'package:kanpractice/infrastructure/test_result/test_result_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
@@ -10,6 +12,7 @@ import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_win_rate_chart.dart';
 import 'package:kanpractice/presentation/core/ui/kp_action_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_kanji_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
@@ -26,24 +29,17 @@ class TestResultPage extends StatefulWidget {
 class _TestResultPageState extends State<TestResultPage> {
   bool _performAnotherTest = false;
 
-  /// Saves the current test on the database on the initialization of the current
-  /// page to avoid unusual behaviors.
-  Future<void> _saveTest() async {
-    final test = Test(
-        testScore: widget.args.score,
-        wordsInTest: widget.args.kanji,
-        studyMode: widget.args.studyMode,
-        testMode: widget.args.testMode,
-        lists: widget.args.listsName,
-        takenDate: Utils.getCurrentMilliseconds());
-    await getIt<TestResultRepositoryImpl>().createTest(test);
-    await getIt<TestDataRepositoryImpl>().updateStats(test);
-  }
-
   @override
   void initState() {
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) async => await _saveTest());
+    final test = Test(
+      testScore: widget.args.score,
+      wordsInTest: widget.args.kanji,
+      studyMode: widget.args.studyMode,
+      testMode: widget.args.testMode,
+      lists: widget.args.listsName,
+      takenDate: Utils.getCurrentMilliseconds(),
+    );
+    getIt<TestResultBloc>().add(TestResultEventSaveTest(test: test));
     super.initState();
   }
 
@@ -54,67 +50,81 @@ class _TestResultPageState extends State<TestResultPage> {
       automaticallyImplyLeading: false,
       toolbarHeight: KPMargins.margin32,
       appBarTitle: null,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "test_result_title".tr(),
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headline4,
-          ),
-          WinRateChart(
-            winRate: widget.args.score,
-            backgroundColor: StudyModes.values[widget.args.studyMode].color,
-            size: MediaQuery.of(context).size.width / 2.5,
-            rateSize: KPChartSize.large,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: KPMargins.margin8),
-            child: Text("test_result_disclaimer".tr(),
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyText1),
-          ),
-          Visibility(
-              visible: widget.args.studyList != null,
-              child: Expanded(child: _kanjiOnTest())),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Row(
+      child: BlocProvider(
+        create: (context) => getIt<TestResultBloc>(),
+        child: BlocBuilder<TestResultBloc, TestResultState>(
+          builder: (context, state) {
+            if (state is TestResultStateSaving) {
+              return const Center(
+                child: KPProgressIndicator(),
+              );
+            }
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "test_result_title".tr(),
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+                WinRateChart(
+                  winRate: widget.args.score,
+                  backgroundColor:
+                      StudyModes.values[widget.args.studyMode].color,
+                  size: MediaQuery.of(context).size.width / 2.5,
+                  rateSize: KPChartSize.large,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: KPMargins.margin8),
+                  child: Text("test_result_disclaimer".tr(),
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyText1),
+                ),
+                Visibility(
+                    visible: widget.args.studyList != null,
+                    child: Expanded(child: _kanjiOnTest())),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(Icons.track_changes_rounded,
-                        color: KPColors.getSecondaryColor(context)),
                     Expanded(
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.only(left: KPMargins.margin16),
-                        child: Text("test_result_do_test_button_label".tr(),
-                            maxLines: 2,
-                            style: Theme.of(context).textTheme.bodyText1),
+                      child: Row(
+                        children: [
+                          Icon(Icons.track_changes_rounded,
+                              color: KPColors.getSecondaryColor(context)),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: KPMargins.margin16),
+                              child: Text(
+                                  "test_result_do_test_button_label".tr(),
+                                  maxLines: 2,
+                                  style: Theme.of(context).textTheme.bodyText1),
+                            ),
+                          ),
+                        ],
                       ),
+                    ),
+                    Switch(
+                      value: _performAnotherTest,
+                      activeColor: KPColors.secondaryDarkerColor,
+                      activeTrackColor: KPColors.secondaryColor,
+                      onChanged: (value) =>
+                          setState(() => _performAnotherTest = value),
                     ),
                   ],
                 ),
-              ),
-              Switch(
-                value: _performAnotherTest,
-                activeColor: KPColors.secondaryDarkerColor,
-                activeTrackColor: KPColors.secondaryColor,
-                onChanged: (value) =>
-                    setState(() => _performAnotherTest = value),
-              ),
-            ],
-          ),
-          KPActionButton(
-              label: "test_result_save_button_label".tr(),
-              vertical: KPMargins.margin16,
-              onTap: () {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    KanPracticePages.homePage, (route) => false,
-                    arguments: _performAnotherTest);
-              }),
-        ],
+                KPActionButton(
+                    label: "test_result_save_button_label".tr(),
+                    vertical: KPMargins.margin16,
+                    onTap: () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          KanPracticePages.homePage, (route) => false,
+                          arguments: _performAnotherTest);
+                    }),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

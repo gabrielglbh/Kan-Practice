@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/application/add_kanji/add_kanji_bloc.dart';
+import 'package:kanpractice/application/add_word/add_word_bloc.dart';
 import 'package:kanpractice/core/database/database_consts.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
@@ -63,9 +63,9 @@ class _AddWordPageState extends State<AddWordPage> {
   }
 
   Future<void> _createKanji({bool exit = true}) async {
-    getIt<AddWordBloc>().add(AddKanjiEventCreate(
+    getIt<AddWordBloc>().add(AddWordEventCreate(
         exitMode: exit,
-        kanji: Word(
+        word: Word(
           word: _kanjiController?.text ?? "",
           pronunciation: _pronunciationController?.text ?? "",
           meaning: _meaningController?.text ?? "",
@@ -80,7 +80,7 @@ class _AddWordPageState extends State<AddWordPage> {
     Word? k = widget.args.word;
     if (k != null) {
       getIt<AddWordBloc>()
-          .add(AddKanjiEventUpdate(widget.args.listName, k.word, parameters: {
+          .add(AddWordEventUpdate(widget.args.listName, k.word, parameters: {
         WordTableFields.wordField: _kanjiController?.text ?? "",
         WordTableFields.pronunciationField:
             _pronunciationController?.text ?? "",
@@ -109,7 +109,7 @@ class _AddWordPageState extends State<AddWordPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AddWordBloc>(
-      create: (_) => getIt<AddWordBloc>()..add(AddKanjiEventIdle()),
+      create: (_) => getIt<AddWordBloc>()..add(AddWordEventIdle()),
       child: KPScaffold(
         resizeToAvoidBottomInset: true,
         appBarTitle: widget.args.word != null
@@ -139,7 +139,7 @@ class _AddWordPageState extends State<AddWordPage> {
               }
             },
           ),
-          BlocBuilder<AddWordBloc, AddKanjiState>(
+          BlocBuilder<AddWordBloc, AddWordState>(
             builder: (context, state) => Visibility(
               visible: widget.args.word == null,
               child: IconButton(
@@ -150,7 +150,7 @@ class _AddWordPageState extends State<AddWordPage> {
               ),
             ),
           ),
-          BlocBuilder<AddWordBloc, AddKanjiState>(
+          BlocBuilder<AddWordBloc, AddWordState>(
               builder: (context, state) => IconButton(
                     icon: const Icon(Icons.check_rounded),
                     onPressed: () {
@@ -174,9 +174,9 @@ class _AddWordPageState extends State<AddWordPage> {
   }
 
   BlocListener _builder() {
-    return BlocListener<AddWordBloc, AddKanjiState>(
+    return BlocListener<AddWordBloc, AddWordState>(
       listener: (context, state) {
-        if (state is AddKanjiStateDoneCreating) {
+        if (state is AddWordStateDoneCreating) {
           /// If exit is true, only one kanji should be created and exit
           if (state.exitMode) {
             Navigator.of(context).pop(0);
@@ -186,9 +186,9 @@ class _AddWordPageState extends State<AddWordPage> {
             _meaningController?.clear();
             _kanjiFocus?.requestFocus();
           }
-        } else if (state is AddKanjiStateDoneUpdating) {
+        } else if (state is AddWordStateDoneUpdating) {
           Navigator.of(context).pop(0);
-        } else if (state is AddKanjiStateFailure) {
+        } else if (state is AddWordStateFailure) {
           Utils.getSnackBar(context, state.message);
         }
       },
@@ -241,7 +241,7 @@ class _AddWordPageState extends State<AddWordPage> {
         ),
         Padding(
           padding: const EdgeInsets.only(top: KPMargins.margin16),
-          child: BlocBuilder<AddWordBloc, AddKanjiState>(
+          child: BlocBuilder<AddWordBloc, AddWordState>(
             builder: (context, state) => KPTextForm(
               controller: _meaningController,
               focusNode: _meaningFocus,

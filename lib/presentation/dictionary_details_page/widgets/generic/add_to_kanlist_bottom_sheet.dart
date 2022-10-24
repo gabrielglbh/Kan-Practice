@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/add_word/add_word_bloc.dart';
 import 'package:kanpractice/application/list/lists_bloc.dart';
 import 'package:kanpractice/domain/dictionary_details/word_data.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:kanpractice/presentation/core/types/word_categories.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
-import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_create_kanlist_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
@@ -54,24 +54,21 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
     String meaning = singleKanjiMeaning ?? wordMeaning;
     String reading = singleKanjiReading ?? wordReading;
 
-    final code = await getIt<WordRepositoryImpl>().createWord(Word(
-        word: widget.kanji ?? "",
-        meaning:
-            "${meaning[0].toUpperCase()}${meaning.substring(1).toLowerCase()}",
-        pronunciation: reading,
-        category: category.index,
-        listName: listName,
-        dateAdded: Utils.getCurrentMilliseconds(),
-        dateLastShown: Utils.getCurrentMilliseconds()));
-    if (code == 0) {
-      if (!mounted) return;
-      Navigator.of(context).pop();
-      Utils.getSnackBar(context, "add_kanji_createKanji_successful".tr());
-    } else if (code == -1) {
-      setState(() => _error = "add_kanji_createKanji_failed_insertion".tr());
-    } else {
-      setState(() => _error = "add_kanji_createKanji_failed".tr());
-    }
+    getIt<AddWordBloc>().add(
+      AddWordEventCreate(
+        word: Word(
+          word: widget.kanji ?? "",
+          meaning:
+              "${meaning[0].toUpperCase()}${meaning.substring(1).toLowerCase()}",
+          pronunciation: reading,
+          category: category.index,
+          listName: listName,
+          dateAdded: Utils.getCurrentMilliseconds(),
+          dateLastShown: Utils.getCurrentMilliseconds(),
+        ),
+        exitMode: false,
+      ),
+    );
   }
 
   @override
@@ -80,62 +77,76 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        return Wrap(children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const KPDragContainer(),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: KPMargins.margin8,
-                    horizontal: KPMargins.margin32),
-                child: Text("dict_jisho_add_kanji_bottom_sheet_title".tr(),
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6),
+        return BlocProvider(
+          create: (context) => getIt<AddWordBloc>(),
+          child: BlocListener<AddWordBloc, AddWordState>(
+            listener: (context, state) {
+              if (state is AddWordStateDoneCreating) {
+                Navigator.of(context).pop();
+                Utils.getSnackBar(
+                    context, "add_kanji_createKanji_successful".tr());
+              } else if (state is AddWordStateFailure) {
+                setState(() => _error = state.message);
+              }
+            },
+            child: Wrap(children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const KPDragContainer(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: KPMargins.margin8,
+                        horizontal: KPMargins.margin32),
+                    child: Text("dict_jisho_add_kanji_bottom_sheet_title".tr(),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline6),
+                  ),
+                  Visibility(
+                    visible: _error.isNotEmpty,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: KPMargins.margin8,
+                          horizontal: KPMargins.margin32),
+                      child: Text(_error,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context)
+                              .textTheme
+                              .button
+                              ?.copyWith(color: KPColors.secondaryColor)),
+                    ),
+                  ),
+                  BlocProvider<ListBloc>(
+                    create: (_) =>
+                        getIt<ListBloc>()..add(const ListForTestEventLoading()),
+                    child: BlocBuilder<ListBloc, ListState>(
+                      builder: (context, state) {
+                        if (state is ListStateFailure) {
+                          return KPEmptyList(
+                              showTryButton: true,
+                              onRefresh: () => getIt<ListBloc>()
+                                ..add(const ListForTestEventLoading()),
+                              message: "study_bottom_sheet_load_failed".tr());
+                        } else if (state is ListStateLoading) {
+                          return const KPProgressIndicator();
+                        } else if (state is ListStateLoaded) {
+                          return Container(
+                              constraints: BoxConstraints(
+                                  maxHeight:
+                                      MediaQuery.of(context).size.height / 2),
+                              margin: const EdgeInsets.all(KPMargins.margin8),
+                              child: _listSelection(state));
+                        } else {
+                          return Container();
+                        }
+                      },
+                    ),
+                  )
+                ],
               ),
-              Visibility(
-                visible: _error.isNotEmpty,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: KPMargins.margin8,
-                      horizontal: KPMargins.margin32),
-                  child: Text(_error,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context)
-                          .textTheme
-                          .button
-                          ?.copyWith(color: KPColors.secondaryColor)),
-                ),
-              ),
-              BlocProvider<ListBloc>(
-                create: (_) =>
-                    getIt<ListBloc>()..add(const ListForTestEventLoading()),
-                child: BlocBuilder<ListBloc, ListState>(
-                  builder: (context, state) {
-                    if (state is ListStateFailure) {
-                      return KPEmptyList(
-                          showTryButton: true,
-                          onRefresh: () => getIt<ListBloc>()
-                            ..add(const ListForTestEventLoading()),
-                          message: "study_bottom_sheet_load_failed".tr());
-                    } else if (state is ListStateLoading) {
-                      return const KPProgressIndicator();
-                    } else if (state is ListStateLoaded) {
-                      return Container(
-                          constraints: BoxConstraints(
-                              maxHeight:
-                                  MediaQuery.of(context).size.height / 2),
-                          margin: const EdgeInsets.all(KPMargins.margin8),
-                          child: _listSelection(state));
-                    } else {
-                      return Container();
-                    }
-                  },
-                ),
-              )
-            ],
+            ]),
           ),
-        ]);
+        );
       },
     );
   }

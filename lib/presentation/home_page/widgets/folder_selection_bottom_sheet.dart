@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/folder_list/folder_bloc.dart';
+import 'package:kanpractice/application/load_test_folder_selection/load_test_folder_selection_bloc.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
-import 'package:kanpractice/domain/word/word.dart';
-import 'package:kanpractice/infrastructure/folder/folder_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
@@ -34,25 +33,11 @@ class FolderSelectionBottomSheet extends StatefulWidget {
 
 class _FolderSelectionBottomSheetState
     extends State<FolderSelectionBottomSheet> {
-  List<Word> _kanji = [];
   final List<String> _selectedFolders = [];
   String _selectedFormattedFolder = "";
 
   bool _selectionMode = false;
   bool _onListEmpty = false;
-
-  Future<void> _loadKanjiFromFolderSelection(List<String> folders) async {
-    _kanji =
-        await getIt<FolderRepositoryImpl>().getAllWordsOnListsOnFolder(folders);
-    _kanji.shuffle();
-
-    /// Keep the list names all the way to the Test Result page in a formatted way
-    for (var name in _selectedFolders) {
-      _selectedFormattedFolder += "$name, ";
-    }
-    _selectedFormattedFolder = _selectedFormattedFolder.substring(
-        0, _selectedFormattedFolder.length - 2);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,67 +45,95 @@ class _FolderSelectionBottomSheetState
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        return Wrap(children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const KPDragContainer(),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: KPMargins.margin8,
-                    horizontal: KPMargins.margin32),
-                child: Text("study_folder_bottom_sheet_title".tr(),
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6),
-              ),
-              Visibility(
-                visible: _onListEmpty,
-                child: Text("study_bottom_sheet_load_failed".tr(),
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6
-                        ?.copyWith(fontWeight: FontWeight.w400)),
-              ),
-              Visibility(
-                visible: _selectionMode,
-                child: KPTestStudyMode(
-                    list: _kanji,
-                    type: Tests.folder,
-                    testName: _selectedFormattedFolder),
-              ),
-              Visibility(
-                visible: !_selectionMode,
-                child: BlocProvider(
-                  create: (_) =>
-                      getIt<FolderBloc>()..add(FolderForTestEventLoading()),
-                  child: BlocBuilder<FolderBloc, FolderState>(
-                    builder: (context, state) {
-                      if (state is FolderStateFailure) {
-                        return KPEmptyList(
-                            showTryButton: true,
-                            onRefresh: () => getIt<FolderBloc>()
-                              ..add(FolderForTestEventLoading()),
-                            message: "study_bottom_sheet_load_failed".tr());
-                      } else if (state is FolderStateLoading) {
-                        return const KPProgressIndicator();
-                      } else if (state is FolderStateLoaded) {
-                        return Container(
-                            constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height / 2.5),
-                            margin: const EdgeInsets.all(KPMargins.margin8),
-                            child: _listSelection(state));
-                      } else {
-                        return const SizedBox();
-                      }
-                    },
-                  ),
+        return BlocProvider(
+          create: (context) => getIt<LoadTestFolderSelectionBloc>(),
+          child: BlocConsumer<LoadTestFolderSelectionBloc,
+              LoadTestFolderSelectionState>(
+            listener: (context, state) {
+              if (state is LoadTestFolderSelectionStateLoadedList) {
+                if (state.words.isNotEmpty) {
+                  setState(() => _selectionMode = true);
+                } else {
+                  /// Keep the list names all the way to the Test Result page in a formatted way
+                  for (var name in _selectedFolders) {
+                    _selectedFormattedFolder += "$name, ";
+                  }
+                  _selectedFormattedFolder = _selectedFormattedFolder.substring(
+                      0, _selectedFormattedFolder.length - 2);
+                }
+              }
+            },
+            builder: (context, state) {
+              return Wrap(children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const KPDragContainer(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: KPMargins.margin8,
+                          horizontal: KPMargins.margin32),
+                      child: Text("study_folder_bottom_sheet_title".tr(),
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.headline6),
+                    ),
+                    Visibility(
+                      visible: _onListEmpty,
+                      child: Text("study_bottom_sheet_load_failed".tr(),
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline6
+                              ?.copyWith(fontWeight: FontWeight.w400)),
+                    ),
+                    Visibility(
+                      visible: _selectionMode &&
+                          (state is LoadTestFolderSelectionStateLoadedList),
+                      child: KPTestStudyMode(
+                        list: (state as LoadTestFolderSelectionStateLoadedList)
+                            .words,
+                        type: Tests.folder,
+                        testName: _selectedFormattedFolder,
+                      ),
+                    ),
+                    Visibility(
+                      visible: !_selectionMode,
+                      child: BlocProvider(
+                        create: (_) => getIt<FolderBloc>()
+                          ..add(FolderForTestEventLoading()),
+                        child: BlocBuilder<FolderBloc, FolderState>(
+                          builder: (context, state) {
+                            if (state is FolderStateFailure) {
+                              return KPEmptyList(
+                                  showTryButton: true,
+                                  onRefresh: () => getIt<FolderBloc>()
+                                    ..add(FolderForTestEventLoading()),
+                                  message:
+                                      "study_bottom_sheet_load_failed".tr());
+                            } else if (state is FolderStateLoading) {
+                              return const KPProgressIndicator();
+                            } else if (state is FolderStateLoaded) {
+                              return Container(
+                                  constraints: BoxConstraints(
+                                      maxHeight:
+                                          MediaQuery.of(context).size.height /
+                                              2.5),
+                                  margin:
+                                      const EdgeInsets.all(KPMargins.margin8),
+                                  child: _listSelection(state));
+                            } else {
+                              return const SizedBox();
+                            }
+                          },
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-              )
-            ],
+              ]);
+            },
           ),
-        ]);
+        );
       },
     );
   }
@@ -150,8 +163,9 @@ class _FolderSelectionBottomSheetState
             title2: "study_bottom_sheet_button_label".tr(),
             onTap: () async {
               if (_selectedFolders.isNotEmpty) {
-                await _loadKanjiFromFolderSelection(_selectedFolders);
-                if (_kanji.isNotEmpty) setState(() => _selectionMode = true);
+                getIt<LoadTestFolderSelectionBloc>().add(
+                    LoadTestFolderSelectionEventLoadList(
+                        folders: _selectedFolders));
               } else {
                 setState(() => _onListEmpty = true);
               }

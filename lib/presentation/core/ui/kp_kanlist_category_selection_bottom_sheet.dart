@@ -34,6 +34,7 @@ class KPKanListCategorySelectionBottomSheet extends StatefulWidget {
 class _KPKanListCategorySelectionBottomSheetState
     extends State<KPKanListCategorySelectionBottomSheet> {
   WordCategory _selectedCategory = WordCategory.noun;
+  bool _selectionMode = false;
   bool _onListEmpty = false;
 
   @override
@@ -50,10 +51,10 @@ class _KPKanListCategorySelectionBottomSheetState
             listener: ((context, state) {
               if (state is LoadTestCategorySelectionStateLoadedList) {
                 setState(() {
-                  if (state.words.isEmpty) {
-                    _onListEmpty = true;
+                  if (state.words.isNotEmpty) {
+                    _selectionMode = true;
                   } else {
-                    _onListEmpty = false;
+                    _onListEmpty = true;
                   }
                 });
               }
@@ -83,7 +84,7 @@ class _KPKanListCategorySelectionBottomSheetState
                               ?.copyWith(fontWeight: FontWeight.w400)),
                     ),
                     Visibility(
-                      visible:
+                      visible: _selectionMode &&
                           state is LoadTestCategorySelectionStateLoadedList,
                       child: KPTestStudyMode(
                         list:
@@ -96,7 +97,7 @@ class _KPKanListCategorySelectionBottomSheetState
                       ),
                     ),
                     Visibility(
-                      visible: state is LoadTestCategorySelectionStateIdle,
+                      visible: !_selectionMode,
                       child: Container(
                         margin: const EdgeInsets.all(KPMargins.margin8),
                         child: Column(

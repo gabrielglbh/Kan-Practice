@@ -1,23 +1,34 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database/database_consts.dart';
-import 'package:kanpractice/infrastructure/services/database/migrations.dart';
-import 'package:kanpractice/domain/services/i_database_repository.dart';
+import 'package:kanpractice/infrastructure/services/db_migration/migrations.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
-@injectable
-class DatabaseRepositoryImpl implements IDatabaseRepository {
-  final Database? _database;
-
-  DatabaseRepositoryImpl(this._database);
-
-  @override
-  Future<void> close() async => await _database?.close();
-
-  @override
-  Future<void> open() async {
+@module
+abstract class InjectableModule {
+  @lazySingleton
+  FirebaseAuth get firebaseAuth => FirebaseAuth.instance;
+  @lazySingleton
+  FirebaseFirestore get firebaseFirestore => FirebaseFirestore.instance;
+  @lazySingleton
+  FirebaseMessaging get firebaseMessaging => FirebaseMessaging.instance;
+  @lazySingleton
+  FlutterLocalNotificationsPlugin get flutterLocalNotificationsPlugin =>
+      FlutterLocalNotificationsPlugin();
+  @lazySingleton
+  FlutterTts get tts => FlutterTts();
+  @preResolve
+  Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
+  @preResolve
+  Future<Database> get database async {
     String databasesPath = await getDatabasesPath();
     String path = join(databasesPath, "kanpractice.db");
 
@@ -25,7 +36,7 @@ class DatabaseRepositoryImpl implements IDatabaseRepository {
       await Directory(databasesPath).create(recursive: true);
     } catch (_) {}
 
-    await openDatabase(
+    return await openDatabase(
       path,
       version: 9,
       singleInstance: true,

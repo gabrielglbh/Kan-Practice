@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:kanpractice/application/initial/initial_bloc.dart';
-import 'package:kanpractice/application/services/database/database_service.dart';
 import 'package:kanpractice/application/services/messaging_service.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
@@ -49,9 +48,8 @@ Future<void> _initSharedPreferences() async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  configureInjection();
+  await configureInjection();
   await _initSharedPreferences();
-  await getIt<DatabaseService>().open();
   await Firebase.initializeApp();
   await EasyLocalization.ensureInitialized();
   await FlutterLocalNotificationsPlugin().initialize(
@@ -100,12 +98,6 @@ class _KanPracticeState extends State<KanPractice> {
       }
     });
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    getIt<DatabaseService>().close();
-    super.dispose();
   }
 
   @override

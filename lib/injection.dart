@@ -5,4 +5,4 @@ import 'package:kanpractice/injection.config.dart';
 final GetIt getIt = GetIt.instance;
 
 @injectableInit
-GetIt configureInjection() => $initGetIt(getIt);
+Future<GetIt> configureInjection() async => await $initGetIt(getIt);

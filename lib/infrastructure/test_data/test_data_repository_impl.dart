@@ -1,20 +1,20 @@
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database/database_consts.dart';
+import 'package:kanpractice/domain/specific_data/i_specific_data_repository.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/domain/specific_data/specific_data.dart';
 import 'package:kanpractice/domain/test_data/i_test_data_repository.dart';
 import 'package:kanpractice/domain/test_data/test_data.dart';
 import 'package:kanpractice/domain/test_result/test_result.dart';
-import 'package:kanpractice/infrastructure/specific_data/specific_data_repository_impl.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 @LazySingleton(as: ITestDataRepository)
 class TestDataRepositoryImpl implements ITestDataRepository {
   final Database _database;
-  final SpecificDataRepositoryImpl _specificDataRepositoryImpl;
+  final ISpecificDataRepository _specificDataRepository;
 
-  TestDataRepositoryImpl(this._database, this._specificDataRepositoryImpl);
+  TestDataRepositoryImpl(this._database, this._specificDataRepository);
 
   @override
   Map<String, num> getAdditionalParams(TestData curr, Test test) {
@@ -120,8 +120,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
         /// Populate all TestSpecificData
         TestData rawTestData = TestData.fromJson(res[0]);
         for (var t in Tests.values) {
-          final rawSpec =
-              await _specificDataRepositoryImpl.getSpecificTestData(t);
+          final rawSpec = await _specificDataRepository.getSpecificTestData(t);
           if (rawSpec != SpecificData.empty) {
             rawTestData = rawTestData.copyWith(rawSpec);
           }
@@ -199,7 +198,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
       map.addEntries(getAdditionalParams(curr, test).entries);
       map.addEntries(getTestParams(curr, test).entries);
 
-      await _specificDataRepositoryImpl.updateSpecificTestStats(test);
+      await _specificDataRepository.updateSpecificTestStats(test);
       await _database.update(
         TestDataTableFields.testDataTable,
         map,

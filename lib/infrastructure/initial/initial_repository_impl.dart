@@ -5,23 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/initial/i_initial_repository.dart';
+import 'package:kanpractice/domain/list/i_list_repository.dart';
 import 'package:kanpractice/domain/list/list.dart';
+import 'package:kanpractice/domain/word/i_word_repository.dart';
 import 'package:kanpractice/domain/word/word.dart';
-import 'package:kanpractice/infrastructure/list/list_repository_impl.dart';
-import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 @LazySingleton(as: IInitialRepository)
 class InitialRepositoryImpl implements IInitialRepository {
   final Database _database;
-  final ListRepositoryImpl _listRepositoryImpl;
-  final WordRepositoryImpl _wordRepositoryImpl;
+  final IListRepository _listRepository;
+  final IWordRepository _wordRepository;
 
   InitialRepositoryImpl(
     this._database,
-    this._listRepositoryImpl,
-    this._wordRepositoryImpl,
+    this._listRepository,
+    this._wordRepository,
   );
 
   @override
@@ -52,14 +52,14 @@ class InitialRepositoryImpl implements IInitialRepository {
       for (int x = 0; x < lists.length; x++) {
         final WordList k = lists[x]
             .copyWithUpdatedDate(lastUpdated: Utils.getCurrentMilliseconds());
-        batch = await _listRepositoryImpl.mergeLists(
+        batch = await _listRepository.mergeLists(
             batch, [k], ConflictAlgorithm.replace);
       }
       for (int x = 0; x < kanji.length; x++) {
         final Word k = kanji[x].copyWithUpdatedDate(
             dateAdded: Utils.getCurrentMilliseconds(),
             dateLastShown: Utils.getCurrentMilliseconds());
-        batch = await _wordRepositoryImpl.mergeWords(
+        batch = await _wordRepository.mergeWords(
             batch, [k], ConflictAlgorithm.replace);
       }
 

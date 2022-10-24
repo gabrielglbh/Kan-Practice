@@ -1,9 +1,9 @@
 import 'package:kanpractice/domain/dictionary_details/word_example.dart';
-import 'package:unofficial_jisho_api/api.dart' as jisho;
+import 'package:unofficial_jisho_api/api.dart';
 
 class WordData {
-  final jisho.KanjiResultData? resultData;
-  final List<jisho.JishoResult> resultPhrase;
+  final KanjiResultData? resultData;
+  final List<JishoResult> resultPhrase;
   final List<WordExample> example;
 
   const WordData(

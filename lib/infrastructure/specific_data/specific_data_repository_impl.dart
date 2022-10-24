@@ -1,27 +1,26 @@
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database/database_consts.dart';
+import 'package:kanpractice/domain/word/i_word_repository.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/word_categories.dart';
 import 'package:kanpractice/domain/specific_data/i_specific_data_repository.dart';
 import 'package:kanpractice/domain/specific_data/specific_data.dart';
 import 'package:kanpractice/domain/test_result/test_result.dart';
-import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 @LazySingleton(as: ISpecificDataRepository)
 class SpecificDataRepositoryImpl implements ISpecificDataRepository {
   static const categoryId = -9999;
   final Database _database;
-  final WordRepositoryImpl _wordRepositoryImpl;
+  final IWordRepository _wordRepository;
 
-  SpecificDataRepositoryImpl(this._database, this._wordRepositoryImpl);
+  SpecificDataRepositoryImpl(this._database, this._wordRepository);
 
   @override
   Future<SpecificData> getSpecificCategoryData(WordCategory mode) async {
     try {
-      final list =
-          await _wordRepositoryImpl.getWordsBasedOnCategory(mode.index);
+      final list = await _wordRepository.getWordsBasedOnCategory(mode.index);
       double writing = 0,
           reading = 0,
           recognition = 0,

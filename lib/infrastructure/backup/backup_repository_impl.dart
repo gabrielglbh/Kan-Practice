@@ -6,17 +6,17 @@ import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/backup/backup.dart';
 import 'package:kanpractice/domain/backup/i_backup_repository.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
+import 'package:kanpractice/domain/folder/i_folder_repository.dart';
+import 'package:kanpractice/domain/list/i_list_repository.dart';
 import 'package:kanpractice/domain/list/list.dart';
+import 'package:kanpractice/domain/relation_folder_list/i_relation_folder_list_repository.dart';
 import 'package:kanpractice/domain/relation_folder_list/relation_folder_list.dart';
+import 'package:kanpractice/domain/specific_data/i_specific_data_repository.dart';
 import 'package:kanpractice/domain/specific_data/specific_data.dart';
+import 'package:kanpractice/domain/test_data/i_test_data_repository.dart';
 import 'package:kanpractice/domain/test_data/test_data.dart';
+import 'package:kanpractice/domain/word/i_word_repository.dart';
 import 'package:kanpractice/domain/word/word.dart';
-import 'package:kanpractice/infrastructure/folder/folder_repository_impl.dart';
-import 'package:kanpractice/infrastructure/list/list_repository_impl.dart';
-import 'package:kanpractice/infrastructure/relation_folder_list/relation_folder_list_repository_impl.dart';
-import 'package:kanpractice/infrastructure/specific_data/specific_data_repository_impl.dart';
-import 'package:kanpractice/infrastructure/test_data/test_data_repository_impl.dart';
-import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:sqflite/sqlite_api.dart';
 
@@ -25,23 +25,23 @@ class BackupRepositoryImpl implements IBackupRepository {
   final FirebaseFirestore _ref;
   final FirebaseAuth _auth;
   final Database _database;
-  final WordRepositoryImpl _wordRepositoryImpl;
-  final ListRepositoryImpl _listRepositoryImpl;
-  final RelationFolderListRepositoryImpl _relationFolderListRepositoryImpl;
-  final FolderRepositoryImpl _folderRepositoryImpl;
-  final SpecificDataRepositoryImpl _specificDataRepositoryImpl;
-  final TestDataRepositoryImpl _testDataRepositoryImpl;
+  final IWordRepository _wordRepository;
+  final IListRepository _listRepository;
+  final IRelationFolderListRepository _relationFolderListRepository;
+  final IFolderRepository _folderRepository;
+  final ISpecificDataRepository _specificDataRepository;
+  final ITestDataRepository _testDataRepository;
 
   BackupRepositoryImpl(
     this._auth,
     this._ref,
     this._database,
-    this._wordRepositoryImpl,
-    this._listRepositoryImpl,
-    this._relationFolderListRepositoryImpl,
-    this._folderRepositoryImpl,
-    this._specificDataRepositoryImpl,
-    this._testDataRepositoryImpl,
+    this._wordRepository,
+    this._listRepository,
+    this._relationFolderListRepository,
+    this._folderRepository,
+    this._specificDataRepository,
+    this._testDataRepository,
   );
 
   final String collection = "BackUps";
@@ -69,9 +69,9 @@ class BackupRepositoryImpl implements IBackupRepository {
     User? user = _auth.currentUser;
     await user?.reload();
 
-    List<Word> kanji = await _wordRepositoryImpl.getAllWords();
-    List<WordList> lists = await _listRepositoryImpl.getAllLists();
-    TestData testData = await _testDataRepositoryImpl.getTestDataFromDb();
+    List<Word> kanji = await _wordRepository.getAllWords();
+    List<WordList> lists = await _listRepository.getAllLists();
+    TestData testData = await _testDataRepository.getTestDataFromDb();
     List<SpecificData> testSpecData = [];
 
     /// Remove from the back up the empty specs
@@ -100,9 +100,9 @@ class BackupRepositoryImpl implements IBackupRepository {
       testSpecData.add(testData.dailyTestData);
     }
 
-    List<Folder> folders = await _folderRepositoryImpl.getAllFolders();
+    List<Folder> folders = await _folderRepository.getAllFolders();
     List<RelationFolderList> relFolderKanList =
-        await _relationFolderListRepositoryImpl.getFolderRelation();
+        await _relationFolderListRepository.getFolderRelation();
     int date = Utils.getCurrentMilliseconds();
 
     if (lists.isEmpty) {
@@ -447,22 +447,22 @@ class BackupRepositoryImpl implements IBackupRepository {
       /// Conflict algorithm allows us to merge the data from back up with current one.
       Batch? batch = _database.batch();
 
-      batch = await _listRepositoryImpl.mergeLists(
+      batch = await _listRepository.mergeLists(
           batch, backUpLists, ConflictAlgorithm.replace);
 
-      batch = await _wordRepositoryImpl.mergeWords(
+      batch = await _wordRepository.mergeWords(
           batch, backUpWords, ConflictAlgorithm.ignore);
 
-      batch = await _folderRepositoryImpl.mergeFolders(
+      batch = await _folderRepository.mergeFolders(
           batch, backUpFolders, ConflictAlgorithm.replace);
 
-      batch = _testDataRepositoryImpl.mergeTestData(
+      batch = _testDataRepository.mergeTestData(
           batch, backUpTestData, ConflictAlgorithm.replace);
 
-      batch = await _relationFolderListRepositoryImpl.mergeRelationFolderList(
+      batch = await _relationFolderListRepository.mergeRelationFolderList(
           batch, backUpRelationFolderList, ConflictAlgorithm.replace);
 
-      batch = await _specificDataRepositoryImpl.mergeSpecificData(
+      batch = await _specificDataRepository.mergeSpecificData(
           batch, backUpTestSpecData, ConflictAlgorithm.replace);
 
       final results = await batch?.commit();

@@ -5,7 +5,7 @@ import 'package:kanpractice/domain/dictionary_details/i_dictionary_details_repos
 import 'package:kanpractice/domain/dictionary_details/word_data.dart';
 import 'package:kanpractice/domain/dictionary_details/word_example.dart';
 import 'package:kanpractice/domain/word_history/i_word_history_repository.dart';
-import 'package:unofficial_jisho_api/api.dart' as jisho;
+import 'package:unofficial_jisho_api/api.dart';
 
 part 'dictionary_details_event.dart';
 part 'dictionary_details_state.dart';
@@ -24,9 +24,8 @@ class DictionaryDetailsBloc
       emit(DictionaryDetailsStateLoading());
       try {
         final infra = _dictionaryDetailsRepository;
-        jisho.KanjiResultData? resultData = await infra.searchWord(event.kanji);
-        List<jisho.JishoResult> resultPhrase =
-            await infra.searchPhrase(event.kanji);
+        KanjiResultData? resultData = await infra.searchWord(event.kanji);
+        List<JishoResult> resultPhrase = await infra.searchPhrase(event.kanji);
         List<WordExample> example = await infra.searchForExample(event.kanji);
 
         WordData data = WordData(

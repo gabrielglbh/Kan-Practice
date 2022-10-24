@@ -7,13 +7,13 @@ import 'package:kanpractice/presentation/dictionary_details_page/widgets/generic
 import 'package:kanpractice/presentation/dictionary_details_page/widgets/generic/jisho_info_tile.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/widgets/generic/scrollable_text.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/widgets/generic/single_kanji_look_up_list.dart';
-import 'package:unofficial_jisho_api/api.dart' as jisho;
+import 'package:unofficial_jisho_api/api.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class WordResult extends StatelessWidget {
   final String? kanji;
-  final jisho.KanjiResultData? data;
-  final List<jisho.JishoResult> phrase;
+  final KanjiResultData? data;
+  final List<JishoResult> phrase;
   final String _separator = " • ";
   final bool fromDictionary;
   const WordResult(
@@ -130,9 +130,9 @@ class WordResult extends StatelessWidget {
         children: [
           JishoHeader(header: header, guideline: guideline),
           ScrollableText(
-            label: d is List<jisho.JishoWordSense>
+            label: d is List<JishoWordSense>
                 ? _sense(d)
-                : d is List<jisho.JishoJapaneseWord>
+                : d is List<JishoJapaneseWord>
                     ? _readings(d)
                     : "",
             paddingTop: true,
@@ -144,7 +144,7 @@ class WordResult extends StatelessWidget {
     );
   }
 
-  String _sense(List<jisho.JishoWordSense> sense) {
+  String _sense(List<JishoWordSense> sense) {
     List<String?> actualSenses = [];
     for (var meaning in sense) {
       actualSenses
@@ -153,7 +153,7 @@ class WordResult extends StatelessWidget {
     return actualSenses.join(_separator);
   }
 
-  String _readings(List<jisho.JishoJapaneseWord> readings) {
+  String _readings(List<JishoJapaneseWord> readings) {
     List<String?> actualReadings = [];
     for (var word in readings) {
       actualReadings.add(""

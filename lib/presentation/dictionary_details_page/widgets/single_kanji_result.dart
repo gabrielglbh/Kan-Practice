@@ -9,12 +9,11 @@ import 'package:kanpractice/presentation/dictionary_details_page/widgets/generic
 import 'package:kanpractice/presentation/dictionary_details_page/widgets/generic/scrollable_text.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/widgets/generic/single_kanji_look_up_list.dart';
 import 'package:unofficial_jisho_api/api.dart';
-import 'package:unofficial_jisho_api/api.dart' as jisho;
 import 'package:easy_localization/easy_localization.dart';
 
 class SingleKanjiResult extends StatelessWidget {
   final KanjiResultData? data;
-  final List<jisho.JishoResult> phrase;
+  final List<JishoResult> phrase;
   final String _separator = " • ";
   final bool fromDictionary;
   const SingleKanjiResult(

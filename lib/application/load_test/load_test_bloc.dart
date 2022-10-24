@@ -10,21 +10,21 @@ import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
-part 'test_load_event.dart';
-part 'test_load_state.dart';
+part 'load_test_event.dart';
+part 'load_test_state.dart';
 
 @lazySingleton
-class TestLoadBloc extends Bloc<TestLoadEvent, TestLoadState> {
+class LoadTestBloc extends Bloc<LoadTestEvent, LoadTestState> {
   final IWordRepository _wordRepository;
   final IFolderRepository _folderRepository;
 
-  TestLoadBloc(
+  LoadTestBloc(
     this._wordRepository,
     this._folderRepository,
-  ) : super(TestLoadStateIdle()) {
-    on<TestLoadEventIdle>((_, __) {});
+  ) : super(LoadTestStateIdle()) {
+    on<LoadTestEventIdle>((_, __) {});
 
-    on<TestLoadEventLoadList>((event, emit) async {
+    on<LoadTestEventLoadList>((event, emit) async {
       List<Word> finalList = [];
 
       /// Get all the list of all kanji and perform a 20 kanji random sublist
@@ -75,7 +75,7 @@ class TestLoadBloc extends Bloc<TestLoadEvent, TestLoadState> {
       List<Word> sortedList = finalList.sublist(
           0, finalList.length < kanjiInTest ? finalList.length : kanjiInTest);
 
-      emit(TestLoadStateLoadedList(sortedList, event.mode));
+      emit(LoadTestStateLoadedList(sortedList, event.mode));
     });
   }
 }

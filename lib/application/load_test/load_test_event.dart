@@ -1,21 +1,21 @@
-part of 'test_load_bloc.dart';
+part of 'load_test_bloc.dart';
 
-abstract class TestLoadEvent extends Equatable {
-  const TestLoadEvent();
+abstract class LoadTestEvent extends Equatable {
+  const LoadTestEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class TestLoadEventIdle extends TestLoadEvent {}
+class LoadTestEventIdle extends LoadTestEvent {}
 
-class TestLoadEventLoadList extends TestLoadEvent {
+class LoadTestEventLoadList extends LoadTestEvent {
   final String? folder;
   final StudyModes mode;
   final Tests type;
   final String? practiceList;
 
-  const TestLoadEventLoadList({
+  const LoadTestEventLoadList({
     required this.folder,
     required this.mode,
     required this.type,

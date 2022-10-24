@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/application/test_load/test_load_bloc.dart';
+import 'package:kanpractice/application/load_test/load_test_bloc.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -49,10 +49,10 @@ class KPTestStudyMode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<TestLoadBloc>(),
-      child: BlocConsumer<TestLoadBloc, TestLoadState>(
+      create: (context) => getIt<LoadTestBloc>(),
+      child: BlocConsumer<LoadTestBloc, LoadTestState>(
         listener: ((context, state) async {
-          if (state is TestLoadStateLoadedList) {
+          if (state is LoadTestStateLoadedList) {
             List<Word> list = state.words;
             if (list.isEmpty) {
               Navigator.of(context).pop();
@@ -140,8 +140,8 @@ class KPTestStudyMode extends StatelessWidget {
               await _decideOnMode(context, l, mode);
             }
           } else {
-            getIt<TestLoadBloc>().add(
-              TestLoadEventLoadList(folder: folder, mode: mode, type: type),
+            getIt<LoadTestBloc>().add(
+              LoadTestEventLoadList(folder: folder, mode: mode, type: type),
             );
           }
         });

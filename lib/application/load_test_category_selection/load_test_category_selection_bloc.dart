@@ -7,22 +7,22 @@ import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/word_categories.dart';
 
-part 'test_category_selection_event.dart';
-part 'test_category_selection_state.dart';
+part 'load_test_category_selection_event.dart';
+part 'load_test_category_selection_state.dart';
 
 @lazySingleton
-class TestCategorySelectionBloc
-    extends Bloc<TestCategorySelectionEvent, TestCategorySelectionState> {
+class LoadTestCategorySelectionBloc extends Bloc<LoadTestCategorySelectionEvent,
+    LoadTestCategorySelectionState> {
   final IWordRepository _wordRepository;
   final IFolderRepository _folderRepository;
 
-  TestCategorySelectionBloc(
+  LoadTestCategorySelectionBloc(
     this._wordRepository,
     this._folderRepository,
-  ) : super(TestCategorySelectionStateIdle()) {
-    on<TestCategorySelectionEventIdle>((_, __) {});
+  ) : super(LoadTestCategorySelectionStateIdle()) {
+    on<LoadTestCategorySelectionEventIdle>((_, __) {});
 
-    on<TestCategorySelectionEventLoadList>((event, emit) async {
+    on<LoadTestCategorySelectionEventLoadList>((event, emit) async {
       List<Word> list = [];
       if (event.folder == null) {
         list =
@@ -35,7 +35,7 @@ class TestCategorySelectionBloc
         );
       }
       list.shuffle();
-      emit(TestCategorySelectionStateLoadedList(list));
+      emit(LoadTestCategorySelectionStateLoadedList(list));
     });
   }
 }

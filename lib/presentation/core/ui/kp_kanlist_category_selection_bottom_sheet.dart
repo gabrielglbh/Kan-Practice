@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/application/test_category_selection/test_category_selection_bloc.dart';
+import 'package:kanpractice/application/load_test_category_selection/load_test_category_selection_bloc.dart';
 import 'package:kanpractice/presentation/core/types/word_categories.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -44,11 +44,11 @@ class _KPKanListCategorySelectionBottomSheetState
       onClosing: () {},
       builder: (context) {
         return BlocProvider(
-          create: (context) => getIt<TestCategorySelectionBloc>(),
-          child: BlocConsumer<TestCategorySelectionBloc,
-              TestCategorySelectionState>(
+          create: (context) => getIt<LoadTestCategorySelectionBloc>(),
+          child: BlocConsumer<LoadTestCategorySelectionBloc,
+              LoadTestCategorySelectionState>(
             listener: ((context, state) {
-              if (state is TestCategorySelectionStateLoadedList) {
+              if (state is LoadTestCategorySelectionStateLoadedList) {
                 setState(() {
                   if (state.words.isEmpty) {
                     _onListEmpty = true;
@@ -83,10 +83,12 @@ class _KPKanListCategorySelectionBottomSheetState
                               ?.copyWith(fontWeight: FontWeight.w400)),
                     ),
                     Visibility(
-                      visible: state is TestCategorySelectionStateLoadedList,
+                      visible:
+                          state is LoadTestCategorySelectionStateLoadedList,
                       child: KPTestStudyMode(
-                        list: (state as TestCategorySelectionStateLoadedList)
-                            .words,
+                        list:
+                            (state as LoadTestCategorySelectionStateLoadedList)
+                                .words,
                         type: Tests.categories,
                         testName: widget.folder == null
                             ? "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category}"
@@ -94,7 +96,7 @@ class _KPKanListCategorySelectionBottomSheetState
                       ),
                     ),
                     Visibility(
-                      visible: state is TestCategorySelectionStateIdle,
+                      visible: state is LoadTestCategorySelectionStateIdle,
                       child: Container(
                         margin: const EdgeInsets.all(KPMargins.margin8),
                         child: Column(
@@ -113,8 +115,8 @@ class _KPKanListCategorySelectionBottomSheetState
                                   "study_bottom_sheet_button_label_ext".tr(),
                               title2: "study_bottom_sheet_button_label".tr(),
                               onTap: () async {
-                                getIt<TestCategorySelectionBloc>().add(
-                                  TestCategorySelectionEventLoadList(
+                                getIt<LoadTestCategorySelectionBloc>().add(
+                                  LoadTestCategorySelectionEventLoadList(
                                       category: _selectedCategory,
                                       folder: widget.folder),
                                 );

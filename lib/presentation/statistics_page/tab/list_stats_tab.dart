@@ -1,7 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/specific_data/specific_data_bloc.dart';
 import 'package:kanpractice/presentation/core/types/word_categories.dart';
-import 'package:kanpractice/infrastructure/specific_data/specific_data_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_bar_chart.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';
@@ -68,27 +69,39 @@ class _ListStatsState extends State<ListStats>
         ),
         const Divider(),
         StatsHeader(title: "words_by_category".tr()),
-        KPBarChart(
-          graphName: "kanji_category_label".tr(),
-          animationDuration: 0,
-          heightRatio: 3,
-          enableTooltip: false,
-          isHorizontalChart: true,
-          onBarTapped: (model) async {
-            if (model.dataPoints?.isNotEmpty == true) {
-              final mode = WordCategory.values[model.pointIndex ?? -1];
-              final data = await getIt<SpecificDataRepositoryImpl>()
-                  .getSpecificCategoryData(mode);
-              // ignore: use_build_context_synchronously
-              SpecBottomSheet.show(context, mode.category, data);
-            }
-          },
-          dataSource: List.generate(
-            WordCategory.values.length,
-            (index) => DataFrame(
-              x: WordCategory.values[index].category,
-              y: widget.stats.totalCategoryCounts[index].toDouble(),
-              color: KPColors.secondaryColor,
+        BlocProvider(
+          create: (context) => getIt<SpecificDataBloc>(),
+          child: BlocListener<SpecificDataBloc, SpecificDataState>(
+            listener: (context, state) {
+              if (state is SpecificDataStateGatheredCategory) {
+                SpecBottomSheet.show(
+                  context,
+                  state.category.category,
+                  state.data,
+                );
+              }
+            },
+            child: KPBarChart(
+              graphName: "kanji_category_label".tr(),
+              animationDuration: 0,
+              heightRatio: 3,
+              enableTooltip: false,
+              isHorizontalChart: true,
+              onBarTapped: (model) async {
+                if (model.dataPoints?.isNotEmpty == true) {
+                  final category = WordCategory.values[model.pointIndex ?? -1];
+                  getIt<SpecificDataBloc>()
+                      .add(SpecificDataEventGatherCategory(category: category));
+                }
+              },
+              dataSource: List.generate(
+                WordCategory.values.length,
+                (index) => DataFrame(
+                  x: WordCategory.values[index].category,
+                  y: widget.stats.totalCategoryCounts[index].toDouble(),
+                  color: KPColors.secondaryColor,
+                ),
+              ),
             ),
           ),
         ),

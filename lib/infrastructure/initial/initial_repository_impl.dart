@@ -4,10 +4,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/application/services/database/database_consts.dart';
 import 'package:kanpractice/domain/initial/i_initial_repository.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/domain/word/word.dart';
+import 'package:kanpractice/infrastructure/list/list_repository_impl.dart';
+import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:sqflite/sqlite_api.dart';
 
@@ -39,25 +40,25 @@ class InitialRepositoryImpl implements IInitialRepository {
       }
 
       /// Order matters as kanji depends on lists.
-      final batch = _database.batch();
+      Batch? batch = _database.batch();
 
       /// For all KanLists and Kanji, set the last updated field to current time
       for (int x = 0; x < lists.length; x++) {
         final WordList k = lists[x]
             .copyWithUpdatedDate(lastUpdated: Utils.getCurrentMilliseconds());
-        batch.insert(ListTableFields.listsTable, k.toJson(),
-            conflictAlgorithm: ConflictAlgorithm.replace);
+        batch = await ListRepositoryImpl(_database)
+            .mergeLists(batch, [k], ConflictAlgorithm.replace);
       }
       for (int x = 0; x < kanji.length; x++) {
         final Word k = kanji[x].copyWithUpdatedDate(
             dateAdded: Utils.getCurrentMilliseconds(),
             dateLastShown: Utils.getCurrentMilliseconds());
-        batch.insert(WordTableFields.wordTable, k.toJson(),
-            conflictAlgorithm: ConflictAlgorithm.replace);
+        batch = await WordRepositoryImpl(_database)
+            .mergeWords(batch, [k], ConflictAlgorithm.replace);
       }
 
-      final results = await batch.commit();
-      return results.isEmpty == true ? -3 : 0;
+      final results = await batch?.commit();
+      return results?.isEmpty == true ? -3 : 0;
     } catch (err) {
       return -2;
     }

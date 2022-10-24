@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:kanpractice/application/initial/initial_bloc.dart';
 import 'package:kanpractice/application/services/database/database_service.dart';
 import 'package:kanpractice/application/services/messaging_service.dart';
-import 'package:kanpractice/infrastructure/initial/initial_repository_impl.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
-import 'package:kanpractice/infrastructure/test_data/test_data_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -96,9 +96,7 @@ class _KanPracticeState extends State<KanPractice> {
       if (getIt<PreferencesService>()
               .readData(SharedKeys.haveSeenKanListCoachMark) ==
           false) {
-        await getIt<InitialRepositoryImpl>()
-            .setInitialDataForReference(context);
-        await getIt<TestDataRepositoryImpl>().insertInitialTestData();
+        getIt<InitialBloc>().add(InitialEventInstallData(context));
       }
     });
     super.initState();
@@ -112,17 +110,24 @@ class _KanPracticeState extends State<KanPractice> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'KanPractice',
-      locale: context.locale,
-      supportedLocales: context.supportedLocales,
-      localizationsDelegates: context.localizationDelegates,
-      debugShowCheckedModeBanner: false,
-      theme: ThemeManager.instance.currentLightThemeData,
-      darkTheme: ThemeManager.instance.currentDarkThemeData,
-      themeMode: ThemeManager.instance.themeMode,
-      initialRoute: KanPracticePages.homePage,
-      onGenerateRoute: onGenerateRoute,
+    return BlocProvider(
+      create: (context) => getIt<InitialBloc>(),
+      child: BlocBuilder<InitialBloc, InitialState>(
+        builder: (context, state) {
+          return MaterialApp(
+            title: 'KanPractice',
+            locale: context.locale,
+            supportedLocales: context.supportedLocales,
+            localizationsDelegates: context.localizationDelegates,
+            debugShowCheckedModeBanner: false,
+            theme: ThemeManager.instance.currentLightThemeData,
+            darkTheme: ThemeManager.instance.currentDarkThemeData,
+            themeMode: ThemeManager.instance.themeMode,
+            initialRoute: KanPracticePages.homePage,
+            onGenerateRoute: onGenerateRoute,
+          );
+        },
+      ),
     );
   }
 }

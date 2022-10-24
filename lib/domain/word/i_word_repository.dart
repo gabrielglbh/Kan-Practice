@@ -19,7 +19,7 @@ abstract class IWordRepository {
     Batch? batch,
     List<Word> words,
     ConflictAlgorithm conflictAlgorithm,
-  ); // TODO: Replace on backup and ignore on market
+  );
   Future<Word> getWord(String listName, String word);
 
   /// Gets a [Word] and removes it from the db.

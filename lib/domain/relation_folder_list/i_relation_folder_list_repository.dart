@@ -12,5 +12,5 @@ abstract class IRelationFolderListRepository {
     Batch? batch,
     List<RelationFolderList> relations,
     ConflictAlgorithm? conflictAlgorithm,
-  ); // TODO: Replace on backup and ignore on market
+  );
 }

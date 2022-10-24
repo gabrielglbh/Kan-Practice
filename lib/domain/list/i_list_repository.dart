@@ -18,7 +18,7 @@ abstract class IListRepository {
     Batch? batch,
     List<WordList> lists,
     ConflictAlgorithm conflictAlgorithm,
-  ); // TODO: Conflict - Replace on backup,  Ignore on market merge
+  );
   Future<WordList> getList(String name);
 
   /// Gets a [WordList] and removes it from the db.

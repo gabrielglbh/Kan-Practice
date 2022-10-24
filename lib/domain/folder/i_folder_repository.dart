@@ -23,7 +23,7 @@ abstract class IFolderRepository {
     Batch? batch,
     List<Folder> folders,
     ConflictAlgorithm conflictAlgorithm,
-  ); // TODO: Conlict - replace on backup, ignore on market
+  );
   Future<Folder> getFolder(String name);
   Future<List<Folder>> getAllFolders({
     FolderFilters filter = FolderFilters.all,

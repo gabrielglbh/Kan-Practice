@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kanpractice/core/database/database_consts.dart';
+import 'package:kanpractice/application/services/database/database_consts.dart';
 
 part 'test_result.g.dart';
 

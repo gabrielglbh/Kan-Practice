@@ -1,24 +1,22 @@
 import 'dart:io';
-import 'package:kanpractice/core/database/database_consts.dart';
+
+import 'package:injectable/injectable.dart';
+import 'package:kanpractice/application/services/database/database_consts.dart';
+import 'package:kanpractice/infrastructure/services/database/migrations.dart';
+import 'package:kanpractice/domain/services/i_database_repository.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'migrations.dart';
+@LazySingleton(as: IDatabaseRepository)
+class DatabaseRepositoryImpl implements IDatabaseRepository {
+  final Database? _database;
 
-class CustomDatabase {
-  CustomDatabase._();
+  DatabaseRepositoryImpl(this._database);
 
-  static final CustomDatabase _instance = CustomDatabase._();
+  @override
+  Future<void> close() async => await _database?.close();
 
-  /// Singleton instance of [CustomDatabase]
-  static CustomDatabase get instance => _instance;
-
-  /// Database to perform all the queries on
-  static Database? _database;
-
-  Database? get database => _database;
-
-  /// Opens up the db and configures all of it
+  @override
   Future<void> open() async {
     String databasesPath = await getDatabasesPath();
     String path = join(databasesPath, "kanpractice.db");
@@ -27,7 +25,7 @@ class CustomDatabase {
       await Directory(databasesPath).create(recursive: true);
     } catch (_) {}
 
-    _database = await openDatabase(
+    await openDatabase(
       path,
       version: 9,
       singleInstance: true,
@@ -35,7 +33,15 @@ class CustomDatabase {
         await db.execute('PRAGMA foreign_keys = ON');
       },
       onUpgrade: (Database db, int oldVersion, int newVersion) async {
-        await _onUpgrade(db, oldVersion, newVersion);
+        final c = Migrations();
+        if (oldVersion <= 1) c.version1to2(db);
+        if (oldVersion <= 2) c.version2to3(db);
+        if (oldVersion <= 3) c.version3to4(db);
+        if (oldVersion <= 4) c.version4to5(db);
+        if (oldVersion <= 5) c.version5to6(db);
+        if (oldVersion <= 6) c.version6to7(db);
+        if (oldVersion <= 7) c.version7to8(db);
+        if (oldVersion <= 8) c.version8to9(db);
       },
       onCreate: (Database db, int version) async {
         await db.execute("CREATE TABLE ${WordTableFields.wordTable}("
@@ -136,21 +142,4 @@ class CustomDatabase {
       },
     );
   }
-
-  /// Function to manage migrations on whenever an update is needed.
-  /// Whenever the update to the DB, automatically put it on the onCreate DB
-  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    final c = Migrations();
-    if (oldVersion <= 1) c.version1to2(db);
-    if (oldVersion <= 2) c.version2to3(db);
-    if (oldVersion <= 3) c.version3to4(db);
-    if (oldVersion <= 4) c.version4to5(db);
-    if (oldVersion <= 5) c.version5to6(db);
-    if (oldVersion <= 6) c.version6to7(db);
-    if (oldVersion <= 7) c.version7to8(db);
-    if (oldVersion <= 8) c.version8to9(db);
-  }
-
-  /// Closes up the current database.
-  Future<void> close() async => await database?.close();
 }

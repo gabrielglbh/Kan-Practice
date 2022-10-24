@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/core/database/database_consts.dart';
+import 'package:kanpractice/application/services/database/database_consts.dart';
 import 'package:kanpractice/domain/relation_folder_list/i_relation_folder_list_repository.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:kanpractice/domain/relation_folder_list/relation_folder_list.dart';

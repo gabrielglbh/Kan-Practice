@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:kanpractice/application/services/database/database_service.dart';
 import 'package:kanpractice/application/services/messaging_service.dart';
-import 'package:kanpractice/core/database/database.dart';
 import 'package:kanpractice/infrastructure/initial/initial_repository_impl.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/infrastructure/test_data/test_data_repository_impl.dart';
@@ -51,7 +51,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   configureInjection();
   await _initSharedPreferences();
-  await CustomDatabase.instance.open();
+  await getIt<DatabaseService>().open();
   await Firebase.initializeApp();
   await EasyLocalization.ensureInitialized();
   await FlutterLocalNotificationsPlugin().initialize(
@@ -106,7 +106,7 @@ class _KanPracticeState extends State<KanPractice> {
 
   @override
   void dispose() {
-    CustomDatabase.instance.close();
+    getIt<DatabaseService>().close();
     super.dispose();
   }
 

@@ -4,7 +4,7 @@ import 'package:kanpractice/application/list_details/list_details_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
-import 'package:kanpractice/core/tutorial/tutorial_manager.dart';
+import 'package:kanpractice/presentation/core/util/tutorial_coach.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/coach_tutorial_parts.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';

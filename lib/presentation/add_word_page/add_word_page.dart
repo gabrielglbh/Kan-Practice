@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/add_word/add_word_bloc.dart';
-import 'package:kanpractice/core/database/database_consts.dart';
+import 'package:kanpractice/application/services/database/database_consts.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/word_categories.dart';

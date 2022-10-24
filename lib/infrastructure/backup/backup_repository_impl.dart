@@ -13,7 +13,7 @@ import 'package:kanpractice/domain/test_data/test_data.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/infrastructure/folder/folder_repository_impl.dart';
 import 'package:kanpractice/infrastructure/list/list_repository_impl.dart';
-import 'package:kanpractice/infrastructure/relation_folder_list/relation_foldeR_list_repository_impl.dart';
+import 'package:kanpractice/infrastructure/relation_folder_list/relation_folder_list_repository_impl.dart';
 import 'package:kanpractice/infrastructure/specific_data/specific_data_repository_impl.dart';
 import 'package:kanpractice/infrastructure/test_data/test_data_repository_impl.dart';
 import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
@@ -25,8 +25,24 @@ class BackupRepositoryImpl implements IBackupRepository {
   final FirebaseFirestore _ref;
   final FirebaseAuth _auth;
   final Database _database;
+  final WordRepositoryImpl _wordRepositoryImpl;
+  final ListRepositoryImpl _listRepositoryImpl;
+  final RelationFolderListRepositoryImpl _relationFolderListRepositoryImpl;
+  final FolderRepositoryImpl _folderRepositoryImpl;
+  final SpecificDataRepositoryImpl _specificDataRepositoryImpl;
+  final TestDataRepositoryImpl _testDataRepositoryImpl;
 
-  BackupRepositoryImpl(this._auth, this._ref, this._database);
+  BackupRepositoryImpl(
+    this._auth,
+    this._ref,
+    this._database,
+    this._wordRepositoryImpl,
+    this._listRepositoryImpl,
+    this._relationFolderListRepositoryImpl,
+    this._folderRepositoryImpl,
+    this._specificDataRepositoryImpl,
+    this._testDataRepositoryImpl,
+  );
 
   final String collection = "BackUps";
   final String kanjiLabel = "Kanji";
@@ -53,10 +69,9 @@ class BackupRepositoryImpl implements IBackupRepository {
     User? user = _auth.currentUser;
     await user?.reload();
 
-    List<Word> kanji = await WordRepositoryImpl(_database).getAllWords();
-    List<WordList> lists = await ListRepositoryImpl(_database).getAllLists();
-    TestData testData =
-        await TestDataRepositoryImpl(_database).getTestDataFromDb();
+    List<Word> kanji = await _wordRepositoryImpl.getAllWords();
+    List<WordList> lists = await _listRepositoryImpl.getAllLists();
+    TestData testData = await _testDataRepositoryImpl.getTestDataFromDb();
     List<SpecificData> testSpecData = [];
 
     /// Remove from the back up the empty specs
@@ -85,10 +100,9 @@ class BackupRepositoryImpl implements IBackupRepository {
       testSpecData.add(testData.dailyTestData);
     }
 
-    List<Folder> folders =
-        await FolderRepositoryImpl(_database).getAllFolders();
+    List<Folder> folders = await _folderRepositoryImpl.getAllFolders();
     List<RelationFolderList> relFolderKanList =
-        await RelationFolderListRepositoryImpl(_database).getFolderRelation();
+        await _relationFolderListRepositoryImpl.getFolderRelation();
     int date = Utils.getCurrentMilliseconds();
 
     if (lists.isEmpty) {
@@ -433,23 +447,22 @@ class BackupRepositoryImpl implements IBackupRepository {
       /// Conflict algorithm allows us to merge the data from back up with current one.
       Batch? batch = _database.batch();
 
-      batch = await ListRepositoryImpl(_database)
-          .mergeLists(batch, backUpLists, ConflictAlgorithm.replace);
+      batch = await _listRepositoryImpl.mergeLists(
+          batch, backUpLists, ConflictAlgorithm.replace);
 
-      batch = await WordRepositoryImpl(_database)
-          .mergeWords(batch, backUpWords, ConflictAlgorithm.ignore);
+      batch = await _wordRepositoryImpl.mergeWords(
+          batch, backUpWords, ConflictAlgorithm.ignore);
 
-      batch = await FolderRepositoryImpl(_database)
-          .mergeFolders(batch, backUpFolders, ConflictAlgorithm.replace);
+      batch = await _folderRepositoryImpl.mergeFolders(
+          batch, backUpFolders, ConflictAlgorithm.replace);
 
-      batch = TestDataRepositoryImpl(_database)
-          .mergeTestData(batch, backUpTestData, ConflictAlgorithm.replace);
+      batch = _testDataRepositoryImpl.mergeTestData(
+          batch, backUpTestData, ConflictAlgorithm.replace);
 
-      batch = await RelationFolderListRepositoryImpl(_database)
-          .mergeRelationFolderList(
-              batch, backUpRelationFolderList, ConflictAlgorithm.replace);
+      batch = await _relationFolderListRepositoryImpl.mergeRelationFolderList(
+          batch, backUpRelationFolderList, ConflictAlgorithm.replace);
 
-      batch = await SpecificDataRepositoryImpl(_database).mergeSpecificData(
+      batch = await _specificDataRepositoryImpl.mergeSpecificData(
           batch, backUpTestSpecData, ConflictAlgorithm.replace);
 
       final results = await batch?.commit();

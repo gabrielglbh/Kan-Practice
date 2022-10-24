@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database/database_consts.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
+import 'package:kanpractice/infrastructure/relation_folder_list/relation_folder_list_repository_impl.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
@@ -8,15 +9,15 @@ import 'package:kanpractice/presentation/core/types/folder_filters.dart';
 import 'package:kanpractice/domain/folder/i_folder_repository.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/domain/list/list.dart';
-import 'package:kanpractice/infrastructure/relation_folder_list/relation_foldeR_list_repository_impl.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 @LazySingleton(as: IFolderRepository)
 class FolderRepositoryImpl implements IFolderRepository {
   final Database _database;
+  final RelationFolderListRepositoryImpl _relationFolderListRepositoryImpl;
 
-  FolderRepositoryImpl(this._database);
+  FolderRepositoryImpl(this._database, this._relationFolderListRepositoryImpl);
 
   @override
   Future<int> createFolder(String name, {List<String> lists = const []}) async {
@@ -29,8 +30,8 @@ class FolderRepositoryImpl implements IFolderRepository {
             lastUpdated: Utils.getCurrentMilliseconds(),
           ).toJson());
       for (var l in lists) {
-        int code = await RelationFolderListRepositoryImpl(_database)
-            .moveListToFolder(name, l);
+        int code =
+            await _relationFolderListRepositoryImpl.moveListToFolder(name, l);
         if (code != 0) throw Exception();
       }
       return 0;

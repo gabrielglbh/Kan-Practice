@@ -12,8 +12,9 @@ import 'package:sqflite/sqlite_api.dart';
 @LazySingleton(as: ITestDataRepository)
 class TestDataRepositoryImpl implements ITestDataRepository {
   final Database _database;
+  final SpecificDataRepositoryImpl _specificDataRepositoryImpl;
 
-  TestDataRepositoryImpl(this._database);
+  TestDataRepositoryImpl(this._database, this._specificDataRepositoryImpl);
 
   @override
   Map<String, num> getAdditionalParams(TestData curr, Test test) {
@@ -119,8 +120,8 @@ class TestDataRepositoryImpl implements ITestDataRepository {
         /// Populate all TestSpecificData
         TestData rawTestData = TestData.fromJson(res[0]);
         for (var t in Tests.values) {
-          final rawSpec = await SpecificDataRepositoryImpl(_database)
-              .getSpecificTestData(t);
+          final rawSpec =
+              await _specificDataRepositoryImpl.getSpecificTestData(t);
           if (rawSpec != SpecificData.empty) {
             rawTestData = rawTestData.copyWith(rawSpec);
           }
@@ -198,7 +199,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
       map.addEntries(getAdditionalParams(curr, test).entries);
       map.addEntries(getTestParams(curr, test).entries);
 
-      await SpecificDataRepositoryImpl(_database).updateSpecificTestStats(test);
+      await _specificDataRepositoryImpl.updateSpecificTestStats(test);
       await _database.update(
         TestDataTableFields.testDataTable,
         map,

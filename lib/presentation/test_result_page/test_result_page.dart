@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/test_result/test_result_bloc.dart';
-import 'package:kanpractice/infrastructure/test_data/test_data_repository_impl.dart';
-import 'package:kanpractice/infrastructure/test_result/test_result_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';

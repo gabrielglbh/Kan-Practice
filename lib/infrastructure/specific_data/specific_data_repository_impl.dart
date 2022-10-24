@@ -13,14 +13,15 @@ import 'package:sqflite/sqlite_api.dart';
 class SpecificDataRepositoryImpl implements ISpecificDataRepository {
   static const categoryId = -9999;
   final Database _database;
+  final WordRepositoryImpl _wordRepositoryImpl;
 
-  SpecificDataRepositoryImpl(this._database);
+  SpecificDataRepositoryImpl(this._database, this._wordRepositoryImpl);
 
   @override
   Future<SpecificData> getSpecificCategoryData(WordCategory mode) async {
     try {
-      final list = await WordRepositoryImpl(_database)
-          .getWordsBasedOnCategory(mode.index);
+      final list =
+          await _wordRepositoryImpl.getWordsBasedOnCategory(mode.index);
       double writing = 0,
           reading = 0,
           recognition = 0,

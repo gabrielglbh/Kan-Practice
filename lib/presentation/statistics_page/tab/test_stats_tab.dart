@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/specific_data/specific_data_bloc.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
-import 'package:kanpractice/infrastructure/specific_data/specific_data_repository_impl.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_bar_chart.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';

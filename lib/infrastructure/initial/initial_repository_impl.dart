@@ -15,8 +15,14 @@ import 'package:sqflite/sqlite_api.dart';
 @LazySingleton(as: IInitialRepository)
 class InitialRepositoryImpl implements IInitialRepository {
   final Database _database;
+  final ListRepositoryImpl _listRepositoryImpl;
+  final WordRepositoryImpl _wordRepositoryImpl;
 
-  InitialRepositoryImpl(this._database);
+  InitialRepositoryImpl(
+    this._database,
+    this._listRepositoryImpl,
+    this._wordRepositoryImpl,
+  );
 
   @override
   Future<int> setInitialDataForReference(BuildContext context) async {
@@ -46,15 +52,15 @@ class InitialRepositoryImpl implements IInitialRepository {
       for (int x = 0; x < lists.length; x++) {
         final WordList k = lists[x]
             .copyWithUpdatedDate(lastUpdated: Utils.getCurrentMilliseconds());
-        batch = await ListRepositoryImpl(_database)
-            .mergeLists(batch, [k], ConflictAlgorithm.replace);
+        batch = await _listRepositoryImpl.mergeLists(
+            batch, [k], ConflictAlgorithm.replace);
       }
       for (int x = 0; x < kanji.length; x++) {
         final Word k = kanji[x].copyWithUpdatedDate(
             dateAdded: Utils.getCurrentMilliseconds(),
             dateLastShown: Utils.getCurrentMilliseconds());
-        batch = await WordRepositoryImpl(_database)
-            .mergeWords(batch, [k], ConflictAlgorithm.replace);
+        batch = await _wordRepositoryImpl.mergeWords(
+            batch, [k], ConflictAlgorithm.replace);
       }
 
       final results = await batch?.commit();

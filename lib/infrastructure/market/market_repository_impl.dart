@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
+import 'package:kanpractice/infrastructure/relation_folder_list/relation_folder_list_repository_impl.dart';
 import 'package:kanpractice/presentation/core/types/market_filters.dart';
 import 'package:kanpractice/domain/market/i_market_repository.dart';
 import 'package:kanpractice/domain/relation_folder_list/relation_folder_list.dart';
@@ -12,7 +13,6 @@ import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/domain/market/market.dart';
 import 'package:kanpractice/infrastructure/folder/folder_repository_impl.dart';
 import 'package:kanpractice/infrastructure/list/list_repository_impl.dart';
-import 'package:kanpractice/infrastructure/relation_folder_list/relation_foldeR_list_repository_impl.dart';
 import 'package:kanpractice/infrastructure/word/word_repository_impl.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
@@ -29,8 +29,20 @@ class MarketRepositoryImpl implements IMarketRepository {
   final FirebaseFirestore _ref;
   final FirebaseAuth _auth;
   final Database _database;
+  final FolderRepositoryImpl _folderRepositoryImpl;
+  final ListRepositoryImpl _listRepositoryImpl;
+  final WordRepositoryImpl _wordRepositoryImpl;
+  final RelationFolderListRepositoryImpl _relationFolderListRepositoryImpl;
 
-  MarketRepositoryImpl(this._ref, this._auth, this._database);
+  MarketRepositoryImpl(
+    this._ref,
+    this._auth,
+    this._database,
+    this._folderRepositoryImpl,
+    this._listRepositoryImpl,
+    this._wordRepositoryImpl,
+    this._relationFolderListRepositoryImpl,
+  );
 
   /// We make sure that when the limit of 500 WRITES per batch is met,
   /// we commit the current batch and initialize it again to perform
@@ -109,26 +121,24 @@ class MarketRepositoryImpl implements IMarketRepository {
         Batch? batch = _database.batch();
 
         /// Check if the folder is already installed
-        final f = await FolderRepositoryImpl(_database)
-            .getFolder(backUpFolder.folder);
+        final f = await _folderRepositoryImpl.getFolder(backUpFolder.folder);
         if (f.folder == backUpFolder.folder) {
           return "market_download_already_installed".tr();
         }
 
-        batch = await FolderRepositoryImpl(_database)
-            .mergeFolders(batch, [backUpFolder], ConflictAlgorithm.ignore);
+        batch = await _folderRepositoryImpl.mergeFolders(
+            batch, [backUpFolder], ConflictAlgorithm.ignore);
 
         /// Order matters as kanji depends on lists.
         /// Conflict algorithm allows us to ignore if the insertion if the list already exists.
-        batch = await ListRepositoryImpl(_database)
-            .mergeLists(batch, backUpList, ConflictAlgorithm.ignore);
+        batch = await _listRepositoryImpl.mergeLists(
+            batch, backUpList, ConflictAlgorithm.ignore);
 
-        batch = await WordRepositoryImpl(_database)
-            .mergeWords(batch, backUpWords, ConflictAlgorithm.ignore);
+        batch = await _wordRepositoryImpl.mergeWords(
+            batch, backUpWords, ConflictAlgorithm.ignore);
 
-        batch = await RelationFolderListRepositoryImpl(_database)
-            .mergeRelationFolderList(
-                batch, backUpRelations, ConflictAlgorithm.ignore);
+        batch = await _relationFolderListRepositoryImpl.mergeRelationFolderList(
+            batch, backUpRelations, ConflictAlgorithm.ignore);
 
         final results = await batch?.commit();
         return results?.isEmpty == true
@@ -184,7 +194,7 @@ class MarketRepositoryImpl implements IMarketRepository {
 
         /// Merge it on the DB
         /// Check if the list is already installed
-        final l = await ListRepositoryImpl(_database).getList(backUpList.name);
+        final l = await _listRepositoryImpl.getList(backUpList.name);
         if (l.name == backUpList.name) {
           return "market_download_already_installed".tr();
         }
@@ -193,11 +203,11 @@ class MarketRepositoryImpl implements IMarketRepository {
         /// Conflict algorithm allows us to ignore if the insertion if the list already exists.
         Batch? batch = _database.batch();
 
-        batch = await ListRepositoryImpl(_database)
-            .mergeLists(batch, [backUpList], ConflictAlgorithm.ignore);
+        batch = await _listRepositoryImpl.mergeLists(
+            batch, [backUpList], ConflictAlgorithm.ignore);
 
-        batch = await WordRepositoryImpl(_database)
-            .mergeWords(batch, backUpWords, ConflictAlgorithm.ignore);
+        batch = await _wordRepositoryImpl.mergeWords(
+            batch, backUpWords, ConflictAlgorithm.ignore);
 
         final results = await batch?.commit();
         return results?.isEmpty == true

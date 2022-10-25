@@ -70,7 +70,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
     _aggrStats = getIt<PreferencesService>()
         .readData(SharedKeys.kanListListVisualization);
     getIt<ListDetailBloc>().add(
-      ListDetailEventLoading(widget.list.name, reset: true),
+      ListDetailEventLoading(_listName, reset: true),
     );
     super.initState();
   }
@@ -203,7 +203,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
                 isTest: false,
                 mode: state.mode,
                 testMode: Tests.blitz,
-                studyModeHeaderDisplayName: widget.list.name))
+                studyModeHeaderDisplayName: _listName))
         .then(
           (value) => _addLoadingEvent(reset: true),
         );
@@ -222,10 +222,14 @@ class _ListDetailsPageState extends State<ListDetailsPage>
           return true;
         }
       },
-      appBarTitle: BlocBuilder<ListDetailBloc, ListDetailState>(
-        builder: (context, state) {
+      appBarTitle: BlocConsumer<ListDetailBloc, ListDetailState>(
+        listener: ((context, state) {
           if (state is ListDetailStateLoaded) {
             _listName = state.name;
+          }
+        }),
+        builder: (context, state) {
+          if (state is ListDetailStateLoaded) {
             return FittedBox(
                 fit: BoxFit.fitWidth,
                 child: GestureDetector(
@@ -251,7 +255,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
             ),
             IconButton(
               onPressed: () {
-                FolderListBottomSheet.show(context, widget.list.name);
+                FolderListBottomSheet.show(context, _listName);
               },
               icon: const Icon(Icons.create_new_folder_rounded),
             ),
@@ -373,7 +377,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
             onTap: () async {
               if (_aggrStats) {
                 return await PracticeListBottomSheet.show(
-                        context, widget.list.name, state.list)
+                        context, _listName, state.list)
                     .then(
                   (value) => _addLoadingEvent(reset: true),
                 );

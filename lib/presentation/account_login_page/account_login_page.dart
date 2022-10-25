@@ -171,12 +171,8 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               BlocConsumer<AuthBloc, AuthState>(
                 listener: (context, state) {
-                  /// Only pop automatically when closing session
-                  if (state is AuthStateLoggedOut) {
-                    if (state.message ==
-                        "login_bloc_close_session_successful".tr()) {
-                      Navigator.of(context).pop();
-                    }
+                  if (state is AuthStateIdle) {
+                    if (state.shouldPop) Navigator.of(context).pop();
                   }
                 },
                 builder: (context, state) {
@@ -186,11 +182,8 @@ class _LoginPageState extends State<LoginPage> {
                     return _successfulState(context, state);
                   } else if (state is AuthStateIdle) {
                     return _idleState(context, state);
-                  } else if (state is AuthStateLoggedOut) {
-                    return _loggedOut(state);
-                  } else {
-                    return Container();
                   }
+                  return const SizedBox();
                 },
               ),
             ],
@@ -335,22 +328,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ],
     );
-  }
-
-  Center _loggedOut(AuthStateLoggedOut state) {
-    return Center(
-        child: Column(
-      children: [
-        Icon(Icons.check_circle_rounded,
-            color: KPColors.getSecondaryColor(context),
-            size: KPSizes.maxHeightValidationCircle),
-        Padding(
-          padding: const EdgeInsets.all(KPMargins.margin16),
-          child: Text(state.message,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyText1),
-        ),
-      ],
-    ));
   }
 }

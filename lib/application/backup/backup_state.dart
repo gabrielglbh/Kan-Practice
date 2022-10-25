@@ -38,3 +38,12 @@ class BackUpStateVersionRetrieved extends BackUpState {
   @override
   List<Object> get props => [version, notes];
 }
+
+class BackUpStateVersionNotesRetrieved extends BackUpState {
+  final List<String> notes;
+
+  const BackUpStateVersionNotesRetrieved(this.notes);
+
+  @override
+  List<Object> get props => [notes];
+}

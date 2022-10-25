@@ -2,6 +2,7 @@ import 'package:app_settings/app_settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/backup/backup_bloc.dart';
 import 'package:kanpractice/application/settings/settings_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
@@ -199,10 +200,24 @@ class _SettingsPageState extends State<SettingsPage> {
                 Navigator.of(context).pushNamed(KanPracticePages.loginPage)),
         _header("settings_information_section".tr()),
         const Divider(),
-        ListTile(
-          leading: const Icon(Icons.star, color: Colors.green),
-          title: Text("settings_general_versionNotes".tr()),
-          onTap: () async => await Utils.showVersionNotes(context),
+        BlocListener<BackUpBloc, BackUpState>(
+          listener: (context, state) async {
+            if (state is BackUpStateVersionNotesRetrieved) {
+              await Utils.showVersionNotes(
+                context,
+                notes: state.notes,
+              );
+            }
+          },
+          child: ListTile(
+            leading: const Icon(Icons.star, color: Colors.green),
+            title: Text("settings_general_versionNotes".tr()),
+            onTap: () {
+              getIt<BackUpBloc>().add(
+                BackUpGetVersion(context, showNotes: true),
+              );
+            },
+          ),
         ),
         const Divider(),
         ListTile(

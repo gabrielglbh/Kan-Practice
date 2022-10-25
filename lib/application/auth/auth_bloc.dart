@@ -43,14 +43,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthStateLoading());
       final error = await _authRepository.closeSession();
       if (error == 0) {
-        emit(AuthStateLoggedOut(
-            message: "Auth_bloc_close_session_successful".tr()));
+        emit(const AuthStateIdle(shouldPop: true));
       } else {
         final user = _authRepository.getUser();
         if (user != null) {
           emit(AuthStateSuccessful(user: user));
         } else {
-          emit(AuthStateIdle(error: "Auth_bloc_close_session_failed".tr()));
+          emit(AuthStateIdle(error: "login_bloc_close_session_failed".tr()));
         }
       }
     });
@@ -59,14 +58,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthStateLoading());
       final error = await _authRepository.deleteAccount(event.password);
       if (error == "") {
-        emit(AuthStateLoggedOut(
-            message: "Auth_bloc_remove_account_successful".tr()));
+        emit(const AuthStateIdle(shouldPop: true));
       } else {
         final user = _authRepository.getUser();
         if (user != null) {
           emit(AuthStateSuccessful(user: user));
         } else {
-          emit(AuthStateIdle(error: "Auth_bloc_remove_account_failed".tr()));
+          emit(AuthStateIdle(error: "login_bloc_remove_account_failed".tr()));
         }
       }
     });

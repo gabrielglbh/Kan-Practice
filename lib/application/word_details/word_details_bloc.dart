@@ -57,6 +57,8 @@ class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
               ListTableFields.totalWinRateRecognitionField:
                   DatabaseConstants.emptyWinRate,
               ListTableFields.totalWinRateListeningField:
+                  DatabaseConstants.emptyWinRate,
+              ListTableFields.totalWinRateSpeakingField:
                   DatabaseConstants.emptyWinRate
             });
           } else {
@@ -64,6 +66,7 @@ class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
             double readNewScore = list.totalWinRateReading;
             double recNewScore = list.totalWinRateRecognition;
             double lisNewScore = list.totalWinRateListening;
+            double speakNewScore = list.totalWinRateSpeaking;
 
             if (k.winRateWriting != DatabaseConstants.emptyWinRate) {
               /// Get the y value: total length of list prior to removal of
@@ -92,12 +95,18 @@ class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
               double partialScore = y - k.winRateListening;
               lisNewScore = partialScore / words.length;
             }
+            if (k.winRateSpeaking != DatabaseConstants.emptyWinRate) {
+              double y = (words.length + 1) * list.totalWinRateSpeaking;
+              double partialScore = y - k.winRateSpeaking;
+              speakNewScore = partialScore / words.length;
+            }
 
             await _listRepository.updateList(k.listName, {
               ListTableFields.totalWinRateWritingField: wNewScore,
               ListTableFields.totalWinRateReadingField: readNewScore,
               ListTableFields.totalWinRateRecognitionField: recNewScore,
-              ListTableFields.totalWinRateListeningField: lisNewScore
+              ListTableFields.totalWinRateListeningField: lisNewScore,
+              ListTableFields.totalWinRateSpeakingField: speakNewScore
             });
           }
           emit(WordDetailsStateRemoved());

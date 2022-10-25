@@ -50,13 +50,16 @@ class BackUpBloc extends Bloc<BackUpEvent, BackUpState> {
     });
 
     on<BackUpGetVersion>((event, emit) async {
+      emit(BackUpStateLoading());
       final version = await _backupRepository.getVersion();
       PackageInfo pi = await PackageInfo.fromPlatform();
+      List<String> notes =
+          // ignore: use_build_context_synchronously
+          await _backupRepository.getVersionNotes(event.context);
       if (version != pi.version && version != "") {
-        List<String> notes =
-            // ignore: use_build_context_synchronously
-            await _backupRepository.getVersionNotes(event.context);
         emit(BackUpStateVersionRetrieved(version, notes));
+      } else {
+        emit(BackUpStateVersionNotesRetrieved(notes));
       }
     });
   }

@@ -15,9 +15,10 @@ class BackUpLoadingRemoveBackUp extends BackUpEvent {}
 
 class BackUpGetVersion extends BackUpEvent {
   final BuildContext context;
+  final bool showNotes;
 
-  const BackUpGetVersion(this.context);
+  const BackUpGetVersion(this.context, {this.showNotes = false});
 
   @override
-  List<Object> get props => [context];
+  List<Object> get props => [context, showNotes];
 }

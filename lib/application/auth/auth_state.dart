@@ -9,15 +9,6 @@ class AuthState extends Equatable {
 
 class AuthStateLoading extends AuthState {}
 
-class AuthStateLoggedOut extends AuthState {
-  final String message;
-
-  const AuthStateLoggedOut({required this.message});
-
-  @override
-  List<Object> get props => [message];
-}
-
 class AuthStateSuccessful extends AuthState {
   final User user;
 
@@ -29,9 +20,10 @@ class AuthStateSuccessful extends AuthState {
 
 class AuthStateIdle extends AuthState {
   final String error;
+  final bool shouldPop;
 
-  const AuthStateIdle({this.error = ""});
+  const AuthStateIdle({this.error = "", this.shouldPop = false});
 
   @override
-  List<Object> get props => [error];
+  List<Object> get props => [error, shouldPop];
 }

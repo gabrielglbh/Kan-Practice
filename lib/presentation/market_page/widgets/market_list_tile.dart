@@ -136,7 +136,7 @@ class MarketListTile extends StatelessWidget {
                         )),
                   );
                 }
-                return const SizedBox();
+                return const Expanded(child: SizedBox());
               },
             ),
             IconButton(

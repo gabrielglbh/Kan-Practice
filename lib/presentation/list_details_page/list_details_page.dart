@@ -69,7 +69,9 @@ class _ListDetailsPageState extends State<ListDetailsPage>
     _listName = widget.list.name;
     _aggrStats = getIt<PreferencesService>()
         .readData(SharedKeys.kanListListVisualization);
-    getIt<ListDetailBloc>().add(ListDetailEventLoading(widget.list.name));
+    getIt<ListDetailBloc>().add(
+      ListDetailEventLoading(widget.list.name, reset: true),
+    );
     super.initState();
   }
 

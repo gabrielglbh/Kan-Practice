@@ -65,6 +65,9 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = Theme.of(context).brightness == Brightness.light
+        ? Colors.black
+        : Colors.white;
     return BottomSheet(
       enableDrag: false,
       onClosing: () {},
@@ -94,7 +97,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
               ),
               GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, childAspectRatio: 4.5),
+                    crossAxisCount: 2, childAspectRatio: 4),
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: Ranges.values.length,
@@ -102,25 +105,50 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
                   Ranges range = Ranges.values[index];
                   return Padding(
                     padding: const EdgeInsets.only(right: KPMargins.margin8),
-                    child: ActionChip(
-                        label: Text(range.label),
-                        pressElevation: KPMargins.margin4,
-                        backgroundColor: _selectedLists.contains(range)
-                            ? KPColors.secondaryDarkerColor
-                            : KPColors.secondaryColor,
-                        onPressed: () {
-                          setState(() {
-                            if (_selectedLists.contains(range)) {
-                              _selectedLists.remove(range);
-                            } else {
-                              _selectedLists.add(range);
-                            }
-                          });
-                        }),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          if (_selectedLists.contains(range)) {
+                            _selectedLists.remove(range);
+                          } else {
+                            _selectedLists.add(range);
+                          }
+                        });
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: KPMargins.margin8,
+                            vertical: KPMargins.margin2),
+                        decoration: BoxDecoration(
+                          color: _selectedLists.contains(range)
+                              ? KPColors.secondaryDarkerColor
+                              : Colors.transparent,
+                          borderRadius:
+                              BorderRadius.circular(KPRadius.radius16),
+                          border: Border.all(
+                            color: _selectedLists.contains(range)
+                                ? Colors.transparent
+                                : textColor,
+                          ),
+                        ),
+                        child: Text(
+                          range.label,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2
+                              ?.copyWith(
+                                  color: _selectedLists.contains(range)
+                                      ? Colors.white
+                                      : textColor),
+                        ),
+                      ),
+                    ),
                   );
                 },
               ),
-              _numberButton(context, "number_bottom_sheet_label".tr())
+              _numberButton(context, "number_bottom_sheet_label".tr()),
+              const SizedBox(height: KPMargins.margin8),
             ],
           ),
         ]);
@@ -134,7 +162,6 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
         KPButton(
             title1: "number_bottom_sheet_begin_ext".tr(),
             title2: "number_bottom_sheet_begin".tr(),
-            width: true,
             onTap: () async {
               List<Word> list = _loadBlitzTest();
               if (list.isEmpty) {

@@ -98,13 +98,33 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const KPDragContainer(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: KPMargins.margin8,
-                      horizontal: KPMargins.margin32),
-                  child: Text("dict_jisho_add_kanji_bottom_sheet_title".tr(),
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headline6),
+                Row(
+                  children: [
+                    const SizedBox(width: KPMargins.margin48),
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: KPMargins.margin8,
+                            horizontal: KPMargins.margin32),
+                        child: Text(
+                            "dict_jisho_add_kanji_bottom_sheet_title".tr(),
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headline6),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        KPCreateKanListDialog.show(context,
+                            onSubmit: (String name) {
+                          getIt<ListBloc>().add(ListEventCreate(name,
+                              filter: WordListFilters.all,
+                              order: false,
+                              useLazyLoading: false));
+                        });
+                      },
+                      icon: const Icon(Icons.add),
+                    ),
+                  ],
                 ),
                 Visibility(
                   visible: _error.isNotEmpty,
@@ -161,17 +181,6 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
               setState(() => _category = WordCategory.values[index]);
             },
           ),
-        ),
-        ListTile(
-          onTap: () =>
-              KPCreateKanListDialog.show(context, onSubmit: (String name) {
-            getIt<ListBloc>().add(ListEventCreate(name,
-                filter: WordListFilters.all,
-                order: false,
-                useLazyLoading: false));
-          }),
-          title: Text("dict_jisho_create_kanji_list".tr()),
-          leading: const Icon(Icons.add),
         ),
         const Divider(),
         Expanded(

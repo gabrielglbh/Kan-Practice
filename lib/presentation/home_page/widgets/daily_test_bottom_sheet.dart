@@ -123,6 +123,7 @@ class DailyBottomSheet extends StatelessWidget {
                           .add(LoadTestDailyEventLoadList(folder: folder));
                     },
                   ),
+                  const SizedBox(height: KPMargins.margin16),
                 ],
               ),
             ]);

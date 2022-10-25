@@ -155,18 +155,19 @@ class _FolderSelectionBottomSheetState
           ),
         ),
         KPButton(
-            width: true,
-            title1: "study_bottom_sheet_button_label_ext".tr(),
-            title2: "study_bottom_sheet_button_label".tr(),
-            onTap: () async {
-              if (_selectedFolders.isNotEmpty) {
-                getIt<LoadTestFolderSelectionBloc>().add(
-                    LoadTestFolderSelectionEventLoadList(
-                        folders: _selectedFolders));
-              } else {
-                setState(() => _onListEmpty = true);
-              }
-            })
+          title1: "study_bottom_sheet_button_label_ext".tr(),
+          title2: "study_bottom_sheet_button_label".tr(),
+          onTap: () async {
+            if (_selectedFolders.isNotEmpty) {
+              getIt<LoadTestFolderSelectionBloc>().add(
+                  LoadTestFolderSelectionEventLoadList(
+                      folders: _selectedFolders));
+            } else {
+              setState(() => _onListEmpty = true);
+            }
+          },
+        ),
+        const SizedBox(height: KPMargins.margin8),
       ],
     );
   }

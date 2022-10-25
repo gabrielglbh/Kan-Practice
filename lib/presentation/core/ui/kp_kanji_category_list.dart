@@ -18,6 +18,9 @@ class KPKanjiCategoryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = Theme.of(context).brightness == Brightness.light
+        ? Colors.black
+        : Colors.white;
     return GridView(
       physics:
           hasScrollablePhysics ? null : const NeverScrollableScrollPhysics(),
@@ -28,19 +31,24 @@ class KPKanjiCategoryList extends StatelessWidget {
         return GestureDetector(
           onTap: () => onSelected(index),
           child: Container(
-              decoration: BoxDecoration(
-                  color: selected(index)
-                      ? KPColors.secondaryDarkerColor
-                      : KPColors.secondaryColor,
-                  borderRadius: BorderRadius.circular(KPRadius.radius16)),
-              margin: const EdgeInsets.symmetric(
-                  horizontal: KPMargins.margin4, vertical: KPMargins.margin2),
-              alignment: Alignment.center,
-              child: Text(WordCategory.values[index].category,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      ?.copyWith(color: Colors.white))),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(KPRadius.radius16),
+              border: Border.all(
+                  color: selected(index) ? Colors.transparent : textColor),
+              color: selected(index)
+                  ? KPColors.secondaryDarkerColor
+                  : Colors.transparent,
+            ),
+            margin: const EdgeInsets.symmetric(
+                horizontal: KPMargins.margin4, vertical: KPMargins.margin2),
+            alignment: Alignment.center,
+            child: Text(
+              WordCategory.values[index].category,
+              style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                    color: selected(index) ? Colors.white : textColor,
+                  ),
+            ),
+          ),
         );
       }),
     );

@@ -17,9 +17,12 @@ class KPKanListGrid<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = Theme.of(context).brightness == Brightness.light
+        ? Colors.black
+        : Colors.white;
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4, childAspectRatio: 2),
+          crossAxisCount: 3, childAspectRatio: 2.8),
       itemCount: items.length,
       itemBuilder: (context, index) {
         String name = items[index] is WordList
@@ -37,18 +40,19 @@ class KPKanListGrid<T> extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: KPMargins.margin4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(KPRadius.radius16),
+                border: Border.all(
+                    color: isSelected(name) ? Colors.transparent : textColor),
                 color: isSelected(name)
                     ? KPColors.secondaryDarkerColor
-                    : KPColors.secondaryColor,
+                    : Colors.transparent,
               ),
               child: FittedBox(
                 fit: BoxFit.contain,
                 child: Text(
                   name,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      ?.copyWith(color: Colors.white),
+                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        color: isSelected(name) ? Colors.white : textColor,
+                      ),
                 ),
               ),
             ),

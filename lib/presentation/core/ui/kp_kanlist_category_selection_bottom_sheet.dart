@@ -114,7 +114,6 @@ class _KPKanListCategorySelectionBottomSheetState
                             }),
                           ),
                           KPButton(
-                            width: true,
                             title1: "study_bottom_sheet_button_label_ext".tr(),
                             title2: "study_bottom_sheet_button_label".tr(),
                             onTap: () async {
@@ -124,7 +123,8 @@ class _KPKanListCategorySelectionBottomSheetState
                                     folder: widget.folder),
                               );
                             },
-                          )
+                          ),
+                          const SizedBox(height: KPMargins.margin8),
                         ],
                       ),
                     ),

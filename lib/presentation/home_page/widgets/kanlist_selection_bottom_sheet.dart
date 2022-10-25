@@ -44,25 +44,24 @@ class _KanListSelectionBottomSheetState
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        return BlocConsumer<LoadTestListSelectionBloc,
-            LoadTestListSelectionState>(
-          listener: (context, state) {
-            if (state is LoadTestListSelectionStateLoadedList) {
-              if (state.words.isEmpty) return;
+        getIt<ListBloc>().add(const ListForTestEventLoading());
+        return BlocListener<LoadTestListSelectionBloc,
+                LoadTestListSelectionState>(
+            listener: (context, state) {
+              if (state is LoadTestListSelectionStateLoadedList) {
+                if (state.words.isEmpty) return;
 
-              setState(() => _selectionMode = true);
+                setState(() => _selectionMode = true);
 
-              /// Keep the list names all the way to the Test Result page in a formatted way
-              for (var name in _selectedLists) {
-                _selectedFormattedLists += "$name, ";
+                /// Keep the list names all the way to the Test Result page in a formatted way
+                for (var name in _selectedLists) {
+                  _selectedFormattedLists += "$name, ";
+                }
+                _selectedFormattedLists = _selectedFormattedLists.substring(
+                    0, _selectedFormattedLists.length - 2);
               }
-              _selectedFormattedLists = _selectedFormattedLists.substring(
-                  0, _selectedFormattedLists.length - 2);
-            }
-          },
-          builder: (context, state) {
-            getIt<ListBloc>().add(const ListForTestEventLoading());
-            return Wrap(children: [
+            },
+            child: Wrap(children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -84,15 +83,21 @@ class _KanListSelectionBottomSheetState
                             .headline6
                             ?.copyWith(fontWeight: FontWeight.w400)),
                   ),
-                  Visibility(
-                    visible: _selectionMode &&
-                        (state is LoadTestListSelectionStateLoadedList),
-                    child: KPTestStudyMode(
-                      list:
-                          (state as LoadTestListSelectionStateLoadedList).words,
-                      type: Tests.lists,
-                      testName: _selectedFormattedLists,
-                    ),
+                  BlocBuilder<LoadTestListSelectionBloc,
+                      LoadTestListSelectionState>(
+                    builder: (context, state) {
+                      if (state is! LoadTestListSelectionStateLoadedList) {
+                        return const SizedBox();
+                      }
+                      return Visibility(
+                        visible: _selectionMode,
+                        child: KPTestStudyMode(
+                          list: state.words,
+                          type: Tests.lists,
+                          testName: _selectedFormattedLists,
+                        ),
+                      );
+                    },
                   ),
                   Visibility(
                     visible: !_selectionMode,
@@ -121,9 +126,7 @@ class _KanListSelectionBottomSheetState
                   )
                 ],
               ),
-            ]);
-          },
-        );
+            ]));
       },
     );
   }

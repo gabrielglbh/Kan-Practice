@@ -44,7 +44,7 @@ class _KPKanListCategorySelectionBottomSheetState
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        return BlocConsumer<LoadTestCategorySelectionBloc,
+        return BlocListener<LoadTestCategorySelectionBloc,
             LoadTestCategorySelectionState>(
           listener: ((context, state) {
             if (state is LoadTestCategorySelectionStateLoadedList) {
@@ -57,8 +57,8 @@ class _KPKanListCategorySelectionBottomSheetState
               });
             }
           }),
-          builder: (context, state) {
-            return Wrap(children: [
+          child: Wrap(
+            children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -81,17 +81,23 @@ class _KPKanListCategorySelectionBottomSheetState
                             .headline6
                             ?.copyWith(fontWeight: FontWeight.w400)),
                   ),
-                  Visibility(
-                    visible: _selectionMode &&
-                        state is LoadTestCategorySelectionStateLoadedList,
-                    child: KPTestStudyMode(
-                      list: (state as LoadTestCategorySelectionStateLoadedList)
-                          .words,
-                      type: Tests.categories,
-                      testName: widget.folder == null
-                          ? "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category}"
-                          : "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category} - ${widget.folder}",
-                    ),
+                  BlocBuilder<LoadTestCategorySelectionBloc,
+                      LoadTestCategorySelectionState>(
+                    builder: (context, state) {
+                      if (state is! LoadTestCategorySelectionStateLoadedList) {
+                        return const SizedBox();
+                      }
+                      return Visibility(
+                        visible: _selectionMode,
+                        child: KPTestStudyMode(
+                          list: state.words,
+                          type: Tests.categories,
+                          testName: widget.folder == null
+                              ? "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category}"
+                              : "${"categories_test_bottom_sheet_label".tr()} ${_selectedCategory.category} - ${widget.folder}",
+                        ),
+                      );
+                    },
                   ),
                   Visibility(
                     visible: !_selectionMode,
@@ -125,8 +131,8 @@ class _KPKanListCategorySelectionBottomSheetState
                   )
                 ],
               ),
-            ]);
-          },
+            ],
+          ),
         );
       },
     );

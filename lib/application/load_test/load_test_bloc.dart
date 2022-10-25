@@ -25,10 +25,7 @@ class LoadTestBloc extends Bloc<LoadTestEvent, LoadTestState> {
     on<LoadTestEventLoadList>((event, emit) async {
       List<Word> finalList = [];
 
-      /// Get all the list of all kanji and perform a 20 kanji random sublist
       if (event.practiceList == null) {
-        /// If the type is Folder or Blitz with a specified folder, gather all
-        /// words within the folder
         if (event.type == Tests.folder ||
             (event.type == Tests.blitz && event.folder != null)) {
           if (event.folder != null) {
@@ -46,7 +43,6 @@ class LoadTestBloc extends Bloc<LoadTestEvent, LoadTestState> {
           );
           finalList = list;
         } else {
-          /// Else, just get all Kanji
           List<Word> list = await _wordRepository.getAllWords(
               mode: event.mode, type: event.type);
 

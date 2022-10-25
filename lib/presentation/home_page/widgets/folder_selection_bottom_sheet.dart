@@ -45,7 +45,8 @@ class _FolderSelectionBottomSheetState
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        return BlocConsumer<LoadTestFolderSelectionBloc,
+        getIt<FolderBloc>().add(FolderForTestEventLoading());
+        return BlocListener<LoadTestFolderSelectionBloc,
             LoadTestFolderSelectionState>(
           listener: (context, state) {
             if (state is LoadTestFolderSelectionStateLoadedList) {
@@ -61,9 +62,8 @@ class _FolderSelectionBottomSheetState
                   0, _selectedFormattedFolder.length - 2);
             }
           },
-          builder: (context, state) {
-            getIt<FolderBloc>().add(FolderForTestEventLoading());
-            return Wrap(children: [
+          child: Wrap(
+            children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -85,15 +85,21 @@ class _FolderSelectionBottomSheetState
                             .headline6
                             ?.copyWith(fontWeight: FontWeight.w400)),
                   ),
-                  Visibility(
-                    visible: _selectionMode &&
-                        (state is LoadTestFolderSelectionStateLoadedList),
-                    child: KPTestStudyMode(
-                      list: (state as LoadTestFolderSelectionStateLoadedList)
-                          .words,
-                      type: Tests.folder,
-                      testName: _selectedFormattedFolder,
-                    ),
+                  BlocBuilder<LoadTestFolderSelectionBloc,
+                      LoadTestFolderSelectionState>(
+                    builder: (context, state) {
+                      if (state is! LoadTestFolderSelectionStateLoadedList) {
+                        return const SizedBox();
+                      }
+                      return Visibility(
+                        visible: _selectionMode,
+                        child: KPTestStudyMode(
+                          list: state.words,
+                          type: Tests.folder,
+                          testName: _selectedFormattedFolder,
+                        ),
+                      );
+                    },
                   ),
                   Visibility(
                     visible: !_selectionMode,
@@ -122,8 +128,8 @@ class _FolderSelectionBottomSheetState
                   )
                 ],
               ),
-            ]);
-          },
+            ],
+          ),
         );
       },
     );

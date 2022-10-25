@@ -136,7 +136,12 @@ class KPTestStudyMode extends StatelessWidget {
             }
           } else {
             getIt<LoadTestBloc>().add(
-              LoadTestEventLoadList(folder: folder, mode: mode, type: type),
+              LoadTestEventLoadList(
+                folder: folder,
+                mode: mode,
+                type: type,
+                practiceList: practiceList,
+              ),
             );
           }
         });

@@ -35,56 +35,64 @@ If you wish to distribute a new app based on this one, remember to change the Bu
 
 ## Code Structure and Architecture
 
-Code is based on 2 main folders: `ui` and `core`, with self explanatory meanings. On `main.dart` you will find the main `Widget` that runs the app with all of its configuration.
+Code is based on the DDD Clean Architecture paradigm, [learn more](https://medium.com/@ushimaru/beginners-guide-to-flutter-with-ddd-87d4c476c3cb). This design pattern uses abstraction (domains) to create code that has very low coupling and that makes it very easy to test, maintain and change data providers at any given moment.
 
-Architecture is based on the __BLoC pattern__ ([reference](https://pub.dev/packages/flutter_bloc)), which separates business logic from the UI. Any heavy loading from the local DB or Firebase will be performed and listened from a dedicated BLoC. Custom events and states are created for each BLoC to properly update the necessary UI elements accordingly.
+This architecture is reached with __BLoC pattern__ and __Dependencies Injection__.
 
-Along with BLoC, the __lazy loading pattern__ is used ([reference](https://en.wikipedia.org/wiki/Lazy_loading)). Lazy loading serves as a light weight mode to serve large lists to UI. The method is to load small batches from a large list and loading even more batches when the user reaches the end or a certain point of the list.
+- __BLoC pattern__ ([reference](https://pub.dev/packages/flutter_bloc)) separates business logic from the UI. Any heavy loading will be performed and listened from a dedicated BLoC. Custom events and states are created for each BLoC to properly update the necessary UI elements accordingly. Along with BLoC, we use __lazy loading__ or __pagination__ ([reference](https://en.wikipedia.org/wiki/Lazy_loading)). Lazy loading serves as a light weight mode to serve large lists to UI. The method is to load small batches from a large list and loading even more batches when the user reaches the end or a certain point of the list.
 
-### 1. Code: `Core`
+- For __Dependency Injection__ I used __GetIt__ ([reference](https://pub.dev/packages/get_it)) and __Injection__ ([reference](https://pub.dev/packages/injectable)). 
+  - __GetIt__ is a simple Service Locator that allows us to use our services, in this case BLoC classes, without the need of using the context of the app. This makes it easier to access the BLoC class from anywhere in the app, even outside the UI.
+  - __Injection__ is simply a code generator built for GetIt. This makes far more easier the configuration of the service locator using custom annotations to tell the code generator to register either factories, singletons or lazy singletons.
 
-Subdivided in:
+With this in mind, we divide the code into 4 main folders: `application`, `domain`, `infrastructure` and `presentation`. These folders come from the below figure, representing the 4 different layers that will interact with the `domain`.
 
-- `database`: related code for database management (creation of db, queries, db models and helper constants).
-- `firebase`: related code for firebase and backup management (services of back up and authentication, queries and firebase models).
-- `jisho`: related code for the connection to the Jisho API.
-- `localization`: available translations.
-- `preferences`: related code for the Shared Preferences helper to store key-value data in the device.
-- `routing`: related code for managing the routing of the pages of the app.
-- `tflite`: related code for the instantiation and inference of the Tensorflow Lite model for recognizing kanji, used on the dictionary.
-- `utils`: code that is purely functional and that is used across the app.
+<p align="center">
+  <img src="documentation/ddd-arch.webp" width="40%">
+</p>
 
-Please, refer to the comments to better understand the code and feel free to navigate through the code with the help of your IDE to understand better the architecture.
 
-### 2. Code: `UI`
+### 1. `application`
 
-Subdivided in:
+Layer in which all the services are presented. All BLoC classes and custom services will be retained in this layer. None of the actual functionality is performed in this layer. This only serves as an interface for the `presentation` layer to call the actual functionality in the `infrastructure` layer via the abstract repositories created in `domain` layer.
 
-- `pages`: the different pages are subdivided in their respective folder, each one having their own bloc management (when needed).
-- `theme`: purely UI code as colors, theming, heights...
-- `widgets`: UI components with functional elements that are reused across the app.
+This means that all of the BLoC classes and services will have as constructor parameters the repositories created in the `domain` to achieve the extra level of abstraction.
 
-### 3. Code: BLoC
+All BLoC classes, dependant on the usage in the app, will have a `@lazySingleton` annotation to indicate `getIt` that the classes are persistent. Thus with the Custom Services, we will annotate them with `@injectable`.
 
-In some `ui/pages` folder, subdivided in:
+### 2. `domain`
 
-- `blocx_event`: where events are defined. These events are launched from the UI layer to the Business Logic (BL) layer to handle the logic there.
-- `blocx_state`: where states are defined. These states are emitted from the BL to the UI. When a certain event has finished, a state is emitted to update the UI layer.
-- `blocx_bloc`: where all the business logic is defined. Events' content is defined here and it is this class the one that the UI will instantiate to initialize the BLoC pattern.
+The main layer. This will contain the models that the UI conveys and the public abstract repositories that define the data extraction. These are like a contracts for the `infrastructure` layer to comply with, as they will implement them.
 
-### 4. Code: Lazy Loading
+The repositories are used in the `application` and `infrastructure` layer to maintain the abstraction from the actual data providers.
+
+### 3. `infrastrucure`
+
+This is the only layer that communicates with the data providers, and thus, the only layer we will have to modify in case we want to change providers. This leads to maintaining the `domain` contracts all across the app. 
+
+The repository implementations are gathered in here. Again, as constructor parameters they will take the `domain` interfaces, but with the nuance that the implementation actually uses the Data Providers APIs, injected with `getIt` in the constructor.
+
+All repository implementations will be annotated with `@LazySingleton(as: I_x_Repository)` to tell `getIt` to create a lazy singleton instance from the `domain` repository and use it as the `infrastructure` implementation. 
+
+### 4. `presentation`
+
+All the UI elements such as widgets, pages, routing... are located in this layer. In order to retrieve data to paint the UI with, this layer comunicates only with the `application` layer's BLoC classes and custom needed Services such as `PreferencesService` or `TextToSpeechService`.
+
+You will find all pages as subfolders of the root with one special `core` folder inside it too. This folder contains the reusable widgets, localization, routing, utils, custom types and theming of the whole app.
+
+### 5. Extra: Lazy Loading
 
 In order to use lazy loading we have to make changes in the UI, BL and DB layer:
 
-- <u>UI Layer</u>: an `ScrollController` is appended to the desired `ListView`. When reaching the end of the list, a new `loading` event will be transmitted to the `bloc`. In this event, an `offset` will be updated by 1 everytime the user reaches the end of the list to inform the BL that is needed to get the next batch.
-- <u>BL Layer</u>: in order to keep track of the whole list, a private list `fullList` is created on the `bloc` class. When the UI launches `loading`, a new list is created (`fullListCopy`) as a copy of `fullList`. Is this `fullListCopy` in which the batches will be added when gathered from DB and the list that will be forwarded to the UI layer for repaint purposes. The `fullList`, when the state is emitted, must be updated with the new batch in order to keep track of the whole list, as `fullListCopy` is only a temporary list.
-- <u>DB Layer</u>: in the database layer, in case of using SQLite, a `LIMIT` and `OFFSET` must be appended to the query. The `LIMIT` is maintained constant, but the `OFFSET` is a changing value with the formula `limit X offset`. In this way, the DB always retrieves batches of size `limit` and shifting `limit X offset` times everytime the user reaches the list's end.
+- <u>`presentation` layer</u>: an `ScrollController` is appended to the desired `ListView`. When reaching the end of the list, a new `loading` event will be transmitted to the `bloc`. In this event, an `offset` will be updated by 1 everytime the user reaches the end of the list to inform the BL that is needed to get the next batch.
+- <u>`application` layer</u>: in order to keep track of the whole list, a private list `fullList` is created on the `bloc` class. When the UI launches `loading`, a new list is created (`fullListCopy`) as a copy of `fullList`. Is this `fullListCopy` in which the batches will be added when gathered from DB and the list that will be forwarded to the UI layer for repaint purposes. The `fullList`, when the state is emitted, must be updated with the new batch in order to keep track of the whole list, as `fullListCopy` is only a temporary list.
+- <u>`infrastructure` layer</u>: if using SQLite, a `LIMIT` and `OFFSET` must be appended to the query. The `LIMIT` is maintained constant, but the `OFFSET` is a changing value with the formula `limit X offset`. In this way, the DB always retrieves batches of size `limit` and shifting `limit X offset` times everytime the user reaches the list's end.
 
-In case this plain explanation is confusing, you can refer to the `test_history` example ([reference](https://github.com/gabrielglbh/Kan-Practice/tree/main/lib/ui/pages/test_history)).
+In case this plain explanation is confusing, you can refer to the `word_history` example ([reference](https://github.com/gabrielglbh/Kan-Practice/tree/main/lib/application/word_history/word_history_bloc.dart)).
 
 ### Language Addition
 
-The language management system is handled by JSON files located under `lib/core/localization/`. Current languages are Spanish and English.
+The language management system is handled by JSON files located under `lib/presentation/core/localization/`. Current languages are Spanish, English and German.
 Contribution needed for more languages to be added.
 
 If you wish to contribute by adding a new language, you must perform these actions:

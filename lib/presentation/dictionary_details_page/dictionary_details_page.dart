@@ -63,7 +63,14 @@ class _DictionaryDetailsPageState extends State<DictionaryDetailsPage> {
                 },
               ),
             ),
-            _poweredByDictionaryDetails(),
+            Padding(
+              padding: const EdgeInsets.only(bottom: KPMargins.margin8),
+              child: Chip(
+                backgroundColor: Colors.green[200],
+                label: Text("jisho_resultData_powered_by".tr(),
+                    style: const TextStyle(color: Colors.black)),
+              ),
+            ),
           ],
         ));
   }
@@ -74,17 +81,6 @@ class _DictionaryDetailsPageState extends State<DictionaryDetailsPage> {
         Expanded(
           child: ListView(
             children: [
-              Visibility(
-                visible: widget.args.fromDictionary,
-                child: KPButton(
-                  title2: "dict_jisho_add_kanji_label".tr(),
-                  onTap: () {
-                    AddToKanListBottomSheet.callAddToKanListBottomSheet(
-                        context, widget.args.word, state.data);
-                  },
-                ),
-              ),
-
               /// All info is based on the value of state.data.
               /// If resultData is null, it means that the kanji searched is actually a
               /// compound one.
@@ -115,24 +111,26 @@ class _DictionaryDetailsPageState extends State<DictionaryDetailsPage> {
             ],
           ),
         ),
+        Visibility(
+          visible: widget.args.fromDictionary,
+          child: KPButton(
+            title2: "dict_jisho_add_kanji_label".tr(),
+            icon: Icons.add,
+            onTap: () {
+              AddToKanListBottomSheet.callAddToKanListBottomSheet(
+                  context, widget.args.word, state.data);
+            },
+          ),
+        ),
       ],
     );
   }
 
   Widget _nothingFound() {
     return Center(
-        child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
-            child: Text("jisho_no_match".tr(), textAlign: TextAlign.center)));
-  }
-
-  Widget _poweredByDictionaryDetails() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
-      child: Chip(
-        backgroundColor: Colors.green[200],
-        label: Text("jisho_resultData_powered_by".tr(),
-            style: const TextStyle(color: Colors.black)),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
+        child: Text("jisho_no_match".tr(), textAlign: TextAlign.center),
       ),
     );
   }

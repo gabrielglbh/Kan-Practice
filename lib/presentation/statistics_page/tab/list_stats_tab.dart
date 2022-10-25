@@ -82,7 +82,7 @@ class _ListStatsState extends State<ListStats>
           child: KPBarChart(
             graphName: "kanji_category_label".tr(),
             animationDuration: 0,
-            heightRatio: 3,
+            heightRatio: 3.5,
             enableTooltip: false,
             isHorizontalChart: true,
             onBarTapped: (model) async {

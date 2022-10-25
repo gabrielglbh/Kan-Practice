@@ -94,7 +94,7 @@ class _TestStatsState extends State<TestStats>
       child: KPBarChart(
         enableTooltip: false,
         isHorizontalChart: true,
-        heightRatio: 2.5,
+        heightRatio: 3,
         animationDuration: 0,
         graphName: "tests".tr(),
         onBarTapped: (model) async {

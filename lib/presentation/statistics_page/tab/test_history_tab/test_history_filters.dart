@@ -210,6 +210,7 @@ class _TestHistoryFiltersState extends State<TestHistoryFilters> {
             ),
             KPButton(
               title2: 'filter_apply'.tr(),
+              icon: Icons.check_rounded,
               onTap: () {
                 Navigator.of(context).pop(TestHistoryArgs(
                   _firstDate,

@@ -77,7 +77,7 @@ final ThemeData dark = ThemeData(
       const TextSelectionThemeData(cursorColor: KPColors.secondaryColor),
   inputDecorationTheme: InputDecorationTheme(
       hintStyle: TextStyle(color: Colors.grey[400]),
-      border: const OutlineInputBorder(
+      enabledBorder: const OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(KPRadius.radius24)),
         borderSide: BorderSide(color: _accent),
       ),

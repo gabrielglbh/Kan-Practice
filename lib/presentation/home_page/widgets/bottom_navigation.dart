@@ -21,9 +21,7 @@ class HomeBottomNavigation extends StatelessWidget {
     return Container(
       height: 64,
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.light
-            ? Colors.white
-            : Colors.grey.shade700,
+        color: KPColors.getPrimary(context),
         boxShadow: <BoxShadow>[
           BoxShadow(
             color: Theme.of(context).brightness == Brightness.light
@@ -49,9 +47,7 @@ class HomeBottomNavigation extends StatelessWidget {
 
   Widget _bottomBarItem(BuildContext context, HomeType type, GlobalKey key) {
     final selectedColor = currentPage == type;
-    final color = Theme.of(context).brightness == Brightness.light
-        ? Colors.grey.shade700
-        : Colors.grey.shade400;
+    final color = KPColors.getSubtle(context);
     return GestureDetector(
       onTap: () async {
         if (type != HomeType.actions) {

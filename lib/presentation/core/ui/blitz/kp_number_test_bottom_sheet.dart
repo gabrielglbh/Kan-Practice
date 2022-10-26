@@ -65,9 +65,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final textColor = Theme.of(context).brightness == Brightness.light
-        ? Colors.black
-        : Colors.white;
+    final textColor = KPColors.getAccent(context);
     return BottomSheet(
       enableDrag: false,
       onClosing: () {},

@@ -1,60 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
-const Color _primary = Colors.white;
-final Color _cardColor = Colors.grey.shade200;
-final Color _chipColor = Colors.grey.shade500;
-const Color _accent = Colors.black;
-final Color _subtle = Colors.grey.shade600;
-
 final ThemeData light = ThemeData(
   brightness: Brightness.light,
-  scaffoldBackgroundColor: _primary,
+  scaffoldBackgroundColor: KPColors.primaryLight,
   colorScheme: ColorScheme.fromSwatch()
-      .copyWith(secondary: _accent, brightness: Brightness.light),
+      .copyWith(secondary: KPColors.accentLight, brightness: Brightness.light),
   appBarTheme: const AppBarTheme(
-    color: _primary,
+    color: KPColors.primaryLight,
     elevation: 0,
-    titleTextStyle: TextStyle(fontSize: KPFontSizes.fontSize32, color: _accent),
-    iconTheme: IconThemeData(color: _accent),
+    titleTextStyle: TextStyle(
+        fontSize: KPFontSizes.fontSize32, color: KPColors.accentLight),
+    iconTheme: IconThemeData(color: KPColors.accentLight),
   ),
-  iconTheme: const IconThemeData(color: _accent),
+  iconTheme: const IconThemeData(color: KPColors.accentLight),
   textTheme: TextTheme(
-      headline1: const TextStyle(color: _accent),
-      headline2: const TextStyle(color: _accent),
-      headline3:
-          const TextStyle(color: _accent, fontSize: KPFontSizes.fontSize64),
-      headline4:
-          const TextStyle(color: _accent, fontSize: KPFontSizes.fontSize32),
+      headline1: const TextStyle(color: KPColors.accentLight),
+      headline2: const TextStyle(color: KPColors.accentLight),
+      headline3: const TextStyle(
+          color: KPColors.accentLight, fontSize: KPFontSizes.fontSize64),
+      headline4: const TextStyle(
+          color: KPColors.accentLight, fontSize: KPFontSizes.fontSize32),
       headline5: const TextStyle(
-          color: _accent,
+          color: KPColors.accentLight,
           fontSize: KPFontSizes.fontSize24,
           fontWeight: FontWeight.bold),
       headline6: const TextStyle(
-          color: _accent,
+          color: KPColors.accentLight,
           fontSize: KPFontSizes.fontSize18,
           fontWeight: FontWeight.bold),
-      subtitle1: const TextStyle(color: _accent),
+      subtitle1: const TextStyle(color: KPColors.accentLight),
       subtitle2: const TextStyle(
-          color: _accent,
+          color: KPColors.accentLight,
           fontSize: KPFontSizes.fontSize12,
           fontWeight: FontWeight.w400),
       bodyText1: const TextStyle(
-          color: _accent,
+          color: KPColors.accentLight,
           fontSize: KPFontSizes.fontSize16,
           fontWeight: FontWeight.w400),
-      bodyText2:
-          const TextStyle(color: _accent, fontSize: KPFontSizes.fontSize14),
-      caption: TextStyle(color: _subtle),
+      bodyText2: const TextStyle(
+          color: KPColors.accentLight, fontSize: KPFontSizes.fontSize14),
+      caption: TextStyle(color: KPColors.subtleLight),
       button: const TextStyle(
-          color: _primary,
+          color: KPColors.primaryLight,
           fontSize: KPFontSizes.fontSize16,
           fontWeight: FontWeight.bold),
       overline: const TextStyle(
           color: KPColors.secondaryDarkerColor,
           decoration: TextDecoration.underline,
           fontSize: KPFontSizes.fontSize14)),
-  cardTheme: CardTheme(color: _cardColor, elevation: 8),
+  cardTheme: CardTheme(color: KPColors.cardColorLight, elevation: 8),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
       backgroundColor:
@@ -72,14 +67,15 @@ final ThemeData light = ThemeData(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(KPRadius.radius16))),
       elevation: 12,
-      contentTextStyle: TextStyle(color: _primary)),
+      contentTextStyle: TextStyle(color: KPColors.primaryLight)),
   textSelectionTheme:
       const TextSelectionThemeData(cursorColor: KPColors.secondaryDarkerColor),
   inputDecorationTheme: InputDecorationTheme(
       hintStyle: TextStyle(color: Colors.grey[400]),
-      enabledBorder: const OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(KPRadius.radius24)),
-        borderSide: BorderSide(color: _accent),
+      enabledBorder: OutlineInputBorder(
+        borderRadius:
+            const BorderRadius.all(Radius.circular(KPRadius.radius24)),
+        borderSide: BorderSide(color: KPColors.subtleLight),
       ),
       focusedBorder: const OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(KPRadius.radius24)),
@@ -87,21 +83,21 @@ final ThemeData light = ThemeData(
             BorderSide(color: KPColors.secondaryDarkerColor, width: 2.0),
       )),
   bottomSheetTheme: const BottomSheetThemeData(
-      backgroundColor: _primary,
+      backgroundColor: KPColors.primaryLight,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(KPRadius.radius16),
               topRight: Radius.circular(KPRadius.radius16)))),
-  dialogBackgroundColor: _primary,
+  dialogBackgroundColor: KPColors.primaryLight,
   chipTheme: ChipThemeData(
       selectedColor: KPColors.secondaryDarkerColor,
-      secondaryLabelStyle: const TextStyle(color: _primary),
+      secondaryLabelStyle: const TextStyle(color: KPColors.primaryLight),
       brightness: Brightness.light,
-      backgroundColor: _chipColor,
+      backgroundColor: KPColors.chipColor,
       padding: const EdgeInsets.all(KPMargins.margin4),
       disabledColor: Colors.grey,
-      labelStyle: const TextStyle(color: _primary),
-      secondarySelectedColor: _accent),
+      labelStyle: const TextStyle(color: KPColors.primaryLight),
+      secondarySelectedColor: KPColors.accentLight),
   tabBarTheme: const TabBarTheme(
     labelColor: Colors.black,
     labelStyle: TextStyle(

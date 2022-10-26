@@ -245,9 +245,13 @@ class _HomePageState extends State<HomePage>
                   _resetLists();
                   _searchBarFn.unfocus();
                   return false;
-                } else {
-                  return true;
                 }
+                if (_currentPage.index != 0) {
+                  _controller.jumpToPage(0);
+                  setState(() => _currentPage = HomeType.kanlist);
+                  return false;
+                }
+                return true;
               },
               appBarTitle: _currentPage.appBarTitle,
               appBarActions: _currentPage != HomeType.dictionary

@@ -138,9 +138,7 @@ class _MarketPageState extends State<MarketPage>
         _currentAppliedOrder
             ? Icons.arrow_downward_rounded
             : Icons.arrow_upward_rounded,
-        color: Theme.of(context).brightness == Brightness.light
-            ? Colors.white
-            : Colors.black);
+        color: KPColors.getAlterAccent(context));
 
     return SizedBox(
         height: KPSizes.defaultSizeFiltersList,

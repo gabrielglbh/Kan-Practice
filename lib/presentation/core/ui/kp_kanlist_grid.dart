@@ -17,9 +17,7 @@ class KPKanListGrid<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textColor = Theme.of(context).brightness == Brightness.light
-        ? Colors.black
-        : Colors.white;
+    final textColor = KPColors.getAccent(context);
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3, childAspectRatio: 2.8),

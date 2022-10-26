@@ -94,9 +94,7 @@ class _KPCustomCanvasState extends State<KPCustomCanvas> {
                   height: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(KPRadius.radius16),
-                    color: Theme.of(context).brightness == Brightness.light
-                        ? Colors.grey[300]
-                        : Colors.grey[600],
+                    color: KPColors.getCardColor(context),
                   ),
                   child: CustomPaint(
                     painter: KanjiPainter(points: widget.line, size: size),
@@ -130,15 +128,11 @@ class _KPCustomCanvasState extends State<KPCustomCanvas> {
                 height: KPSizes.defaultSizeSearchBarIcons,
                 width: KPSizes.defaultSizeSearchBarIcons,
                 decoration: BoxDecoration(
-                    color: Theme.of(context).brightness == Brightness.light
-                        ? Colors.white
-                        : Colors.black,
+                    color: KPColors.getAlterAccent(context),
                     borderRadius: BorderRadius.circular(KPRadius.radius16)),
                 child: Icon(icon,
                     size: KPFontSizes.fontSize32,
-                    color: Theme.of(context).brightness == Brightness.light
-                        ? Colors.black
-                        : Colors.white),
+                    color: KPColors.getAccent(context)),
               ))),
     );
   }

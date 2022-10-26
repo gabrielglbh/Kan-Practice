@@ -98,12 +98,8 @@ class _KPCartesianChartTooltip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tooltipColor = Theme.of(context).brightness == Brightness.light
-        ? Colors.black
-        : Colors.white;
-    final tooltipTextColor = Theme.of(context).brightness == Brightness.light
-        ? Colors.white
-        : Colors.black;
+    final tooltipColor = KPColors.getAccent(context);
+    final tooltipTextColor = KPColors.getAlterAccent(context);
     final format = DateFormat('MMM dd, HH:mm');
     final mode = source.mode.nameAbbr;
     final date = format.format(source.x);

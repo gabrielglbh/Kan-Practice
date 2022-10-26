@@ -209,9 +209,7 @@ class Utils {
     DateTime firstDate,
     DateTime lastDate,
   ) async {
-    final dialogColor = Theme.of(context).brightness == Brightness.light
-        ? Colors.black
-        : Colors.white;
+    final dialogColor = KPColors.getAccent(context);
     late DateTimeRange? range;
     await showDateRangePicker(
       context: context,

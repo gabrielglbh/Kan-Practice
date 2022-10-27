@@ -30,7 +30,7 @@ class SMAlgorithm {
     // This is based on the win rate of the Word in a ceratin Study Mode
     // In the SM2 paper, the quality must be 0 to 5, so we just round it
     // up to match the percentage to the range.
-    int qualityParsed = (quality * 6).round();
+    int qualityParsed = (quality * 5).round();
 
     if (qualityParsed >= 3) {
       switch (repetitions) {

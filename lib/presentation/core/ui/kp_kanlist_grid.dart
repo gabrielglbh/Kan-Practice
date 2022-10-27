@@ -17,7 +17,6 @@ class KPKanListGrid<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textColor = KPColors.getAccent(context);
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3, childAspectRatio: 2.8),
@@ -39,7 +38,9 @@ class KPKanListGrid<T> extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(KPRadius.radius16),
                 border: Border.all(
-                    color: isSelected(name) ? Colors.transparent : textColor),
+                    color: isSelected(name)
+                        ? Colors.transparent
+                        : KPColors.getSubtle(context)),
                 color: isSelected(name)
                     ? KPColors.secondaryDarkerColor
                     : Colors.transparent,
@@ -51,7 +52,7 @@ class KPKanListGrid<T> extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyText1?.copyWith(
                         color: isSelected(name)
                             ? KPColors.primaryLight
-                            : textColor,
+                            : KPColors.getAccent(context),
                       ),
                 ),
               ),

@@ -134,7 +134,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
         _testScores.add(score);
         if (widget.args.testMode == Tests.daily) {
           getIt<StudyModeBloc>().add(StudyModeEventCalculateSM2Params(
-              widget.args.mode, _studyList[_macro]));
+              widget.args.mode, _studyList[_macro], score));
         }
       } else {
         getIt<StudyModeBloc>().add(StudyModeEventCalculateScore(

@@ -79,18 +79,13 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
     on<StudyModeEventCalculateSM2Params>((event, emit) async {
       Map<String, dynamic> toUpdate = {};
 
-      /// As this is called after the [StudyModeEventCalculateScore] event is launched
-      /// we retireve the updated word to update the SM2 parameters accordingly
-      final word =
-          await _wordRepository.getWord(event.word.listName, event.word.word);
-
       switch (event.mode) {
         case StudyModes.writing:
           final sm2 = SMAlgorithm.calc(
-            quality: word.winRateWriting,
-            repetitions: word.repetitionsWriting,
-            previousInterval: word.previousIntervalWriting,
-            previousEaseFactor: word.previousEaseFactorWriting,
+            quality: event.score,
+            repetitions: event.word.repetitionsWriting,
+            previousInterval: event.word.previousIntervalWriting,
+            previousEaseFactor: event.word.previousEaseFactorWriting,
           );
           toUpdate = {
             WordTableFields.previousIntervalWritingField: sm2.interval,
@@ -102,10 +97,10 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
           break;
         case StudyModes.reading:
           final sm2 = SMAlgorithm.calc(
-            quality: word.winRateReading,
-            repetitions: word.repetitionsReading,
-            previousInterval: word.previousIntervalReading,
-            previousEaseFactor: word.previousEaseFactorReading,
+            quality: event.score,
+            repetitions: event.word.repetitionsReading,
+            previousInterval: event.word.previousIntervalReading,
+            previousEaseFactor: event.word.previousEaseFactorReading,
           );
           toUpdate = {
             WordTableFields.previousIntervalReadingField: sm2.interval,
@@ -117,10 +112,10 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
           break;
         case StudyModes.recognition:
           final sm2 = SMAlgorithm.calc(
-            quality: word.winRateRecognition,
-            repetitions: word.repetitionsRecognition,
-            previousInterval: word.previousIntervalRecognition,
-            previousEaseFactor: word.previousEaseFactorRecognition,
+            quality: event.score,
+            repetitions: event.word.repetitionsRecognition,
+            previousInterval: event.word.previousIntervalRecognition,
+            previousEaseFactor: event.word.previousEaseFactorRecognition,
           );
           toUpdate = {
             WordTableFields.previousIntervalRecognitionField: sm2.interval,
@@ -132,10 +127,10 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
           break;
         case StudyModes.listening:
           final sm2 = SMAlgorithm.calc(
-            quality: word.winRateListening,
-            repetitions: word.repetitionsListening,
-            previousInterval: word.previousIntervalListening,
-            previousEaseFactor: word.previousEaseFactorListening,
+            quality: event.score,
+            repetitions: event.word.repetitionsListening,
+            previousInterval: event.word.previousIntervalListening,
+            previousEaseFactor: event.word.previousEaseFactorListening,
           );
           toUpdate = {
             WordTableFields.previousIntervalListeningField: sm2.interval,
@@ -147,10 +142,10 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
           break;
         case StudyModes.speaking:
           final sm2 = SMAlgorithm.calc(
-            quality: word.winRateSpeaking,
-            repetitions: word.repetitionsSpeaking,
-            previousInterval: word.previousIntervalSpeaking,
-            previousEaseFactor: word.previousEaseFactorSpeaking,
+            quality: event.score,
+            repetitions: event.word.repetitionsSpeaking,
+            previousInterval: event.word.previousIntervalSpeaking,
+            previousEaseFactor: event.word.previousEaseFactorSpeaking,
           );
           toUpdate = {
             WordTableFields.previousIntervalSpeakingField: sm2.interval,
@@ -161,7 +156,11 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
           };
           break;
       }
-      await _wordRepository.updateWord(word.listName, word.word, toUpdate);
+      await _wordRepository.updateWord(
+        event.word.listName,
+        event.word.word,
+        toUpdate,
+      );
       emit(StudyModeStateSM2Calculated());
     });
 

@@ -203,7 +203,7 @@ class _WritingStudyState extends State<WritingStudy> {
       _testScores.add(currentScore);
       if (widget.args.testMode == Tests.daily) {
         getIt<StudyModeBloc>().add(StudyModeEventCalculateSM2Params(
-            widget.args.mode, _studyList[_macro]));
+            widget.args.mode, _studyList[_macro], currentScore));
       }
     } else {
       getIt<StudyModeBloc>().add(StudyModeEventCalculateScore(

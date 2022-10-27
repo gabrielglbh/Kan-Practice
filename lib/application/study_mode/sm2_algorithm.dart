@@ -3,6 +3,8 @@ part of 'study_mode_bloc.dart';
 class SMAlgorithm {
   /// Days from today to review the word again
   final int interval;
+
+  /// Milliseconds of the proposed interval to review the word again
   final int intervalAsDate;
   final int repetitions;
   final double easeFactor;
@@ -15,6 +17,8 @@ class SMAlgorithm {
   });
 
   /// See https://github.com/thyagoluciano/sm2
+  ///
+  /// Takes today's score and calulates next iterations based on SM2 params
   factory SMAlgorithm.calc({
     required double quality,
     required int repetitions,
@@ -26,7 +30,7 @@ class SMAlgorithm {
     // This is based on the win rate of the Word in a ceratin Study Mode
     // In the SM2 paper, the quality must be 0 to 5, so we just round it
     // up to match the percentage to the range.
-    int qualityParsed = ((quality * 6) / 100).round();
+    int qualityParsed = (quality * 6).round();
 
     if (qualityParsed >= 3) {
       switch (repetitions) {

@@ -31,12 +31,13 @@ class StudyModeEventCalculateScore extends StudyModeEvent {
 
 class StudyModeEventCalculateSM2Params extends StudyModeEvent {
   final StudyModes mode;
+  final double score;
   final Word word;
 
-  const StudyModeEventCalculateSM2Params(this.mode, this.word);
+  const StudyModeEventCalculateSM2Params(this.mode, this.word, this.score);
 
   @override
-  List<Object> get props => [mode, word];
+  List<Object> get props => [mode, score, word];
 }
 
 class StudyModeEventUpdateScoreForTestsAffectingPractice

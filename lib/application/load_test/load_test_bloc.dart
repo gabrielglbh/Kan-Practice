@@ -36,15 +36,13 @@ class LoadTestBloc extends Bloc<LoadTestEvent, LoadTestState> {
           }
         } else if ((event.type == Tests.time || event.type == Tests.less) &&
             event.folder != null) {
-          List<Word> list = await _folderRepository.getAllWordsOnListsOnFolder(
+          finalList = await _folderRepository.getAllWordsOnListsOnFolder(
             [event.folder!],
             mode: event.mode,
             type: event.type,
           );
-          finalList = list;
         } else if (event.type == Tests.daily) {
-          List<Word> list = await _wordRepository.getDailyWords(event.mode);
-          finalList = list;
+          finalList = await _wordRepository.getDailySM2Words(event.mode);
         } else {
           List<Word> list = await _wordRepository.getAllWords(
               mode: event.mode, type: event.type);

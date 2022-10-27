@@ -190,13 +190,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
                 KPValidationButtons(
                   trigger: _showWord,
                   submitLabel: "done_button_label".tr(),
-                  wrongAction: (score) async => await _updateUIOnSubmit(score),
-                  midWrongAction: (score) async =>
-                      await _updateUIOnSubmit(score),
-                  midPerfectAction: (score) async =>
-                      await _updateUIOnSubmit(score),
-                  perfectAction: (score) async =>
-                      await _updateUIOnSubmit(score),
+                  action: (score) async => await _updateUIOnSubmit(score),
                   onSubmit: () => setState(() => _showWord = true),
                 )
               ],

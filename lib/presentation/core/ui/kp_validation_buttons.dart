@@ -9,35 +9,17 @@ class KPValidationButtons extends StatelessWidget {
 
   /// Label to put on the submit button
   final String submitLabel;
-
-  /// Action to be performed when tapping the WRONG button:
-  /// 0% score added to the kanji.
-  final Function(double) wrongAction;
-
-  /// Action to be performed when tapping the MID-WRONG button:
-  /// 33% score added to the kanji.
-  final Function(double) midWrongAction;
-
-  /// Action to be performed when tapping the MID-PERFECT button:
-  /// 66% score added to the kanji.
-  final Function(double) midPerfectAction;
-
-  /// Action to be performed when tapping the PERFECT button:
-  /// 100% score added to the kanji.
-  final Function(double) perfectAction;
+  final Function(double) action;
 
   /// Action to be performed when submitting the current card
   final Function() onSubmit;
-  const KPValidationButtons(
-      {Key? key,
-      required this.trigger,
-      required this.wrongAction,
-      required this.midWrongAction,
-      required this.midPerfectAction,
-      required this.perfectAction,
-      required this.onSubmit,
-      required this.submitLabel})
-      : super(key: key);
+  const KPValidationButtons({
+    Key? key,
+    required this.trigger,
+    required this.action,
+    required this.onSubmit,
+    required this.submitLabel,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -93,8 +75,8 @@ class KPValidationButtons extends StatelessWidget {
   GridView _validation() {
     return GridView(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 1.9,
+        crossAxisCount: 3,
+        childAspectRatio: 1.5,
       ),
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -105,8 +87,8 @@ class KPValidationButtons extends StatelessWidget {
               label: "wrong_button_label".tr(),
               horizontal: KPMargins.margin4,
               vertical: KPMargins.margin4,
-              onTap: () async => await wrongAction(0),
-              color: Colors.red[700]!,
+              onTap: () async => await action(0),
+              color: Colors.redAccent.shade700,
             )),
         _animation(
             duration: 2,
@@ -114,26 +96,44 @@ class KPValidationButtons extends StatelessWidget {
               label: "mid_wrong_button_label".tr(),
               horizontal: KPMargins.margin4,
               vertical: KPMargins.margin4,
-              onTap: () async => await midWrongAction(0.33),
-              color: Colors.yellow[800]!,
+              onTap: () async => await action(0.20),
+              color: Colors.red.shade500,
             )),
         _animation(
             duration: 3,
             child: KPActionButton(
-              label: "mid_perfect_button_label".tr(),
+              label: "mid_button_label".tr(),
               horizontal: KPMargins.margin4,
               vertical: KPMargins.margin4,
-              onTap: () async => await midPerfectAction(0.66),
-              color: Colors.green[300]!,
+              onTap: () async => await action(0.40),
+              color: Colors.orange.shade700,
             )),
         _animation(
             duration: 4,
             child: KPActionButton(
+              label: "mid_good_button_label".tr(),
+              horizontal: KPMargins.margin4,
+              vertical: KPMargins.margin4,
+              onTap: () async => await action(0.60),
+              color: Colors.amber.shade500,
+            )),
+        _animation(
+            duration: 5,
+            child: KPActionButton(
+              label: "mid_perfect_button_label".tr(),
+              horizontal: KPMargins.margin4,
+              vertical: KPMargins.margin4,
+              onTap: () async => await action(0.80),
+              color: Colors.lime.shade700,
+            )),
+        _animation(
+            duration: 6,
+            child: KPActionButton(
               label: "perfect_button_label".tr(),
               horizontal: KPMargins.margin4,
               vertical: KPMargins.margin4,
-              onTap: () async => await perfectAction(1),
-              color: Colors.green[700]!,
+              onTap: () async => await action(1),
+              color: Colors.green.shade700,
             ))
       ],
     );

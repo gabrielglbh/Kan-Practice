@@ -17,22 +17,7 @@ class WritingButtonsAnimations extends StatelessWidget {
 
   /// Label to put on the submit button
   final String submitLabel;
-
-  /// Action to be performed when tapping the WRONG button:
-  /// 0% score added to the kanji.
-  final Function(double) wrongAction;
-
-  /// Action to be performed when tapping the MID-WRONG button:
-  /// 33% score added to the kanji.
-  final Function(double) midWrongAction;
-
-  /// Action to be performed when tapping the MID-PERFECT button:
-  /// 66% score added to the kanji.
-  final Function(double) midPerfectAction;
-
-  /// Action to be performed when tapping the PERFECT button:
-  /// 100% score added to the kanji.
-  final Function(double) perfectAction;
+  final Function(double) action;
 
   /// Action to be performed when submitting the current card
   final Function() onSubmit;
@@ -41,10 +26,7 @@ class WritingButtonsAnimations extends StatelessWidget {
       required this.trigger,
       required this.triggerSlide,
       required this.id,
-      required this.wrongAction,
-      required this.midWrongAction,
-      required this.midPerfectAction,
-      required this.perfectAction,
+      required this.action,
       required this.onSubmit,
       required this.submitLabel})
       : super(key: key);
@@ -94,6 +76,7 @@ class WritingButtonsAnimations extends StatelessWidget {
     );
   }
 
+  // TODO: Adjust to 6 buttons
   /// This buttons will slide from the top one by one
   Row _validation() {
     return Row(
@@ -106,7 +89,7 @@ class WritingButtonsAnimations extends StatelessWidget {
               child: KPActionButton(
                 label: "wrong_button_label".tr(),
                 horizontal: KPMargins.margin2,
-                onTap: () async => await wrongAction(0),
+                onTap: () async => await action(0),
                 color: Colors.red[700]!,
               )),
         ),
@@ -117,7 +100,7 @@ class WritingButtonsAnimations extends StatelessWidget {
               child: KPActionButton(
                 label: "mid_wrong_button_label".tr(),
                 horizontal: KPMargins.margin2,
-                onTap: () async => await midWrongAction(0.33),
+                onTap: () async => await action(0.33),
                 color: Colors.yellow[800]!,
               )),
         ),
@@ -128,7 +111,7 @@ class WritingButtonsAnimations extends StatelessWidget {
                 child: KPActionButton(
                   label: "mid_perfect_button_label".tr(),
                   horizontal: KPMargins.margin2,
-                  onTap: () async => await midPerfectAction(0.66),
+                  onTap: () async => await action(0.66),
                   color: Colors.green[300]!,
                 ))),
         Expanded(
@@ -138,7 +121,7 @@ class WritingButtonsAnimations extends StatelessWidget {
               child: KPActionButton(
                 label: "perfect_button_label".tr(),
                 horizontal: KPMargins.margin2,
-                onTap: () async => await perfectAction(1),
+                onTap: () async => await action(1),
                 color: Colors.green[700]!,
               )),
         )

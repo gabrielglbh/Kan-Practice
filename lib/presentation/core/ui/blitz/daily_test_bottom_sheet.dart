@@ -4,8 +4,6 @@ import 'package:kanpractice/application/load_test/load_test_bloc.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/application/services/preferences_service.dart';
-import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_study_mode.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -59,13 +57,27 @@ class DailyBottomSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const KPDragContainer(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: KPMargins.margin8,
-                        horizontal: KPMargins.margin32),
-                    child: Text("daily_test_bottom_sheet_title".tr(),
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headline6),
+                  Row(
+                    children: [
+                      const SizedBox(width: KPMargins.margin48),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: KPMargins.margin8,
+                              horizontal: KPMargins.margin32),
+                          child: Text("daily_test_bottom_sheet_title".tr(),
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.headline6),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.info_outline_rounded),
+                        onPressed: () {
+                          Utils.launch(context,
+                              'https://en.wikipedia.org/wiki/SuperMemo');
+                        },
+                      ),
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -74,37 +86,6 @@ class DailyBottomSheet extends StatelessWidget {
                     child: Text("daily_test_description".tr(),
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.bodyText1),
-                  ),
-                  Visibility(
-                    visible: getIt<PreferencesService>()
-                            .readData(SharedKeys.affectOnPractice) ==
-                        true,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: KPMargins.margin8,
-                          horizontal: KPMargins.margin24),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(right: KPMargins.margin16),
-                            child: Icon(Icons.auto_graph_rounded,
-                                color: Colors.lightBlueAccent),
-                          ),
-                          Expanded(
-                              child: Text(
-                            "settings_general_toggle".tr(),
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.bodyText1,
-                          )),
-                          const Padding(
-                            padding: EdgeInsets.only(left: KPMargins.margin16),
-                            child: Icon(Icons.auto_graph_rounded,
-                                color: Colors.lightBlueAccent),
-                          ),
-                        ],
-                      ),
-                    ),
                   ),
                   KPTestStudyMode(
                     type: Tests.daily,

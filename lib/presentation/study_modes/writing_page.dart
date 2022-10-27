@@ -262,11 +262,7 @@ class _WritingStudyState extends State<WritingStudy> {
                 submitLabel: _goNextKanji
                     ? "writing_next_kanji_label".tr()
                     : "done_button_label".tr(),
-                wrongAction: (score) async => await _updateUIOnSubmit(score),
-                midWrongAction: (score) async => await _updateUIOnSubmit(score),
-                midPerfectAction: (score) async =>
-                    await _updateUIOnSubmit(score),
-                perfectAction: (score) async => await _updateUIOnSubmit(score),
+                action: (score) async => await _updateUIOnSubmit(score),
                 onSubmit: () {
                   if (_macro <= _studyList.length - 1) {
                     _resetKanji();

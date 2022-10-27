@@ -10,6 +10,7 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 
 part 'study_mode_event.dart';
 part 'study_mode_state.dart';
+part 'sm2_algorithm.dart';
 
 @lazySingleton
 class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {

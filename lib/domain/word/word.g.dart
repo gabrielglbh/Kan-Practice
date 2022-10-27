@@ -29,6 +29,11 @@ Word _$WordFromJson(Map<String, dynamic> json) => Word(
       dateLastShownListening: json['dateLastShownListening'] as int? ?? 0,
       dateLastShownSpeaking: json['dateLastShownSpeaking'] as int? ?? 0,
       category: json['category'] as int? ?? 0,
+      repetitions: json['repetitions'] as int? ?? 0,
+      previousEaseFactor:
+          (json['previousEaseFactor'] as num?)?.toDouble() ?? 2.5,
+      previousInterval: json['previousInterval'] as int? ?? 0,
+      previousIntervalAsDate: json['previousIntervalAsDate'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$WordToJson(Word instance) => <String, dynamic>{
@@ -49,4 +54,8 @@ Map<String, dynamic> _$WordToJson(Word instance) => <String, dynamic>{
       'dateLastShownListening': instance.dateLastShownListening,
       'dateLastShownSpeaking': instance.dateLastShownSpeaking,
       'category': instance.category,
+      'repetitions': instance.repetitions,
+      'previousEaseFactor': instance.previousEaseFactor,
+      'previousInterval': instance.previousInterval,
+      'previousIntervalAsDate': instance.previousIntervalAsDate,
     };

@@ -25,25 +25,34 @@ class Word {
   final int dateLastShownListening;
   final int dateLastShownSpeaking;
   final int category;
+  final int repetitions;
+  final double previousEaseFactor;
+  final int previousInterval;
+  final int previousIntervalAsDate;
 
-  const Word(
-      {required this.word,
-      required this.listName,
-      required this.meaning,
-      required this.pronunciation,
-      this.winRateReading = DatabaseConstants.emptyWinRate,
-      this.winRateRecognition = DatabaseConstants.emptyWinRate,
-      this.winRateWriting = DatabaseConstants.emptyWinRate,
-      this.winRateListening = DatabaseConstants.emptyWinRate,
-      this.winRateSpeaking = DatabaseConstants.emptyWinRate,
-      this.dateAdded = 0,
-      this.dateLastShown = 0,
-      this.dateLastShownWriting = 0,
-      this.dateLastShownReading = 0,
-      this.dateLastShownRecognition = 0,
-      this.dateLastShownListening = 0,
-      this.dateLastShownSpeaking = 0,
-      this.category = 0});
+  const Word({
+    required this.word,
+    required this.listName,
+    required this.meaning,
+    required this.pronunciation,
+    this.winRateReading = DatabaseConstants.emptyWinRate,
+    this.winRateRecognition = DatabaseConstants.emptyWinRate,
+    this.winRateWriting = DatabaseConstants.emptyWinRate,
+    this.winRateListening = DatabaseConstants.emptyWinRate,
+    this.winRateSpeaking = DatabaseConstants.emptyWinRate,
+    this.dateAdded = 0,
+    this.dateLastShown = 0,
+    this.dateLastShownWriting = 0,
+    this.dateLastShownReading = 0,
+    this.dateLastShownRecognition = 0,
+    this.dateLastShownListening = 0,
+    this.dateLastShownSpeaking = 0,
+    this.category = 0,
+    this.repetitions = 0,
+    this.previousEaseFactor = 2.5,
+    this.previousInterval = 0,
+    this.previousIntervalAsDate = 0,
+  });
 
   /// Empty [Word]
   static const Word empty =
@@ -53,40 +62,50 @@ class Word {
   Map<String, dynamic> toJson() => _$WordToJson(this);
 
   Word copyWithUpdatedDate({int? dateAdded, int? dateLastShown}) => Word(
-      word: word,
-      listName: listName,
-      meaning: meaning,
-      pronunciation: pronunciation,
-      winRateWriting: winRateWriting,
-      winRateReading: winRateReading,
-      winRateRecognition: winRateRecognition,
-      winRateListening: winRateListening,
-      winRateSpeaking: winRateSpeaking,
-      dateLastShownWriting: dateLastShownWriting,
-      dateLastShownReading: dateLastShownReading,
-      dateLastShownRecognition: dateLastShownRecognition,
-      dateLastShownListening: dateLastShownListening,
-      dateLastShownSpeaking: dateLastShownSpeaking,
-      dateAdded: dateAdded ?? this.dateAdded,
-      dateLastShown: dateLastShown ?? this.dateLastShown,
-      category: category);
+        word: word,
+        listName: listName,
+        meaning: meaning,
+        pronunciation: pronunciation,
+        winRateWriting: winRateWriting,
+        winRateReading: winRateReading,
+        winRateRecognition: winRateRecognition,
+        winRateListening: winRateListening,
+        winRateSpeaking: winRateSpeaking,
+        dateLastShownWriting: dateLastShownWriting,
+        dateLastShownReading: dateLastShownReading,
+        dateLastShownRecognition: dateLastShownRecognition,
+        dateLastShownListening: dateLastShownListening,
+        dateLastShownSpeaking: dateLastShownSpeaking,
+        dateAdded: dateAdded ?? this.dateAdded,
+        dateLastShown: dateLastShown ?? this.dateLastShown,
+        category: category,
+        repetitions: repetitions,
+        previousEaseFactor: previousEaseFactor,
+        previousInterval: previousInterval,
+        previousIntervalAsDate: previousIntervalAsDate,
+      );
 
   Word copyWithReset() => Word(
-      word: word,
-      listName: listName,
-      meaning: meaning,
-      pronunciation: pronunciation,
-      winRateWriting: DatabaseConstants.emptyWinRate,
-      winRateReading: DatabaseConstants.emptyWinRate,
-      winRateRecognition: DatabaseConstants.emptyWinRate,
-      winRateListening: DatabaseConstants.emptyWinRate,
-      winRateSpeaking: DatabaseConstants.emptyWinRate,
-      dateLastShownWriting: Utils.getCurrentMilliseconds(),
-      dateLastShownReading: Utils.getCurrentMilliseconds(),
-      dateLastShownRecognition: Utils.getCurrentMilliseconds(),
-      dateLastShownListening: Utils.getCurrentMilliseconds(),
-      dateLastShownSpeaking: Utils.getCurrentMilliseconds(),
-      dateAdded: dateAdded,
-      dateLastShown: Utils.getCurrentMilliseconds(),
-      category: category);
+        word: word,
+        listName: listName,
+        meaning: meaning,
+        pronunciation: pronunciation,
+        winRateWriting: DatabaseConstants.emptyWinRate,
+        winRateReading: DatabaseConstants.emptyWinRate,
+        winRateRecognition: DatabaseConstants.emptyWinRate,
+        winRateListening: DatabaseConstants.emptyWinRate,
+        winRateSpeaking: DatabaseConstants.emptyWinRate,
+        dateLastShownWriting: Utils.getCurrentMilliseconds(),
+        dateLastShownReading: Utils.getCurrentMilliseconds(),
+        dateLastShownRecognition: Utils.getCurrentMilliseconds(),
+        dateLastShownListening: Utils.getCurrentMilliseconds(),
+        dateLastShownSpeaking: Utils.getCurrentMilliseconds(),
+        dateAdded: dateAdded,
+        dateLastShown: Utils.getCurrentMilliseconds(),
+        category: category,
+        repetitions: 0,
+        previousEaseFactor: 2.5,
+        previousInterval: 0,
+        previousIntervalAsDate: 0,
+      );
 }

@@ -141,7 +141,7 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<ListDetailBloc>()),
         BlocProvider(create: (_) => getIt<StudyModeBloc>()),
         BlocProvider(create: (_) => getIt<WordHistoryBloc>()),
-        BlocProvider(create: (_) => getIt<AuthBloc>()),
+        BlocProvider(create: (_) => getIt<AuthBloc>()..add(AuthIdle())),
         BlocProvider(create: (_) => getIt<AddFolderBloc>()),
         BlocProvider(create: (_) => getIt<AddToMarketBloc>()),
         BlocProvider(create: (_) => getIt<AddWordBloc>()),

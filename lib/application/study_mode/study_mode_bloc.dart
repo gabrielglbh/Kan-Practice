@@ -76,6 +76,95 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
       emit(StudyModeStateScoreCalculated(res));
     });
 
+    on<StudyModeEventCalculateSM2Params>((event, emit) async {
+      Map<String, dynamic> toUpdate = {};
+
+      /// As this is called after the [StudyModeEventCalculateScore] event is launched
+      /// we retireve the updated word to update the SM2 parameters accordingly
+      final word =
+          await _wordRepository.getWord(event.word.listName, event.word.word);
+
+      switch (event.mode) {
+        case StudyModes.writing:
+          final sm2 = SMAlgorithm.calc(
+            quality: word.winRateWriting,
+            repetitions: word.repetitionsWriting,
+            previousInterval: word.previousIntervalWriting,
+            previousEaseFactor: word.previousEaseFactorWriting,
+          );
+          toUpdate = {
+            WordTableFields.previousIntervalWritingField: sm2.interval,
+            WordTableFields.previousIntervalAsDateWritingField:
+                sm2.intervalAsDate,
+            WordTableFields.repetitionsWritingField: sm2.repetitions,
+            WordTableFields.previousEaseFactorWritingField: sm2.easeFactor,
+          };
+          break;
+        case StudyModes.reading:
+          final sm2 = SMAlgorithm.calc(
+            quality: word.winRateReading,
+            repetitions: word.repetitionsReading,
+            previousInterval: word.previousIntervalReading,
+            previousEaseFactor: word.previousEaseFactorReading,
+          );
+          toUpdate = {
+            WordTableFields.previousIntervalReadingField: sm2.interval,
+            WordTableFields.previousIntervalAsDateReadingField:
+                sm2.intervalAsDate,
+            WordTableFields.repetitionsReadingField: sm2.repetitions,
+            WordTableFields.previousEaseFactorReadingField: sm2.easeFactor,
+          };
+          break;
+        case StudyModes.recognition:
+          final sm2 = SMAlgorithm.calc(
+            quality: word.winRateRecognition,
+            repetitions: word.repetitionsRecognition,
+            previousInterval: word.previousIntervalRecognition,
+            previousEaseFactor: word.previousEaseFactorRecognition,
+          );
+          toUpdate = {
+            WordTableFields.previousIntervalRecognitionField: sm2.interval,
+            WordTableFields.previousIntervalAsDateRecognitionField:
+                sm2.intervalAsDate,
+            WordTableFields.repetitionsRecognitionField: sm2.repetitions,
+            WordTableFields.previousEaseFactorRecognitionField: sm2.easeFactor,
+          };
+          break;
+        case StudyModes.listening:
+          final sm2 = SMAlgorithm.calc(
+            quality: word.winRateListening,
+            repetitions: word.repetitionsListening,
+            previousInterval: word.previousIntervalListening,
+            previousEaseFactor: word.previousEaseFactorListening,
+          );
+          toUpdate = {
+            WordTableFields.previousIntervalListeningField: sm2.interval,
+            WordTableFields.previousIntervalAsDateListeningField:
+                sm2.intervalAsDate,
+            WordTableFields.repetitionsListeningField: sm2.repetitions,
+            WordTableFields.previousEaseFactorListeningField: sm2.easeFactor,
+          };
+          break;
+        case StudyModes.speaking:
+          final sm2 = SMAlgorithm.calc(
+            quality: word.winRateSpeaking,
+            repetitions: word.repetitionsSpeaking,
+            previousInterval: word.previousIntervalSpeaking,
+            previousEaseFactor: word.previousEaseFactorSpeaking,
+          );
+          toUpdate = {
+            WordTableFields.previousIntervalSpeakingField: sm2.interval,
+            WordTableFields.previousIntervalAsDateSpeakingField:
+                sm2.intervalAsDate,
+            WordTableFields.repetitionsSpeakingField: sm2.repetitions,
+            WordTableFields.previousEaseFactorSpeakingField: sm2.easeFactor,
+          };
+          break;
+      }
+      await _wordRepository.updateWord(word.listName, word.word, toUpdate);
+      emit(StudyModeStateSM2Calculated());
+    });
+
     on<StudyModeEventUpdateDateShown>((event, emit) async {
       await _wordRepository.updateWord(event.listName, event.word, {
         WordTableFields.dateLastShown: Utils.getCurrentMilliseconds(),

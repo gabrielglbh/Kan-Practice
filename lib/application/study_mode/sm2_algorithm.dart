@@ -1,12 +1,15 @@
 part of 'study_mode_bloc.dart';
 
 class SMAlgorithm {
+  /// Days from today to review the word again
   final int interval;
+  final int intervalAsDate;
   final int repetitions;
   final double easeFactor;
 
   SMAlgorithm({
     required this.interval,
+    required this.intervalAsDate,
     required this.repetitions,
     required this.easeFactor,
   });
@@ -48,8 +51,12 @@ class SMAlgorithm {
 
     if (easeFactor < 1.3) easeFactor = 1.3;
 
+    final intervalAsDate =
+        DateTime.now().add(Duration(days: interval)).millisecondsSinceEpoch;
+
     return SMAlgorithm(
       interval: interval,
+      intervalAsDate: intervalAsDate,
       repetitions: repetitions,
       easeFactor: easeFactor,
     );

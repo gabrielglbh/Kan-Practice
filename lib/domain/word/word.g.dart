@@ -29,11 +29,37 @@ Word _$WordFromJson(Map<String, dynamic> json) => Word(
       dateLastShownListening: json['dateLastShownListening'] as int? ?? 0,
       dateLastShownSpeaking: json['dateLastShownSpeaking'] as int? ?? 0,
       category: json['category'] as int? ?? 0,
-      repetitions: json['repetitions'] as int? ?? 0,
-      previousEaseFactor:
-          (json['previousEaseFactor'] as num?)?.toDouble() ?? 2.5,
-      previousInterval: json['previousInterval'] as int? ?? 0,
-      previousIntervalAsDate: json['previousIntervalAsDate'] as int? ?? 0,
+      repetitionsWriting: json['repetitionsWriting'] as int? ?? 0,
+      previousEaseFactorWriting:
+          (json['previousEaseFactorWriting'] as num?)?.toDouble() ?? 2.5,
+      previousIntervalWriting: json['previousIntervalWriting'] as int? ?? 0,
+      previousIntervalAsDateWriting:
+          json['previousIntervalAsDateWriting'] as int? ?? 0,
+      repetitionsReading: json['repetitionsReading'] as int? ?? 0,
+      previousEaseFactorReading:
+          (json['previousEaseFactorReading'] as num?)?.toDouble() ?? 2.5,
+      previousIntervalReading: json['previousIntervalReading'] as int? ?? 0,
+      previousIntervalAsDateReading:
+          json['previousIntervalAsDateReading'] as int? ?? 0,
+      repetitionsRecognition: json['repetitionsRecognition'] as int? ?? 0,
+      previousEaseFactorRecognition:
+          (json['previousEaseFactorRecognition'] as num?)?.toDouble() ?? 2.5,
+      previousIntervalRecognition:
+          json['previousIntervalRecognition'] as int? ?? 0,
+      previousIntervalAsDateRecognition:
+          json['previousIntervalAsDateRecognition'] as int? ?? 0,
+      repetitionsListening: json['repetitionsListening'] as int? ?? 0,
+      previousEaseFactorListening:
+          (json['previousEaseFactorListening'] as num?)?.toDouble() ?? 2.5,
+      previousIntervalListening: json['previousIntervalListening'] as int? ?? 0,
+      previousIntervalAsDateListening:
+          json['previousIntervalAsDateListening'] as int? ?? 0,
+      repetitionsSpeaking: json['repetitionsSpeaking'] as int? ?? 0,
+      previousEaseFactorSpeaking:
+          (json['previousEaseFactorSpeaking'] as num?)?.toDouble() ?? 2.5,
+      previousIntervalSpeaking: json['previousIntervalSpeaking'] as int? ?? 0,
+      previousIntervalAsDateSpeaking:
+          json['previousIntervalAsDateSpeaking'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$WordToJson(Word instance) => <String, dynamic>{
@@ -54,8 +80,26 @@ Map<String, dynamic> _$WordToJson(Word instance) => <String, dynamic>{
       'dateLastShownListening': instance.dateLastShownListening,
       'dateLastShownSpeaking': instance.dateLastShownSpeaking,
       'category': instance.category,
-      'repetitions': instance.repetitions,
-      'previousEaseFactor': instance.previousEaseFactor,
-      'previousInterval': instance.previousInterval,
-      'previousIntervalAsDate': instance.previousIntervalAsDate,
+      'repetitionsWriting': instance.repetitionsWriting,
+      'previousEaseFactorWriting': instance.previousEaseFactorWriting,
+      'previousIntervalWriting': instance.previousIntervalWriting,
+      'previousIntervalAsDateWriting': instance.previousIntervalAsDateWriting,
+      'repetitionsReading': instance.repetitionsReading,
+      'previousEaseFactorReading': instance.previousEaseFactorReading,
+      'previousIntervalReading': instance.previousIntervalReading,
+      'previousIntervalAsDateReading': instance.previousIntervalAsDateReading,
+      'repetitionsRecognition': instance.repetitionsRecognition,
+      'previousEaseFactorRecognition': instance.previousEaseFactorRecognition,
+      'previousIntervalRecognition': instance.previousIntervalRecognition,
+      'previousIntervalAsDateRecognition':
+          instance.previousIntervalAsDateRecognition,
+      'repetitionsListening': instance.repetitionsListening,
+      'previousEaseFactorListening': instance.previousEaseFactorListening,
+      'previousIntervalListening': instance.previousIntervalListening,
+      'previousIntervalAsDateListening':
+          instance.previousIntervalAsDateListening,
+      'repetitionsSpeaking': instance.repetitionsSpeaking,
+      'previousEaseFactorSpeaking': instance.previousEaseFactorSpeaking,
+      'previousIntervalSpeaking': instance.previousIntervalSpeaking,
+      'previousIntervalAsDateSpeaking': instance.previousIntervalAsDateSpeaking,
     };

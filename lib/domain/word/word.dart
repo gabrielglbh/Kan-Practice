@@ -25,10 +25,26 @@ class Word {
   final int dateLastShownListening;
   final int dateLastShownSpeaking;
   final int category;
-  final int repetitions;
-  final double previousEaseFactor;
-  final int previousInterval;
-  final int previousIntervalAsDate;
+  final int repetitionsWriting;
+  final double previousEaseFactorWriting;
+  final int previousIntervalWriting;
+  final int previousIntervalAsDateWriting;
+  final int repetitionsReading;
+  final double previousEaseFactorReading;
+  final int previousIntervalReading;
+  final int previousIntervalAsDateReading;
+  final int repetitionsRecognition;
+  final double previousEaseFactorRecognition;
+  final int previousIntervalRecognition;
+  final int previousIntervalAsDateRecognition;
+  final int repetitionsListening;
+  final double previousEaseFactorListening;
+  final int previousIntervalListening;
+  final int previousIntervalAsDateListening;
+  final int repetitionsSpeaking;
+  final double previousEaseFactorSpeaking;
+  final int previousIntervalSpeaking;
+  final int previousIntervalAsDateSpeaking;
 
   const Word({
     required this.word,
@@ -48,10 +64,26 @@ class Word {
     this.dateLastShownListening = 0,
     this.dateLastShownSpeaking = 0,
     this.category = 0,
-    this.repetitions = 0,
-    this.previousEaseFactor = 2.5,
-    this.previousInterval = 0,
-    this.previousIntervalAsDate = 0,
+    this.repetitionsWriting = 0,
+    this.previousEaseFactorWriting = 2.5,
+    this.previousIntervalWriting = 0,
+    this.previousIntervalAsDateWriting = 0,
+    this.repetitionsReading = 0,
+    this.previousEaseFactorReading = 2.5,
+    this.previousIntervalReading = 0,
+    this.previousIntervalAsDateReading = 0,
+    this.repetitionsRecognition = 0,
+    this.previousEaseFactorRecognition = 2.5,
+    this.previousIntervalRecognition = 0,
+    this.previousIntervalAsDateRecognition = 0,
+    this.repetitionsListening = 0,
+    this.previousEaseFactorListening = 2.5,
+    this.previousIntervalListening = 0,
+    this.previousIntervalAsDateListening = 0,
+    this.repetitionsSpeaking = 0,
+    this.previousEaseFactorSpeaking = 2.5,
+    this.previousIntervalSpeaking = 0,
+    this.previousIntervalAsDateSpeaking = 0,
   });
 
   /// Empty [Word]
@@ -79,10 +111,26 @@ class Word {
         dateAdded: dateAdded ?? this.dateAdded,
         dateLastShown: dateLastShown ?? this.dateLastShown,
         category: category,
-        repetitions: repetitions,
-        previousEaseFactor: previousEaseFactor,
-        previousInterval: previousInterval,
-        previousIntervalAsDate: previousIntervalAsDate,
+        repetitionsWriting: repetitionsWriting,
+        previousEaseFactorWriting: previousEaseFactorWriting,
+        previousIntervalWriting: previousIntervalWriting,
+        previousIntervalAsDateWriting: previousIntervalAsDateWriting,
+        repetitionsReading: repetitionsReading,
+        previousEaseFactorReading: previousEaseFactorReading,
+        previousIntervalReading: previousIntervalReading,
+        previousIntervalAsDateReading: previousIntervalAsDateReading,
+        repetitionsRecognition: repetitionsRecognition,
+        previousEaseFactorRecognition: previousEaseFactorRecognition,
+        previousIntervalRecognition: previousIntervalRecognition,
+        previousIntervalAsDateRecognition: previousIntervalAsDateRecognition,
+        repetitionsListening: repetitionsListening,
+        previousEaseFactorListening: previousEaseFactorListening,
+        previousIntervalListening: previousIntervalListening,
+        previousIntervalAsDateListening: previousIntervalAsDateListening,
+        repetitionsSpeaking: repetitionsSpeaking,
+        previousEaseFactorSpeaking: previousEaseFactorSpeaking,
+        previousIntervalSpeaking: previousIntervalSpeaking,
+        previousIntervalAsDateSpeaking: previousIntervalAsDateSpeaking,
       );
 
   Word copyWithReset() => Word(
@@ -103,9 +151,25 @@ class Word {
         dateAdded: dateAdded,
         dateLastShown: Utils.getCurrentMilliseconds(),
         category: category,
-        repetitions: 0,
-        previousEaseFactor: 2.5,
-        previousInterval: 0,
-        previousIntervalAsDate: 0,
+        repetitionsWriting: 0,
+        previousEaseFactorWriting: 2.5,
+        previousIntervalWriting: 0,
+        previousIntervalAsDateWriting: 0,
+        repetitionsReading: 0,
+        previousEaseFactorReading: 2.5,
+        previousIntervalReading: 0,
+        previousIntervalAsDateReading: 0,
+        repetitionsRecognition: 0,
+        previousEaseFactorRecognition: 2.5,
+        previousIntervalRecognition: 0,
+        previousIntervalAsDateRecognition: 0,
+        repetitionsListening: 0,
+        previousEaseFactorListening: 2.5,
+        previousIntervalListening: 0,
+        previousIntervalAsDateListening: 0,
+        repetitionsSpeaking: 0,
+        previousEaseFactorSpeaking: 2.5,
+        previousIntervalSpeaking: 0,
+        previousIntervalAsDateSpeaking: 0,
       );
 }

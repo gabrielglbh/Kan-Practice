@@ -348,7 +348,7 @@
   "abbr_test_mode_daily": "Daily",
   "daily_test_bottom_sheet_title": "Perform a daily test",
   "daily_test_bottom_sheet_load_failed": "No list could be gathered. Try again later.",
-  "daily_test_description": "Perform a daily test on a random mode (writing, reading, listening, recognition or speaking) with an ordered combination of words to strengthen your study.\n\nYou can repeat this test whenever you want but you cannot exit from it, you have to finish it!",
+  "daily_test_description": "Perform a daily test in which the words will be sorted based on the success of past daily tests (based on the SM2 algorithm).\n\nPerform this test daily for better memorization.",
   "daily_test_start_button": "Start",
   "daily_test_start_button_tr": "始める",
   "daily_test_cannot_go_back": "You are performing a daily test. Finish the test, you can do it!",

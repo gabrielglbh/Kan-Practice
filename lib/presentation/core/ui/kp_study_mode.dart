@@ -15,7 +15,7 @@ import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 class KPTestStudyMode extends StatelessWidget {
   /// List of [Kanji] to make the test with.
   ///
-  /// If [list] is null, the list must be loaded upon the mode selection (BLITZ or REMEMBRANCE or LESS %).
+  /// If [list] is null, the list must be loaded upon the mode selection (BLITZ or REMEMBRANCE or LESS % or DAILY).
   ///
   /// If it is not null, the list must come from (SELECTION OR CATEGORY TEST).
   final List<Word>? list;

@@ -1,54 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/application/load_test_daily/load_test_daily_bloc.dart';
+import 'package:kanpractice/application/load_test/load_test_bloc.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
-import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
+import 'package:kanpractice/presentation/core/ui/kp_study_mode.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
 class DailyBottomSheet extends StatelessWidget {
-  final String? folder;
-  const DailyBottomSheet({Key? key, this.folder}) : super(key: key);
+  const DailyBottomSheet({Key? key}) : super(key: key);
 
   /// Creates and calls the [BottomSheet] with the content for a regular test
-  static Future<String?> show(BuildContext context, {String? folder}) async {
+  static Future<String?> show(BuildContext context) async {
     return await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
-        builder: (context) => DailyBottomSheet(folder: folder));
+        builder: (context) => const DailyBottomSheet());
   }
 
   @override
   Widget build(BuildContext context) {
-    final title = folder != null ? ": $folder" : "";
     return BottomSheet(
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        return BlocConsumer<LoadTestDailyBloc, LoadTestDailyState>(
+        return BlocConsumer<LoadTestBloc, LoadTestState>(
           listener: (context, state) async {
-            if (state is LoadTestDailyStateLoadedList) {
+            if (state is LoadTestStateLoadedList) {
               final navigator = Navigator.of(context);
               final today = await Utils.parseTodayDate(context);
 
               navigator.pop(); // Dismiss this bottom sheet
               navigator.pop(); // Dismiss the tests bottom sheet
 
-              final folderTitle = folder != null ? " - $folder" : "";
-              final name = "${"abbr_test_mode_daily".tr()}: $today$folderTitle";
-
-              /// Save to SharedPreferences the current folder, if any, to manage
-              /// proper navigation when finishing the test.
-              /// See addPostFrameCallback() in init() in [HomePage]
-              getIt<PreferencesService>()
-                  .saveData(SharedKeys.folderWhenOnTest, folder ?? "");
+              final name = "${"abbr_test_mode_daily".tr()}: $today";
               await navigator.pushNamed(
                 state.mode.page,
                 arguments: ModeArguments(
@@ -72,9 +63,17 @@ class DailyBottomSheet extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         vertical: KPMargins.margin8,
                         horizontal: KPMargins.margin32),
-                    child: Text("${"daily_test_bottom_sheet_title".tr()}$title",
+                    child: Text("daily_test_bottom_sheet_title".tr(),
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.headline6),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: KPMargins.margin8,
+                        horizontal: KPMargins.margin32),
+                    child: Text("daily_test_description".tr(),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyText1),
                   ),
                   Visibility(
                     visible: getIt<PreferencesService>()
@@ -107,23 +106,10 @@ class DailyBottomSheet extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: KPMargins.margin8,
-                        horizontal: KPMargins.margin32),
-                    child: Text("daily_test_description".tr(),
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyText1),
-                  ),
-                  KPButton(
-                    title1: "daily_test_start_button_tr".tr(),
-                    title2: "daily_test_start_button".tr(),
-                    onTap: () {
-                      getIt<LoadTestDailyBloc>()
-                          .add(LoadTestDailyEventLoadList(folder: folder));
-                    },
-                  ),
-                  const SizedBox(height: KPMargins.margin16),
+                  KPTestStudyMode(
+                    type: Tests.daily,
+                    testName: Tests.daily.name,
+                  )
                 ],
               ),
             ]);

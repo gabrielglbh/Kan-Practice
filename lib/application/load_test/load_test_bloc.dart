@@ -42,6 +42,9 @@ class LoadTestBloc extends Bloc<LoadTestEvent, LoadTestState> {
             type: event.type,
           );
           finalList = list;
+        } else if (event.type == Tests.daily) {
+          List<Word> list = await _wordRepository.getDailyWords(event.mode);
+          finalList = list;
         } else {
           List<Word> list = await _wordRepository.getAllWords(
               mode: event.mode, type: event.type);

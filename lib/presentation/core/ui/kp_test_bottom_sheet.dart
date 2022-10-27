@@ -7,7 +7,7 @@ import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_kanlist_category_selection_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/home_page/widgets/daily_test_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/ui/blitz/daily_test_bottom_sheet.dart';
 import 'package:kanpractice/presentation/home_page/widgets/folder_selection_bottom_sheet.dart';
 import 'package:kanpractice/presentation/home_page/widgets/kanlist_selection_bottom_sheet.dart';
 
@@ -142,7 +142,7 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
               await FolderSelectionBottomSheet.show(context);
               break;
             case Tests.daily:
-              await DailyBottomSheet.show(context, folder: widget.folder);
+              await DailyBottomSheet.show(context);
               break;
           }
         });

@@ -348,7 +348,7 @@
   "abbr_test_mode_daily": "Diario",
   "daily_test_bottom_sheet_title": "Hacer un test diario",
   "daily_test_bottom_sheet_load_failed": "No se ha podido hacer ninguna lista. Prueba de nuevo más tarde.",
-  "daily_test_description": "Realiza un test diario en una modalidad aleatoria (escritura, lectura, escucha, reconocimiento o habla) con una combinación ordenada de palabras para reforzar tu estudio.\n\nPuedes repetir este test cuando quieras pero no puedes salir de él, ¡tienes que terminarlo!",
+  "daily_test_description": "Realiza un test diario en el que las palabras saldrán ordenadas en base al acierto de tests diarios pasados (Basado en el algoritmo SM2).\n\nRealiza este test a diario para una mayor memorización.",
   "daily_test_start_button": "Empezar",
   "daily_test_start_button_tr": "始める",
   "daily_test_cannot_go_back": "Estás haciendo un test diario. Termina el test, ¡tú puedes!",

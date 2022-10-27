@@ -158,6 +158,7 @@ class WordRepositoryImpl implements IWordRepository {
   }
 
   @override
+  // TODO: Search by SM2 parameters
   Future<List<Word>> getDailyWords(StudyModes mode) async {
     try {
       String query = "";

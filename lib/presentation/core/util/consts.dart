@@ -67,6 +67,7 @@ class KPFontSizes {
   static const double fontSize24 = 24;
   static const double fontSize26 = 26;
   static const double fontSize32 = 32;
+  static const double fontSize48 = 48;
   static const double fontSize64 = 64;
 }
 

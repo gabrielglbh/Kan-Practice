@@ -8,8 +8,6 @@ import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/canvas/kp_custom_canvas.dart';
-import 'package:kanpractice/presentation/core/ui/kp_learning_header_animation.dart';
-import 'package:kanpractice/presentation/core/ui/kp_learning_header_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_list_percentage_indicator.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/ui/kp_study_mode_app_bar.dart';
@@ -250,8 +248,22 @@ class _WritingStudyState extends State<WritingStudy> {
             children: [
               KPListPercentageIndicator(
                   value: (_macro + 1) / _studyList.length),
-              KPLearningHeaderAnimation(id: _macro, children: _header()),
-              KPCustomCanvas(line: _line, allowEdit: !_showActualKanji),
+              const SizedBox(height: KPMargins.margin32 + KPMargins.margin8),
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  KPCustomCanvas(line: _line, allowEdit: !_showActualKanji),
+                  Positioned(
+                    top: -KPMargins.margin32,
+                    right: KPMargins.margin64 + KPMargins.margin8,
+                    left: KPMargins.margin64 + KPMargins.margin8,
+                    child: SizedBox(
+                      height: 120,
+                      child: _wordDisplay(),
+                    ),
+                  ),
+                ],
+              ),
               WritingButtonsAnimations(
                 id: _macro,
 
@@ -283,41 +295,65 @@ class _WritingStudyState extends State<WritingStudy> {
     );
   }
 
-  List<Widget> _header() {
-    double finalHeight =
-        MediaQuery.of(context).size.height < KPSizes.minimumHeight
-            ? KPSizes.listStudyHeight / 3
-            : KPSizes.listStudyHeight;
-    return [
-      KPLearningHeaderContainer(
-          height: KPSizes.defaultSizeLearningExtContainer + KPMargins.margin8,
-          text: _goNextKanji ? _studyList[_macro].pronunciation : ""),
-      SizedBox(
-        height: finalHeight,
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: _studyList[_macro].word.length,
-          physics: const NeverScrollableScrollPhysics(),
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            String? kanji = _studyList[_macro].word;
-            return Text(
-                _currentKanji[_macro][index] == _none ? _none : kanji[index],
-                style: TextStyle(
-                    fontSize: MediaQuery.of(context).size.height <
-                            KPSizes.minimumHeight
-                        ? KPFontSizes.fontSize24
-                        : KPFontSizes.fontSize64,
-                    color: index == _inner ? KPColors.secondaryColor : null));
-          },
-        ),
+  Card _wordDisplay() {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(KPRadius.radius8),
       ),
-      KPLearningHeaderContainer(
-        height: KPSizes.defaultSizeLearningExtContainer,
-        text: _studyList[_macro].meaning,
-        top: KPMargins.margin8,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              top: KPMargins.margin4,
+              right: KPMargins.margin8,
+              left: KPMargins.margin8,
+            ),
+            child: Text(
+              _goNextKanji ? _studyList[_macro].pronunciation : "",
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: KPMargins.margin8),
+              child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: _studyList[_macro].word.length,
+                itemBuilder: ((context, index) {
+                  String? kanji = _studyList[_macro].word;
+                  return Text(
+                    _currentKanji[_macro][index] == _none
+                        ? _none
+                        : kanji[index],
+                    style: TextStyle(
+                      fontSize: 42,
+                      color: index == _inner ? KPColors.secondaryColor : null,
+                    ),
+                  );
+                }),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: KPMargins.margin4,
+              horizontal: KPMargins.margin8,
+            ),
+            child: Text(
+              _studyList[_macro].meaning,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(height: KPMargins.margin4),
+        ],
       ),
-    ];
+    );
   }
 
   _clear() => setState(() => _line = []);

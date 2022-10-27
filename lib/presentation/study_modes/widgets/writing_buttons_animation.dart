@@ -34,7 +34,7 @@ class WritingButtonsAnimations extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: KPSizes.listStudyHeight,
+      height: KPSizes.listStudyHeight * 1.6,
       child: AnimatedSwitcher(
           duration: const Duration(milliseconds: KPAnimations.ms300),
           switchInCurve: Curves.easeOut,
@@ -76,55 +76,70 @@ class WritingButtonsAnimations extends StatelessWidget {
     );
   }
 
-  // TODO: Adjust to 6 buttons
   /// This buttons will slide from the top one by one
-  Row _validation() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+  Widget _validation() {
+    return GridView(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        childAspectRatio: 1.8,
+      ),
       children: [
-        Expanded(
-          flex: 1,
-          child: _animation(
-              duration: 1,
-              child: KPActionButton(
-                label: "wrong_button_label".tr(),
-                horizontal: KPMargins.margin2,
-                onTap: () async => await action(0),
-                color: Colors.red[700]!,
-              )),
-        ),
-        Expanded(
-          flex: 1,
-          child: _animation(
-              duration: 2,
-              child: KPActionButton(
-                label: "mid_wrong_button_label".tr(),
-                horizontal: KPMargins.margin2,
-                onTap: () async => await action(0.33),
-                color: Colors.yellow[800]!,
-              )),
-        ),
-        Expanded(
-            flex: 1,
-            child: _animation(
-                duration: 3,
-                child: KPActionButton(
-                  label: "mid_perfect_button_label".tr(),
-                  horizontal: KPMargins.margin2,
-                  onTap: () async => await action(0.66),
-                  color: Colors.green[300]!,
-                ))),
-        Expanded(
-          flex: 1,
-          child: _animation(
-              duration: 4,
-              child: KPActionButton(
-                label: "perfect_button_label".tr(),
-                horizontal: KPMargins.margin2,
-                onTap: () async => await action(1),
-                color: Colors.green[700]!,
-              )),
-        )
+        _animation(
+            duration: 1,
+            child: KPActionButton(
+              label: "wrong_button_label".tr(),
+              horizontal: KPMargins.margin4,
+              vertical: KPMargins.margin4,
+              onTap: () async => await action(0),
+              color: Colors.redAccent.shade700,
+            )),
+        _animation(
+            duration: 2,
+            child: KPActionButton(
+              label: "mid_wrong_button_label".tr(),
+              horizontal: KPMargins.margin4,
+              vertical: KPMargins.margin4,
+              onTap: () async => await action(0.20),
+              color: Colors.red.shade500,
+            )),
+        _animation(
+            duration: 3,
+            child: KPActionButton(
+              label: "mid_button_label".tr(),
+              horizontal: KPMargins.margin4,
+              vertical: KPMargins.margin4,
+              onTap: () async => await action(0.40),
+              color: Colors.orange.shade700,
+            )),
+        _animation(
+            duration: 4,
+            child: KPActionButton(
+              label: "mid_good_button_label".tr(),
+              horizontal: KPMargins.margin4,
+              vertical: KPMargins.margin4,
+              onTap: () async => await action(0.60),
+              color: Colors.amber.shade500,
+            )),
+        _animation(
+            duration: 5,
+            child: KPActionButton(
+              label: "mid_perfect_button_label".tr(),
+              horizontal: KPMargins.margin4,
+              vertical: KPMargins.margin4,
+              onTap: () async => await action(0.80),
+              color: Colors.lime.shade700,
+            )),
+        _animation(
+            duration: 6,
+            child: KPActionButton(
+              label: "perfect_button_label".tr(),
+              horizontal: KPMargins.margin4,
+              vertical: KPMargins.margin4,
+              onTap: () async => await action(1),
+              color: Colors.green.shade700,
+            ))
       ],
     );
   }

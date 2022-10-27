@@ -50,6 +50,9 @@ Future<void> _initSharedPreferences() async {
   if (prefs.readData(SharedKeys.numberOfKanjiInTest) == null) {
     prefs.saveData(SharedKeys.numberOfKanjiInTest, KPSizes.numberOfKanjiInTest);
   }
+  if (prefs.readData(SharedKeys.enableRepetitionOnTests) == null) {
+    prefs.saveData(SharedKeys.enableRepetitionOnTests, true);
+  }
 
   /// Breaking change with 2.1.0: if themeMode in shared preferences is bool
   /// then change it to the actual name of [ThemeMode], as [ThemeMode.system]

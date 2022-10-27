@@ -43,7 +43,7 @@ class KPKanjiCategoryList extends StatelessWidget {
             child: Text(
               WordCategory.values[index].category,
               style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                    color: selected(index) ? Colors.white : textColor,
+                    color: selected(index) ? KPColors.primaryLight : textColor,
                   ),
             ),
           ),

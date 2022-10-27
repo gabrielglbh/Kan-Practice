@@ -30,4 +30,5 @@ class SharedKeys {
       "haveSeenKanListDetailCoachMark";
   static const String numberOfKanjiInTest = "numberOfKanjiInTest";
   static const String folderWhenOnTest = "folderWhenOnTest";
+  static const String enableRepetitionOnTests = "enableRepetitionOnTests";
 }

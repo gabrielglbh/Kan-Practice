@@ -131,14 +131,14 @@ class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
                           },
                           style: ButtonStyle(
                             backgroundColor:
-                                MaterialStateProperty.all(Colors.grey.shade500),
+                                MaterialStateProperty.all(KPColors.midGrey),
                           ),
                           child: Text(
                             "history_tests_filter".tr(),
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText1
-                                ?.copyWith(color: Colors.white),
+                                ?.copyWith(color: KPColors.primaryLight),
                           ),
                         ),
                       ),

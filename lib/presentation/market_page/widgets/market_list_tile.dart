@@ -112,7 +112,7 @@ class MarketListTile extends StatelessWidget {
                   padding: const EdgeInsets.only(left: KPMargins.margin8),
                   child: Icon(
                     Icons.folder_rounded,
-                    color: Colors.grey.shade500,
+                    color: KPColors.midGrey,
                     size: 18,
                   ),
                 ),

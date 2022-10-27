@@ -93,13 +93,13 @@ final ThemeData light = ThemeData(
       selectedColor: KPColors.secondaryDarkerColor,
       secondaryLabelStyle: const TextStyle(color: KPColors.primaryLight),
       brightness: Brightness.light,
-      backgroundColor: KPColors.chipColor,
+      backgroundColor: KPColors.midGrey,
       padding: const EdgeInsets.all(KPMargins.margin4),
       disabledColor: Colors.grey,
       labelStyle: const TextStyle(color: KPColors.primaryLight),
       secondarySelectedColor: KPColors.accentLight),
   tabBarTheme: const TabBarTheme(
-    labelColor: Colors.black,
+    labelColor: KPColors.accentLight,
     labelStyle: TextStyle(
         fontSize: KPFontSizes.fontSize18, fontWeight: FontWeight.bold),
     indicator: ShapeDecoration(

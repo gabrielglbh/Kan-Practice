@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
 
 enum StudyModeFilters {
   all,
@@ -31,7 +32,7 @@ extension StudyModeFiltersExt on StudyModeFilters {
   Color get color {
     switch (this) {
       case StudyModeFilters.all:
-        return Colors.black;
+        return KPColors.accentLight;
       case StudyModeFilters.writing:
         return Colors.blue.shade300;
       case StudyModeFilters.reading:

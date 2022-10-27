@@ -374,6 +374,7 @@
   "filter_select_dates_label": "Rango de fechas",
   "filter_select_test_type_label": "Tipo de test",
   "filter_select_study_mode_label": "Modo de estudio",
-  "filter_apply": "Aplicar"
-
+  "filter_apply": "Aplicar",
+  "settings_general_repetition_toggle": "Activar Repetición Espaciada en Tests",
+  "settings_general_repetition_sub": "Cuando se activa, al hacer un test, las palabras que falles volverán a aparecer al final del mismo para practicarlas. El acierto no se actualizará al practicar."
 }

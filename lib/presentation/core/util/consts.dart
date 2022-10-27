@@ -125,7 +125,7 @@ class KPColors {
   static final Color primaryDark = Colors.grey.shade700;
   static final Color cardColorLight = Colors.grey.shade200;
   static final Color cardColorDark = Colors.grey.shade600;
-  static final Color chipColor = Colors.grey.shade500;
+  static final Color midGrey = Colors.grey.shade500;
   static const Color accentLight = Colors.black;
   static const Color accentDark = Colors.white;
   static final Color subtleLight = Colors.grey.shade600;

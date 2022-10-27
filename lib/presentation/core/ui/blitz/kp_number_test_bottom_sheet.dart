@@ -137,7 +137,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
                               .bodyText2
                               ?.copyWith(
                                   color: _selectedLists.contains(range)
-                                      ? Colors.white
+                                      ? KPColors.primaryLight
                                       : textColor),
                         ),
                       ),

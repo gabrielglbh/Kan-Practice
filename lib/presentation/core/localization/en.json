@@ -374,5 +374,7 @@
   "filter_select_dates_label": "Date range",
   "filter_select_test_type_label": "Test type",
   "filter_select_study_mode_label": "Study mode",
-  "filter_apply": "Apply"
+  "filter_apply": "Apply",
+  "settings_general_repetition_toggle": "Enable Spaced Repetition in Tests",
+  "settings_general_repetition_sub": "When enabled, when taking a test, the words you fail will reappear at the end of the test for practice. The accuracy will not be updated when practicing."
 }

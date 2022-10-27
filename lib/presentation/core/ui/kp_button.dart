@@ -60,14 +60,15 @@ class KPButton extends StatelessWidget {
                     child: Text(title1 ?? "",
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.headline6?.copyWith(
-                            fontWeight: FontWeight.w400, color: Colors.white)),
+                            fontWeight: FontWeight.w400,
+                            color: KPColors.primaryLight)),
                   ),
                 ),
                 Visibility(
                   visible: title1 == null && icon != null,
                   child: Padding(
                       padding: const EdgeInsets.only(bottom: KPMargins.margin8),
-                      child: Icon(icon, color: Colors.white)),
+                      child: Icon(icon, color: KPColors.primaryLight)),
                 ),
                 FittedBox(
                   fit: BoxFit.fitWidth,

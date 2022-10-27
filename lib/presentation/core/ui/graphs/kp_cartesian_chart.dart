@@ -57,7 +57,7 @@ class KPCartesianChart<T> extends StatelessWidget {
           final point = args.pointIndex;
           args.color = point == null ? null : dataSource[point].studyMode.color;
           args.borderWidth = 1;
-          args.borderColor = Colors.white;
+          args.borderColor = KPColors.primaryLight;
         },
         primaryXAxis: DateTimeAxis(
           intervalType: intervalType,
@@ -72,7 +72,7 @@ class KPCartesianChart<T> extends StatelessWidget {
             enableTooltip: true,
             markerSettings: MarkerSettings(
               isVisible: true,
-              color: Colors.white,
+              color: KPColors.primaryLight,
               width: dataSource.length > markerThreshold ? 9 : 14,
               height: dataSource.length > markerThreshold ? 9 : 14,
             ),
@@ -125,7 +125,7 @@ class _KPCartesianChartTooltip extends StatelessWidget {
                       width: 14,
                       height: 14,
                       decoration: const BoxDecoration(
-                        color: Colors.white,
+                        color: KPColors.primaryLight,
                         shape: BoxShape.circle,
                       ),
                     ),

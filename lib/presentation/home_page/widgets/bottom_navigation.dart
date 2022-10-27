@@ -26,7 +26,7 @@ class HomeBottomNavigation extends StatelessWidget {
           BoxShadow(
             color: Theme.of(context).brightness == Brightness.light
                 ? Colors.grey
-                : Colors.black,
+                : KPColors.accentLight,
             blurRadius: 10,
           )
         ],

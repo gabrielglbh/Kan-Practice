@@ -53,14 +53,21 @@ class _WritingStudyState extends State<WritingStudy> {
   bool _showActualKanji = false;
   bool _goNextKanji = false;
   bool _hasFinished = false;
+  bool _enableRepOnTest = false;
 
   final String _none = "wildcard".tr();
 
   /// Widget auxiliary variable
   final List<Word> _studyList = [];
 
+  bool get _hasRepetition => !widget.args.isTest || _enableRepOnTest;
+  bool _enableSpacedRepetition(double score) =>
+      (!widget.args.isTest && score < 0.5) || (_enableRepOnTest && score < 0.5);
+
   @override
   void initState() {
+    _enableRepOnTest = getIt<PreferencesService>()
+        .readData(SharedKeys.enableRepetitionOnTests);
     _studyList.addAll(widget.args.studyList);
     _initAuxKanjiArray();
     super.initState();
@@ -118,7 +125,7 @@ class _WritingStudyState extends State<WritingStudy> {
       /// SPATIAL, the append the current word to the list, to review it again.
       /// Only do this when NOT on test
       final double score = _score[_macro] / _maxScore[_macro];
-      if (!widget.args.isTest && score < 0.5) {
+      if (_enableSpacedRepetition(score)) {
         _studyList.add(_studyList[_macro]);
         _initScoreArray(_studyList.length - 1);
       }
@@ -133,7 +140,7 @@ class _WritingStudyState extends State<WritingStudy> {
         /// set of words. If the current word is above that, using SPATIAL
         /// repetition, then do NOT calculate the score and return 0 directly.
         final condition =
-            !widget.args.isTest && _macro >= widget.args.studyList.length;
+            _hasRepetition && _macro >= widget.args.studyList.length;
         final code = !condition ? await _calculateKanjiScore() : 0;
 
         /// If everything went well, and we have words left in the list,
@@ -229,7 +236,7 @@ class _WritingStudyState extends State<WritingStudy> {
               visible: _goNextKanji,
               child: TTSIconButton(word: _studyList[_macro].pronunciation),
             ),
-            if (!widget.args.isTest)
+            if (_hasRepetition)
               IconButton(
                 onPressed: () => Utils.showSpatialRepetitionDisclaimer(context),
                 icon: const Icon(Icons.info_outline_rounded),

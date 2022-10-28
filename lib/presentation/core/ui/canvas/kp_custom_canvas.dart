@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'package:easy_localization/easy_localization.dart';
 import 'package:image/image.dart' as im;
 import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -103,9 +104,17 @@ class _KPCustomCanvasState extends State<KPCustomCanvas> {
             )),
           ),
           _actionIcon(
-              action: () => _undoLine(), icon: Icons.undo_rounded, right: null),
+            action: () => _undoLine(),
+            icon: Icons.undo_rounded,
+            text: "back_canvas".tr(),
+            right: null,
+          ),
           _actionIcon(
-              action: () => _clear(), icon: Icons.redo_rounded, left: null),
+            action: () => _clear(),
+            icon: Icons.redo_rounded,
+            text: "clear_canvas".tr(),
+            left: null,
+          ),
         ],
       ),
     );
@@ -114,26 +123,41 @@ class _KPCustomCanvasState extends State<KPCustomCanvas> {
   _actionIcon(
       {required Function() action,
       required IconData icon,
+      required String text,
       double? left = KPMargins.margin16,
       double? right = KPMargins.margin16}) {
     return Visibility(
       visible: widget.allowEdit,
       child: Positioned(
-          top: KPMargins.margin8,
-          left: left,
-          right: right,
-          child: GestureDetector(
-              onTap: action,
-              child: Container(
-                height: KPSizes.defaultSizeSearchBarIcons,
-                width: KPSizes.defaultSizeSearchBarIcons,
-                decoration: BoxDecoration(
-                    color: KPColors.getAlterAccent(context),
-                    borderRadius: BorderRadius.circular(KPRadius.radius16)),
-                child: Icon(icon,
-                    size: KPFontSizes.fontSize32,
-                    color: KPColors.getAccent(context)),
-              ))),
+        bottom: KPMargins.margin8,
+        left: left,
+        right: right,
+        child: GestureDetector(
+          onTap: action,
+          child: Container(
+            height: KPSizes.defaultSizeSearchBarIcons,
+            width: KPSizes.defaultSizeSearchBarIcons,
+            decoration: BoxDecoration(
+                color: KPColors.getAlterAccent(context),
+                borderRadius: BorderRadius.circular(KPRadius.radius16)),
+            child: Column(
+              children: [
+                Icon(
+                  icon,
+                  size: KPFontSizes.fontSize32,
+                  color: KPColors.getAccent(context),
+                ),
+                FittedBox(
+                    child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: KPMargins.margin4),
+                  child: Text(text),
+                ))
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 

@@ -34,7 +34,7 @@ class WritingButtonsAnimations extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: KPSizes.listStudyHeight * 1.6,
+      height: KPSizes.listStudyHeight * 1.48,
       child: AnimatedSwitcher(
           duration: const Duration(milliseconds: KPAnimations.ms300),
           switchInCurve: Curves.easeOut,
@@ -83,7 +83,7 @@ class WritingButtonsAnimations extends StatelessWidget {
       shrinkWrap: true,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
-        childAspectRatio: 1.8,
+        childAspectRatio: 2,
       ),
       children: [
         _animation(

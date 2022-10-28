@@ -378,5 +378,7 @@
   "filter_select_study_mode_label": "Studienmodus",
   "filter_apply": "Anwenden",
   "settings_general_repetition_toggle": "Abgestufte Wiederholungen in Tests aktivieren",
-  "settings_general_repetition_sub": "Wenn diese Option aktiviert ist, werden bei einem Test die Wörter, die Sie nicht geschafft haben, am Ende des Tests zum Üben erneut angezeigt. Der Treffer wird beim Üben nicht aktualisiert."
+  "settings_general_repetition_sub": "Wenn diese Option aktiviert ist, werden bei einem Test die Wörter, die Sie nicht geschafft haben, am Ende des Tests zum Üben erneut angezeigt. Der Treffer wird beim Üben nicht aktualisiert.",
+  "clear_canvas": "Löschen",
+  "back_canvas": "Zurück"
 }

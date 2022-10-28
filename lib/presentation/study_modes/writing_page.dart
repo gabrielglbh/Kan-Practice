@@ -125,7 +125,8 @@ class _WritingStudyState extends State<WritingStudy> {
       /// SPATIAL, the append the current word to the list, to review it again.
       /// Only do this when NOT on test
       final double score = _score[_macro] / _maxScore[_macro];
-      if (_enableSpacedRepetition(score)) {
+      if (_enableSpacedRepetition(score) &&
+          widget.args.testMode != Tests.daily) {
         _studyList.add(_studyList[_macro]);
         _initScoreArray(_studyList.length - 1);
       }
@@ -243,7 +244,7 @@ class _WritingStudyState extends State<WritingStudy> {
               visible: _goNextKanji,
               child: TTSIconButton(word: _studyList[_macro].pronunciation),
             ),
-            if (_hasRepetition)
+            if (_hasRepetition && widget.args.testMode != Tests.daily)
               IconButton(
                 onPressed: () => Utils.showSpatialRepetitionDisclaimer(context),
                 icon: const Icon(Icons.info_outline_rounded),

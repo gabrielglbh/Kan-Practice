@@ -58,7 +58,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
   Future<void> _updateUIOnSubmit(double score) async {
     /// If the score is less PARTIAL or WRONG and the Learning Mode is
     /// SPATIAL, the append the current word to the list, to review it again.
-    if (_enableSpacedRepetition(score)) {
+    if (_enableSpacedRepetition(score) && widget.args.testMode != Tests.daily) {
       _studyList.add(_studyList[_macro]);
     }
 
@@ -175,7 +175,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
                 visible: _showMeaning,
                 child: TTSIconButton(word: _studyList[_macro].pronunciation),
               ),
-              if (_hasRepetition)
+              if (_hasRepetition && widget.args.testMode != Tests.daily)
                 IconButton(
                   onPressed: () =>
                       Utils.showSpatialRepetitionDisclaimer(context),

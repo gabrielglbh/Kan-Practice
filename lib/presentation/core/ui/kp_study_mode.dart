@@ -192,7 +192,7 @@ class _KPTestStudyModeState extends State<KPTestStudyMode> {
                     .caption
                     ?.copyWith(color: Colors.white),
               ),
-              backgroundColor: KPColors.getSecondaryColor(context),
+              backgroundColor: KPColors.secondaryDarkerColor,
               labelPadding: EdgeInsets.zero,
             ),
           ),

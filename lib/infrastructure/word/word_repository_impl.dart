@@ -233,7 +233,7 @@ class WordRepositoryImpl implements IWordRepository {
       ];
     } catch (err) {
       print(err.toString());
-      return List.generate(StudyModes.values.length, (_) => 0);
+      return [];
     }
   }
 

@@ -165,10 +165,44 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
     });
 
     on<StudyModeEventUpdateDateShown>((event, emit) async {
-      await _wordRepository.updateWord(event.listName, event.word, {
+      final toUpdate = {
         WordTableFields.dateLastShown: Utils.getCurrentMilliseconds(),
-        WordTableFields.dateLastShownListening: Utils.getCurrentMilliseconds()
-      });
+      };
+
+      switch (event.mode) {
+        case StudyModes.writing:
+          toUpdate.addEntries([
+            MapEntry(WordTableFields.dateLastShownWriting,
+                Utils.getCurrentMilliseconds())
+          ]);
+          break;
+        case StudyModes.reading:
+          toUpdate.addEntries([
+            MapEntry(WordTableFields.dateLastShownReading,
+                Utils.getCurrentMilliseconds())
+          ]);
+          break;
+        case StudyModes.recognition:
+          toUpdate.addEntries([
+            MapEntry(WordTableFields.dateLastShownRecognition,
+                Utils.getCurrentMilliseconds())
+          ]);
+          break;
+        case StudyModes.listening:
+          toUpdate.addEntries([
+            MapEntry(WordTableFields.dateLastShownListening,
+                Utils.getCurrentMilliseconds())
+          ]);
+          break;
+        case StudyModes.speaking:
+          toUpdate.addEntries([
+            MapEntry(WordTableFields.dateLastShownSpeaking,
+                Utils.getCurrentMilliseconds())
+          ]);
+          break;
+      }
+
+      await _wordRepository.updateWord(event.listName, event.word, toUpdate);
     });
 
     on<StudyModeEventUpdateScoreForTestsAffectingPractice>((event, emit) async {

@@ -10,12 +10,16 @@ abstract class StudyModeEvent extends Equatable {
 class StudyModeEventUpdateDateShown extends StudyModeEvent {
   final String listName;
   final String word;
+  final StudyModes mode;
 
-  const StudyModeEventUpdateDateShown(
-      {required this.listName, required this.word});
+  const StudyModeEventUpdateDateShown({
+    required this.listName,
+    required this.word,
+    required this.mode,
+  });
 
   @override
-  List<Object> get props => [listName, word];
+  List<Object> get props => [listName, word, mode];
 }
 
 class StudyModeEventCalculateScore extends StudyModeEvent {

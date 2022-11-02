@@ -121,8 +121,10 @@ class _ListeningStudyState extends State<ListeningStudy> {
       _testScores.add(score);
     } else {
       getIt<StudyModeBloc>().add(StudyModeEventUpdateDateShown(
-          listName: _studyList[_macro].listName,
-          word: _studyList[_macro].word));
+        listName: _studyList[_macro].listName,
+        word: _studyList[_macro].word,
+        mode: widget.args.mode,
+      ));
 
       /// Add the current virgin score to the test scores...
       if (widget.args.isTest) {

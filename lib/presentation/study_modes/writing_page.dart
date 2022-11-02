@@ -191,7 +191,10 @@ class _WritingStudyState extends State<WritingStudy> {
 
   Future<int> _calculateKanjiScore() async {
     getIt<StudyModeBloc>().add(StudyModeEventUpdateDateShown(
-        listName: _studyList[_macro].listName, word: _studyList[_macro].word));
+      listName: _studyList[_macro].listName,
+      word: _studyList[_macro].word,
+      mode: widget.args.mode,
+    ));
     final double currentScore = _score[_macro] / _maxScore[_macro];
 
     /// Add the current virgin score to the test scores...

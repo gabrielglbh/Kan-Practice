@@ -112,7 +112,10 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
     /// Updates the dateLastShown attribute of the finished word AND
     /// the current specific last shown mode attribute
     getIt<StudyModeBloc>().add(StudyModeEventUpdateDateShown(
-        listName: _studyList[_macro].listName, word: _studyList[_macro].word));
+      listName: _studyList[_macro].listName,
+      word: _studyList[_macro].word,
+      mode: widget.args.mode,
+    ));
 
     /// Add the current virgin score to the test scores...
     if (widget.args.isTest) {

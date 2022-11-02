@@ -17,6 +17,39 @@ class WordTableFields {
   static const String dateLastShownListening = "dateLastShownListening";
   static const String dateLastShownSpeaking = "dateLastShownSpeaking";
   static const String categoryField = "category";
+  static const String repetitionsWritingField = "repetitionsWriting";
+  static const String previousEaseFactorWritingField =
+      "previousEaseFactorWriting";
+  static const String previousIntervalWritingField = "previousIntervalWriting";
+  static const String previousIntervalAsDateWritingField =
+      "previousIntervalAsDateWriting";
+  static const String repetitionsReadingField = "repetitionsReading";
+  static const String previousEaseFactorReadingField =
+      "previousEaseFactorReading";
+  static const String previousIntervalReadingField = "previousIntervalReading";
+  static const String previousIntervalAsDateReadingField =
+      "previousIntervalAsDateReading";
+  static const String repetitionsRecognitionField = "repetitionsRecognition";
+  static const String previousEaseFactorRecognitionField =
+      "previousEaseFactorRecognition";
+  static const String previousIntervalRecognitionField =
+      "previousIntervalRecognition";
+  static const String previousIntervalAsDateRecognitionField =
+      "previousIntervalAsDateRecognition";
+  static const String repetitionsListeningField = "repetitionsListening";
+  static const String previousEaseFactorListeningField =
+      "previousEaseFactorListening";
+  static const String previousIntervalListeningField =
+      "previousIntervalListening";
+  static const String previousIntervalAsDateListeningField =
+      "previousIntervalAsDateListening";
+  static const String repetitionsSpeakingField = "repetitionsSpeaking";
+  static const String previousEaseFactorSpeakingField =
+      "previousEaseFactorSpeaking";
+  static const String previousIntervalSpeakingField =
+      "previousIntervalSpeaking";
+  static const String previousIntervalAsDateSpeakingField =
+      "previousIntervalAsDateSpeaking";
 }
 
 class ListTableFields {

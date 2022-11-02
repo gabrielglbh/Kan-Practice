@@ -21,7 +21,17 @@ class LoadTestBloc extends Bloc<LoadTestEvent, LoadTestState> {
   LoadTestBloc(
     this._wordRepository,
     this._folderRepository,
-  ) : super(LoadTestStateIdle()) {
+  ) : super(const LoadTestStateIdle([])) {
+    on<LoadTestEventIdle>((event, emit) async {
+      if (event.mode == Tests.daily) {
+        final wordsToReview =
+            await _wordRepository.getSM2ReviewWordsAsForToday();
+        emit(LoadTestStateIdle(wordsToReview));
+      } else {
+        emit(const LoadTestStateIdle([]));
+      }
+    });
+
     on<LoadTestEventLoadList>((event, emit) async {
       List<Word> finalList = [];
 
@@ -36,12 +46,13 @@ class LoadTestBloc extends Bloc<LoadTestEvent, LoadTestState> {
           }
         } else if ((event.type == Tests.time || event.type == Tests.less) &&
             event.folder != null) {
-          List<Word> list = await _folderRepository.getAllWordsOnListsOnFolder(
+          finalList = await _folderRepository.getAllWordsOnListsOnFolder(
             [event.folder!],
             mode: event.mode,
             type: event.type,
           );
-          finalList = list;
+        } else if (event.type == Tests.daily) {
+          finalList = await _wordRepository.getDailySM2Words(event.mode);
         } else {
           List<Word> list = await _wordRepository.getAllWords(
               mode: event.mode, type: event.type);

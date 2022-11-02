@@ -23,7 +23,7 @@ class KPSizes {
   static const double maxHeightForLastSeenDates = 256;
   static const double maxHeightValidationCircle = 256;
 
-  static const double minimumHeight = 600;
+  static const double minimumHeight = 750;
 
   static const int numberOfKanjiInTest = 30;
   static const int numberOfPredictedKanji = 20;
@@ -67,6 +67,7 @@ class KPFontSizes {
   static const double fontSize24 = 24;
   static const double fontSize26 = 26;
   static const double fontSize32 = 32;
+  static const double fontSize48 = 48;
   static const double fontSize64 = 64;
 }
 

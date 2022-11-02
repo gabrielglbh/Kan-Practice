@@ -38,7 +38,7 @@ abstract class InjectableModule {
 
     return await openDatabase(
       path,
-      version: 9,
+      version: 10,
       singleInstance: true,
       onConfigure: (db) async {
         await db.execute('PRAGMA foreign_keys = ON');
@@ -53,6 +53,7 @@ abstract class InjectableModule {
         if (oldVersion <= 6) c.version6to7(db);
         if (oldVersion <= 7) c.version7to8(db);
         if (oldVersion <= 8) c.version8to9(db);
+        if (oldVersion <= 9) c.version9to10(db);
       },
       onCreate: (Database db, int version) async {
         await db.execute("CREATE TABLE ${WordTableFields.wordTable}("
@@ -73,6 +74,26 @@ abstract class InjectableModule {
             "${WordTableFields.dateLastShownListening} INTEGER NOT NULL DEFAULT 0, "
             "${WordTableFields.dateLastShownSpeaking} INTEGER NOT NULL DEFAULT 0, "
             "${WordTableFields.categoryField} INTEGER NOT NULL DEFAULT 0, "
+            "${WordTableFields.repetitionsWritingField} INTEGER NOT NULL DEFAULT 0, "
+            "${WordTableFields.previousEaseFactorWritingField} INTEGER NOT NULL DEFAULT 2.5, "
+            "${WordTableFields.previousIntervalWritingField} INTEGER NOT NULL DEFAULT 0, "
+            "${WordTableFields.previousIntervalAsDateWritingField} INTEGER NOT NULL DEFAULT 0, "
+            "${WordTableFields.repetitionsReadingField} INTEGER NOT NULL DEFAULT 0, "
+            "${WordTableFields.previousEaseFactorReadingField} INTEGER NOT NULL DEFAULT 2.5, "
+            "${WordTableFields.previousIntervalReadingField} INTEGER NOT NULL DEFAULT 0, "
+            "${WordTableFields.previousIntervalAsDateReadingField} INTEGER NOT NULL DEFAULT 0, "
+            "${WordTableFields.repetitionsRecognitionField} INTEGER NOT NULL DEFAULT 0, "
+            "${WordTableFields.previousEaseFactorRecognitionField} INTEGER NOT NULL DEFAULT 2.5, "
+            "${WordTableFields.previousIntervalRecognitionField} INTEGER NOT NULL DEFAULT 0, "
+            "${WordTableFields.previousIntervalAsDateRecognitionField} INTEGER NOT NULL DEFAULT 0, "
+            "${WordTableFields.repetitionsListeningField} INTEGER NOT NULL DEFAULT 0, "
+            "${WordTableFields.previousEaseFactorListeningField} INTEGER NOT NULL DEFAULT 2.5, "
+            "${WordTableFields.previousIntervalListeningField} INTEGER NOT NULL DEFAULT 0, "
+            "${WordTableFields.previousIntervalAsDateListeningField} INTEGER NOT NULL DEFAULT 0, "
+            "${WordTableFields.repetitionsSpeakingField} INTEGER NOT NULL DEFAULT 0, "
+            "${WordTableFields.previousEaseFactorSpeakingField} INTEGER NOT NULL DEFAULT 2.5, "
+            "${WordTableFields.previousIntervalSpeakingField} INTEGER NOT NULL DEFAULT 0, "
+            "${WordTableFields.previousIntervalAsDateSpeakingField} INTEGER NOT NULL DEFAULT 0, "
             "PRIMARY KEY (${WordTableFields.wordField}, ${WordTableFields.meaningField}, ${WordTableFields.pronunciationField}), "
             "FOREIGN KEY (${WordTableFields.listNameField}) "
             "REFERENCES ${ListTableFields.listsTable}(${ListTableFields.nameField}) "

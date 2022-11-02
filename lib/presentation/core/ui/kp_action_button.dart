@@ -43,19 +43,20 @@ class KPActionButton extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(KPRadius.radius16),
           child: Container(
-              height: KPSizes.defaultSizeActionButton,
-              alignment: Alignment.center,
-              margin: const EdgeInsets.all(KPMargins.margin16),
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: Text(label,
-                    textAlign: TextAlign.center,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context)
-                        .textTheme
-                        .button
-                        ?.copyWith(color: textColor)),
-              )),
+            height: KPSizes.defaultSizeActionButton,
+            alignment: Alignment.center,
+            margin: const EdgeInsets.all(KPMargins.margin8),
+            child: Text(
+              label,
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              style: Theme.of(context)
+                  .textTheme
+                  .button
+                  ?.copyWith(color: textColor),
+            ),
+          ),
         ),
       ),
     );

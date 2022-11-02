@@ -131,8 +131,10 @@
   "kanji_lists_empty": "No available lists.\n\nCreate new lists for your study by tapping on '+' or import them from your backup.",
   "done_button_label": "Done!",
   "perfect_button_label": "Perfect",
-  "mid_perfect_button_label": "Good",
-  "mid_wrong_button_label": "Partial",
+  "mid_perfect_button_label": "Almost perfect",
+  "mid_good_button_label": "Good",
+  "mid_button_label": "Partial",
+  "mid_wrong_button_label": "Bad",
   "wrong_button_label": "Wrong",
   "developer_info_label": "Developer Info",
   "developer_info_follow": "@gabrielglbh on GitHub",
@@ -348,7 +350,7 @@
   "abbr_test_mode_daily": "Daily",
   "daily_test_bottom_sheet_title": "Perform a daily test",
   "daily_test_bottom_sheet_load_failed": "No list could be gathered. Try again later.",
-  "daily_test_description": "Perform a daily test on a random mode (writing, reading, listening, recognition or speaking) with an ordered combination of words to strengthen your study.\n\nYou can repeat this test whenever you want but you cannot exit from it, you have to finish it!",
+  "daily_test_description": "Perform a test in which the words will be sorted based on the success of past daily tests. Perform this test daily for better memorization.",
   "daily_test_start_button": "Start",
   "daily_test_start_button_tr": "始める",
   "daily_test_cannot_go_back": "You are performing a daily test. Finish the test, you can do it!",
@@ -376,5 +378,7 @@
   "filter_select_study_mode_label": "Study mode",
   "filter_apply": "Apply",
   "settings_general_repetition_toggle": "Enable Spaced Repetition in Tests",
-  "settings_general_repetition_sub": "When enabled, when taking a test, the words you fail will reappear at the end of the test for practice. The accuracy will not be updated when practicing."
+  "settings_general_repetition_sub": "When enabled, when taking a test, the words you fail will reappear at the end of the test for practice. The accuracy will not be updated when practicing.",
+  "clear_canvas": "Clear",
+  "back_canvas": "Back"
 }

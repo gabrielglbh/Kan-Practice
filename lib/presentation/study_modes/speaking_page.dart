@@ -59,7 +59,7 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
     /// If the score is less PARTIAL or WRONG and the Learning Mode is
     /// SPATIAL, the append the current word to the list, to review it again.
     /// Only do this when NOT on test
-    if (_enableSpacedRepetition(score)) {
+    if (_enableSpacedRepetition(score) && widget.args.testMode != Tests.daily) {
       _studyList.add(_studyList[_macro]);
     }
 
@@ -122,6 +122,10 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
             widget.args.mode, _studyList[_macro], score));
       }
       _testScores.add(score);
+      if (widget.args.testMode == Tests.daily) {
+        getIt<StudyModeBloc>().add(StudyModeEventCalculateSM2Params(
+            widget.args.mode, _studyList[_macro], score));
+      }
     } else {
       getIt<StudyModeBloc>().add(StudyModeEventCalculateScore(
           widget.args.mode, _studyList[_macro], score));
@@ -153,11 +157,6 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
       builder: (context, state) {
         return KPScaffold(
           onWillPop: () async {
-            if (widget.args.testMode == Tests.daily) {
-              Utils.getSnackBar(context, "daily_test_cannot_go_back".tr());
-              return false;
-            }
-
             return StudyModeUpdateHandler.handle(
               context,
               widget.args,
@@ -174,7 +173,7 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
               visible: _showInfo,
               child: TTSIconButton(word: _studyList[_macro].pronunciation),
             ),
-            if (_hasRepetition)
+            if (_hasRepetition && widget.args.testMode != Tests.daily)
               IconButton(
                 onPressed: () => Utils.showSpatialRepetitionDisclaimer(context),
                 icon: const Icon(Icons.info_outline_rounded),
@@ -192,11 +191,7 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
               KPValidationButtons(
                 trigger: _showInfo,
                 submitLabel: "done_button_label".tr(),
-                wrongAction: (score) async => await _updateUIOnSubmit(score),
-                midWrongAction: (score) async => await _updateUIOnSubmit(score),
-                midPerfectAction: (score) async =>
-                    await _updateUIOnSubmit(score),
-                perfectAction: (score) async => await _updateUIOnSubmit(score),
+                action: (score) async => await _updateUIOnSubmit(score),
                 onSubmit: () => setState(() => _showInfo = true),
               )
             ],

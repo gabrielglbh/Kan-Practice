@@ -8,14 +8,15 @@ import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
+import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
-class KPTestStudyMode extends StatelessWidget {
+class KPTestStudyMode extends StatefulWidget {
   /// List of [Kanji] to make the test with.
   ///
-  /// If [list] is null, the list must be loaded upon the mode selection (BLITZ or REMEMBRANCE or LESS %).
+  /// If [list] is null, the list must be loaded upon the mode selection (BLITZ or REMEMBRANCE or LESS % or DAILY).
   ///
   /// If it is not null, the list must come from (SELECTION OR CATEGORY TEST).
   final List<Word>? list;
@@ -47,55 +48,67 @@ class KPTestStudyMode extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<KPTestStudyMode> createState() => _KPTestStudyModeState();
+}
+
+class _KPTestStudyModeState extends State<KPTestStudyMode> {
+  @override
+  void initState() {
+    getIt<LoadTestBloc>().add(LoadTestEventIdle(mode: widget.type));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoadTestBloc, LoadTestState>(
-      listener: ((context, state) async {
-        if (state is LoadTestStateLoadedList) {
-          List<Word> list = state.words;
-          if (list.isEmpty) {
-            Navigator.of(context).pop();
-            Utils.getSnackBar(context, "study_modes_empty".tr());
-          } else {
-            await _decideOnMode(context, list, state.mode);
-          }
-        }
-      }),
-      builder: (context, state) {
-        return Container(
-            alignment: Alignment.center,
-            child: Column(
-              children: [
-                Visibility(
-                  visible: getIt<PreferencesService>()
-                          .readData(SharedKeys.affectOnPractice) ==
-                      true,
-                  child: Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: KPMargins.margin8,
-                          horizontal: KPMargins.margin24),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(right: KPMargins.margin16),
-                            child: Icon(Icons.auto_graph_rounded,
-                                color: Colors.lightBlueAccent),
-                          ),
-                          Expanded(
-                              child: Text(
-                            "settings_general_toggle".tr(),
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.bodyText1,
-                          )),
-                          const Padding(
-                            padding: EdgeInsets.only(left: KPMargins.margin16),
-                            child: Icon(Icons.auto_graph_rounded,
-                                color: Colors.lightBlueAccent),
-                          ),
-                        ],
-                      )),
-                ),
-                Padding(
+    return Container(
+      alignment: Alignment.center,
+      child: Column(
+        children: [
+          Visibility(
+            visible: getIt<PreferencesService>()
+                    .readData(SharedKeys.affectOnPractice) ==
+                true,
+            child: Container(
+                margin: const EdgeInsets.symmetric(
+                    vertical: KPMargins.margin8,
+                    horizontal: KPMargins.margin24),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(right: KPMargins.margin16),
+                      child: Icon(Icons.auto_graph_rounded,
+                          color: Colors.lightBlueAccent),
+                    ),
+                    Expanded(
+                        child: Text(
+                      "settings_general_toggle".tr(),
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )),
+                    const Padding(
+                      padding: EdgeInsets.only(left: KPMargins.margin16),
+                      child: Icon(Icons.auto_graph_rounded,
+                          color: Colors.lightBlueAccent),
+                    ),
+                  ],
+                )),
+          ),
+          BlocConsumer<LoadTestBloc, LoadTestState>(
+            listener: ((context, state) async {
+              if (state is LoadTestStateLoadedList) {
+                List<Word> list = state.words;
+                if (list.isEmpty) {
+                  Navigator.of(context).pop();
+                  Utils.getSnackBar(context, "study_modes_empty".tr());
+                } else {
+                  await _decideOnMode(context, list, state.mode);
+                }
+              }
+            }),
+            builder: (context, state) {
+              if (state is LoadTestStateIdle) {
+                return Padding(
                   padding: const EdgeInsets.only(
                     right: KPMargins.margin16,
                     left: KPMargins.margin16,
@@ -108,43 +121,83 @@ class KPTestStudyMode extends StatelessWidget {
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3, childAspectRatio: 1.2),
-                    itemBuilder: (context, index) {
+                    itemBuilder: (context, i) {
                       return _modeBasedButtons(
-                          context, StudyModes.values[index]);
+                        context,
+                        StudyModes.values[i],
+                        state.wordsToReview.isEmpty
+                            ? -1
+                            : state.wordsToReview[i],
+                      );
                     },
                   ),
-                ),
-              ],
-            ));
-      },
+                );
+              } else {
+                return const Center(child: KPProgressIndicator());
+              }
+            },
+          )
+        ],
+      ),
     );
   }
 
-  Widget _modeBasedButtons(BuildContext context, StudyModes mode) {
-    return KPButton(
-        title1: mode.japMode,
-        title2: mode.mode,
-        color: mode.color,
-        onTap: () async {
-          List<Word>? l = list;
-          if (l != null) {
-            if (l.isEmpty) {
-              Navigator.of(context).pop();
-              Utils.getSnackBar(context, "study_modes_empty".tr());
+  Widget _modeBasedButtons(
+    BuildContext context,
+    StudyModes mode,
+    int wordsToReview,
+  ) {
+    String toReview = wordsToReview.toString();
+    if (wordsToReview > 1000) {
+      toReview = "> 1000";
+    }
+    return Stack(
+      alignment: Alignment.topRight,
+      clipBehavior: Clip.none,
+      children: [
+        KPButton(
+          title1: mode.japMode,
+          title2: mode.mode,
+          color: mode.color,
+          onTap: () async {
+            List<Word>? l = widget.list;
+            if (l != null) {
+              if (l.isEmpty) {
+                Navigator.of(context).pop();
+                Utils.getSnackBar(context, "study_modes_empty".tr());
+              } else {
+                await _decideOnMode(context, l, mode);
+              }
             } else {
-              await _decideOnMode(context, l, mode);
+              getIt<LoadTestBloc>().add(
+                LoadTestEventLoadList(
+                  folder: widget.folder,
+                  mode: mode,
+                  type: widget.type,
+                  practiceList: widget.practiceList,
+                ),
+              );
             }
-          } else {
-            getIt<LoadTestBloc>().add(
-              LoadTestEventLoadList(
-                folder: folder,
-                mode: mode,
-                type: type,
-                practiceList: practiceList,
+          },
+        ),
+        if (wordsToReview > 0)
+          Positioned(
+            top: -KPMargins.margin12,
+            right: -KPMargins.margin8,
+            child: Chip(
+              label: Text(
+                toReview,
+                style: Theme.of(context)
+                    .textTheme
+                    .caption
+                    ?.copyWith(color: Colors.white),
               ),
-            );
-          }
-        });
+              backgroundColor: KPColors.getSecondaryColor(context),
+              labelPadding: EdgeInsets.zero,
+            ),
+          ),
+      ],
+    );
   }
 
   Future<void> _decideOnMode(
@@ -152,7 +205,7 @@ class KPTestStudyMode extends StatelessWidget {
     List<Word> list,
     StudyModes mode,
   ) async {
-    final displayTestName = type.name;
+    final displayTestName = widget.type.name;
     Navigator.of(context).pop(); // Dismiss this bottom sheet
     Navigator.of(context).pop(); // Dismiss the tests bottom sheet
 
@@ -160,17 +213,17 @@ class KPTestStudyMode extends StatelessWidget {
     /// proper navigation when finishing the test.
     /// See addPostFrameCallback() in init() in [HomePage]
     getIt<PreferencesService>()
-        .saveData(SharedKeys.folderWhenOnTest, folder ?? "");
+        .saveData(SharedKeys.folderWhenOnTest, widget.folder ?? "");
 
     await Navigator.of(context).pushNamed(
       mode.page,
       arguments: ModeArguments(
         studyList: list,
         isTest: true,
-        testMode: type,
+        testMode: widget.type,
         studyModeHeaderDisplayName: displayTestName,
         mode: mode,
-        testHistoryDisplasyName: testName,
+        testHistoryDisplasyName: widget.testName,
       ),
     );
   }

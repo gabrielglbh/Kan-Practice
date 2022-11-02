@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 import 'package:kana_kit/kana_kit.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
@@ -65,7 +64,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
     /// If the score is less PARTIAL or WRONG and the Learning Mode is
     /// SPATIAL, the append the current word to the list, to review it again.
     /// Only do this when NOT on test
-    if (_enableSpacedRepetition(score)) {
+    if (_enableSpacedRepetition(score) && widget.args.testMode != Tests.daily) {
       _studyList.add(_studyList[_macro]);
     }
 
@@ -126,9 +125,14 @@ class _ReadingStudyState extends State<ReadingStudy> {
             widget.args.mode, _studyList[_macro], score));
       }
       _testScores.add(score);
+      if (widget.args.testMode == Tests.daily) {
+        getIt<StudyModeBloc>().add(StudyModeEventCalculateSM2Params(
+            widget.args.mode, _studyList[_macro], score));
+      }
     } else {
       getIt<StudyModeBloc>().add(StudyModeEventCalculateScore(
           widget.args.mode, _studyList[_macro], score));
+      // TODO: Make SM2 onto practice?
     }
     return 0;
   }
@@ -167,11 +171,6 @@ class _ReadingStudyState extends State<ReadingStudy> {
       builder: (context, state) {
         return KPScaffold(
           onWillPop: () async {
-            if (widget.args.testMode == Tests.daily) {
-              Utils.getSnackBar(context, "daily_test_cannot_go_back".tr());
-              return false;
-            }
-
             return StudyModeUpdateHandler.handle(
               context,
               widget.args,
@@ -188,7 +187,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
               visible: _showPronunciation,
               child: TTSIconButton(word: _studyList[_macro].pronunciation),
             ),
-            if (_hasRepetition)
+            if (_hasRepetition && widget.args.testMode != Tests.daily)
               IconButton(
                 onPressed: () => Utils.showSpatialRepetitionDisclaimer(context),
                 icon: const Icon(Icons.info_outline_rounded),
@@ -206,11 +205,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
               KPValidationButtons(
                 trigger: _showPronunciation,
                 submitLabel: "done_button_label".tr(),
-                wrongAction: (score) async => await _updateUIOnSubmit(score),
-                midWrongAction: (score) async => await _updateUIOnSubmit(score),
-                midPerfectAction: (score) async =>
-                    await _updateUIOnSubmit(score),
-                perfectAction: (score) async => await _updateUIOnSubmit(score),
+                action: (score) async => await _updateUIOnSubmit(score),
                 onSubmit: () => setState(() => _showPronunciation = true),
               ),
             ],

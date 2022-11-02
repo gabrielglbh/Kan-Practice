@@ -21,7 +21,17 @@ class LoadTestBloc extends Bloc<LoadTestEvent, LoadTestState> {
   LoadTestBloc(
     this._wordRepository,
     this._folderRepository,
-  ) : super(LoadTestStateIdle()) {
+  ) : super(const LoadTestStateIdle([])) {
+    on<LoadTestEventIdle>((event, emit) async {
+      if (event.mode == Tests.daily) {
+        final wordsToReview =
+            await _wordRepository.getSM2ReviewWordsAsForToday();
+        emit(LoadTestStateIdle(wordsToReview));
+      } else {
+        emit(const LoadTestStateIdle([]));
+      }
+    });
+
     on<LoadTestEventLoadList>((event, emit) async {
       List<Word> finalList = [];
 

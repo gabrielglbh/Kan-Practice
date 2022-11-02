@@ -206,6 +206,38 @@ class WordRepositoryImpl implements IWordRepository {
   }
 
   @override
+  Future<List<int>> getSM2ReviewWordsAsForToday() async {
+    try {
+      final today = DateTime.now().millisecondsSinceEpoch;
+      final resWriting = await _database.rawQuery(
+          "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
+          "WHERE ${WordTableFields.previousIntervalAsDateWritingField} <= $today");
+      final resReading = await _database.rawQuery(
+          "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
+          "WHERE ${WordTableFields.previousIntervalAsDateReadingField} <= $today");
+      final resRecognition = await _database.rawQuery(
+          "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
+          "WHERE ${WordTableFields.previousIntervalAsDateRecognitionField} <= $today");
+      final resListening = await _database.rawQuery(
+          "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
+          "WHERE ${WordTableFields.previousIntervalAsDateListeningField} <= $today");
+      final resSpeaking = await _database.rawQuery(
+          "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
+          "WHERE ${WordTableFields.previousIntervalAsDateSpeakingField} <= $today");
+      return [
+        resWriting.length,
+        resReading.length,
+        resRecognition.length,
+        resListening.length,
+        resSpeaking.length,
+      ];
+    } catch (err) {
+      print(err.toString());
+      return List.generate(StudyModes.values.length, (_) => 0);
+    }
+  }
+
+  @override
   Future<int> getTotalWordCount() async {
     try {
       List<Map<String, dynamic>>? res = [];

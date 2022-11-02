@@ -78,4 +78,5 @@ abstract class IWordRepository {
   Future<int> getTotalWordCount();
   Future<Word> getTotalWordsWinRates();
   Future<List<int>> getWordsFromCategory();
+  Future<List<int>> getSM2ReviewWordsAsForToday();
 }

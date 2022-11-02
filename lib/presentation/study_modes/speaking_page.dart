@@ -157,11 +157,6 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
       builder: (context, state) {
         return KPScaffold(
           onWillPop: () async {
-            if (widget.args.testMode == Tests.daily) {
-              Utils.getSnackBar(context, "daily_test_cannot_go_back".tr());
-              return false;
-            }
-
             return StudyModeUpdateHandler.handle(
               context,
               widget.args,

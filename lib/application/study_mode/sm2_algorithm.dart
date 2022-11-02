@@ -43,15 +43,14 @@ class SMAlgorithm {
         default:
           interval = (previousInterval * previousEaseFactor).round();
       }
-
       repetitions++;
-      easeFactor = previousEaseFactor +
-          (0.1 - (5 - qualityParsed) * (0.08 + (5 - qualityParsed) * 0.02));
     } else {
       repetitions = 0;
       interval = 1;
-      easeFactor = previousEaseFactor;
     }
+
+    easeFactor = previousEaseFactor +
+        (0.1 - (5 - qualityParsed) * (0.08 + (5 - qualityParsed) * 0.02));
 
     if (easeFactor < 1.3) easeFactor = 1.3;
 

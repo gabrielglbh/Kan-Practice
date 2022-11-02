@@ -106,7 +106,7 @@
   "list_details_load_failed": "Wort konnte nicht abgerufen werden ",
   "list_details_practice_button_label": "Üben",
   "list_details_practice_button_label_ext": "練習",
-  "list_details_learningMode_spatial": "Abgestufte Wiederholung",
+  "list_details_learningMode_spatial": "Wiederholung Scheitern",
   "list_details_empty": "Kein verfügbares Wort.\n\nFügen Sie neue Wörter zu dieser Liste hinzu, indem Sie auf '+' tippen, oder importieren Sie sie aus Ihrem Backup.",
   "list_details_searchBar_hint": "Suche nach Wort, Bedeutung, Aussprache",
   "kan_list_tile_createDialogForDeletingKanList_title": "KanList entfernen",
@@ -359,7 +359,7 @@
   "stats_tests_total_acc": "Gesamtgenauigkeit der Tests nach Studienmodus",
   "stats_tests_tap_to_specs": "Tippen Sie auf die Balken, um mehr Details für jeden Testtyp zu sehen",
   "folder_practice_title": "Üben Sie mit einer Teilmenge von Wörtern aus den Listen in diesem Ordner.",
-  "disclaimer_spatial_repetition": "Die Übung basiert auf dem Lernen durch räumliche Wiederholung. Diese Methode wird so angewandt, dass Wörter, die Sie beim Üben übersehen haben, am Ende der gesamten Prüfung wieder auftauchen (bis Sie sie richtig können). Dies fördert das Lernen und verbessert das Einprägen von Vokabeln",
+  "disclaimer_spatial_repetition": "Die Praxis basiert auf dem Lernen durch Nicht-Wiederholung. Diese Methode wird so angewandt, dass Wörter, die Sie beim Üben übersehen haben, am Ende der gesamten Prüfung wieder auftauchen (bis Sie sie richtig können). Dies fördert das Lernen und verbessert das Einprägen von Vokabeln",
   "settings_general_kanji_list": "Gruppenstatistiken nach Wort",
   "settings_general_kanji_list_description": "Wenn diese Funktion aktiviert ist, wird bei allen KanLists-Wörtern der Mittelwert über alle Studienmodi hinweg angezeigt, anstatt zwischen ihnen zu wechseln.",
   "tests": "Tests",
@@ -377,8 +377,8 @@
   "filter_select_test_type_label": "Testart",
   "filter_select_study_mode_label": "Studienmodus",
   "filter_apply": "Anwenden",
-  "settings_general_repetition_toggle": "Abgestufte Wiederholungen in Tests aktivieren",
-  "settings_general_repetition_sub": "Wenn diese Option aktiviert ist, werden bei einem Test die Wörter, die Sie nicht geschafft haben, am Ende des Tests zum Üben erneut angezeigt. Der Treffer wird beim Üben nicht aktualisiert.",
+  "settings_general_repetition_toggle": "Fehlerhafte Wiederholungen in Tests aktivieren",
+  "settings_general_repetition_sub": "Wenn diese Funktion aktiviert ist, werden die Wörter, die Sie in einem Test nicht bestanden haben, am Ende zum Üben wieder angezeigt. Die Genauigkeit wird beim Üben nicht aktualisiert. Gilt nicht für den täglichen Test.",
   "clear_canvas": "Löschen",
   "back_canvas": "Zurück"
 }

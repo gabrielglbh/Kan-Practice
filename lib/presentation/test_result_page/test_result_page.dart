@@ -201,7 +201,7 @@ class _TestResultPageState extends State<TestResultPage> {
                       style: Theme.of(context)
                           .textTheme
                           .bodyText2
-                          ?.copyWith(color: Colors.black)),
+                          ?.copyWith(color: KPColors.accentLight)),
                 ))),
       ),
     );

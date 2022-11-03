@@ -53,14 +53,21 @@ class _WritingStudyState extends State<WritingStudy> {
   bool _showActualKanji = false;
   bool _goNextKanji = false;
   bool _hasFinished = false;
+  bool _enableRepOnTest = false;
 
   final String _none = "wildcard".tr();
 
   /// Widget auxiliary variable
   final List<Word> _studyList = [];
 
+  bool get _hasRepetition => !widget.args.isTest || _enableRepOnTest;
+  bool _enableSpacedRepetition(double score) =>
+      (!widget.args.isTest && score < 0.5) || (_enableRepOnTest && score < 0.5);
+
   @override
   void initState() {
+    _enableRepOnTest = getIt<PreferencesService>()
+        .readData(SharedKeys.enableRepetitionOnTests);
     _studyList.addAll(widget.args.studyList);
     _initAuxKanjiArray();
     super.initState();
@@ -118,7 +125,8 @@ class _WritingStudyState extends State<WritingStudy> {
       /// SPATIAL, the append the current word to the list, to review it again.
       /// Only do this when NOT on test
       final double score = _score[_macro] / _maxScore[_macro];
-      if (!widget.args.isTest && score < 0.5) {
+      if (_enableSpacedRepetition(score) &&
+          widget.args.testMode != Tests.daily) {
         _studyList.add(_studyList[_macro]);
         _initScoreArray(_studyList.length - 1);
       }
@@ -133,7 +141,7 @@ class _WritingStudyState extends State<WritingStudy> {
         /// set of words. If the current word is above that, using SPATIAL
         /// repetition, then do NOT calculate the score and return 0 directly.
         final condition =
-            !widget.args.isTest && _macro >= widget.args.studyList.length;
+            _hasRepetition && _macro >= widget.args.studyList.length;
         final code = !condition ? await _calculateKanjiScore() : 0;
 
         /// If everything went well, and we have words left in the list,
@@ -183,7 +191,10 @@ class _WritingStudyState extends State<WritingStudy> {
 
   Future<int> _calculateKanjiScore() async {
     getIt<StudyModeBloc>().add(StudyModeEventUpdateDateShown(
-        listName: _studyList[_macro].listName, word: _studyList[_macro].word));
+      listName: _studyList[_macro].listName,
+      word: _studyList[_macro].word,
+      mode: widget.args.mode,
+    ));
     final double currentScore = _score[_macro] / _maxScore[_macro];
 
     /// Add the current virgin score to the test scores...
@@ -194,6 +205,10 @@ class _WritingStudyState extends State<WritingStudy> {
             widget.args.mode, _studyList[_macro], currentScore));
       }
       _testScores.add(currentScore);
+      if (widget.args.testMode == Tests.daily) {
+        getIt<StudyModeBloc>().add(StudyModeEventCalculateSM2Params(
+            widget.args.mode, _studyList[_macro], currentScore));
+      }
     } else {
       getIt<StudyModeBloc>().add(StudyModeEventCalculateScore(
           widget.args.mode, _studyList[_macro], currentScore));
@@ -203,15 +218,13 @@ class _WritingStudyState extends State<WritingStudy> {
 
   @override
   Widget build(BuildContext context) {
+    final threshold =
+        MediaQuery.of(context).size.height <= KPSizes.minimumHeight;
+    const marginTop = 164.0;
     return BlocBuilder<StudyModeBloc, StudyModeState>(
       builder: (context, state) {
         return KPScaffold(
           onWillPop: () async {
-            if (widget.args.testMode == Tests.daily) {
-              Utils.getSnackBar(context, "daily_test_cannot_go_back".tr());
-              return false;
-            }
-
             return StudyModeUpdateHandler.handle(
               context,
               widget.args,
@@ -229,7 +242,7 @@ class _WritingStudyState extends State<WritingStudy> {
               visible: _goNextKanji,
               child: TTSIconButton(word: _studyList[_macro].pronunciation),
             ),
-            if (!widget.args.isTest)
+            if (_hasRepetition && widget.args.testMode != Tests.daily)
               IconButton(
                 onPressed: () => Utils.showSpatialRepetitionDisclaimer(context),
                 icon: const Icon(Icons.info_outline_rounded),
@@ -239,8 +252,31 @@ class _WritingStudyState extends State<WritingStudy> {
             children: [
               KPListPercentageIndicator(
                   value: (_macro + 1) / _studyList.length),
-              KPLearningHeaderAnimation(id: _macro, children: _header()),
-              KPCustomCanvas(line: _line, allowEdit: !_showActualKanji),
+              SizedBox(
+                height: threshold
+                    ? KPMargins.margin64 + KPMargins.margin8
+                    : marginTop,
+              ),
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  KPCustomCanvas(
+                    line: _line,
+                    allowEdit: !_showActualKanji,
+                  ),
+                  Positioned(
+                    top: threshold
+                        ? -(KPMargins.margin64 + KPMargins.margin16)
+                        : -(marginTop + KPMargins.margin4),
+                    right: 0,
+                    left: 0,
+                    child: KPLearningHeaderAnimation(
+                      id: _macro,
+                      children: _header(),
+                    ),
+                  ),
+                ],
+              ),
               WritingButtonsAnimations(
                 id: _macro,
 
@@ -251,11 +287,7 @@ class _WritingStudyState extends State<WritingStudy> {
                 submitLabel: _goNextKanji
                     ? "writing_next_kanji_label".tr()
                     : "done_button_label".tr(),
-                wrongAction: (score) async => await _updateUIOnSubmit(score),
-                midWrongAction: (score) async => await _updateUIOnSubmit(score),
-                midPerfectAction: (score) async =>
-                    await _updateUIOnSubmit(score),
-                perfectAction: (score) async => await _updateUIOnSubmit(score),
+                action: (score) async => await _updateUIOnSubmit(score),
                 onSubmit: () {
                   if (_macro <= _studyList.length - 1) {
                     _resetKanji();
@@ -277,16 +309,12 @@ class _WritingStudyState extends State<WritingStudy> {
   }
 
   List<Widget> _header() {
-    double finalHeight =
-        MediaQuery.of(context).size.height < KPSizes.minimumHeight
-            ? KPSizes.listStudyHeight / 3
-            : KPSizes.listStudyHeight;
     return [
       KPLearningHeaderContainer(
-          height: KPSizes.defaultSizeLearningExtContainer + KPMargins.margin8,
+          height: KPSizes.defaultSizeLearningExtContainer + KPMargins.margin4,
           text: _goNextKanji ? _studyList[_macro].pronunciation : ""),
       SizedBox(
-        height: finalHeight,
+        height: 80,
         child: ListView.builder(
           shrinkWrap: true,
           itemCount: _studyList[_macro].word.length,
@@ -297,10 +325,7 @@ class _WritingStudyState extends State<WritingStudy> {
             return Text(
                 _currentKanji[_macro][index] == _none ? _none : kanji[index],
                 style: TextStyle(
-                    fontSize: MediaQuery.of(context).size.height <
-                            KPSizes.minimumHeight
-                        ? KPFontSizes.fontSize24
-                        : KPFontSizes.fontSize64,
+                    fontSize: KPFontSizes.fontSize64,
                     color: index == _inner ? KPColors.secondaryColor : null));
           },
         ),

@@ -14,6 +14,7 @@ import 'package:kanpractice/presentation/dictionary_page/dictionary_page.dart';
 import 'package:kanpractice/presentation/folder_details_page/folder_details_page.dart';
 import 'package:kanpractice/presentation/home_page/home_page.dart';
 import 'package:kanpractice/presentation/list_details_page/list_details_page.dart';
+import 'package:kanpractice/presentation/settings_toggle_page/settings_toggle_page.dart';
 import 'package:kanpractice/presentation/statistics_page/statistics_page.dart';
 import 'package:kanpractice/presentation/statistics_page/tab/test_history_tab/test_history_filters.dart';
 import 'package:kanpractice/presentation/statistics_page/tab/test_history_tab/test_history_landscape.dart';
@@ -96,6 +97,10 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return CupertinoPageRoute(builder: (_) {
         TestHistoryArgs data = settings.arguments as TestHistoryArgs;
         return TestHistoryFilters(data: data);
+      });
+    case KanPracticePages.settingsTogglePage:
+      return CupertinoPageRoute(builder: (_) {
+        return const SettingsTogglePage();
       });
   }
   return null;

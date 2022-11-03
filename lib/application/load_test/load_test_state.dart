@@ -7,7 +7,14 @@ abstract class LoadTestState extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadTestStateIdle extends LoadTestState {}
+class LoadTestStateIdle extends LoadTestState {
+  final List<int> wordsToReview;
+
+  const LoadTestStateIdle(this.wordsToReview);
+
+  @override
+  List<Object> get props => [wordsToReview];
+}
 
 class LoadTestStateLoadedList extends LoadTestState {
   final List<Word> words;

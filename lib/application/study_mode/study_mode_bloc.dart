@@ -10,6 +10,7 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 
 part 'study_mode_event.dart';
 part 'study_mode_state.dart';
+part 'sm2_algorithm.dart';
 
 @lazySingleton
 class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
@@ -75,11 +76,133 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
       emit(StudyModeStateScoreCalculated(res));
     });
 
+    on<StudyModeEventCalculateSM2Params>((event, emit) async {
+      Map<String, dynamic> toUpdate = {};
+
+      switch (event.mode) {
+        case StudyModes.writing:
+          final sm2 = SMAlgorithm.calc(
+            quality: event.score,
+            repetitions: event.word.repetitionsWriting,
+            previousInterval: event.word.previousIntervalWriting,
+            previousEaseFactor: event.word.previousEaseFactorWriting,
+          );
+          toUpdate = {
+            WordTableFields.previousIntervalWritingField: sm2.interval,
+            WordTableFields.previousIntervalAsDateWritingField:
+                sm2.intervalAsDate,
+            WordTableFields.repetitionsWritingField: sm2.repetitions,
+            WordTableFields.previousEaseFactorWritingField: sm2.easeFactor,
+          };
+          break;
+        case StudyModes.reading:
+          final sm2 = SMAlgorithm.calc(
+            quality: event.score,
+            repetitions: event.word.repetitionsReading,
+            previousInterval: event.word.previousIntervalReading,
+            previousEaseFactor: event.word.previousEaseFactorReading,
+          );
+          toUpdate = {
+            WordTableFields.previousIntervalReadingField: sm2.interval,
+            WordTableFields.previousIntervalAsDateReadingField:
+                sm2.intervalAsDate,
+            WordTableFields.repetitionsReadingField: sm2.repetitions,
+            WordTableFields.previousEaseFactorReadingField: sm2.easeFactor,
+          };
+          break;
+        case StudyModes.recognition:
+          final sm2 = SMAlgorithm.calc(
+            quality: event.score,
+            repetitions: event.word.repetitionsRecognition,
+            previousInterval: event.word.previousIntervalRecognition,
+            previousEaseFactor: event.word.previousEaseFactorRecognition,
+          );
+          toUpdate = {
+            WordTableFields.previousIntervalRecognitionField: sm2.interval,
+            WordTableFields.previousIntervalAsDateRecognitionField:
+                sm2.intervalAsDate,
+            WordTableFields.repetitionsRecognitionField: sm2.repetitions,
+            WordTableFields.previousEaseFactorRecognitionField: sm2.easeFactor,
+          };
+          break;
+        case StudyModes.listening:
+          final sm2 = SMAlgorithm.calc(
+            quality: event.score,
+            repetitions: event.word.repetitionsListening,
+            previousInterval: event.word.previousIntervalListening,
+            previousEaseFactor: event.word.previousEaseFactorListening,
+          );
+          toUpdate = {
+            WordTableFields.previousIntervalListeningField: sm2.interval,
+            WordTableFields.previousIntervalAsDateListeningField:
+                sm2.intervalAsDate,
+            WordTableFields.repetitionsListeningField: sm2.repetitions,
+            WordTableFields.previousEaseFactorListeningField: sm2.easeFactor,
+          };
+          break;
+        case StudyModes.speaking:
+          final sm2 = SMAlgorithm.calc(
+            quality: event.score,
+            repetitions: event.word.repetitionsSpeaking,
+            previousInterval: event.word.previousIntervalSpeaking,
+            previousEaseFactor: event.word.previousEaseFactorSpeaking,
+          );
+          toUpdate = {
+            WordTableFields.previousIntervalSpeakingField: sm2.interval,
+            WordTableFields.previousIntervalAsDateSpeakingField:
+                sm2.intervalAsDate,
+            WordTableFields.repetitionsSpeakingField: sm2.repetitions,
+            WordTableFields.previousEaseFactorSpeakingField: sm2.easeFactor,
+          };
+          break;
+      }
+      await _wordRepository.updateWord(
+        event.word.listName,
+        event.word.word,
+        toUpdate,
+      );
+      emit(StudyModeStateSM2Calculated());
+    });
+
     on<StudyModeEventUpdateDateShown>((event, emit) async {
-      await _wordRepository.updateWord(event.listName, event.word, {
+      final toUpdate = {
         WordTableFields.dateLastShown: Utils.getCurrentMilliseconds(),
-        WordTableFields.dateLastShownListening: Utils.getCurrentMilliseconds()
-      });
+      };
+
+      switch (event.mode) {
+        case StudyModes.writing:
+          toUpdate.addEntries([
+            MapEntry(WordTableFields.dateLastShownWriting,
+                Utils.getCurrentMilliseconds())
+          ]);
+          break;
+        case StudyModes.reading:
+          toUpdate.addEntries([
+            MapEntry(WordTableFields.dateLastShownReading,
+                Utils.getCurrentMilliseconds())
+          ]);
+          break;
+        case StudyModes.recognition:
+          toUpdate.addEntries([
+            MapEntry(WordTableFields.dateLastShownRecognition,
+                Utils.getCurrentMilliseconds())
+          ]);
+          break;
+        case StudyModes.listening:
+          toUpdate.addEntries([
+            MapEntry(WordTableFields.dateLastShownListening,
+                Utils.getCurrentMilliseconds())
+          ]);
+          break;
+        case StudyModes.speaking:
+          toUpdate.addEntries([
+            MapEntry(WordTableFields.dateLastShownSpeaking,
+                Utils.getCurrentMilliseconds())
+          ]);
+          break;
+      }
+
+      await _wordRepository.updateWord(event.listName, event.word, toUpdate);
     });
 
     on<StudyModeEventUpdateScoreForTestsAffectingPractice>((event, emit) async {

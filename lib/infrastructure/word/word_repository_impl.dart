@@ -1,5 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
+import 'package:kanpractice/domain/services/i_preferences_repository.dart';
 import 'package:kanpractice/presentation/core/types/word_categories.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
@@ -10,8 +12,9 @@ import 'package:sqflite/sqlite_api.dart';
 @LazySingleton(as: IWordRepository)
 class WordRepositoryImpl implements IWordRepository {
   final Database _database;
+  final IPreferencesRepository _preferencesService;
 
-  WordRepositoryImpl(this._database);
+  WordRepositoryImpl(this._database, this._preferencesService);
 
   @override
   Future<int> createWord(Word word) async {
@@ -158,39 +161,83 @@ class WordRepositoryImpl implements IWordRepository {
   }
 
   @override
-  Future<List<Word>> getDailyWords(StudyModes mode) async {
+  Future<List<Word>> getDailySM2Words(StudyModes mode) async {
     try {
       String query = "";
+      int limit = _preferencesService.readData(SharedKeys.numberOfKanjiInTest);
+      final today = DateTime.now().millisecondsSinceEpoch;
       switch (mode) {
         case StudyModes.writing:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
-              "ORDER BY ${WordTableFields.dateLastShownWriting} ASC, "
-              "${WordTableFields.winRateWritingField} ASC";
+              "WHERE ${WordTableFields.previousIntervalAsDateWritingField} <= $today "
+              "ORDER BY ${WordTableFields.previousIntervalAsDateWritingField} ASC, "
+              "${WordTableFields.winRateWritingField} ASC "
+              "LIMIT $limit";
           break;
         case StudyModes.reading:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
-              "ORDER BY ${WordTableFields.dateLastShownReading} ASC, "
-              "${WordTableFields.winRateReadingField} ASC";
+              "WHERE ${WordTableFields.previousIntervalAsDateReadingField} <= $today "
+              "ORDER BY ${WordTableFields.previousIntervalAsDateReadingField} ASC, "
+              "${WordTableFields.winRateReadingField} ASC "
+              "LIMIT $limit";
           break;
         case StudyModes.recognition:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
-              "ORDER BY ${WordTableFields.dateLastShownRecognition} ASC, "
-              "${WordTableFields.winRateRecognitionField} ASC";
+              "WHERE ${WordTableFields.previousIntervalAsDateRecognitionField} <= $today "
+              "ORDER BY ${WordTableFields.previousIntervalAsDateRecognitionField} ASC, "
+              "${WordTableFields.winRateRecognitionField} ASC "
+              "LIMIT $limit";
           break;
         case StudyModes.listening:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
-              "ORDER BY ${WordTableFields.dateLastShownListening} ASC, "
-              "${WordTableFields.winRateListeningField} ASC";
+              "WHERE ${WordTableFields.previousIntervalAsDateListeningField} <= $today "
+              "ORDER BY ${WordTableFields.previousIntervalAsDateListeningField} ASC, "
+              "${WordTableFields.winRateListeningField} ASC "
+              "LIMIT $limit";
           break;
         case StudyModes.speaking:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
-              "ORDER BY ${WordTableFields.dateLastShownSpeaking} ASC, "
-              "${WordTableFields.winRateSpeakingField} ASC";
+              "WHERE ${WordTableFields.previousIntervalAsDateSpeakingField} <= $today "
+              "ORDER BY ${WordTableFields.previousIntervalAsDateSpeakingField} ASC, "
+              "${WordTableFields.winRateSpeakingField} ASC "
+              "LIMIT $limit";
           break;
       }
       final res = await _database.rawQuery(query);
       return List.generate(res.length, (i) => Word.fromJson(res[i]));
     } catch (e) {
+      return [];
+    }
+  }
+
+  @override
+  Future<List<int>> getSM2ReviewWordsAsForToday() async {
+    try {
+      final today = DateTime.now().millisecondsSinceEpoch;
+      final resWriting = await _database.rawQuery(
+          "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
+          "WHERE ${WordTableFields.previousIntervalAsDateWritingField} <= $today");
+      final resReading = await _database.rawQuery(
+          "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
+          "WHERE ${WordTableFields.previousIntervalAsDateReadingField} <= $today");
+      final resRecognition = await _database.rawQuery(
+          "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
+          "WHERE ${WordTableFields.previousIntervalAsDateRecognitionField} <= $today");
+      final resListening = await _database.rawQuery(
+          "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
+          "WHERE ${WordTableFields.previousIntervalAsDateListeningField} <= $today");
+      final resSpeaking = await _database.rawQuery(
+          "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
+          "WHERE ${WordTableFields.previousIntervalAsDateSpeakingField} <= $today");
+      return [
+        resWriting.length,
+        resReading.length,
+        resRecognition.length,
+        resListening.length,
+        resSpeaking.length,
+      ];
+    } catch (err) {
+      print(err.toString());
       return [];
     }
   }

@@ -182,7 +182,7 @@ class _DictionaryPageState extends State<DictionaryPage>
             shape: BoxShape.circle, color: KPColors.secondaryColor),
         child: Icon(
           widget.args.searchInJisho ? Icons.search : Icons.done,
-          color: Colors.white,
+          color: KPColors.primaryLight,
           size: canSearchEitherWay ? 24 : 0,
         ),
       ),

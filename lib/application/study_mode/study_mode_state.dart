@@ -11,6 +11,8 @@ class StudyModeStateLoading extends StudyModeState {}
 
 class StudyModeStateLoaded extends StudyModeState {}
 
+class StudyModeStateSM2Calculated extends StudyModeState {}
+
 class StudyModeStateScoreCalculated extends StudyModeState {
   final int score;
 

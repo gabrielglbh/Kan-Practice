@@ -131,8 +131,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
                       text:
                           "(${WordCategory.values[updatedKanji.category].category}) ",
                       style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                          color: Colors.grey.shade500,
-                          fontStyle: FontStyle.italic),
+                          color: KPColors.midGrey, fontStyle: FontStyle.italic),
                     ),
                     TextSpan(
                         text: updatedKanji.meaning,

@@ -51,13 +51,14 @@ class BackupRepositoryImpl implements IBackupRepository {
   final String relFolderKanListLabel = "RelationsFK";
   final String testsLabel = "Tests";
   final String testSpecsLabel = "TestsSpecs";
+  int writes = 0;
 
   /// We make sure that when the limit of 500 WRITES per batch is met,
   /// we commit the current batch and initialize it again to perform
   /// more operations.
-  Future<WriteBatch?> _reinitializeBatch(WriteBatch? curr, int max) async {
-    if ((max + 1) % 500 == 0) {
-      await curr?.commit();
+  Future<WriteBatch> _reinitializeBatch(WriteBatch curr) async {
+    if ((writes + 1) % 500 == 0) {
+      await curr.commit();
       return _ref.batch();
     } else {
       return curr;
@@ -108,7 +109,7 @@ class BackupRepositoryImpl implements IBackupRepository {
     if (lists.isEmpty) {
       return "backup_firebase_createBackUp_listEmpty".tr();
     } else {
-      WriteBatch? batch = _ref.batch();
+      var batch = _ref.batch();
       try {
         /// Making sure the back up only contains the actual data of the device
         await removeBackUp();
@@ -120,12 +121,10 @@ class BackupRepositoryImpl implements IBackupRepository {
               .doc(user?.uid)
               .collection(kanjiLabel)
               .doc(kanji[x].word);
-          batch?.set(doc, kanji[x].toJson());
-          batch = await _reinitializeBatch(batch, x);
+          batch.set(doc, kanji[x].toJson());
+          writes++;
+          batch = await _reinitializeBatch(batch);
         }
-
-        await batch?.commit();
-        batch = _ref.batch();
 
         /// Lists
         for (int x = 0; x < lists.length; x++) {
@@ -134,12 +133,10 @@ class BackupRepositoryImpl implements IBackupRepository {
               .doc(user?.uid)
               .collection(listsLabel)
               .doc(lists[x].name);
-          batch?.set(doc, lists[x].toJson());
-          batch = await _reinitializeBatch(batch, x);
+          batch.set(doc, lists[x].toJson());
+          writes++;
+          batch = await _reinitializeBatch(batch);
         }
-
-        await batch?.commit();
-        batch = _ref.batch();
 
         /// Folders
         for (int x = 0; x < folders.length; x++) {
@@ -148,12 +145,10 @@ class BackupRepositoryImpl implements IBackupRepository {
               .doc(user?.uid)
               .collection(foldersLabel)
               .doc(folders[x].folder);
-          batch?.set(doc, folders[x].toJson());
-          batch = await _reinitializeBatch(batch, x);
+          batch.set(doc, folders[x].toJson());
+          writes++;
+          batch = await _reinitializeBatch(batch);
         }
-
-        await batch?.commit();
-        batch = _ref.batch();
 
         /// Tests
         final DocumentReference doc = _ref
@@ -162,9 +157,8 @@ class BackupRepositoryImpl implements IBackupRepository {
             .collection(testsLabel)
             .doc(testData.statsId.toString());
         batch.set(doc, testData.toJson());
-
-        await batch.commit();
-        batch = _ref.batch();
+        writes++;
+        batch = await _reinitializeBatch(batch);
 
         /// Tests Specs
         for (int x = 0; x < testSpecData.length; x++) {
@@ -173,12 +167,10 @@ class BackupRepositoryImpl implements IBackupRepository {
               .doc(user?.uid)
               .collection(testSpecsLabel)
               .doc(testSpecData[x].id.toString());
-          batch?.set(doc, testSpecData[x].toJson());
-          batch = await _reinitializeBatch(batch, x);
+          batch.set(doc, testSpecData[x].toJson());
+          writes++;
+          batch = await _reinitializeBatch(batch);
         }
-
-        await batch?.commit();
-        batch = _ref.batch();
 
         /// Relation Folder-KanList
         for (int x = 0; x < relFolderKanList.length; x++) {
@@ -187,20 +179,22 @@ class BackupRepositoryImpl implements IBackupRepository {
               .doc(user?.uid)
               .collection(relFolderKanListLabel)
               .doc(x.toString());
-          batch?.set(doc, relFolderKanList[x].toJson());
-          batch = await _reinitializeBatch(batch, x);
+          batch.set(doc, relFolderKanList[x].toJson());
+          writes++;
+          batch = await _reinitializeBatch(batch);
         }
-
-        await batch?.commit();
-        batch = _ref.batch();
 
         /// Last updated
         batch.set(_ref.collection(collection).doc(user?.uid),
             {BackUp.updatedLabel: date});
+        writes++;
+        batch = await _reinitializeBatch(batch);
 
         await batch.commit();
+        writes = 0;
         return "";
       } catch (e) {
+        writes = 0;
         return e.toString();
       }
     }
@@ -291,77 +285,88 @@ class BackupRepositoryImpl implements IBackupRepository {
           .collection(relFolderKanListLabel)
           .get();
 
-      WriteBatch? batch = _ref.batch();
+      var batch = _ref.batch();
 
       if (kanjiSnapshot.size > 0 && listsSnapshot.size > 0) {
         for (int x = 0; x < kanjiSnapshot.size; x++) {
-          batch?.delete(_ref
+          batch.delete(_ref
               .collection(collection)
               .doc(user?.uid)
               .collection(kanjiLabel)
               .doc(Word.fromJson(kanjiSnapshot.docs[x].data()).word));
-          batch = await _reinitializeBatch(batch, x);
+          writes++;
+          batch = await _reinitializeBatch(batch);
         }
         for (int x = 0; x < listsSnapshot.size; x++) {
-          batch?.delete(_ref
+          batch.delete(_ref
               .collection(collection)
               .doc(user?.uid)
               .collection(listsLabel)
               .doc(WordList.fromJson(listsSnapshot.docs[x].data()).name));
-          batch = await _reinitializeBatch(batch, x);
+          writes++;
+          batch = await _reinitializeBatch(batch);
         }
       }
 
       if (foldersSnapshot.size > 0) {
         for (int x = 0; x < foldersSnapshot.size; x++) {
-          batch?.delete(_ref
+          batch.delete(_ref
               .collection(collection)
               .doc(user?.uid)
               .collection(foldersLabel)
               .doc(Folder.fromJson(foldersSnapshot.docs[x].data()).folder));
-          batch = await _reinitializeBatch(batch, x);
+          writes++;
+          batch = await _reinitializeBatch(batch);
         }
       }
 
       if (testDataSnapshot.size > 0) {
-        batch?.delete(_ref
+        batch.delete(_ref
             .collection(collection)
             .doc(user?.uid)
             .collection(testsLabel)
             .doc(TestData.fromJson(testDataSnapshot.docs[0].data())
                 .statsId
                 .toString()));
-        batch = await _reinitializeBatch(batch, 499);
+        writes++;
+        batch = await _reinitializeBatch(batch);
       }
 
       if (relFolderKanListSnapshot.size > 0) {
         for (int x = 0; x < relFolderKanListSnapshot.size; x++) {
-          batch?.delete(_ref
+          batch.delete(_ref
               .collection(collection)
               .doc(user?.uid)
               .collection(relFolderKanListLabel)
               .doc(x.toString()));
-          batch = await _reinitializeBatch(batch, x);
+          writes++;
+          batch = await _reinitializeBatch(batch);
         }
       }
 
       if (testSpecDataSnapshot.size > 0) {
         for (int x = 0; x < testSpecDataSnapshot.size; x++) {
-          batch?.delete(_ref
+          batch.delete(_ref
               .collection(collection)
               .doc(user?.uid)
               .collection(testSpecsLabel)
               .doc(SpecificData.fromJson(testSpecDataSnapshot.docs[x].data())
                   .id
                   .toString()));
-          batch = await _reinitializeBatch(batch, x);
+          writes++;
+          batch = await _reinitializeBatch(batch);
         }
       }
 
-      batch?.delete(_ref.collection(collection).doc(user?.uid));
-      await batch?.commit();
+      batch.delete(_ref.collection(collection).doc(user?.uid));
+      writes++;
+      batch = await _reinitializeBatch(batch);
+
+      await batch.commit();
+      writes = 0;
       return "";
     } catch (err) {
+      writes = 0;
       return err.toString();
     }
   }

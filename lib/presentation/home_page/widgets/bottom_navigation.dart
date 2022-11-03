@@ -5,7 +5,7 @@ import 'package:kanpractice/presentation/home_page/widgets/actions_bottom_sheet.
 
 class HomeBottomNavigation extends StatelessWidget {
   final Function(HomeType) onPageChanged;
-  final Function(String) onShowActions;
+  final Function(String?) onShowActions;
   final HomeType currentPage;
   final List<GlobalKey> tutorialKeys;
   const HomeBottomNavigation({
@@ -26,7 +26,7 @@ class HomeBottomNavigation extends StatelessWidget {
           BoxShadow(
             color: Theme.of(context).brightness == Brightness.light
                 ? Colors.grey
-                : Colors.black,
+                : KPColors.accentLight,
             blurRadius: 10,
           )
         ],
@@ -54,9 +54,7 @@ class HomeBottomNavigation extends StatelessWidget {
           onPageChanged(type);
         } else {
           final code = await ActionsBottomSheet.show(context, currentPage);
-          if (code != null) {
-            onShowActions(code);
-          }
+          onShowActions(code);
         }
       },
       child: Container(

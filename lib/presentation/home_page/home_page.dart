@@ -350,10 +350,10 @@ class _HomePageState extends State<HomePage>
                               if (state.wordsToReview.isNotEmpty &&
                                   state.wordsToReview.any((i) => i > 0)) {
                                 return ActionChip(
-                                  avatar: Icon(
+                                  avatar: const Icon(
                                     Icons.calendar_today,
                                     size: 16,
-                                    color: KPColors.getPrimary(context),
+                                    color: Colors.white,
                                   ),
                                   label: Text("pending_review".tr()),
                                   backgroundColor:

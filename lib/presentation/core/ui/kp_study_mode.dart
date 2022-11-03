@@ -148,8 +148,8 @@ class _KPTestStudyModeState extends State<KPTestStudyMode> {
     int wordsToReview,
   ) {
     String toReview = wordsToReview.toString();
-    if (wordsToReview > 1000) {
-      toReview = "> 1000";
+    if (wordsToReview > 5000) {
+      toReview = "> 5000";
     }
     return Stack(
       alignment: Alignment.topRight,

@@ -175,12 +175,16 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
           },
         ),
         if (hasWords)
-          Container(
-            width: 20,
-            height: 20,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: KPColors.secondaryDarkerColor,
+          Positioned(
+            top: KPMargins.margin4,
+            right: KPMargins.margin4,
+            child: Container(
+              width: 20,
+              height: 20,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: KPColors.secondaryDarkerColor,
+              ),
             ),
           )
       ],

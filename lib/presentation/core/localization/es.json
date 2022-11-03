@@ -381,5 +381,6 @@
   "settings_general_repetition_sub": "Cuando se activa las palabras que falles en un test volverán a aparecer al final para practicarlas. El acierto no se actualizará al practicar. No aplicable en el Test Diario.",
   "clear_canvas": "Limpiar",
   "back_canvas": "Atrás",
-  "settings_enhancements_label": "Mejoras"
+  "settings_enhancements_label": "Mejoras",
+  "pending_review": "Pendiente de revisión diaria"
 }

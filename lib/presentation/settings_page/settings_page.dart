@@ -7,7 +7,6 @@ import 'package:kanpractice/application/settings/settings_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
-import 'package:kanpractice/presentation/core/ui/kp_switch.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/settings_page/widgets/change_kanji_test.dart';

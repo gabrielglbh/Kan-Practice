@@ -381,5 +381,6 @@
   "settings_general_repetition_sub": "Wenn diese Funktion aktiviert ist, werden die Wörter, die Sie in einem Test nicht bestanden haben, am Ende zum Üben wieder angezeigt. Die Genauigkeit wird beim Üben nicht aktualisiert. Gilt nicht für den täglichen Test.",
   "clear_canvas": "Löschen",
   "back_canvas": "Zurück",
-  "settings_enhancements_label": "Erweiterungen"
+  "settings_enhancements_label": "Erweiterungen",
+  "pending_review": "ausstehende tägliche Überprüfung"
 }

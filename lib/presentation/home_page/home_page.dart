@@ -1,13 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
 import 'package:kanpractice/application/folder_list/folder_bloc.dart';
 import 'package:kanpractice/application/list/lists_bloc.dart';
+import 'package:kanpractice/application/load_test/load_test_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
+import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/util/tutorial_coach.dart';
 import 'package:kanpractice/presentation/core/types/coach_tutorial_parts.dart';
 import 'package:kanpractice/presentation/core/types/folder_filters.dart';
@@ -114,6 +117,8 @@ class _HomePageState extends State<HomePage>
 
     getIt<BackUpBloc>().add(BackUpGetVersion(context));
 
+    _addReviewEvent();
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       /// Read folder from SharedPreferences, current selected folder for the latest
       /// test. If any, show that BS and navigate to that tab. Else just
@@ -126,11 +131,14 @@ class _HomePageState extends State<HomePage>
         await KPTestBottomSheet.show(
           context,
           folder: hasFolder ? folder : null,
-        );
+        ).then((_) => _addReviewEvent());
       }
     });
     super.initState();
   }
+
+  _addReviewEvent() =>
+      getIt<LoadTestBloc>().add(const LoadTestEventIdle(mode: Tests.daily));
 
   _addListLoadingEvent({bool reset = true}) =>
       getIt<ListBloc>().add(ListEventLoading(
@@ -274,12 +282,15 @@ class _HomePageState extends State<HomePage>
                   }
                 },
                 onShowActions: (name) {
-                  if (name == "__folder") {
-                    _addFolderListLoadingEvent();
-                  } else {
-                    getIt<ListBloc>().add(ListEventCreate(name,
-                        filter: _currentAppliedFilter,
-                        order: _currentAppliedOrder));
+                  _addReviewEvent();
+                  if (name != null) {
+                    if (name == "__folder") {
+                      _addFolderListLoadingEvent();
+                    } else {
+                      getIt<ListBloc>().add(ListEventCreate(name,
+                          filter: _currentAppliedFilter,
+                          order: _currentAppliedOrder));
+                    }
                   }
                 },
               ),
@@ -309,25 +320,54 @@ class _HomePageState extends State<HomePage>
                       },
                     ),
                   Expanded(
-                    child: Column(
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
                       children: [
-                        if (_currentPage == HomeType.kanlist)
-                          TabBar(
-                            key: folders,
-                            controller: _tabController,
-                            onTap: (tab) {
-                              if (tab == 0) {
-                                _addListLoadingEvent();
-                                return;
+                        Column(
+                          children: [
+                            if (_currentPage == HomeType.kanlist)
+                              TabBar(
+                                key: folders,
+                                controller: _tabController,
+                                onTap: (tab) {
+                                  if (tab == 0) {
+                                    _addListLoadingEvent();
+                                    return;
+                                  }
+                                  _addFolderListLoadingEvent();
+                                },
+                                tabs: const [
+                                  Tab(icon: Icon(Icons.table_rows_rounded)),
+                                  Tab(icon: Icon(Icons.folder_rounded)),
+                                ],
+                              ),
+                            Expanded(child: _body()),
+                          ],
+                        ),
+                        BlocBuilder<LoadTestBloc, LoadTestState>(
+                          builder: (context, state) {
+                            if (state is LoadTestStateIdle) {
+                              if (state.wordsToReview.isNotEmpty &&
+                                  state.wordsToReview.any((i) => i > 0)) {
+                                return ActionChip(
+                                  avatar: Icon(
+                                    Icons.calendar_today,
+                                    size: 16,
+                                    color: KPColors.getPrimary(context),
+                                  ),
+                                  label: Text("pending_review".tr()),
+                                  backgroundColor:
+                                      KPColors.getSecondaryColor(context),
+                                  onPressed: () async {
+                                    await KPTestBottomSheet.show(context)
+                                        .then((_) => _addReviewEvent());
+                                  },
+                                );
                               }
-                              _addFolderListLoadingEvent();
-                            },
-                            tabs: const [
-                              Tab(icon: Icon(Icons.table_rows_rounded)),
-                              Tab(icon: Icon(Icons.folder_rounded)),
-                            ],
-                          ),
-                        Expanded(child: _body()),
+                            }
+                            return const SizedBox();
+                          },
+                        ),
                       ],
                     ),
                   ),

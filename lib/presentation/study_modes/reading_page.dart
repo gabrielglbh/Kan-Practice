@@ -135,7 +135,6 @@ class _ReadingStudyState extends State<ReadingStudy> {
     } else {
       getIt<StudyModeBloc>().add(StudyModeEventCalculateScore(
           widget.args.mode, _studyList[_macro], score));
-      // TODO: Make SM2 onto practice?
     }
     return 0;
   }

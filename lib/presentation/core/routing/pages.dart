@@ -19,4 +19,5 @@ class KanPracticePages {
   static const String historyWordPage = "/historyWordPage";
   static const String historyTestExpandedPage = "/historyTestExpandedPage";
   static const String historyTestFiltersPage = "/historyTestFiltersPage";
+  static const String settingsTogglePage = "/settingsTogglePage";
 }

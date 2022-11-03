@@ -380,5 +380,6 @@
   "settings_general_repetition_toggle": "Enable Fail Repetition in Tests",
   "settings_general_repetition_sub": "When enabled the words you fail in a test will reappear at the end for practice. The accuracy will not be updated when practicing. Not applicable in Daily Test.",
   "clear_canvas": "Clear",
-  "back_canvas": "Back"
+  "back_canvas": "Back",
+  "settings_enhancements_label": "Enhancements"
 }

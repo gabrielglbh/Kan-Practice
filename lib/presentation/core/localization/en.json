@@ -382,5 +382,6 @@
   "clear_canvas": "Clear",
   "back_canvas": "Back",
   "settings_enhancements_label": "Enhancements",
-  "pending_review": "Pending daily reviews"
+  "pending_review": "Pending daily reviews",
+  "can_take_a_while_loading": "Might take a while, do not close this page."
 }

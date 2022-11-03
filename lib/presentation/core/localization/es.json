@@ -382,5 +382,6 @@
   "clear_canvas": "Limpiar",
   "back_canvas": "Atrás",
   "settings_enhancements_label": "Mejoras",
-  "pending_review": "Pendiente de revisión diaria"
+  "pending_review": "Pendiente de revisión diaria",
+  "can_take_a_while_loading": "Pude tardar un poco, no cierres esta página."
 }

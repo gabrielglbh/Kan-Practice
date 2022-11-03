@@ -382,5 +382,6 @@
   "clear_canvas": "Löschen",
   "back_canvas": "Zurück",
   "settings_enhancements_label": "Erweiterungen",
-  "pending_review": "ausstehende tägliche Überprüfung"
+  "pending_review": "ausstehende tägliche Überprüfung",
+  "can_take_a_while_loading": "Kann eine Weile dauern, bitte schließen Sie die Seite nicht."
 }

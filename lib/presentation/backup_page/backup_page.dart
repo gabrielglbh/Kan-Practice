@@ -15,50 +15,62 @@ class BackUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return KPScaffold(
-        appBarTitle: "backup_title".tr(),
-        child: BlocConsumer<BackUpBloc, BackUpState>(
-          listener: (context, state) {
-            if (state is BackUpStateFailure) {
-              Utils.getSnackBar(context, state.message);
-            }
-            if (state is BackUpStateSuccess) {
-              Utils.getSnackBar(context, state.message);
-              Navigator.of(context).pop(); // Go to manage account, pop
-              Navigator.of(context).pop(); // Go to settings, pop
-            }
-          },
-          builder: (context, state) {
-            if (state is BackUpStateLoading) {
-              return const KPProgressIndicator();
-            } else {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ListTile(
-                        leading: const Icon(Icons.backup_rounded),
-                        title: Text("backup_creation_tile".tr()),
-                        onTap: () => _createDialogForCreatingBackUp(context)),
-                    const Divider(),
-                    ListTile(
-                      leading: const Icon(Icons.cloud_download),
-                      title: Text("backup_merge_tile".tr()),
-                      onTap: () => _createDialogForMergingBackUp(context),
-                    ),
-                    const Divider(),
-                    ListTile(
-                      leading: const Icon(Icons.delete),
-                      title: Text("backup_removal_tile".tr(),
-                          style: TextStyle(
-                              color: KPColors.getSecondaryColor(context))),
-                      onTap: () => _createDialogForRemovingBackUp(context),
-                    ),
-                  ],
-                ),
-              );
-            }
-          },
-        ));
+    return BlocConsumer<BackUpBloc, BackUpState>(
+      listener: (context, state) {
+        if (state is BackUpStateFailure) {
+          Utils.getSnackBar(context, state.message);
+        }
+        if (state is BackUpStateSuccess) {
+          Utils.getSnackBar(context, state.message);
+          Navigator.of(context).pop(); // Go to manage account, pop
+          Navigator.of(context).pop(); // Go to settings, pop
+        }
+      },
+      builder: (context, state) {
+        if (state is BackUpStateLoading) {
+          return KPScaffold(
+            appBarTitle: "backup_title".tr(),
+            onWillPop: () async => false,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const KPProgressIndicator(),
+                const SizedBox(height: KPMargins.margin16),
+                Text('can_take_a_while_loading'.tr()),
+              ],
+            ),
+          );
+        } else {
+          return KPScaffold(
+            appBarTitle: "backup_title".tr(),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ListTile(
+                      leading: const Icon(Icons.backup_rounded),
+                      title: Text("backup_creation_tile".tr()),
+                      onTap: () => _createDialogForCreatingBackUp(context)),
+                  const Divider(),
+                  ListTile(
+                    leading: const Icon(Icons.cloud_download),
+                    title: Text("backup_merge_tile".tr()),
+                    onTap: () => _createDialogForMergingBackUp(context),
+                  ),
+                  const Divider(),
+                  ListTile(
+                    leading: const Icon(Icons.delete),
+                    title: Text("backup_removal_tile".tr(),
+                        style: TextStyle(
+                            color: KPColors.getSecondaryColor(context))),
+                    onTap: () => _createDialogForRemovingBackUp(context),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+      },
+    );
   }
 
   _createDialogForCreatingBackUp(BuildContext context) {

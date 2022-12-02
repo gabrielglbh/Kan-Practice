@@ -18,7 +18,6 @@ class KPKanjiCategoryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textColor = KPColors.getAccent(context);
     return GridView(
       physics:
           hasScrollablePhysics ? null : const NeverScrollableScrollPhysics(),
@@ -32,7 +31,9 @@ class KPKanjiCategoryList extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(KPRadius.radius16),
               border: Border.all(
-                  color: selected(index) ? Colors.transparent : textColor),
+                  color: selected(index)
+                      ? Colors.transparent
+                      : KPColors.getSubtle(context)),
               color: selected(index)
                   ? KPColors.secondaryDarkerColor
                   : Colors.transparent,
@@ -43,7 +44,9 @@ class KPKanjiCategoryList extends StatelessWidget {
             child: Text(
               WordCategory.values[index].category,
               style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                    color: selected(index) ? Colors.white : textColor,
+                    color: selected(index)
+                        ? KPColors.primaryLight
+                        : KPColors.getAccent(context),
                   ),
             ),
           ),

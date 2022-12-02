@@ -3,10 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
+import 'package:kanpractice/application/load_test/load_test_bloc.dart';
 import 'package:kanpractice/application/settings/settings_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
+import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/settings_page/widgets/change_kanji_test.dart';
@@ -24,16 +26,10 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool _aggStats = false;
-  bool _toggleAffect = false;
   int _kanjiInTest = KPSizes.numberOfKanjiInTest;
 
   @override
   void initState() {
-    _toggleAffect =
-        getIt<PreferencesService>().readData(SharedKeys.affectOnPractice);
-    _aggStats = getIt<PreferencesService>()
-        .readData(SharedKeys.kanListListVisualization);
     _kanjiInTest =
         getIt<PreferencesService>().readData(SharedKeys.numberOfKanjiInTest) ??
             KPSizes.numberOfKanjiInTest;
@@ -80,66 +76,22 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(Icons.auto_graph_rounded,
-              color: Colors.lightBlueAccent),
-          title: Text("settings_general_toggle".tr()),
-          subtitle: Padding(
-              padding: const EdgeInsets.only(top: KPMargins.margin8),
-              child: Text("settings_general_toggle_sub".tr(),
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      ?.copyWith(color: Colors.grey.shade500))),
-          trailing: Switch(
-            activeColor: KPColors.secondaryDarkerColor,
-            activeTrackColor: KPColors.secondaryColor,
-            inactiveThumbColor: Brightness.light == Theme.of(context).brightness
-                ? Colors.grey[600]
-                : Colors.white,
-            inactiveTrackColor: Colors.grey,
-            onChanged: (bool value) {
-              getIt<PreferencesService>()
-                  .saveData(SharedKeys.affectOnPractice, value);
-              setState(() => _toggleAffect = value);
-            },
-            value: _toggleAffect,
-          ),
-          onTap: () async {
-            getIt<PreferencesService>()
-                .saveData(SharedKeys.affectOnPractice, !_toggleAffect);
-            setState(() => _toggleAffect = !_toggleAffect);
-          },
+          leading: const Icon(Icons.toggle_on),
+          title: Text("settings_enhancements_label".tr()),
+          onTap: () => Navigator.of(context)
+              .pushNamed(KanPracticePages.settingsTogglePage),
         ),
         const Divider(),
         ListTile(
-          leading:
-              const Icon(Icons.group_work_rounded, color: Colors.orangeAccent),
-          title: Text("settings_general_kanji_list".tr()),
-          subtitle: Padding(
-              padding: const EdgeInsets.only(top: KPMargins.margin8),
-              child: Text("settings_general_kanji_list_description".tr(),
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      ?.copyWith(color: Colors.grey.shade500))),
-          trailing: Switch(
-            activeColor: KPColors.secondaryDarkerColor,
-            activeTrackColor: KPColors.secondaryColor,
-            inactiveThumbColor: Brightness.light == Theme.of(context).brightness
-                ? Colors.grey[600]
-                : Colors.white,
-            inactiveTrackColor: Colors.grey,
-            onChanged: (bool value) {
-              getIt<PreferencesService>()
-                  .saveData(SharedKeys.kanListListVisualization, value);
-              setState(() => _aggStats = value);
-            },
-            value: _aggStats,
-          ),
+          leading: const Icon(Icons.calendar_today_rounded),
+          title: Text("settings_daily_test_options".tr()),
           onTap: () async {
-            getIt<PreferencesService>()
-                .saveData(SharedKeys.kanListListVisualization, !_aggStats);
-            setState(() => _aggStats = !_aggStats);
+            await Navigator.of(context)
+                .pushNamed(KanPracticePages.settingsDailyOptions)
+                .then((_) {
+              getIt<LoadTestBloc>()
+                  .add(const LoadTestEventIdle(mode: Tests.daily));
+            });
           },
         ),
         const Divider(),
@@ -150,7 +102,7 @@ class _SettingsPageState extends State<SettingsPage> {
               style: Theme.of(context)
                   .textTheme
                   .bodyText2
-                  ?.copyWith(color: Colors.grey.shade500)),
+                  ?.copyWith(color: KPColors.midGrey)),
           onTap: () async {
             final newValue = await ChangeKanjiInTest.show(context);
             if (newValue != null) {
@@ -274,7 +226,7 @@ class _SettingsPageState extends State<SettingsPage> {
               style: Theme.of(context)
                   .textTheme
                   .bodyText2
-                  ?.copyWith(color: Colors.grey.shade500))
+                  ?.copyWith(color: KPColors.midGrey))
           : null,
       trailing: hasTrailing
           ? IconButton(

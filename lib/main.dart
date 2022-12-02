@@ -18,7 +18,6 @@ import 'package:kanpractice/application/list_details/list_details_bloc.dart';
 import 'package:kanpractice/application/load_folder_practice/load_folder_practice_bloc.dart';
 import 'package:kanpractice/application/load_test/load_test_bloc.dart';
 import 'package:kanpractice/application/load_test_category_selection/load_test_category_selection_bloc.dart';
-import 'package:kanpractice/application/load_test_daily/load_test_daily_bloc.dart';
 import 'package:kanpractice/application/load_test_folder_selection/load_test_folder_selection_bloc.dart';
 import 'package:kanpractice/application/load_test_list_selection/load_test_list_selection_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
@@ -50,6 +49,9 @@ Future<void> _initSharedPreferences() async {
   if (prefs.readData(SharedKeys.numberOfKanjiInTest) == null) {
     prefs.saveData(SharedKeys.numberOfKanjiInTest, KPSizes.numberOfKanjiInTest);
   }
+  if (prefs.readData(SharedKeys.enableRepetitionOnTests) == null) {
+    prefs.saveData(SharedKeys.enableRepetitionOnTests, true);
+  }
 
   /// Breaking change with 2.1.0: if themeMode in shared preferences is bool
   /// then change it to the actual name of [ThemeMode], as [ThemeMode.system]
@@ -58,6 +60,22 @@ Future<void> _initSharedPreferences() async {
   if (theme is bool) {
     prefs.saveData(SharedKeys.themeMode,
         theme ? ThemeMode.dark.name : ThemeMode.light.name);
+  }
+
+  if (prefs.readData(SharedKeys.writingDailyNotification) == null) {
+    prefs.saveData(SharedKeys.writingDailyNotification, true);
+  }
+  if (prefs.readData(SharedKeys.readingDailyNotification) == null) {
+    prefs.saveData(SharedKeys.readingDailyNotification, true);
+  }
+  if (prefs.readData(SharedKeys.recognitionDailyNotification) == null) {
+    prefs.saveData(SharedKeys.recognitionDailyNotification, true);
+  }
+  if (prefs.readData(SharedKeys.listeningDailyNotification) == null) {
+    prefs.saveData(SharedKeys.listeningDailyNotification, true);
+  }
+  if (prefs.readData(SharedKeys.speakingDailyNotification) == null) {
+    prefs.saveData(SharedKeys.speakingDailyNotification, true);
   }
 
   /// Make the value the same as hasDoneTutorial. If the user has already seen
@@ -141,7 +159,7 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<ListDetailBloc>()),
         BlocProvider(create: (_) => getIt<StudyModeBloc>()),
         BlocProvider(create: (_) => getIt<WordHistoryBloc>()),
-        BlocProvider(create: (_) => getIt<AuthBloc>()),
+        BlocProvider(create: (_) => getIt<AuthBloc>()..add(AuthIdle())),
         BlocProvider(create: (_) => getIt<AddFolderBloc>()),
         BlocProvider(create: (_) => getIt<AddToMarketBloc>()),
         BlocProvider(create: (_) => getIt<AddWordBloc>()),
@@ -151,7 +169,6 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<DictionaryDetailsBloc>()),
         BlocProvider(create: (_) => getIt<FolderDetailsBloc>()),
         BlocProvider(create: (_) => getIt<LoadFolderPracticeBloc>()),
-        BlocProvider(create: (_) => getIt<LoadTestDailyBloc>()),
         BlocProvider(create: (_) => getIt<LoadTestFolderSelectionBloc>()),
         BlocProvider(create: (_) => getIt<LoadTestListSelectionBloc>()),
         BlocProvider(create: (_) => getIt<RateBloc>()),

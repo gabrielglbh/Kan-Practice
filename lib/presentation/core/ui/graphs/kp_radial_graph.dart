@@ -164,7 +164,7 @@ class KPRadialGraph extends StatelessWidget {
                                   color: Theme.of(context).brightness ==
                                           Brightness.light
                                       ? Colors.black87
-                                      : Colors.white),
+                                      : KPColors.primaryLight),
                             ),
                           )
                         ],

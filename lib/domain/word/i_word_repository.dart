@@ -45,7 +45,7 @@ abstract class IWordRepository {
     String word,
     Map<String, dynamic> fields,
   );
-  Future<List<Word>> getDailyWords(StudyModes mode);
+  Future<List<Word>> getDailySM2Words(StudyModes mode);
 
   /// Query to get all Word available in the current db. If anything goes wrong,
   /// an empty list will be returned.
@@ -78,4 +78,5 @@ abstract class IWordRepository {
   Future<int> getTotalWordCount();
   Future<Word> getTotalWordsWinRates();
   Future<List<int>> getWordsFromCategory();
+  Future<List<int>> getSM2ReviewWordsAsForToday();
 }

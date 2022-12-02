@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KanjiPainter extends CustomPainter {
   List<Offset?> points;
@@ -11,7 +12,7 @@ class KanjiPainter extends CustomPainter {
 
   /// Actual brush to paint the kanji with
   static final Paint kanjiPaint = Paint()
-    ..color = Colors.black
+    ..color = KPColors.accentLight
     ..strokeWidth = 10
     ..isAntiAlias = true
     ..strokeCap = StrokeCap.round;

@@ -124,7 +124,13 @@ class _MarketPageState extends State<MarketPage>
           }
         }, builder: (context, state) {
           if (state is MarketStateLoading || state is MarketStateSearching) {
-            return const KPProgressIndicator();
+            return Column(
+              children: [
+                const KPProgressIndicator(),
+                const SizedBox(height: KPMargins.margin16),
+                Text('can_take_a_while_loading'.tr()),
+              ],
+            );
           } else {
             return _lists(state);
           }

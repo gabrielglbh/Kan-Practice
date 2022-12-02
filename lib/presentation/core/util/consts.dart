@@ -23,7 +23,7 @@ class KPSizes {
   static const double maxHeightForLastSeenDates = 256;
   static const double maxHeightValidationCircle = 256;
 
-  static const double minimumHeight = 600;
+  static const double minimumHeight = 750;
 
   static const int numberOfKanjiInTest = 30;
   static const int numberOfPredictedKanji = 20;
@@ -67,6 +67,7 @@ class KPFontSizes {
   static const double fontSize24 = 24;
   static const double fontSize26 = 26;
   static const double fontSize32 = 32;
+  static const double fontSize48 = 48;
   static const double fontSize64 = 64;
 }
 
@@ -125,7 +126,7 @@ class KPColors {
   static final Color primaryDark = Colors.grey.shade700;
   static final Color cardColorLight = Colors.grey.shade200;
   static final Color cardColorDark = Colors.grey.shade600;
-  static final Color chipColor = Colors.grey.shade500;
+  static final Color midGrey = Colors.grey.shade500;
   static const Color accentLight = Colors.black;
   static const Color accentDark = Colors.white;
   static final Color subtleLight = Colors.grey.shade600;

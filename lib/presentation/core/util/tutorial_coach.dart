@@ -55,7 +55,7 @@ class TutorialCoach {
                         Text(_tutorialText[y],
                             style: const TextStyle(
                                 fontSize: 12,
-                                color: Colors.white,
+                                color: KPColors.primaryLight,
                                 fontWeight: FontWeight.bold)),
                       ],
                     ),

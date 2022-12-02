@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/services/i_messaging_repository.dart';
-import 'package:kanpractice/presentation/home_page/widgets/daily_test_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/ui/blitz/daily_test_bottom_sheet.dart';
 
 @LazySingleton(as: IMessagingRepository)
 class MessagingRepositoryImpl implements IMessagingRepository {

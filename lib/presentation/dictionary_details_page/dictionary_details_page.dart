@@ -68,7 +68,7 @@ class _DictionaryDetailsPageState extends State<DictionaryDetailsPage> {
               child: Chip(
                 backgroundColor: Colors.green[200],
                 label: Text("jisho_resultData_powered_by".tr(),
-                    style: const TextStyle(color: Colors.black)),
+                    style: const TextStyle(color: KPColors.accentLight)),
               ),
             ),
           ],

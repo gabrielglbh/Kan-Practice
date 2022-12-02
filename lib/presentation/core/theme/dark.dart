@@ -89,15 +89,15 @@ final ThemeData dark = ThemeData(
   dialogBackgroundColor: KPColors.primaryDark,
   chipTheme: ChipThemeData(
       selectedColor: KPColors.secondaryColor,
-      secondaryLabelStyle: const TextStyle(color: Colors.black),
+      secondaryLabelStyle: const TextStyle(color: KPColors.accentLight),
       brightness: Brightness.dark,
-      backgroundColor: KPColors.chipColor,
+      backgroundColor: KPColors.midGrey,
       padding: const EdgeInsets.all(KPMargins.margin4),
       disabledColor: Colors.grey,
       labelStyle: const TextStyle(color: KPColors.accentDark),
       secondarySelectedColor: KPColors.accentDark),
   tabBarTheme: const TabBarTheme(
-    labelColor: Colors.white,
+    labelColor: KPColors.accentDark,
     labelStyle: TextStyle(
         fontSize: KPFontSizes.fontSize18, fontWeight: FontWeight.bold),
     indicator: ShapeDecoration(

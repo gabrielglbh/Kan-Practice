@@ -17,22 +17,7 @@ class WritingButtonsAnimations extends StatelessWidget {
 
   /// Label to put on the submit button
   final String submitLabel;
-
-  /// Action to be performed when tapping the WRONG button:
-  /// 0% score added to the kanji.
-  final Function(double) wrongAction;
-
-  /// Action to be performed when tapping the MID-WRONG button:
-  /// 33% score added to the kanji.
-  final Function(double) midWrongAction;
-
-  /// Action to be performed when tapping the MID-PERFECT button:
-  /// 66% score added to the kanji.
-  final Function(double) midPerfectAction;
-
-  /// Action to be performed when tapping the PERFECT button:
-  /// 100% score added to the kanji.
-  final Function(double) perfectAction;
+  final Function(double) action;
 
   /// Action to be performed when submitting the current card
   final Function() onSubmit;
@@ -41,10 +26,7 @@ class WritingButtonsAnimations extends StatelessWidget {
       required this.trigger,
       required this.triggerSlide,
       required this.id,
-      required this.wrongAction,
-      required this.midWrongAction,
-      required this.midPerfectAction,
-      required this.perfectAction,
+      required this.action,
       required this.onSubmit,
       required this.submitLabel})
       : super(key: key);
@@ -52,7 +34,7 @@ class WritingButtonsAnimations extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: KPSizes.listStudyHeight,
+      height: KPSizes.listStudyHeight * 1.48,
       child: AnimatedSwitcher(
           duration: const Duration(milliseconds: KPAnimations.ms300),
           switchInCurve: Curves.easeOut,
@@ -95,53 +77,69 @@ class WritingButtonsAnimations extends StatelessWidget {
   }
 
   /// This buttons will slide from the top one by one
-  Row _validation() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+  Widget _validation() {
+    return GridView(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        childAspectRatio: 2,
+      ),
       children: [
-        Expanded(
-          flex: 1,
-          child: _animation(
-              duration: 1,
-              child: KPActionButton(
-                label: "wrong_button_label".tr(),
-                horizontal: KPMargins.margin2,
-                onTap: () async => await wrongAction(0),
-                color: Colors.red[700]!,
-              )),
-        ),
-        Expanded(
-          flex: 1,
-          child: _animation(
-              duration: 2,
-              child: KPActionButton(
-                label: "mid_wrong_button_label".tr(),
-                horizontal: KPMargins.margin2,
-                onTap: () async => await midWrongAction(0.33),
-                color: Colors.yellow[800]!,
-              )),
-        ),
-        Expanded(
-            flex: 1,
-            child: _animation(
-                duration: 3,
-                child: KPActionButton(
-                  label: "mid_perfect_button_label".tr(),
-                  horizontal: KPMargins.margin2,
-                  onTap: () async => await midPerfectAction(0.66),
-                  color: Colors.green[300]!,
-                ))),
-        Expanded(
-          flex: 1,
-          child: _animation(
-              duration: 4,
-              child: KPActionButton(
-                label: "perfect_button_label".tr(),
-                horizontal: KPMargins.margin2,
-                onTap: () async => await perfectAction(1),
-                color: Colors.green[700]!,
-              )),
-        )
+        _animation(
+            duration: 1,
+            child: KPActionButton(
+              label: "wrong_button_label".tr(),
+              horizontal: KPMargins.margin4,
+              vertical: KPMargins.margin4,
+              onTap: () async => await action(0),
+              color: Colors.redAccent.shade700,
+            )),
+        _animation(
+            duration: 2,
+            child: KPActionButton(
+              label: "mid_wrong_button_label".tr(),
+              horizontal: KPMargins.margin4,
+              vertical: KPMargins.margin4,
+              onTap: () async => await action(0.20),
+              color: Colors.red.shade500,
+            )),
+        _animation(
+            duration: 3,
+            child: KPActionButton(
+              label: "mid_button_label".tr(),
+              horizontal: KPMargins.margin4,
+              vertical: KPMargins.margin4,
+              onTap: () async => await action(0.40),
+              color: Colors.orange.shade700,
+            )),
+        _animation(
+            duration: 4,
+            child: KPActionButton(
+              label: "mid_good_button_label".tr(),
+              horizontal: KPMargins.margin4,
+              vertical: KPMargins.margin4,
+              onTap: () async => await action(0.60),
+              color: Colors.amber.shade500,
+            )),
+        _animation(
+            duration: 5,
+            child: KPActionButton(
+              label: "mid_perfect_button_label".tr(),
+              horizontal: KPMargins.margin4,
+              vertical: KPMargins.margin4,
+              onTap: () async => await action(0.80),
+              color: Colors.lime.shade700,
+            )),
+        _animation(
+            duration: 6,
+            child: KPActionButton(
+              label: "perfect_button_label".tr(),
+              horizontal: KPMargins.margin4,
+              vertical: KPMargins.margin4,
+              onTap: () async => await action(1),
+              color: Colors.green.shade700,
+            ))
       ],
     );
   }

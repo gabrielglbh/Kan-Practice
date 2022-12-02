@@ -7,6 +7,15 @@ abstract class LoadTestEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class LoadTestEventIdle extends LoadTestEvent {
+  final Tests mode;
+
+  const LoadTestEventIdle({required this.mode});
+
+  @override
+  List<Object> get props => [mode];
+}
+
 class LoadTestEventLoadList extends LoadTestEvent {
   final String? folder;
   final StudyModes mode;

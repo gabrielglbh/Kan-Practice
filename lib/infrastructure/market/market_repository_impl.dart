@@ -25,6 +25,7 @@ class MarketRepositoryImpl implements IMarketRepository {
   final String listLabel = "List";
   final String folderLabel = "Folder";
   final String relationsKLLabel = "RelationsKL";
+  int writes = 0;
 
   final FirebaseFirestore _ref;
   final FirebaseAuth _auth;
@@ -47,8 +48,8 @@ class MarketRepositoryImpl implements IMarketRepository {
   /// We make sure that when the limit of 500 WRITES per batch is met,
   /// we commit the current batch and initialize it again to perform
   /// more operations.
-  Future<WriteBatch> _reinitializeBatch(WriteBatch curr, int max) async {
-    if ((max + 1) % 500 == 0) {
+  Future<WriteBatch> _reinitializeBatch(WriteBatch curr) async {
+    if ((writes + 1) % 500 == 0) {
       await curr.commit();
       return _ref.batch();
     } else {
@@ -405,6 +406,8 @@ class MarketRepositoryImpl implements IMarketRepository {
           return "market_need_to_be_author".tr();
         }
 
+        var batch = _ref.batch();
+
         final listSnapshot = await _ref
             .collection(collection)
             .doc(id)
@@ -426,23 +429,34 @@ class MarketRepositoryImpl implements IMarketRepository {
             .collection(relationsKLLabel)
             .get();
 
-        /// Use transaction to avoid race errors
-        await _ref.runTransaction((transaction) async {
-          transaction.delete((folderSnapshot.docs.first.reference));
-          for (var x in relationSnapshot.docs) {
-            transaction.delete((x.reference));
-          }
-          for (var x in listSnapshot.docs) {
-            transaction.delete((x.reference));
-          }
-          for (var x in kanjiSnapshot.docs) {
-            transaction.delete((x.reference));
-          }
-          transaction.delete(market);
-        });
+        batch.delete(folderSnapshot.docs.first.reference);
+        writes++;
+
+        for (var x in relationSnapshot.docs) {
+          batch.delete((x.reference));
+          writes++;
+          batch = await _reinitializeBatch(batch);
+        }
+        for (var x in listSnapshot.docs) {
+          batch.delete((x.reference));
+          writes++;
+          batch = await _reinitializeBatch(batch);
+        }
+        for (var x in kanjiSnapshot.docs) {
+          batch.delete((x.reference));
+          writes++;
+          batch = await _reinitializeBatch(batch);
+        }
+        batch.delete(market);
+        writes++;
+        batch = await _reinitializeBatch(batch);
+
+        await batch.commit();
+        writes = 0;
         return "";
       } catch (err) {
         print(err);
+        writes = 0;
         return err.toString();
       }
     }
@@ -467,6 +481,8 @@ class MarketRepositoryImpl implements IMarketRepository {
           return "market_need_to_be_author".tr();
         }
 
+        var batch = _ref.batch();
+
         final listSnapshot = await _ref
             .collection(collection)
             .doc(id)
@@ -478,19 +494,26 @@ class MarketRepositoryImpl implements IMarketRepository {
             .collection(kanjiLabel)
             .get();
 
-        /// Use transaction to avoid race errors
-        await _ref.runTransaction((transaction) async {
-          for (var x = 0; x < listSnapshot.size; x++) {
-            transaction.delete((listSnapshot.docs[x].reference));
-          }
-          for (var x = 0; x < kanjiSnapshot.size; x++) {
-            transaction.delete((kanjiSnapshot.docs[x].reference));
-          }
-          transaction.delete(market);
-        });
+        for (var x = 0; x < listSnapshot.size; x++) {
+          batch.delete((listSnapshot.docs[x].reference));
+          writes++;
+          batch = await _reinitializeBatch(batch);
+        }
+        for (var x = 0; x < kanjiSnapshot.size; x++) {
+          batch.delete((kanjiSnapshot.docs[x].reference));
+          writes++;
+          batch = await _reinitializeBatch(batch);
+        }
+        batch.delete(market);
+        writes++;
+        batch = await _reinitializeBatch(batch);
+
+        await batch.commit();
+        writes = 0;
         return "";
       } catch (err) {
         print(err);
+        writes = 0;
         return err.toString();
       }
     }
@@ -545,18 +568,21 @@ class MarketRepositoryImpl implements IMarketRepository {
 
         /// Market List
         batch.set(doc, market.toJson());
+        writes++;
 
         /// Folder
         final DocumentReference k =
             doc.collection(folderLabel).doc(resetFolder.folder);
         batch.set(k, resetFolder.toJson());
+        writes++;
 
         /// Relations Folder-KanList
         for (int x = 0; x < relations.length; x++) {
           final DocumentReference k =
               doc.collection(relationsKLLabel).doc(x.toString());
           batch.set(k, relations[x].toJson());
-          batch = await _reinitializeBatch(batch, x);
+          writes++;
+          batch = await _reinitializeBatch(batch);
         }
 
         /// KanList
@@ -564,7 +590,8 @@ class MarketRepositoryImpl implements IMarketRepository {
           final DocumentReference k =
               doc.collection(listLabel).doc(resetLists[x].name);
           batch.set(k, resetLists[x].toJson());
-          batch = await _reinitializeBatch(batch, x);
+          writes++;
+          batch = await _reinitializeBatch(batch);
         }
 
         /// Kanji list
@@ -572,13 +599,16 @@ class MarketRepositoryImpl implements IMarketRepository {
           final DocumentReference k =
               doc.collection(kanjiLabel).doc(resetKanji[x].word);
           batch.set(k, resetKanji[x].toJson());
-          batch = await _reinitializeBatch(batch, x);
+          writes++;
+          batch = await _reinitializeBatch(batch);
         }
 
         await batch.commit();
+        writes = 0;
         return 0;
       } catch (err) {
         print(err);
+        writes = 0;
         return -1;
       }
     }
@@ -623,26 +653,28 @@ class MarketRepositoryImpl implements IMarketRepository {
 
         /// Market List
         batch.set(doc, resetList.toJson());
+        writes++;
 
         /// KanList
         final DocumentReference k = doc.collection(listLabel).doc(raw.name);
         batch.set(k, raw.toJson());
-
-        await batch.commit();
+        writes++;
 
         /// Kanji list
-        batch = _ref.batch();
         for (int x = 0; x < resetKanji.length; x++) {
           final DocumentReference k =
               doc.collection(kanjiLabel).doc(resetKanji[x].word);
           batch.set(k, resetKanji[x].toJson());
-          batch = await _reinitializeBatch(batch, x);
+          writes++;
+          batch = await _reinitializeBatch(batch);
         }
 
         await batch.commit();
+        writes = 0;
         return 0;
       } catch (err) {
         print(err);
+        writes = 0;
         return -1;
       }
     }

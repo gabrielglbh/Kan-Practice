@@ -107,7 +107,7 @@ class KanjiItem extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .bodyText2
-                        ?.copyWith(color: Colors.black)),
+                        ?.copyWith(color: KPColors.accentLight)),
               )),
         ),
       ),

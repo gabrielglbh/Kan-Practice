@@ -5,6 +5,53 @@ import 'package:kanpractice/domain/word/word.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Migrations extends MigrationUtils {
+  Future<void> version9to10(Database db) async {
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.repetitionsWritingField} INTEGER NOT NULL DEFAULT 0");
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.previousEaseFactorWritingField} INTEGER NOT NULL DEFAULT 2.5");
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.previousIntervalWritingField} INTEGER NOT NULL DEFAULT 0");
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.previousIntervalAsDateWritingField} INTEGER NOT NULL DEFAULT 0");
+
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.repetitionsReadingField} INTEGER NOT NULL DEFAULT 0");
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.previousEaseFactorReadingField} INTEGER NOT NULL DEFAULT 2.5");
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.previousIntervalReadingField} INTEGER NOT NULL DEFAULT 0");
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.previousIntervalAsDateReadingField} INTEGER NOT NULL DEFAULT 0");
+
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.repetitionsRecognitionField} INTEGER NOT NULL DEFAULT 0");
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.previousEaseFactorRecognitionField} INTEGER NOT NULL DEFAULT 2.5");
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.previousIntervalRecognitionField} INTEGER NOT NULL DEFAULT 0");
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.previousIntervalAsDateRecognitionField} INTEGER NOT NULL DEFAULT 0");
+
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.repetitionsListeningField} INTEGER NOT NULL DEFAULT 0");
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.previousEaseFactorListeningField} INTEGER NOT NULL DEFAULT 2.5");
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.previousIntervalListeningField} INTEGER NOT NULL DEFAULT 0");
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.previousIntervalAsDateListeningField} INTEGER NOT NULL DEFAULT 0");
+
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.repetitionsSpeakingField} INTEGER NOT NULL DEFAULT 0");
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.previousEaseFactorSpeakingField} INTEGER NOT NULL DEFAULT 2.5");
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.previousIntervalSpeakingField} INTEGER NOT NULL DEFAULT 0");
+    await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
+        "ADD COLUMN ${WordTableFields.previousIntervalAsDateSpeakingField} INTEGER NOT NULL DEFAULT 0");
+  }
+
   Future<void> version8to9(Database db) async {
     await db.execute("CREATE TABLE ${TestDataTableFields.testDataTable}("
         "${TestDataTableFields.statsIdField} TEXT NOT NULL PRIMARY KEY, "

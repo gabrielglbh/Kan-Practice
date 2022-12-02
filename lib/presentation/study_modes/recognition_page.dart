@@ -33,6 +33,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
 
   bool _showMeaning = false;
   bool _hasFinished = false;
+  bool _enableRepOnTest = false;
 
   /// Array that saves all scores without any previous context for the test result
   final List<double> _testScores = [];
@@ -42,8 +43,14 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
 
   final String _none = "wildcard".tr();
 
+  bool get _hasRepetition => !widget.args.isTest || _enableRepOnTest;
+  bool _enableSpacedRepetition(double score) =>
+      (!widget.args.isTest && score < 0.5) || (_enableRepOnTest && score < 0.5);
+
   @override
   void initState() {
+    _enableRepOnTest = getIt<PreferencesService>()
+        .readData(SharedKeys.enableRepetitionOnTests);
     _studyList.addAll(widget.args.studyList);
     super.initState();
   }
@@ -51,7 +58,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
   Future<void> _updateUIOnSubmit(double score) async {
     /// If the score is less PARTIAL or WRONG and the Learning Mode is
     /// SPATIAL, the append the current word to the list, to review it again.
-    if (!widget.args.isTest && score < 0.5) {
+    if (_enableSpacedRepetition(score) && widget.args.testMode != Tests.daily) {
       _studyList.add(_studyList[_macro]);
     }
 
@@ -62,7 +69,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
       /// set of words. If the current word is above that, using SPATIAL
       /// repetition, then do NOT calculate the score and return 0 directly.
       final condition =
-          !widget.args.isTest && _macro >= widget.args.studyList.length;
+          _hasRepetition && _macro >= widget.args.studyList.length;
       final code = !condition ? await _calculateKanjiScore(score) : 0;
 
       /// If everything went well, and we have words left in the list,
@@ -102,7 +109,10 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
 
   Future<int> _calculateKanjiScore(double score) async {
     getIt<StudyModeBloc>().add(StudyModeEventUpdateDateShown(
-        listName: _studyList[_macro].listName, word: _studyList[_macro].word));
+      listName: _studyList[_macro].listName,
+      word: _studyList[_macro].word,
+      mode: widget.args.mode,
+    ));
 
     /// Add the current virgin score to the test scores...
     if (widget.args.isTest) {
@@ -112,6 +122,10 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
             widget.args.mode, _studyList[_macro], score));
       }
       _testScores.add(score);
+      if (widget.args.testMode == Tests.daily) {
+        getIt<StudyModeBloc>().add(StudyModeEventCalculateSM2Params(
+            widget.args.mode, _studyList[_macro], score));
+      }
     } else {
       getIt<StudyModeBloc>().add(StudyModeEventCalculateScore(
           widget.args.mode, _studyList[_macro], score));
@@ -143,11 +157,6 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
       builder: (context, state) {
         return KPScaffold(
             onWillPop: () async {
-              if (widget.args.testMode == Tests.daily) {
-                Utils.getSnackBar(context, "daily_test_cannot_go_back".tr());
-                return false;
-              }
-
               return StudyModeUpdateHandler.handle(
                 context,
                 widget.args,
@@ -164,7 +173,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
                 visible: _showMeaning,
                 child: TTSIconButton(word: _studyList[_macro].pronunciation),
               ),
-              if (!widget.args.isTest)
+              if (_hasRepetition && widget.args.testMode != Tests.daily)
                 IconButton(
                   onPressed: () =>
                       Utils.showSpatialRepetitionDisclaimer(context),
@@ -183,13 +192,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
                 KPValidationButtons(
                   trigger: _showMeaning,
                   submitLabel: "done_button_label".tr(),
-                  wrongAction: (score) async => await _updateUIOnSubmit(score),
-                  midWrongAction: (score) async =>
-                      await _updateUIOnSubmit(score),
-                  midPerfectAction: (score) async =>
-                      await _updateUIOnSubmit(score),
-                  perfectAction: (score) async =>
-                      await _updateUIOnSubmit(score),
+                  action: (score) async => await _updateUIOnSubmit(score),
                   onSubmit: () => setState(() => _showMeaning = true),
                 )
               ],

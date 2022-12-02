@@ -38,7 +38,7 @@ class Utils {
     } else if (winRate > 0.9 && winRate <= 1) {
       return Colors.green;
     } else {
-      return Colors.white;
+      return KPColors.primaryLight;
     }
   }
 
@@ -55,7 +55,7 @@ class Utils {
     } else if (score > 0.8 && score <= 1) {
       return Colors.green;
     } else {
-      return Colors.white;
+      return KPColors.primaryLight;
     }
   }
 
@@ -80,11 +80,11 @@ class Utils {
   /// Returns the text color based on the given [score]
   static Color getTextColorBasedOnScore(double score) {
     if (score >= 0 && score <= 0.2) {
-      return Colors.black;
+      return KPColors.accentLight;
     } else if (score > 0.2 && score <= 0.4) {
-      return Colors.black;
+      return KPColors.accentLight;
     } else {
-      return Colors.white;
+      return KPColors.primaryLight;
     }
   }
 
@@ -107,7 +107,7 @@ class Utils {
           content: Row(children: [
             const Padding(
               padding: EdgeInsets.only(right: KPMargins.margin8),
-              child: Icon(Icons.info_rounded, color: Colors.white),
+              child: Icon(Icons.info_rounded, color: KPColors.primaryLight),
             ),
             Expanded(child: Text(message)),
           ]),

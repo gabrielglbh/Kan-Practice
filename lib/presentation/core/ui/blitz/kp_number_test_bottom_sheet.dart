@@ -65,7 +65,6 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final textColor = KPColors.getAccent(context);
     return BottomSheet(
       enableDrag: false,
       onClosing: () {},
@@ -127,7 +126,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
                           border: Border.all(
                             color: _selectedLists.contains(range)
                                 ? Colors.transparent
-                                : textColor,
+                                : KPColors.getSubtle(context),
                           ),
                         ),
                         child: Text(
@@ -137,8 +136,8 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
                               .bodyText2
                               ?.copyWith(
                                   color: _selectedLists.contains(range)
-                                      ? Colors.white
-                                      : textColor),
+                                      ? KPColors.primaryLight
+                                      : KPColors.getAccent(context)),
                         ),
                       ),
                     ),

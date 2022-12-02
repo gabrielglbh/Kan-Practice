@@ -3,10 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
+import 'package:kanpractice/application/load_test/load_test_bloc.dart';
 import 'package:kanpractice/application/settings/settings_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
+import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/settings_page/widgets/change_kanji_test.dart';
@@ -78,6 +80,19 @@ class _SettingsPageState extends State<SettingsPage> {
           title: Text("settings_enhancements_label".tr()),
           onTap: () => Navigator.of(context)
               .pushNamed(KanPracticePages.settingsTogglePage),
+        ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(Icons.calendar_today_rounded),
+          title: Text("settings_daily_test_options".tr()),
+          onTap: () async {
+            await Navigator.of(context)
+                .pushNamed(KanPracticePages.settingsDailyOptions)
+                .then((_) {
+              getIt<LoadTestBloc>()
+                  .add(const LoadTestEventIdle(mode: Tests.daily));
+            });
+          },
         ),
         const Divider(),
         ListTile(

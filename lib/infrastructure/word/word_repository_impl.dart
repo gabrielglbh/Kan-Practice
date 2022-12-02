@@ -213,22 +213,43 @@ class WordRepositoryImpl implements IWordRepository {
   @override
   Future<List<int>> getSM2ReviewWordsAsForToday() async {
     try {
+      final writingNotification =
+          _preferencesService.readData(SharedKeys.writingDailyNotification);
+      final readingNotification =
+          _preferencesService.readData(SharedKeys.readingDailyNotification);
+      final recognitionNotification =
+          _preferencesService.readData(SharedKeys.recognitionDailyNotification);
+      final listeningNotification =
+          _preferencesService.readData(SharedKeys.listeningDailyNotification);
+      final speakingNotification =
+          _preferencesService.readData(SharedKeys.speakingDailyNotification);
       final today = DateTime.now().millisecondsSinceEpoch;
-      final resWriting = await _database.rawQuery(
-          "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
-          "WHERE ${WordTableFields.previousIntervalAsDateWritingField} <= $today");
-      final resReading = await _database.rawQuery(
-          "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
-          "WHERE ${WordTableFields.previousIntervalAsDateReadingField} <= $today");
-      final resRecognition = await _database.rawQuery(
-          "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
-          "WHERE ${WordTableFields.previousIntervalAsDateRecognitionField} <= $today");
-      final resListening = await _database.rawQuery(
-          "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
-          "WHERE ${WordTableFields.previousIntervalAsDateListeningField} <= $today");
-      final resSpeaking = await _database.rawQuery(
-          "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
-          "WHERE ${WordTableFields.previousIntervalAsDateSpeakingField} <= $today");
+
+      final resWriting = writingNotification
+          ? await _database.rawQuery(
+              "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
+              "WHERE ${WordTableFields.previousIntervalAsDateWritingField} <= $today")
+          : [];
+      final resReading = readingNotification
+          ? await _database.rawQuery(
+              "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
+              "WHERE ${WordTableFields.previousIntervalAsDateReadingField} <= $today")
+          : [];
+      final resRecognition = recognitionNotification
+          ? await _database.rawQuery(
+              "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
+              "WHERE ${WordTableFields.previousIntervalAsDateRecognitionField} <= $today")
+          : [];
+      final resListening = listeningNotification
+          ? await _database.rawQuery(
+              "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
+              "WHERE ${WordTableFields.previousIntervalAsDateListeningField} <= $today")
+          : [];
+      final resSpeaking = speakingNotification
+          ? await _database.rawQuery(
+              "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
+              "WHERE ${WordTableFields.previousIntervalAsDateSpeakingField} <= $today")
+          : [];
       return [
         resWriting.length,
         resReading.length,

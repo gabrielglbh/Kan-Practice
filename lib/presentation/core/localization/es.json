@@ -383,5 +383,8 @@
   "back_canvas": "Atrás",
   "settings_enhancements_label": "Mejoras",
   "pending_review": "Pendiente de revisión diaria",
-  "can_take_a_while_loading": "Pude tardar un poco, no cierres esta página."
+  "can_take_a_while_loading": "Pude tardar un poco, no cierres esta página.",
+  "settings_daily_test_options": "Opciones de test diarios",
+  "settings_daily_notification_title": "Mostrar noticiatión de test",
+  "settings_daily_notification_sub": "Si está activo, cuando tengas palabras que revisar para ese modo de estudio, el aviso del test diario aparecerá en la pantalla de inicio."
 }

@@ -62,6 +62,22 @@ Future<void> _initSharedPreferences() async {
         theme ? ThemeMode.dark.name : ThemeMode.light.name);
   }
 
+  if (prefs.readData(SharedKeys.writingDailyNotification) == null) {
+    prefs.saveData(SharedKeys.writingDailyNotification, true);
+  }
+  if (prefs.readData(SharedKeys.readingDailyNotification) == null) {
+    prefs.saveData(SharedKeys.readingDailyNotification, true);
+  }
+  if (prefs.readData(SharedKeys.recognitionDailyNotification) == null) {
+    prefs.saveData(SharedKeys.recognitionDailyNotification, true);
+  }
+  if (prefs.readData(SharedKeys.listeningDailyNotification) == null) {
+    prefs.saveData(SharedKeys.listeningDailyNotification, true);
+  }
+  if (prefs.readData(SharedKeys.speakingDailyNotification) == null) {
+    prefs.saveData(SharedKeys.speakingDailyNotification, true);
+  }
+
   /// Make the value the same as hasDoneTutorial. If the user has already seen
   /// the overall tutorial, do not show the coach mark tutorial
   // DEBUG ONLY

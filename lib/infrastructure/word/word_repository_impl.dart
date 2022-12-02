@@ -204,40 +204,46 @@ class WordRepositoryImpl implements IWordRepository {
         }
       }
 
+      // We order by previousIntervalAsDate DESC, as we want to prioratize
+      // early previous reviews rather than older ones.
+      //
+      // If we have pending review A since the day before yesterday and
+      // fresh review B from yesterday, in this way B will be prioritized
+      // over A.
       final today = DateTime.now().millisecondsSinceEpoch;
       switch (mode) {
         case StudyModes.writing:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
               "WHERE ${WordTableFields.previousIntervalAsDateWritingField} <= $today "
-              "ORDER BY ${WordTableFields.previousIntervalAsDateWritingField} ASC, "
+              "ORDER BY ${WordTableFields.previousIntervalAsDateWritingField} DESC, "
               "${WordTableFields.winRateWritingField} ASC "
               "LIMIT $limit";
           break;
         case StudyModes.reading:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
               "WHERE ${WordTableFields.previousIntervalAsDateReadingField} <= $today "
-              "ORDER BY ${WordTableFields.previousIntervalAsDateReadingField} ASC, "
+              "ORDER BY ${WordTableFields.previousIntervalAsDateReadingField} DESC, "
               "${WordTableFields.winRateReadingField} ASC "
               "LIMIT $limit";
           break;
         case StudyModes.recognition:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
               "WHERE ${WordTableFields.previousIntervalAsDateRecognitionField} <= $today "
-              "ORDER BY ${WordTableFields.previousIntervalAsDateRecognitionField} ASC, "
+              "ORDER BY ${WordTableFields.previousIntervalAsDateRecognitionField} DESC, "
               "${WordTableFields.winRateRecognitionField} ASC "
               "LIMIT $limit";
           break;
         case StudyModes.listening:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
               "WHERE ${WordTableFields.previousIntervalAsDateListeningField} <= $today "
-              "ORDER BY ${WordTableFields.previousIntervalAsDateListeningField} ASC, "
+              "ORDER BY ${WordTableFields.previousIntervalAsDateListeningField} DESC, "
               "${WordTableFields.winRateListeningField} ASC "
               "LIMIT $limit";
           break;
         case StudyModes.speaking:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
               "WHERE ${WordTableFields.previousIntervalAsDateSpeakingField} <= $today "
-              "ORDER BY ${WordTableFields.previousIntervalAsDateSpeakingField} ASC, "
+              "ORDER BY ${WordTableFields.previousIntervalAsDateSpeakingField} DESC, "
               "${WordTableFields.winRateSpeakingField} ASC "
               "LIMIT $limit";
           break;

@@ -104,6 +104,7 @@ class _KPCartesianChartTooltip extends StatelessWidget {
     final mode = source.mode.nameAbbr;
     final date = format.format(source.x);
     final rate = Utils.getFixedPercentageAsString(source.y);
+    final words = source.wordsOnTest.toString();
     return Container(
       padding: const EdgeInsets.all(KPMargins.margin8),
       decoration: BoxDecoration(
@@ -151,6 +152,11 @@ class _KPCartesianChartTooltip extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: tooltipTextColor, fontWeight: FontWeight.bold)),
+                const SizedBox(width: KPMargins.margin4),
+                Text('($words)',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: tooltipTextColor, fontWeight: FontWeight.bold)),
               ],
             ),
             const SizedBox(height: KPMargins.margin8),
@@ -174,7 +180,8 @@ class _KPCartesianChartTooltip extends StatelessWidget {
                   Text(rate,
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: tooltipTextColor, fontWeight: FontWeight.bold))
+                          color: tooltipTextColor,
+                          fontWeight: FontWeight.bold)),
                 ],
               ),
             )

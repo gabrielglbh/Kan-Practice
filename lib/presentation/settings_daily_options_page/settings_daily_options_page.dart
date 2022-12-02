@@ -67,36 +67,6 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return KPScaffold(
-      appBarTitle: 'settings_daily_test_options'.tr(),
-      child: ListView(
-        children: [
-          ListTile(
-            leading: const Icon(Icons.calendar_view_day_rounded),
-            title: Text("settings_daily_notification_title".tr()),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(top: KPMargins.margin8),
-              child: Text(
-                "settings_daily_notification_sub".tr(),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    ?.copyWith(color: KPColors.midGrey),
-              ),
-            ),
-          ),
-          _notificationDaily(StudyModes.writing),
-          _notificationDaily(StudyModes.reading),
-          _notificationDaily(StudyModes.recognition),
-          _notificationDaily(StudyModes.listening),
-          _notificationDaily(StudyModes.speaking),
-        ],
-      ),
-    );
-  }
-
   ListTile _notificationDaily(StudyModes mode) {
     late bool notification;
     switch (mode) {
@@ -133,6 +103,36 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
       onTap: () {
         _saveData(mode, !notification);
       },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return KPScaffold(
+      appBarTitle: 'settings_daily_test_options'.tr(),
+      child: ListView(
+        children: [
+          ListTile(
+            leading: const Icon(Icons.calendar_view_day_rounded),
+            title: Text("settings_daily_notification_title".tr()),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: KPMargins.margin8),
+              child: Text(
+                "settings_daily_notification_sub".tr(),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    ?.copyWith(color: KPColors.midGrey),
+              ),
+            ),
+          ),
+          _notificationDaily(StudyModes.writing),
+          _notificationDaily(StudyModes.reading),
+          _notificationDaily(StudyModes.recognition),
+          _notificationDaily(StudyModes.listening),
+          _notificationDaily(StudyModes.speaking),
+        ],
+      ),
     );
   }
 }

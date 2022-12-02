@@ -3,9 +3,9 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/domain/folder/i_folder_repository.dart';
+import 'package:kanpractice/domain/services/i_preferences_repository.dart';
 import 'package:kanpractice/domain/word/i_word_repository.dart';
 import 'package:kanpractice/domain/word/word.dart';
-import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -17,10 +17,12 @@ part 'load_test_state.dart';
 class LoadTestBloc extends Bloc<LoadTestEvent, LoadTestState> {
   final IWordRepository _wordRepository;
   final IFolderRepository _folderRepository;
+  final IPreferencesRepository _preferencesRepository;
 
   LoadTestBloc(
     this._wordRepository,
     this._folderRepository,
+    this._preferencesRepository,
   ) : super(const LoadTestStateIdle([])) {
     on<LoadTestEventIdle>((event, emit) async {
       if (event.mode == Tests.daily) {
@@ -74,13 +76,20 @@ class LoadTestBloc extends Bloc<LoadTestEvent, LoadTestState> {
         finalList = list;
       }
 
-      final kanjiInTest = getIt<PreferencesService>()
-              .readData(SharedKeys.numberOfKanjiInTest) ??
-          KPSizes.numberOfKanjiInTest;
-      List<Word> sortedList = finalList.sublist(
-          0, finalList.length < kanjiInTest ? finalList.length : kanjiInTest);
+      final controlledPace =
+          _preferencesRepository.readData(SharedKeys.dailyTestOnControlledPace);
+      if (event.type == Tests.daily && controlledPace == true) {
+        emit(LoadTestStateLoadedList(finalList, event.mode));
+      } else {
+        final kanjiInTest =
+            _preferencesRepository.readData(SharedKeys.numberOfKanjiInTest) ??
+                KPSizes.numberOfKanjiInTest;
 
-      emit(LoadTestStateLoadedList(sortedList, event.mode));
+        List<Word> sortedList = finalList.sublist(
+            0, finalList.length < kanjiInTest ? finalList.length : kanjiInTest);
+
+        emit(LoadTestStateLoadedList(sortedList, event.mode));
+      }
     });
   }
 }

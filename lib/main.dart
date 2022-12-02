@@ -77,6 +77,9 @@ Future<void> _initSharedPreferences() async {
   if (prefs.readData(SharedKeys.speakingDailyNotification) == null) {
     prefs.saveData(SharedKeys.speakingDailyNotification, true);
   }
+  if (prefs.readData(SharedKeys.dailyTestOnControlledPace) == null) {
+    prefs.saveData(SharedKeys.dailyTestOnControlledPace, false);
+  }
 
   /// Make the value the same as hasDoneTutorial. If the user has already seen
   /// the overall tutorial, do not show the coach mark tutorial

@@ -386,5 +386,7 @@
   "can_take_a_while_loading": "Kann eine Weile dauern, bitte schließen Sie die Seite nicht.",
   "settings_daily_test_options": "Tägliche Testoptionen",
   "settings_daily_notification_title": "Tägliche Benachrichtigung anzeigen",
-  "settings_daily_notification_sub": "Wenn diese Option aktiviert ist, wird die tägliche Testaufforderung auf Ihrem Startbildschirm angezeigt, wenn Sie Wörter für diesen Lernmodus zu überprüfen haben."
+  "settings_daily_notification_sub": "Wenn diese Option aktiviert ist, wird die tägliche Testaufforderung auf Ihrem Startbildschirm angezeigt, wenn Sie Wörter für diesen Lernmodus zu überprüfen haben.",
+  "settings_daily_pace": "Kontrolliertes Tempo",
+  "settings_daily_pace_sub": "Wenn aktiv, werden Sie 1 Test pro Tag für jeden Lernmodus mit einer vorausberechneten Anzahl von Wörtern durchführen. Andernfalls: keine Einschränkungen."
 }

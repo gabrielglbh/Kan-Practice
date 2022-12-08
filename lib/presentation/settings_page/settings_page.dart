@@ -83,7 +83,8 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(Icons.calendar_today_rounded),
+          leading: const Icon(Icons.calendar_today_rounded,
+              color: KPColors.secondaryColor),
           title: Text("settings_daily_test_options".tr()),
           onTap: () async {
             await Navigator.of(context)

@@ -43,4 +43,11 @@ class SharedKeys {
       "recognitionDailyNotification";
   static const String listeningDailyNotification = "listeningDailyNotification";
   static const String speakingDailyNotification = "speakingDailyNotification";
+
+  static const String dailyTestOnControlledPace = "dailyTestOnControlledPace";
+  static const String writingDailyPerformed = "writingDailyPerformed";
+  static const String readingDailyPerformed = "readingDailyPerformed";
+  static const String recognitionDailyPerformed = "recognitionDailyPerformed";
+  static const String listeningDailyPerformed = "listeningDailyPerformed";
+  static const String speakingDailyPerformed = "speakingDailyPerformed";
 }

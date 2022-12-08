@@ -21,6 +21,7 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
   bool _recognitionNotification = true;
   bool _listeningNotification = true;
   bool _speakingNotification = true;
+  bool _controlledPace = true;
 
   @override
   void initState() {
@@ -34,6 +35,8 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
         .readData(SharedKeys.listeningDailyNotification);
     _speakingNotification = getIt<PreferencesService>()
         .readData(SharedKeys.speakingDailyNotification);
+    _controlledPace = getIt<PreferencesService>()
+        .readData(SharedKeys.dailyTestOnControlledPace);
     super.initState();
   }
 
@@ -65,36 +68,6 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
         setState(() => _speakingNotification = value);
         return;
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return KPScaffold(
-      appBarTitle: 'settings_daily_test_options'.tr(),
-      child: ListView(
-        children: [
-          ListTile(
-            leading: const Icon(Icons.calendar_view_day_rounded),
-            title: Text("settings_daily_notification_title".tr()),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(top: KPMargins.margin8),
-              child: Text(
-                "settings_daily_notification_sub".tr(),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    ?.copyWith(color: KPColors.midGrey),
-              ),
-            ),
-          ),
-          _notificationDaily(StudyModes.writing),
-          _notificationDaily(StudyModes.reading),
-          _notificationDaily(StudyModes.recognition),
-          _notificationDaily(StudyModes.listening),
-          _notificationDaily(StudyModes.speaking),
-        ],
-      ),
-    );
   }
 
   ListTile _notificationDaily(StudyModes mode) {
@@ -133,6 +106,64 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
       onTap: () {
         _saveData(mode, !notification);
       },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return KPScaffold(
+      appBarTitle: 'settings_daily_test_options'.tr(),
+      child: ListView(
+        children: [
+          ListTile(
+            leading: const Icon(Icons.calendar_view_day_rounded),
+            title: Text("settings_daily_notification_title".tr()),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: KPMargins.margin8),
+              child: Text(
+                "settings_daily_notification_sub".tr(),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    ?.copyWith(color: KPColors.midGrey),
+              ),
+            ),
+          ),
+          _notificationDaily(StudyModes.writing),
+          _notificationDaily(StudyModes.reading),
+          _notificationDaily(StudyModes.recognition),
+          _notificationDaily(StudyModes.listening),
+          _notificationDaily(StudyModes.speaking),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.sports_gymnastics_rounded),
+            title: Text("settings_daily_pace".tr()),
+            trailing: KPSwitch(
+              onChanged: (bool value) {
+                getIt<PreferencesService>()
+                    .saveData(SharedKeys.dailyTestOnControlledPace, value);
+                setState(() => _controlledPace = value);
+              },
+              value: _controlledPace,
+            ),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: KPMargins.margin8),
+              child: Text(
+                "settings_daily_pace_sub".tr(),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    ?.copyWith(color: KPColors.midGrey),
+              ),
+            ),
+            onTap: () {
+              getIt<PreferencesService>().saveData(
+                  SharedKeys.dailyTestOnControlledPace, !_controlledPace);
+              setState(() => _controlledPace = !_controlledPace);
+            },
+          ),
+        ],
+      ),
     );
   }
 }

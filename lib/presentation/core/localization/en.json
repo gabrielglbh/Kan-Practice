@@ -384,7 +384,9 @@
   "settings_enhancements_label": "Enhancements",
   "pending_review": "Pending daily reviews",
   "can_take_a_while_loading": "Might take a while, do not close this page.",
-  "settings_daily_test_options": "Daily test options",
+  "settings_daily_test_options": "Daily Test Options",
   "settings_daily_notification_title": "Show daily notificaction",
-  "settings_daily_notification_sub": "If active, when you have words to review for that study mode, the daily test prompt will pop up on your home screen."
+  "settings_daily_notification_sub": "If active, when you have words to review for that study mode, the daily test prompt will pop up on your home screen.",
+  "settings_daily_pace": "Controlled pace",
+  "settings_daily_pace_sub": "If active, you will perform 1 test per day per each study mode with a precalculated number of words. Else, no restrictions."
 }

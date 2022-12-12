@@ -216,35 +216,40 @@ class WordRepositoryImpl implements IWordRepository {
           query = "SELECT * FROM ${WordTableFields.wordTable} "
               "WHERE ${WordTableFields.previousIntervalAsDateWritingField} <= $today "
               "ORDER BY ${WordTableFields.previousIntervalAsDateWritingField} DESC, "
-              "${WordTableFields.winRateWritingField} ASC "
+              "${WordTableFields.winRateWritingField} ASC, "
+              "${WordTableFields.dateAddedField} DESC "
               "LIMIT $limit";
           break;
         case StudyModes.reading:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
               "WHERE ${WordTableFields.previousIntervalAsDateReadingField} <= $today "
               "ORDER BY ${WordTableFields.previousIntervalAsDateReadingField} DESC, "
-              "${WordTableFields.winRateReadingField} ASC "
+              "${WordTableFields.winRateReadingField} ASC, "
+              "${WordTableFields.dateAddedField} DESC "
               "LIMIT $limit";
           break;
         case StudyModes.recognition:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
               "WHERE ${WordTableFields.previousIntervalAsDateRecognitionField} <= $today "
               "ORDER BY ${WordTableFields.previousIntervalAsDateRecognitionField} DESC, "
-              "${WordTableFields.winRateRecognitionField} ASC "
+              "${WordTableFields.winRateRecognitionField} ASC, "
+              "${WordTableFields.dateAddedField} DESC "
               "LIMIT $limit";
           break;
         case StudyModes.listening:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
               "WHERE ${WordTableFields.previousIntervalAsDateListeningField} <= $today "
               "ORDER BY ${WordTableFields.previousIntervalAsDateListeningField} DESC, "
-              "${WordTableFields.winRateListeningField} ASC "
+              "${WordTableFields.winRateListeningField} ASC, "
+              "${WordTableFields.dateAddedField} DESC "
               "LIMIT $limit";
           break;
         case StudyModes.speaking:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
               "WHERE ${WordTableFields.previousIntervalAsDateSpeakingField} <= $today "
               "ORDER BY ${WordTableFields.previousIntervalAsDateSpeakingField} DESC, "
-              "${WordTableFields.winRateSpeakingField} ASC "
+              "${WordTableFields.winRateSpeakingField} ASC, "
+              "${WordTableFields.dateAddedField} DESC "
               "LIMIT $limit";
           break;
       }

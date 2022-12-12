@@ -54,8 +54,10 @@ class SMAlgorithm {
 
     if (easeFactor < 1.3) easeFactor = 1.3;
 
-    final intervalAsDate =
-        DateTime.now().add(Duration(days: interval)).millisecondsSinceEpoch;
+    // Set the intervalAsDate as the 00:00 of the day + interval
+    final now = DateTime.now();
+    final intervalAsDate = DateTime(now.year, now.month, now.day + interval)
+        .millisecondsSinceEpoch;
 
     return SMAlgorithm(
       interval: interval,

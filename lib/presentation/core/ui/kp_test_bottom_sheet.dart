@@ -66,7 +66,9 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
               BlocBuilder<LoadTestBloc, LoadTestState>(
                 builder: (context, state) {
                   if (state is LoadTestStateIdle) {
-                    return _body(hasWords: state.wordsToReview.isNotEmpty);
+                    return _body(
+                      hasWords: state.wordsToReview.any((w) => w > 0),
+                    );
                   } else {
                     return _body();
                   }

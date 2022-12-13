@@ -54,7 +54,8 @@ class SMAlgorithm {
 
     if (easeFactor < 1.3) easeFactor = 1.3;
 
-    // Set the intervalAsDate as the 00:00 of the day + interval
+    // Set the intervalAsDate as the 00:00 of the day + interval to make
+    // sure the Daily notification and test works as intended
     final now = DateTime.now();
     final intervalAsDate = DateTime(now.year, now.month, now.day + interval)
         .millisecondsSinceEpoch;

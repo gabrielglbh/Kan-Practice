@@ -389,5 +389,6 @@
   "settings_daily_notification_sub": "Si está activo, cuando tengas palabras que revisar para ese modo de estudio, el aviso del test diario aparecerá en la pantalla de inicio.",
   "settings_daily_pace": "Ritmo controlado",
   "settings_daily_pace_sub": "Si está activo, podrás realizar 1 prueba al día por cada modo de estudio con un número precalculado de palabras. Si no, no hay restricciones",
-  "filter_recently_added": "Reciente"
+  "filter_recently_added": "Reciente",
+  "test_info_controlled_pace": "Solo podrás completar un test diario por modo de estudio al día."
 }

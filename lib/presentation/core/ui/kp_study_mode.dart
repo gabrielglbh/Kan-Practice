@@ -58,42 +58,79 @@ class _KPTestStudyModeState extends State<KPTestStudyMode> {
     super.initState();
   }
 
+  Widget affectOnPractice() {
+    return Visibility(
+      visible:
+          getIt<PreferencesService>().readData(SharedKeys.affectOnPractice) ==
+              true,
+      child: Container(
+          margin: const EdgeInsets.symmetric(
+              vertical: KPMargins.margin8, horizontal: KPMargins.margin24),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(right: KPMargins.margin16),
+                child: Icon(Icons.auto_graph_rounded,
+                    color: Colors.lightBlueAccent),
+              ),
+              Expanded(
+                  child: Text(
+                "settings_general_toggle".tr(),
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyText1,
+              )),
+              const Padding(
+                padding: EdgeInsets.only(left: KPMargins.margin16),
+                child: Icon(Icons.auto_graph_rounded,
+                    color: Colors.lightBlueAccent),
+              ),
+            ],
+          )),
+    );
+  }
+
+  Widget controlledPace() {
+    final controlledPace = getIt<PreferencesService>()
+            .readData(SharedKeys.dailyTestOnControlledPace) ==
+        true;
+    return Visibility(
+      visible: controlledPace && widget.type == Tests.daily,
+      child: Container(
+          margin: const EdgeInsets.symmetric(
+              vertical: KPMargins.margin8, horizontal: KPMargins.margin24),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: KPMargins.margin16),
+                child: Icon(Icons.sports_gymnastics_rounded,
+                    color: KPColors.getSubtle(context)),
+              ),
+              Expanded(
+                  child: Text(
+                "test_info_controlled_pace".tr(),
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyText1,
+              )),
+              Padding(
+                padding: const EdgeInsets.only(left: KPMargins.margin16),
+                child: Icon(Icons.sports_gymnastics_rounded,
+                    color: KPColors.getSubtle(context)),
+              ),
+            ],
+          )),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
       child: Column(
         children: [
-          Visibility(
-            visible: getIt<PreferencesService>()
-                    .readData(SharedKeys.affectOnPractice) ==
-                true,
-            child: Container(
-                margin: const EdgeInsets.symmetric(
-                    vertical: KPMargins.margin8,
-                    horizontal: KPMargins.margin24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(right: KPMargins.margin16),
-                      child: Icon(Icons.auto_graph_rounded,
-                          color: Colors.lightBlueAccent),
-                    ),
-                    Expanded(
-                        child: Text(
-                      "settings_general_toggle".tr(),
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    )),
-                    const Padding(
-                      padding: EdgeInsets.only(left: KPMargins.margin16),
-                      child: Icon(Icons.auto_graph_rounded,
-                          color: Colors.lightBlueAccent),
-                    ),
-                  ],
-                )),
-          ),
+          affectOnPractice(),
+          controlledPace(),
           BlocConsumer<LoadTestBloc, LoadTestState>(
             listener: ((context, state) async {
               if (state is LoadTestStateLoadedList) {

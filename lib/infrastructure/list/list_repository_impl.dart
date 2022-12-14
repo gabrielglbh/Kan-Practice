@@ -36,11 +36,36 @@ class ListRepositoryImpl implements IListRepository {
       int? offset}) async {
     try {
       List<Map<String, dynamic>>? res = [];
-      res = await _database.query(ListTableFields.listsTable,
-          orderBy: "${filter.filter} $order",
-          limit: limit,
-          offset: (offset != null && limit != null) ? offset * limit : null);
-      return List.generate(res.length, (i) => WordList.fromJson(res![i]));
+
+      if (filter != WordListFilters.recentlyAdded) {
+        res = await _database.query(ListTableFields.listsTable,
+            orderBy: "${filter.filter} $order",
+            limit: limit,
+            offset: (offset != null && limit != null) ? offset * limit : null);
+      } else {
+        String limitQuery = "";
+
+        if (offset != null && limit != null) {
+          limitQuery = "LIMIT $limit OFFSET ${offset * limit}";
+        }
+
+        res = await _database.rawQuery(
+            "SELECT A.${ListTableFields.nameField}, A.${ListTableFields.lastUpdatedField}, "
+            "A.${ListTableFields.totalWinRateWritingField}, A.${ListTableFields.totalWinRateReadingField}, "
+            "A.${ListTableFields.totalWinRateRecognitionField}, A.${ListTableFields.totalWinRateListeningField}, "
+            "A.${ListTableFields.totalWinRateSpeakingField} "
+            "FROM ${ListTableFields.listsTable} A "
+            "JOIN "
+            "(SELECT ${WordTableFields.listNameField}, MAX(${filter.filter}) AS ${WordTableFields.dateAddedField} "
+            "FROM ${WordTableFields.wordTable} "
+            "GROUP BY ${WordTableFields.listNameField} "
+            "ORDER BY ${WordTableFields.dateAddedField}) B "
+            "ON A.${ListTableFields.nameField} = B.${WordTableFields.listNameField} "
+            "ORDER BY B.${filter.filter} $order "
+            "$limitQuery");
+      }
+      final list = List.generate(res.length, (i) => WordList.fromJson(res![i]));
+      return list;
     } catch (err) {
       print(err.toString());
       return [];

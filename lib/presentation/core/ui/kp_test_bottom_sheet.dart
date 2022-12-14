@@ -66,7 +66,9 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
               BlocBuilder<LoadTestBloc, LoadTestState>(
                 builder: (context, state) {
                   if (state is LoadTestStateIdle) {
-                    return _body(hasWords: state.wordsToReview.isNotEmpty);
+                    return _body(
+                      hasWords: state.wordsToReview.any((w) => w > 0),
+                    );
                   } else {
                     return _body();
                   }
@@ -120,6 +122,69 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
     Tests mode, {
     bool hasWords = false,
   }) {
+    bool hasNoDailyTests = !hasWords && mode == Tests.daily;
+    if (hasNoDailyTests) {
+      final locale =
+          EasyLocalization.of(context)?.currentLocale?.languageCode ?? 'en';
+      final now = DateTime.now();
+      final nextDay = DateFormat.MMMMd(locale)
+          .format(DateTime(now.year, now.month, now.day + 1));
+      return Stack(
+        alignment: Alignment.topRight,
+        clipBehavior: Clip.none,
+        children: [
+          KPButton(
+            customIcon: Column(
+              children: [
+                FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    mode.name,
+                    style: Theme.of(context)
+                        .textTheme
+                        .button
+                        ?.copyWith(fontSize: 14),
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.lock_rounded, size: 16, color: Colors.white),
+                    Icon(Icons.arrow_forward_rounded,
+                        size: 16, color: Colors.white),
+                    Icon(Icons.lock_open_rounded,
+                        size: 16, color: Colors.white),
+                  ],
+                ),
+                const SizedBox(height: 4),
+              ],
+            ),
+            title2: nextDay,
+            onTap: null,
+            color: KPColors.midGrey,
+          ),
+          Positioned(
+            top: KPMargins.margin2,
+            right: KPMargins.margin2,
+            child: Container(
+              width: 24,
+              height: 24,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: KPColors.subtleLight,
+              ),
+              child: const Icon(
+                Icons.sports_gymnastics_rounded,
+                size: 14,
+                color: Colors.white,
+              ),
+            ),
+          )
+        ],
+      );
+    }
+
     return Stack(
       alignment: Alignment.topRight,
       clipBehavior: Clip.none,

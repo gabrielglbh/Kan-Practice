@@ -12,9 +12,9 @@ import 'package:sqflite/sqlite_api.dart';
 @LazySingleton(as: IWordRepository)
 class WordRepositoryImpl implements IWordRepository {
   final Database _database;
-  final IPreferencesRepository _preferencesService;
+  final IPreferencesRepository _preferencesRepository;
 
-  WordRepositoryImpl(this._database, this._preferencesService);
+  WordRepositoryImpl(this._database, this._preferencesRepository);
 
   @override
   Future<int> createWord(Word word) async {
@@ -164,47 +164,98 @@ class WordRepositoryImpl implements IWordRepository {
   Future<List<Word>> getDailySM2Words(StudyModes mode) async {
     try {
       String query = "";
-      int limit = _preferencesService.readData(SharedKeys.numberOfKanjiInTest);
+      final controlledPace =
+          _preferencesRepository.readData(SharedKeys.dailyTestOnControlledPace);
+      int limit =
+          _preferencesRepository.readData(SharedKeys.numberOfKanjiInTest);
+
+      if (controlledPace) {
+        // Divide number of total words of the user's db by the weekdays
+        limit = ((await _database.query(WordTableFields.wordTable)).length / 7)
+            .ceil();
+
+        // Also check if the daily test can be performed
+        switch (mode) {
+          case StudyModes.writing:
+            final canBePerformed = _preferencesRepository
+                .readData(SharedKeys.writingDailyPerformed);
+            if (canBePerformed != 0 && canBePerformed != null) return [];
+            break;
+          case StudyModes.reading:
+            final canBePerformed = _preferencesRepository
+                .readData(SharedKeys.readingDailyPerformed);
+            if (canBePerformed != 0 && canBePerformed != null) return [];
+            break;
+          case StudyModes.recognition:
+            final canBePerformed = _preferencesRepository
+                .readData(SharedKeys.recognitionDailyPerformed);
+            if (canBePerformed != 0 && canBePerformed != null) return [];
+            break;
+          case StudyModes.listening:
+            final canBePerformed = _preferencesRepository
+                .readData(SharedKeys.listeningDailyPerformed);
+            if (canBePerformed != 0 && canBePerformed != null) return [];
+            break;
+          case StudyModes.speaking:
+            final canBePerformed = _preferencesRepository
+                .readData(SharedKeys.speakingDailyPerformed);
+            if (canBePerformed != 0 && canBePerformed != null) return [];
+            break;
+        }
+      }
+
+      // We order by previousIntervalAsDate DESC, as we want to prioratize
+      // early previous reviews rather than older ones.
+      //
+      // If we have pending review A since the day before yesterday and
+      // fresh review B from yesterday, in this way B will be prioritized
+      // over A.
       final today = DateTime.now().millisecondsSinceEpoch;
       switch (mode) {
         case StudyModes.writing:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
               "WHERE ${WordTableFields.previousIntervalAsDateWritingField} <= $today "
-              "ORDER BY ${WordTableFields.previousIntervalAsDateWritingField} ASC, "
-              "${WordTableFields.winRateWritingField} ASC "
+              "ORDER BY ${WordTableFields.previousIntervalAsDateWritingField} DESC, "
+              "${WordTableFields.winRateWritingField} ASC, "
+              "${WordTableFields.dateAddedField} DESC "
               "LIMIT $limit";
           break;
         case StudyModes.reading:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
               "WHERE ${WordTableFields.previousIntervalAsDateReadingField} <= $today "
-              "ORDER BY ${WordTableFields.previousIntervalAsDateReadingField} ASC, "
-              "${WordTableFields.winRateReadingField} ASC "
+              "ORDER BY ${WordTableFields.previousIntervalAsDateReadingField} DESC, "
+              "${WordTableFields.winRateReadingField} ASC, "
+              "${WordTableFields.dateAddedField} DESC "
               "LIMIT $limit";
           break;
         case StudyModes.recognition:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
               "WHERE ${WordTableFields.previousIntervalAsDateRecognitionField} <= $today "
-              "ORDER BY ${WordTableFields.previousIntervalAsDateRecognitionField} ASC, "
-              "${WordTableFields.winRateRecognitionField} ASC "
+              "ORDER BY ${WordTableFields.previousIntervalAsDateRecognitionField} DESC, "
+              "${WordTableFields.winRateRecognitionField} ASC, "
+              "${WordTableFields.dateAddedField} DESC "
               "LIMIT $limit";
           break;
         case StudyModes.listening:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
               "WHERE ${WordTableFields.previousIntervalAsDateListeningField} <= $today "
-              "ORDER BY ${WordTableFields.previousIntervalAsDateListeningField} ASC, "
-              "${WordTableFields.winRateListeningField} ASC "
+              "ORDER BY ${WordTableFields.previousIntervalAsDateListeningField} DESC, "
+              "${WordTableFields.winRateListeningField} ASC, "
+              "${WordTableFields.dateAddedField} DESC "
               "LIMIT $limit";
           break;
         case StudyModes.speaking:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
               "WHERE ${WordTableFields.previousIntervalAsDateSpeakingField} <= $today "
-              "ORDER BY ${WordTableFields.previousIntervalAsDateSpeakingField} ASC, "
-              "${WordTableFields.winRateSpeakingField} ASC "
+              "ORDER BY ${WordTableFields.previousIntervalAsDateSpeakingField} DESC, "
+              "${WordTableFields.winRateSpeakingField} ASC, "
+              "${WordTableFields.dateAddedField} DESC "
               "LIMIT $limit";
           break;
       }
       final res = await _database.rawQuery(query);
-      return List.generate(res.length, (i) => Word.fromJson(res[i]));
+      final list = List.generate(res.length, (i) => Word.fromJson(res[i]));
+      return list;
     } catch (e) {
       return [];
     }
@@ -213,22 +264,106 @@ class WordRepositoryImpl implements IWordRepository {
   @override
   Future<List<int>> getSM2ReviewWordsAsForToday() async {
     try {
+      final prefs = _preferencesRepository;
+      final controlledPace =
+          prefs.readData(SharedKeys.dailyTestOnControlledPace);
+      List<String> limitQuery =
+          List.generate(StudyModes.values.length, (_) => '');
+      // Resets check on daily performed tests based on the ms on
+      // the saved key and the next day's 00:00 ms.
+      //
+      // writingDailyPerformed stores the next day's 00:00 ms. If
+      // now() ms is greater than writingDailyPerformed, it means that
+      // the test is ready to be performed again --> thus saving 0ms.
+      //
+      // The value of writingDailyPerformed is updated in test_result_bloc.
+      if (controlledPace) {
+        final now = DateTime.now().millisecondsSinceEpoch;
+        final limit =
+            ((await _database.query(WordTableFields.wordTable)).length / 7)
+                .ceil();
+
+        final w = prefs.readData(SharedKeys.writingDailyPerformed);
+        if (w == null || (w != null && w <= now)) {
+          prefs.saveData(SharedKeys.writingDailyPerformed, 0);
+          limitQuery[0] = "LIMIT $limit";
+        }
+        final r = prefs.readData(SharedKeys.readingDailyPerformed);
+        if (r == null || (r != null && r <= now)) {
+          prefs.saveData(SharedKeys.readingDailyPerformed, 0);
+          limitQuery[1] = "LIMIT $limit";
+        }
+        final rec = prefs.readData(SharedKeys.recognitionDailyPerformed);
+        if (rec == null || (rec != null && rec <= now)) {
+          prefs.saveData(SharedKeys.recognitionDailyPerformed, 0);
+          limitQuery[2] = "LIMIT $limit";
+        }
+        final l = prefs.readData(SharedKeys.listeningDailyPerformed);
+        if (l == null || (l != null && l <= now)) {
+          prefs.saveData(SharedKeys.listeningDailyPerformed, 0);
+          limitQuery[3] = "LIMIT $limit";
+        }
+        final s = prefs.readData(SharedKeys.speakingDailyPerformed);
+        if (s == null || (s != null && s <= now)) {
+          prefs.saveData(SharedKeys.speakingDailyPerformed, 0);
+          limitQuery[4] = "LIMIT $limit";
+        }
+      }
+
+      final writingNotification =
+          prefs.readData(SharedKeys.writingDailyNotification);
+      final readingNotification =
+          prefs.readData(SharedKeys.readingDailyNotification);
+      final recognitionNotification =
+          prefs.readData(SharedKeys.recognitionDailyNotification);
+      final listeningNotification =
+          prefs.readData(SharedKeys.listeningDailyNotification);
+      final speakingNotification =
+          prefs.readData(SharedKeys.speakingDailyNotification);
       final today = DateTime.now().millisecondsSinceEpoch;
-      final resWriting = await _database.rawQuery(
-          "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
-          "WHERE ${WordTableFields.previousIntervalAsDateWritingField} <= $today");
-      final resReading = await _database.rawQuery(
-          "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
-          "WHERE ${WordTableFields.previousIntervalAsDateReadingField} <= $today");
-      final resRecognition = await _database.rawQuery(
-          "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
-          "WHERE ${WordTableFields.previousIntervalAsDateRecognitionField} <= $today");
-      final resListening = await _database.rawQuery(
-          "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
-          "WHERE ${WordTableFields.previousIntervalAsDateListeningField} <= $today");
-      final resSpeaking = await _database.rawQuery(
-          "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
-          "WHERE ${WordTableFields.previousIntervalAsDateSpeakingField} <= $today");
+
+      final resWriting = writingNotification
+          // If no limit has been set and we are in controlledPace mode
+          // it means that there is no available tests for now.
+          ? controlledPace && limitQuery[0].isEmpty
+              ? []
+              : await _database.rawQuery(
+                  "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
+                  "WHERE ${WordTableFields.previousIntervalAsDateWritingField} <= $today "
+                  "${limitQuery[0]}")
+          : [];
+      final resReading = readingNotification
+          ? controlledPace && limitQuery[1].isEmpty
+              ? []
+              : await _database.rawQuery(
+                  "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
+                  "WHERE ${WordTableFields.previousIntervalAsDateReadingField} <= $today "
+                  "${limitQuery[1]}")
+          : [];
+      final resRecognition = recognitionNotification
+          ? controlledPace && limitQuery[2].isEmpty
+              ? []
+              : await _database.rawQuery(
+                  "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
+                  "WHERE ${WordTableFields.previousIntervalAsDateRecognitionField} <= $today "
+                  "${limitQuery[2]}")
+          : [];
+      final resListening = listeningNotification
+          ? controlledPace && limitQuery[3].isEmpty
+              ? []
+              : await _database.rawQuery(
+                  "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
+                  "WHERE ${WordTableFields.previousIntervalAsDateListeningField} <= $today "
+                  "${limitQuery[3]}")
+          : [];
+      final resSpeaking = speakingNotification
+          ? controlledPace && limitQuery[4].isEmpty
+              ? []
+              : await _database.rawQuery(
+                  "SELECT ${WordTableFields.wordField} FROM ${WordTableFields.wordTable} "
+                  "WHERE ${WordTableFields.previousIntervalAsDateSpeakingField} <= $today "
+                  "${limitQuery[4]}")
+          : [];
       return [
         resWriting.length,
         resReading.length,

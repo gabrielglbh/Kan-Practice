@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 enum WordListFilters {
   all,
+  recentlyAdded,
   alphabetically,
   writing,
   reading,
@@ -16,6 +17,8 @@ extension KanListFiltersExtensions on WordListFilters {
     switch (this) {
       case WordListFilters.all:
         return "filters_all".tr();
+      case WordListFilters.recentlyAdded:
+        return "filter_recently_added".tr();
       case WordListFilters.alphabetically:
         return "ABC";
       case WordListFilters.writing:
@@ -47,6 +50,8 @@ extension KanListFiltersExtensions on WordListFilters {
         return ListTableFields.lastUpdatedField;
       case WordListFilters.alphabetically:
         return ListTableFields.nameField;
+      case WordListFilters.recentlyAdded:
+        return WordTableFields.dateAddedField;
     }
   }
 }
@@ -55,6 +60,8 @@ class KanListFiltersUtils {
   static WordListFilters getFilterFrom(String f) {
     if (f == ListTableFields.lastUpdatedField) {
       return WordListFilters.all;
+    } else if (f == WordTableFields.dateAddedField) {
+      return WordListFilters.recentlyAdded;
     } else if (f == ListTableFields.nameField) {
       return WordListFilters.alphabetically;
     } else if (f == ListTableFields.totalWinRateWritingField) {

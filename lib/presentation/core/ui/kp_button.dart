@@ -18,16 +18,18 @@ class KPButton extends StatelessWidget {
   final String title2;
 
   /// Action to perform when tapping the button
-  final Function onTap;
-  const KPButton(
-      {Key? key,
-      this.width = false,
-      this.color = KPColors.secondaryColor,
-      this.title1,
-      required this.title2,
-      required this.onTap,
-      this.icon})
-      : super(key: key);
+  final Function()? onTap;
+  final Widget? customIcon;
+  const KPButton({
+    Key? key,
+    this.width = false,
+    this.color = KPColors.secondaryColor,
+    this.title1,
+    required this.title2,
+    required this.onTap,
+    this.icon,
+    this.customIcon,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class KPButton extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () => onTap(),
+          onTap: onTap,
           borderRadius: BorderRadius.circular(KPRadius.radius16),
           child: Container(
             width: width != false ? KPSizes.customButtonWidth : null,
@@ -69,6 +71,10 @@ class KPButton extends StatelessWidget {
                   child: Padding(
                       padding: const EdgeInsets.only(bottom: KPMargins.margin8),
                       child: Icon(icon, color: KPColors.primaryLight)),
+                ),
+                Visibility(
+                  visible: title1 == null && icon == null && customIcon != null,
+                  child: customIcon ?? const SizedBox(),
                 ),
                 FittedBox(
                   fit: BoxFit.fitWidth,

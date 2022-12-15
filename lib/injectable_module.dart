@@ -38,7 +38,7 @@ abstract class InjectableModule {
 
     return await openDatabase(
       path,
-      version: 10,
+      version: 11,
       singleInstance: true,
       onConfigure: (db) async {
         await db.execute('PRAGMA foreign_keys = ON');
@@ -54,6 +54,7 @@ abstract class InjectableModule {
         if (oldVersion <= 7) c.version7to8(db);
         if (oldVersion <= 8) c.version8to9(db);
         if (oldVersion <= 9) c.version9to10(db);
+        if (oldVersion <= 10) c.version10to11(db);
       },
       onCreate: (Database db, int version) async {
         await db.execute("CREATE TABLE ${WordTableFields.wordTable}("
@@ -171,6 +172,30 @@ abstract class InjectableModule {
             "${TestSpecificDataTableFields.totalWinRateRecognitionField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalWinRateListeningField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalWinRateSpeakingField} INTEGER NOT NULL DEFAULT 0)");
+
+        await db.execute("CREATE TABLE ${GrammarTableFields.grammarTable}("
+            "${GrammarTableFields.nameField} TEXT NOT NULL, "
+            "${GrammarTableFields.definitionField} TEXT NOT NULL, "
+            "${GrammarTableFields.exampleField} TEXT NOT NULL, "
+            "${GrammarTableFields.listNameField} TEXT NOT NULL, "
+            "${GrammarTableFields.winRateDefinitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${GrammarTableFields.winRateRecognitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${GrammarTableFields.dateAddedField} INTEGER NOT NULL DEFAULT 0, "
+            "${GrammarTableFields.dateLastShown} INTEGER NOT NULL DEFAULT 0, "
+            "${GrammarTableFields.dateLastDefinitionWriting} INTEGER NOT NULL DEFAULT 0, "
+            "${GrammarTableFields.dateLastShownRecognition} INTEGER NOT NULL DEFAULT 0, "
+            "${GrammarTableFields.repetitionsDefinitionField} INTEGER NOT NULL DEFAULT 0, "
+            "${GrammarTableFields.previousEaseFactorDefinitionField} INTEGER NOT NULL DEFAULT 2.5, "
+            "${GrammarTableFields.previousIntervalDefinitionField} INTEGER NOT NULL DEFAULT 0, "
+            "${GrammarTableFields.previousIntervalAsDateDefinitionField} INTEGER NOT NULL DEFAULT 0, "
+            "${GrammarTableFields.repetitionsRecognitionField} INTEGER NOT NULL DEFAULT 0, "
+            "${GrammarTableFields.previousEaseFactorRecognitionField} INTEGER NOT NULL DEFAULT 2.5, "
+            "${GrammarTableFields.previousIntervalRecognitionField} INTEGER NOT NULL DEFAULT 0, "
+            "${GrammarTableFields.previousIntervalAsDateRecognitionField} INTEGER NOT NULL DEFAULT 0, "
+            "PRIMARY KEY (${GrammarTableFields.nameField}, ${GrammarTableFields.definitionField}), "
+            "FOREIGN KEY (${GrammarTableFields.listNameField}) "
+            "REFERENCES ${ListTableFields.listsTable}(${ListTableFields.nameField}) "
+            "ON DELETE CASCADE ON UPDATE CASCADE)");
       },
     );
   }

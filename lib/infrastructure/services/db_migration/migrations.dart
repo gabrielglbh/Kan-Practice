@@ -5,6 +5,32 @@ import 'package:kanpractice/domain/word/word.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Migrations extends MigrationUtils {
+  Future<void> version10to11(Database db) async {
+    await db.execute("CREATE TABLE ${GrammarTableFields.grammarTable}("
+        "${GrammarTableFields.nameField} TEXT NOT NULL, "
+        "${GrammarTableFields.definitionField} TEXT NOT NULL, "
+        "${GrammarTableFields.exampleField} TEXT NOT NULL, "
+        "${GrammarTableFields.listNameField} TEXT NOT NULL, "
+        "${GrammarTableFields.winRateDefinitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+        "${GrammarTableFields.winRateRecognitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+        "${GrammarTableFields.dateAddedField} INTEGER NOT NULL DEFAULT 0, "
+        "${GrammarTableFields.dateLastShown} INTEGER NOT NULL DEFAULT 0, "
+        "${GrammarTableFields.dateLastDefinitionWriting} INTEGER NOT NULL DEFAULT 0, "
+        "${GrammarTableFields.dateLastShownRecognition} INTEGER NOT NULL DEFAULT 0, "
+        "${GrammarTableFields.repetitionsDefinitionField} INTEGER NOT NULL DEFAULT 0, "
+        "${GrammarTableFields.previousEaseFactorDefinitionField} INTEGER NOT NULL DEFAULT 2.5, "
+        "${GrammarTableFields.previousIntervalDefinitionField} INTEGER NOT NULL DEFAULT 0, "
+        "${GrammarTableFields.previousIntervalAsDateDefinitionField} INTEGER NOT NULL DEFAULT 0, "
+        "${GrammarTableFields.repetitionsRecognitionField} INTEGER NOT NULL DEFAULT 0, "
+        "${GrammarTableFields.previousEaseFactorRecognitionField} INTEGER NOT NULL DEFAULT 2.5, "
+        "${GrammarTableFields.previousIntervalRecognitionField} INTEGER NOT NULL DEFAULT 0, "
+        "${GrammarTableFields.previousIntervalAsDateRecognitionField} INTEGER NOT NULL DEFAULT 0, "
+        "PRIMARY KEY (${GrammarTableFields.nameField}, ${GrammarTableFields.definitionField}), "
+        "FOREIGN KEY (${GrammarTableFields.listNameField}) "
+        "REFERENCES ${ListTableFields.listsTable}(${ListTableFields.nameField}) "
+        "ON DELETE CASCADE ON UPDATE CASCADE)");
+  }
+
   Future<void> version9to10(Database db) async {
     await db.rawQuery("ALTER TABLE ${WordTableFields.wordTable} "
         "ADD COLUMN ${WordTableFields.repetitionsWritingField} INTEGER NOT NULL DEFAULT 0");

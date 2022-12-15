@@ -137,6 +137,34 @@ class TestSpecificDataTableFields {
   static const String totalWinRateSpeakingField = "totalWinRateSpeaking";
 }
 
+class GrammarTableFields {
+  static const String grammarTable = "GRAMMAR_TABLE";
+  static const String nameField = "name";
+  static const String definitionField = "definition";
+  static const String exampleField = "example";
+  static const String listNameField = "listName";
+  static const String winRateDefinitionField = "winRateDefinition";
+  static const String winRateRecognitionField = "winRateRecognition";
+  static const String dateAddedField = "dateAdded";
+  static const String dateLastShown = "dateLastShown";
+  static const String dateLastDefinitionWriting = "dateLastDefinitionWriting";
+  static const String dateLastShownRecognition = "dateLastShownRecognition";
+  static const String repetitionsDefinitionField = "repetitionsDefinition";
+  static const String previousEaseFactorDefinitionField =
+      "previousEaseFactorDefinition";
+  static const String previousIntervalDefinitionField =
+      "previousIntervalDefinition";
+  static const String previousIntervalAsDateDefinitionField =
+      "previousIntervalAsDateDefinition";
+  static const String repetitionsRecognitionField = "repetitionsRecognition";
+  static const String previousEaseFactorRecognitionField =
+      "previousEaseFactorRecognition";
+  static const String previousIntervalRecognitionField =
+      "previousIntervalRecognition";
+  static const String previousIntervalAsDateRecognitionField =
+      "previousIntervalAsDateRecognition";
+}
+
 class DatabaseConstants {
   static const double emptyWinRate = -1;
 }

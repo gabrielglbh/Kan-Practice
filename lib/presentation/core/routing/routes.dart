@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:kanpractice/presentation/add_grammar_page/add_grammar_page.dart';
+import 'package:kanpractice/presentation/add_grammar_page/arguments.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/account_login_page/account_login_page.dart';
@@ -107,6 +109,9 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return CupertinoPageRoute(builder: (_) {
         return const SettingsDailyOptionsPage();
       });
+    case KanPracticePages.addGrammarPage:
+      AddGrammarArgs args = settings.arguments as AddGrammarArgs;
+      return CupertinoPageRoute(builder: (_) => AddGrammarPage(args: args));
   }
   return null;
 }

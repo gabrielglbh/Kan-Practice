@@ -394,5 +394,19 @@
   "test_info_controlled_pace": "Solo podrás completar un test diario por modo de estudio al día.",
   "list_details_words": "Palabras",
   "list_details_grammar": "Gramática",
-  "list_details_searchBar_hint_grammar": "Buscar por nombre, definición..."
+  "list_details_searchBar_hint_grammar": "Buscar por nombre, definición...",
+  "add_grammar_createGrammar_successful": "Punto de gramática creado en KanList con éxito",
+  "add_grammar_createGrammar_failed_insertion": "Error al crear punto gramatical: ya está en otra lista",
+  "add_grammar_createGrammar_failed": "Error genérico al crear punto gramatical",
+  "add_grammar_updateGrammar_failed_update": "Error al actualizar punto gramatical",
+  "add_grammar_updateGrammar_failed": "Error genérico al actualizar punto gramatical",
+  "add_grammar_validateGrammar_failed": "Rellenar correctamente el formulario",
+  "add_grammar_update_title": "Actualizar",
+  "add_grammar_new_title": "Añadir",
+  "add_grammar_textForm_grammar": "Punto Gramatical",
+  "add_grammar_textForm_grammar_ext": "Lugar (に) Sustantivo あります/います",
+  "add_grammar_textForm_definition": "Definición",
+  "add_grammar_textForm_definition_ext": "に denota que (Sustantivo) existe en (Lugar)",
+  "add_grammar_textForm_example": "Ejemplo(s)",
+  "add_grammar_textForm_example_ext": "私の部屋に椅子があります\n事務所にあなたがいました"
 }

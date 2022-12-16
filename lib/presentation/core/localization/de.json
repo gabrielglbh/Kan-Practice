@@ -394,5 +394,19 @@
   "test_info_controlled_pace": "Sie können nur einen Tagestest pro Lernmodus und Tag absolvieren.",
   "list_details_words": "Wörter",
   "list_details_grammar": "Grammatik",
-  "list_details_searchBar_hint_grammar": "Suche nach Name, Definition..."
+  "list_details_searchBar_hint_grammar": "Suche nach Name, Definition...",
+  "add_grammar_createGrammar_successful": "Grammatikpunkt in KanList erfolgreich erstellt",
+  "add_grammar_createGrammar_failed_insertion": "Fehler beim Erstellen des Grammatikpunkts: bereits in anderer Liste",
+  "add_grammar_createGrammar_failed": "Generischer Fehler beim Erstellen eines Grammatikpunktes",
+  "add_grammar_updateGrammar_failed_update": "Fehler beim Aktualisieren des Grammatikpunkts",
+  "add_grammar_updateGrammar_failed": "Generischer Fehler beim Aktualisieren des Grammatikpunkts",
+  "add_grammar_validateGrammar_failed": "Füllen Sie das Formular korrekt aus",
+  "add_grammar_update_title": "Aktualisieren",
+  "add_grammar_new_title": "Hinzufügen",
+  "add_grammar_textForm_grammar": "Grammatikpunkt",
+  "add_grammar_textForm_grammar_ext": "Ort (に) Substantiv あります/います",
+  "add_grammar_textForm_definition": "Definition",
+  "add_grammar_textForm_definition_ext": "に gibt an, dass (Substantiv) in (Ort) existiert",
+  "add_grammar_textForm_example": "Beispiel(e)",
+  "add_grammar_textForm_example_ext": "私の部屋に椅子があります\n事務所にあなたがいました"
 }

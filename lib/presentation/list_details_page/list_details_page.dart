@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/list_details/list_details_bloc.dart';
 import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/presentation/add_grammar_page/arguments.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/list/list.dart';
@@ -66,11 +67,13 @@ class _ListDetailsPageState extends State<ListDetailsPage>
 
   _focusListener() => setState(() => _searchHasFocus = _searchBarFn.hasFocus);
 
+  // TODO: Loading grammar event
   _addLoadingEvent({bool reset = false}) {
     return getIt<ListDetailBloc>()
         .add(ListDetailEventLoading(_listName, reset: reset));
   }
 
+  // TODO: Searching grammar event
   _addSearchingEvent(String query, {bool reset = false}) {
     return getIt<ListDetailBloc>()
         .add(ListDetailEventSearching(query, _listName, reset: reset));
@@ -160,10 +163,17 @@ class _ListDetailsPageState extends State<ListDetailsPage>
             ),
             IconButton(
               onPressed: () async {
-                await Navigator.of(context)
-                    .pushNamed(KanPracticePages.addKanjiPage,
-                        arguments: AddWordArgs(listName: _listName))
-                    .then((code) => _addLoadingEvent(reset: true));
+                if (_currentPage == ListDetailsType.words) {
+                  await Navigator.of(context)
+                      .pushNamed(KanPracticePages.addKanjiPage,
+                          arguments: AddWordArgs(listName: _listName))
+                      .then((code) => _addLoadingEvent(reset: true));
+                } else {
+                  await Navigator.of(context)
+                      .pushNamed(KanPracticePages.addGrammarPage,
+                          arguments: AddGrammarArgs(listName: _listName))
+                      .then((code) => _addLoadingEvent(reset: true));
+                }
               },
               icon: const Icon(Icons.add),
             )

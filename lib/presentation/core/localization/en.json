@@ -394,5 +394,19 @@
   "test_info_controlled_pace": "You will only be able to complete one daily test per study mode per day.",
   "list_details_words": "Words",
   "list_details_grammar": "Grammar",
-  "list_details_searchBar_hint_grammar": "Search by name, definition..."
+  "list_details_searchBar_hint_grammar": "Search by name, definition...",
+  "add_grammar_createGrammar_successful": "Grammar point created in KanList successfully",
+  "add_grammar_createGrammar_failed_insertion": "Error creating grammar point: already in other list",
+  "add_grammar_createGrammar_failed": "Generic error creating grammar point",
+  "add_grammar_updateGrammar_failed_update": "Error updating grammar point",
+  "add_grammar_updateGrammar_failed": "Generic error updating grammar point",
+  "add_grammar_validateGrammar_failed": "Fill up the form correctly",
+  "add_grammar_update_title": "Update",
+  "add_grammar_new_title": "Add",
+  "add_grammar_textForm_grammar": "Grammar Point",
+  "add_grammar_textForm_grammar_ext": "Place (に) Noun あります/います",
+  "add_grammar_textForm_definition": "Definition",
+  "add_grammar_textForm_definition_ext": "に denotes that (Noun) exists in (Place)",
+  "add_grammar_textForm_example": "Example(s)",
+  "add_grammar_textForm_example_ext": "私の部屋に椅子があります\n事務所にあなたがいました"
 }

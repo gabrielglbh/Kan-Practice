@@ -14,6 +14,8 @@ import 'package:kanpractice/presentation/dictionary_details_page/dictionary_deta
 import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
 import 'package:kanpractice/presentation/dictionary_page/dictionary_page.dart';
 import 'package:kanpractice/presentation/folder_details_page/folder_details_page.dart';
+import 'package:kanpractice/presentation/grammar_modes/definition_page.dart';
+import 'package:kanpractice/presentation/grammar_modes/utils/grammar_mode_arguments.dart';
 import 'package:kanpractice/presentation/home_page/home_page.dart';
 import 'package:kanpractice/presentation/list_details_page/list_details_page.dart';
 import 'package:kanpractice/presentation/settings_daily_options_page/settings_daily_options_page.dart';
@@ -61,6 +63,9 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case KanPracticePages.speakingStudyPage:
       ModeArguments args = settings.arguments as ModeArguments;
       return CupertinoPageRoute(builder: (_) => SpeakingStudy(args: args));
+    case KanPracticePages.definitionStudyPage:
+      GrammarModeArguments args = settings.arguments as GrammarModeArguments;
+      return CupertinoPageRoute(builder: (_) => DefinitionStudy(args: args));
     case KanPracticePages.testResultPage:
       TestResultArguments args = settings.arguments as TestResultArguments;
       return CupertinoPageRoute(builder: (_) => TestResultPage(args: args));

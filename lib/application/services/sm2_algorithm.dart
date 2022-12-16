@@ -1,5 +1,3 @@
-part of 'study_mode_bloc.dart';
-
 class SMAlgorithm {
   /// Days from today to review the word again
   final int interval;

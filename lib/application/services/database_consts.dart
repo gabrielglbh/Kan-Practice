@@ -144,12 +144,9 @@ class GrammarTableFields {
   static const String exampleField = "example";
   static const String listNameField = "listName";
   static const String winRateDefinitionField = "winRateDefinition";
-  static const String winRateRecognitionField = "winRateRecognition";
   static const String dateAddedField = "dateAdded";
   static const String dateLastShownField = "dateLastShown";
   static const String dateLastShownDefinitionField = "dateLastShownDefinition";
-  static const String dateLastShownRecognitionField =
-      "dateLastShownRecognition";
   static const String repetitionsDefinitionField = "repetitionsDefinition";
   static const String previousEaseFactorDefinitionField =
       "previousEaseFactorDefinition";
@@ -157,13 +154,6 @@ class GrammarTableFields {
       "previousIntervalDefinition";
   static const String previousIntervalAsDateDefinitionField =
       "previousIntervalAsDateDefinition";
-  static const String repetitionsRecognitionField = "repetitionsRecognition";
-  static const String previousEaseFactorRecognitionField =
-      "previousEaseFactorRecognition";
-  static const String previousIntervalRecognitionField =
-      "previousIntervalRecognition";
-  static const String previousIntervalAsDateRecognitionField =
-      "previousIntervalAsDateRecognition";
 }
 
 class DatabaseConstants {

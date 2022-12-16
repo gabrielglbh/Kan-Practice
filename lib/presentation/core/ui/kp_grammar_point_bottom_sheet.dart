@@ -4,7 +4,7 @@ import 'package:kanpractice/application/grammar_details/grammar_details_bloc.dar
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_grammar_mode_radial_graph.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_win_rate_chart.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
@@ -124,9 +124,10 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
             ),
           ),
           const Divider(),
-          KPGrammarModeRadialGraph(
-            definition: grammarPoint.winRateDefinition,
-            recognition: grammarPoint.winRateRecognition,
+          WinRateChart(
+            winRate: grammarPoint.winRateDefinition,
+            backgroundColor: GrammarModes.definition.color,
+            size: KPSizes.defaultSizeWinRateChart / 1.2,
           ),
           _lastTimeShownWidget(context, grammarPoint),
           Visibility(
@@ -144,77 +145,21 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
 
   Widget _lastTimeShownWidget(BuildContext context, GrammarPoint grammarPoint) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
-        child: ExpansionTile(
-            iconColor: KPColors.secondaryColor,
-            textColor: KPColors.secondaryColor,
-            tilePadding: const EdgeInsets.all(0),
-            title: FittedBox(
-                fit: BoxFit.contain,
-                child: Text(
-                    "${"created_label".tr()} "
-                    "${Utils.parseDateMilliseconds(context, grammarPoint.dateAdded)} • "
-                    "${"last_seen_label".tr()} "
-                    "${Utils.parseDateMilliseconds(context, grammarPoint.dateLastShown)}",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyText2)),
-            children: [
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: GrammarModes.values.length,
-                itemBuilder: (context, index) {
-                  return _lastSeenOnModes(
-                      context, grammarPoint, GrammarModes.values[index]);
-                },
-              )
-            ]));
-  }
-
-  Widget _lastSeenOnModes(
-      BuildContext context, GrammarPoint grammarPoint, GrammarModes mode) {
-    int? date = 0;
-    String parsedDate = "-";
-    switch (mode) {
-      case GrammarModes.definition:
-        date = grammarPoint.dateLastShownDefinition;
-        break;
-      case GrammarModes.recognition:
-        date = grammarPoint.dateLastShownRecognition;
-        break;
-    }
-    if (date != 0) {
-      parsedDate =
-          "${"last_seen_label".tr()} ${Utils.parseDateMilliseconds(context, date)}";
-    }
-
-    return Container(
-      height: KPMargins.margin24,
-      padding: const EdgeInsets.only(
-          left: KPMargins.margin8,
-          right: KPMargins.margin16,
-          bottom: KPMargins.margin8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Text(" • ${(mode.mode).capitalized}:",
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.subtitle2),
-          ),
-          Expanded(
-              child: Container(
-            alignment: Alignment.centerRight,
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: Text(parsedDate,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.right,
-                  style: Theme.of(context).textTheme.subtitle2),
-            ),
-          ))
-        ],
+      padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
+      child: ListTile(
+        iconColor: KPColors.secondaryColor,
+        textColor: KPColors.secondaryColor,
+        contentPadding: const EdgeInsets.all(0),
+        title: FittedBox(
+          fit: BoxFit.contain,
+          child: Text(
+              "${"created_label".tr()} "
+              "${Utils.parseDateMilliseconds(context, grammarPoint.dateAdded)} • "
+              "${"last_seen_label".tr()} "
+              "${Utils.parseDateMilliseconds(context, grammarPoint.dateLastShown)}",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyText2),
+        ),
       ),
     );
   }

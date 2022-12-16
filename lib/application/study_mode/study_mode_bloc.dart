@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
+import 'package:kanpractice/application/services/sm2_algorithm.dart';
 import 'package:kanpractice/domain/list/i_list_repository.dart';
 import 'package:kanpractice/domain/word/i_word_repository.dart';
 import 'package:kanpractice/domain/word/word.dart';
@@ -10,7 +11,6 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 
 part 'study_mode_event.dart';
 part 'study_mode_state.dart';
-part 'sm2_algorithm.dart';
 
 @lazySingleton
 class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {

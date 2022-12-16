@@ -7,7 +7,7 @@ import 'package:kanpractice/presentation/core/ui/kp_kanji_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 
-class KanjiItem extends StatelessWidget {
+class WordItem extends StatelessWidget {
   final bool aggregateStats;
   final String listName;
   final WordList list;
@@ -17,7 +17,7 @@ class KanjiItem extends StatelessWidget {
   final Function() onTap;
   final int index;
   final Function() onShowModal;
-  const KanjiItem({
+  const WordItem({
     Key? key,
     this.aggregateStats = false,
     required this.listName,

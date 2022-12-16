@@ -188,7 +188,8 @@ class _ListDetailsPageState extends State<ListDetailsPage>
                   await Navigator.of(context)
                       .pushNamed(KanPracticePages.addGrammarPage,
                           arguments: AddGrammarPointArgs(listName: _listName))
-                      .then((code) => _addWordLoadingEvent(reset: true));
+                      .then(
+                          (code) => _addGrammarPointLoadingEvent(reset: true));
                 }
               },
               icon: const Icon(Icons.add),
@@ -254,7 +255,12 @@ class _ListDetailsPageState extends State<ListDetailsPage>
                             onEnd: () => _onTutorial = false);
                   },
                 ),
-                const GrammarListWidget(),
+                GrammarListWidget(
+                  list: widget.list,
+                  listName: _listName,
+                  query: _query,
+                  searchBarFn: _searchBarFn,
+                ),
               ],
             ),
           ),

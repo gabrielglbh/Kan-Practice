@@ -17,7 +17,7 @@ class ListDetailGrammarPointsStateSearching
 
 class ListDetailGrammarPointsStateLoadedPractice
     extends ListDetailGrammarPointsState {
-  final StudyModes mode;
+  final GrammarModes mode;
   final List<GrammarPoint> list;
 
   const ListDetailGrammarPointsStateLoadedPractice(this.mode, this.list);

@@ -32,11 +32,11 @@ class ListDetailGrammarPointsEventSearching
 
 class ListDetailGrammarPointsEventLoadUpPractice
     extends ListDetailGrammarPointsEvent {
-  final StudyModes studyMode;
+  final GrammarModes grammarMode;
   final String list;
 
-  const ListDetailGrammarPointsEventLoadUpPractice(this.list, this.studyMode);
+  const ListDetailGrammarPointsEventLoadUpPractice(this.list, this.grammarMode);
 
   @override
-  List<Object> get props => [list, studyMode];
+  List<Object> get props => [list, grammarMode];
 }

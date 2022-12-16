@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/domain/grammar_point/i_grammar_point_repository.dart';
-import 'package:kanpractice/presentation/core/types/study_modes.dart';
+import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
@@ -22,7 +22,7 @@ class ListDetailGrammarPointsBloc
 
     /// Maintain the list for pagination purposes on search
     List<GrammarPoint> searchList = [];
-    const int limit = LazyLoadingLimits.wordList;
+    const int limit = LazyLoadingLimits.grammarPointList;
 
     /// Loading offset for normal pagination
     int loadingTimes = 0;
@@ -88,7 +88,7 @@ class ListDetailGrammarPointsBloc
           allList.shuffle();
           List<GrammarPoint> list = allList;
           emit(ListDetailGrammarPointsStateLoadedPractice(
-              event.studyMode, list));
+              event.grammarMode, list));
         } else {
           emit(ListDetailGrammarPointsStateFailure(
               error: "list_details_loadUpPractice_failed".tr()));

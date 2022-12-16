@@ -408,5 +408,9 @@
   "add_grammar_textForm_definition": "Definition",
   "add_grammar_textForm_definition_ext": "に gibt an, dass (Substantiv) in (Ort) existiert",
   "add_grammar_textForm_example": "Beispiel(e)",
-  "add_grammar_textForm_example_ext": "私の部屋に椅子があります\n事務所にあなたがいました"
+  "add_grammar_textForm_example_ext": "私の部屋に椅子があります\n事務所にあなたがいました",
+  "study_modes_definition": "Definition",
+  "study_modes_definition_ext": "定義",
+  "list_details_load_failed_grammar": "Grammatikpunkte konnten nicht abgerufen werden",
+  "list_details_empty_grammar": "Keine Grammatikpunkte verfügbar.\n\n Fügen Sie neue Grammatikpunkte zu dieser Liste hinzu, indem Sie auf '+' tippen, oder importieren Sie sie aus Ihrer Sicherung."
 }

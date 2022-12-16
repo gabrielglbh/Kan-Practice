@@ -15,7 +15,7 @@ import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
-import 'package:kanpractice/presentation/list_details_page/widgets/kanji_item.dart';
+import 'package:kanpractice/presentation/list_details_page/widgets/word_item.dart';
 import 'package:kanpractice/presentation/list_details_page/widgets/practice_on_list_bottom_sheet.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
@@ -267,7 +267,7 @@ class _WordListWidgetState extends State<WordListWidget>
           crossAxisCount: 5, childAspectRatio: 2),
       itemBuilder: (context, k) {
         Word? kanji = state.list[k];
-        return KanjiItem(
+        return WordItem(
           aggregateStats: _aggrStats,
           index: k,
           kanji: kanji,

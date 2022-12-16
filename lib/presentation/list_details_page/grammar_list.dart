@@ -15,6 +15,7 @@ import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/list_details_page/widgets/grammar_point_item.dart';
+import 'package:kanpractice/presentation/list_details_page/widgets/practice_grammar_bottom_sheet.dart';
 
 class GrammarListWidget extends StatefulWidget {
   final WordList list;
@@ -209,12 +210,11 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
             title2: "list_details_practice_button_label".tr(),
             onTap: () async {
               if (_aggrStats) {
-                // TODO: PracticeGrammarBottomSheet
-                /*return await PracticeListBottomSheet.show(
+                return await PracticeGrammarBottomSheet.show(
                         context, widget.listName, state.list)
                     .then(
                   (value) => _addLoadingEvent(reset: true),
-                );*/
+                );
               }
               getIt<ListDetailGrammarPointsBloc>().add(
                   ListDetailGrammarPointsEventLoadUpPractice(

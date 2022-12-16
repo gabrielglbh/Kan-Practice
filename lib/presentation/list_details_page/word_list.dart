@@ -16,7 +16,7 @@ import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/list_details_page/widgets/word_item.dart';
-import 'package:kanpractice/presentation/list_details_page/widgets/practice_on_list_bottom_sheet.dart';
+import 'package:kanpractice/presentation/list_details_page/widgets/practice_words_bottom_sheet.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
 class WordListWidget extends StatefulWidget {
@@ -237,7 +237,7 @@ class _WordListWidgetState extends State<WordListWidget>
             title2: "list_details_practice_button_label".tr(),
             onTap: () async {
               if (_aggrStats) {
-                return await PracticeListBottomSheet.show(
+                return await PracticeWordsBottomSheet.show(
                         context, widget.listName, state.list)
                     .then(
                   (value) => _addLoadingEvent(reset: true),

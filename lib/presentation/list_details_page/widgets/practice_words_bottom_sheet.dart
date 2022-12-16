@@ -9,10 +9,10 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
-class PracticeListBottomSheet extends StatefulWidget {
+class PracticeWordsBottomSheet extends StatefulWidget {
   final String listName;
   final List<Word> list;
-  const PracticeListBottomSheet({
+  const PracticeWordsBottomSheet({
     Key? key,
     required this.listName,
     required this.list,
@@ -27,15 +27,15 @@ class PracticeListBottomSheet extends StatefulWidget {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (context) =>
-            PracticeListBottomSheet(listName: listName, list: list));
+            PracticeWordsBottomSheet(listName: listName, list: list));
   }
 
   @override
-  State<PracticeListBottomSheet> createState() =>
-      _PracticeListBottomSheetState();
+  State<PracticeWordsBottomSheet> createState() =>
+      _PracticeWordsBottomSheetState();
 }
 
-class _PracticeListBottomSheetState extends State<PracticeListBottomSheet> {
+class _PracticeWordsBottomSheetState extends State<PracticeWordsBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return BottomSheet(

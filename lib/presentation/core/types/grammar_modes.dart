@@ -44,7 +44,7 @@ extension GrammarModesExt on GrammarModes {
 
   String get page {
     switch (this) {
-      // TODO: Decide what to do
+      // TODO: Create grammar mode practice page
       case GrammarModes.definition:
         return KanPracticePages.readingStudyPage;
       case GrammarModes.recognition:

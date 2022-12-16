@@ -213,7 +213,8 @@ class _ListDetailsPageState extends State<ListDetailsPage>
                   searchBarFn: _searchBarFn,
                   onStartTutorial: () async {
                     _onTutorial = true;
-                    await TutorialCoach([vocabulary, actions, changeName],
+                    await TutorialCoach(
+                            [vocabulary, navigation, actions, changeName],
                             CoachTutorialParts.details)
                         .showTutorial(context,
                             onEnd: () => _onTutorial = false);

@@ -146,9 +146,10 @@ class GrammarTableFields {
   static const String winRateDefinitionField = "winRateDefinition";
   static const String winRateRecognitionField = "winRateRecognition";
   static const String dateAddedField = "dateAdded";
-  static const String dateLastShown = "dateLastShown";
-  static const String dateLastDefinitionWriting = "dateLastDefinitionWriting";
-  static const String dateLastShownRecognition = "dateLastShownRecognition";
+  static const String dateLastShownField = "dateLastShown";
+  static const String dateLastShownDefinitionField = "dateLastShownDefinition";
+  static const String dateLastShownRecognitionField =
+      "dateLastShownRecognition";
   static const String repetitionsDefinitionField = "repetitionsDefinition";
   static const String previousEaseFactorDefinitionField =
       "previousEaseFactorDefinition";

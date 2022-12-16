@@ -204,6 +204,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
           Expanded(
             child: PageView(
               controller: _pageController,
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 WordListWidget(
                   key: vocabulary,

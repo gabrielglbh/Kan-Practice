@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/list_details/list_details_bloc.dart';
+import 'package:kanpractice/application/list_details_grammar_points/list_details_grammar_points_bloc.dart';
+import 'package:kanpractice/application/list_details_words/list_details_words_bloc.dart';
 import 'package:kanpractice/injection.dart';
-import 'package:kanpractice/presentation/add_grammar_page/arguments.dart';
+import 'package:kanpractice/presentation/add_grammar_point_page/arguments.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/list/list.dart';
@@ -54,6 +56,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
   void initState() {
     _searchBarFn.addListener(_focusListener);
     _listName = widget.list.name;
+    getIt<ListDetailBloc>().add(ListDetailEventIdle(widget.list.name));
     super.initState();
   }
 
@@ -67,16 +70,24 @@ class _ListDetailsPageState extends State<ListDetailsPage>
 
   _focusListener() => setState(() => _searchHasFocus = _searchBarFn.hasFocus);
 
-  // TODO: Loading grammar event
-  _addLoadingEvent({bool reset = false}) {
-    return getIt<ListDetailBloc>()
-        .add(ListDetailEventLoading(_listName, reset: reset));
+  _addWordLoadingEvent({bool reset = false}) {
+    return getIt<ListDetailWordsBloc>()
+        .add(ListDetailWordsEventLoading(_listName, reset: reset));
   }
 
-  // TODO: Searching grammar event
-  _addSearchingEvent(String query, {bool reset = false}) {
-    return getIt<ListDetailBloc>()
-        .add(ListDetailEventSearching(query, _listName, reset: reset));
+  _addWordSearchingEvent(String query, {bool reset = false}) {
+    return getIt<ListDetailWordsBloc>()
+        .add(ListDetailWordsEventSearching(query, _listName, reset: reset));
+  }
+
+  _addGrammarPointLoadingEvent({bool reset = false}) {
+    return getIt<ListDetailGrammarPointsBloc>()
+        .add(ListDetailGrammarPointsEventLoading(_listName, reset: reset));
+  }
+
+  _addGrammarPointSearchingEvent(String query, {bool reset = false}) {
+    return getIt<ListDetailGrammarPointsBloc>().add(
+        ListDetailGrammarPointsEventSearching(query, _listName, reset: reset));
   }
 
   _updateName(String name) {
@@ -117,7 +128,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
       onWillPop: () async {
         if (_onTutorial) return false;
         if (_searchHasFocus) {
-          _addLoadingEvent(reset: true);
+          _addWordLoadingEvent(reset: true);
           _searchBarFn.unfocus();
           return false;
         } else {
@@ -127,7 +138,12 @@ class _ListDetailsPageState extends State<ListDetailsPage>
       appBarTitle: BlocConsumer<ListDetailBloc, ListDetailState>(
         listener: ((context, state) {
           if (state is ListDetailStateLoaded) {
-            _listName = state.name;
+            final oldName = _listName;
+            setState(() => _listName = state.name);
+            if (_listName != oldName) {
+              _addWordLoadingEvent(reset: true);
+              _addGrammarPointLoadingEvent(reset: true);
+            }
           }
         }),
         builder: (context, state) {
@@ -142,7 +158,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
                       style: Theme.of(context).appBarTheme.titleTextStyle),
                 ));
           } else {
-            return Container();
+            return const SizedBox();
           }
         },
       ),
@@ -167,12 +183,12 @@ class _ListDetailsPageState extends State<ListDetailsPage>
                   await Navigator.of(context)
                       .pushNamed(KanPracticePages.addKanjiPage,
                           arguments: AddWordArgs(listName: _listName))
-                      .then((code) => _addLoadingEvent(reset: true));
+                      .then((code) => _addWordLoadingEvent(reset: true));
                 } else {
                   await Navigator.of(context)
                       .pushNamed(KanPracticePages.addGrammarPage,
-                          arguments: AddGrammarArgs(listName: _listName))
-                      .then((code) => _addLoadingEvent(reset: true));
+                          arguments: AddGrammarPointArgs(listName: _listName))
+                      .then((code) => _addWordLoadingEvent(reset: true));
                 }
               },
               icon: const Icon(Icons.add),
@@ -192,7 +208,6 @@ class _ListDetailsPageState extends State<ListDetailsPage>
       ),
       child: Column(
         children: [
-          // TODO: Grammar queries
           KPSearchBar(
             controller: _searchTextController,
             hint: _currentPage == ListDetailsType.words
@@ -203,12 +218,20 @@ class _ListDetailsPageState extends State<ListDetailsPage>
               /// Everytime the user queries, reset the query itself and
               /// the pagination index
               _query = query;
-              _addSearchingEvent(query, reset: true);
+              if (_currentPage == ListDetailsType.words) {
+                _addWordSearchingEvent(query, reset: true);
+              } else {
+                _addGrammarPointSearchingEvent(query, reset: true);
+              }
             },
             onExitSearch: () {
               /// Empty the query
               _query = "";
-              _addLoadingEvent(reset: true);
+              if (_currentPage == ListDetailsType.words) {
+                _addWordLoadingEvent(reset: true);
+              } else {
+                _addGrammarPointLoadingEvent(reset: true);
+              }
             },
           ),
           Expanded(
@@ -219,6 +242,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
                 WordListWidget(
                   key: vocabulary,
                   list: widget.list,
+                  listName: _listName,
                   query: _query,
                   searchBarFn: _searchBarFn,
                   onStartTutorial: () async {

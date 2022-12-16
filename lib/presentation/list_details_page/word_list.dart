@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/application/list_details/list_details_bloc.dart';
+import 'package:kanpractice/application/list_details_words/list_details_words_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
@@ -21,16 +21,18 @@ import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
 class WordListWidget extends StatefulWidget {
   final WordList list;
+  final String listName;
   final String query;
   final Function() onStartTutorial;
   final FocusNode? searchBarFn;
-  const WordListWidget({
-    Key? key,
-    required this.list,
-    required this.query,
-    required this.onStartTutorial,
-    this.searchBarFn,
-  }) : super(key: key);
+  const WordListWidget(
+      {Key? key,
+      required this.list,
+      required this.query,
+      required this.onStartTutorial,
+      this.searchBarFn,
+      required this.listName})
+      : super(key: key);
 
   @override
   State<WordListWidget> createState() => _WordListWidgetState();
@@ -44,20 +46,16 @@ class _WordListWidgetState extends State<WordListWidget>
   StudyModes _selectedMode = StudyModes.writing;
   bool _aggrStats = false;
 
-  /// Saves the last name of the current visited list
-  String _listName = "";
-
   @override
   void initState() {
     _tabController =
         TabController(length: StudyModes.values.length, vsync: this);
     _tabController?.addListener(_tabControllerManagement);
     _scrollController.addListener(_scrollListener);
-    _listName = widget.list.name;
     _aggrStats = getIt<PreferencesService>()
         .readData(SharedKeys.kanListListVisualization);
-    getIt<ListDetailBloc>().add(
-      ListDetailEventLoading(_listName, reset: true),
+    getIt<ListDetailWordsBloc>().add(
+      ListDetailWordsEventLoading(widget.listName, reset: true),
     );
     super.initState();
   }
@@ -136,16 +134,16 @@ class _WordListWidgetState extends State<WordListWidget>
   }
 
   _addLoadingEvent({bool reset = false}) {
-    return getIt<ListDetailBloc>()
-        .add(ListDetailEventLoading(_listName, reset: reset));
+    return getIt<ListDetailWordsBloc>()
+        .add(ListDetailWordsEventLoading(widget.listName, reset: reset));
   }
 
   _addSearchingEvent(String query, {bool reset = false}) {
-    return getIt<ListDetailBloc>()
-        .add(ListDetailEventSearching(query, _listName, reset: reset));
+    return getIt<ListDetailWordsBloc>().add(
+        ListDetailWordsEventSearching(query, widget.listName, reset: reset));
   }
 
-  Future<void> _goToPractice(ListDetailStateLoadedPractice state) async {
+  Future<void> _goToPractice(ListDetailWordsStateLoadedPractice state) async {
     await Navigator.of(context)
         .pushNamed(state.mode.page,
             arguments: ModeArguments(
@@ -153,7 +151,7 @@ class _WordListWidgetState extends State<WordListWidget>
                 isTest: false,
                 mode: state.mode,
                 testMode: Tests.blitz,
-                studyModeHeaderDisplayName: _listName))
+                studyModeHeaderDisplayName: widget.listName))
         .then(
           (value) => _addLoadingEvent(reset: true),
         );
@@ -162,15 +160,15 @@ class _WordListWidgetState extends State<WordListWidget>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocConsumer<ListDetailBloc, ListDetailState>(
+    return BlocConsumer<ListDetailWordsBloc, ListDetailWordsState>(
       listener: (context, state) async {
-        if (state is ListDetailStateLoadedPractice) {
+        if (state is ListDetailWordsStateLoadedPractice) {
           await _goToPractice(state);
-        } else if (state is ListDetailStateFailure) {
+        } else if (state is ListDetailWordsStateFailure) {
           if (state.error.isNotEmpty) {
             Utils.getSnackBar(context, state.error);
           }
-        } else if (state is ListDetailStateLoaded) {
+        } else if (state is ListDetailWordsStateLoaded) {
           if (getIt<PreferencesService>()
                   .readData(SharedKeys.haveSeenKanListDetailCoachMark) ==
               false) {
@@ -179,15 +177,14 @@ class _WordListWidgetState extends State<WordListWidget>
         }
       },
       builder: (context, state) {
-        if (state is ListDetailStateLoaded) {
-          _listName = state.name;
+        if (state is ListDetailWordsStateLoaded) {
           return _body(state);
-        } else if (state is ListDetailStateLoading ||
-            state is ListDetailStateSearching ||
-            state is ListDetailStateIdle ||
-            state is ListDetailStateLoadedPractice) {
+        } else if (state is ListDetailWordsStateLoading ||
+            state is ListDetailWordsStateSearching ||
+            state is ListDetailWordsStateIdle ||
+            state is ListDetailWordsStateLoadedPractice) {
           return const KPProgressIndicator();
-        } else if (state is ListDetailStateFailure) {
+        } else if (state is ListDetailWordsStateFailure) {
           return KPEmptyList(
               showTryButton: true,
               onRefresh: () => _addLoadingEvent(reset: true),
@@ -199,7 +196,7 @@ class _WordListWidgetState extends State<WordListWidget>
     );
   }
 
-  Column _body(ListDetailStateLoaded state) {
+  Column _body(ListDetailWordsStateLoaded state) {
     return Column(
       children: [
         if (!_aggrStats)
@@ -241,19 +238,20 @@ class _WordListWidgetState extends State<WordListWidget>
             onTap: () async {
               if (_aggrStats) {
                 return await PracticeListBottomSheet.show(
-                        context, _listName, state.list)
+                        context, widget.listName, state.list)
                     .then(
                   (value) => _addLoadingEvent(reset: true),
                 );
               }
-              getIt<ListDetailBloc>()
-                  .add(ListDetailEventLoadUpPractice(_listName, _selectedMode));
+              getIt<ListDetailWordsBloc>().add(
+                  ListDetailWordsEventLoadUpPractice(
+                      widget.listName, _selectedMode));
             }),
       ],
     );
   }
 
-  Widget _kanjiList(ListDetailStateLoaded state) {
+  Widget _kanjiList(ListDetailWordsStateLoaded state) {
     if (state.list.isEmpty) {
       return KPEmptyList(
           showTryButton: true,
@@ -274,13 +272,14 @@ class _WordListWidgetState extends State<WordListWidget>
           index: k,
           kanji: kanji,
           list: widget.list,
-          listName: _listName,
+          listName: widget.listName,
           selectedMode: _selectedMode,
           onShowModal: () => widget.searchBarFn?.unfocus(),
           onTap: () async {
             await Navigator.of(context)
                 .pushNamed(KanPracticePages.addKanjiPage,
-                    arguments: AddWordArgs(listName: _listName, word: kanji))
+                    arguments:
+                        AddWordArgs(listName: widget.listName, word: kanji))
                 .then((code) {
               if (code == 0) _addLoadingEvent(reset: true);
             });

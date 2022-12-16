@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'grammar.dart';
+part of 'grammar_point.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Grammar _$GrammarFromJson(Map<String, dynamic> json) => Grammar(
+GrammarPoint _$GrammarPointFromJson(Map<String, dynamic> json) => GrammarPoint(
       name: json['name'] as String,
       listName: json['listName'] as String,
       definition: json['definition'] as String,
@@ -35,7 +35,8 @@ Grammar _$GrammarFromJson(Map<String, dynamic> json) => Grammar(
           json['previousIntervalAsDateRecognition'] as int? ?? 0,
     );
 
-Map<String, dynamic> _$GrammarToJson(Grammar instance) => <String, dynamic>{
+Map<String, dynamic> _$GrammarPointToJson(GrammarPoint instance) =>
+    <String, dynamic>{
       'name': instance.name,
       'listName': instance.listName,
       'definition': instance.definition,

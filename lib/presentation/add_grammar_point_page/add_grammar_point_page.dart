@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/application/add_word/add_word_bloc.dart';
-import 'package:kanpractice/domain/grammar/grammar.dart';
-import 'package:kanpractice/presentation/add_grammar_page/arguments.dart';
+import 'package:kanpractice/application/add_grammar_point/add_grammar_point_bloc.dart';
+import 'package:kanpractice/application/services/database_consts.dart';
+import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
+import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/presentation/add_grammar_point_page/arguments.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/ui/kp_text_form.dart';
@@ -10,7 +12,7 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class AddGrammarPage extends StatefulWidget {
-  final AddGrammarArgs args;
+  final AddGrammarPointArgs args;
   const AddGrammarPage({Key? key, required this.args}) : super(key: key);
 
   @override
@@ -33,11 +35,11 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
     _definitionFocus = FocusNode();
     _exampleController = TextEditingController();
     _exampleFocus = FocusNode();
-    Grammar? grammar = widget.args.grammar;
-    if (grammar != null) {
-      _nameController?.text = grammar.name.toString();
-      _definitionController?.text = grammar.definition.toString();
-      _exampleController?.text = grammar.example.toString();
+    GrammarPoint? grammarPoint = widget.args.grammarPoint;
+    if (grammarPoint != null) {
+      _nameController?.text = grammarPoint.name.toString();
+      _definitionController?.text = grammarPoint.definition.toString();
+      _exampleController?.text = grammarPoint.example.toString();
     }
     super.initState();
   }
@@ -54,32 +56,28 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
   }
 
   Future<void> _createGrammar({bool exit = true}) async {
-    // TODO: Create grammar --> BLOC
-    /*getIt<AddWordBloc>().add(AddWordEventCreate(
+    getIt<AddGrammarPointBloc>().add(AddGrammarPointEventCreate(
         exitMode: exit,
-        word: Word(
-          word: _nameController?.text ?? "",
-          pronunciation: _definitionController?.text ?? "",
-          meaning: _exampleController?.text ?? "",
+        grammarPoint: GrammarPoint(
+          name: _nameController?.text ?? "",
+          definition: _definitionController?.text ?? "",
+          example: _exampleController?.text ?? "",
           listName: widget.args.listName,
-          category: _currentCategory.index,
           dateAdded: Utils.getCurrentMilliseconds(),
           dateLastShown: Utils.getCurrentMilliseconds(),
-        )));*/
+        )));
   }
 
   Future<void> _updateGrammar() async {
-    Grammar? g = widget.args.grammar;
-    // TODO: Update grammar --> BLOC
-    /*if (k != null) {
-      getIt<AddWordBloc>()
-          .add(AddWordEventUpdate(widget.args.listName, k.word, parameters: {
-        WordTableFields.wordField: _nameController?.text ?? "",
-        WordTableFields.pronunciationField: _definitionController?.text ?? "",
-        WordTableFields.meaningField: _exampleController?.text ?? "",
-        WordTableFields.categoryField: _currentCategory.index
+    GrammarPoint? g = widget.args.grammarPoint;
+    if (g != null) {
+      getIt<AddGrammarPointBloc>().add(
+          AddGrammarPointEventUpdate(widget.args.listName, g.name, parameters: {
+        GrammarTableFields.nameField: _nameController?.text ?? "",
+        GrammarTableFields.definitionField: _definitionController?.text ?? "",
+        GrammarTableFields.exampleField: _exampleController?.text ?? "",
       }));
-    }*/
+    }
   }
 
   _validateGrammar(Function execute) {
@@ -96,14 +94,13 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
   Widget build(BuildContext context) {
     return KPScaffold(
       resizeToAvoidBottomInset: true,
-      appBarTitle: widget.args.grammar != null
+      appBarTitle: widget.args.grammarPoint != null
           ? "add_grammar_update_title".tr()
           : "add_grammar_new_title".tr(),
       appBarActions: [
-        // TODO: BLOC
-        BlocBuilder<AddWordBloc, AddWordState>(
+        BlocBuilder<AddGrammarPointBloc, AddGrammarPointState>(
           builder: (context, state) => Visibility(
-            visible: widget.args.grammar == null,
+            visible: widget.args.grammarPoint == null,
             child: IconButton(
               icon: const Icon(Icons.add),
               onPressed: () {
@@ -112,12 +109,12 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
             ),
           ),
         ),
-        BlocBuilder<AddWordBloc, AddWordState>(
+        BlocBuilder<AddGrammarPointBloc, AddGrammarPointState>(
             builder: (context, state) => IconButton(
                   icon: const Icon(Icons.check_rounded),
                   onPressed: () {
                     _validateGrammar(() {
-                      if (widget.args.grammar != null) {
+                      if (widget.args.grammarPoint != null) {
                         _updateGrammar();
                       } else {
                         _createGrammar();
@@ -135,10 +132,10 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
   }
 
   BlocListener _builder() {
-    return BlocListener<AddWordBloc, AddWordState>(
+    return BlocListener<AddGrammarPointBloc, AddGrammarPointState>(
       listener: (context, state) {
-        if (state is AddWordStateDoneCreating) {
-          /// If exit is true, only one kanji should be created and exit
+        if (state is AddGrammarPointStateDoneCreating) {
+          /// If exit is true, only one grammar point should be created and exit
           if (state.exitMode) {
             Navigator.of(context).pop(0);
           } else {
@@ -147,9 +144,9 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
             _exampleController?.clear();
             _nameFocus?.requestFocus();
           }
-        } else if (state is AddWordStateDoneUpdating) {
+        } else if (state is AddGrammarPointStateDoneUpdating) {
           Navigator.of(context).pop(0);
-        } else if (state is AddWordStateFailure) {
+        } else if (state is AddGrammarPointStateFailure) {
           Utils.getSnackBar(context, state.message);
         }
       },
@@ -164,7 +161,7 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
           controller: _nameController,
           focusNode: _nameFocus,
           header: "add_grammar_textForm_grammar".tr(),
-          autofocus: widget.args.grammar == null,
+          autofocus: widget.args.grammarPoint == null,
           hint: "add_grammar_textForm_grammar_ext".tr(),
           onEditingComplete: () => _definitionFocus?.requestFocus(),
         ),
@@ -183,7 +180,7 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
         ),
         Padding(
           padding: const EdgeInsets.only(top: KPMargins.margin16),
-          child: BlocBuilder<AddWordBloc, AddWordState>(
+          child: BlocBuilder<AddGrammarPointBloc, AddGrammarPointState>(
             builder: (context, state) => KPTextForm(
               controller: _exampleController,
               focusNode: _exampleFocus,

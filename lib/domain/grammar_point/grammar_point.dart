@@ -2,10 +2,10 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 
-part 'grammar.g.dart';
+part 'grammar_point.g.dart';
 
 @JsonSerializable()
-class Grammar {
+class GrammarPoint {
   final String name;
   final String listName;
   final String definition;
@@ -25,7 +25,7 @@ class Grammar {
   final int previousIntervalRecognition;
   final int previousIntervalAsDateRecognition;
 
-  const Grammar({
+  const GrammarPoint({
     required this.name,
     required this.listName,
     required this.definition,
@@ -46,15 +46,16 @@ class Grammar {
     this.previousIntervalAsDateRecognition = 0,
   });
 
-  /// Empty [Grammar]
-  static const Grammar empty =
-      Grammar(name: "", listName: "", definition: "", example: "");
+  /// Empty [GrammarPoint]
+  static const GrammarPoint empty =
+      GrammarPoint(name: "", listName: "", definition: "", example: "");
 
-  factory Grammar.fromJson(Map<String, dynamic> json) =>
-      _$GrammarFromJson(json);
-  Map<String, dynamic> toJson() => _$GrammarToJson(this);
+  factory GrammarPoint.fromJson(Map<String, dynamic> json) =>
+      _$GrammarPointFromJson(json);
+  Map<String, dynamic> toJson() => _$GrammarPointToJson(this);
 
-  Grammar copyWithUpdatedDate({int? dateAdded, int? dateLastShown}) => Grammar(
+  GrammarPoint copyWithUpdatedDate({int? dateAdded, int? dateLastShown}) =>
+      GrammarPoint(
         name: name,
         listName: listName,
         definition: definition,
@@ -75,7 +76,7 @@ class Grammar {
         previousIntervalAsDateRecognition: previousIntervalAsDateRecognition,
       );
 
-  Grammar copyWithReset() => Grammar(
+  GrammarPoint copyWithReset() => GrammarPoint(
         name: name,
         listName: listName,
         definition: definition,

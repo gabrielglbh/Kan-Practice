@@ -5,7 +5,7 @@ import 'package:kanpractice/domain/specific_data/specific_data.dart';
 import 'package:kanpractice/infrastructure/specific_data/specific_data_repository_impl.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_bar_chart.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_radial_graph.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_study_mode_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
@@ -140,7 +140,7 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: KPMargins.margin24),
-                    child: KPRadialGraph(
+                    child: KPStudyModeRadialGraph(
                       animationDuration: 0,
                       writing: widget.data.totalWinRateWriting,
                       reading: widget.data.totalWinRateReading,

@@ -6,7 +6,7 @@ import 'package:kanpractice/presentation/core/types/word_categories.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_bar_chart.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_radial_graph.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_study_mode_radial_graph.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/domain/stats/stats.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/spec_bottom_sheet.dart';
@@ -38,7 +38,7 @@ class _ListStatsState extends State<ListStats>
         _countLabel(context, widget.stats.totalWords.toString()),
         Padding(
             padding: const EdgeInsets.only(top: KPMargins.margin16),
-            child: KPRadialGraph(
+            child: KPStudyModeRadialGraph(
               animationDuration: 0,
               writing: widget.stats.totalWinRateWriting,
               reading: widget.stats.totalWinRateReading,

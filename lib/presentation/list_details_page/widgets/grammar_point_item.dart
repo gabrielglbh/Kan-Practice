@@ -4,6 +4,7 @@ import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_win_rate_chart.dart';
+import 'package:kanpractice/presentation/core/ui/kp_grammar_point_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class GrammarPointItem extends StatelessWidget {
@@ -58,9 +59,8 @@ class GrammarPointItem extends StatelessWidget {
     return ListTile(
       onTap: () async {
         onShowModal();
-        // TODO: Grammar details bottom sheet
-        /*await KPKanjiBottomSheet.show(context, listName, kanji,
-            onTap: onTap, onRemove: onRemoval);*/
+        await KPGrammarPointBottomSheet.show(context, listName, grammarPoint,
+            onTap: onTap, onRemove: onRemoval);
       },
       title: Text(
         grammarPoint.name,

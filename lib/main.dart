@@ -13,6 +13,7 @@ import 'package:kanpractice/application/dictionary/dict_bloc.dart';
 import 'package:kanpractice/application/dictionary_details/dictionary_details_bloc.dart';
 import 'package:kanpractice/application/folder_details/folder_details_bloc.dart';
 import 'package:kanpractice/application/folder_list/folder_bloc.dart';
+import 'package:kanpractice/application/grammar_details/grammar_details_bloc.dart';
 import 'package:kanpractice/application/initial/initial_bloc.dart';
 import 'package:kanpractice/application/list/lists_bloc.dart';
 import 'package:kanpractice/application/list_details/list_details_bloc.dart';
@@ -185,6 +186,7 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<AddGrammarPointBloc>()),
         BlocProvider(create: (_) => getIt<ListDetailWordsBloc>()),
         BlocProvider(create: (_) => getIt<ListDetailGrammarPointsBloc>()),
+        BlocProvider(create: (_) => getIt<GrammarPointDetailsBloc>()),
       ],
       child: BlocBuilder<InitialBloc, InitialState>(
         builder: (context, state) {

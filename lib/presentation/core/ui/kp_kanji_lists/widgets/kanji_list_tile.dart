@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/domain/list/list.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_radial_graph.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_study_mode_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
@@ -66,7 +66,7 @@ class WordListTile extends StatelessWidget {
             ],
           ),
         ),
-        subtitle: KPRadialGraph(
+        subtitle: KPStudyModeRadialGraph(
           writing: item.totalWinRateWriting,
           reading: item.totalWinRateReading,
           recognition: item.totalWinRateRecognition,

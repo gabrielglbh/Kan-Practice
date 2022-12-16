@@ -412,5 +412,10 @@
   "modos_de_estudio_definición": "Definición",
   "study_modes_definition_ext": "定義",
   "list_details_load_failed_grammar": "Fallo al recuperar puntos gramaticales",
-  "list_details_empty_grammar": "No hay puntos gramaticales disponibles.\nAñade nuevos puntos gramaticales a esta lista tocando en '+' o impórtalos desde tu copia de seguridad."
+  "list_details_empty_grammar": "No hay puntos gramaticales disponibles.\nAñade nuevos puntos gramaticales a esta lista tocando en '+' o impórtalos desde tu copia de seguridad.",
+  "grammar_bottom_sheet_createDialogForDeletingGrammar_removal_failed": "Error al eliminar punto gramatical",
+  "grammar_bottom_sheet_createDialogForDeletingGrammar_failed": "Error genérico al eliminar punto gramatical",
+  "grammar_bottom_sheet_removeGrammar_title": "Eliminar un punto gramatical",
+  "grammar_bottom_sheet_removeGrammar_content": "¿Estás seguro de que quieres eliminar este punto?",
+  "grammar_bottom_sheet_removeGrammar_positive": "Eliminar"
 }

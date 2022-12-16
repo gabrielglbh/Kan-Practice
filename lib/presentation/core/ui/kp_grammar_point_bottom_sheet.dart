@@ -1,47 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/application/word_details/word_details_bloc.dart';
+import 'package:kanpractice/application/grammar_details/grammar_details_bloc.dart';
+import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/injection.dart';
-import 'package:kanpractice/presentation/core/routing/pages.dart';
-import 'package:kanpractice/domain/word/word.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_study_mode_radial_graph.dart';
+import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_grammar_mode_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
-import 'package:kanpractice/presentation/core/ui/kp_tts_icon_button.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
-import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
-import 'package:kanpractice/presentation/core/types/word_categories.dart';
-import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class KPKanjiBottomSheet extends StatelessWidget {
-  /// Kanji object to be displayed
+class KPGrammarPointBottomSheet extends StatelessWidget {
   final String listName;
-  final Word? kanji;
+  final GrammarPoint? grammarPoint;
   final Function()? onRemove;
   final Function()? onTap;
-  const KPKanjiBottomSheet(
+  const KPGrammarPointBottomSheet(
       {Key? key,
       required this.listName,
-      required this.kanji,
+      required this.grammarPoint,
       this.onTap,
       this.onRemove})
       : super(key: key);
 
   /// Creates and calls the [BottomSheet] with the content for displaying the data
-  /// of the current selected kanji
+  /// of the current selected grammar point
   static Future<String?> show(
-      BuildContext context, String listName, Word? kanji,
+      BuildContext context, String listName, GrammarPoint? grammarPoint,
       {Function()? onRemove, Function()? onTap}) async {
     return await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
-        builder: (context) => KPKanjiBottomSheet(
+        builder: (context) => KPGrammarPointBottomSheet(
             listName: listName,
-            kanji: kanji,
+            grammarPoint: grammarPoint,
             onTap: onTap,
             onRemove: onRemove));
   }
@@ -54,8 +49,8 @@ class KPKanjiBottomSheet extends StatelessWidget {
       constraints: BoxConstraints(maxHeight: maxHeight),
       onClosing: () {},
       builder: (context) {
-        getIt<WordDetailsBloc>()
-            .add(WordDetailsEventLoading(kanji ?? Word.empty));
+        getIt<GrammarPointDetailsBloc>().add(GrammarPointDetailsEventLoading(
+            grammarPoint ?? GrammarPoint.empty));
         return Wrap(children: [
           Padding(
               padding: const EdgeInsets.all(KPMargins.margin8),
@@ -63,30 +58,31 @@ class KPKanjiBottomSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const KPDragContainer(),
-                  BlocConsumer<WordDetailsBloc, WordDetailsState>(
+                  BlocConsumer<GrammarPointDetailsBloc,
+                      GrammarPointDetailsState>(
                     listener: (context, state) {
-                      if (state is WordDetailsStateFailure) {
+                      if (state is GrammarPointDetailsStateFailure) {
                         Utils.getSnackBar(context, state.error);
                       }
-                      if (state is WordDetailsStateRemoved) {
+                      if (state is GrammarPointDetailsStateRemoved) {
                         if (onRemove != null) onRemove!();
                       }
                     },
                     builder: (context, state) {
-                      if (state is WordDetailsStateLoading) {
+                      if (state is GrammarPointDetailsStateLoading) {
                         return Center(
                             child: SizedBox(
                                 height: MediaQuery.of(context).size.height / 2,
                                 child: const KPProgressIndicator()));
-                      } else if (state is WordDetailsStateFailure) {
+                      } else if (state is GrammarPointDetailsStateFailure) {
                         return Container(
                             height: MediaQuery.of(context).size.height / 2,
                             alignment: Alignment.center,
                             margin: const EdgeInsets.symmetric(
                                 horizontal: KPMargins.margin16),
                             child: Text(state.error));
-                      } else if (state is WordDetailsStateLoaded) {
-                        return _body(context, state.kanji);
+                      } else if (state is GrammarPointDetailsStateLoaded) {
+                        return _body(context, state.grammarPoint);
                       } else {
                         return Container();
                       }
@@ -99,55 +95,40 @@ class KPKanjiBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _body(BuildContext context, Word updatedKanji) {
+  Widget _body(BuildContext context, GrammarPoint grammarPoint) {
     return Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _header(context, updatedKanji),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: Text(updatedKanji.word,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline5
-                      ?.copyWith(fontWeight: FontWeight.bold)),
+            child: Text(
+              grammarPoint.name,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.headline6?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
           ),
-          Flexible(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: KPMargins.margin4,
-                  bottom: KPMargins.margin4,
-                  right: KPMargins.margin16,
-                  left: KPMargins.margin16),
-              child: RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(children: [
-                    TextSpan(
-                      text:
-                          "(${WordCategory.values[updatedKanji.category].category}) ",
-                      style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                          color: KPColors.midGrey, fontStyle: FontStyle.italic),
-                    ),
-                    TextSpan(
-                        text: updatedKanji.meaning,
-                        style: Theme.of(context).textTheme.bodyText2)
-                  ])),
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
+            child: Text(
+              grammarPoint.definition,
+              textAlign: TextAlign.center,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.bodyText2,
             ),
           ),
           const Divider(),
-          KPStudyModeRadialGraph(
-            writing: updatedKanji.winRateWriting,
-            reading: updatedKanji.winRateReading,
-            recognition: updatedKanji.winRateRecognition,
-            listening: updatedKanji.winRateListening,
-            speaking: updatedKanji.winRateSpeaking,
+          KPGrammarModeRadialGraph(
+            definition: grammarPoint.winRateDefinition,
+            recognition: grammarPoint.winRateRecognition,
           ),
-          _lastTimeShownWidget(context, updatedKanji),
+          _lastTimeShownWidget(context, grammarPoint),
           Visibility(
             visible: onTap != null && onRemove != null,
             child: Column(
@@ -161,35 +142,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
         ]);
   }
 
-  Widget _header(BuildContext context, Word updatedKanji) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.menu_book_rounded),
-              onPressed: () {
-                Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
-                    arguments:
-                        DictionaryDetailsArguments(word: updatedKanji.word));
-              },
-            ),
-            SizedBox(
-              height: KPMargins.margin24,
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: Text(updatedKanji.pronunciation,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyText1),
-              ),
-            ),
-            TTSIconButton(word: updatedKanji.pronunciation)
-          ],
-        ));
-  }
-
-  Widget _lastTimeShownWidget(BuildContext context, Word updatedKanji) {
+  Widget _lastTimeShownWidget(BuildContext context, GrammarPoint grammarPoint) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
         child: ExpansionTile(
@@ -200,43 +153,34 @@ class KPKanjiBottomSheet extends StatelessWidget {
                 fit: BoxFit.contain,
                 child: Text(
                     "${"created_label".tr()} "
-                    "${Utils.parseDateMilliseconds(context, updatedKanji.dateAdded)} • "
+                    "${Utils.parseDateMilliseconds(context, grammarPoint.dateAdded)} • "
                     "${"last_seen_label".tr()} "
-                    "${Utils.parseDateMilliseconds(context, updatedKanji.dateLastShown)}",
+                    "${Utils.parseDateMilliseconds(context, grammarPoint.dateLastShown)}",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyText2)),
             children: [
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: StudyModes.values.length,
+                itemCount: GrammarModes.values.length,
                 itemBuilder: (context, index) {
                   return _lastSeenOnModes(
-                      context, updatedKanji, StudyModes.values[index]);
+                      context, grammarPoint, GrammarModes.values[index]);
                 },
               )
             ]));
   }
 
   Widget _lastSeenOnModes(
-      BuildContext context, Word updatedKanji, StudyModes mode) {
+      BuildContext context, GrammarPoint grammarPoint, GrammarModes mode) {
     int? date = 0;
     String parsedDate = "-";
     switch (mode) {
-      case StudyModes.writing:
-        date = updatedKanji.dateLastShownWriting;
+      case GrammarModes.definition:
+        date = grammarPoint.dateLastShownDefinition;
         break;
-      case StudyModes.reading:
-        date = updatedKanji.dateLastShownReading;
-        break;
-      case StudyModes.recognition:
-        date = updatedKanji.dateLastShownRecognition;
-        break;
-      case StudyModes.listening:
-        date = updatedKanji.dateLastShownListening;
-        break;
-      case StudyModes.speaking:
-        date = updatedKanji.dateLastShownSpeaking;
+      case GrammarModes.recognition:
+        date = grammarPoint.dateLastShownRecognition;
         break;
     }
     if (date != 0) {
@@ -288,15 +232,16 @@ class KPKanjiBottomSheet extends StatelessWidget {
               showDialog(
                   context: bloc,
                   builder: (context) => KPDialog(
-                      title: Text("kanji_bottom_sheet_removeKanji_title".tr()),
-                      content:
-                          Text("kanji_bottom_sheet_removeKanji_content".tr()),
+                      title:
+                          Text("grammar_bottom_sheet_removeGrammar_title".tr()),
+                      content: Text(
+                          "grammar_bottom_sheet_removeGrammar_content".tr()),
                       positiveButtonText:
-                          "kanji_bottom_sheet_removeKanji_positive".tr(),
+                          "grammar_bottom_sheet_removeGrammar_positive".tr(),
                       onPositive: () {
                         Navigator.of(context).pop();
-                        getIt<WordDetailsBloc>()
-                            .add(WordDetailsEventDelete(kanji));
+                        getIt<GrammarPointDetailsBloc>()
+                            .add(GrammarPointDetailsEventDelete(grammarPoint));
                         if (onRemove != null) onRemove!();
                       }));
             },

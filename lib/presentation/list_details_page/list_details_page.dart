@@ -17,6 +17,7 @@ import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/ui/kp_search_bar.dart';
 import 'package:kanpractice/presentation/core/ui/kp_text_form.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/tutorial_coach.dart';
 import 'package:kanpractice/presentation/list_details_page/grammar_list.dart';
 import 'package:kanpractice/presentation/list_details_page/widgets/list_details_bottom_navigation.dart';
@@ -204,7 +205,11 @@ class _ListDetailsPageState extends State<ListDetailsPage>
           setState(() => _currentPage = type);
           _searchBarFn.unfocus();
           _searchTextController.text = "";
-          _pageController.jumpToPage(type.page);
+          _pageController.animateToPage(
+            type.page,
+            duration: const Duration(milliseconds: KPAnimations.ms300),
+            curve: Curves.easeInOut,
+          );
         },
       ),
       child: Column(

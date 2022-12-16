@@ -65,9 +65,19 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
   }
 
   @override
-  Future<GrammarPoint> getGrammarPoint(String listName, String grammarPoint) {
-    // TODO: implement getGrammarPoint
-    throw UnimplementedError();
+  Future<GrammarPoint> getGrammarPoint(
+      String listName, String grammarPoint) async {
+    try {
+      List<Map<String, dynamic>>? res = [];
+      res = await _database.query(GrammarTableFields.grammarTable,
+          where:
+              "${GrammarTableFields.listNameField}=? AND ${GrammarTableFields.nameField}=?",
+          whereArgs: [listName, grammarPoint]);
+      return GrammarPoint.fromJson(res[0]);
+    } catch (err) {
+      print(err.toString());
+      return GrammarPoint.empty;
+    }
   }
 
   @override
@@ -124,9 +134,17 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
   }
 
   @override
-  Future<int> removeGrammarPoint(String listName, String grammarPoint) {
-    // TODO: implement removeGrammarPoint
-    throw UnimplementedError();
+  Future<int> removeGrammarPoint(String listName, String grammarPoint) async {
+    try {
+      await _database.delete(GrammarTableFields.grammarTable,
+          where:
+              "${GrammarTableFields.listNameField}=? AND ${GrammarTableFields.nameField}=?",
+          whereArgs: [listName, grammarPoint]);
+      return 0;
+    } catch (err) {
+      print(err.toString());
+      return -1;
+    }
   }
 
   @override

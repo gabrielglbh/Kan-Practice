@@ -6,6 +6,8 @@ import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/presentation/add_grammar_point_page/arguments.dart';
+import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
@@ -246,14 +248,13 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
           selectedMode: _selectedMode,
           onShowModal: () => widget.searchBarFn?.unfocus(),
           onTap: () async {
-            // TODO: On tap on grammar point
-            /*await Navigator.of(context)
-                .pushNamed(KanPracticePages.addKanjiPage,
-                    arguments:
-                        AddWordArgs(listName: widget.listName, word: kanji))
+            await Navigator.of(context)
+                .pushNamed(KanPracticePages.addGrammarPage,
+                    arguments: AddGrammarPointArgs(
+                        listName: widget.listName, grammarPoint: gp))
                 .then((code) {
               if (code == 0) _addLoadingEvent(reset: true);
-            });*/
+            });
           },
           onRemoval: () => _addLoadingEvent(reset: true),
         );

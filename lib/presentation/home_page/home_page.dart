@@ -28,7 +28,7 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
 import 'package:kanpractice/presentation/dictionary_page/dictionary_page.dart';
 import 'package:kanpractice/presentation/folder_list_page/folder_list_page.dart';
-import 'package:kanpractice/presentation/home_page/widgets/bottom_navigation.dart';
+import 'package:kanpractice/presentation/home_page/widgets/home_bottom_navigation.dart';
 import 'package:kanpractice/presentation/market_page/market_page.dart';
 import 'package:kanpractice/presentation/settings_page/settings_page.dart';
 

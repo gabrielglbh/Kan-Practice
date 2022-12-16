@@ -390,5 +390,8 @@
   "settings_daily_pace": "Controlled pace",
   "settings_daily_pace_sub": "If active, you will perform 1 test per day per each study mode with a precalculated number of words. Else, no restrictions.",
   "filter_recently_added": "Recent",
-  "test_info_controlled_pace": "You will only be able to complete one daily test per study mode per day."
+  "test_info_controlled_pace": "You will only be able to complete one daily test per study mode per day.",
+  "list_details_words": "Words",
+  "list_details_grammar": "Grammar",
+  "list_details_searchBar_hint_grammar": "Search by name, definition..."
 }

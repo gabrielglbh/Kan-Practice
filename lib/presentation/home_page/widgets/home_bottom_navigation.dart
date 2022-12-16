@@ -59,7 +59,7 @@ class HomeBottomNavigation extends StatelessWidget {
       },
       child: Container(
         key: key,
-        width: MediaQuery.of(context).size.width / 5,
+        width: MediaQuery.of(context).size.width / HomeType.values.length,
         height: 42,
         color: Colors.transparent,
         child: Icon(type.icon,

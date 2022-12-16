@@ -390,5 +390,8 @@
   "settings_daily_pace": "Kontrolliertes Tempo",
   "settings_daily_pace_sub": "Wenn aktiv, werden Sie 1 Test pro Tag für jeden Lernmodus mit einer vorausberechneten Anzahl von Wörtern durchführen. Andernfalls: keine Einschränkungen.",
   "filter_recently_added": "Aktuelle",
-  "test_info_controlled_pace": "Sie können nur einen Tagestest pro Lernmodus und Tag absolvieren."
+  "test_info_controlled_pace": "Sie können nur einen Tagestest pro Lernmodus und Tag absolvieren.",
+  "list_details_words": "Wörter",
+  "list_details_grammar": "Grammatik",
+  "list_details_searchBar_hint_grammar": "Suche nach Name, Definition..."
 }

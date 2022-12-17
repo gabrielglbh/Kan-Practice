@@ -9,9 +9,13 @@ class KPLearningHeaderAnimation extends StatelessWidget {
   /// to control properly the animation and to differ each Card
   /// from each other
   final int id;
-  const KPLearningHeaderAnimation(
-      {Key? key, required this.children, required this.id})
-      : super(key: key);
+  final bool fitted;
+  const KPLearningHeaderAnimation({
+    Key? key,
+    required this.children,
+    required this.id,
+    this.fitted = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +40,13 @@ class KPLearningHeaderAnimation extends StatelessWidget {
               borderRadius: BorderRadius.circular(KPRadius.radius8),
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: Column(children: children),
-              ),
+              padding: const EdgeInsets.all(KPMargins.margin8),
+              child: fitted
+                  ? FittedBox(
+                      fit: BoxFit.contain,
+                      child: Column(children: children),
+                    )
+                  : Column(children: children),
             )));
   }
 }

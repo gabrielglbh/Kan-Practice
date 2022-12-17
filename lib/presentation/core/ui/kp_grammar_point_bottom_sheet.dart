@@ -128,6 +128,7 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
             winRate: grammarPoint.winRateDefinition,
             backgroundColor: GrammarModes.definition.color,
             size: KPSizes.defaultSizeWinRateChart / 1.2,
+            rateSize: KPFontSizes.fontSize20,
           ),
           _lastTimeShownWidget(context, grammarPoint),
           Visibility(

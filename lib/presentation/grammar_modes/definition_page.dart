@@ -8,7 +8,6 @@ import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_learning_header_animation.dart';
-import 'package:kanpractice/presentation/core/ui/kp_learning_header_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_list_percentage_indicator.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/ui/kp_study_mode_app_bar.dart';
@@ -151,7 +150,6 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
     }
   }
 
-  // TODO: Rebuild UI
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GrammarModeBloc, GrammarModeState>(
@@ -183,7 +181,11 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
                 children: [
                   KPListPercentageIndicator(
                       value: (_macro + 1) / _studyList.length),
-                  KPLearningHeaderAnimation(id: _macro, children: _header()),
+                  KPLearningHeaderAnimation(
+                    id: _macro,
+                    fitted: false,
+                    children: _header(),
+                  ),
                 ],
               ),
               KPValidationButtons(
@@ -200,18 +202,35 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
   }
 
   List<Widget> _header() {
+    final examples = _getExample().replaceAll('\n', '• \n');
     return [
-      KPLearningHeaderContainer(
-          height: KPSizes.defaultResultWordListOnTest,
-          text: _studyList[_macro].name),
-      KPLearningHeaderContainer(
-          fontSize: KPFontSizes.fontSize64,
-          height: KPSizes.listStudyHeight,
-          text: _getDefinition()),
-      KPLearningHeaderContainer(
-          height: KPSizes.defaultSizeLearningExtContainer,
-          text: _getExample(),
-          top: KPMargins.margin8)
+      SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Text(
+          _studyList[_macro].name,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.headline6,
+        ),
+      ),
+      const SizedBox(height: KPMargins.margin12),
+      Text(_getDefinition()),
+      const SizedBox(height: KPMargins.margin12),
+      Text(
+        "${"add_grammar_textForm_example".tr()}:",
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              decoration: TextDecoration.underline,
+            ),
+      ),
+      const SizedBox(height: KPMargins.margin8),
+      SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Text(
+          "• $examples",
+          maxLines: 4,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
     ];
   }
 }

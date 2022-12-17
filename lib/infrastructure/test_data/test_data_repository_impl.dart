@@ -158,6 +158,8 @@ class TestDataRepositoryImpl implements ITestDataRepository {
         return {TestDataTableFields.folderTestsField: curr.folderTests + 1};
       case Tests.daily:
         return {TestDataTableFields.dailyTestsField: curr.dailyTests + 1};
+      case Tests.grammar:
+        return {TestDataTableFields.grammarTestsField: curr.grammarTests + 1};
     }
   }
 

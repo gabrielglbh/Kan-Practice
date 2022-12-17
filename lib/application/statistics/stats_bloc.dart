@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
+import 'package:kanpractice/domain/grammar_point/i_grammar_point_repository.dart';
 import 'package:kanpractice/domain/list/i_list_repository.dart';
 import 'package:kanpractice/domain/stats/stats.dart';
 import 'package:kanpractice/domain/test_data/i_test_data_repository.dart';
@@ -16,11 +18,13 @@ class StatisticsBloc extends Bloc<StatsEvent, StatsState> {
   final IListRepository _listRepository;
   final IWordRepository _wordRepository;
   final ITestDataRepository _testDataRepository;
+  final IGrammarPointRepository _grammarPointRepository;
 
   StatisticsBloc(
     this._listRepository,
     this._wordRepository,
     this._testDataRepository,
+    this._grammarPointRepository,
   ) : super(StatisticsIdle()) {
     on<StatisticsEventLoading>((event, emit) async {
       emit(StatisticsLoading());
@@ -28,6 +32,8 @@ class StatisticsBloc extends Bloc<StatsEvent, StatsState> {
       final int totalLists = await _listRepository.getTotalListCount();
       final int totalWords = await _wordRepository.getTotalWordCount();
       final Word winRates = await _wordRepository.getTotalWordsWinRates();
+      final GrammarPoint winRatesGrammar =
+          await _grammarPointRepository.getTotalGrammarPointsWinRates();
       final List<String> lists = await _listRepository.getBestAndWorstList();
       final TestData test = await _testDataRepository.getTestDataFromDb();
       final List<int> totalCategoryCounts =
@@ -42,6 +48,7 @@ class StatisticsBloc extends Bloc<StatsEvent, StatsState> {
           totalWinRateRecognition: winRates.winRateRecognition,
           totalWinRateListening: winRates.winRateListening,
           totalWinRateSpeaking: winRates.winRateSpeaking,
+          totalWinRateDefinition: winRatesGrammar.winRateDefinition,
           bestList: lists[0],
           worstList: lists[1],
           test: test,

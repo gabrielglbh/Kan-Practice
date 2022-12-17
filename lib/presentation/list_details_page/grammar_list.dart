@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/list_details_grammar_points/list_details_grammar_points_bloc.dart';
-import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/injection.dart';
@@ -38,14 +37,11 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
 
-  bool _aggrStats = false;
   final _selectedMode = GrammarModes.definition;
 
   @override
   void initState() {
     _scrollController.addListener(_scrollListener);
-    _aggrStats = getIt<PreferencesService>()
-        .readData(SharedKeys.kanListListVisualization);
     getIt<ListDetailGrammarPointsBloc>().add(
       ListDetailGrammarPointsEventLoading(widget.listName, reset: true),
     );

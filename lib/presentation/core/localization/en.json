@@ -417,5 +417,7 @@
   "grammar_bottom_sheet_createDialogForDeletingGrammar_failed": "Generic error removing grammar point",
   "grammar_bottom_sheet_removeGrammar_title": "Remove a grammar point",
   "grammar_bottom_sheet_removeGrammar_content": "Are you sure you want to remove this point?",
-  "grammar_bottom_sheet_removeGrammar_positive": "Remove"
+  "grammar_bottom_sheet_removeGrammar_positive": "Remove",
+  "test_mode_grammar": "Grammar Test",
+  "abbr_test_mode_grammar": "Grammar"
 }

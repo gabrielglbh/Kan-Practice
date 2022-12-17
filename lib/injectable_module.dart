@@ -45,14 +45,6 @@ abstract class InjectableModule {
       },
       onUpgrade: (Database db, int oldVersion, int newVersion) async {
         final c = Migrations();
-        if (oldVersion <= 1) c.version1to2(db);
-        if (oldVersion <= 2) c.version2to3(db);
-        if (oldVersion <= 3) c.version3to4(db);
-        if (oldVersion <= 4) c.version4to5(db);
-        if (oldVersion <= 5) c.version5to6(db);
-        if (oldVersion <= 6) c.version6to7(db);
-        if (oldVersion <= 7) c.version7to8(db);
-        if (oldVersion <= 8) c.version8to9(db);
         if (oldVersion <= 9) c.version9to10(db);
         if (oldVersion <= 10) c.version10to11(db);
       },
@@ -107,6 +99,7 @@ abstract class InjectableModule {
             "${ListTableFields.totalWinRateRecognitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${ListTableFields.totalWinRateListeningField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${ListTableFields.totalWinRateSpeakingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${ListTableFields.totalWinRateDefinitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${ListTableFields.lastUpdatedField} INTEGER NOT NULL DEFAULT 0)");
 
         await db.execute("CREATE TABLE ${TestTableFields.testTable}("
@@ -144,11 +137,13 @@ abstract class InjectableModule {
             "${TestDataTableFields.testTotalCountRecognitionField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalCountListeningField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalCountSpeakingField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestDataTableFields.testTotalCountDefinitionField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalWinRateWritingField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalWinRateReadingField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalWinRateRecognitionField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalWinRateListeningField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalWinRateSpeakingField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestDataTableFields.testTotalWinRateDefinitionField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.selectionTestsField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.blitzTestsField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.remembranceTestsField} INTEGER NOT NULL DEFAULT 0, "
@@ -156,7 +151,8 @@ abstract class InjectableModule {
             "${TestDataTableFields.lessPctTestsField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.categoryTestsField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.folderTestsField} INTEGER NOT NULL DEFAULT 0, "
-            "${TestDataTableFields.dailyTestsField} INTEGER NOT NULL DEFAULT 0)");
+            "${TestDataTableFields.dailyTestsField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestDataTableFields.grammarTestsField} INTEGER NOT NULL DEFAULT 0)");
 
         /// id is the [Test].index for future refers
         await db.execute(

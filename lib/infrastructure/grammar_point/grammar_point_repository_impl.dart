@@ -121,9 +121,29 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
   }
 
   @override
-  Future<GrammarPoint> getTotalGrammarPointsWinRates() {
-    // TODO: implement getTotalGrammarPointsWinRates
-    throw UnimplementedError();
+  Future<GrammarPoint> getTotalGrammarPointsWinRates() async {
+    try {
+      List<Map<String, dynamic>>? res =
+          await _database.query(GrammarTableFields.grammarTable);
+      List<GrammarPoint> gp =
+          List.generate(res.length, (i) => GrammarPoint.fromJson(res[i]));
+      final int total = gp.length;
+      double definition = 0;
+      for (var point in gp) {
+        definition += (point.winRateDefinition == DatabaseConstants.emptyWinRate
+            ? 0
+            : point.winRateDefinition);
+      }
+      return GrammarPoint(
+          name: '',
+          definition: '',
+          listName: '',
+          example: '',
+          winRateDefinition: definition == 0 ? 0 : definition / total);
+    } catch (err) {
+      print(err.toString());
+      return GrammarPoint.empty;
+    }
   }
 
   @override

@@ -213,24 +213,34 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
         ),
       ),
       const SizedBox(height: KPMargins.margin12),
-      Text(_getDefinition()),
-      const SizedBox(height: KPMargins.margin12),
       Text(
-        "${"add_grammar_textForm_example".tr()}:",
-        textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              decoration: TextDecoration.underline,
+        _getDefinition(),
+        style: _showDefinition
+            ? Theme.of(context).textTheme.bodyMedium
+            : Theme.of(context).textTheme.headline3,
+      ),
+      const SizedBox(height: KPMargins.margin12),
+      if (_showDefinition)
+        Column(
+          children: [
+            Text(
+              "${"add_grammar_textForm_example".tr()}:",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    decoration: TextDecoration.underline,
+                  ),
             ),
-      ),
-      const SizedBox(height: KPMargins.margin8),
-      SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: Text(
-          "• $examples",
-          maxLines: 4,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
+            const SizedBox(height: KPMargins.margin8),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Text(
+                "• $examples",
+                maxLines: 4,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        )
     ];
   }
 }

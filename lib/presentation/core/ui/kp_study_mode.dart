@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/load_test/load_test_bloc.dart';
+import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -123,6 +124,10 @@ class _KPTestStudyModeState extends State<KPTestStudyMode> {
     );
   }
 
+  int get _modesLegnth => widget.type == Tests.daily
+      ? StudyModes.values.length + GrammarModes.values.length
+      : StudyModes.values.length;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -131,6 +136,7 @@ class _KPTestStudyModeState extends State<KPTestStudyMode> {
         children: [
           affectOnPractice(),
           controlledPace(),
+          // TODO: Grammar loading on LoadTestBloc
           BlocConsumer<LoadTestBloc, LoadTestState>(
             listener: ((context, state) async {
               if (state is LoadTestStateLoadedList) {
@@ -144,6 +150,7 @@ class _KPTestStudyModeState extends State<KPTestStudyMode> {
               }
             }),
             builder: (context, state) {
+              // TODO: Make a PageView with Words - Grammar modes
               if (state is LoadTestStateIdle) {
                 return Padding(
                   padding: const EdgeInsets.only(
@@ -152,13 +159,21 @@ class _KPTestStudyModeState extends State<KPTestStudyMode> {
                     bottom: KPMargins.margin8,
                   ),
                   child: GridView.builder(
-                    itemCount: StudyModes.values.length,
+                    itemCount: _modesLegnth,
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3, childAspectRatio: 1.2),
                     itemBuilder: (context, i) {
+                      // TODO: LoadTestBloc, grammarToReview
+                      if (widget.type == Tests.daily && i == _modesLegnth - 1) {
+                        return _grammarButton(
+                          context,
+                          GrammarModes.values[0],
+                          -1,
+                        );
+                      }
                       return _modeBasedButtons(
                         context,
                         StudyModes.values[i],
@@ -176,6 +191,47 @@ class _KPTestStudyModeState extends State<KPTestStudyMode> {
           )
         ],
       ),
+    );
+  }
+
+  Widget _grammarButton(
+    BuildContext context,
+    GrammarModes mode,
+    int grammarToReview,
+  ) {
+    String toReview = grammarToReview.toString();
+    if (grammarToReview > 5000) {
+      toReview = "> 5000";
+    }
+    return Stack(
+      alignment: Alignment.topRight,
+      clipBehavior: Clip.none,
+      children: [
+        KPButton(
+          title1: mode.japMode,
+          title2: mode.mode,
+          color: mode.color,
+          onTap: () async {
+            // TODO: Load grammar for daily test
+          },
+        ),
+        if (grammarToReview > 0)
+          Positioned(
+            top: -KPMargins.margin12,
+            right: -KPMargins.margin8,
+            child: Chip(
+              label: Text(
+                toReview,
+                style: Theme.of(context)
+                    .textTheme
+                    .caption
+                    ?.copyWith(color: Colors.white),
+              ),
+              backgroundColor: KPColors.secondaryDarkerColor,
+              labelPadding: EdgeInsets.zero,
+            ),
+          ),
+      ],
     );
   }
 

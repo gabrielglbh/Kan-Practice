@@ -21,6 +21,7 @@ import 'package:kanpractice/application/list_details/list_details_bloc.dart';
 import 'package:kanpractice/application/list_details_grammar_points/list_details_grammar_points_bloc.dart';
 import 'package:kanpractice/application/list_details_words/list_details_words_bloc.dart';
 import 'package:kanpractice/application/load_folder_practice/load_folder_practice_bloc.dart';
+import 'package:kanpractice/application/load_grammar_test/load_grammar_test_bloc.dart';
 import 'package:kanpractice/application/load_test/load_test_bloc.dart';
 import 'package:kanpractice/application/load_test_category_selection/load_test_category_selection_bloc.dart';
 import 'package:kanpractice/application/load_test_folder_selection/load_test_folder_selection_bloc.dart';
@@ -192,6 +193,7 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<ListDetailGrammarPointsBloc>()),
         BlocProvider(create: (_) => getIt<GrammarPointDetailsBloc>()),
         BlocProvider(create: (_) => getIt<GrammarModeBloc>()),
+        BlocProvider(create: (_) => getIt<LoadGrammarTestBloc>()),
       ],
       child: BlocBuilder<InitialBloc, InitialState>(
         builder: (context, state) {

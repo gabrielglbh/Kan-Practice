@@ -56,6 +56,7 @@ class TestResultBloc extends Bloc<TestResultEvent, TestResultState> {
           _preferencesRepository.saveData(
               SharedKeys.speakingDailyPerformed, nextMidnight);
         }
+        // TODO: Add to Tests table a grammarStudyMode int for controlled pace and backups
       }
       emit(TestResultStateSaved());
     });

@@ -10,7 +10,7 @@ import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_kanlist_grid.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
-import 'package:kanpractice/presentation/core/ui/kp_study_mode.dart';
+import 'package:kanpractice/presentation/core/ui/kp_study_mode_grid/kp_study_mode.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KanListSelectionBottomSheet extends StatefulWidget {
@@ -91,6 +91,7 @@ class _KanListSelectionBottomSheetState
                       }
                       return Visibility(
                         visible: _selectionMode,
+                        // TODO: List selection test on grammar
                         child: KPTestStudyMode(
                           list: state.words,
                           type: Tests.lists,

@@ -8,7 +8,7 @@ import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_kanji_category_list.dart';
-import 'package:kanpractice/presentation/core/ui/kp_study_mode.dart';
+import 'package:kanpractice/presentation/core/ui/kp_study_mode_grid/kp_study_mode.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KPKanListCategorySelectionBottomSheet extends StatefulWidget {

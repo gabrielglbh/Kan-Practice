@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
-import 'package:kanpractice/presentation/core/ui/kp_study_mode.dart';
+import 'package:kanpractice/presentation/core/ui/kp_study_mode_grid/kp_study_mode.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KPBlitzBottomSheet extends StatelessWidget {

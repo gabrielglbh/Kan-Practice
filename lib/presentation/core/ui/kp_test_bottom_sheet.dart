@@ -83,7 +83,6 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
   }
 
   Widget _body({bool hasWords = false}) {
-    // TODO: Make a PageView with Words - Grammar modes
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
       child: GridView(

@@ -1,5 +1,5 @@
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
-import 'package:kanpractice/presentation/core/types/study_modes.dart';
+import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:sqflite/sqlite_api.dart';
 
@@ -45,7 +45,7 @@ abstract class IGrammarPointRepository {
     String grammarPoint,
     Map<String, dynamic> fields,
   );
-  Future<List<GrammarPoint>> getDailySM2GrammarPoints(StudyModes mode);
+  Future<List<GrammarPoint>> getDailySM2GrammarPoints(GrammarModes mode);
 
   /// Query to get all Grammar available in the current db. If anything goes wrong,
   /// an empty list will be returned.
@@ -57,7 +57,7 @@ abstract class IGrammarPointRepository {
   /// [type] serves as a control variable to order all the Grammar by
   /// their last shown parameter or worst accuracy parameter. See [Tests].
   Future<List<GrammarPoint>> getAllGrammarPoints(
-      {StudyModes? mode, Tests? type});
+      {GrammarModes? mode, Tests? type});
   Future<List<GrammarPoint>> getGrammarPointBasedOnSelectedLists(
       List<String> listNames);
   Future<List<GrammarPoint>> getAllGrammarPointsFromList(
@@ -76,7 +76,7 @@ abstract class IGrammarPointRepository {
   /// that enables Spatial Learning: ordering in ASC order the [GrammarPoint] with less winRate.
   /// If anything goes wrong, an empty list will be returned.
   Future<List<GrammarPoint>> getAllGrammarPointsForPractice(
-      String listName, StudyModes mode);
+      String listName, GrammarModes mode);
   Future<int> getTotalGrammarPointCount();
   Future<GrammarPoint> getTotalGrammarPointsWinRates();
   Future<List<int>> getSM2ReviewGrammarPointsAsForToday();

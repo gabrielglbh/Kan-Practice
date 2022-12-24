@@ -1,8 +1,10 @@
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/domain/grammar_point/i_grammar_point_repository.dart';
 import 'package:kanpractice/domain/services/i_preferences_repository.dart';
+import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:sqflite/sqflite.dart';
@@ -28,14 +30,46 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
 
   @override
   Future<List<GrammarPoint>> getAllGrammarPoints(
-      {StudyModes? mode, Tests? type}) {
-    // TODO: implement getAllGrammarPoints
-    throw UnimplementedError();
+      {GrammarModes? mode, Tests? type}) async {
+    try {
+      String query = "";
+      if (type == Tests.time) {
+        if (mode != null) {
+          switch (mode) {
+            case GrammarModes.definition:
+              query = "SELECT * FROM ${GrammarTableFields.grammarTable} "
+                  "ORDER BY ${GrammarTableFields.dateLastShownDefinitionField} ASC";
+              break;
+          }
+        } else {
+          return [];
+        }
+      } else if (type == Tests.less) {
+        if (mode != null) {
+          switch (mode) {
+            case GrammarModes.definition:
+              query = "SELECT * FROM ${GrammarTableFields.grammarTable} "
+                  "ORDER BY ${GrammarTableFields.winRateDefinitionField} ASC";
+              break;
+          }
+        } else {
+          return [];
+        }
+      } else {
+        query = "SELECT * FROM ${GrammarTableFields.grammarTable}";
+      }
+
+      List<Map<String, dynamic>>? res = await _database.rawQuery(query);
+      return List.generate(res.length, (i) => GrammarPoint.fromJson(res[i]));
+    } catch (err) {
+      print(err.toString());
+      return [];
+    }
   }
 
   @override
   Future<List<GrammarPoint>> getAllGrammarPointsForPractice(
-      String listName, StudyModes mode) {
+      String listName, GrammarModes mode) {
     // TODO: implement getAllGrammarPointsForPractice
     throw UnimplementedError();
   }
@@ -59,9 +93,55 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
   }
 
   @override
-  Future<List<GrammarPoint>> getDailySM2GrammarPoints(StudyModes mode) {
-    // TODO: implement getDailySM2GrammarPoints
-    throw UnimplementedError();
+  Future<List<GrammarPoint>> getDailySM2GrammarPoints(GrammarModes mode) async {
+    try {
+      String query = "";
+      final controlledPace =
+          _preferencesRepository.readData(SharedKeys.dailyTestOnControlledPace);
+      int limit =
+          _preferencesRepository.readData(SharedKeys.numberOfKanjiInTest);
+
+      if (controlledPace) {
+        // Divide number of total words of the user's db by the weekdays
+        limit =
+            ((await _database.query(GrammarTableFields.grammarTable)).length /
+                    7)
+                .ceil();
+
+        // Also check if the daily test can be performed
+        switch (mode) {
+          case GrammarModes.definition:
+            final canBePerformed = _preferencesRepository
+                .readData(SharedKeys.definitionDailyPerformed);
+            if (canBePerformed != 0 && canBePerformed != null) return [];
+            break;
+        }
+      }
+
+      // We order by previousIntervalAsDate DESC, as we want to prioratize
+      // early previous reviews rather than older ones.
+      //
+      // If we have pending review A since the day before yesterday and
+      // fresh review B from yesterday, in this way B will be prioritized
+      // over A.
+      final today = DateTime.now().millisecondsSinceEpoch;
+      switch (mode) {
+        case GrammarModes.definition:
+          query = "SELECT * FROM ${GrammarTableFields.grammarTable} "
+              "WHERE ${GrammarTableFields.previousIntervalAsDateDefinitionField} <= $today "
+              "ORDER BY ${GrammarTableFields.previousIntervalAsDateDefinitionField} DESC, "
+              "${GrammarTableFields.winRateDefinitionField} ASC, "
+              "${GrammarTableFields.dateAddedField} DESC "
+              "LIMIT $limit";
+          break;
+      }
+      final res = await _database.rawQuery(query);
+      final list =
+          List.generate(res.length, (i) => GrammarPoint.fromJson(res[i]));
+      return list;
+    } catch (e) {
+      return [];
+    }
   }
 
   @override
@@ -109,9 +189,54 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
   }
 
   @override
-  Future<List<int>> getSM2ReviewGrammarPointsAsForToday() {
-    // TODO: implement getSM2ReviewGrammarPointsAsForToday
-    throw UnimplementedError();
+  Future<List<int>> getSM2ReviewGrammarPointsAsForToday() async {
+    try {
+      final prefs = _preferencesRepository;
+      final controlledPace =
+          prefs.readData(SharedKeys.dailyTestOnControlledPace);
+      List<String> limitQuery =
+          List.generate(StudyModes.values.length, (_) => '');
+      // Resets check on daily performed tests based on the ms on
+      // the saved key and the next day's 00:00 ms.
+      //
+      // writingDailyPerformed stores the next day's 00:00 ms. If
+      // now() ms is greater than writingDailyPerformed, it means that
+      // the test is ready to be performed again --> thus saving 0ms.
+      //
+      // The value of writingDailyPerformed is updated in test_result_bloc.
+      if (controlledPace) {
+        final now = DateTime.now().millisecondsSinceEpoch;
+        final limit =
+            ((await _database.query(GrammarTableFields.grammarTable)).length /
+                    7)
+                .ceil();
+
+        final d = prefs.readData(SharedKeys.definitionDailyPerformed);
+        if (d == null || (d != null && d <= now)) {
+          prefs.saveData(SharedKeys.definitionDailyPerformed, 0);
+          limitQuery[0] = "LIMIT $limit";
+        }
+      }
+
+      final definitionNotification =
+          prefs.readData(SharedKeys.definitionDailyNotification);
+      final today = DateTime.now().millisecondsSinceEpoch;
+
+      final resDefinition = definitionNotification
+          // If no limit has been set and we are in controlledPace mode
+          // it means that there is no available tests for now.
+          ? controlledPace && limitQuery[0].isEmpty
+              ? []
+              : await _database.rawQuery(
+                  "SELECT ${GrammarTableFields.definitionField} FROM ${GrammarTableFields.grammarTable} "
+                  "WHERE ${GrammarTableFields.previousIntervalAsDateDefinitionField} <= $today "
+                  "${limitQuery[0]}")
+          : [];
+      return [resDefinition.length];
+    } catch (err) {
+      print(err.toString());
+      return [];
+    }
   }
 
   @override

@@ -38,7 +38,6 @@ class _TestResultPageState extends State<TestResultPage> {
       lists: widget.args.listsName,
       takenDate: Utils.getCurrentMilliseconds(),
     );
-    // TODO: Add TestResultBloc function to save grammar test
     getIt<TestResultBloc>().add(TestResultEventSaveTest(test: test));
     super.initState();
   }

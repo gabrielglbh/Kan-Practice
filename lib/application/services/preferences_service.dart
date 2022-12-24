@@ -53,4 +53,6 @@ class SharedKeys {
   static const String listeningDailyPerformed = "listeningDailyPerformed";
   static const String speakingDailyPerformed = "speakingDailyPerformed";
   static const String definitionDailyPerformed = "definitionDailyPerformed";
+
+  static const String showGrammarGraphs = "showGrammarGraphs";
 }

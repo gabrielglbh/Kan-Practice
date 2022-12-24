@@ -116,9 +116,8 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
 
         /// We just need to update the totalWinRate as a reflection of the already
         /// meaned out words in the KanList
-        // TODO: LIST TABLE WITH GRAMMAR WIN RATE
-        // TODO: final toUpdate = {ListTableFields.totalWinRateWritingField: overall};
-        await _listRepository.updateList(kanListName, {});
+        final toUpdate = {ListTableFields.totalWinRateDefinitionField: overall};
+        await _listRepository.updateList(kanListName, toUpdate);
       }
     });
 
@@ -141,9 +140,10 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
     on<GrammarModeEventUpdateListScore>((event, emit) async {
       /// We just need to update the totalWinRate as a reflection of the already
       /// meaned out words in the KanList
-      // TODO: LIST TABLE WITH GRAMMAR WIN RATE
-      // TODO: Map<String, dynamic> toUpdate = {ListTableFields.totalWinRateWritingField: event.score};
-      await _listRepository.updateList(event.listName, {});
+      final toUpdate = {
+        ListTableFields.totalWinRateDefinitionField: event.score
+      };
+      await _listRepository.updateList(event.listName, toUpdate);
     });
   }
 }

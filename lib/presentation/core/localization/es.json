@@ -418,6 +418,6 @@
   "grammar_bottom_sheet_removeGrammar_title": "Eliminar un punto gramatical",
   "grammar_bottom_sheet_removeGrammar_content": "¿Estás seguro de que quieres eliminar este punto?",
   "grammar_bottom_sheet_removeGrammar_positive": "Eliminar",
-  "test_mode_grammar": "Test Gramática",
-  "abbr_test_mode_grammar": "Gramática"
+  "grammar_change_graphs": "Mostrar % de gramática",
+  "word_change_graphs": "Mostrar % de palabras"
 }

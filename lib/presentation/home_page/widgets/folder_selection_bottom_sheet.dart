@@ -11,7 +11,7 @@ import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_kanlist_grid.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
-import 'package:kanpractice/presentation/core/ui/kp_study_mode_grid/kp_study_mode.dart';
+import 'package:kanpractice/presentation/core/ui/modes_grid/kp_modes_grid.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class FolderSelectionBottomSheet extends StatefulWidget {
@@ -94,7 +94,7 @@ class _FolderSelectionBottomSheetState
                       return Visibility(
                         visible: _selectionMode,
                         // TODO: Folder selection test on grammar
-                        child: KPTestStudyMode(
+                        child: KPModesGrid(
                           list: state.words,
                           type: Tests.folder,
                           testName: _selectedFormattedFolder,

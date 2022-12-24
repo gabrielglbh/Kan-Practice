@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/load_grammar_test/load_grammar_test_bloc.dart';
 import 'package:kanpractice/application/load_test/load_test_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
@@ -65,13 +66,22 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
               ),
               BlocBuilder<LoadTestBloc, LoadTestState>(
                 builder: (context, state) {
+                  bool wordsToReview = false;
                   if (state is LoadTestStateIdle) {
-                    return _body(
-                      hasWords: state.wordsToReview.any((w) => w > 0),
-                    );
-                  } else {
-                    return _body();
+                    wordsToReview = state.wordsToReview.any((w) => w > 0);
                   }
+                  return BlocBuilder<LoadGrammarTestBloc, LoadGrammarTestState>(
+                    builder: (context, grammarState) {
+                      if (grammarState is LoadGrammarTestStateIdle) {
+                        return _body(
+                          hasWords: wordsToReview ||
+                              grammarState.grammarToReview.any((w) => w > 0),
+                        );
+                      } else {
+                        return _body();
+                      }
+                    },
+                  );
                 },
               ),
               Container(height: KPMargins.margin16)
@@ -236,8 +246,6 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                 await DailyBottomSheet.show(context)
                     .then((_) => _checkReviewWords());
                 break;
-              case Tests.grammar:
-              // TODO: on tap test
             }
           },
         ),

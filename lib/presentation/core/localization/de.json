@@ -417,7 +417,7 @@
   "grammar_bottom_sheet_createDialogForDeletingGrammar_failed": "Generischer Fehler beim Entfernen des Grammatikpunkts",
   "grammar_bottom_sheet_removeGrammar_title": "Einen Grammatikpunkt entfernen",
   "grammar_bottom_sheet_removeGrammar_content": "Sind Sie sicher, dass Sie diesen Punkt entfernen wollen?",
-  "grammar_bottom_sheet_removeGrammar_positive": "Entfernen", 
-  "test_mode_grammar": "Grammatiktest",
-  "abbr_test_mode_grammar": "Grammatik"
+  "grammar_bottom_sheet_removeGrammar_positive": "Entfernen",
+  "grammar_change_graphs": "Zeige % der Grammatik",
+  "word_change_graphs": "Zeige % der Wörter"
 }

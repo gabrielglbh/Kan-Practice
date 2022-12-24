@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/domain/list/list.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_grammar_mode_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_study_mode_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -19,12 +20,14 @@ class WordListTile extends StatelessWidget {
 
   /// Tells the widget that [this] is a [WordList] within a Folder
   final bool withinFolder;
+  final bool showGrammarGraphs;
   const WordListTile({
     Key? key,
     required this.item,
     required this.onTap,
     required this.onRemoval,
     this.withinFolder = false,
+    this.showGrammarGraphs = false,
   }) : super(key: key);
 
   @override
@@ -66,13 +69,17 @@ class WordListTile extends StatelessWidget {
             ],
           ),
         ),
-        subtitle: KPStudyModeRadialGraph(
-          writing: item.totalWinRateWriting,
-          reading: item.totalWinRateReading,
-          recognition: item.totalWinRateRecognition,
-          listening: item.totalWinRateListening,
-          speaking: item.totalWinRateSpeaking,
-        ),
+        subtitle: !showGrammarGraphs
+            ? KPStudyModeRadialGraph(
+                writing: item.totalWinRateWriting,
+                reading: item.totalWinRateReading,
+                recognition: item.totalWinRateRecognition,
+                listening: item.totalWinRateListening,
+                speaking: item.totalWinRateSpeaking,
+              )
+            : KPGrammarModeRadialGraph(
+                definition: item.totalWinRateDefinition,
+              ),
       ),
     );
   }

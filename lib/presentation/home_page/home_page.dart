@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
 import 'package:kanpractice/application/folder_list/folder_bloc.dart';
 import 'package:kanpractice/application/list/lists_bloc.dart';
+import 'package:kanpractice/application/load_grammar_test/load_grammar_test_bloc.dart';
 import 'package:kanpractice/application/load_test/load_test_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
@@ -19,7 +20,7 @@ import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:kanpractice/presentation/core/types/market_filters.dart';
 import 'package:kanpractice/presentation/core/types/tab_types.dart';
 import 'package:kanpractice/domain/market/market.dart';
-import 'package:kanpractice/presentation/core/ui/kp_kanji_lists/kanji_lists.dart';
+import 'package:kanpractice/presentation/core/ui/word_lists/kp_word_lists.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/ui/kp_search_bar.dart';
 import 'package:kanpractice/presentation/core/ui/kp_test_bottom_sheet.dart';
@@ -183,6 +184,10 @@ class _HomePageState extends State<HomePage>
     return _addMarketLoadingEvent();
   }
 
+  bool _showPendingReview(List<int> toReview) {
+    return toReview.isNotEmpty && toReview.any((i) => i > 0);
+  }
+
   @override
   void dispose() {
     _controller.dispose();
@@ -329,6 +334,8 @@ class _HomePageState extends State<HomePage>
                               TabBar(
                                 key: folders,
                                 controller: _tabController,
+                                padding: const EdgeInsets.only(
+                                    bottom: KPMargins.margin4),
                                 onTap: (tab) {
                                   if (tab == 0) {
                                     _addListLoadingEvent();
@@ -347,23 +354,20 @@ class _HomePageState extends State<HomePage>
                         BlocBuilder<LoadTestBloc, LoadTestState>(
                           builder: (context, state) {
                             if (state is LoadTestStateIdle) {
-                              if (state.wordsToReview.isNotEmpty &&
-                                  state.wordsToReview.any((i) => i > 0)) {
-                                return ActionChip(
-                                  avatar: const Icon(
-                                    Icons.calendar_today,
-                                    size: 16,
-                                    color: Colors.white,
-                                  ),
-                                  label: Text("pending_review".tr()),
-                                  backgroundColor:
-                                      KPColors.getSecondaryColor(context),
-                                  onPressed: () async {
-                                    await KPTestBottomSheet.show(context)
-                                        .then((_) => _addReviewEvent());
-                                  },
-                                );
-                              }
+                              final show =
+                                  _showPendingReview(state.wordsToReview);
+                              if (show) return _actionChipReview();
+                              return BlocBuilder<LoadGrammarTestBloc,
+                                  LoadGrammarTestState>(
+                                builder: (context, state) {
+                                  if (state is LoadGrammarTestStateIdle) {
+                                    final show = _showPendingReview(
+                                        state.grammarToReview);
+                                    if (show) return _actionChipReview();
+                                  }
+                                  return const SizedBox();
+                                },
+                              );
                             }
                             return const SizedBox();
                           },
@@ -377,6 +381,21 @@ class _HomePageState extends State<HomePage>
           ),
         ),
       ),
+    );
+  }
+
+  ActionChip _actionChipReview() {
+    return ActionChip(
+      avatar: const Icon(
+        Icons.calendar_today,
+        size: 16,
+        color: Colors.white,
+      ),
+      label: Text("pending_review".tr()),
+      backgroundColor: KPColors.getSecondaryColor(context),
+      onPressed: () async {
+        await KPTestBottomSheet.show(context).then((_) => _addReviewEvent());
+      },
     );
   }
 

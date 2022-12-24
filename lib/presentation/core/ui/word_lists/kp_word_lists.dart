@@ -7,8 +7,9 @@ import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
-import 'package:kanpractice/presentation/core/ui/kp_kanji_lists/widgets/kanji_list_tile.dart';
+import 'package:kanpractice/presentation/core/ui/word_lists/widgets/word_list_tile.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/ui/kp_switch.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -43,20 +44,24 @@ class _KPWordListsState extends State<KPWordLists>
   /// true --> DESC or false --> ASC. The value is saved into the shared preferences when a filter
   /// is applied. This value is then restored upon new session.
   bool _currentAppliedOrder = true;
+  bool _showGrammarGraphs = false;
+  bool _showGrammarSwitchOnStack = false;
 
   @override
   void initState() {
     _scrollController.addListener(_scrollListener);
 
-    if (widget.folder == null) {
-      final filterText =
-          getIt<PreferencesService>().readData(SharedKeys.filtersOnList) ??
-              ListTableFields.lastUpdatedField;
-      _currentAppliedFilter = KanListFiltersUtils.getFilterFrom(filterText);
+    final filterText =
+        getIt<PreferencesService>().readData(SharedKeys.filtersOnList) ??
+            ListTableFields.lastUpdatedField;
+    _currentAppliedFilter = KanListFiltersUtils.getFilterFrom(filterText);
 
-      _currentAppliedOrder =
-          getIt<PreferencesService>().readData(SharedKeys.orderOnList) ?? true;
-    }
+    _currentAppliedOrder =
+        getIt<PreferencesService>().readData(SharedKeys.orderOnList) ?? true;
+
+    _showGrammarGraphs =
+        getIt<PreferencesService>().readData(SharedKeys.showGrammarGraphs) ??
+            false;
     super.initState();
   }
 
@@ -73,6 +78,7 @@ class _KPWordListsState extends State<KPWordLists>
         _scrollController.position.maxScrollExtent) {
       widget.onScrolledToBottom();
     }
+    setState(() => _showGrammarSwitchOnStack = _scrollController.offset >= 64);
   }
 
   _addLoadingEvent({bool reset = false}) {
@@ -126,11 +132,36 @@ class _KPWordListsState extends State<KPWordLists>
     }
   }
 
+  _toggleGraphs(bool value) {
+    getIt<PreferencesService>().saveData(SharedKeys.showGrammarGraphs, value);
+    setState(() => _showGrammarGraphs = value);
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return Column(
-      children: [_filterChips(), _lists()],
+      children: [
+        _filterChips(),
+        Expanded(
+          child: Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              _lists(),
+              if (_showGrammarSwitchOnStack)
+                ActionChip(
+                  label: Text(_showGrammarGraphs
+                      ? 'word_change_graphs'.tr()
+                      : 'grammar_change_graphs'.tr()),
+                  backgroundColor: KPColors.getSecondaryColor(context),
+                  onPressed: () {
+                    _toggleGraphs(!_showGrammarGraphs);
+                  },
+                )
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -161,6 +192,26 @@ class _KPWordListsState extends State<KPWordLists>
                 ),
               );
             }));
+  }
+
+  ListTile _grammarSwitch() {
+    return ListTile(
+      title: Text(
+        'grammar_change_graphs'.tr(),
+        style: Theme.of(context)
+            .textTheme
+            .bodyMedium
+            ?.copyWith(color: KPColors.accentLight),
+      ),
+      trailing: KPSwitch(
+        onChanged: _toggleGraphs,
+        value: _showGrammarGraphs,
+      ),
+      visualDensity: const VisualDensity(vertical: -4),
+      onTap: () {
+        _toggleGraphs(!_showGrammarGraphs);
+      },
+    );
   }
 
   BlocBuilder _lists() {
@@ -218,38 +269,45 @@ class _KPWordListsState extends State<KPWordLists>
       child: RefreshIndicator(
         onRefresh: () => _addLoadingEvent(reset: true),
         color: KPColors.secondaryColor,
-        child: ListView.builder(
+        child: CustomScrollView(
           key: const PageStorageKey<String>('kanListListsController'),
           controller: _scrollController,
-          itemCount: lists.length,
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          padding: const EdgeInsets.only(bottom: KPMargins.margin24),
-          itemBuilder: (context, k) {
-            return WordListTile(
-              item: lists[k],
-              onTap: widget.removeFocus,
-              withinFolder: widget.withinFolder,
-              onRemoval: () {
-                if (widget.folder == null) {
-                  getIt<ListBloc>().add(ListEventDelete(
-                    lists[k],
-                    filter: _currentAppliedFilter,
-                    order: _currentAppliedOrder,
-                  ));
-                } else {
-                  getIt<FolderDetailsBloc>().add(
-                    FolderDetailsEventDelete(
-                      widget.folder!,
-                      lists[k],
-                      filter: _currentAppliedFilter,
-                      order: _currentAppliedOrder,
-                    ),
-                  );
-                }
-                _resetScroll();
-              },
-            );
-          },
+          slivers: [
+            SliverToBoxAdapter(child: _grammarSwitch()),
+            SliverList(
+              delegate: SliverChildBuilderDelegate((_, k) {
+                return WordListTile(
+                  item: lists[k],
+                  onTap: widget.removeFocus,
+                  withinFolder: widget.withinFolder,
+                  showGrammarGraphs: _showGrammarGraphs,
+                  onRemoval: () {
+                    if (widget.folder == null) {
+                      getIt<ListBloc>().add(ListEventDelete(
+                        lists[k],
+                        filter: _currentAppliedFilter,
+                        order: _currentAppliedOrder,
+                      ));
+                    } else {
+                      getIt<FolderDetailsBloc>().add(
+                        FolderDetailsEventDelete(
+                          widget.folder!,
+                          lists[k],
+                          filter: _currentAppliedFilter,
+                          order: _currentAppliedOrder,
+                        ),
+                      );
+                    }
+                    _resetScroll();
+                  },
+                );
+              }, childCount: lists.length),
+            ),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: KPMargins.margin48),
+            )
+          ],
         ),
       ),
     );

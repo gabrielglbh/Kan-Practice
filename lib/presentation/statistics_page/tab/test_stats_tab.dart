@@ -154,12 +154,6 @@ class _TestStatsState extends State<TestStats>
                 y: s.test.dailyTests.toDouble(),
                 color: KPColors.secondaryColor,
               );
-            case Tests.grammar:
-              return DataFrame(
-                x: Tests.grammar.nameAbbr,
-                y: s.test.grammarTests.toDouble(),
-                color: KPColors.secondaryColor,
-              );
           }
         }),
       ),

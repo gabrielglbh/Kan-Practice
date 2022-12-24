@@ -7,11 +7,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
-import 'package:kanpractice/presentation/core/ui/kp_study_mode_grid/grammar_grid.dart';
-import 'package:kanpractice/presentation/core/ui/kp_study_mode_grid/word_grid.dart';
+import 'package:kanpractice/presentation/core/ui/modes_grid/grammar_grid.dart';
+import 'package:kanpractice/presentation/core/ui/modes_grid/word_grid.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
-class KPTestStudyMode extends StatefulWidget {
+class KPModesGrid extends StatefulWidget {
   /// List of [Kanji] to make the test with.
   ///
   /// If [list] is null, the list must be loaded upon the mode selection (BLITZ or REMEMBRANCE or LESS % or DAILY).
@@ -43,7 +43,7 @@ class KPTestStudyMode extends StatefulWidget {
   /// Type of test being performed
   final Tests type;
 
-  const KPTestStudyMode({
+  const KPModesGrid({
     Key? key,
     this.list,
     this.grammarList,
@@ -54,10 +54,10 @@ class KPTestStudyMode extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<KPTestStudyMode> createState() => _KPTestStudyModeState();
+  State<KPModesGrid> createState() => _KPModesGridState();
 }
 
-class _KPTestStudyModeState extends State<KPTestStudyMode> {
+class _KPModesGridState extends State<KPModesGrid> {
   final PageController _pageController = PageController();
   int _page = 0;
 
@@ -143,8 +143,8 @@ class _KPTestStudyModeState extends State<KPTestStudyMode> {
 
   Container _bullet(int index) {
     return Container(
-      width: KPMargins.margin12,
-      height: KPMargins.margin12,
+      width: KPMargins.margin8,
+      height: KPMargins.margin8,
       decoration: BoxDecoration(
         color: _page == index
             ? KPColors.getSecondaryColor(context)

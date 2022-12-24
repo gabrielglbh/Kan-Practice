@@ -17,7 +17,6 @@ enum Tests {
   categories,
   folder,
   daily,
-  grammar,
 }
 
 extension TestsExt on Tests {
@@ -39,8 +38,6 @@ extension TestsExt on Tests {
         return "test_mode_folder".tr();
       case Tests.daily:
         return "test_mode_daily".tr();
-      case Tests.grammar:
-        return "test_mode_grammar".tr();
     }
   }
 
@@ -62,8 +59,6 @@ extension TestsExt on Tests {
         return "abbr_test_mode_folder".tr();
       case Tests.daily:
         return "abbr_test_mode_daily".tr();
-      case Tests.grammar:
-        return "abbr_test_mode_grammar".tr();
     }
   }
 
@@ -85,8 +80,6 @@ extension TestsExt on Tests {
         return Icons.folder_rounded;
       case Tests.daily:
         return Icons.calendar_today;
-      case Tests.grammar:
-        return Icons.book_rounded;
     }
   }
 }

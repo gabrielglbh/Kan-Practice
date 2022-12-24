@@ -109,6 +109,7 @@ abstract class InjectableModule {
             "${TestTableFields.wordsInTestField} INTEGER NOT NULL DEFAULT 0, "
             "${TestTableFields.wordsListsField} TEXT NOT NULL, "
             "${TestTableFields.studyModeField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestTableFields.grammarModeField} INTEGER NOT NULL DEFAULT 0, "
             "${TestTableFields.testModeField} INTEGER NOT NULL DEFAULT -1)");
 
         await db.execute("CREATE TABLE ${FolderTableFields.folderTable}("
@@ -151,8 +152,7 @@ abstract class InjectableModule {
             "${TestDataTableFields.lessPctTestsField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.categoryTestsField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.folderTestsField} INTEGER NOT NULL DEFAULT 0, "
-            "${TestDataTableFields.dailyTestsField} INTEGER NOT NULL DEFAULT 0, "
-            "${TestDataTableFields.grammarTestsField} INTEGER NOT NULL DEFAULT 0)");
+            "${TestDataTableFields.dailyTestsField} INTEGER NOT NULL DEFAULT 0)");
 
         /// id is the [Test].index for future refers
         await db.execute(

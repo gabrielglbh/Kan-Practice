@@ -83,11 +83,12 @@ class SpecificDataRepositoryImpl implements ISpecificDataRepository {
   @override
   Future<void> updateSpecificTestStats(Test test) async {
     final raw = await getSpecificTestData(Tests.values[test.testMode!]);
+    final mode = test.studyMode ?? 0;
 
     if (raw != SpecificData.empty) {
       late Map<String, num> map;
 
-      switch (StudyModes.values[test.studyMode]) {
+      switch (StudyModes.values[mode]) {
         case StudyModes.writing:
           final count = raw.totalWritingCount + 1;
           map = {
@@ -147,7 +148,7 @@ class SpecificDataRepositoryImpl implements ISpecificDataRepository {
         whereArgs: [raw.id],
       );
     } else {
-      final m = StudyModes.values[test.studyMode];
+      final m = StudyModes.values[mode];
       await _database.insert(
         TestSpecificDataTableFields.testDataTable,
         SpecificData(

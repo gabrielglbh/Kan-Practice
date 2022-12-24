@@ -174,7 +174,7 @@ class _TestHistoryState extends State<TestHistory>
             return TestDataFrame(
               x: DateTime.fromMillisecondsSinceEpoch(test.takenDate),
               y: test.testScore,
-              studyMode: StudyModes.values[test.studyMode],
+              studyMode: StudyModes.values[test.studyMode ?? 0],
               wordsOnTest: test.wordsInTest,
               mode: Tests.values[test.testMode ?? 0],
             );

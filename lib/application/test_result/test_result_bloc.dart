@@ -6,6 +6,7 @@ import 'package:kanpractice/domain/services/i_preferences_repository.dart';
 import 'package:kanpractice/domain/test_data/i_test_data_repository.dart';
 import 'package:kanpractice/domain/test_result/i_test_repository.dart';
 import 'package:kanpractice/domain/test_result/test_result.dart';
+import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 
@@ -56,7 +57,10 @@ class TestResultBloc extends Bloc<TestResultEvent, TestResultState> {
           _preferencesRepository.saveData(
               SharedKeys.speakingDailyPerformed, nextMidnight);
         }
-        // TODO: Add to Tests table a grammarStudyMode int for controlled pace and backups
+        if (event.test.grammarMode == GrammarModes.definition.index) {
+          _preferencesRepository.saveData(
+              SharedKeys.definitionDailyPerformed, nextMidnight);
+        }
       }
       emit(TestResultStateSaved());
     });

@@ -19,7 +19,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
   @override
   Map<String, num> getAdditionalParams(TestData curr, Test test) {
     final score = test.testScore;
-    switch (StudyModes.values[test.studyMode]) {
+    switch (StudyModes.values[test.studyMode ?? 0]) {
       case StudyModes.writing:
         final totalTests = curr.testTotalCountWriting + 1;
         final newAcc =

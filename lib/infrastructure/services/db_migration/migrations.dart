@@ -10,8 +10,9 @@ class Migrations {
         "ADD COLUMN ${TestDataTableFields.testTotalCountDefinitionField} INTEGER NOT NULL DEFAULT 0");
     await db.rawQuery("ALTER TABLE ${TestDataTableFields.testDataTable} "
         "ADD COLUMN ${TestDataTableFields.testTotalWinRateDefinitionField} INTEGER NOT NULL DEFAULT 0");
-    await db.rawQuery("ALTER TABLE ${TestDataTableFields.testDataTable} "
-        "ADD COLUMN ${TestDataTableFields.grammarTestsField} INTEGER NOT NULL DEFAULT 0");
+
+    await db.rawQuery("ALTER TABLE ${TestTableFields.testTable} "
+        "ADD COLUMN ${TestTableFields.grammarModeField} INTEGER NOT NULL DEFAULT 0");
 
     await db.execute("CREATE TABLE ${GrammarTableFields.grammarTable}("
         "${GrammarTableFields.nameField} TEXT NOT NULL, "

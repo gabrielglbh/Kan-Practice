@@ -73,6 +73,7 @@ class TestTableFields {
   static const String wordsListsField = "kanjiLists";
   static const String studyModeField = "studyMode";
   static const String testModeField = "testMode";
+  static const String grammarModeField = "grammarMode";
 }
 
 class RelationFolderListTableFields {
@@ -125,7 +126,6 @@ class TestDataTableFields {
   static const String categoryTestsField = "categoryTests";
   static const String folderTestsField = "folderTests";
   static const String dailyTestsField = "dailyTests";
-  static const String grammarTestsField = "grammarTests";
 }
 
 class TestSpecificDataTableFields {

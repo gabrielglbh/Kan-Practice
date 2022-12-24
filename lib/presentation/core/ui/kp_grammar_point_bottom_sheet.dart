@@ -3,8 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/grammar_details/grammar_details_bloc.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/injection.dart';
-import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_win_rate_chart.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_grammar_mode_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
@@ -124,11 +123,8 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
             ),
           ),
           const Divider(),
-          WinRateChart(
-            winRate: grammarPoint.winRateDefinition,
-            backgroundColor: GrammarModes.definition.color,
-            size: KPSizes.defaultSizeWinRateChart / 1.2,
-            rateSize: KPFontSizes.fontSize20,
+          KPGrammarModeRadialGraph(
+            definition: grammarPoint.winRateDefinition,
           ),
           _lastTimeShownWidget(context, grammarPoint),
           Visibility(

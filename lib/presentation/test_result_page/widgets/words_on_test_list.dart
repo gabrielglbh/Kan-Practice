@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/domain/word/word.dart';
-import 'package:kanpractice/presentation/core/ui/kp_kanji_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/ui/kp_word_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 
@@ -61,7 +61,7 @@ class WordsOnTestList extends StatelessWidget {
                           borderRadius: const BorderRadius.all(
                               Radius.circular(KPRadius.radius8)),
                           onTap: () async {
-                            await KPKanjiBottomSheet.show(
+                            await KPWordBottomSheet.show(
                                 context, (word?.listName ?? ""), word);
                           },
                           // _createDialogForDeletingKanji(context, kanji.kanji),,

@@ -16,13 +16,13 @@ import 'package:kanpractice/presentation/core/types/word_categories.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class KPKanjiBottomSheet extends StatelessWidget {
+class KPWordBottomSheet extends StatelessWidget {
   /// Kanji object to be displayed
   final String listName;
   final Word? kanji;
   final Function()? onRemove;
   final Function()? onTap;
-  const KPKanjiBottomSheet(
+  const KPWordBottomSheet(
       {Key? key,
       required this.listName,
       required this.kanji,
@@ -39,7 +39,7 @@ class KPKanjiBottomSheet extends StatelessWidget {
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
-        builder: (context) => KPKanjiBottomSheet(
+        builder: (context) => KPWordBottomSheet(
             listName: listName,
             kanji: kanji,
             onTap: onTap,

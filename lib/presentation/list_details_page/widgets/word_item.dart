@@ -3,7 +3,7 @@ import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/domain/word/word.dart';
-import 'package:kanpractice/presentation/core/ui/kp_kanji_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/ui/kp_word_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 
@@ -93,7 +93,7 @@ class WordItem extends StatelessWidget {
               const BorderRadius.all(Radius.circular(KPRadius.radius8)),
           onTap: () async {
             onShowModal();
-            await KPKanjiBottomSheet.show(context, listName, kanji,
+            await KPWordBottomSheet.show(context, listName, kanji,
                 onTap: onTap, onRemove: onRemoval);
           },
           child: Container(

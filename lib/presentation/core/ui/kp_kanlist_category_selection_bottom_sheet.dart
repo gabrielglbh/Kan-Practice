@@ -7,7 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
-import 'package:kanpractice/presentation/core/ui/kp_kanji_category_list.dart';
+import 'package:kanpractice/presentation/core/ui/kp_word_category_list.dart';
 import 'package:kanpractice/presentation/core/ui/modes_grid/kp_modes_grid.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
@@ -105,7 +105,7 @@ class _KPKanListCategorySelectionBottomSheetState
                       margin: const EdgeInsets.all(KPMargins.margin8),
                       child: Column(
                         children: [
-                          KPKanjiCategoryList(
+                          KPWordCategoryList(
                             selected: (index) =>
                                 index == _selectedCategory.index,
                             onSelected: (index) => setState(() {

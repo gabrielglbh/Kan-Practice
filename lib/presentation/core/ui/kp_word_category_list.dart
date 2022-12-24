@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/types/word_categories.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
-class KPKanjiCategoryList extends StatelessWidget {
+class KPWordCategoryList extends StatelessWidget {
   /// Function called when a certain category is tapped. Index is provided
   final Function(int) onSelected;
 
   /// Function that should return [bool] to change style of the selected category
   final Function(int) selected;
   final bool hasScrollablePhysics;
-  const KPKanjiCategoryList(
+  const KPWordCategoryList(
       {Key? key,
       required this.onSelected,
       required this.selected,

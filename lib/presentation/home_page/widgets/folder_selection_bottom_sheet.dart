@@ -93,7 +93,7 @@ class _FolderSelectionBottomSheetState
                       }
                       return Visibility(
                         visible: _selectionMode,
-                        // TODO: Folder selection test on grammar
+                        // TODO: Folder selection test on grammar - pass list load to LoadTestBloc / LoadGrammarTestBloc
                         child: KPModesGrid(
                           list: state.words,
                           type: Tests.folder,

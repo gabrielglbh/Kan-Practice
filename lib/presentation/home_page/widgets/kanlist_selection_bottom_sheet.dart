@@ -91,7 +91,7 @@ class _KanListSelectionBottomSheetState
                       }
                       return Visibility(
                         visible: _selectionMode,
-                        // TODO: List selection test on grammar
+                        // TODO: List selection test on grammar - pass list load to LoadTestBloc / LoadGrammarTestBloc
                         child: KPModesGrid(
                           list: state.words,
                           type: Tests.lists,

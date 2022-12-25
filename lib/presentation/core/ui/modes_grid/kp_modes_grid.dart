@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/application/load_grammar_test/load_grammar_test_bloc.dart';
 import 'package:kanpractice/application/load_test/load_test_bloc.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
+import 'package:kanpractice/presentation/core/types/list_details_types.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
@@ -141,17 +142,10 @@ class _KPModesGridState extends State<KPModesGrid> {
     );
   }
 
-  Container _bullet(int index) {
-    return Container(
-      width: KPMargins.margin8,
-      height: KPMargins.margin8,
-      decoration: BoxDecoration(
-        color: _page == index
-            ? KPColors.getSecondaryColor(context)
-            : KPColors.getSubtle(context),
-        shape: BoxShape.circle,
-      ),
-    );
+  Color _getColor(int index) {
+    return _page == index
+        ? KPColors.getSecondaryColor(context)
+        : KPColors.getSubtle(context);
   }
 
   @override
@@ -163,7 +157,7 @@ class _KPModesGridState extends State<KPModesGrid> {
         controlledPace(),
         if (widget.type != Tests.categories)
           ConstrainedBox(
-            constraints: const BoxConstraints(maxHeight: 232),
+            constraints: const BoxConstraints(maxHeight: 248),
             child: Column(
               children: [
                 Expanded(
@@ -189,18 +183,27 @@ class _KPModesGridState extends State<KPModesGrid> {
                   ),
                 ),
                 const SizedBox(height: KPMargins.margin4),
+                const Divider(
+                  indent: KPMargins.margin8,
+                  endIndent: KPMargins.margin8,
+                ),
                 SizedBox(
-                  height: KPMargins.margin16,
+                  height: KPMargins.margin32,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _bullet(0),
-                      const SizedBox(width: KPMargins.margin12),
-                      _bullet(1),
+                      Icon(
+                        ListDetailsType.words.icon,
+                        color: _getColor(ListDetailsType.words.index),
+                      ),
+                      Icon(
+                        ListDetailsType.grammar.icon,
+                        color: _getColor(ListDetailsType.grammar.index),
+                      ),
                     ],
                   ),
                 ),
-                const SizedBox(height: KPMargins.margin4),
+                const SizedBox(height: KPMargins.margin8),
               ],
             ),
           )

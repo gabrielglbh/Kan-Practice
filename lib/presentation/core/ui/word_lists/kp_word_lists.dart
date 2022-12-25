@@ -265,50 +265,48 @@ class _KPWordListsState extends State<KPWordLists>
   }
 
   Widget _content(List<WordList> lists) {
-    return Expanded(
-      child: RefreshIndicator(
-        onRefresh: () => _addLoadingEvent(reset: true),
-        color: KPColors.secondaryColor,
-        child: CustomScrollView(
-          key: const PageStorageKey<String>('kanListListsController'),
-          controller: _scrollController,
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          slivers: [
-            SliverToBoxAdapter(child: _grammarSwitch()),
-            SliverList(
-              delegate: SliverChildBuilderDelegate((_, k) {
-                return WordListTile(
-                  item: lists[k],
-                  onTap: widget.removeFocus,
-                  withinFolder: widget.withinFolder,
-                  showGrammarGraphs: _showGrammarGraphs,
-                  onRemoval: () {
-                    if (widget.folder == null) {
-                      getIt<ListBloc>().add(ListEventDelete(
+    return RefreshIndicator(
+      onRefresh: () => _addLoadingEvent(reset: true),
+      color: KPColors.secondaryColor,
+      child: CustomScrollView(
+        key: const PageStorageKey<String>('kanListListsController'),
+        controller: _scrollController,
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        slivers: [
+          SliverToBoxAdapter(child: _grammarSwitch()),
+          SliverList(
+            delegate: SliverChildBuilderDelegate((_, k) {
+              return WordListTile(
+                item: lists[k],
+                onTap: widget.removeFocus,
+                withinFolder: widget.withinFolder,
+                showGrammarGraphs: _showGrammarGraphs,
+                onRemoval: () {
+                  if (widget.folder == null) {
+                    getIt<ListBloc>().add(ListEventDelete(
+                      lists[k],
+                      filter: _currentAppliedFilter,
+                      order: _currentAppliedOrder,
+                    ));
+                  } else {
+                    getIt<FolderDetailsBloc>().add(
+                      FolderDetailsEventDelete(
+                        widget.folder!,
                         lists[k],
                         filter: _currentAppliedFilter,
                         order: _currentAppliedOrder,
-                      ));
-                    } else {
-                      getIt<FolderDetailsBloc>().add(
-                        FolderDetailsEventDelete(
-                          widget.folder!,
-                          lists[k],
-                          filter: _currentAppliedFilter,
-                          order: _currentAppliedOrder,
-                        ),
-                      );
-                    }
-                    _resetScroll();
-                  },
-                );
-              }, childCount: lists.length),
-            ),
-            const SliverToBoxAdapter(
-              child: SizedBox(height: KPMargins.margin48),
-            )
-          ],
-        ),
+                      ),
+                    );
+                  }
+                  _resetScroll();
+                },
+              );
+            }, childCount: lists.length),
+          ),
+          const SliverToBoxAdapter(
+            child: SizedBox(height: KPMargins.margin48),
+          )
+        ],
       ),
     );
   }

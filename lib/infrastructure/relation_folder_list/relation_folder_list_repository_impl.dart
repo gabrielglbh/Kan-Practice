@@ -24,10 +24,10 @@ class RelationFolderListRepositoryImpl
   }
 
   @override
-  Future<Batch?> mergeRelationFolderList(
+  Batch? mergeRelationFolderList(
       Batch? batch,
       List<RelationFolderList> relations,
-      ConflictAlgorithm? conflictAlgorithm) async {
+      ConflictAlgorithm? conflictAlgorithm) {
     for (var k in relations) {
       batch?.insert(RelationFolderListTableFields.relTable, k.toJson(),
           conflictAlgorithm: conflictAlgorithm);

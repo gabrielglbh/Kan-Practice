@@ -380,11 +380,11 @@ class FolderRepositoryImpl implements IFolderRepository {
   }
 
   @override
-  Future<Batch?> mergeFolders(
+  Batch? mergeFolders(
     Batch? batch,
     List<Folder> folders,
     ConflictAlgorithm conflictAlgorithm,
-  ) async {
+  ) {
     for (int x = 0; x < folders.length; x++) {
       batch?.insert(FolderTableFields.folderTable, folders[x].toJson(),
           conflictAlgorithm: conflictAlgorithm);

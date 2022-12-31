@@ -155,8 +155,8 @@ class ListRepositoryImpl implements IListRepository {
   }
 
   @override
-  Future<Batch?> mergeLists(Batch? batch, List<WordList> lists,
-      ConflictAlgorithm conflictAlgorithm) async {
+  Batch? mergeLists(
+      Batch? batch, List<WordList> lists, ConflictAlgorithm conflictAlgorithm) {
     for (int x = 0; x < lists.length; x++) {
       batch?.insert(ListTableFields.listsTable, lists[x].toJson(),
           conflictAlgorithm: conflictAlgorithm);

@@ -15,7 +15,7 @@ abstract class IGrammarPointRepository {
   Future<int> createGrammarPoint(GrammarPoint grammarPoint);
 
   /// Merges grammars from the backup or market
-  Future<Batch?> mergeGrammarPoints(
+  Batch? mergeGrammarPoints(
     Batch? batch,
     List<GrammarPoint> grammarPoints,
     ConflictAlgorithm conflictAlgorithm,
@@ -71,12 +71,6 @@ abstract class IGrammarPointRepository {
     required int offset,
     required int limit,
   });
-
-  /// Query to get all Grammar available in the current db within a list with the name [listName]
-  /// that enables Spatial Learning: ordering in ASC order the [GrammarPoint] with less winRate.
-  /// If anything goes wrong, an empty list will be returned.
-  Future<List<GrammarPoint>> getAllGrammarPointsForPractice(
-      String listName, GrammarModes mode);
   Future<int> getTotalGrammarPointCount();
   Future<GrammarPoint> getTotalGrammarPointsWinRates();
   Future<List<int>> getSM2ReviewGrammarPointsAsForToday();

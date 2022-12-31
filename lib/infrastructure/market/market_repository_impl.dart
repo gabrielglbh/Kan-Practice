@@ -127,18 +127,18 @@ class MarketRepositoryImpl implements IMarketRepository {
           return "market_download_already_installed".tr();
         }
 
-        batch = await _folderRepository.mergeFolders(
+        batch = _folderRepository.mergeFolders(
             batch, [backUpFolder], ConflictAlgorithm.ignore);
 
         /// Order matters as kanji depends on lists.
         /// Conflict algorithm allows us to ignore if the insertion if the list already exists.
-        batch = await _listRepository.mergeLists(
+        batch = _listRepository.mergeLists(
             batch, backUpList, ConflictAlgorithm.ignore);
 
-        batch = await _wordRepository.mergeWords(
+        batch = _wordRepository.mergeWords(
             batch, backUpWords, ConflictAlgorithm.ignore);
 
-        batch = await _relationFolderListRepository.mergeRelationFolderList(
+        batch = _relationFolderListRepository.mergeRelationFolderList(
             batch, backUpRelations, ConflictAlgorithm.ignore);
 
         final results = await batch?.commit();
@@ -204,10 +204,10 @@ class MarketRepositoryImpl implements IMarketRepository {
         /// Conflict algorithm allows us to ignore if the insertion if the list already exists.
         Batch? batch = _database.batch();
 
-        batch = await _listRepository.mergeLists(
+        batch = _listRepository.mergeLists(
             batch, [backUpList], ConflictAlgorithm.ignore);
 
-        batch = await _wordRepository.mergeWords(
+        batch = _wordRepository.mergeWords(
             batch, backUpWords, ConflictAlgorithm.ignore);
 
         final results = await batch?.commit();

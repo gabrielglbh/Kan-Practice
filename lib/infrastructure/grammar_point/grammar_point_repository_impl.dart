@@ -68,13 +68,6 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
   }
 
   @override
-  Future<List<GrammarPoint>> getAllGrammarPointsForPractice(
-      String listName, GrammarModes mode) {
-    // TODO: implement getAllGrammarPointsForPractice
-    throw UnimplementedError();
-  }
-
-  @override
   Future<List<GrammarPoint>> getAllGrammarPointsFromList(String listName,
       {int? offset, int? limit}) async {
     try {
@@ -289,10 +282,13 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
   }
 
   @override
-  Future<Batch?> mergeGrammarPoints(Batch? batch,
-      List<GrammarPoint> grammarPoints, ConflictAlgorithm conflictAlgorithm) {
-    // TODO: implement mergeGrammarPoints
-    throw UnimplementedError();
+  Batch? mergeGrammarPoints(Batch? batch, List<GrammarPoint> grammarPoints,
+      ConflictAlgorithm conflictAlgorithm) {
+    for (var gp in grammarPoints) {
+      batch?.insert(GrammarTableFields.grammarTable, gp.toJson(),
+          conflictAlgorithm: ConflictAlgorithm.ignore);
+    }
+    return batch;
   }
 
   @override

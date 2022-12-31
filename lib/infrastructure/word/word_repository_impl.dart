@@ -99,50 +99,6 @@ class WordRepositoryImpl implements IWordRepository {
   }
 
   @override
-  Future<List<Word>> getAllWordsForPractice(
-      String listName, StudyModes mode) async {
-    try {
-      List<Map<String, dynamic>>? res = [];
-      switch (mode) {
-        case StudyModes.writing:
-          res = await _database.query(WordTableFields.wordTable,
-              where: "${WordTableFields.listNameField}=?",
-              whereArgs: [listName],
-              orderBy: "${WordTableFields.winRateWritingField} ASC");
-          break;
-        case StudyModes.reading:
-          res = await _database.query(WordTableFields.wordTable,
-              where: "${WordTableFields.listNameField}=?",
-              whereArgs: [listName],
-              orderBy: "${WordTableFields.winRateReadingField} ASC");
-          break;
-        case StudyModes.recognition:
-          res = await _database.query(WordTableFields.wordTable,
-              where: "${WordTableFields.listNameField}=?",
-              whereArgs: [listName],
-              orderBy: "${WordTableFields.winRateRecognitionField} ASC");
-          break;
-        case StudyModes.listening:
-          res = await _database.query(WordTableFields.wordTable,
-              where: "${WordTableFields.listNameField}=?",
-              whereArgs: [listName],
-              orderBy: "${WordTableFields.winRateListeningField} ASC");
-          break;
-        case StudyModes.speaking:
-          res = await _database.query(WordTableFields.wordTable,
-              where: "${WordTableFields.listNameField}=?",
-              whereArgs: [listName],
-              orderBy: "${WordTableFields.winRateSpeakingField} ASC");
-          break;
-      }
-      return List.generate(res.length, (i) => Word.fromJson(res![i]));
-    } catch (err) {
-      print(err.toString());
-      return [];
-    }
-  }
-
-  @override
   Future<List<Word>> getAllWordsFromList(String listName,
       {int? offset, int? limit}) async {
     try {
@@ -527,8 +483,8 @@ class WordRepositoryImpl implements IWordRepository {
   }
 
   @override
-  Future<Batch?> mergeWords(Batch? batch, List<Word> words,
-      ConflictAlgorithm conflictAlgorithm) async {
+  Batch? mergeWords(
+      Batch? batch, List<Word> words, ConflictAlgorithm conflictAlgorithm) {
     for (var k in words) {
       batch?.insert(WordTableFields.wordTable, k.toJson(),
           conflictAlgorithm: ConflictAlgorithm.ignore);

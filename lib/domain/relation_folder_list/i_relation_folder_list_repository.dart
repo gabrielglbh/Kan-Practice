@@ -8,7 +8,7 @@ abstract class IRelationFolderListRepository {
   Future<int> removeListToFolder(String folder, String list);
 
   /// Merges relations between folders and lists from the backup
-  Future<Batch?> mergeRelationFolderList(
+  Batch? mergeRelationFolderList(
     Batch? batch,
     List<RelationFolderList> relations,
     ConflictAlgorithm? conflictAlgorithm,

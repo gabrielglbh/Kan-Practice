@@ -21,7 +21,7 @@ abstract class IFolderRepository {
   Future<int> createFolder(String name, {List<String> lists = const []});
 
   /// Merges words from the backup
-  Future<Batch?> mergeFolders(
+  Batch? mergeFolders(
     Batch? batch,
     List<Folder> folders,
     ConflictAlgorithm conflictAlgorithm,

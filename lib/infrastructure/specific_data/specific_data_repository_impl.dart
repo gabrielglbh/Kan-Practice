@@ -68,11 +68,11 @@ class SpecificDataRepositoryImpl implements ISpecificDataRepository {
   }
 
   @override
-  Future<Batch?> mergeSpecificData(
+  Batch? mergeSpecificData(
     Batch? batch,
     List<SpecificData> data,
     ConflictAlgorithm conflictAlgorithm,
-  ) async {
+  ) {
     for (int x = 0; x < data.length; x++) {
       batch?.insert(TestSpecificDataTableFields.testDataTable, data[x].toJson(),
           conflictAlgorithm: conflictAlgorithm);

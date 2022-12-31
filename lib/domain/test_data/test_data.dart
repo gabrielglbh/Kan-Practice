@@ -21,7 +21,7 @@ class TestData {
   final double testTotalWinRateRecognition;
   final double testTotalWinRateListening;
   final double testTotalWinRateSpeaking;
-  final double testTotalWinRateDefintition;
+  final double testTotalWinRateDefinition;
   final int selectionTests;
   @JsonKey(ignore: true)
   final SpecificData selectionTestData;
@@ -46,7 +46,6 @@ class TestData {
   final int dailyTests;
   @JsonKey(ignore: true)
   final SpecificData dailyTestData;
-  final int grammarTests;
 
   const TestData({
     this.statsId = TestDataTableFields.statsMainId,
@@ -63,7 +62,7 @@ class TestData {
     required this.testTotalWinRateRecognition,
     required this.testTotalWinRateListening,
     required this.testTotalWinRateSpeaking,
-    required this.testTotalWinRateDefintition,
+    required this.testTotalWinRateDefinition,
     required this.selectionTests,
     required this.blitzTests,
     required this.remembranceTests,
@@ -72,7 +71,6 @@ class TestData {
     required this.categoryTests,
     required this.folderTests,
     required this.dailyTests,
-    required this.grammarTests,
     this.selectionTestData = SpecificData.empty,
     this.blitzTestData = SpecificData.empty,
     this.remembranceTestData = SpecificData.empty,
@@ -99,7 +97,7 @@ class TestData {
       testTotalWinRateRecognition: testTotalWinRateRecognition,
       testTotalWinRateListening: testTotalWinRateListening,
       testTotalWinRateSpeaking: testTotalWinRateSpeaking,
-      testTotalWinRateDefintition: testTotalWinRateDefintition,
+      testTotalWinRateDefinition: testTotalWinRateDefinition,
       selectionTests: selectionTests,
       selectionTestData: test == Tests.lists ? testSpecs : selectionTestData,
       blitzTests: blitzTests,
@@ -116,7 +114,6 @@ class TestData {
       folderTestData: test == Tests.folder ? testSpecs : folderTestData,
       dailyTests: dailyTests,
       dailyTestData: test == Tests.daily ? testSpecs : dailyTestData,
-      grammarTests: grammarTests,
     );
   }
 
@@ -136,7 +133,7 @@ class TestData {
     testTotalWinRateRecognition: 0,
     testTotalWinRateListening: 0,
     testTotalWinRateSpeaking: 0,
-    testTotalWinRateDefintition: 0,
+    testTotalWinRateDefinition: 0,
     selectionTests: 0,
     blitzTests: 0,
     remembranceTests: 0,
@@ -145,7 +142,6 @@ class TestData {
     categoryTests: 0,
     folderTests: 0,
     dailyTests: 0,
-    grammarTests: 0,
   );
 
   factory TestData.fromJson(Map<String, dynamic> json) =>

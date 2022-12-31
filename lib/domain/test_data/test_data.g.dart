@@ -26,8 +26,8 @@ TestData _$TestDataFromJson(Map<String, dynamic> json) => TestData(
           (json['testTotalWinRateListening'] as num).toDouble(),
       testTotalWinRateSpeaking:
           (json['testTotalWinRateSpeaking'] as num).toDouble(),
-      testTotalWinRateDefintition:
-          (json['testTotalWinRateDefintition'] as num).toDouble(),
+      testTotalWinRateDefinition:
+          (json['testTotalWinRateDefinition'] as num).toDouble(),
       selectionTests: json['selectionTests'] as int,
       blitzTests: json['blitzTests'] as int,
       remembranceTests: json['remembranceTests'] as int,
@@ -36,7 +36,6 @@ TestData _$TestDataFromJson(Map<String, dynamic> json) => TestData(
       categoryTests: json['categoryTests'] as int,
       folderTests: json['folderTests'] as int,
       dailyTests: json['dailyTests'] as int,
-      grammarTests: json['grammarTests'] as int,
     );
 
 Map<String, dynamic> _$TestDataToJson(TestData instance) => <String, dynamic>{
@@ -54,7 +53,7 @@ Map<String, dynamic> _$TestDataToJson(TestData instance) => <String, dynamic>{
       'testTotalWinRateRecognition': instance.testTotalWinRateRecognition,
       'testTotalWinRateListening': instance.testTotalWinRateListening,
       'testTotalWinRateSpeaking': instance.testTotalWinRateSpeaking,
-      'testTotalWinRateDefintition': instance.testTotalWinRateDefintition,
+      'testTotalWinRateDefinition': instance.testTotalWinRateDefinition,
       'selectionTests': instance.selectionTests,
       'blitzTests': instance.blitzTests,
       'remembranceTests': instance.remembranceTests,
@@ -63,5 +62,4 @@ Map<String, dynamic> _$TestDataToJson(TestData instance) => <String, dynamic>{
       'categoryTests': instance.categoryTests,
       'folderTests': instance.folderTests,
       'dailyTests': instance.dailyTests,
-      'grammarTests': instance.grammarTests,
     };

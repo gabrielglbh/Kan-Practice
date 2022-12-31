@@ -14,7 +14,7 @@ abstract class IListRepository {
   Future<int> createList(String name);
 
   /// Merges lists from the backup
-  Future<Batch?> mergeLists(
+  Batch? mergeLists(
     Batch? batch,
     List<WordList> lists,
     ConflictAlgorithm conflictAlgorithm,

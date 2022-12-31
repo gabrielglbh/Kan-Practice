@@ -1,7 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
+import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes_filters.dart';
-import 'package:kanpractice/presentation/core/types/study_modes_filters.dart';
+import 'package:kanpractice/presentation/core/types/test_filters.dart';
 import 'package:kanpractice/domain/test_result/i_test_repository.dart';
 import 'package:kanpractice/domain/test_result/test_result.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -37,7 +38,7 @@ class TestResultRepositoryImpl implements ITestRepository {
 
   @override
   Future<List<Test>> getTests(DateTime initial, DateTime last,
-      TestFilters testFilter, StudyModeFilters modesFilter) async {
+      TestFilters testFilter, TestModeFilters modesFilter) async {
     try {
       final initialMs = initial.millisecondsSinceEpoch;
       final lastMs = last.millisecondsSinceEpoch;
@@ -49,9 +50,17 @@ class TestResultRepositoryImpl implements ITestRepository {
             "AND ${TestTableFields.testModeField} == ${testFilter.index - 1}";
       }
 
-      if (modesFilter != StudyModeFilters.all) {
-        modeFilterQuery =
-            "AND ${TestTableFields.studyModeField} == ${modesFilter.index - 1}";
+      if (modesFilter != TestModeFilters.all) {
+        // For the filters, the GrammarModes and StudyModes are sequentialized
+        // Just remove the offset of the filter and apply the correct query
+        if (modesFilter.index > StudyModes.values.length) {
+          final realIndex = modesFilter.index - 1 - StudyModes.values.length;
+          modeFilterQuery =
+              "AND ${TestTableFields.grammarModeField} == $realIndex";
+        } else {
+          modeFilterQuery =
+              "AND ${TestTableFields.studyModeField} == ${modesFilter.index - 1}";
+        }
       }
 
       List<Map<String, dynamic>>? res = await _database.rawQuery(

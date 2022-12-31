@@ -11,13 +11,13 @@ class TestHistoryEventLoading extends TestHistoryEvent {
   final DateTime initial;
   final DateTime last;
   final TestFilters testFilter;
-  final StudyModeFilters modesFilter;
+  final TestModeFilters modesFilter;
 
   const TestHistoryEventLoading({
     required this.initial,
     required this.last,
     this.testFilter = TestFilters.all,
-    this.modesFilter = StudyModeFilters.all,
+    this.modesFilter = TestModeFilters.all,
   });
 
   @override

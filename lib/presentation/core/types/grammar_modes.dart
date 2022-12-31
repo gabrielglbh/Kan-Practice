@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 
-/// TODO When adding a new grammar mode, be sure to update [GrammarModeFilters] too
+/// TODO When adding a new grammar mode, be sure to update [TestHistoryFilters] too
 enum GrammarModes { definition }
 
 extension GrammarModesExt on GrammarModes {

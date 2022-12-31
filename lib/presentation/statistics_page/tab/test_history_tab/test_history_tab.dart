@@ -5,7 +5,7 @@ import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
-import 'package:kanpractice/presentation/core/types/study_modes_filters.dart';
+import 'package:kanpractice/presentation/core/types/test_filters.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes_filters.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -20,7 +20,7 @@ import 'package:kanpractice/presentation/statistics_page/widgets/stats_header.da
 class TestHistoryArgs {
   final DateTime firstDate, lastDate;
   final TestFilters testFilters;
-  final StudyModeFilters modeFilters;
+  final TestModeFilters modeFilters;
 
   const TestHistoryArgs(
     this.firstDate,
@@ -43,7 +43,7 @@ class _TestHistoryState extends State<TestHistory>
     with AutomaticKeepAliveClientMixin {
   late DateTime _firstDate, _lastDate;
   TestFilters _testsFilter = TestFilters.all;
-  StudyModeFilters _modesFilter = StudyModeFilters.all;
+  TestModeFilters _modesFilter = TestModeFilters.all;
 
   Future<void> _applyFilters(TestHistoryArgs? filters) async {
     if (filters != null) {

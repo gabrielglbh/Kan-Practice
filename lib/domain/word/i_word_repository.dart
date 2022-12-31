@@ -15,7 +15,7 @@ abstract class IWordRepository {
   Future<int> createWord(Word word);
 
   /// Merges words from the backup or market
-  Future<Batch?> mergeWords(
+  Batch? mergeWords(
     Batch? batch,
     List<Word> words,
     ConflictAlgorithm conflictAlgorithm,
@@ -70,11 +70,6 @@ abstract class IWordRepository {
     required int offset,
     required int limit,
   });
-
-  /// Query to get all Word available in the current db within a list with the name [listName]
-  /// that enables Spatial Learning: ordering in ASC order the [Word] with less winRate.
-  /// If anything goes wrong, an empty list will be returned.
-  Future<List<Word>> getAllWordsForPractice(String listName, StudyModes mode);
   Future<int> getTotalWordCount();
   Future<Word> getTotalWordsWinRates();
   Future<List<int>> getWordsFromCategory();

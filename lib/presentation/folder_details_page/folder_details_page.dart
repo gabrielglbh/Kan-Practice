@@ -7,7 +7,7 @@ import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:kanpractice/presentation/core/types/tab_types.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
-import 'package:kanpractice/presentation/core/ui/kp_kanji_lists/kanji_lists.dart';
+import 'package:kanpractice/presentation/core/ui/word_lists/kp_word_lists.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/ui/kp_search_bar.dart';
 import 'package:kanpractice/presentation/core/ui/kp_test_bottom_sheet.dart';

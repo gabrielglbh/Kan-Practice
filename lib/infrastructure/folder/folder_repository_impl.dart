@@ -1,7 +1,9 @@
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
+import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/domain/relation_folder_list/i_relation_folder_list_repository.dart';
+import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
@@ -266,6 +268,86 @@ class FolderRepositoryImpl implements IFolderRepository {
   }
 
   @override
+  Future<List<GrammarPoint>> getAllGrammarPointsOnListsOnFolder(
+      List<String> folders,
+      {GrammarModes? mode,
+      Tests? type,
+      int? category}) async {
+    try {
+      String whereClause = "";
+      String query = "";
+
+      /// Build up the where clauses from the listName
+      for (var folder in folders) {
+        whereClause +=
+            "${RelationFolderListTableFields.nameField} LIKE '$folder' OR ";
+      }
+
+      /// Clean up the String
+      whereClause = whereClause.substring(0, whereClause.length - 4);
+
+      final joinSelection =
+          "SELECT DISTINCT K.${GrammarTableFields.nameField}, "
+          "K.${GrammarTableFields.definitionField}, "
+          "K.${GrammarTableFields.exampleField}, "
+          "K.${GrammarTableFields.listNameField}, "
+          "K.${GrammarTableFields.winRateDefinitionField}, "
+          "K.${GrammarTableFields.dateAddedField}, "
+          "K.${GrammarTableFields.dateLastShownField}, "
+          "K.${GrammarTableFields.dateLastShownDefinitionField}, "
+          "FROM ${RelationFolderListTableFields.relTable} L JOIN ${ListTableFields.listsTable} R "
+          "ON L.${RelationFolderListTableFields.listNameField}=R.${ListTableFields.nameField} "
+          "JOIN ${GrammarTableFields.grammarTable} K "
+          "ON K.${GrammarTableFields.listNameField}=R.${ListTableFields.nameField} "
+          "WHERE $whereClause";
+
+      if (type == Tests.daily) {
+        if (mode != null) {
+          switch (mode) {
+            case GrammarModes.definition:
+              query =
+                  "$joinSelection ORDER BY K.${GrammarTableFields.dateLastShownDefinitionField} ASC, "
+                  "K.${GrammarTableFields.winRateDefinitionField} ASC";
+              break;
+          }
+        } else {
+          return [];
+        }
+      } else if (type == Tests.time) {
+        if (mode != null) {
+          switch (mode) {
+            case GrammarModes.definition:
+              query =
+                  "$joinSelection ORDER BY K.${GrammarTableFields.dateLastShownDefinitionField} ASC";
+              break;
+          }
+        } else {
+          return [];
+        }
+      } else if (type == Tests.less) {
+        if (mode != null) {
+          switch (mode) {
+            case GrammarModes.definition:
+              query =
+                  "$joinSelection ORDER BY K.${GrammarTableFields.winRateDefinitionField} ASC";
+              break;
+          }
+        } else {
+          return [];
+        }
+      } else {
+        query = joinSelection;
+      }
+
+      final res = await _database.rawQuery(query);
+      return List.generate(res.length, (i) => GrammarPoint.fromJson(res[i]));
+    } catch (err) {
+      print(err.toString());
+      return [];
+    }
+  }
+
+  @override
   Future<Folder> getFolder(String name) async {
     try {
       final res = await _database.query(
@@ -298,11 +380,11 @@ class FolderRepositoryImpl implements IFolderRepository {
   }
 
   @override
-  Future<Batch?> mergeFolders(
+  Batch? mergeFolders(
     Batch? batch,
     List<Folder> folders,
     ConflictAlgorithm conflictAlgorithm,
-  ) async {
+  ) {
     for (int x = 0; x < folders.length; x++) {
       batch?.insert(FolderTableFields.folderTable, folders[x].toJson(),
           conflictAlgorithm: conflictAlgorithm);

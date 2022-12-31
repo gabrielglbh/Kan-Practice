@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/load_grammar_test/load_grammar_test_bloc.dart';
 import 'package:kanpractice/application/load_test/load_test_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
@@ -34,6 +35,8 @@ class KPTestBottomSheet extends StatefulWidget {
 class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
   _checkReviewWords() {
     getIt<LoadTestBloc>().add(const LoadTestEventIdle(mode: Tests.daily));
+    getIt<LoadGrammarTestBloc>()
+        .add(const LoadGrammarTestEventIdle(mode: Tests.daily));
   }
 
   @override
@@ -65,13 +68,22 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
               ),
               BlocBuilder<LoadTestBloc, LoadTestState>(
                 builder: (context, state) {
+                  bool wordsToReview = false;
                   if (state is LoadTestStateIdle) {
-                    return _body(
-                      hasWords: state.wordsToReview.any((w) => w > 0),
-                    );
-                  } else {
-                    return _body();
+                    wordsToReview = state.wordsToReview.any((w) => w > 0);
                   }
+                  return BlocBuilder<LoadGrammarTestBloc, LoadGrammarTestState>(
+                    builder: (context, grammarState) {
+                      if (grammarState is LoadGrammarTestStateIdle) {
+                        return _body(
+                          hasWords: wordsToReview ||
+                              grammarState.grammarToReview.any((w) => w > 0),
+                        );
+                      } else {
+                        return _body();
+                      }
+                    },
+                  );
                 },
               ),
               Container(height: KPMargins.margin16)
@@ -150,11 +162,11 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                    Icon(Icons.lock_rounded, size: 16, color: Colors.white),
+                    Icon(Icons.lock_rounded, size: 15, color: Colors.white),
                     Icon(Icons.arrow_forward_rounded,
-                        size: 16, color: Colors.white),
+                        size: 15, color: Colors.white),
                     Icon(Icons.lock_open_rounded,
-                        size: 16, color: Colors.white),
+                        size: 15, color: Colors.white),
                   ],
                 ),
                 const SizedBox(height: 4),

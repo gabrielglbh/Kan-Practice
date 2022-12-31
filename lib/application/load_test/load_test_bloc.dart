@@ -8,6 +8,7 @@ import 'package:kanpractice/domain/word/i_word_repository.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
+import 'package:kanpractice/presentation/core/types/word_categories.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 part 'load_test_event.dart';
@@ -40,12 +41,13 @@ class LoadTestBloc extends Bloc<LoadTestEvent, LoadTestState> {
       if (event.practiceList == null) {
         if (event.type == Tests.folder ||
             (event.type == Tests.blitz && event.folder != null)) {
-          if (event.folder != null) {
-            List<Word> list = await _folderRepository
-                .getAllWordsOnListsOnFolder([event.folder!]);
-            list.shuffle();
-            finalList = list;
-          }
+          final folders = event.folder == null
+              ? event.selectionQuery ?? []
+              : [event.folder!];
+          finalList = await _folderRepository.getAllWordsOnListsOnFolder(
+            folders,
+          );
+          finalList.shuffle();
         } else if ((event.type == Tests.time || event.type == Tests.less) &&
             event.folder != null) {
           finalList = await _folderRepository.getAllWordsOnListsOnFolder(
@@ -55,6 +57,25 @@ class LoadTestBloc extends Bloc<LoadTestEvent, LoadTestState> {
           );
         } else if (event.type == Tests.daily) {
           finalList = await _wordRepository.getDailySM2Words(event.mode);
+        } else if (event.type == Tests.lists) {
+          finalList = await _wordRepository
+              .getWordBasedOnSelectedLists(event.selectionQuery ?? []);
+          finalList.shuffle();
+        } else if (event.type == Tests.categories) {
+          final selectedCategory = WordCategory.values
+              .firstWhere((c) => c.name == event.selectionQuery?[0])
+              .index;
+          if (event.folder == null) {
+            finalList =
+                await _wordRepository.getWordsBasedOnCategory(selectedCategory);
+          } else {
+            finalList = await _folderRepository.getAllWordsOnListsOnFolder(
+              [event.folder!],
+              type: Tests.categories,
+              category: selectedCategory,
+            );
+          }
+          finalList.shuffle();
         } else {
           List<Word> list = await _wordRepository.getAllWords(
               mode: event.mode, type: event.type);

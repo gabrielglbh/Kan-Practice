@@ -11,7 +11,7 @@ import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_create_kanlist_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
-import 'package:kanpractice/presentation/core/ui/kp_kanji_category_list.dart';
+import 'package:kanpractice/presentation/core/ui/kp_word_category_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
@@ -174,7 +174,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
     return Column(
       children: [
         Expanded(
-          child: KPKanjiCategoryList(
+          child: KPWordCategoryList(
             hasScrollablePhysics: true,
             selected: (index) => _category.index == index,
             onSelected: (index) {

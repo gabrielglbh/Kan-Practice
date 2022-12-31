@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
-import 'package:kanpractice/presentation/core/types/study_modes_filters.dart';
+import 'package:kanpractice/presentation/core/types/test_filters.dart';
 import 'package:kanpractice/presentation/core/types/test_modes_filters.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
@@ -22,7 +22,7 @@ class _TestHistoryFiltersState extends State<TestHistoryFilters> {
   late DateTime _firstDate, _lastDate;
   List<_ChartData> studyModesAllIcon = [];
   TestFilters _testsFilter = TestFilters.all;
-  StudyModeFilters _modesFilter = StudyModeFilters.all;
+  TestModeFilters _modesFilter = TestModeFilters.all;
 
   String _parseDate(DateTime i, DateTime l) {
     final format = DateFormat('dd MMM yyyy');
@@ -151,12 +151,12 @@ class _TestHistoryFiltersState extends State<TestHistoryFilters> {
                           child: DropdownButton<String>(
                             icon: icon,
                             value: _modesFilter.mode,
-                            items: StudyModeFilters.values
+                            items: TestModeFilters.values
                                 .map((mode) => DropdownMenuItem(
                                     value: mode.mode,
                                     child: Row(
                                       children: [
-                                        if (mode != StudyModeFilters.all)
+                                        if (mode != TestModeFilters.all)
                                           Container(
                                             width: KPMargins.margin16,
                                             height: KPMargins.margin16,
@@ -195,9 +195,9 @@ class _TestHistoryFiltersState extends State<TestHistoryFilters> {
                                 .toList(),
                             onChanged: (value) {
                               setState(() {
-                                _modesFilter = StudyModeFilters.values
+                                _modesFilter = TestModeFilters.values
                                     .firstWhere((e) => e.mode == value,
-                                        orElse: () => StudyModeFilters.all);
+                                        orElse: () => TestModeFilters.all);
                               });
                             },
                           ),

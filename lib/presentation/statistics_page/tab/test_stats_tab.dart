@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/specific_data/specific_data_bloc.dart';
+import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/injection.dart';
@@ -11,6 +12,7 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/domain/stats/stats.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/spec_bottom_sheet.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/stats_header.dart';
+import 'package:kanpractice/presentation/statistics_page/widgets/stats_tappable_info.dart';
 
 class TestStats extends StatefulWidget {
   final KanPracticeStats stats;
@@ -25,7 +27,6 @@ class _TestStatsState extends State<TestStats>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     return ListView(
       children: [
         StatsHeader(
@@ -35,49 +36,56 @@ class _TestStatsState extends State<TestStats>
         KPBarChart(
           graphName: "tests".tr(),
           animationDuration: 0,
-          dataSource: List.generate(StudyModes.values.length, (index) {
-            switch (StudyModes.values[index]) {
-              case StudyModes.writing:
-                final v = widget.stats.test.testTotalCountWriting;
-                return DataFrame(
-                  x: StudyModes.writing.mode,
-                  y: v.toDouble(),
-                  color: StudyModes.writing.color,
-                );
-              case StudyModes.reading:
-                final v = widget.stats.test.testTotalCountReading;
-                return DataFrame(
-                  x: StudyModes.reading.mode,
-                  y: v.toDouble(),
-                  color: StudyModes.reading.color,
-                );
-              case StudyModes.recognition:
-                final v = widget.stats.test.testTotalCountRecognition;
-                return DataFrame(
-                  x: StudyModes.recognition.mode,
-                  y: v.toDouble(),
-                  color: StudyModes.recognition.color,
-                );
-              case StudyModes.listening:
-                final v = widget.stats.test.testTotalCountListening;
-                return DataFrame(
-                  x: StudyModes.listening.mode,
-                  y: v.toDouble(),
-                  color: StudyModes.listening.color,
-                );
-              case StudyModes.speaking:
-                final v = widget.stats.test.testTotalCountSpeaking;
-                return DataFrame(
-                  x: StudyModes.speaking.mode,
-                  y: v.toDouble(),
-                  color: StudyModes.speaking.color,
-                );
+          dataSource: List.generate(
+              StudyModes.values.length + GrammarModes.values.length, (index) {
+            if (index == 0) {
+              final v = widget.stats.test.testTotalCountWriting;
+              return DataFrame(
+                x: StudyModes.writing.mode,
+                y: v.toDouble(),
+                color: StudyModes.writing.color,
+              );
+            } else if (index == 1) {
+              final v = widget.stats.test.testTotalCountReading;
+              return DataFrame(
+                x: StudyModes.reading.mode,
+                y: v.toDouble(),
+                color: StudyModes.reading.color,
+              );
+            } else if (index == 2) {
+              final v = widget.stats.test.testTotalCountRecognition;
+              return DataFrame(
+                x: StudyModes.recognition.mode,
+                y: v.toDouble(),
+                color: StudyModes.recognition.color,
+              );
+            } else if (index == 3) {
+              final v = widget.stats.test.testTotalCountListening;
+              return DataFrame(
+                x: StudyModes.listening.mode,
+                y: v.toDouble(),
+                color: StudyModes.listening.color,
+              );
+            } else if (index == 4) {
+              final v = widget.stats.test.testTotalCountSpeaking;
+              return DataFrame(
+                x: StudyModes.speaking.mode,
+                y: v.toDouble(),
+                color: StudyModes.speaking.color,
+              );
+            } else {
+              final v = widget.stats.test.testTotalCountDefinition;
+              return DataFrame(
+                x: GrammarModes.definition.mode,
+                y: v.toDouble(),
+                color: GrammarModes.definition.color,
+              );
             }
           }),
         ),
         const Divider(),
         StatsHeader(title: "stats_tests_by_type".tr()),
-        _info,
+        const TappableInfo(),
         _expandedTestCount(context, widget.stats),
         const SizedBox(height: KPMargins.margin32)
       ],
@@ -159,28 +167,6 @@ class _TestStatsState extends State<TestStats>
       ),
     );
   }
-
-  Widget get _info => Padding(
-        padding: const EdgeInsets.only(
-          left: KPMargins.margin16,
-          right: KPMargins.margin16,
-          bottom: KPMargins.margin8,
-        ),
-        child: Row(
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(right: KPMargins.margin8),
-              child: Icon(Icons.info_rounded, size: 16, color: Colors.grey),
-            ),
-            Flexible(
-              child: Text(
-                "stats_tests_tap_to_specs".tr(),
-                style: Theme.of(context).textTheme.caption,
-              ),
-            ),
-          ],
-        ),
-      );
 
   @override
   bool get wantKeepAlive => true;

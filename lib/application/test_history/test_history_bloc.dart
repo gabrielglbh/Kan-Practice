@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/presentation/core/types/study_modes_filters.dart';
+import 'package:kanpractice/presentation/core/types/test_filters.dart';
 import 'package:kanpractice/presentation/core/types/test_modes_filters.dart';
 import 'package:kanpractice/domain/test_result/i_test_repository.dart';
 import 'package:kanpractice/domain/test_result/test_result.dart';

@@ -1,11 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
+import 'package:kanpractice/presentation/core/types/list_details_types.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/domain/specific_data/specific_data.dart';
 import 'package:kanpractice/infrastructure/specific_data/specific_data_repository_impl.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_bar_chart.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_radial_graph.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_grammar_mode_radial_graph.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_study_mode_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
@@ -37,8 +40,10 @@ class SpecBottomSheet extends StatefulWidget {
 }
 
 class _SpecBottomSheetState extends State<SpecBottomSheet> {
+  bool _showWords = true;
   bool get _isCategory =>
       widget.data.id == SpecificDataRepositoryImpl.categoryId;
+  int length = StudyModes.values.length + GrammarModes.values.length;
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +51,14 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
         widget.data.totalReadingCount +
         widget.data.totalRecognitionCount +
         widget.data.totalListeningCount +
-        widget.data.totalSpeakingCount;
+        widget.data.totalSpeakingCount +
+        widget.data.totalDefinitionCount;
     final aggregate = widget.data.totalWinRateWriting +
         widget.data.totalWinRateReading +
         widget.data.totalWinRateRecognition +
         widget.data.totalWinRateListening +
-        widget.data.totalWinRateSpeaking;
+        widget.data.totalWinRateSpeaking +
+        widget.data.totalWinRateDefinition;
 
     return BottomSheet(
       enableDrag: false,
@@ -76,39 +83,49 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                       graphName: "tests".tr(),
                       heightRatio: 1.3,
                       animationDuration: 0,
-                      dataSource:
-                          List.generate(StudyModes.values.length, (index) {
-                        switch (StudyModes.values[index]) {
-                          case StudyModes.writing:
-                            return DataFrame(
-                              x: StudyModes.writing.mode,
-                              y: widget.data.totalWritingCount.toDouble(),
-                              color: StudyModes.writing.color,
-                            );
-                          case StudyModes.reading:
-                            return DataFrame(
-                              x: StudyModes.reading.mode,
-                              y: widget.data.totalReadingCount.toDouble(),
-                              color: StudyModes.reading.color,
-                            );
-                          case StudyModes.recognition:
-                            return DataFrame(
-                              x: StudyModes.recognition.mode,
-                              y: widget.data.totalRecognitionCount.toDouble(),
-                              color: StudyModes.recognition.color,
-                            );
-                          case StudyModes.listening:
-                            return DataFrame(
-                              x: StudyModes.listening.mode,
-                              y: widget.data.totalListeningCount.toDouble(),
-                              color: StudyModes.listening.color,
-                            );
-                          case StudyModes.speaking:
-                            return DataFrame(
-                              x: StudyModes.speaking.mode,
-                              y: widget.data.totalSpeakingCount.toDouble(),
-                              color: StudyModes.speaking.color,
-                            );
+                      dataSource: List.generate(length, (index) {
+                        if (index == 0) {
+                          final v = widget.data.totalWritingCount;
+                          return DataFrame(
+                            x: StudyModes.writing.mode,
+                            y: v.toDouble(),
+                            color: StudyModes.writing.color,
+                          );
+                        } else if (index == 1) {
+                          final v = widget.data.totalReadingCount;
+                          return DataFrame(
+                            x: StudyModes.reading.mode,
+                            y: v.toDouble(),
+                            color: StudyModes.reading.color,
+                          );
+                        } else if (index == 2) {
+                          final v = widget.data.totalRecognitionCount;
+                          return DataFrame(
+                            x: StudyModes.recognition.mode,
+                            y: v.toDouble(),
+                            color: StudyModes.recognition.color,
+                          );
+                        } else if (index == 3) {
+                          final v = widget.data.totalListeningCount;
+                          return DataFrame(
+                            x: StudyModes.listening.mode,
+                            y: v.toDouble(),
+                            color: StudyModes.listening.color,
+                          );
+                        } else if (index == 4) {
+                          final v = widget.data.totalSpeakingCount;
+                          return DataFrame(
+                            x: StudyModes.speaking.mode,
+                            y: v.toDouble(),
+                            color: StudyModes.speaking.color,
+                          );
+                        } else {
+                          final v = widget.data.totalDefinitionCount;
+                          return DataFrame(
+                            x: GrammarModes.definition.mode,
+                            y: v.toDouble(),
+                            color: GrammarModes.definition.color,
+                          );
                         }
                       }),
                     )
@@ -130,24 +147,50 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                         ),
                       ),
                     ),
-                  StatsHeader(
-                    title: "specific_accuracy_label".tr(),
-                    align: MainAxisAlignment.center,
-                    verticalVisualDensity: -4,
-                    value: Utils.getFixedPercentageAsString(
-                        aggregate / StudyModes.values.length),
+                  Row(
+                    children: [
+                      Flexible(
+                        child: StatsHeader(
+                          title: "specific_accuracy_label".tr(),
+                          align: MainAxisAlignment.center,
+                          verticalVisualDensity: -4,
+                          value: Utils.getFixedPercentageAsString(
+                            aggregate / length,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(right: KPMargins.margin16),
+                        child: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _showWords = !_showWords;
+                            });
+                          },
+                          icon: Icon(_showWords
+                              ? ListDetailsType.grammar.icon
+                              : ListDetailsType.words.icon),
+                        ),
+                      ),
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: KPMargins.margin24),
-                    child: KPRadialGraph(
-                      animationDuration: 0,
-                      writing: widget.data.totalWinRateWriting,
-                      reading: widget.data.totalWinRateReading,
-                      recognition: widget.data.totalWinRateRecognition,
-                      listening: widget.data.totalWinRateListening,
-                      speaking: widget.data.totalWinRateSpeaking,
-                    ),
+                    child: _showWords
+                        ? KPStudyModeRadialGraph(
+                            animationDuration: 0,
+                            writing: widget.data.totalWinRateWriting,
+                            reading: widget.data.totalWinRateReading,
+                            recognition: widget.data.totalWinRateRecognition,
+                            listening: widget.data.totalWinRateListening,
+                            speaking: widget.data.totalWinRateSpeaking,
+                          )
+                        : KPGrammarModeRadialGraph(
+                            animationDuration: 0,
+                            definition: widget.data.totalWinRateDefinition,
+                          ),
                   ),
                   const SizedBox(height: KPMargins.margin24)
                 ],

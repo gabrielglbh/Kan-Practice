@@ -21,12 +21,14 @@ class LoadTestEventLoadList extends LoadTestEvent {
   final StudyModes mode;
   final Tests type;
   final String? practiceList;
+  final List<String>? selectionQuery;
 
   const LoadTestEventLoadList({
     required this.folder,
     required this.mode,
     required this.type,
     this.practiceList,
+    this.selectionQuery,
   });
 
   @override

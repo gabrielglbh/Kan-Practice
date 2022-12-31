@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
+import 'package:kanpractice/application/load_grammar_test/load_grammar_test_bloc.dart';
 import 'package:kanpractice/application/load_test/load_test_bloc.dart';
 import 'package:kanpractice/application/settings/settings_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
@@ -92,6 +93,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 .then((_) {
               getIt<LoadTestBloc>()
                   .add(const LoadTestEventIdle(mode: Tests.daily));
+              getIt<LoadGrammarTestBloc>()
+                  .add(const LoadGrammarTestEventIdle(mode: Tests.daily));
             });
           },
         ),

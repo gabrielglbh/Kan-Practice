@@ -52,15 +52,15 @@ class InitialRepositoryImpl implements IInitialRepository {
       for (int x = 0; x < lists.length; x++) {
         final WordList k = lists[x]
             .copyWithUpdatedDate(lastUpdated: Utils.getCurrentMilliseconds());
-        batch = await _listRepository.mergeLists(
-            batch, [k], ConflictAlgorithm.replace);
+        batch =
+            _listRepository.mergeLists(batch, [k], ConflictAlgorithm.replace);
       }
       for (int x = 0; x < kanji.length; x++) {
         final Word k = kanji[x].copyWithUpdatedDate(
             dateAdded: Utils.getCurrentMilliseconds(),
             dateLastShown: Utils.getCurrentMilliseconds());
-        batch = await _wordRepository.mergeWords(
-            batch, [k], ConflictAlgorithm.replace);
+        batch =
+            _wordRepository.mergeWords(batch, [k], ConflictAlgorithm.replace);
       }
 
       final results = await batch?.commit();

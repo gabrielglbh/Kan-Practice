@@ -7,35 +7,10 @@ abstract class ListDetailEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class ListDetailEventLoading extends ListDetailEvent {
-  final String list;
-  final bool reset;
+class ListDetailEventIdle extends ListDetailEvent {
+  final String name;
 
-  const ListDetailEventLoading(this.list, {this.reset = false});
-
-  @override
-  List<Object> get props => [list, reset];
-}
-
-class ListDetailEventSearching extends ListDetailEvent {
-  final String query;
-  final String list;
-  final bool reset;
-
-  const ListDetailEventSearching(this.query, this.list, {this.reset = false});
-
-  @override
-  List<Object> get props => [query, list, reset];
-}
-
-class ListDetailEventLoadUpPractice extends ListDetailEvent {
-  final StudyModes studyMode;
-  final String list;
-
-  const ListDetailEventLoadUpPractice(this.list, this.studyMode);
-
-  @override
-  List<Object> get props => [list, studyMode];
+  const ListDetailEventIdle(this.name);
 }
 
 class ListDetailUpdateName extends ListDetailEvent {

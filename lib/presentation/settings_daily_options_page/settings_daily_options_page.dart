@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/ui/kp_switch.dart';
@@ -21,6 +22,7 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
   bool _recognitionNotification = true;
   bool _listeningNotification = true;
   bool _speakingNotification = true;
+  bool _definitionNotification = true;
   bool _controlledPace = true;
 
   @override
@@ -35,6 +37,8 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
         .readData(SharedKeys.listeningDailyNotification);
     _speakingNotification = getIt<PreferencesService>()
         .readData(SharedKeys.speakingDailyNotification);
+    _definitionNotification = getIt<PreferencesService>()
+        .readData(SharedKeys.definitionDailyNotification);
     _controlledPace = getIt<PreferencesService>()
         .readData(SharedKeys.dailyTestOnControlledPace);
     super.initState();
@@ -70,33 +74,17 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
     }
   }
 
-  ListTile _notificationDaily(StudyModes mode) {
-    late bool notification;
-    switch (mode) {
-      case StudyModes.writing:
-        notification = _writingNotification;
-        break;
-      case StudyModes.reading:
-        notification = _readingNotification;
-        break;
-      case StudyModes.recognition:
-        notification = _recognitionNotification;
-        break;
-      case StudyModes.listening:
-        notification = _listeningNotification;
-        break;
-      case StudyModes.speaking:
-        notification = _speakingNotification;
-        break;
-    }
-
+  ListTile _notificationDaily(
+    bool notification,
+    Icon icon,
+    String title,
+    Function(bool) onTap,
+  ) {
     return ListTile(
-      leading: Icon(mode.icon, color: mode.color),
-      title: Text(mode.mode),
+      leading: icon,
+      title: Text(title),
       trailing: KPSwitch(
-        onChanged: (bool value) {
-          _saveData(mode, value);
-        },
+        onChanged: onTap,
         value: notification,
       ),
       contentPadding: const EdgeInsets.only(
@@ -104,7 +92,7 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
         left: KPMargins.margin32 + KPMargins.margin12,
       ),
       onTap: () {
-        _saveData(mode, !notification);
+        onTap(!notification);
       },
     );
   }
@@ -129,11 +117,48 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
               ),
             ),
           ),
-          _notificationDaily(StudyModes.writing),
-          _notificationDaily(StudyModes.reading),
-          _notificationDaily(StudyModes.recognition),
-          _notificationDaily(StudyModes.listening),
-          _notificationDaily(StudyModes.speaking),
+          _notificationDaily(
+            _writingNotification,
+            Icon(StudyModes.writing.icon, color: StudyModes.writing.color),
+            StudyModes.writing.mode,
+            (v) => _saveData(StudyModes.writing, v),
+          ),
+          _notificationDaily(
+            _readingNotification,
+            Icon(StudyModes.reading.icon, color: StudyModes.reading.color),
+            StudyModes.reading.mode,
+            (v) => _saveData(StudyModes.reading, v),
+          ),
+          _notificationDaily(
+            _recognitionNotification,
+            Icon(StudyModes.recognition.icon,
+                color: StudyModes.recognition.color),
+            StudyModes.recognition.mode,
+            (v) => _saveData(StudyModes.recognition, v),
+          ),
+          _notificationDaily(
+            _listeningNotification,
+            Icon(StudyModes.listening.icon, color: StudyModes.listening.color),
+            StudyModes.listening.mode,
+            (v) => _saveData(StudyModes.listening, v),
+          ),
+          _notificationDaily(
+            _speakingNotification,
+            Icon(StudyModes.speaking.icon, color: StudyModes.speaking.color),
+            StudyModes.speaking.mode,
+            (v) => _saveData(StudyModes.speaking, v),
+          ),
+          _notificationDaily(
+            _definitionNotification,
+            Icon(GrammarModes.definition.icon,
+                color: GrammarModes.definition.color),
+            GrammarModes.definition.mode,
+            (v) {
+              getIt<PreferencesService>()
+                  .saveData(SharedKeys.definitionDailyNotification, v);
+              setState(() => _definitionNotification = v);
+            },
+          ),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.sports_gymnastics_rounded),

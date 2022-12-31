@@ -7,6 +7,7 @@ class Market {
   static const uidField = "uid";
   static const listNameField = "name";
   static const numberOfWordsField = "words";
+  static const numberOfGrammarPointsField = "grammar";
   static const ratingMapField = "ratingMap";
   static const ratingField = "rating";
   static const downloadField = "downloads";
@@ -17,6 +18,7 @@ class Market {
 
   final String name;
   final int words;
+  final int? grammar;
   final String uid;
 
   /// Rating will hold a map of authenticated users IDs with their rating on a list.
@@ -39,6 +41,7 @@ class Market {
 
   Market({
     required this.words,
+    this.grammar = 0,
     required this.uid,
     required this.name,
     this.ratingMap = const {},
@@ -75,6 +78,7 @@ class Market {
       name: name,
       uid: uid,
       words: words,
+      grammar: grammar,
       ratingMap: ratingMap,
       rating: rating,
       keywords: k,

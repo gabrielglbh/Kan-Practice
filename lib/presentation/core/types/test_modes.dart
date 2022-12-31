@@ -8,7 +8,16 @@ import 'package:flutter/material.dart';
 /// the switch checks in the base code (see Usages on [Tests]).
 /// Also, add them to [TestFilters]
 
-enum Tests { lists, blitz, time, numbers, less, categories, folder, daily }
+enum Tests {
+  lists,
+  blitz,
+  time,
+  numbers,
+  less,
+  categories,
+  folder,
+  daily,
+}
 
 extension TestsExt on Tests {
   String get name {

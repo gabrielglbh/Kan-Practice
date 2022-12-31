@@ -21,6 +21,9 @@ WordList _$WordListFromJson(Map<String, dynamic> json) => WordList(
       totalWinRateSpeaking:
           (json['totalWinRateSpeaking'] as num?)?.toDouble() ??
               DatabaseConstants.emptyWinRate,
+      totalWinRateDefinition:
+          (json['totalWinRateDefinition'] as num?)?.toDouble() ??
+              DatabaseConstants.emptyWinRate,
       lastUpdated: json['lastUpdated'] as int,
     );
 
@@ -31,5 +34,6 @@ Map<String, dynamic> _$WordListToJson(WordList instance) => <String, dynamic>{
       'totalWinRateRecognition': instance.totalWinRateRecognition,
       'totalWinRateListening': instance.totalWinRateListening,
       'totalWinRateSpeaking': instance.totalWinRateSpeaking,
+      'totalWinRateDefinition': instance.totalWinRateDefinition,
       'lastUpdated': instance.lastUpdated,
     };

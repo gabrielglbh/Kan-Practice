@@ -86,9 +86,19 @@ class GrammarGrid extends StatelessWidget {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3, childAspectRatio: 1.2),
               itemBuilder: (context, i) {
+                int? isAvailable;
+
+                switch (GrammarModes.values[i]) {
+                  case GrammarModes.definition:
+                    isAvailable = getIt<PreferencesService>()
+                        .readData(SharedKeys.definitionDailyPerformed);
+                    break;
+                }
+
                 return _grammarButton(
                   context,
                   GrammarModes.values[i],
+                  isAvailable == 0 || isAvailable == null,
                   state.grammarToReview.isEmpty ? -1 : state.grammarToReview[i],
                 );
               },
@@ -104,6 +114,7 @@ class GrammarGrid extends StatelessWidget {
   Widget _grammarButton(
     BuildContext context,
     GrammarModes mode,
+    bool isAvailable,
     int grammarToReview,
   ) {
     String toReview = grammarToReview.toString();
@@ -117,23 +128,26 @@ class GrammarGrid extends StatelessWidget {
         KPButton(
           title1: mode.japMode,
           title2: mode.mode,
-          color: mode.color,
-          onTap: () async {
-            if (selectionQuery != null && selectionQuery?.isEmpty == true) {
-              Navigator.of(context).pop();
-              Utils.getSnackBar(context, "study_modes_empty".tr());
-            } else {
-              getIt<LoadGrammarTestBloc>().add(
-                LoadGrammarTestEventLoadList(
-                  folder: folder,
-                  mode: mode,
-                  type: type,
-                  practiceList: practiceList,
-                  selectionQuery: selectionQuery,
-                ),
-              );
-            }
-          },
+          color: isAvailable ? mode.color : KPColors.getSubtle(context),
+          onTap: isAvailable
+              ? () async {
+                  if (selectionQuery != null &&
+                      selectionQuery?.isEmpty == true) {
+                    Navigator.of(context).pop();
+                    Utils.getSnackBar(context, "study_modes_empty".tr());
+                  } else {
+                    getIt<LoadGrammarTestBloc>().add(
+                      LoadGrammarTestEventLoadList(
+                        folder: folder,
+                        mode: mode,
+                        type: type,
+                        practiceList: practiceList,
+                        selectionQuery: selectionQuery,
+                      ),
+                    );
+                  }
+                }
+              : null,
         ),
         if (grammarToReview > 0 && type == Tests.daily)
           Positioned(

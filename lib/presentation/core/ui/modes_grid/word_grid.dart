@@ -86,9 +86,35 @@ class WordGrid extends StatelessWidget {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3, childAspectRatio: 1.2),
               itemBuilder: (context, i) {
+                int? isAvailable;
+
+                switch (StudyModes.values[i]) {
+                  case StudyModes.writing:
+                    isAvailable = getIt<PreferencesService>()
+                        .readData(SharedKeys.writingDailyPerformed);
+                    break;
+                  case StudyModes.reading:
+                    isAvailable = getIt<PreferencesService>()
+                        .readData(SharedKeys.readingDailyPerformed);
+                    break;
+                  case StudyModes.recognition:
+                    isAvailable = getIt<PreferencesService>()
+                        .readData(SharedKeys.recognitionDailyPerformed);
+                    break;
+                  case StudyModes.listening:
+                    isAvailable = getIt<PreferencesService>()
+                        .readData(SharedKeys.listeningDailyPerformed);
+                    break;
+                  case StudyModes.speaking:
+                    isAvailable = getIt<PreferencesService>()
+                        .readData(SharedKeys.speakingDailyPerformed);
+                    break;
+                }
+
                 return _modeBasedButtons(
                   context,
                   StudyModes.values[i],
+                  isAvailable == 0 || isAvailable == null,
                   state.wordsToReview.isEmpty ? -1 : state.wordsToReview[i],
                 );
               },
@@ -104,12 +130,14 @@ class WordGrid extends StatelessWidget {
   Widget _modeBasedButtons(
     BuildContext context,
     StudyModes mode,
+    bool isAvailable,
     int wordsToReview,
   ) {
     String toReview = wordsToReview.toString();
-    if (wordsToReview > 5000) {
-      toReview = "> 5000";
+    if (wordsToReview > 500) {
+      toReview = "> 500";
     }
+
     return Stack(
       alignment: Alignment.topRight,
       clipBehavior: Clip.none,
@@ -117,23 +145,26 @@ class WordGrid extends StatelessWidget {
         KPButton(
           title1: mode.japMode,
           title2: mode.mode,
-          color: mode.color,
-          onTap: () async {
-            if (selectionQuery != null && selectionQuery?.isEmpty == true) {
-              Navigator.of(context).pop();
-              Utils.getSnackBar(context, "study_modes_empty".tr());
-            } else {
-              getIt<LoadTestBloc>().add(
-                LoadTestEventLoadList(
-                  folder: folder,
-                  mode: mode,
-                  type: type,
-                  practiceList: practiceList,
-                  selectionQuery: selectionQuery,
-                ),
-              );
-            }
-          },
+          color: isAvailable ? mode.color : KPColors.getSubtle(context),
+          onTap: isAvailable
+              ? () async {
+                  if (selectionQuery != null &&
+                      selectionQuery?.isEmpty == true) {
+                    Navigator.of(context).pop();
+                    Utils.getSnackBar(context, "study_modes_empty".tr());
+                  } else {
+                    getIt<LoadTestBloc>().add(
+                      LoadTestEventLoadList(
+                        folder: folder,
+                        mode: mode,
+                        type: type,
+                        practiceList: practiceList,
+                        selectionQuery: selectionQuery,
+                      ),
+                    );
+                  }
+                }
+              : null,
         ),
         if (wordsToReview > 0 && type == Tests.daily)
           Positioned(

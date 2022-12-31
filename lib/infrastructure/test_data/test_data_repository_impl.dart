@@ -20,6 +20,8 @@ class TestDataRepositoryImpl implements ITestDataRepository {
   @override
   Map<String, num> getAdditionalParams(TestData curr, Test test) {
     final score = test.testScore;
+    final totalLength = StudyModes.values.length + GrammarModes.values.length;
+
     if (test.grammarMode != null) {
       switch (GrammarModes.values[test.grammarMode!]) {
         case GrammarModes.definition:
@@ -38,7 +40,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
                         curr.testTotalWinRateListening +
                         curr.testTotalWinRateSpeaking +
                         newAcc) /
-                    StudyModes.values.length
+                    totalLength
           };
       }
     } else {
@@ -59,7 +61,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
                         curr.testTotalWinRateSpeaking +
                         curr.testTotalWinRateDefinition +
                         newAcc) /
-                    StudyModes.values.length
+                    totalLength
           };
         case StudyModes.reading:
           final totalTests = curr.testTotalCountReading + 1;
@@ -77,7 +79,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
                         curr.testTotalWinRateSpeaking +
                         curr.testTotalWinRateDefinition +
                         newAcc) /
-                    StudyModes.values.length
+                    totalLength
           };
         case StudyModes.recognition:
           final totalTests = curr.testTotalCountRecognition + 1;
@@ -95,7 +97,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
                         curr.testTotalWinRateSpeaking +
                         curr.testTotalWinRateDefinition +
                         newAcc) /
-                    StudyModes.values.length
+                    totalLength
           };
         case StudyModes.listening:
           final totalTests = curr.testTotalCountListening + 1;
@@ -113,7 +115,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
                         curr.testTotalWinRateSpeaking +
                         curr.testTotalWinRateDefinition +
                         newAcc) /
-                    StudyModes.values.length
+                    totalLength
           };
         case StudyModes.speaking:
           final totalTests = curr.testTotalCountSpeaking + 1;
@@ -131,7 +133,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
                         curr.testTotalWinRateListening +
                         curr.testTotalWinRateDefinition +
                         newAcc) /
-                    StudyModes.values.length
+                    totalLength
           };
       }
     }

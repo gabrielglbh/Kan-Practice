@@ -7,6 +7,7 @@ import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
+import 'package:kanpractice/presentation/core/ui/kp_grammar_word_chip.dart';
 import 'package:kanpractice/presentation/core/ui/word_lists/widgets/word_list_tile.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/ui/kp_switch.dart';
@@ -149,15 +150,12 @@ class _KPWordListsState extends State<KPWordLists>
             children: [
               _lists(),
               if (_showGrammarSwitchOnStack)
-                ActionChip(
-                  label: Text(_showGrammarGraphs
-                      ? 'word_change_graphs'.tr()
-                      : 'grammar_change_graphs'.tr()),
-                  backgroundColor: KPColors.getSecondaryColor(context),
+                KPGrammarWordChip(
+                  controller: _showGrammarGraphs,
                   onPressed: () {
-                    _toggleGraphs(!_showGrammarGraphs);
+                    setState(() => _showGrammarGraphs = !_showGrammarGraphs);
                   },
-                )
+                ),
             ],
           ),
         ),

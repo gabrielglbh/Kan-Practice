@@ -10,6 +10,7 @@ import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes_filters.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_cartesian_chart.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_grammar_mode_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_study_mode_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -144,14 +145,20 @@ class _TestHistoryState extends State<TestHistory>
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
-              child: KPStudyModeRadialGraph(
-                animationDuration: 0,
-                writing: widget.stats.test.testTotalWinRateWriting,
-                reading: widget.stats.test.testTotalWinRateReading,
-                recognition: widget.stats.test.testTotalWinRateRecognition,
-                listening: widget.stats.test.testTotalWinRateListening,
-                speaking: widget.stats.test.testTotalWinRateSpeaking,
-              ),
+              child: widget.showWords
+                  ? KPStudyModeRadialGraph(
+                      animationDuration: 0,
+                      writing: widget.stats.test.testTotalWinRateWriting,
+                      reading: widget.stats.test.testTotalWinRateReading,
+                      recognition:
+                          widget.stats.test.testTotalWinRateRecognition,
+                      listening: widget.stats.test.testTotalWinRateListening,
+                      speaking: widget.stats.test.testTotalWinRateSpeaking,
+                    )
+                  : KPGrammarModeRadialGraph(
+                      animationDuration: 0,
+                      definition: widget.stats.test.testTotalWinRateDefinition,
+                    ),
             ),
             const SizedBox(height: KPMargins.margin32)
           ],

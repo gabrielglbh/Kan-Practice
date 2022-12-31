@@ -1,11 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
+import 'package:kanpractice/presentation/core/types/list_details_types.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/domain/specific_data/specific_data.dart';
 import 'package:kanpractice/infrastructure/specific_data/specific_data_repository_impl.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_bar_chart.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_grammar_mode_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_study_mode_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -38,8 +40,10 @@ class SpecBottomSheet extends StatefulWidget {
 }
 
 class _SpecBottomSheetState extends State<SpecBottomSheet> {
+  bool _showWords = true;
   bool get _isCategory =>
       widget.data.id == SpecificDataRepositoryImpl.categoryId;
+  int length = StudyModes.values.length + GrammarModes.values.length;
 
   @override
   Widget build(BuildContext context) {
@@ -79,9 +83,7 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                       graphName: "tests".tr(),
                       heightRatio: 1.3,
                       animationDuration: 0,
-                      dataSource: List.generate(
-                          StudyModes.values.length + GrammarModes.values.length,
-                          (index) {
+                      dataSource: List.generate(length, (index) {
                         if (index == 0) {
                           final v = widget.data.totalWritingCount;
                           return DataFrame(
@@ -145,26 +147,50 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                         ),
                       ),
                     ),
-                  StatsHeader(
-                    title: "specific_accuracy_label".tr(),
-                    align: MainAxisAlignment.center,
-                    verticalVisualDensity: -4,
-                    value: Utils.getFixedPercentageAsString(
-                      aggregate / StudyModes.values.length +
-                          GrammarModes.values.length,
-                    ),
+                  Row(
+                    children: [
+                      Flexible(
+                        child: StatsHeader(
+                          title: "specific_accuracy_label".tr(),
+                          align: MainAxisAlignment.center,
+                          verticalVisualDensity: -4,
+                          value: Utils.getFixedPercentageAsString(
+                            aggregate / length,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(right: KPMargins.margin16),
+                        child: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _showWords = !_showWords;
+                            });
+                          },
+                          icon: Icon(_showWords
+                              ? ListDetailsType.grammar.icon
+                              : ListDetailsType.words.icon),
+                        ),
+                      ),
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: KPMargins.margin24),
-                    child: KPStudyModeRadialGraph(
-                      animationDuration: 0,
-                      writing: widget.data.totalWinRateWriting,
-                      reading: widget.data.totalWinRateReading,
-                      recognition: widget.data.totalWinRateRecognition,
-                      listening: widget.data.totalWinRateListening,
-                      speaking: widget.data.totalWinRateSpeaking,
-                    ),
+                    child: _showWords
+                        ? KPStudyModeRadialGraph(
+                            animationDuration: 0,
+                            writing: widget.data.totalWinRateWriting,
+                            reading: widget.data.totalWinRateReading,
+                            recognition: widget.data.totalWinRateRecognition,
+                            listening: widget.data.totalWinRateListening,
+                            speaking: widget.data.totalWinRateSpeaking,
+                          )
+                        : KPGrammarModeRadialGraph(
+                            animationDuration: 0,
+                            definition: widget.data.totalWinRateDefinition,
+                          ),
                   ),
                   const SizedBox(height: KPMargins.margin24)
                 ],

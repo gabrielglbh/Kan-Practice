@@ -52,46 +52,46 @@ class _ListStatsState extends State<ListStats>
                   speaking: widget.stats.totalWinRateSpeaking,
                 )
               : KPGrammarModeRadialGraph(
+                  animationDuration: 0,
                   definition: widget.stats.totalWinRateDefinition,
                 ),
         ),
-        if (widget.showWords) const Divider(),
-        if (widget.showWords) StatsHeader(title: "words_by_category".tr()),
-        if (widget.showWords) const TappableInfo(),
-        if (widget.showWords)
-          BlocListener<SpecificDataBloc, SpecificDataState>(
-            listener: (context, state) {
-              if (state is SpecificDataStateGatheredCategory) {
-                SpecBottomSheet.show(
-                  context,
-                  state.category.category,
-                  state.data,
-                );
+        const Divider(),
+        StatsHeader(title: "words_by_category".tr()),
+        const TappableInfo(),
+        BlocListener<SpecificDataBloc, SpecificDataState>(
+          listener: (context, state) {
+            if (state is SpecificDataStateGatheredCategory) {
+              SpecBottomSheet.show(
+                context,
+                state.category.category,
+                state.data,
+              );
+            }
+          },
+          child: KPBarChart(
+            graphName: "kanji_category_label".tr(),
+            animationDuration: 0,
+            heightRatio: 3.5,
+            enableTooltip: false,
+            isHorizontalChart: true,
+            onBarTapped: (model) async {
+              if (model.dataPoints?.isNotEmpty == true) {
+                final category = WordCategory.values[model.pointIndex ?? -1];
+                getIt<SpecificDataBloc>()
+                    .add(SpecificDataEventGatherCategory(category: category));
               }
             },
-            child: KPBarChart(
-              graphName: "kanji_category_label".tr(),
-              animationDuration: 0,
-              heightRatio: 3.5,
-              enableTooltip: false,
-              isHorizontalChart: true,
-              onBarTapped: (model) async {
-                if (model.dataPoints?.isNotEmpty == true) {
-                  final category = WordCategory.values[model.pointIndex ?? -1];
-                  getIt<SpecificDataBloc>()
-                      .add(SpecificDataEventGatherCategory(category: category));
-                }
-              },
-              dataSource: List.generate(
-                WordCategory.values.length,
-                (index) => DataFrame(
-                  x: WordCategory.values[index].category,
-                  y: widget.stats.totalCategoryCounts[index].toDouble(),
-                  color: KPColors.secondaryColor,
-                ),
+            dataSource: List.generate(
+              WordCategory.values.length,
+              (index) => DataFrame(
+                x: WordCategory.values[index].category,
+                y: widget.stats.totalCategoryCounts[index].toDouble(),
+                color: KPColors.secondaryColor,
               ),
             ),
           ),
+        ),
         const SizedBox(height: KPMargins.margin32 + KPMargins.margin8)
       ],
     );

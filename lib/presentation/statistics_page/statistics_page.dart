@@ -5,6 +5,7 @@ import 'package:kanpractice/application/statistics/stats_bloc.dart';
 import 'package:kanpractice/application/test_history/test_history_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
+import 'package:kanpractice/presentation/core/ui/kp_grammar_word_chip.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -117,11 +118,8 @@ class _StatisticsPageState extends State<StatisticsPage>
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: KPMargins.margin8),
-                child: ActionChip(
-                  label: Text(_showWords
-                      ? 'grammar_change_graphs'.tr()
-                      : 'word_change_graphs'.tr()),
-                  backgroundColor: KPColors.getSecondaryColor(context),
+                child: KPGrammarWordChip(
+                  controller: _showWords,
                   onPressed: () {
                     setState(() => _showWords = !_showWords);
                   },

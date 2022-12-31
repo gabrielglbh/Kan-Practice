@@ -24,6 +24,7 @@ class _StatisticsPageState extends State<StatisticsPage>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
   int _selectedTab = 0;
+  bool _showWords = true;
   final _tabs = const [
     Tab(icon: Icon(Icons.table_rows_rounded)),
     Tab(icon: Icon(Icons.track_changes_rounded)),
@@ -103,12 +104,29 @@ class _StatisticsPageState extends State<StatisticsPage>
         TabBar(controller: _controller, tabs: _tabs),
         const SizedBox(height: KPMargins.margin16),
         Expanded(
-          child: TabBarView(
-            controller: _controller,
+          child: Stack(
+            alignment: Alignment.bottomCenter,
             children: [
-              ListStats(stats: stats),
-              TestStats(stats: stats),
-              TestHistory(stats: stats),
+              TabBarView(
+                controller: _controller,
+                children: [
+                  ListStats(stats: stats, showWords: _showWords),
+                  TestStats(stats: stats),
+                  TestHistory(stats: stats, showWords: _showWords),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: KPMargins.margin8),
+                child: ActionChip(
+                  label: Text(_showWords
+                      ? 'grammar_change_graphs'.tr()
+                      : 'word_change_graphs'.tr()),
+                  backgroundColor: KPColors.getSecondaryColor(context),
+                  onPressed: () {
+                    setState(() => _showWords = !_showWords);
+                  },
+                ),
+              )
             ],
           ),
         ),

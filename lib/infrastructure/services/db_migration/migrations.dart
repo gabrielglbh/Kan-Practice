@@ -11,8 +11,40 @@ class Migrations {
     await db.rawQuery("ALTER TABLE ${TestDataTableFields.testDataTable} "
         "ADD COLUMN ${TestDataTableFields.testTotalWinRateDefinitionField} INTEGER NOT NULL DEFAULT 0");
 
+    await db.rawQuery(
+        "ALTER TABLE ${TestSpecificDataTableFields.testDataTable} "
+        "ADD COLUMN ${TestSpecificDataTableFields.totalDefinitionCountField} INTEGER NOT NULL DEFAULT 0");
+    await db.rawQuery(
+        "ALTER TABLE ${TestSpecificDataTableFields.testDataTable} "
+        "ADD COLUMN ${TestSpecificDataTableFields.totalWinRateDefinitionField} INTEGER NOT NULL DEFAULT 0");
+
     await db.rawQuery("ALTER TABLE ${TestTableFields.testTable} "
-        "ADD COLUMN ${TestTableFields.grammarModeField} INTEGER NOT NULL DEFAULT 0");
+        "ADD COLUMN ${TestTableFields.grammarModeField} INTEGER DEFAULT 0");
+
+    // BREAKING CHANGE: NOT NULL drop on studyMode
+    await db.transaction((txn) async {
+      await txn.execute("CREATE TABLE TEMP("
+          "${TestTableFields.testIdField} INTEGER PRIMARY KEY AUTOINCREMENT, "
+          "${TestTableFields.takenDateField} INTEGER NOT NULL DEFAULT 0, "
+          "${TestTableFields.testScoreField} INTEGER NOT NULL DEFAULT 0, "
+          "${TestTableFields.wordsInTestField} INTEGER NOT NULL DEFAULT 0, "
+          "${TestTableFields.wordsListsField} TEXT NOT NULL, "
+          "${TestTableFields.studyModeField} INTEGER, "
+          "${TestTableFields.grammarModeField} INTEGER, "
+          "${TestTableFields.testModeField} INTEGER NOT NULL DEFAULT -1)");
+      await txn.execute("INSERT INTO TEMP(${TestTableFields.testIdField}, "
+          "${TestTableFields.takenDateField}, "
+          "${TestTableFields.testScoreField}, "
+          "${TestTableFields.wordsInTestField}, "
+          "${TestTableFields.wordsListsField}, "
+          "${TestTableFields.studyModeField}, "
+          "${TestTableFields.grammarModeField}, "
+          "${TestTableFields.testModeField}) "
+          "SELECT * FROM ${TestTableFields.testTable}");
+      await txn.execute("DROP TABLE ${TestTableFields.testTable}");
+      await txn
+          .execute("ALTER TABLE TEMP RENAME TO ${TestTableFields.testTable}");
+    });
 
     await db.execute("CREATE TABLE ${GrammarTableFields.grammarTable}("
         "${GrammarTableFields.nameField} TEXT NOT NULL, "

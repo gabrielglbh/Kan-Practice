@@ -250,9 +250,15 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
   }
 
   @override
-  Future<int> getTotalGrammarPointCount() {
-    // TODO: implement getTotalGrammarPointCount
-    throw UnimplementedError();
+  Future<int> getTotalGrammarPointCount() async {
+    try {
+      List<Map<String, dynamic>>? res =
+          await _database.query(GrammarTableFields.grammarTable);
+      return res.length;
+    } catch (err) {
+      print(err.toString());
+      return 0;
+    }
   }
 
   @override

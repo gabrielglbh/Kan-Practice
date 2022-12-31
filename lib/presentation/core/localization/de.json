@@ -358,7 +358,7 @@
   "settings_notifications_label": "Aktivieren/Deaktivieren von Benachrichtigungen",
   "stats_tests_by_type": "Gesamtzahl der Tests nach Typ",
   "stats_tests_total_acc": "Gesamtgenauigkeit der Tests nach Studienmodus",
-  "stats_tests_tap_to_specs": "Tippen Sie auf die Balken, um mehr Details für jeden Testtyp zu sehen",
+  "stats_tests_tap_to_specs": "Tippen Sie auf die Balken, um weitere Details zu sehen",
   "folder_practice_title": "Üben Sie mit einer Teilmenge von Wörtern aus den Listen in diesem Ordner.",
   "disclaimer_spatial_repetition": "Die Praxis basiert auf dem Lernen durch Nicht-Wiederholung. Diese Methode wird so angewandt, dass Wörter, die Sie beim Üben übersehen haben, am Ende der gesamten Prüfung wieder auftauchen (bis Sie sie richtig können). Dies fördert das Lernen und verbessert das Einprägen von Vokabeln",
   "settings_general_kanji_list": "Gruppenstatistiken nach Wort",
@@ -418,6 +418,7 @@
   "grammar_bottom_sheet_removeGrammar_title": "Einen Grammatikpunkt entfernen",
   "grammar_bottom_sheet_removeGrammar_content": "Sind Sie sicher, dass Sie diesen Punkt entfernen wollen?",
   "grammar_bottom_sheet_removeGrammar_positive": "Entfernen",
-  "grammar_change_graphs": "Zeige % der Grammatik",
-  "word_change_graphs": "Zeige % der Wörter"
+  "grammar_change_graphs": "Grammatik anzeigen",
+  "word_change_graphs": "Wörter anzeigen",
+  "stats_grammar": "Gesamtzahl der Grammatikpunkte"
 }

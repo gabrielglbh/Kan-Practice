@@ -31,6 +31,8 @@ class StatisticsBloc extends Bloc<StatsEvent, StatsState> {
 
       final int totalLists = await _listRepository.getTotalListCount();
       final int totalWords = await _wordRepository.getTotalWordCount();
+      final int totalGrammar =
+          await _grammarPointRepository.getTotalGrammarPointCount();
       final Word winRates = await _wordRepository.getTotalWordsWinRates();
       final GrammarPoint winRatesGrammar =
           await _grammarPointRepository.getTotalGrammarPointsWinRates();
@@ -43,6 +45,7 @@ class StatisticsBloc extends Bloc<StatsEvent, StatsState> {
         stats: KanPracticeStats(
           totalLists: totalLists,
           totalWords: totalWords,
+          totalGrammar: totalGrammar,
           totalWinRateWriting: winRates.winRateWriting,
           totalWinRateReading: winRates.winRateReading,
           totalWinRateRecognition: winRates.winRateRecognition,

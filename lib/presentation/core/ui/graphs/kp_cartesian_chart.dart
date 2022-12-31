@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
+import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -10,17 +11,20 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class TestDataFrame {
   final DateTime x;
   final double y;
-  final StudyModes studyMode;
+  final StudyModes? studyMode;
+  final GrammarModes? grammarMode;
   final Tests mode;
   final int wordsOnTest;
 
   const TestDataFrame({
     required this.x,
     required this.y,
-    required this.studyMode,
+    this.studyMode,
+    this.grammarMode,
     required this.mode,
     required this.wordsOnTest,
-  });
+  }) : assert((studyMode != null && grammarMode == null) ||
+            (studyMode == null && grammarMode != null));
 }
 
 class KPCartesianChart<T> extends StatelessWidget {
@@ -55,7 +59,14 @@ class KPCartesianChart<T> extends StatelessWidget {
         zoomPanBehavior: zoomPanBehavior,
         onMarkerRender: (args) {
           final point = args.pointIndex;
-          args.color = point == null ? null : dataSource[point].studyMode.color;
+          if (point != null) {
+            final color = dataSource[point].studyMode == null
+                ? dataSource[point].grammarMode!.color
+                : dataSource[point].studyMode!.color;
+            args.color = color;
+          } else {
+            args.color = null;
+          }
           args.borderWidth = 1;
           args.borderColor = KPColors.primaryLight;
         },
@@ -134,14 +145,19 @@ class _KPCartesianChartTooltip extends StatelessWidget {
                       width: 12,
                       height: 12,
                       decoration: BoxDecoration(
-                        color: source.studyMode.color,
+                        color: source.studyMode == null
+                            ? source.grammarMode!.color
+                            : source.studyMode!.color,
                         shape: BoxShape.circle,
                       ),
                     )
                   ],
                 ),
                 const SizedBox(width: KPMargins.margin4),
-                Text(source.studyMode.mode,
+                Text(
+                    source.studyMode == null
+                        ? source.grammarMode!.mode
+                        : source.studyMode!.mode,
                     textAlign: TextAlign.center,
                     style: Theme.of(context)
                         .textTheme

@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/domain/specific_data/i_specific_data_repository.dart';
+import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/domain/specific_data/specific_data.dart';
@@ -19,92 +20,120 @@ class TestDataRepositoryImpl implements ITestDataRepository {
   @override
   Map<String, num> getAdditionalParams(TestData curr, Test test) {
     final score = test.testScore;
-    switch (StudyModes.values[test.studyMode ?? 0]) {
-      case StudyModes.writing:
-        final totalTests = curr.testTotalCountWriting + 1;
-        final newAcc =
-            ((curr.testTotalCountWriting * curr.testTotalWinRateWriting) +
-                    score) /
-                totalTests;
-        return {
-          TestDataTableFields.testTotalCountWritingField: totalTests,
-          TestDataTableFields.testTotalWinRateWritingField: newAcc,
-          TestDataTableFields.totalTestAccuracyField:
-              (curr.testTotalWinRateReading +
-                      curr.testTotalWinRateRecognition +
-                      curr.testTotalWinRateListening +
-                      curr.testTotalWinRateSpeaking +
-                      newAcc) /
-                  StudyModes.values.length
-        };
-      case StudyModes.reading:
-        final totalTests = curr.testTotalCountReading + 1;
-        final newAcc =
-            ((curr.testTotalCountReading * curr.testTotalWinRateReading) +
-                    score) /
-                totalTests;
-        return {
-          TestDataTableFields.testTotalCountReadingField: totalTests,
-          TestDataTableFields.testTotalWinRateReadingField: newAcc,
-          TestDataTableFields.totalTestAccuracyField:
-              (curr.testTotalWinRateWriting +
-                      curr.testTotalWinRateRecognition +
-                      curr.testTotalWinRateListening +
-                      curr.testTotalWinRateSpeaking +
-                      newAcc) /
-                  StudyModes.values.length
-        };
-      case StudyModes.recognition:
-        final totalTests = curr.testTotalCountRecognition + 1;
-        final newAcc = ((curr.testTotalCountRecognition *
-                    curr.testTotalWinRateRecognition) +
-                score) /
-            totalTests;
-        return {
-          TestDataTableFields.testTotalCountRecognitionField: totalTests,
-          TestDataTableFields.testTotalWinRateRecognitionField: newAcc,
-          TestDataTableFields.totalTestAccuracyField:
-              (curr.testTotalWinRateWriting +
-                      curr.testTotalWinRateReading +
-                      curr.testTotalWinRateListening +
-                      curr.testTotalWinRateSpeaking +
-                      newAcc) /
-                  StudyModes.values.length
-        };
-      case StudyModes.listening:
-        final totalTests = curr.testTotalCountListening + 1;
-        final newAcc =
-            ((curr.testTotalCountListening * curr.testTotalWinRateListening) +
-                    score) /
-                totalTests;
-        return {
-          TestDataTableFields.testTotalCountListeningField: totalTests,
-          TestDataTableFields.testTotalWinRateListeningField: newAcc,
-          TestDataTableFields.totalTestAccuracyField:
-              (curr.testTotalWinRateWriting +
-                      curr.testTotalWinRateReading +
-                      curr.testTotalWinRateRecognition +
-                      curr.testTotalWinRateSpeaking +
-                      newAcc) /
-                  StudyModes.values.length
-        };
-      case StudyModes.speaking:
-        final totalTests = curr.testTotalCountSpeaking + 1;
-        final newAcc =
-            ((curr.testTotalCountSpeaking * curr.testTotalWinRateSpeaking) +
-                    score) /
-                totalTests;
-        return {
-          TestDataTableFields.testTotalCountSpeakingField: totalTests,
-          TestDataTableFields.testTotalWinRateSpeakingField: newAcc,
-          TestDataTableFields.totalTestAccuracyField:
-              (curr.testTotalWinRateWriting +
-                      curr.testTotalWinRateReading +
-                      curr.testTotalWinRateRecognition +
-                      curr.testTotalWinRateListening +
-                      newAcc) /
-                  StudyModes.values.length
-        };
+    if (test.grammarMode != null) {
+      switch (GrammarModes.values[test.grammarMode!]) {
+        case GrammarModes.definition:
+          final totalTests = curr.testTotalCountDefinition + 1;
+          final newAcc = ((curr.testTotalCountDefinition *
+                      curr.testTotalWinRateDefinition) +
+                  score) /
+              totalTests;
+          return {
+            TestDataTableFields.testTotalCountDefinitionField: totalTests,
+            TestDataTableFields.testTotalWinRateDefinitionField: newAcc,
+            TestDataTableFields.totalTestAccuracyField:
+                (curr.testTotalWinRateWriting +
+                        curr.testTotalWinRateReading +
+                        curr.testTotalWinRateRecognition +
+                        curr.testTotalWinRateListening +
+                        curr.testTotalWinRateSpeaking +
+                        newAcc) /
+                    StudyModes.values.length
+          };
+      }
+    } else {
+      switch (StudyModes.values[test.studyMode!]) {
+        case StudyModes.writing:
+          final totalTests = curr.testTotalCountWriting + 1;
+          final newAcc =
+              ((curr.testTotalCountWriting * curr.testTotalWinRateWriting) +
+                      score) /
+                  totalTests;
+          return {
+            TestDataTableFields.testTotalCountWritingField: totalTests,
+            TestDataTableFields.testTotalWinRateWritingField: newAcc,
+            TestDataTableFields.totalTestAccuracyField:
+                (curr.testTotalWinRateReading +
+                        curr.testTotalWinRateRecognition +
+                        curr.testTotalWinRateListening +
+                        curr.testTotalWinRateSpeaking +
+                        curr.testTotalWinRateDefinition +
+                        newAcc) /
+                    StudyModes.values.length
+          };
+        case StudyModes.reading:
+          final totalTests = curr.testTotalCountReading + 1;
+          final newAcc =
+              ((curr.testTotalCountReading * curr.testTotalWinRateReading) +
+                      score) /
+                  totalTests;
+          return {
+            TestDataTableFields.testTotalCountReadingField: totalTests,
+            TestDataTableFields.testTotalWinRateReadingField: newAcc,
+            TestDataTableFields.totalTestAccuracyField:
+                (curr.testTotalWinRateWriting +
+                        curr.testTotalWinRateRecognition +
+                        curr.testTotalWinRateListening +
+                        curr.testTotalWinRateSpeaking +
+                        curr.testTotalWinRateDefinition +
+                        newAcc) /
+                    StudyModes.values.length
+          };
+        case StudyModes.recognition:
+          final totalTests = curr.testTotalCountRecognition + 1;
+          final newAcc = ((curr.testTotalCountRecognition *
+                      curr.testTotalWinRateRecognition) +
+                  score) /
+              totalTests;
+          return {
+            TestDataTableFields.testTotalCountRecognitionField: totalTests,
+            TestDataTableFields.testTotalWinRateRecognitionField: newAcc,
+            TestDataTableFields.totalTestAccuracyField:
+                (curr.testTotalWinRateWriting +
+                        curr.testTotalWinRateReading +
+                        curr.testTotalWinRateListening +
+                        curr.testTotalWinRateSpeaking +
+                        curr.testTotalWinRateDefinition +
+                        newAcc) /
+                    StudyModes.values.length
+          };
+        case StudyModes.listening:
+          final totalTests = curr.testTotalCountListening + 1;
+          final newAcc =
+              ((curr.testTotalCountListening * curr.testTotalWinRateListening) +
+                      score) /
+                  totalTests;
+          return {
+            TestDataTableFields.testTotalCountListeningField: totalTests,
+            TestDataTableFields.testTotalWinRateListeningField: newAcc,
+            TestDataTableFields.totalTestAccuracyField:
+                (curr.testTotalWinRateWriting +
+                        curr.testTotalWinRateReading +
+                        curr.testTotalWinRateRecognition +
+                        curr.testTotalWinRateSpeaking +
+                        curr.testTotalWinRateDefinition +
+                        newAcc) /
+                    StudyModes.values.length
+          };
+        case StudyModes.speaking:
+          final totalTests = curr.testTotalCountSpeaking + 1;
+          final newAcc =
+              ((curr.testTotalCountSpeaking * curr.testTotalWinRateSpeaking) +
+                      score) /
+                  totalTests;
+          return {
+            TestDataTableFields.testTotalCountSpeakingField: totalTests,
+            TestDataTableFields.testTotalWinRateSpeakingField: newAcc,
+            TestDataTableFields.totalTestAccuracyField:
+                (curr.testTotalWinRateWriting +
+                        curr.testTotalWinRateReading +
+                        curr.testTotalWinRateRecognition +
+                        curr.testTotalWinRateListening +
+                        curr.testTotalWinRateDefinition +
+                        newAcc) /
+                    StudyModes.values.length
+          };
+      }
     }
   }
 

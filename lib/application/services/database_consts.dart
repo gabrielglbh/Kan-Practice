@@ -136,11 +136,13 @@ class TestSpecificDataTableFields {
   static const String totalRecognitionCountField = "totalRecognitionCount";
   static const String totalListeningCountField = "totalListeningCount";
   static const String totalSpeakingCountField = "totalSpeakingCount";
+  static const String totalDefinitionCountField = "totalDefinitionCount";
   static const String totalWinRateWritingField = "totalWinRateWriting";
   static const String totalWinRateReadingField = "totalWinRateReading";
   static const String totalWinRateRecognitionField = "totalWinRateRecognition";
   static const String totalWinRateListeningField = "totalWinRateListening";
   static const String totalWinRateSpeakingField = "totalWinRateSpeaking";
+  static const String totalWinRateDefinitionField = "totalWinRateDefinition";
 }
 
 class GrammarTableFields {

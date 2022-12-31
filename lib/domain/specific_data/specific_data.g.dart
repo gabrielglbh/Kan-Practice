@@ -13,12 +13,15 @@ SpecificData _$SpecificDataFromJson(Map<String, dynamic> json) => SpecificData(
       totalRecognitionCount: json['totalRecognitionCount'] as int,
       totalListeningCount: json['totalListeningCount'] as int,
       totalSpeakingCount: json['totalSpeakingCount'] as int,
+      totalDefinitionCount: json['totalDefinitionCount'] as int,
       totalWinRateWriting: (json['totalWinRateWriting'] as num).toDouble(),
       totalWinRateReading: (json['totalWinRateReading'] as num).toDouble(),
       totalWinRateRecognition:
           (json['totalWinRateRecognition'] as num).toDouble(),
       totalWinRateListening: (json['totalWinRateListening'] as num).toDouble(),
       totalWinRateSpeaking: (json['totalWinRateSpeaking'] as num).toDouble(),
+      totalWinRateDefinition:
+          (json['totalWinRateDefinition'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$SpecificDataToJson(SpecificData instance) =>
@@ -29,9 +32,11 @@ Map<String, dynamic> _$SpecificDataToJson(SpecificData instance) =>
       'totalRecognitionCount': instance.totalRecognitionCount,
       'totalListeningCount': instance.totalListeningCount,
       'totalSpeakingCount': instance.totalSpeakingCount,
+      'totalDefinitionCount': instance.totalDefinitionCount,
       'totalWinRateWriting': instance.totalWinRateWriting,
       'totalWinRateReading': instance.totalWinRateReading,
       'totalWinRateRecognition': instance.totalWinRateRecognition,
       'totalWinRateListening': instance.totalWinRateListening,
       'totalWinRateSpeaking': instance.totalWinRateSpeaking,
+      'totalWinRateDefinition': instance.totalWinRateDefinition,
     };

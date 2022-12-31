@@ -3,8 +3,9 @@ import 'package:kanpractice/domain/word/word.dart';
 
 class TestResultArguments {
   final double score;
-  final int kanji;
-  final int studyMode;
+  final int word;
+  final int? studyMode;
+  final int? grammarMode;
   final int testMode;
   final String listsName;
   final Map<String, List<Map<Word, double>>>? studyList;
@@ -12,11 +13,19 @@ class TestResultArguments {
 
   TestResultArguments({
     required this.score,
-    required this.kanji,
-    required this.studyMode,
+    required this.word,
+    this.studyMode,
+    this.grammarMode,
     required this.testMode,
     required this.listsName,
-    required this.studyList,
+    this.studyList,
     this.grammarList,
-  });
+  }) : assert((studyMode != null &&
+                studyList != null &&
+                grammarMode == null &&
+                grammarList == null) ||
+            (studyMode == null &&
+                studyList == null &&
+                grammarMode != null &&
+                grammarList != null));
 }

@@ -108,8 +108,8 @@ abstract class InjectableModule {
             "${TestTableFields.testScoreField} INTEGER NOT NULL DEFAULT 0, "
             "${TestTableFields.wordsInTestField} INTEGER NOT NULL DEFAULT 0, "
             "${TestTableFields.wordsListsField} TEXT NOT NULL, "
-            "${TestTableFields.studyModeField} INTEGER NOT NULL DEFAULT 0, "
-            "${TestTableFields.grammarModeField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestTableFields.studyModeField} INTEGER, "
+            "${TestTableFields.grammarModeField} INTEGER, "
             "${TestTableFields.testModeField} INTEGER NOT NULL DEFAULT -1)");
 
         await db.execute("CREATE TABLE ${FolderTableFields.folderTable}("
@@ -163,11 +163,13 @@ abstract class InjectableModule {
             "${TestSpecificDataTableFields.totalRecognitionCountField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalListeningCountField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalSpeakingCountField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestSpecificDataTableFields.totalDefinitionCountField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalWinRateWritingField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalWinRateReadingField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalWinRateRecognitionField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalWinRateListeningField} INTEGER NOT NULL DEFAULT 0, "
-            "${TestSpecificDataTableFields.totalWinRateSpeakingField} INTEGER NOT NULL DEFAULT 0)");
+            "${TestSpecificDataTableFields.totalWinRateSpeakingField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestSpecificDataTableFields.totalWinRateDefinitionField} INTEGER NOT NULL DEFAULT 0)");
 
         await db.execute("CREATE TABLE ${GrammarTableFields.grammarTable}("
             "${GrammarTableFields.nameField} TEXT NOT NULL, "

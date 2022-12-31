@@ -10,11 +10,13 @@ class SpecificData {
   final int totalRecognitionCount;
   final int totalListeningCount;
   final int totalSpeakingCount;
+  final int totalDefinitionCount;
   final double totalWinRateWriting;
   final double totalWinRateReading;
   final double totalWinRateRecognition;
   final double totalWinRateListening;
   final double totalWinRateSpeaking;
+  final double totalWinRateDefinition;
 
   const SpecificData({
     required this.id,
@@ -23,11 +25,13 @@ class SpecificData {
     required this.totalRecognitionCount,
     required this.totalListeningCount,
     required this.totalSpeakingCount,
+    required this.totalDefinitionCount,
     required this.totalWinRateWriting,
     required this.totalWinRateReading,
     required this.totalWinRateRecognition,
     required this.totalWinRateListening,
     required this.totalWinRateSpeaking,
+    required this.totalWinRateDefinition,
   });
 
   /// Empty instance of [BackUp]
@@ -38,11 +42,13 @@ class SpecificData {
     totalRecognitionCount: 0,
     totalListeningCount: 0,
     totalSpeakingCount: 0,
+    totalDefinitionCount: 0,
     totalWinRateWriting: 0,
     totalWinRateReading: 0,
     totalWinRateRecognition: 0,
     totalWinRateListening: 0,
     totalWinRateSpeaking: 0,
+    totalWinRateDefinition: 0,
   );
 
   factory SpecificData.fromJson(Map<String, dynamic> json) =>

@@ -83,7 +83,7 @@ class StudyModeUpdateHandler {
                         KanPracticePages.testResultPage,
                         arguments: TestResultArguments(
                             score: testScore,
-                            kanji: args.studyList.length,
+                            word: args.studyList.length,
                             studyMode: args.mode.index,
                             testMode: args.testMode.index,
                             listsName: args.testHistoryDisplasyName,

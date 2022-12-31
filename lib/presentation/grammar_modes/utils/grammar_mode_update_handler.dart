@@ -83,11 +83,10 @@ class GrammarModeUpdateHandler {
                         KanPracticePages.testResultPage,
                         arguments: TestResultArguments(
                           score: testScore,
-                          kanji: args.studyList.length,
-                          studyMode: args.mode.index,
+                          word: args.studyList.length,
+                          grammarMode: args.mode.index,
                           testMode: args.testMode.index,
                           listsName: args.testHistoryDisplasyName,
-                          studyList: null,
                           grammarList: grammarList,
                         ));
                   }

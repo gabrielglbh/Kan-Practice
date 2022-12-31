@@ -32,8 +32,9 @@ class _TestResultPageState extends State<TestResultPage> {
   void initState() {
     final test = Test(
       testScore: widget.args.score,
-      wordsInTest: widget.args.kanji,
+      wordsInTest: widget.args.word,
       studyMode: widget.args.studyMode,
+      grammarMode: widget.args.grammarMode,
       testMode: widget.args.testMode,
       lists: widget.args.listsName,
       takenDate: Utils.getCurrentMilliseconds(),
@@ -67,8 +68,8 @@ class _TestResultPageState extends State<TestResultPage> {
               WinRateChart(
                 winRate: widget.args.score,
                 backgroundColor: widget.args.grammarList != null
-                    ? GrammarModes.values[widget.args.studyMode].color
-                    : StudyModes.values[widget.args.studyMode].color,
+                    ? GrammarModes.values[widget.args.grammarMode!].color
+                    : StudyModes.values[widget.args.studyMode!].color,
                 size: MediaQuery.of(context).size.width / 2.5,
                 rateSize: KPChartSize.large,
               ),

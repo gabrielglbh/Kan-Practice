@@ -3,6 +3,7 @@ import 'package:kanpractice/domain/test_data/test_data.dart';
 class KanPracticeStats {
   final int totalLists;
   final int totalWords;
+  final int totalGrammar;
   final double totalWinRateWriting;
   final double totalWinRateReading;
   final double totalWinRateRecognition;
@@ -17,6 +18,7 @@ class KanPracticeStats {
   KanPracticeStats({
     required this.totalLists,
     required this.totalWords,
+    required this.totalGrammar,
     required this.totalWinRateWriting,
     required this.totalWinRateReading,
     required this.totalWinRateRecognition,

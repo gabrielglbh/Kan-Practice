@@ -35,6 +35,8 @@ class KPTestBottomSheet extends StatefulWidget {
 class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
   _checkReviewWords() {
     getIt<LoadTestBloc>().add(const LoadTestEventIdle(mode: Tests.daily));
+    getIt<LoadGrammarTestBloc>()
+        .add(const LoadGrammarTestEventIdle(mode: Tests.daily));
   }
 
   @override
@@ -160,11 +162,11 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                    Icon(Icons.lock_rounded, size: 16, color: Colors.white),
+                    Icon(Icons.lock_rounded, size: 15, color: Colors.white),
                     Icon(Icons.arrow_forward_rounded,
-                        size: 16, color: Colors.white),
+                        size: 15, color: Colors.white),
                     Icon(Icons.lock_open_rounded,
-                        size: 16, color: Colors.white),
+                        size: 15, color: Colors.white),
                   ],
                 ),
                 const SizedBox(height: 4),

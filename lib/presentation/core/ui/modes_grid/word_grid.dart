@@ -135,7 +135,7 @@ class WordGrid extends StatelessWidget {
             }
           },
         ),
-        if (wordsToReview > 0)
+        if (wordsToReview > 0 && type == Tests.daily)
           Positioned(
             top: -KPMargins.margin12,
             right: -KPMargins.margin8,

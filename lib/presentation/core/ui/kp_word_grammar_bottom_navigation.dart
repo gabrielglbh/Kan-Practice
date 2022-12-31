@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/types/list_details_types.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
-class ListDetailsBottomNavigation extends StatelessWidget {
+class KPWordGrammarBottomNavigation extends StatelessWidget {
   final Function(ListDetailsType) onPageChanged;
   final ListDetailsType currentPage;
-  const ListDetailsBottomNavigation({
+  const KPWordGrammarBottomNavigation({
     super.key,
     required this.currentPage,
     required this.onPageChanged,

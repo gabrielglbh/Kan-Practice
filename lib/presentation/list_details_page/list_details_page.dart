@@ -20,7 +20,7 @@ import 'package:kanpractice/presentation/core/ui/kp_text_form.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/tutorial_coach.dart';
 import 'package:kanpractice/presentation/list_details_page/grammar_list.dart';
-import 'package:kanpractice/presentation/list_details_page/widgets/list_details_bottom_navigation.dart';
+import 'package:kanpractice/presentation/core/ui/kp_word_grammar_bottom_navigation.dart';
 import 'package:kanpractice/presentation/list_details_page/word_list.dart';
 
 class ListDetailsPage extends StatefulWidget {
@@ -198,7 +198,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
           ],
         ),
       ],
-      bottomNavigationWidget: ListDetailsBottomNavigation(
+      bottomNavigationWidget: KPWordGrammarBottomNavigation(
         key: navigation,
         currentPage: _currentPage,
         onPageChanged: (type) {

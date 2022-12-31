@@ -135,7 +135,7 @@ class GrammarGrid extends StatelessWidget {
             }
           },
         ),
-        if (grammarToReview > 0)
+        if (grammarToReview > 0 && type == Tests.daily)
           Positioned(
             top: -KPMargins.margin12,
             right: -KPMargins.margin8,

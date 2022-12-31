@@ -11,6 +11,7 @@ import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/modes_grid/grammar_grid.dart';
 import 'package:kanpractice/presentation/core/ui/modes_grid/word_grid.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/ui/kp_word_grammar_bottom_navigation.dart';
 
 class KPModesGrid extends StatefulWidget {
   /// List of [Word] to make the test with.
@@ -60,14 +61,14 @@ class KPModesGrid extends StatefulWidget {
 
 class _KPModesGridState extends State<KPModesGrid> {
   final PageController _pageController = PageController();
-  int _page = 0;
+  ListDetailsType _page = ListDetailsType.words;
 
   @override
   void initState() {
     _pageController.addListener(() {
-      if (_pageController.page?.round() != _page) {
+      if (_pageController.page?.round() != _page.index) {
         setState(() {
-          _page = _pageController.page?.round() ?? 0;
+          _page = ListDetailsType.values[_pageController.page?.round() ?? 0];
         });
       }
     });
@@ -142,12 +143,6 @@ class _KPModesGridState extends State<KPModesGrid> {
     );
   }
 
-  Color _getColor(int index) {
-    return _page == index
-        ? KPColors.getSecondaryColor(context)
-        : KPColors.getSubtle(context);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -157,7 +152,7 @@ class _KPModesGridState extends State<KPModesGrid> {
         controlledPace(),
         if (widget.type != Tests.categories)
           ConstrainedBox(
-            constraints: const BoxConstraints(maxHeight: 248),
+            constraints: const BoxConstraints(maxHeight: 272),
             child: Column(
               children: [
                 Expanded(
@@ -182,28 +177,18 @@ class _KPModesGridState extends State<KPModesGrid> {
                     ],
                   ),
                 ),
-                const SizedBox(height: KPMargins.margin4),
-                const Divider(
-                  indent: KPMargins.margin8,
-                  endIndent: KPMargins.margin8,
+                KPWordGrammarBottomNavigation(
+                  currentPage: _page,
+                  onPageChanged: (type) {
+                    setState(() => _page = type);
+                    _pageController.animateToPage(
+                      type.page,
+                      duration:
+                          const Duration(milliseconds: KPAnimations.ms300),
+                      curve: Curves.easeInOut,
+                    );
+                  },
                 ),
-                SizedBox(
-                  height: KPMargins.margin32,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Icon(
-                        ListDetailsType.words.icon,
-                        color: _getColor(ListDetailsType.words.index),
-                      ),
-                      Icon(
-                        ListDetailsType.grammar.icon,
-                        color: _getColor(ListDetailsType.grammar.index),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: KPMargins.margin8),
               ],
             ),
           )

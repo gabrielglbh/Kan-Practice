@@ -138,8 +138,11 @@ class _HomePageState extends State<HomePage>
     super.initState();
   }
 
-  _addReviewEvent() =>
-      getIt<LoadTestBloc>().add(const LoadTestEventIdle(mode: Tests.daily));
+  _addReviewEvent() {
+    getIt<LoadTestBloc>().add(const LoadTestEventIdle(mode: Tests.daily));
+    getIt<LoadGrammarTestBloc>()
+        .add(const LoadGrammarTestEventIdle(mode: Tests.daily));
+  }
 
   _addListLoadingEvent({bool reset = true}) =>
       getIt<ListBloc>().add(ListEventLoading(

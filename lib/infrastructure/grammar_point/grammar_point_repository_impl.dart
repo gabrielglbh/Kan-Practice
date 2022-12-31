@@ -162,9 +162,26 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
 
   @override
   Future<List<GrammarPoint>> getGrammarPointBasedOnSelectedLists(
-      List<String> listNames) {
-    // TODO: implement getGrammarPointBasedOnSelectedLists
-    throw UnimplementedError();
+      List<String> listNames) async {
+    try {
+      String whereClause = "";
+
+      /// Build up the where clauses from the listName
+      for (var x = 0; x < listNames.length; x++) {
+        whereClause += "${GrammarTableFields.listNameField}=? OR ";
+      }
+
+      /// Clean up the String
+      whereClause = whereClause.substring(0, whereClause.length - 4);
+      List<Map<String, dynamic>>? res = await _database.query(
+          GrammarTableFields.grammarTable,
+          where: whereClause,
+          whereArgs: listNames);
+      return List.generate(res.length, (i) => GrammarPoint.fromJson(res[i]));
+    } catch (err) {
+      print(err.toString());
+      return [];
+    }
   }
 
   @override

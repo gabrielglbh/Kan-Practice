@@ -23,9 +23,6 @@ import 'package:kanpractice/application/list_details_words/list_details_words_bl
 import 'package:kanpractice/application/load_folder_practice/load_folder_practice_bloc.dart';
 import 'package:kanpractice/application/load_grammar_test/load_grammar_test_bloc.dart';
 import 'package:kanpractice/application/load_test/load_test_bloc.dart';
-import 'package:kanpractice/application/load_test_category_selection/load_test_category_selection_bloc.dart';
-import 'package:kanpractice/application/load_test_folder_selection/load_test_folder_selection_bloc.dart';
-import 'package:kanpractice/application/load_test_list_selection/load_test_list_selection_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
 import 'package:kanpractice/application/rate/rate_bloc.dart';
 import 'package:kanpractice/application/services/messaging_service.dart';
@@ -176,13 +173,10 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<AddToMarketBloc>()),
         BlocProvider(create: (_) => getIt<AddWordBloc>()),
         BlocProvider(create: (_) => getIt<WordDetailsBloc>()),
-        BlocProvider(create: (_) => getIt<LoadTestCategorySelectionBloc>()),
         BlocProvider(create: (_) => getIt<LoadTestBloc>()),
         BlocProvider(create: (_) => getIt<DictionaryDetailsBloc>()),
         BlocProvider(create: (_) => getIt<FolderDetailsBloc>()),
         BlocProvider(create: (_) => getIt<LoadFolderPracticeBloc>()),
-        BlocProvider(create: (_) => getIt<LoadTestFolderSelectionBloc>()),
-        BlocProvider(create: (_) => getIt<LoadTestListSelectionBloc>()),
         BlocProvider(create: (_) => getIt<RateBloc>()),
         BlocProvider(create: (_) => getIt<StatisticsBloc>()),
         BlocProvider(create: (_) => getIt<TestHistoryBloc>()),

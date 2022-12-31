@@ -14,7 +14,7 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
 class WordGrid extends StatelessWidget {
-  final List<Word>? list;
+  final List<String>? selectionQuery;
   final Tests type;
   final String? folder;
   final String testName;
@@ -24,7 +24,7 @@ class WordGrid extends StatelessWidget {
     required this.type,
     required this.folder,
     required this.testName,
-    this.list,
+    this.selectionQuery,
     this.practiceList,
   });
 
@@ -119,14 +119,9 @@ class WordGrid extends StatelessWidget {
           title2: mode.mode,
           color: mode.color,
           onTap: () async {
-            List<Word>? l = list;
-            if (l != null) {
-              if (l.isEmpty) {
-                Navigator.of(context).pop();
-                Utils.getSnackBar(context, "study_modes_empty".tr());
-              } else {
-                await _decideOnMode(context, l, mode);
-              }
+            if (selectionQuery != null && selectionQuery?.isEmpty == true) {
+              Navigator.of(context).pop();
+              Utils.getSnackBar(context, "study_modes_empty".tr());
             } else {
               getIt<LoadTestBloc>().add(
                 LoadTestEventLoadList(
@@ -134,6 +129,7 @@ class WordGrid extends StatelessWidget {
                   mode: mode,
                   type: type,
                   practiceList: practiceList,
+                  selectionQuery: selectionQuery,
                 ),
               );
             }

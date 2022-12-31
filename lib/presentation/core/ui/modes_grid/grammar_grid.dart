@@ -14,18 +14,18 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/grammar_modes/utils/grammar_mode_arguments.dart';
 
 class GrammarGrid extends StatelessWidget {
-  final List<GrammarPoint>? list;
+  final List<String>? selectionQuery;
   final Tests type;
   final String? folder;
   final String testName;
   final String? practiceList;
   const GrammarGrid({
     super.key,
-    required this.list,
     required this.type,
     required this.folder,
     required this.testName,
     required this.practiceList,
+    this.selectionQuery,
   });
 
   Future<void> _decideOnGrammarMode(
@@ -119,14 +119,9 @@ class GrammarGrid extends StatelessWidget {
           title2: mode.mode,
           color: mode.color,
           onTap: () async {
-            List<GrammarPoint>? l = list;
-            if (l != null) {
-              if (l.isEmpty) {
-                Navigator.of(context).pop();
-                Utils.getSnackBar(context, "study_modes_empty".tr());
-              } else {
-                await _decideOnGrammarMode(context, l, mode);
-              }
+            if (selectionQuery != null && selectionQuery?.isEmpty == true) {
+              Navigator.of(context).pop();
+              Utils.getSnackBar(context, "study_modes_empty".tr());
             } else {
               getIt<LoadGrammarTestBloc>().add(
                 LoadGrammarTestEventLoadList(
@@ -134,6 +129,7 @@ class GrammarGrid extends StatelessWidget {
                   mode: mode,
                   type: type,
                   practiceList: practiceList,
+                  selectionQuery: selectionQuery,
                 ),
               );
             }

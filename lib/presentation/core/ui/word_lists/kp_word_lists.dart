@@ -224,14 +224,13 @@ class _KPWordListsState extends State<KPWordLists>
                 onRefresh: () => _addLoadingEvent(reset: true),
                 message: "kanji_lists_load_failed".tr());
           } else if (state is ListStateLoading || state is ListStateSearching) {
-            return const Expanded(child: KPProgressIndicator());
+            return const KPProgressIndicator();
           } else if (state is ListStateLoaded) {
             return state.lists.isEmpty
-                ? Expanded(
-                    child: KPEmptyList(
-                        onRefresh: () => _addLoadingEvent(reset: true),
-                        showTryButton: true,
-                        message: "kanji_lists_empty".tr()))
+                ? KPEmptyList(
+                    onRefresh: () => _addLoadingEvent(reset: true),
+                    showTryButton: true,
+                    message: "kanji_lists_empty".tr())
                 : _content(state.lists);
           } else {
             return Container();

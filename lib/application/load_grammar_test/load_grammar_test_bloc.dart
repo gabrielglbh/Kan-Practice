@@ -41,12 +41,14 @@ class LoadGrammarTestBloc
       if (event.practiceList == null) {
         if (event.type == Tests.folder ||
             (event.type == Tests.blitz && event.folder != null)) {
-          if (event.folder != null) {
-            List<GrammarPoint> list = await _folderRepository
-                .getAllGrammarPointsOnListsOnFolder([event.folder!]);
-            list.shuffle();
-            finalList = list;
-          }
+          final folders = event.folder == null
+              ? event.selectionQuery ?? []
+              : [event.folder!];
+          finalList =
+              await _folderRepository.getAllGrammarPointsOnListsOnFolder(
+            folders,
+          );
+          finalList.shuffle();
         } else if ((event.type == Tests.time || event.type == Tests.less) &&
             event.folder != null) {
           finalList =
@@ -58,6 +60,10 @@ class LoadGrammarTestBloc
         } else if (event.type == Tests.daily) {
           finalList = await _grammarPointRepository
               .getDailySM2GrammarPoints(event.mode);
+        } else if (event.type == Tests.lists) {
+          finalList = await _grammarPointRepository
+              .getGrammarPointBasedOnSelectedLists(event.selectionQuery ?? []);
+          finalList.shuffle();
         } else {
           List<GrammarPoint> list = await _grammarPointRepository
               .getAllGrammarPoints(mode: event.mode, type: event.type);

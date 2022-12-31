@@ -13,12 +13,12 @@ import 'package:kanpractice/presentation/core/ui/modes_grid/word_grid.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KPModesGrid extends StatefulWidget {
-  /// List of [Kanji] to make the test with.
+  /// List of [Word] to make the test with.
   ///
   /// If [list] is null, the list must be loaded upon the mode selection (BLITZ or REMEMBRANCE or LESS % or DAILY).
   ///
   /// If it is not null, the list must come from (SELECTION OR CATEGORY TEST).
-  final List<Word>? list;
+  final List<String>? selectionQuery;
 
   /// List of [GrammarPoint] to make the test with.
   ///
@@ -46,7 +46,7 @@ class KPModesGrid extends StatefulWidget {
 
   const KPModesGrid({
     Key? key,
-    this.list,
+    this.selectionQuery,
     this.grammarList,
     this.practiceList,
     this.folder,
@@ -170,14 +170,14 @@ class _KPModesGridState extends State<KPModesGrid> {
                         folder: widget.folder,
                         testName: widget.testName,
                         practiceList: widget.practiceList,
-                        list: widget.list,
+                        selectionQuery: widget.selectionQuery,
                       ),
                       GrammarGrid(
                         type: widget.type,
                         folder: widget.folder,
                         testName: widget.testName,
                         practiceList: widget.practiceList,
-                        list: widget.grammarList,
+                        selectionQuery: widget.selectionQuery,
                       )
                     ],
                   ),
@@ -213,7 +213,7 @@ class _KPModesGridState extends State<KPModesGrid> {
             folder: widget.folder,
             testName: widget.testName,
             practiceList: widget.practiceList,
-            list: widget.list,
+            selectionQuery: widget.selectionQuery,
           )
       ],
     );

@@ -21,12 +21,14 @@ class LoadGrammarTestEventLoadList extends LoadGrammarTestEvent {
   final GrammarModes mode;
   final Tests type;
   final String? practiceList;
+  final List<String>? selectionQuery;
 
   const LoadGrammarTestEventLoadList({
     required this.folder,
     required this.mode,
     required this.type,
     this.practiceList,
+    this.selectionQuery,
   });
 
   @override

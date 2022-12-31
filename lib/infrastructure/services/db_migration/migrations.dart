@@ -21,7 +21,7 @@ class Migrations {
     await db.rawQuery("ALTER TABLE ${TestTableFields.testTable} "
         "ADD COLUMN ${TestTableFields.grammarModeField} INTEGER DEFAULT 0");
 
-    // BREAKING CHANGE: NOT NULL drop on studyMode
+    // TODO: BREAKING CHANGE: NOT NULL drop on studyMode
     await db.transaction((txn) async {
       await txn.execute("CREATE TABLE TEMP("
           "${TestTableFields.testIdField} INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -32,7 +32,8 @@ class Migrations {
           "${TestTableFields.studyModeField} INTEGER, "
           "${TestTableFields.grammarModeField} INTEGER, "
           "${TestTableFields.testModeField} INTEGER NOT NULL DEFAULT -1)");
-      await txn.execute("INSERT INTO TEMP(${TestTableFields.testIdField}, "
+      await txn.execute("INSERT INTO "
+          "TEMP(${TestTableFields.testIdField}, "
           "${TestTableFields.takenDateField}, "
           "${TestTableFields.testScoreField}, "
           "${TestTableFields.wordsInTestField}, "
@@ -40,7 +41,15 @@ class Migrations {
           "${TestTableFields.studyModeField}, "
           "${TestTableFields.grammarModeField}, "
           "${TestTableFields.testModeField}) "
-          "SELECT * FROM ${TestTableFields.testTable}");
+          "SELECT (${TestTableFields.testIdField}, "
+          "${TestTableFields.takenDateField}, "
+          "${TestTableFields.testScoreField}, "
+          "${TestTableFields.wordsInTestField}, "
+          "${TestTableFields.wordsListsField}, "
+          "${TestTableFields.studyModeField}, "
+          "${TestTableFields.grammarModeField}, "
+          "${TestTableFields.testModeField}) "
+          "FROM ${TestTableFields.testTable}");
       await txn.execute("DROP TABLE ${TestTableFields.testTable}");
       await txn
           .execute("ALTER TABLE TEMP RENAME TO ${TestTableFields.testTable}");

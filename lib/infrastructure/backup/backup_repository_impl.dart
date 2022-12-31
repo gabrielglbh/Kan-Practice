@@ -49,7 +49,7 @@ class BackupRepositoryImpl implements IBackupRepository {
   );
 
   final String collection = "BackUps";
-  final String kanjiLabel = "Kanji";
+  final String wordLabel = "Kanji";
   final String grammarLabel = "Grammar";
   final String listsLabel = "Lists";
   final String foldersLabel = "Folders";
@@ -75,7 +75,7 @@ class BackupRepositoryImpl implements IBackupRepository {
     User? user = _auth.currentUser;
     await user?.reload();
 
-    List<Word> kanji = await _wordRepository.getAllWords();
+    List<Word> word = await _wordRepository.getAllWords();
     List<GrammarPoint> grammar =
         await _grammarPointRepository.getAllGrammarPoints();
     List<WordList> lists = await _listRepository.getAllLists();
@@ -122,13 +122,13 @@ class BackupRepositoryImpl implements IBackupRepository {
         await removeBackUp();
 
         /// Kanji list
-        for (int x = 0; x < kanji.length; x++) {
+        for (int x = 0; x < word.length; x++) {
           final DocumentReference doc = _ref
               .collection(collection)
               .doc(user?.uid)
-              .collection(kanjiLabel)
-              .doc(kanji[x].word);
-          batch.set(doc, kanji[x].toJson());
+              .collection(wordLabel)
+              .doc(word[x].word);
+          batch.set(doc, word[x].toJson());
           writes++;
           batch = await _reinitializeBatch(batch);
         }
@@ -273,10 +273,10 @@ class BackupRepositoryImpl implements IBackupRepository {
     await user?.reload();
 
     try {
-      final kanjiSnapshot = await _ref
+      final wordSnapshot = await _ref
           .collection(collection)
           .doc(user?.uid)
-          .collection(kanjiLabel)
+          .collection(wordLabel)
           .get();
       final grammarSnapshot = await _ref
           .collection(collection)
@@ -311,13 +311,13 @@ class BackupRepositoryImpl implements IBackupRepository {
 
       var batch = _ref.batch();
 
-      if (kanjiSnapshot.size > 0) {
-        for (int x = 0; x < kanjiSnapshot.size; x++) {
+      if (wordSnapshot.size > 0) {
+        for (int x = 0; x < wordSnapshot.size; x++) {
           batch.delete(_ref
               .collection(collection)
               .doc(user?.uid)
-              .collection(kanjiLabel)
-              .doc(Word.fromJson(kanjiSnapshot.docs[x].data()).word));
+              .collection(wordLabel)
+              .doc(Word.fromJson(wordSnapshot.docs[x].data()).word));
           writes++;
           batch = await _reinitializeBatch(batch);
         }
@@ -416,10 +416,10 @@ class BackupRepositoryImpl implements IBackupRepository {
     await user?.reload();
 
     try {
-      final kanjiSnapshot = await _ref
+      final wordSnapshot = await _ref
           .collection(collection)
           .doc(user?.uid)
-          .collection(kanjiLabel)
+          .collection(wordLabel)
           .get();
       final grammarSnapshot = await _ref
           .collection(collection)
@@ -460,9 +460,9 @@ class BackupRepositoryImpl implements IBackupRepository {
       TestData backUpTestData = TestData.empty;
       List<SpecificData> backUpTestSpecData = [];
 
-      if (kanjiSnapshot.size > 0) {
-        for (int x = 0; x < kanjiSnapshot.size; x++) {
-          backUpWords.add(Word.fromJson(kanjiSnapshot.docs[x].data()));
+      if (wordSnapshot.size > 0) {
+        for (int x = 0; x < wordSnapshot.size; x++) {
+          backUpWords.add(Word.fromJson(wordSnapshot.docs[x].data()));
         }
       }
 

@@ -4,6 +4,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/folder/i_folder_repository.dart';
+import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
+import 'package:kanpractice/domain/grammar_point/i_grammar_point_repository.dart';
 import 'package:kanpractice/domain/list/i_list_repository.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
@@ -21,7 +23,8 @@ import 'package:sqflite/sqlite_api.dart';
 @LazySingleton(as: IMarketRepository)
 class MarketRepositoryImpl implements IMarketRepository {
   final String collection = "Market";
-  final String kanjiLabel = "Kanji";
+  final String wordLabel = "Kanji";
+  final String grammarLabel = "Grammar";
   final String listLabel = "List";
   final String folderLabel = "Folder";
   final String relationsKLLabel = "RelationsKL";
@@ -33,6 +36,7 @@ class MarketRepositoryImpl implements IMarketRepository {
   final IFolderRepository _folderRepository;
   final IListRepository _listRepository;
   final IWordRepository _wordRepository;
+  final IGrammarPointRepository _grammarPointRepository;
   final IRelationFolderListRepository _relationFolderListRepository;
 
   MarketRepositoryImpl(
@@ -42,6 +46,7 @@ class MarketRepositoryImpl implements IMarketRepository {
     this._folderRepository,
     this._listRepository,
     this._wordRepository,
+    this._grammarPointRepository,
     this._relationFolderListRepository,
   );
 
@@ -83,16 +88,22 @@ class MarketRepositoryImpl implements IMarketRepository {
             .doc(id)
             .collection(listLabel)
             .get();
-        final kanjiSnapshot = await _ref
+        final wordSnapshot = await _ref
             .collection(collection)
             .doc(id)
-            .collection(kanjiLabel)
+            .collection(wordLabel)
+            .get();
+        final grammarSnapshot = await _ref
+            .collection(collection)
+            .doc(id)
+            .collection(grammarLabel)
             .get();
 
         late Folder backUpFolder;
         List<RelationFolderList> backUpRelations = [];
         List<WordList> backUpList = [];
         List<Word> backUpWords = [];
+        List<GrammarPoint> backUpGrammar = [];
 
         /// Apply the transform to the POJO
         backUpFolder = Folder.fromJson(folderSnapshot.docs.first.data());
@@ -101,13 +112,19 @@ class MarketRepositoryImpl implements IMarketRepository {
             backUpRelations.add(RelationFolderList.fromJson(m.data()));
           }
         }
-        if (kanjiSnapshot.size > 0 && listSnapshot.size > 0) {
+        if (wordSnapshot.size > 0) {
+          for (var m in wordSnapshot.docs) {
+            backUpWords.add(Word.fromJson(m.data()));
+          }
+        }
+        if (grammarSnapshot.size > 0) {
+          for (var m in grammarSnapshot.docs) {
+            backUpGrammar.add(GrammarPoint.fromJson(m.data()));
+          }
+        }
+        if (listSnapshot.size > 0) {
           for (var m in listSnapshot.docs) {
             backUpList.add(WordList.fromJson(m.data()).copyWithReset());
-          }
-
-          for (var m in kanjiSnapshot.docs) {
-            backUpWords.add(Word.fromJson(m.data()));
           }
         }
 
@@ -138,6 +155,9 @@ class MarketRepositoryImpl implements IMarketRepository {
         batch = _wordRepository.mergeWords(
             batch, backUpWords, ConflictAlgorithm.ignore);
 
+        batch = _grammarPointRepository.mergeGrammarPoints(
+            batch, backUpGrammar, ConflictAlgorithm.ignore);
+
         batch = _relationFolderListRepository.mergeRelationFolderList(
             batch, backUpRelations, ConflictAlgorithm.ignore);
 
@@ -167,22 +187,37 @@ class MarketRepositoryImpl implements IMarketRepository {
             .doc(id)
             .collection(listLabel)
             .get();
-        final kanjiSnapshot = await _ref
+        final wordSnapshot = await _ref
             .collection(collection)
             .doc(id)
-            .collection(kanjiLabel)
+            .collection(wordLabel)
+            .get();
+        final grammarSnapshot = await _ref
+            .collection(collection)
+            .doc(id)
+            .collection(grammarLabel)
             .get();
 
         late WordList backUpList;
         List<Word> backUpWords = [];
+        List<GrammarPoint> backUpGrammar = [];
 
         /// Apply the transform to the POJO
-        if (kanjiSnapshot.size > 0 && listSnapshot.size > 0) {
+        if (listSnapshot.size > 0) {
           backUpList = WordList.fromJson(listSnapshot.docs[0].data());
           backUpList = backUpList.copyWithReset();
+        }
 
-          for (int x = 0; x < kanjiSnapshot.size; x++) {
-            backUpWords.add(Word.fromJson(kanjiSnapshot.docs[x].data()));
+        if (wordSnapshot.size > 0) {
+          for (int x = 0; x < wordSnapshot.size; x++) {
+            backUpWords.add(Word.fromJson(wordSnapshot.docs[x].data()));
+          }
+        }
+
+        if (grammarSnapshot.size > 0) {
+          for (int x = 0; x < grammarSnapshot.size; x++) {
+            backUpGrammar
+                .add(GrammarPoint.fromJson(grammarSnapshot.docs[x].data()));
           }
         }
 
@@ -209,6 +244,9 @@ class MarketRepositoryImpl implements IMarketRepository {
 
         batch = _wordRepository.mergeWords(
             batch, backUpWords, ConflictAlgorithm.ignore);
+
+        batch = _grammarPointRepository.mergeGrammarPoints(
+            batch, backUpGrammar, ConflictAlgorithm.ignore);
 
         final results = await batch?.commit();
         return results?.isEmpty == true
@@ -413,10 +451,15 @@ class MarketRepositoryImpl implements IMarketRepository {
             .doc(id)
             .collection(listLabel)
             .get();
-        final kanjiSnapshot = await _ref
+        final wordSnapshot = await _ref
             .collection(collection)
             .doc(id)
-            .collection(kanjiLabel)
+            .collection(wordLabel)
+            .get();
+        final grammarSnapshot = await _ref
+            .collection(collection)
+            .doc(id)
+            .collection(grammarLabel)
             .get();
         final folderSnapshot = await _ref
             .collection(collection)
@@ -442,7 +485,12 @@ class MarketRepositoryImpl implements IMarketRepository {
           writes++;
           batch = await _reinitializeBatch(batch);
         }
-        for (var x in kanjiSnapshot.docs) {
+        for (var x in wordSnapshot.docs) {
+          batch.delete((x.reference));
+          writes++;
+          batch = await _reinitializeBatch(batch);
+        }
+        for (var x in grammarSnapshot.docs) {
           batch.delete((x.reference));
           writes++;
           batch = await _reinitializeBatch(batch);
@@ -488,10 +536,15 @@ class MarketRepositoryImpl implements IMarketRepository {
             .doc(id)
             .collection(listLabel)
             .get();
-        final kanjiSnapshot = await _ref
+        final wordSnapshot = await _ref
             .collection(collection)
             .doc(id)
-            .collection(kanjiLabel)
+            .collection(wordLabel)
+            .get();
+        final grammarSnapshot = await _ref
+            .collection(collection)
+            .doc(id)
+            .collection(grammarLabel)
             .get();
 
         for (var x = 0; x < listSnapshot.size; x++) {
@@ -499,8 +552,13 @@ class MarketRepositoryImpl implements IMarketRepository {
           writes++;
           batch = await _reinitializeBatch(batch);
         }
-        for (var x = 0; x < kanjiSnapshot.size; x++) {
-          batch.delete((kanjiSnapshot.docs[x].reference));
+        for (var x = 0; x < wordSnapshot.size; x++) {
+          batch.delete((wordSnapshot.docs[x].reference));
+          writes++;
+          batch = await _reinitializeBatch(batch);
+        }
+        for (var x = 0; x < grammarSnapshot.size; x++) {
+          batch.delete((grammarSnapshot.docs[x].reference));
           writes++;
           batch = await _reinitializeBatch(batch);
         }
@@ -520,8 +578,13 @@ class MarketRepositoryImpl implements IMarketRepository {
   }
 
   @override
-  Future<int> uploadFolderToMarketPlace(String name, Folder folder,
-      List<WordList> lists, List<Word> words, String description) async {
+  Future<int> uploadFolderToMarketPlace(
+      String name,
+      Folder folder,
+      List<WordList> lists,
+      List<Word> words,
+      List<GrammarPoint> grammarPoints,
+      String description) async {
     User? user = _auth.currentUser;
     await user?.reload();
 
@@ -544,6 +607,7 @@ class MarketRepositoryImpl implements IMarketRepository {
         final Market market = Market(
           name: name,
           words: words.length,
+          grammar: grammarPoints.length,
           uid: user.uid,
           author: user.displayName ?? "",
           description: description,
@@ -561,9 +625,13 @@ class MarketRepositoryImpl implements IMarketRepository {
             list: k.name,
           ));
         }
-        final List<Word> resetKanji = [];
+        final List<Word> resetWords = [];
         for (var k in words) {
-          resetKanji.add(k.copyWithReset());
+          resetWords.add(k.copyWithReset());
+        }
+        final List<GrammarPoint> resetGrammar = [];
+        for (var gp in grammarPoints) {
+          resetGrammar.add(gp.copyWithReset());
         }
 
         /// Market List
@@ -594,11 +662,20 @@ class MarketRepositoryImpl implements IMarketRepository {
           batch = await _reinitializeBatch(batch);
         }
 
-        /// Kanji list
-        for (int x = 0; x < resetKanji.length; x++) {
+        /// Word list
+        for (int x = 0; x < resetWords.length; x++) {
           final DocumentReference k =
-              doc.collection(kanjiLabel).doc(resetKanji[x].word);
-          batch.set(k, resetKanji[x].toJson());
+              doc.collection(wordLabel).doc(resetWords[x].word);
+          batch.set(k, resetWords[x].toJson());
+          writes++;
+          batch = await _reinitializeBatch(batch);
+        }
+
+        /// Grammar list
+        for (int x = 0; x < resetGrammar.length; x++) {
+          final DocumentReference k =
+              doc.collection(grammarLabel).doc(resetGrammar[x].name);
+          batch.set(k, resetGrammar[x].toJson());
           writes++;
           batch = await _reinitializeBatch(batch);
         }
@@ -616,7 +693,11 @@ class MarketRepositoryImpl implements IMarketRepository {
 
   @override
   Future<int> uploadListToMarketPlace(
-      String name, WordList list, List<Word> words, String description) async {
+      String name,
+      WordList list,
+      List<Word> words,
+      List<GrammarPoint> grammarPoints,
+      String description) async {
     User? user = _auth.currentUser;
     await user?.reload();
 
@@ -635,10 +716,11 @@ class MarketRepositoryImpl implements IMarketRepository {
           return -3;
         }
 
-        /// Initialize Market, KanList and Kanjis
+        /// Initialize Market, KanList, Words and Grammar
         final Market resetList = Market(
                 name: name,
                 words: words.length,
+                grammar: grammarPoints.length,
                 uid: user.uid,
                 author: user.displayName ?? "",
                 description: description,
@@ -646,9 +728,13 @@ class MarketRepositoryImpl implements IMarketRepository {
             .copyWithKeywords();
 
         final WordList raw = list.copyWithReset();
-        final List<Word> resetKanji = [];
+        final List<Word> resetWords = [];
         for (var k in words) {
-          resetKanji.add(k.copyWithReset());
+          resetWords.add(k.copyWithReset());
+        }
+        final List<GrammarPoint> resetGrammar = [];
+        for (var gp in grammarPoints) {
+          resetGrammar.add(gp.copyWithReset());
         }
 
         /// Market List
@@ -660,11 +746,20 @@ class MarketRepositoryImpl implements IMarketRepository {
         batch.set(k, raw.toJson());
         writes++;
 
-        /// Kanji list
-        for (int x = 0; x < resetKanji.length; x++) {
+        /// Word list
+        for (int x = 0; x < resetWords.length; x++) {
           final DocumentReference k =
-              doc.collection(kanjiLabel).doc(resetKanji[x].word);
-          batch.set(k, resetKanji[x].toJson());
+              doc.collection(wordLabel).doc(resetWords[x].word);
+          batch.set(k, resetWords[x].toJson());
+          writes++;
+          batch = await _reinitializeBatch(batch);
+        }
+
+        /// Grammar list
+        for (int x = 0; x < resetGrammar.length; x++) {
+          final DocumentReference k =
+              doc.collection(grammarLabel).doc(resetGrammar[x].name);
+          batch.set(k, resetGrammar[x].toJson());
           writes++;
           batch = await _reinitializeBatch(batch);
         }

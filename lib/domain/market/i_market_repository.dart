@@ -1,3 +1,4 @@
+import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/presentation/core/types/market_filters.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
 import 'package:kanpractice/domain/list/list.dart';
@@ -33,6 +34,7 @@ abstract class IMarketRepository {
     String name,
     WordList list,
     List<Word> words,
+    List<GrammarPoint> grammarPoints,
     String description,
   );
 
@@ -47,6 +49,7 @@ abstract class IMarketRepository {
     Folder folder,
     List<WordList> lists,
     List<Word> words,
+    List<GrammarPoint> grammarPoints,
     String description,
   );
   Future<String> downloadListFromMarketPlace(String id);

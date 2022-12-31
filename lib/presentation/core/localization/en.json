@@ -420,5 +420,6 @@
   "grammar_bottom_sheet_removeGrammar_positive": "Remove",
   "grammar_change_graphs": "Show grammar",
   "word_change_graphs": "Show words",
-  "stats_grammar": "Total Number of Grammar Points"
+  "stats_grammar": "Total Number of Grammar Points",
+  "market_filter_grammar": "Grammar points"
 }

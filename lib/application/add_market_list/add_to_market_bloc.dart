@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:kanpractice/domain/grammar_point/i_grammar_point_repository.dart';
 import 'package:kanpractice/presentation/core/types/market_list_type.dart';
 import 'package:kanpractice/domain/auth/i_auth_repository.dart';
 import 'package:kanpractice/domain/folder/i_folder_repository.dart';
@@ -17,6 +18,7 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
   final IAuthRepository _authRepository;
   final IMarketRepository _marketRepository;
   final IWordRepository _wordRepository;
+  final IGrammarPointRepository _grammarPointRepository;
   final IListRepository _listRepository;
   final IFolderRepository _folderRepository;
 
@@ -24,6 +26,7 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
     this._authRepository,
     this._marketRepository,
     this._wordRepository,
+    this._grammarPointRepository,
     this._listRepository,
     this._folderRepository,
   ) : super(AddToMarketStateInitial()) {
@@ -49,13 +52,19 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
         } else {
           if (event.type == MarketListType.list) {
             final list = await _listRepository.getList(event.name);
-            final kanji = await _wordRepository.getAllWordsFromList(event.name);
+            final words = await _wordRepository.getAllWordsFromList(event.name);
+            final grammar = await _grammarPointRepository
+                .getAllGrammarPointsFromList(event.name);
 
-            if (kanji.isEmpty) {
+            if (words.isEmpty && grammar.isEmpty) {
               emit(AddToMarketStateFailure("add_to_market_kanji_empty".tr()));
             } else {
               final res = await _marketRepository.uploadListToMarketPlace(
-                  event.listNameForMarket, list, kanji, event.description);
+                  event.listNameForMarket,
+                  list,
+                  words,
+                  grammar,
+                  event.description);
               if (res == 0) {
                 emit(AddToMarketStateSuccess());
               } else if (res == -2) {
@@ -73,17 +82,20 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
             final folder = await _folderRepository.getFolder(event.name);
             final lists =
                 await _folderRepository.getAllListsOnFolder(event.name);
-            final kanji = await _folderRepository
+            final words = await _folderRepository
                 .getAllWordsOnListsOnFolder([event.name]);
+            final grammar = await _folderRepository
+                .getAllGrammarPointsOnListsOnFolder([event.name]);
 
-            if (kanji.isEmpty) {
+            if (words.isEmpty && grammar.isEmpty) {
               emit(AddToMarketStateFailure("add_to_market_kanji_empty".tr()));
             } else {
               final res = await _marketRepository.uploadFolderToMarketPlace(
                   event.listNameForMarket,
                   folder,
                   lists,
-                  kanji,
+                  words,
+                  grammar,
                   event.description);
               if (res == 0) {
                 emit(AddToMarketStateSuccess());

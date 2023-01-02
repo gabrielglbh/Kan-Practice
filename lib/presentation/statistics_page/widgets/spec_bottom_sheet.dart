@@ -167,9 +167,10 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                           align: MainAxisAlignment.center,
                           verticalVisualDensity: -4,
                           value: Utils.getFixedPercentageAsString(
-                            _isCategory
-                                ? aggregateWithoutGrammar
-                                : aggregate / _length,
+                            (_isCategory
+                                    ? aggregateWithoutGrammar
+                                    : aggregate) /
+                                _length,
                           ),
                         ),
                       ),

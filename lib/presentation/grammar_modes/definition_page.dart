@@ -202,7 +202,7 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
   }
 
   List<Widget> _header() {
-    final examples = _getExample().replaceAll('\n', '• \n');
+    final examples = _getExample().replaceAll('\n', '\n• ');
     return [
       SizedBox(
         width: MediaQuery.of(context).size.width,

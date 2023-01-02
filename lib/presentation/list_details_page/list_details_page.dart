@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/list_details/list_details_bloc.dart';
 import 'package:kanpractice/application/list_details_grammar_points/list_details_grammar_points_bloc.dart';
 import 'package:kanpractice/application/list_details_words/list_details_words_bloc.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/add_grammar_point_page/arguments.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
@@ -51,12 +52,16 @@ class _ListDetailsPageState extends State<ListDetailsPage>
 
   bool _searchHasFocus = false;
   bool _onTutorial = false;
+  bool _aggrStats = false;
   ListDetailsType _currentPage = ListDetailsType.words;
 
   @override
   void initState() {
     _searchBarFn.addListener(_focusListener);
     _listName = widget.list.name;
+    _aggrStats = getIt<PreferencesService>()
+            .readData(SharedKeys.kanListListVisualization) ??
+        false;
     getIt<ListDetailBloc>().add(ListDetailEventIdle(widget.list.name));
     super.initState();
   }
@@ -243,7 +248,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
           Expanded(
             child: PageView(
               controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
+              physics: _aggrStats ? null : const NeverScrollableScrollPhysics(),
               children: [
                 WordListWidget(
                   key: vocabulary,

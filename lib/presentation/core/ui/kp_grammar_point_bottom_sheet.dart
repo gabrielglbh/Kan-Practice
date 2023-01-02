@@ -146,17 +146,14 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
       child: ListTile(
         iconColor: KPColors.secondaryColor,
         textColor: KPColors.secondaryColor,
-        contentPadding: const EdgeInsets.all(0),
-        title: FittedBox(
-          fit: BoxFit.contain,
-          child: Text(
-              "${"created_label".tr()} "
-              "${Utils.parseDateMilliseconds(context, grammarPoint.dateAdded)} • "
-              "${"last_seen_label".tr()} "
-              "${Utils.parseDateMilliseconds(context, grammarPoint.dateLastShown)}",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyText2),
-        ),
+        visualDensity: const VisualDensity(vertical: -3),
+        title: Text(
+            "${"created_label".tr()} "
+            "${Utils.parseDateMilliseconds(context, grammarPoint.dateAdded)} • "
+            "${"last_seen_label".tr()} "
+            "${Utils.parseDateMilliseconds(context, grammarPoint.dateLastShown)}",
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyText2),
       ),
     );
   }

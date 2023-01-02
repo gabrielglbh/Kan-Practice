@@ -196,15 +196,13 @@ class KPWordBottomSheet extends StatelessWidget {
             iconColor: KPColors.secondaryColor,
             textColor: KPColors.secondaryColor,
             tilePadding: const EdgeInsets.all(0),
-            title: FittedBox(
-                fit: BoxFit.contain,
-                child: Text(
-                    "${"created_label".tr()} "
-                    "${Utils.parseDateMilliseconds(context, updatedKanji.dateAdded)} • "
-                    "${"last_seen_label".tr()} "
-                    "${Utils.parseDateMilliseconds(context, updatedKanji.dateLastShown)}",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyText2)),
+            title: Text(
+                "${"created_label".tr()} "
+                "${Utils.parseDateMilliseconds(context, updatedKanji.dateAdded)} • "
+                "${"last_seen_label".tr()} "
+                "${Utils.parseDateMilliseconds(context, updatedKanji.dateLastShown)}",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyText2),
             children: [
               ListView.builder(
                 shrinkWrap: true,

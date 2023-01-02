@@ -249,6 +249,11 @@ class _ListDetailsPageState extends State<ListDetailsPage>
             child: PageView(
               controller: _pageController,
               physics: _aggrStats ? null : const NeverScrollableScrollPhysics(),
+              onPageChanged: (p) {
+                setState(() {
+                  _currentPage = ListDetailsType.values[p];
+                });
+              },
               children: [
                 WordListWidget(
                   key: vocabulary,

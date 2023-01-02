@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/list_details_types.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
@@ -43,7 +44,12 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
   bool _showWords = true;
   bool get _isCategory =>
       widget.data.id == SpecificDataRepositoryImpl.categoryId;
-  int length = StudyModes.values.length + GrammarModes.values.length;
+  int get _length => _isCategory
+      ? StudyModes.values.length
+      : StudyModes.values.length + GrammarModes.values.length;
+
+  double _getActualWinRate(double v) =>
+      v == DatabaseConstants.emptyWinRate ? 0 : v;
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +59,18 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
         widget.data.totalListeningCount +
         widget.data.totalSpeakingCount +
         widget.data.totalDefinitionCount;
-    final aggregate = widget.data.totalWinRateWriting +
-        widget.data.totalWinRateReading +
-        widget.data.totalWinRateRecognition +
-        widget.data.totalWinRateListening +
-        widget.data.totalWinRateSpeaking +
-        widget.data.totalWinRateDefinition;
+    final aggregate = _getActualWinRate(widget.data.totalWinRateWriting) +
+        _getActualWinRate(widget.data.totalWinRateReading) +
+        _getActualWinRate(widget.data.totalWinRateRecognition) +
+        _getActualWinRate(widget.data.totalWinRateListening) +
+        _getActualWinRate(widget.data.totalWinRateSpeaking) +
+        _getActualWinRate(widget.data.totalWinRateDefinition);
+    final aggregateWithoutGrammar =
+        _getActualWinRate(widget.data.totalWinRateWriting) +
+            _getActualWinRate(widget.data.totalWinRateReading) +
+            _getActualWinRate(widget.data.totalWinRateRecognition) +
+            _getActualWinRate(widget.data.totalWinRateListening) +
+            _getActualWinRate(widget.data.totalWinRateSpeaking);
 
     return BottomSheet(
       enableDrag: false,
@@ -83,7 +95,7 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                       graphName: "tests".tr(),
                       heightRatio: 1.3,
                       animationDuration: 0,
-                      dataSource: List.generate(length, (index) {
+                      dataSource: List.generate(_length, (index) {
                         if (index == 0) {
                           final v = widget.data.totalWritingCount;
                           return DataFrame(
@@ -155,24 +167,27 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                           align: MainAxisAlignment.center,
                           verticalVisualDensity: -4,
                           value: Utils.getFixedPercentageAsString(
-                            aggregate / length,
+                            _isCategory
+                                ? aggregateWithoutGrammar
+                                : aggregate / _length,
                           ),
                         ),
                       ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(right: KPMargins.margin16),
-                        child: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _showWords = !_showWords;
-                            });
-                          },
-                          icon: Icon(_showWords
-                              ? ListDetailsType.grammar.icon
-                              : ListDetailsType.words.icon),
+                      if (!_isCategory)
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(right: KPMargins.margin16),
+                          child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _showWords = !_showWords;
+                              });
+                            },
+                            icon: Icon(_showWords
+                                ? ListDetailsType.grammar.icon
+                                : ListDetailsType.words.icon),
+                          ),
                         ),
-                      ),
                     ],
                   ),
                   Padding(

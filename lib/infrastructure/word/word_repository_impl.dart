@@ -120,6 +120,7 @@ class WordRepositoryImpl implements IWordRepository {
   Future<List<Word>> getDailySM2Words(StudyModes mode) async {
     try {
       String query = "";
+      String newestWordsQuery = "";
       final controlledPace =
           _preferencesRepository.readData(SharedKeys.dailyTestOnControlledPace);
       int limit =
@@ -175,12 +176,22 @@ class WordRepositoryImpl implements IWordRepository {
               "${WordTableFields.winRateWritingField} ASC, "
               "${WordTableFields.dateAddedField} DESC "
               "LIMIT $limit";
+          newestWordsQuery = "SELECT * FROM ${WordTableFields.wordTable} "
+              "WHERE ${WordTableFields.previousIntervalAsDateWritingField} == 0 "
+              "ORDER BY ${WordTableFields.winRateWritingField} ASC, "
+              "${WordTableFields.dateAddedField} DESC "
+              "LIMIT $limit";
           break;
         case StudyModes.reading:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
               "WHERE ${WordTableFields.previousIntervalAsDateReadingField} <= $today "
               "ORDER BY ${WordTableFields.previousIntervalAsDateReadingField} DESC, "
               "${WordTableFields.winRateReadingField} ASC, "
+              "${WordTableFields.dateAddedField} DESC "
+              "LIMIT $limit";
+          newestWordsQuery = "SELECT * FROM ${WordTableFields.wordTable} "
+              "WHERE ${WordTableFields.previousIntervalAsDateReadingField} == 0 "
+              "ORDER BY ${WordTableFields.winRateReadingField} ASC, "
               "${WordTableFields.dateAddedField} DESC "
               "LIMIT $limit";
           break;
@@ -191,12 +202,22 @@ class WordRepositoryImpl implements IWordRepository {
               "${WordTableFields.winRateRecognitionField} ASC, "
               "${WordTableFields.dateAddedField} DESC "
               "LIMIT $limit";
+          newestWordsQuery = "SELECT * FROM ${WordTableFields.wordTable} "
+              "WHERE ${WordTableFields.previousIntervalAsDateRecognitionField} == 0 "
+              "ORDER BY ${WordTableFields.winRateRecognitionField} ASC, "
+              "${WordTableFields.dateAddedField} DESC "
+              "LIMIT $limit";
           break;
         case StudyModes.listening:
           query = "SELECT * FROM ${WordTableFields.wordTable} "
               "WHERE ${WordTableFields.previousIntervalAsDateListeningField} <= $today "
               "ORDER BY ${WordTableFields.previousIntervalAsDateListeningField} DESC, "
               "${WordTableFields.winRateListeningField} ASC, "
+              "${WordTableFields.dateAddedField} DESC "
+              "LIMIT $limit";
+          newestWordsQuery = "SELECT * FROM ${WordTableFields.wordTable} "
+              "WHERE ${WordTableFields.previousIntervalAsDateListeningField} == 0 "
+              "ORDER BY ${WordTableFields.winRateListeningField} ASC, "
               "${WordTableFields.dateAddedField} DESC "
               "LIMIT $limit";
           break;
@@ -207,11 +228,21 @@ class WordRepositoryImpl implements IWordRepository {
               "${WordTableFields.winRateSpeakingField} ASC, "
               "${WordTableFields.dateAddedField} DESC "
               "LIMIT $limit";
+          newestWordsQuery = "SELECT * FROM ${WordTableFields.wordTable} "
+              "WHERE ${WordTableFields.previousIntervalAsDateSpeakingField} == 0 "
+              "ORDER BY ${WordTableFields.winRateSpeakingField} ASC, "
+              "${WordTableFields.dateAddedField} DESC "
+              "LIMIT $limit";
           break;
       }
       final res = await _database.rawQuery(query);
+      final newestWords = await _database.rawQuery(newestWordsQuery);
       final list = List.generate(res.length, (i) => Word.fromJson(res[i]));
-      return list;
+      final newestWordsList = List.generate(
+          newestWords.length, (i) => Word.fromJson(newestWords[i]));
+      newestWordsList.addAll(list);
+      final finalList = newestWordsList.toSet().toList().take(limit).toList();
+      return finalList;
     } catch (e) {
       return [];
     }

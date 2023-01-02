@@ -89,6 +89,7 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
   Future<List<GrammarPoint>> getDailySM2GrammarPoints(GrammarModes mode) async {
     try {
       String query = "";
+      String newestGrammarPointsQuery = "";
       final controlledPace =
           _preferencesRepository.readData(SharedKeys.dailyTestOnControlledPace);
       int limit =
@@ -126,12 +127,25 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
               "${GrammarTableFields.winRateDefinitionField} ASC, "
               "${GrammarTableFields.dateAddedField} DESC "
               "LIMIT $limit";
+          newestGrammarPointsQuery =
+              "SELECT * FROM ${GrammarTableFields.grammarTable} "
+              "WHERE ${GrammarTableFields.previousIntervalAsDateDefinitionField} == 0 "
+              "ORDER BY ${GrammarTableFields.winRateDefinitionField} ASC, "
+              "${GrammarTableFields.dateAddedField} DESC "
+              "LIMIT $limit";
           break;
       }
       final res = await _database.rawQuery(query);
+      final newestGrammarPoints =
+          await _database.rawQuery(newestGrammarPointsQuery);
       final list =
           List.generate(res.length, (i) => GrammarPoint.fromJson(res[i]));
-      return list;
+      final newestGrammarPointsList = List.generate(newestGrammarPoints.length,
+          (i) => GrammarPoint.fromJson(newestGrammarPoints[i]));
+      newestGrammarPointsList.addAll(list);
+      final finalList =
+          newestGrammarPointsList.toSet().toList().take(limit).toList();
+      return finalList;
     } catch (e) {
       return [];
     }

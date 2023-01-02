@@ -15,6 +15,9 @@ class ListDetailStateLoaded extends ListDetailState {
   final String name;
 
   const ListDetailStateLoaded(this.name);
+
+  @override
+  List<Object> get props => [name];
 }
 
 class ListDetailStateFailure extends ListDetailState {

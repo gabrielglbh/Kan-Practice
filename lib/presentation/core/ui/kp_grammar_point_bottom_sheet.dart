@@ -16,13 +16,16 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
   final GrammarPoint? grammarPoint;
   final Function()? onRemove;
   final Function()? onTap;
-  const KPGrammarPointBottomSheet(
+  KPGrammarPointBottomSheet(
       {Key? key,
       required this.listName,
       required this.grammarPoint,
       this.onTap,
       this.onRemove})
       : super(key: key);
+
+  final _exampleScrollController = ScrollController();
+  final _definitionScrollController = ScrollController();
 
   /// Creates and calls the [BottomSheet] with the content for displaying the data
   /// of the current selected grammar point
@@ -113,20 +116,64 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
             ),
           ),
           const SizedBox(height: KPMargins.margin8),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
-            child: Text(
-              grammarPoint.definition,
-              textAlign: TextAlign.center,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.bodyText2,
+          ConstrainedBox(
+            constraints: const BoxConstraints(
+                maxHeight: KPMargins.margin64 + KPMargins.margin24),
+            child: Scrollbar(
+              controller: _definitionScrollController,
+              thumbVisibility: true,
+              child: SingleChildScrollView(
+                controller: _definitionScrollController,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: KPMargins.margin16,
+                  vertical: KPMargins.margin4,
+                ),
+                child: Text(
+                  grammarPoint.definition,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
+              ),
             ),
           ),
           const SizedBox(height: KPMargins.margin8),
-          const Divider(),
-          KPGrammarModeRadialGraph(
-            definition: grammarPoint.winRateDefinition,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
+            child: ExpansionTile(
+              expandedAlignment: Alignment.centerLeft,
+              iconColor: KPColors.secondaryColor,
+              textColor: KPColors.secondaryColor,
+              title: Text('jisho_resultData_examples_label'.tr(),
+                  style: Theme.of(context).textTheme.bodyText2),
+              tilePadding: EdgeInsets.zero,
+              childrenPadding: const EdgeInsets.all(KPMargins.margin8),
+              children: [
+                ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: KPMargins.margin64 + KPMargins.margin24,
+                      minWidth: MediaQuery.of(context).size.width,
+                    ),
+                    child: Scrollbar(
+                      controller: _exampleScrollController,
+                      thumbVisibility: true,
+                      child: SingleChildScrollView(
+                        controller: _exampleScrollController,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: KPMargins.margin4,
+                        ),
+                        child: Text(
+                            "• ${grammarPoint.example.replaceAll('\n', '\n• ')}"),
+                      ),
+                    ))
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 100,
+            child: KPGrammarModeRadialGraph(
+              definition: grammarPoint.winRateDefinition,
+            ),
           ),
           _lastTimeShownWidget(context, grammarPoint),
           Visibility(
@@ -149,6 +196,7 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
         iconColor: KPColors.secondaryColor,
         textColor: KPColors.secondaryColor,
         visualDensity: const VisualDensity(vertical: -3),
+        contentPadding: EdgeInsets.zero,
         title: Text(
             "${"created_label".tr()} "
             "${Utils.parseDateMilliseconds(context, grammarPoint.dateAdded)} • "

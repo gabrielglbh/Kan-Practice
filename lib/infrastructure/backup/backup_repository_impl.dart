@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/domain/backup/backup.dart';
 import 'package:kanpractice/domain/backup/i_backup_repository.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
@@ -486,7 +487,22 @@ class BackupRepositoryImpl implements IBackupRepository {
       }
 
       if (testDataSnapshot.size > 0) {
-        backUpTestData = TestData.fromJson(testDataSnapshot.docs[0].data());
+        // Breaking change on 4.0.0 with definition fields being required not null
+        Map<String, dynamic> json = testDataSnapshot.docs[0].data();
+        if (!json
+            .containsKey(TestDataTableFields.testTotalCountDefinitionField)) {
+          json.addEntries([
+            const MapEntry(TestDataTableFields.testTotalCountDefinitionField, 0)
+          ]);
+        }
+        if (!json
+            .containsKey(TestDataTableFields.testTotalWinRateDefinitionField)) {
+          json.addEntries([
+            const MapEntry(
+                TestDataTableFields.testTotalWinRateDefinitionField, 0)
+          ]);
+        }
+        backUpTestData = TestData.fromJson(json);
       }
 
       if (relFolderKanListSnapshot.size > 0) {
@@ -497,9 +513,24 @@ class BackupRepositoryImpl implements IBackupRepository {
       }
 
       if (testSpecDataSnapshot.size > 0) {
+        // Breaking change on 4.0.0 with definition fields being required not null
         for (int x = 0; x < testSpecDataSnapshot.size; x++) {
-          backUpTestSpecData
-              .add(SpecificData.fromJson(testSpecDataSnapshot.docs[x].data()));
+          Map<String, dynamic> json = testSpecDataSnapshot.docs[x].data();
+          if (!json.containsKey(
+              TestSpecificDataTableFields.totalDefinitionCountField)) {
+            json.addEntries([
+              const MapEntry(
+                  TestSpecificDataTableFields.totalDefinitionCountField, 0)
+            ]);
+          }
+          if (!json.containsKey(
+              TestSpecificDataTableFields.totalWinRateDefinitionField)) {
+            json.addEntries([
+              const MapEntry(
+                  TestSpecificDataTableFields.totalWinRateDefinitionField, 0)
+            ]);
+          }
+          backUpTestSpecData.add(SpecificData.fromJson(json));
         }
       }
 

@@ -18,13 +18,13 @@ class _KPGrammarWordChipState extends State<KPGrammarWordChip> {
   Widget build(BuildContext context) {
     return ActionChip(
       label: Text(widget.controller
-          ? 'grammar_change_graphs'.tr()
-          : 'word_change_graphs'.tr()),
+          ? 'word_change_graphs'.tr()
+          : 'grammar_change_graphs'.tr()),
       backgroundColor: KPColors.getSecondaryColor(context),
       avatar: Icon(
         widget.controller
-            ? ListDetailsType.grammar.icon
-            : ListDetailsType.words.icon,
+            ? ListDetailsType.words.icon
+            : ListDetailsType.grammar.icon,
         color: Colors.white,
       ),
       padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin4),

@@ -16,8 +16,8 @@ import 'package:kanpractice/presentation/statistics_page/widgets/stats_tappable_
 
 class ListStats extends StatefulWidget {
   final KanPracticeStats stats;
-  final bool showWords;
-  const ListStats({super.key, required this.stats, required this.showWords});
+  final bool showGrammar;
+  const ListStats({super.key, required this.stats, required this.showGrammar});
 
   @override
   State<ListStats> createState() => _ListStatsState();
@@ -31,18 +31,19 @@ class _ListStatsState extends State<ListStats>
     return ListView(
       children: [
         StatsHeader(
-          title: widget.showWords ? "stats_words".tr() : "stats_grammar".tr(),
+          title:
+              !widget.showGrammar ? "stats_words".tr() : "stats_grammar".tr(),
           value: "${widget.stats.totalLists} ${"stats_words_lists".tr()}",
         ),
         _countLabel(
           context,
-          widget.showWords
+          !widget.showGrammar
               ? widget.stats.totalWords.toString()
               : widget.stats.totalGrammar.toString(),
         ),
         Padding(
           padding: const EdgeInsets.only(top: KPMargins.margin16),
-          child: widget.showWords
+          child: !widget.showGrammar
               ? KPStudyModeRadialGraph(
                   animationDuration: 0,
                   writing: widget.stats.totalWinRateWriting,

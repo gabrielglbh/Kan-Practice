@@ -100,8 +100,10 @@ class _KPWordListsState extends State<KPWordLists>
 
   _resetScroll() {
     /// Scroll to the top
-    _scrollController.animateTo(0,
-        duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(0,
+          duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
+    }
   }
 
   _onFilterSelected(int index) {
@@ -263,7 +265,7 @@ class _KPWordListsState extends State<KPWordLists>
 
   Widget _content(List<WordList> lists) {
     return RefreshIndicator(
-      onRefresh: () => _addLoadingEvent(reset: true),
+      onRefresh: () async => _addLoadingEvent(reset: true),
       color: KPColors.secondaryColor,
       child: CustomScrollView(
         key: const PageStorageKey<String>('kanListListsController'),

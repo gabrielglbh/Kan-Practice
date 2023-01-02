@@ -33,8 +33,9 @@ class TestHistoryArgs {
 
 class TestHistory extends StatefulWidget {
   final KanPracticeStats stats;
-  final bool showWords;
-  const TestHistory({super.key, required this.stats, required this.showWords});
+  final bool showGrammar;
+  const TestHistory(
+      {super.key, required this.stats, required this.showGrammar});
 
   @override
   State<TestHistory> createState() => _TestHistoryState();
@@ -145,7 +146,7 @@ class _TestHistoryState extends State<TestHistory>
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
-              child: widget.showWords
+              child: !widget.showGrammar
                   ? KPStudyModeRadialGraph(
                       animationDuration: 0,
                       writing: widget.stats.test.testTotalWinRateWriting,

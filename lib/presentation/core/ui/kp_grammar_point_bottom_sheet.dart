@@ -57,6 +57,7 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const KPDragContainer(),
+                  const SizedBox(height: KPMargins.margin4),
                   BlocConsumer<GrammarPointDetailsBloc,
                       GrammarPointDetailsState>(
                     listener: (context, state) {
@@ -111,7 +112,7 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
                   ),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: KPMargins.margin8),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
             child: Text(
@@ -122,6 +123,7 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyText2,
             ),
           ),
+          const SizedBox(height: KPMargins.margin8),
           const Divider(),
           KPGrammarModeRadialGraph(
             definition: grammarPoint.winRateDefinition,

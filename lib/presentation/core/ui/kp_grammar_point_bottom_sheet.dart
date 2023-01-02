@@ -7,6 +7,7 @@ import 'package:kanpractice/presentation/core/ui/graphs/kp_grammar_mode_radial_g
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/ui/kp_markdown.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -16,16 +17,13 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
   final GrammarPoint? grammarPoint;
   final Function()? onRemove;
   final Function()? onTap;
-  KPGrammarPointBottomSheet(
+  const KPGrammarPointBottomSheet(
       {Key? key,
       required this.listName,
       required this.grammarPoint,
       this.onTap,
       this.onRemove})
       : super(key: key);
-
-  final _exampleScrollController = ScrollController();
-  final _definitionScrollController = ScrollController();
 
   /// Creates and calls the [BottomSheet] with the content for displaying the data
   /// of the current selected grammar point
@@ -103,39 +101,15 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
-            child: Text(
-              grammarPoint.name,
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.headline6?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
+          KPMarkdown(
+            data: grammarPoint.name,
+            maxHeight: KPMargins.margin64,
+            shrinkWrap: true,
           ),
-          const SizedBox(height: KPMargins.margin8),
-          ConstrainedBox(
-            constraints: const BoxConstraints(
-                maxHeight: KPMargins.margin64 + KPMargins.margin24),
-            child: Scrollbar(
-              controller: _definitionScrollController,
-              thumbVisibility: true,
-              child: SingleChildScrollView(
-                controller: _definitionScrollController,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: KPMargins.margin16,
-                  vertical: KPMargins.margin4,
-                ),
-                child: Text(
-                  grammarPoint.definition,
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
-              ),
-            ),
+          KPMarkdown(
+            data: grammarPoint.definition,
+            maxHeight: KPMargins.margin64 + KPMargins.margin16,
+            shrinkWrap: true,
           ),
           const SizedBox(height: KPMargins.margin8),
           Padding(
@@ -147,25 +121,13 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
               title: Text('jisho_resultData_examples_label'.tr(),
                   style: Theme.of(context).textTheme.bodyText2),
               tilePadding: EdgeInsets.zero,
-              childrenPadding: const EdgeInsets.all(KPMargins.margin8),
               children: [
-                ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: KPMargins.margin64 + KPMargins.margin24,
-                      minWidth: MediaQuery.of(context).size.width,
-                    ),
-                    child: Scrollbar(
-                      controller: _exampleScrollController,
-                      thumbVisibility: true,
-                      child: SingleChildScrollView(
-                        controller: _exampleScrollController,
-                        padding: const EdgeInsets.symmetric(
-                          vertical: KPMargins.margin4,
-                        ),
-                        child: Text(
-                            "• ${grammarPoint.example.replaceAll('\n', '\n• ')}"),
-                      ),
-                    ))
+                KPMarkdown(
+                  data: grammarPoint.example,
+                  maxHeight: KPMargins.margin64 + KPMargins.margin24,
+                  minWidth: MediaQuery.of(context).size.width,
+                  shrinkWrap: true,
+                )
               ],
             ),
           ),

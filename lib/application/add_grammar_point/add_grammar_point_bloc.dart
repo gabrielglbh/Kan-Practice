@@ -16,6 +16,7 @@ class AddGrammarPointBloc
   AddGrammarPointBloc(this._grammarPointRepository)
       : super(AddGrammarPointStateIdle()) {
     on<AddGrammarPointEventUpdate>((event, emit) async {
+      emit(AddGrammarPointStateLoading());
       final code = await _grammarPointRepository.updateGrammarPoint(
           event.listName, event.grammarPk, event.parameters);
       if (code == 0) {

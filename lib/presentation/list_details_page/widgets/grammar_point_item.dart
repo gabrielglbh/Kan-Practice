@@ -4,6 +4,7 @@ import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_win_rate_chart.dart';
 import 'package:kanpractice/presentation/core/ui/kp_grammar_point_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/ui/kp_markdown.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class GrammarPointItem extends StatelessWidget {
@@ -35,15 +36,13 @@ class GrammarPointItem extends StatelessWidget {
         await KPGrammarPointBottomSheet.show(context, listName, grammarPoint,
             onTap: onTap, onRemove: onRemoval);
       },
-      title: Text(
-        grammarPoint.name,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
+      title: Padding(
+        padding: const EdgeInsets.only(bottom: KPMargins.margin4),
+        child: KPMarkdown(data: grammarPoint.name, type: MarkdownType.body),
       ),
-      subtitle: Text(
-        "• ${grammarPoint.definition}",
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
+      subtitle: KPMarkdown(
+        data: grammarPoint.definition,
+        type: MarkdownType.body,
       ),
       trailing: WinRateChart(
         winRate: grammarPoint.winRateDefinition,

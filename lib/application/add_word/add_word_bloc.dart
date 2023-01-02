@@ -14,6 +14,7 @@ class AddWordBloc extends Bloc<AddWordEvent, AddWordState> {
 
   AddWordBloc(this._wordyRepository) : super(AddWordStateIdle()) {
     on<AddWordEventUpdate>((event, emit) async {
+      emit(AddWordStateLoading());
       final code = await _wordyRepository.updateWord(
           event.listName, event.wordPk, event.parameters);
       if (code == 0) {

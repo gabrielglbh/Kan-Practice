@@ -12,6 +12,7 @@ import 'package:kanpractice/presentation/core/ui/kp_list_percentage_indicator.da
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/ui/kp_study_mode_app_bar.dart';
 import 'package:kanpractice/presentation/core/ui/kp_validation_buttons.dart';
+import 'package:kanpractice/presentation/core/ui/kp_markdown.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/grammar_modes/utils/grammar_mode_arguments.dart';
@@ -202,24 +203,22 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
   }
 
   List<Widget> _header() {
-    final examples = _getExample().replaceAll('\n', '\n• ');
     return [
-      SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: Text(
-          _studyList[_macro].name,
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline6,
-        ),
+      KPMarkdown(
+        data: _studyList[_macro].name,
+        maxHeight: KPMargins.margin64 * 2,
+        shrinkWrap: true,
       ),
-      const SizedBox(height: KPMargins.margin12),
-      Text(
-        _getDefinition(),
-        style: _showDefinition
-            ? Theme.of(context).textTheme.bodyMedium
-            : Theme.of(context).textTheme.headline3,
-      ),
-      const SizedBox(height: KPMargins.margin12),
+      const SizedBox(height: KPMargins.margin4),
+      if (_showDefinition)
+        KPMarkdown(
+          data: _getDefinition(),
+          maxHeight: KPMargins.margin64 + KPMargins.margin24,
+          shrinkWrap: true,
+        )
+      else
+        Text(_getDefinition(), style: Theme.of(context).textTheme.headline4),
+      const SizedBox(height: KPMargins.margin4),
       if (_showDefinition)
         Column(
           children: [
@@ -231,13 +230,10 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
                   ),
             ),
             const SizedBox(height: KPMargins.margin8),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Text(
-                "• $examples",
-                maxLines: 4,
-                overflow: TextOverflow.ellipsis,
-              ),
+            KPMarkdown(
+              data: _getExample(),
+              maxHeight: KPMargins.margin64,
+              shrinkWrap: true,
             ),
           ],
         )

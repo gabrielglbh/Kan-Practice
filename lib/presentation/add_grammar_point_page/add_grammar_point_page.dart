@@ -59,7 +59,7 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
     getIt<AddGrammarPointBloc>().add(AddGrammarPointEventCreate(
         exitMode: exit,
         grammarPoint: GrammarPoint(
-          name: _nameController?.text ?? "",
+          name: '#### __${_nameController?.text ?? ""}__',
           definition: _definitionController?.text ?? "",
           example: _exampleController?.text ?? "",
           listName: widget.args.listName,
@@ -172,7 +172,7 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
             focusNode: _definitionFocus,
             action: TextInputAction.newline,
             inputType: TextInputType.multiline,
-            maxLength: 512,
+            maxLength: 256,
             header: "add_grammar_textForm_definition".tr(),
             hint: "add_grammar_textForm_definition_ext".tr(),
             onEditingComplete: () => _exampleFocus?.requestFocus(),
@@ -191,6 +191,51 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
               hint: "add_grammar_textForm_example_ext".tr(),
               onEditingComplete: () {},
             ),
+          ),
+        ),
+        const SizedBox(height: KPMargins.margin8),
+        GestureDetector(
+          onTap: () async {
+            await Utils.launch(context,
+                'https://docs.github.com/es/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#GitHub-flavored-markdown');
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: KPMargins.margin4),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(KPRadius.radius4),
+                  border: Border.all(
+                    color: KPColors.getAccent(context),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "M",
+                      style: Theme.of(context)
+                          .textTheme
+                          .caption
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    Icon(Icons.arrow_downward_rounded,
+                        size: 16, color: KPColors.getSubtle(context)),
+                  ],
+                ),
+              ),
+              const SizedBox(width: KPMargins.margin8),
+              Flexible(
+                child: Text(
+                  "markdown_support".tr(),
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.caption,
+                ),
+              ),
+            ],
           ),
         ),
       ],

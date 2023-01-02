@@ -86,13 +86,17 @@ class GrammarGrid extends StatelessWidget {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3, childAspectRatio: 1.2),
               itemBuilder: (context, i) {
-                int? isAvailable;
+                int? isAvailable = 0;
 
-                switch (GrammarModes.values[i]) {
-                  case GrammarModes.definition:
-                    isAvailable = getIt<PreferencesService>()
-                        .readData(SharedKeys.definitionDailyPerformed);
-                    break;
+                if (getIt<PreferencesService>()
+                        .readData(SharedKeys.dailyTestOnControlledPace) ==
+                    true) {
+                  switch (GrammarModes.values[i]) {
+                    case GrammarModes.definition:
+                      isAvailable = getIt<PreferencesService>()
+                          .readData(SharedKeys.definitionDailyPerformed);
+                      break;
+                  }
                 }
 
                 return _grammarButton(

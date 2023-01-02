@@ -86,29 +86,33 @@ class WordGrid extends StatelessWidget {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3, childAspectRatio: 1.2),
               itemBuilder: (context, i) {
-                int? isAvailable;
+                int? isAvailable = 0;
 
-                switch (StudyModes.values[i]) {
-                  case StudyModes.writing:
-                    isAvailable = getIt<PreferencesService>()
-                        .readData(SharedKeys.writingDailyPerformed);
-                    break;
-                  case StudyModes.reading:
-                    isAvailable = getIt<PreferencesService>()
-                        .readData(SharedKeys.readingDailyPerformed);
-                    break;
-                  case StudyModes.recognition:
-                    isAvailable = getIt<PreferencesService>()
-                        .readData(SharedKeys.recognitionDailyPerformed);
-                    break;
-                  case StudyModes.listening:
-                    isAvailable = getIt<PreferencesService>()
-                        .readData(SharedKeys.listeningDailyPerformed);
-                    break;
-                  case StudyModes.speaking:
-                    isAvailable = getIt<PreferencesService>()
-                        .readData(SharedKeys.speakingDailyPerformed);
-                    break;
+                if (getIt<PreferencesService>()
+                        .readData(SharedKeys.dailyTestOnControlledPace) ==
+                    true) {
+                  switch (StudyModes.values[i]) {
+                    case StudyModes.writing:
+                      isAvailable = getIt<PreferencesService>()
+                          .readData(SharedKeys.writingDailyPerformed);
+                      break;
+                    case StudyModes.reading:
+                      isAvailable = getIt<PreferencesService>()
+                          .readData(SharedKeys.readingDailyPerformed);
+                      break;
+                    case StudyModes.recognition:
+                      isAvailable = getIt<PreferencesService>()
+                          .readData(SharedKeys.recognitionDailyPerformed);
+                      break;
+                    case StudyModes.listening:
+                      isAvailable = getIt<PreferencesService>()
+                          .readData(SharedKeys.listeningDailyPerformed);
+                      break;
+                    case StudyModes.speaking:
+                      isAvailable = getIt<PreferencesService>()
+                          .readData(SharedKeys.speakingDailyPerformed);
+                      break;
+                  }
                 }
 
                 return _modeBasedButtons(

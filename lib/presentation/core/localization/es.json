@@ -409,7 +409,7 @@
   "add_grammar_textForm_definition_ext": "に denota que (Sustantivo) existe en (Lugar)",
   "add_grammar_textForm_example": "Ejemplo(s)",
   "add_grammar_textForm_example_ext": "私の部屋に椅子があります\n事務所にあなたがいました",
-  "modos_de_estudio_definición": "Definición",
+  "study_modes_definition": "Definición",
   "study_modes_definition_ext": "定義",
   "list_details_load_failed_grammar": "Fallo al recuperar puntos gramaticales",
   "list_details_empty_grammar": "No hay puntos gramaticales disponibles.\nAñade nuevos puntos gramaticales a esta lista tocando en '+' o impórtalos desde tu copia de seguridad.",

@@ -224,10 +224,17 @@ class _HomePageState extends State<HomePage>
       icon: const Icon(Icons.all_inbox),
     );
 
-    final dictionaryAppBarIcons =
-        _newVersion.isNotEmpty ? [updateIcon, dictHistory] : [dictHistory];
-    final listsAppBarIcons =
-        _newVersion.isNotEmpty ? [updateIcon, listArchive] : [listArchive];
+    final List<IconButton> updateWithAppBarIcons =
+        _currentPage == HomeType.dictionary
+            ? [updateIcon, dictHistory]
+            : _currentPage == HomeType.kanlist
+                ? [updateIcon, listArchive]
+                : [updateIcon];
+    final List<IconButton> appBarIcons = _currentPage == HomeType.dictionary
+        ? [dictHistory]
+        : _currentPage == HomeType.kanlist
+            ? [listArchive]
+            : [];
 
     return BlocListener<BackUpBloc, BackUpState>(
       listener: (context, state) {
@@ -278,13 +285,8 @@ class _HomePageState extends State<HomePage>
                 return true;
               },
               appBarTitle: _currentPage.appBarTitle,
-              appBarActions: _currentPage != HomeType.dictionary
-                  ? _newVersion.isNotEmpty
-                      ? [updateIcon]
-                      : _currentPage != HomeType.kanlist
-                          ? []
-                          : listsAppBarIcons
-                  : dictionaryAppBarIcons,
+              appBarActions:
+                  _newVersion.isNotEmpty ? updateWithAppBarIcons : appBarIcons,
               bottomNavigationWidget: HomeBottomNavigation(
                 tutorialKeys: [kanList, dictionary, actions, market, settings],
                 currentPage: _currentPage,

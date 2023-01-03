@@ -13,9 +13,9 @@ import 'package:kanpractice/presentation/add_word_page/arguments.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/ui/list_details_widgets/kp_word_item.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
-import 'package:kanpractice/presentation/list_details_page/widgets/word_item.dart';
 import 'package:kanpractice/presentation/list_details_page/widgets/practice_words_bottom_sheet.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
@@ -266,12 +266,11 @@ class _WordListWidgetState extends State<WordListWidget>
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 5, childAspectRatio: 2),
       itemBuilder: (context, k) {
-        Word? kanji = state.list[k];
-        return WordItem(
+        Word? word = state.list[k];
+        return KPWordItem(
           aggregateStats: _aggrStats,
           index: k,
-          kanji: kanji,
-          list: widget.list,
+          word: word,
           listName: widget.listName,
           selectedMode: _selectedMode,
           onShowModal: () => widget.searchBarFn?.unfocus(),
@@ -279,7 +278,7 @@ class _WordListWidgetState extends State<WordListWidget>
             await Navigator.of(context)
                 .pushNamed(KanPracticePages.addKanjiPage,
                     arguments:
-                        AddWordArgs(listName: widget.listName, word: kanji))
+                        AddWordArgs(listName: widget.listName, word: word))
                 .then((code) {
               if (code == 0) _addLoadingEvent(reset: true);
             });

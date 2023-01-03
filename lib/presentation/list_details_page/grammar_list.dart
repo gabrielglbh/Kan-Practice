@@ -12,9 +12,9 @@ import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/ui/kp_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/ui/list_details_widgets/kp_grammar_point_item.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/grammar_modes/utils/grammar_mode_arguments.dart';
-import 'package:kanpractice/presentation/list_details_page/widgets/grammar_point_item.dart';
 
 class GrammarListWidget extends StatefulWidget {
   final WordList list;
@@ -162,10 +162,9 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
       separatorBuilder: (_, __) => const Divider(),
       itemBuilder: (context, k) {
         GrammarPoint? gp = state.list[k];
-        return GrammarPointItem(
+        return KPGrammarPointItem(
           index: k,
           grammarPoint: gp,
-          list: widget.list,
           listName: widget.listName,
           selectedMode: _selectedMode,
           onShowModal: () => widget.searchBarFn?.unfocus(),

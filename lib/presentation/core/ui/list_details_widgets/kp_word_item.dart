@@ -1,54 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
-import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/ui/kp_word_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 
-class WordItem extends StatelessWidget {
+class KPWordItem extends StatelessWidget {
   final bool aggregateStats;
-  final String listName;
-  final WordList list;
-  final Word kanji;
+  final String? listName;
+  final Word word;
   final StudyModes selectedMode;
-  final Function() onRemoval;
-  final Function() onTap;
+  final Function()? onRemoval;
+  final Function()? onTap;
   final int index;
   final Function() onShowModal;
-  const WordItem({
+  const KPWordItem({
     Key? key,
     this.aggregateStats = false,
-    required this.listName,
-    required this.kanji,
-    required this.list,
-    required this.onRemoval,
-    required this.onTap,
+    this.listName,
+    required this.word,
+    this.onRemoval,
+    this.onTap,
     required this.selectedMode,
     required this.index,
     required this.onShowModal,
   }) : super(key: key);
 
-  double _getProperKanjiWinRate(Word kanji) {
+  double _getProperKanjiWinRate(Word word) {
     if (aggregateStats) {
-      final writing = (kanji.winRateWriting == DatabaseConstants.emptyWinRate
+      final writing = (word.winRateWriting == DatabaseConstants.emptyWinRate
           ? 0
-          : kanji.winRateWriting);
-      final reading = (kanji.winRateReading == DatabaseConstants.emptyWinRate
+          : word.winRateWriting);
+      final reading = (word.winRateReading == DatabaseConstants.emptyWinRate
           ? 0
-          : kanji.winRateReading);
+          : word.winRateReading);
       final recognition =
-          (kanji.winRateRecognition == DatabaseConstants.emptyWinRate
+          (word.winRateRecognition == DatabaseConstants.emptyWinRate
               ? 0
-              : kanji.winRateRecognition);
-      final listening =
-          (kanji.winRateListening == DatabaseConstants.emptyWinRate
-              ? 0
-              : kanji.winRateListening);
-      final speaking = (kanji.winRateSpeaking == DatabaseConstants.emptyWinRate
+              : word.winRateRecognition);
+      final listening = (word.winRateListening == DatabaseConstants.emptyWinRate
           ? 0
-          : kanji.winRateSpeaking);
+          : word.winRateListening);
+      final speaking = (word.winRateSpeaking == DatabaseConstants.emptyWinRate
+          ? 0
+          : word.winRateSpeaking);
 
       final aggregate = writing + reading + recognition + listening + speaking;
       if (aggregate == 0) return -1;
@@ -57,16 +53,16 @@ class WordItem extends StatelessWidget {
 
     switch (selectedMode) {
       case StudyModes.writing:
-        return kanji.winRateWriting;
+        return word.winRateWriting;
       case StudyModes.reading:
-        return kanji.winRateReading;
+        return word.winRateReading;
       case StudyModes.recognition:
-        return kanji.winRateRecognition;
+        return word.winRateRecognition;
       case StudyModes.listening:
-        return kanji.winRateListening;
+        return word.winRateListening;
       case StudyModes.speaking:
       default:
-        return kanji.winRateSpeaking;
+        return word.winRateSpeaking;
     }
   }
 
@@ -77,7 +73,7 @@ class WordItem extends StatelessWidget {
       padding: const EdgeInsets.all(KPMargins.margin2),
       margin: const EdgeInsets.all(KPMargins.margin4),
       decoration: BoxDecoration(
-          color: Utils.getColorBasedOnWinRate(_getProperKanjiWinRate(kanji)),
+          color: Utils.getColorBasedOnWinRate(_getProperKanjiWinRate(word)),
           borderRadius:
               const BorderRadius.all(Radius.circular(KPRadius.radius8)),
           boxShadow: const [
@@ -93,7 +89,7 @@ class WordItem extends StatelessWidget {
               const BorderRadius.all(Radius.circular(KPRadius.radius8)),
           onTap: () async {
             onShowModal();
-            await KPWordBottomSheet.show(context, listName, kanji,
+            await KPWordBottomSheet.show(context, listName, word,
                 onTap: onTap, onRemove: onRemoval);
           },
           child: Container(
@@ -102,7 +98,7 @@ class WordItem extends StatelessWidget {
                       BorderRadius.all(Radius.circular(KPRadius.radius8))),
               child: FittedBox(
                 fit: BoxFit.contain,
-                child: Text(kanji.word,
+                child: Text(word.word,
                     textAlign: TextAlign.center,
                     style: Theme.of(context)
                         .textTheme

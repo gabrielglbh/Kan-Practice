@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/grammar_details/grammar_details_bloc.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/presentation/core/types/home_types.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_grammar_mode_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
@@ -13,7 +14,7 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class KPGrammarPointBottomSheet extends StatelessWidget {
-  final String listName;
+  final String? listName;
   final GrammarPoint? grammarPoint;
   final Function()? onRemove;
   final Function()? onTap;
@@ -28,7 +29,7 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
   /// Creates and calls the [BottomSheet] with the content for displaying the data
   /// of the current selected grammar point
   static Future<String?> show(
-      BuildContext context, String listName, GrammarPoint? grammarPoint,
+      BuildContext context, String? listName, GrammarPoint? grammarPoint,
       {Function()? onRemove, Function()? onTap}) async {
     return await showModalBottomSheet(
         context: context,
@@ -50,7 +51,9 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
       onClosing: () {},
       builder: (context) {
         getIt<GrammarPointDetailsBloc>().add(GrammarPointDetailsEventLoading(
-            grammarPoint ?? GrammarPoint.empty));
+          grammarPoint ?? GrammarPoint.empty,
+          isArchive: listName == null,
+        ));
         return Wrap(children: [
           Padding(
               padding: const EdgeInsets.all(KPMargins.margin8),
@@ -131,6 +134,38 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
               ],
             ),
           ),
+          if (listName == null)
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: KPMargins.margin16,
+                  right: KPMargins.margin16,
+                  top: KPMargins.margin8,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      HomeType.kanlist.icon,
+                      size: 16,
+                      color: KPColors.getSubtle(context),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: KPMargins.margin8),
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: Text(grammarPoint.listName,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                ?.copyWith(fontWeight: FontWeight.bold)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           SizedBox(
             height: 100,
             child: KPGrammarModeRadialGraph(

@@ -7,6 +7,8 @@ import 'package:kanpractice/application/add_folder/add_folder_bloc.dart';
 import 'package:kanpractice/application/add_grammar_point/add_grammar_point_bloc.dart';
 import 'package:kanpractice/application/add_market_list/add_to_market_bloc.dart';
 import 'package:kanpractice/application/add_word/add_word_bloc.dart';
+import 'package:kanpractice/application/archive_grammar_points/archive_grammar_points_bloc.dart';
+import 'package:kanpractice/application/archive_words/archive_words_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
 import 'package:kanpractice/application/dictionary/dict_bloc.dart';
@@ -188,6 +190,8 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<GrammarPointDetailsBloc>()),
         BlocProvider(create: (_) => getIt<GrammarModeBloc>()),
         BlocProvider(create: (_) => getIt<LoadGrammarTestBloc>()),
+        BlocProvider(create: (_) => getIt<ArchiveGrammarPointsBloc>()),
+        BlocProvider(create: (_) => getIt<ArchiveWordsBloc>()),
       ],
       child: BlocBuilder<InitialBloc, InitialState>(
         builder: (context, state) {

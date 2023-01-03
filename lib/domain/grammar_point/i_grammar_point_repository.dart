@@ -20,7 +20,8 @@ abstract class IGrammarPointRepository {
     List<GrammarPoint> grammarPoints,
     ConflictAlgorithm conflictAlgorithm,
   );
-  Future<GrammarPoint> getGrammarPoint(String listName, String grammarPoint);
+  Future<GrammarPoint> getGrammarPoint(String grammarPoint,
+      {String? listName, String? definition});
 
   /// Gets a [GrammarPoint] and removes it from the db.
   /// Returns an integer depending on the error given:
@@ -58,6 +59,10 @@ abstract class IGrammarPointRepository {
   /// their last shown parameter or worst accuracy parameter. See [Tests].
   Future<List<GrammarPoint>> getAllGrammarPoints(
       {GrammarModes? mode, Tests? type});
+  Future<List<GrammarPoint>> getArchiveGrammarPoints({
+    int? offset,
+    int? limit,
+  });
   Future<List<GrammarPoint>> getGrammarPointBasedOnSelectedLists(
       List<String> listNames);
   Future<List<GrammarPoint>> getAllGrammarPointsFromList(
@@ -66,8 +71,8 @@ abstract class IGrammarPointRepository {
     int? limit,
   });
   Future<List<GrammarPoint>> getGrammarPointsMatchingQuery(
-    String query,
-    String listName, {
+    String query, {
+    String? listName,
     required int offset,
     required int limit,
   });

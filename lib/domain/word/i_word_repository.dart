@@ -20,7 +20,7 @@ abstract class IWordRepository {
     List<Word> words,
     ConflictAlgorithm conflictAlgorithm,
   );
-  Future<Word> getWord(String listName, String word);
+  Future<Word> getWord(String word, {String? listName, String? meaning});
 
   /// Gets a [Word] and removes it from the db.
   /// Returns an integer depending on the error given:
@@ -57,6 +57,10 @@ abstract class IWordRepository {
   /// [type] serves as a control variable to order all the Word by
   /// their last shown parameter or worst accuracy parameter. See [Tests].
   Future<List<Word>> getAllWords({StudyModes? mode, Tests? type});
+  Future<List<Word>> getArchiveWords({
+    int? offset,
+    int? limit,
+  });
   Future<List<Word>> getWordBasedOnSelectedLists(List<String> listNames);
   Future<List<Word>> getWordsBasedOnCategory(int category);
   Future<List<Word>> getAllWordsFromList(
@@ -65,8 +69,8 @@ abstract class IWordRepository {
     int? limit,
   });
   Future<List<Word>> getWordsMatchingQuery(
-    String query,
-    String listName, {
+    String query, {
+    String? listName,
     required int offset,
     required int limit,
   });

@@ -1,28 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
-import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_win_rate_chart.dart';
 import 'package:kanpractice/presentation/core/ui/kp_grammar_point_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/ui/kp_markdown.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
-class GrammarPointItem extends StatelessWidget {
-  final String listName;
-  final WordList list;
+class KPGrammarPointItem extends StatelessWidget {
+  final String? listName;
   final GrammarPoint grammarPoint;
   final GrammarModes selectedMode;
-  final Function() onRemoval;
-  final Function() onTap;
+  final Function()? onRemoval;
+  final Function()? onTap;
   final int index;
   final Function() onShowModal;
-  const GrammarPointItem({
+  const KPGrammarPointItem({
     Key? key,
-    required this.listName,
+    this.listName,
     required this.grammarPoint,
-    required this.list,
-    required this.onRemoval,
-    required this.onTap,
+    this.onRemoval,
+    this.onTap,
     required this.selectedMode,
     required this.index,
     required this.onShowModal,

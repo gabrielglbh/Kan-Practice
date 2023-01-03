@@ -68,6 +68,22 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
   }
 
   @override
+  Future<List<GrammarPoint>> getArchiveGrammarPoints(
+      {int? offset, int? limit}) async {
+    try {
+      List<Map<String, dynamic>>? res = await _database.query(
+          GrammarTableFields.grammarTable,
+          orderBy: "${GrammarTableFields.dateAddedField} ASC",
+          limit: limit,
+          offset: (offset != null && limit != null) ? (offset * limit) : null);
+      return List.generate(res.length, (i) => GrammarPoint.fromJson(res[i]));
+    } catch (err) {
+      print(err.toString());
+      return [];
+    }
+  }
+
+  @override
   Future<List<GrammarPoint>> getAllGrammarPointsFromList(String listName,
       {int? offset, int? limit}) async {
     try {
@@ -152,14 +168,23 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
   }
 
   @override
-  Future<GrammarPoint> getGrammarPoint(
-      String listName, String grammarPoint) async {
+  Future<GrammarPoint> getGrammarPoint(String grammarPoint,
+      {String? listName, String? definition}) async {
     try {
-      List<Map<String, dynamic>>? res = [];
-      res = await _database.query(GrammarTableFields.grammarTable,
-          where:
-              "${GrammarTableFields.listNameField}=? AND ${GrammarTableFields.nameField}=?",
-          whereArgs: [listName, grammarPoint]);
+      assert((listName != null && definition == null) ||
+          (listName == null && definition != null));
+      List<Map<String, dynamic>> res = [];
+      if (listName != null) {
+        res = await _database.query(GrammarTableFields.grammarTable,
+            where:
+                "${GrammarTableFields.listNameField}=? AND ${GrammarTableFields.nameField}=?",
+            whereArgs: [listName, grammarPoint]);
+      } else if (definition != null) {
+        res = await _database.query(GrammarTableFields.grammarTable,
+            where:
+                "${GrammarTableFields.definitionField}=? AND ${GrammarTableFields.nameField}=?",
+            whereArgs: [definition, grammarPoint]);
+      }
       return GrammarPoint.fromJson(res[0]);
     } catch (err) {
       print(err.toString());
@@ -192,20 +217,27 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
   }
 
   @override
-  Future<List<GrammarPoint>> getGrammarPointsMatchingQuery(
-      String query, String listName,
-      {required int offset, required int limit}) async {
+  Future<List<GrammarPoint>> getGrammarPointsMatchingQuery(String query,
+      {String? listName, required int offset, required int limit}) async {
     try {
-      List<Map<String, dynamic>>? res = [];
+      List<Map<String, dynamic>> res = [];
+      String whereClause = "";
+
+      if (listName != null) {
+        whereClause =
+            "WHERE ${GrammarTableFields.listNameField} = '$listName' AND ";
+      } else {
+        whereClause = "WHERE ";
+      }
       res = await _database.rawQuery("SELECT * "
           "FROM ${GrammarTableFields.grammarTable} "
-          "WHERE ${GrammarTableFields.listNameField} = '$listName' "
-          "AND (${GrammarTableFields.nameField} LIKE '%$query%' "
+          "$whereClause "
+          "(${GrammarTableFields.nameField} LIKE '%$query%' "
           "OR ${GrammarTableFields.definitionField} LIKE '%$query%' "
           "OR ${GrammarTableFields.exampleField} LIKE '%$query%') "
           "ORDER BY ${GrammarTableFields.dateAddedField} ASC "
           "LIMIT $limit OFFSET ${offset * limit}");
-      return List.generate(res.length, (i) => GrammarPoint.fromJson(res![i]));
+      return List.generate(res.length, (i) => GrammarPoint.fromJson(res[i]));
     } catch (err) {
       print(err.toString());
       return [];

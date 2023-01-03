@@ -9,11 +9,13 @@ abstract class GrammarPointDetailsEvent extends Equatable {
 
 class GrammarPointDetailsEventLoading extends GrammarPointDetailsEvent {
   final GrammarPoint grammarPoint;
+  final bool isArchive;
 
-  const GrammarPointDetailsEventLoading(this.grammarPoint);
+  const GrammarPointDetailsEventLoading(this.grammarPoint,
+      {this.isArchive = false});
 
   @override
-  List<Object> get props => [grammarPoint];
+  List<Object> get props => [grammarPoint, isArchive];
 }
 
 class GrammarPointDetailsEventDelete extends GrammarPointDetailsEvent {

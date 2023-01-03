@@ -135,6 +135,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
         if (_onTutorial) return false;
         if (_searchHasFocus) {
           _addWordLoadingEvent(reset: true);
+          _addGrammarPointLoadingEvent(reset: true);
           _searchBarFn.unfocus();
           return false;
         } else {

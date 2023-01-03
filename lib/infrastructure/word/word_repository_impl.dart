@@ -99,6 +99,21 @@ class WordRepositoryImpl implements IWordRepository {
   }
 
   @override
+  Future<List<Word>> getArchiveWords({int? offset, int? limit}) async {
+    try {
+      List<Map<String, dynamic>>? res = await _database.query(
+          WordTableFields.wordTable,
+          orderBy: "${WordTableFields.dateAddedField} ASC",
+          limit: limit,
+          offset: (offset != null && limit != null) ? (offset * limit) : null);
+      return List.generate(res.length, (i) => Word.fromJson(res[i]));
+    } catch (err) {
+      print(err.toString());
+      return [];
+    }
+  }
+
+  @override
   Future<List<Word>> getAllWordsFromList(String listName,
       {int? offset, int? limit}) async {
     try {
@@ -423,13 +438,24 @@ class WordRepositoryImpl implements IWordRepository {
   }
 
   @override
-  Future<Word> getWord(String listName, String word) async {
+  Future<Word> getWord(String word, {String? listName, String? meaning}) async {
     try {
+      assert((listName != null && meaning == null) ||
+          (listName == null && meaning != null));
       List<Map<String, dynamic>>? res = [];
-      res = await _database.query(WordTableFields.wordTable,
-          where:
-              "${WordTableFields.listNameField}=? AND ${WordTableFields.wordField}=?",
-          whereArgs: [listName, word]);
+
+      if (listName != null) {
+        res = await _database.query(WordTableFields.wordTable,
+            where:
+                "${WordTableFields.listNameField}=? AND ${WordTableFields.wordField}=?",
+            whereArgs: [listName, word]);
+      } else if (meaning != null) {
+        res = await _database.query(WordTableFields.wordTable,
+            where:
+                "${WordTableFields.meaningField}=? AND ${WordTableFields.wordField}=?",
+            whereArgs: [meaning, word]);
+      }
+
       return Word.fromJson(res[0]);
     } catch (err) {
       print(err.toString());
@@ -494,19 +520,27 @@ class WordRepositoryImpl implements IWordRepository {
   }
 
   @override
-  Future<List<Word>> getWordsMatchingQuery(String query, String listName,
-      {required int offset, required int limit}) async {
+  Future<List<Word>> getWordsMatchingQuery(String query,
+      {String? listName, required int offset, required int limit}) async {
     try {
-      List<Map<String, dynamic>>? res = [];
+      List<Map<String, dynamic>> res = [];
+      String whereClause = "";
+
+      if (listName != null) {
+        whereClause =
+            "WHERE ${WordTableFields.listNameField} = '$listName' AND ";
+      } else {
+        whereClause = "WHERE ";
+      }
       res = await _database.rawQuery("SELECT * "
           "FROM ${WordTableFields.wordTable} "
-          "WHERE ${WordTableFields.listNameField} = '$listName' "
-          "AND (${WordTableFields.meaningField} LIKE '%$query%' "
+          "$whereClause "
+          "(${WordTableFields.meaningField} LIKE '%$query%' "
           "OR ${WordTableFields.wordField} LIKE '%$query%' "
           "OR ${WordTableFields.pronunciationField} LIKE '%$query%') "
           "ORDER BY ${WordTableFields.dateAddedField} ASC "
           "LIMIT $limit OFFSET ${offset * limit}");
-      return List.generate(res.length, (i) => Word.fromJson(res![i]));
+      return List.generate(res.length, (i) => Word.fromJson(res[i]));
     } catch (err) {
       print(err.toString());
       return [];

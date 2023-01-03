@@ -4,6 +4,7 @@ import 'package:kanpractice/application/word_details/word_details_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/domain/word/word.dart';
+import 'package:kanpractice/presentation/core/types/home_types.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_study_mode_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
@@ -18,7 +19,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 class KPWordBottomSheet extends StatelessWidget {
   /// Kanji object to be displayed
-  final String listName;
+  final String? listName;
   final Word? kanji;
   final Function()? onRemove;
   final Function()? onTap;
@@ -33,7 +34,7 @@ class KPWordBottomSheet extends StatelessWidget {
   /// Creates and calls the [BottomSheet] with the content for displaying the data
   /// of the current selected kanji
   static Future<String?> show(
-      BuildContext context, String listName, Word? kanji,
+      BuildContext context, String? listName, Word? kanji,
       {Function()? onRemove, Function()? onTap}) async {
     return await showModalBottomSheet(
         context: context,
@@ -54,8 +55,10 @@ class KPWordBottomSheet extends StatelessWidget {
       constraints: BoxConstraints(maxHeight: maxHeight),
       onClosing: () {},
       builder: (context) {
-        getIt<WordDetailsBloc>()
-            .add(WordDetailsEventLoading(kanji ?? Word.empty));
+        getIt<WordDetailsBloc>().add(WordDetailsEventLoading(
+          kanji ?? Word.empty,
+          isArchive: listName == null,
+        ));
         return Wrap(children: [
           Padding(
               padding: const EdgeInsets.all(KPMargins.margin8),
@@ -139,6 +142,36 @@ class KPWordBottomSheet extends StatelessWidget {
                   ])),
             ),
           ),
+          if (listName == null)
+            Padding(
+              padding: const EdgeInsets.only(
+                left: KPMargins.margin16,
+                right: KPMargins.margin16,
+                top: KPMargins.margin8,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    HomeType.kanlist.icon,
+                    size: 16,
+                    color: KPColors.getSubtle(context),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: KPMargins.margin8),
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: Text(updatedKanji.listName,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2
+                              ?.copyWith(fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           const Divider(),
           KPStudyModeRadialGraph(
             writing: updatedKanji.winRateWriting,

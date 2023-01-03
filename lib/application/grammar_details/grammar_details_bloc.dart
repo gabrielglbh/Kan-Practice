@@ -21,9 +21,17 @@ class GrammarPointDetailsBloc
     on<GrammarPointDetailsEventLoading>((event, emit) async {
       try {
         emit(GrammarPointDetailsStateLoading());
-        final grammarPoint = await _grammarPointRepository.getGrammarPoint(
-            event.grammarPoint.listName, event.grammarPoint.name);
-        emit(GrammarPointDetailsStateLoaded(grammarPoint: grammarPoint));
+        if (event.isArchive) {
+          final grammarPoint = await _grammarPointRepository.getGrammarPoint(
+              event.grammarPoint.name,
+              definition: event.grammarPoint.definition);
+          emit(GrammarPointDetailsStateLoaded(grammarPoint: grammarPoint));
+        } else {
+          final grammarPoint = await _grammarPointRepository.getGrammarPoint(
+              event.grammarPoint.name,
+              listName: event.grammarPoint.listName);
+          emit(GrammarPointDetailsStateLoaded(grammarPoint: grammarPoint));
+        }
       } on Exception {
         emit(const GrammarPointDetailsStateFailure(error: ":("));
       }

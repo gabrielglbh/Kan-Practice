@@ -217,9 +217,17 @@ class _HomePageState extends State<HomePage>
       },
       icon: const Icon(Icons.history_rounded),
     );
+    final listArchive = IconButton(
+      onPressed: () {
+        Navigator.of(context).pushNamed(KanPracticePages.archivePage);
+      },
+      icon: const Icon(Icons.all_inbox),
+    );
 
     final dictionaryAppBarIcons =
         _newVersion.isNotEmpty ? [updateIcon, dictHistory] : [dictHistory];
+    final listsAppBarIcons =
+        _newVersion.isNotEmpty ? [updateIcon, listArchive] : [listArchive];
 
     return BlocListener<BackUpBloc, BackUpState>(
       listener: (context, state) {
@@ -273,7 +281,7 @@ class _HomePageState extends State<HomePage>
               appBarActions: _currentPage != HomeType.dictionary
                   ? _newVersion.isNotEmpty
                       ? [updateIcon]
-                      : null
+                      : listsAppBarIcons
                   : dictionaryAppBarIcons,
               bottomNavigationWidget: HomeBottomNavigation(
                 tutorialKeys: [kanList, dictionary, actions, market, settings],

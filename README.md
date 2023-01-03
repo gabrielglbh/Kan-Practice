@@ -1,8 +1,8 @@
 # KanPractice
 
-A simple app for studying the japanese vocabulary you will learn in your japanese learning journey based on cards with meaning, pronunciation and kanji.
+A simple app for studying the japanese vocabulary and grammar you will learn in your japanese learning journey based on cards with meaning, pronunciation, kanji and more!
 
-Build your own word or sentences lists and study them whenever you want.
+Build your own word, sentences and grammar lists and study them whenever you want.
 
 <p align="center">
   <a href="https://play.google.com/store/apps/details?id=com.gabr.garc.kanpractice">

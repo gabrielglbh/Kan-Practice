@@ -201,7 +201,7 @@ class _KPWordListsState extends State<KPWordLists>
         style: Theme.of(context)
             .textTheme
             .bodyMedium
-            ?.copyWith(color: KPColors.accentLight),
+            ?.copyWith(color: KPColors.getAccent(context)),
       ),
       trailing: KPSwitch(
         onChanged: _toggleGraphs,

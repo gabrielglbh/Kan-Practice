@@ -89,8 +89,9 @@ class WordGrid extends StatelessWidget {
                 int? isAvailable = 0;
 
                 if (getIt<PreferencesService>()
-                        .readData(SharedKeys.dailyTestOnControlledPace) ==
-                    true) {
+                            .readData(SharedKeys.dailyTestOnControlledPace) ==
+                        true &&
+                    type == Tests.daily) {
                   switch (StudyModes.values[i]) {
                     case StudyModes.writing:
                       isAvailable = getIt<PreferencesService>()

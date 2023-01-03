@@ -89,8 +89,9 @@ class GrammarGrid extends StatelessWidget {
                 int? isAvailable = 0;
 
                 if (getIt<PreferencesService>()
-                        .readData(SharedKeys.dailyTestOnControlledPace) ==
-                    true) {
+                            .readData(SharedKeys.dailyTestOnControlledPace) ==
+                        true &&
+                    type == Tests.daily) {
                   switch (GrammarModes.values[i]) {
                     case GrammarModes.definition:
                       isAvailable = getIt<PreferencesService>()

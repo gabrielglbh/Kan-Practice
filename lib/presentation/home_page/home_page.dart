@@ -281,7 +281,9 @@ class _HomePageState extends State<HomePage>
               appBarActions: _currentPage != HomeType.dictionary
                   ? _newVersion.isNotEmpty
                       ? [updateIcon]
-                      : listsAppBarIcons
+                      : _currentPage != HomeType.kanlist
+                          ? []
+                          : listsAppBarIcons
                   : dictionaryAppBarIcons,
               bottomNavigationWidget: HomeBottomNavigation(
                 tutorialKeys: [kanList, dictionary, actions, market, settings],

@@ -30,7 +30,7 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
   /// Current word index
   int _macro = 0;
 
-  bool _showDefinition = false;
+  bool _showGrammarName = false;
   bool _hasFinished = false;
   bool _enableRepOnTest = false;
 
@@ -78,7 +78,7 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
         if (_macro < _studyList.length - 1) {
           setState(() {
             _macro++;
-            _showDefinition = false;
+            _showGrammarName = false;
           });
         }
 
@@ -133,18 +133,9 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
     return 0;
   }
 
-  String _getDefinition() {
-    /// Based on the states, update the pronunciation
-    if (_showDefinition) {
-      return _studyList[_macro].definition;
-    } else {
-      return _none;
-    }
-  }
-
   String _getExample() {
     /// Based on the states, update the meaning
-    if (_showDefinition) {
+    if (_showGrammarName) {
       return _studyList[_macro].example;
     } else {
       return "";
@@ -190,10 +181,10 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
                 ],
               ),
               KPValidationButtons(
-                trigger: _showDefinition,
+                trigger: _showGrammarName,
                 submitLabel: "done_button_label".tr(),
                 action: (score) async => await _updateUIOnSubmit(score),
-                onSubmit: () => setState(() => _showDefinition = true),
+                onSubmit: () => setState(() => _showGrammarName = true),
               ),
             ],
           ),
@@ -204,22 +195,22 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
 
   List<Widget> _header() {
     return [
-      KPMarkdown(
-        data: _studyList[_macro].name,
-        maxHeight: KPMargins.margin64 * 2,
-        shrinkWrap: true,
-      ),
-      const SizedBox(height: KPMargins.margin4),
-      if (_showDefinition)
+      if (_showGrammarName)
         KPMarkdown(
-          data: _getDefinition(),
-          maxHeight: KPMargins.margin64 + KPMargins.margin24,
+          data: _studyList[_macro].name,
+          maxHeight: KPMargins.margin64 * 2,
           shrinkWrap: true,
         )
       else
-        Text(_getDefinition(), style: Theme.of(context).textTheme.headline4),
+        Text(_none, style: Theme.of(context).textTheme.headline4),
       const SizedBox(height: KPMargins.margin4),
-      if (_showDefinition)
+      KPMarkdown(
+        data: _studyList[_macro].definition,
+        maxHeight: KPMargins.margin64 + KPMargins.margin24,
+        shrinkWrap: true,
+      ),
+      const SizedBox(height: KPMargins.margin4),
+      if (_showGrammarName)
         Column(
           children: [
             Text(

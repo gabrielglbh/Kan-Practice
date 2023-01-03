@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 
-/// TODO When adding a new study mode, be sure to update [StudyModeFilters] too
+/// TODO When adding a new study mode, be sure to update [TestHistoryFilters] too
 enum StudyModes { writing, reading, recognition, listening, speaking }
 
 extension StudyModesExt on StudyModes {

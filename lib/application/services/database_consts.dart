@@ -60,6 +60,7 @@ class ListTableFields {
   static const String totalWinRateRecognitionField = "totalWinRateRecognition";
   static const String totalWinRateListeningField = "totalWinRateListening";
   static const String totalWinRateSpeakingField = "totalWinRateSpeaking";
+  static const String totalWinRateDefinitionField = "totalWinRateDefinition";
   static const String lastUpdatedField = "lastUpdated";
 }
 
@@ -72,6 +73,7 @@ class TestTableFields {
   static const String wordsListsField = "kanjiLists";
   static const String studyModeField = "studyMode";
   static const String testModeField = "testMode";
+  static const String grammarModeField = "grammarMode";
 }
 
 class RelationFolderListTableFields {
@@ -104,6 +106,8 @@ class TestDataTableFields {
       "testTotalCountRecognition";
   static const String testTotalCountListeningField = "testTotalCountListening";
   static const String testTotalCountSpeakingField = "testTotalCountSpeaking";
+  static const String testTotalCountDefinitionField =
+      "testTotalCountDefinition";
   static const String testTotalWinRateWritingField = "testTotalWinRateWriting";
   static const String testTotalWinRateReadingField = "testTotalWinRateReading";
   static const String testTotalWinRateRecognitionField =
@@ -112,6 +116,8 @@ class TestDataTableFields {
       "testTotalWinRateListening";
   static const String testTotalWinRateSpeakingField =
       "testTotalWinRateSpeaking";
+  static const String testTotalWinRateDefinitionField =
+      "testTotalWinRateDefinition";
   static const String selectionTestsField = "selectionTests";
   static const String blitzTestsField = "blitzTests";
   static const String remembranceTestsField = "remembranceTests";
@@ -130,11 +136,32 @@ class TestSpecificDataTableFields {
   static const String totalRecognitionCountField = "totalRecognitionCount";
   static const String totalListeningCountField = "totalListeningCount";
   static const String totalSpeakingCountField = "totalSpeakingCount";
+  static const String totalDefinitionCountField = "totalDefinitionCount";
   static const String totalWinRateWritingField = "totalWinRateWriting";
   static const String totalWinRateReadingField = "totalWinRateReading";
   static const String totalWinRateRecognitionField = "totalWinRateRecognition";
   static const String totalWinRateListeningField = "totalWinRateListening";
   static const String totalWinRateSpeakingField = "totalWinRateSpeaking";
+  static const String totalWinRateDefinitionField = "totalWinRateDefinition";
+}
+
+class GrammarTableFields {
+  static const String grammarTable = "GRAMMAR_TABLE";
+  static const String nameField = "name";
+  static const String definitionField = "definition";
+  static const String exampleField = "example";
+  static const String listNameField = "listName";
+  static const String winRateDefinitionField = "winRateDefinition";
+  static const String dateAddedField = "dateAdded";
+  static const String dateLastShownField = "dateLastShown";
+  static const String dateLastShownDefinitionField = "dateLastShownDefinition";
+  static const String repetitionsDefinitionField = "repetitionsDefinition";
+  static const String previousEaseFactorDefinitionField =
+      "previousEaseFactorDefinition";
+  static const String previousIntervalDefinitionField =
+      "previousIntervalDefinition";
+  static const String previousIntervalAsDateDefinitionField =
+      "previousIntervalAsDateDefinition";
 }
 
 class DatabaseConstants {

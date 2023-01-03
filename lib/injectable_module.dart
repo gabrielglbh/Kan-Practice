@@ -38,22 +38,15 @@ abstract class InjectableModule {
 
     return await openDatabase(
       path,
-      version: 10,
+      version: 11,
       singleInstance: true,
       onConfigure: (db) async {
         await db.execute('PRAGMA foreign_keys = ON');
       },
       onUpgrade: (Database db, int oldVersion, int newVersion) async {
         final c = Migrations();
-        if (oldVersion <= 1) c.version1to2(db);
-        if (oldVersion <= 2) c.version2to3(db);
-        if (oldVersion <= 3) c.version3to4(db);
-        if (oldVersion <= 4) c.version4to5(db);
-        if (oldVersion <= 5) c.version5to6(db);
-        if (oldVersion <= 6) c.version6to7(db);
-        if (oldVersion <= 7) c.version7to8(db);
-        if (oldVersion <= 8) c.version8to9(db);
         if (oldVersion <= 9) c.version9to10(db);
+        if (oldVersion <= 10) c.version10to11(db);
       },
       onCreate: (Database db, int version) async {
         await db.execute("CREATE TABLE ${WordTableFields.wordTable}("
@@ -106,6 +99,7 @@ abstract class InjectableModule {
             "${ListTableFields.totalWinRateRecognitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${ListTableFields.totalWinRateListeningField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${ListTableFields.totalWinRateSpeakingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${ListTableFields.totalWinRateDefinitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${ListTableFields.lastUpdatedField} INTEGER NOT NULL DEFAULT 0)");
 
         await db.execute("CREATE TABLE ${TestTableFields.testTable}("
@@ -114,7 +108,8 @@ abstract class InjectableModule {
             "${TestTableFields.testScoreField} INTEGER NOT NULL DEFAULT 0, "
             "${TestTableFields.wordsInTestField} INTEGER NOT NULL DEFAULT 0, "
             "${TestTableFields.wordsListsField} TEXT NOT NULL, "
-            "${TestTableFields.studyModeField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestTableFields.studyModeField} INTEGER, "
+            "${TestTableFields.grammarModeField} INTEGER, "
             "${TestTableFields.testModeField} INTEGER NOT NULL DEFAULT -1)");
 
         await db.execute("CREATE TABLE ${FolderTableFields.folderTable}("
@@ -143,11 +138,13 @@ abstract class InjectableModule {
             "${TestDataTableFields.testTotalCountRecognitionField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalCountListeningField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalCountSpeakingField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestDataTableFields.testTotalCountDefinitionField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalWinRateWritingField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalWinRateReadingField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalWinRateRecognitionField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalWinRateListeningField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalWinRateSpeakingField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestDataTableFields.testTotalWinRateDefinitionField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.selectionTestsField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.blitzTestsField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.remembranceTestsField} INTEGER NOT NULL DEFAULT 0, "
@@ -166,11 +163,31 @@ abstract class InjectableModule {
             "${TestSpecificDataTableFields.totalRecognitionCountField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalListeningCountField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalSpeakingCountField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestSpecificDataTableFields.totalDefinitionCountField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalWinRateWritingField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalWinRateReadingField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalWinRateRecognitionField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalWinRateListeningField} INTEGER NOT NULL DEFAULT 0, "
-            "${TestSpecificDataTableFields.totalWinRateSpeakingField} INTEGER NOT NULL DEFAULT 0)");
+            "${TestSpecificDataTableFields.totalWinRateSpeakingField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestSpecificDataTableFields.totalWinRateDefinitionField} INTEGER NOT NULL DEFAULT 0)");
+
+        await db.execute("CREATE TABLE ${GrammarTableFields.grammarTable}("
+            "${GrammarTableFields.nameField} TEXT NOT NULL, "
+            "${GrammarTableFields.definitionField} TEXT NOT NULL, "
+            "${GrammarTableFields.exampleField} TEXT NOT NULL, "
+            "${GrammarTableFields.listNameField} TEXT NOT NULL, "
+            "${GrammarTableFields.winRateDefinitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${GrammarTableFields.dateAddedField} INTEGER NOT NULL DEFAULT 0, "
+            "${GrammarTableFields.dateLastShownField} INTEGER NOT NULL DEFAULT 0, "
+            "${GrammarTableFields.dateLastShownDefinitionField} INTEGER NOT NULL DEFAULT 0, "
+            "${GrammarTableFields.repetitionsDefinitionField} INTEGER NOT NULL DEFAULT 0, "
+            "${GrammarTableFields.previousEaseFactorDefinitionField} INTEGER NOT NULL DEFAULT 2.5, "
+            "${GrammarTableFields.previousIntervalDefinitionField} INTEGER NOT NULL DEFAULT 0, "
+            "${GrammarTableFields.previousIntervalAsDateDefinitionField} INTEGER NOT NULL DEFAULT 0, "
+            "PRIMARY KEY (${GrammarTableFields.nameField}, ${GrammarTableFields.definitionField}), "
+            "FOREIGN KEY (${GrammarTableFields.listNameField}) "
+            "REFERENCES ${ListTableFields.listsTable}(${ListTableFields.nameField}) "
+            "ON DELETE CASCADE ON UPDATE CASCADE)");
       },
     );
   }

@@ -6,7 +6,7 @@ import 'package:sqflite/sqlite_api.dart';
 
 abstract class ISpecificDataRepository {
   /// Merges words from the backup
-  Future<Batch?> mergeSpecificData(
+  Batch? mergeSpecificData(
     Batch? batch,
     List<SpecificData> data,
     ConflictAlgorithm conflictAlgorithm,

@@ -11,7 +11,8 @@ Test _$TestFromJson(Map<String, dynamic> json) => Test(
       testScore: (json['score'] as num).toDouble(),
       lists: json['kanjiLists'] as String,
       wordsInTest: json['totalKanji'] as int,
-      studyMode: json['studyMode'] as int,
+      studyMode: json['studyMode'] as int?,
+      grammarMode: json['grammarMode'] as int?,
       testMode: json['testMode'] as int? ?? -1,
     );
 
@@ -22,4 +23,5 @@ Map<String, dynamic> _$TestToJson(Test instance) => <String, dynamic>{
       'kanjiLists': instance.lists,
       'testMode': instance.testMode,
       'studyMode': instance.studyMode,
+      'grammarMode': instance.grammarMode,
     };

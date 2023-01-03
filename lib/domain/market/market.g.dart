@@ -8,6 +8,7 @@ part of 'market.dart';
 
 Market _$MarketFromJson(Map<String, dynamic> json) => Market(
       words: json['words'] as int,
+      grammar: json['grammar'] as int? ?? 0,
       uid: json['uid'] as String,
       name: json['name'] as String,
       ratingMap: (json['ratingMap'] as Map<String, dynamic>?)?.map(
@@ -29,6 +30,7 @@ Market _$MarketFromJson(Map<String, dynamic> json) => Market(
 Map<String, dynamic> _$MarketToJson(Market instance) => <String, dynamic>{
       'name': instance.name,
       'words': instance.words,
+      'grammar': instance.grammar,
       'uid': instance.uid,
       'ratingMap': instance.ratingMap,
       'rating': instance.rating,

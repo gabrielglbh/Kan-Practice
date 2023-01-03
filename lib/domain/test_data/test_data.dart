@@ -15,11 +15,13 @@ class TestData {
   final int testTotalCountRecognition;
   final int testTotalCountListening;
   final int testTotalCountSpeaking;
+  final int testTotalCountDefinition;
   final double testTotalWinRateWriting;
   final double testTotalWinRateReading;
   final double testTotalWinRateRecognition;
   final double testTotalWinRateListening;
   final double testTotalWinRateSpeaking;
+  final double testTotalWinRateDefinition;
   final int selectionTests;
   @JsonKey(ignore: true)
   final SpecificData selectionTestData;
@@ -54,11 +56,13 @@ class TestData {
     required this.testTotalCountRecognition,
     required this.testTotalCountListening,
     required this.testTotalCountSpeaking,
+    required this.testTotalCountDefinition,
     required this.testTotalWinRateWriting,
     required this.testTotalWinRateReading,
     required this.testTotalWinRateRecognition,
     required this.testTotalWinRateListening,
     required this.testTotalWinRateSpeaking,
+    required this.testTotalWinRateDefinition,
     required this.selectionTests,
     required this.blitzTests,
     required this.remembranceTests,
@@ -87,11 +91,13 @@ class TestData {
       testTotalCountRecognition: testTotalCountRecognition,
       testTotalCountListening: testTotalCountListening,
       testTotalCountSpeaking: testTotalCountSpeaking,
+      testTotalCountDefinition: testTotalCountDefinition,
       testTotalWinRateWriting: testTotalWinRateWriting,
       testTotalWinRateReading: testTotalWinRateReading,
       testTotalWinRateRecognition: testTotalWinRateRecognition,
       testTotalWinRateListening: testTotalWinRateListening,
       testTotalWinRateSpeaking: testTotalWinRateSpeaking,
+      testTotalWinRateDefinition: testTotalWinRateDefinition,
       selectionTests: selectionTests,
       selectionTestData: test == Tests.lists ? testSpecs : selectionTestData,
       blitzTests: blitzTests,
@@ -121,11 +127,13 @@ class TestData {
     testTotalCountRecognition: 0,
     testTotalCountListening: 0,
     testTotalCountSpeaking: 0,
+    testTotalCountDefinition: 0,
     testTotalWinRateWriting: 0,
     testTotalWinRateReading: 0,
     testTotalWinRateRecognition: 0,
     testTotalWinRateListening: 0,
     testTotalWinRateSpeaking: 0,
+    testTotalWinRateDefinition: 0,
     selectionTests: 0,
     blitzTests: 0,
     remembranceTests: 0,

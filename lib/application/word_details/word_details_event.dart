@@ -9,11 +9,12 @@ abstract class WordDetailsEvent extends Equatable {
 
 class WordDetailsEventLoading extends WordDetailsEvent {
   final Word word;
+  final bool isArchive;
 
-  const WordDetailsEventLoading(this.word);
+  const WordDetailsEventLoading(this.word, {this.isArchive = false});
 
   @override
-  List<Object> get props => [word];
+  List<Object> get props => [word, isArchive];
 }
 
 class WordDetailsEventDelete extends WordDetailsEvent {

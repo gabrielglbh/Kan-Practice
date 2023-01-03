@@ -1,4 +1,6 @@
+import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/presentation/core/types/folder_filters.dart';
+import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
@@ -19,7 +21,7 @@ abstract class IFolderRepository {
   Future<int> createFolder(String name, {List<String> lists = const []});
 
   /// Merges words from the backup
-  Future<Batch?> mergeFolders(
+  Batch? mergeFolders(
     Batch? batch,
     List<Folder> folders,
     ConflictAlgorithm conflictAlgorithm,
@@ -46,6 +48,12 @@ abstract class IFolderRepository {
   Future<List<Word>> getAllWordsOnListsOnFolder(
     List<String> folders, {
     StudyModes? mode,
+    Tests? type,
+    int? category,
+  });
+  Future<List<GrammarPoint>> getAllGrammarPointsOnListsOnFolder(
+    List<String> folders, {
+    GrammarModes? mode,
     Tests? type,
     int? category,
   });

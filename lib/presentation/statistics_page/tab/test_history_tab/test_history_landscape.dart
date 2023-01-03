@@ -6,7 +6,7 @@ import 'package:kanpractice/application/test_history/test_history_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
-import 'package:kanpractice/presentation/core/types/study_modes_filters.dart';
+import 'package:kanpractice/presentation/core/types/test_filters.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes_filters.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_cartesian_chart.dart';
@@ -26,7 +26,7 @@ class TestHistoryExpanded extends StatefulWidget {
 class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
   late DateTime _firstDate, _lastDate;
   TestFilters _testsFilter = TestFilters.all;
-  StudyModeFilters _modesFilter = StudyModeFilters.all;
+  TestModeFilters _modesFilter = TestModeFilters.all;
 
   @override
   void initState() {
@@ -115,7 +115,7 @@ class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
                             x: DateTime.fromMillisecondsSinceEpoch(
                                 test.takenDate),
                             y: test.testScore,
-                            studyMode: StudyModes.values[test.studyMode],
+                            studyMode: StudyModes.values[test.studyMode ?? 0],
                             wordsOnTest: test.wordsInTest,
                             mode: Tests.values[test.testMode ?? 0],
                           );

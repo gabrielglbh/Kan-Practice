@@ -1,4 +1,4 @@
-import 'package:kanpractice/presentation/core/types/study_modes_filters.dart';
+import 'package:kanpractice/presentation/core/types/test_filters.dart';
 import 'package:kanpractice/presentation/core/types/test_modes_filters.dart';
 import 'package:kanpractice/domain/test_result/test_result.dart';
 
@@ -26,7 +26,7 @@ abstract class ITestRepository {
     DateTime initial,
     DateTime last,
     TestFilters testFilter,
-    StudyModeFilters modesFilter,
+    TestModeFilters modesFilter,
   );
   Future<List<Test>> getAllTests();
 }

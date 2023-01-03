@@ -79,8 +79,10 @@ class _FolderListPageState extends State<FolderListPage>
 
   _resetScroll() {
     /// Scroll to the top
-    _scrollController.animateTo(0,
-        duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(0,
+          duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
+    }
   }
 
   _onFilterSelected(int index) {
@@ -167,7 +169,7 @@ class _FolderListPageState extends State<FolderListPage>
                       message: "folder_list_empty".tr()))
               : Expanded(
                   child: RefreshIndicator(
-                    onRefresh: () => _addLoadingEvent(reset: true),
+                    onRefresh: () async => _addLoadingEvent(reset: true),
                     color: KPColors.secondaryColor,
                     child: ListView.separated(
                         key: const PageStorageKey<String>(

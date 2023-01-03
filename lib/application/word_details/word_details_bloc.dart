@@ -24,9 +24,19 @@ class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
     on<WordDetailsEventLoading>((event, emit) async {
       try {
         emit(WordDetailsStateLoading());
-        final kanji =
-            await _wordRepository.getWord(event.word.listName, event.word.word);
-        emit(WordDetailsStateLoaded(kanji: kanji));
+        if (event.isArchive) {
+          final kanji = await _wordRepository.getWord(
+            event.word.word,
+            meaning: event.word.meaning,
+          );
+          emit(WordDetailsStateLoaded(kanji: kanji));
+        } else {
+          final kanji = await _wordRepository.getWord(
+            event.word.word,
+            listName: event.word.listName,
+          );
+          emit(WordDetailsStateLoaded(kanji: kanji));
+        }
       } on Exception {
         emit(const WordDetailsStateFailure(error: ":("));
       }

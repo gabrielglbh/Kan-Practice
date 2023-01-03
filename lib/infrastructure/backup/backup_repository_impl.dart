@@ -3,10 +3,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/domain/backup/backup.dart';
 import 'package:kanpractice/domain/backup/i_backup_repository.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
 import 'package:kanpractice/domain/folder/i_folder_repository.dart';
+import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
+import 'package:kanpractice/domain/grammar_point/i_grammar_point_repository.dart';
 import 'package:kanpractice/domain/list/i_list_repository.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/domain/relation_folder_list/i_relation_folder_list_repository.dart';
@@ -26,6 +29,7 @@ class BackupRepositoryImpl implements IBackupRepository {
   final FirebaseAuth _auth;
   final Database _database;
   final IWordRepository _wordRepository;
+  final IGrammarPointRepository _grammarPointRepository;
   final IListRepository _listRepository;
   final IRelationFolderListRepository _relationFolderListRepository;
   final IFolderRepository _folderRepository;
@@ -37,6 +41,7 @@ class BackupRepositoryImpl implements IBackupRepository {
     this._ref,
     this._database,
     this._wordRepository,
+    this._grammarPointRepository,
     this._listRepository,
     this._relationFolderListRepository,
     this._folderRepository,
@@ -45,7 +50,8 @@ class BackupRepositoryImpl implements IBackupRepository {
   );
 
   final String collection = "BackUps";
-  final String kanjiLabel = "Kanji";
+  final String wordLabel = "Kanji";
+  final String grammarLabel = "Grammar";
   final String listsLabel = "Lists";
   final String foldersLabel = "Folders";
   final String relFolderKanListLabel = "RelationsFK";
@@ -70,7 +76,9 @@ class BackupRepositoryImpl implements IBackupRepository {
     User? user = _auth.currentUser;
     await user?.reload();
 
-    List<Word> kanji = await _wordRepository.getAllWords();
+    List<Word> word = await _wordRepository.getAllWords();
+    List<GrammarPoint> grammar =
+        await _grammarPointRepository.getAllGrammarPoints();
     List<WordList> lists = await _listRepository.getAllLists();
     TestData testData = await _testDataRepository.getTestDataFromDb();
     List<SpecificData> testSpecData = [];
@@ -115,13 +123,25 @@ class BackupRepositoryImpl implements IBackupRepository {
         await removeBackUp();
 
         /// Kanji list
-        for (int x = 0; x < kanji.length; x++) {
+        for (int x = 0; x < word.length; x++) {
           final DocumentReference doc = _ref
               .collection(collection)
               .doc(user?.uid)
-              .collection(kanjiLabel)
-              .doc(kanji[x].word);
-          batch.set(doc, kanji[x].toJson());
+              .collection(wordLabel)
+              .doc(word[x].word);
+          batch.set(doc, word[x].toJson());
+          writes++;
+          batch = await _reinitializeBatch(batch);
+        }
+
+        /// Grammar
+        for (int x = 0; x < grammar.length; x++) {
+          final DocumentReference doc = _ref
+              .collection(collection)
+              .doc(user?.uid)
+              .collection(grammarLabel)
+              .doc(grammar[x].name);
+          batch.set(doc, grammar[x].toJson());
           writes++;
           batch = await _reinitializeBatch(batch);
         }
@@ -254,10 +274,15 @@ class BackupRepositoryImpl implements IBackupRepository {
     await user?.reload();
 
     try {
-      final kanjiSnapshot = await _ref
+      final wordSnapshot = await _ref
           .collection(collection)
           .doc(user?.uid)
-          .collection(kanjiLabel)
+          .collection(wordLabel)
+          .get();
+      final grammarSnapshot = await _ref
+          .collection(collection)
+          .doc(user?.uid)
+          .collection(grammarLabel)
           .get();
       final listsSnapshot = await _ref
           .collection(collection)
@@ -287,16 +312,31 @@ class BackupRepositoryImpl implements IBackupRepository {
 
       var batch = _ref.batch();
 
-      if (kanjiSnapshot.size > 0 && listsSnapshot.size > 0) {
-        for (int x = 0; x < kanjiSnapshot.size; x++) {
+      if (wordSnapshot.size > 0) {
+        for (int x = 0; x < wordSnapshot.size; x++) {
           batch.delete(_ref
               .collection(collection)
               .doc(user?.uid)
-              .collection(kanjiLabel)
-              .doc(Word.fromJson(kanjiSnapshot.docs[x].data()).word));
+              .collection(wordLabel)
+              .doc(Word.fromJson(wordSnapshot.docs[x].data()).word));
           writes++;
           batch = await _reinitializeBatch(batch);
         }
+      }
+
+      if (grammarSnapshot.size > 0) {
+        for (int x = 0; x < grammarSnapshot.size; x++) {
+          batch.delete(_ref
+              .collection(collection)
+              .doc(user?.uid)
+              .collection(grammarLabel)
+              .doc(GrammarPoint.fromJson(grammarSnapshot.docs[x].data()).name));
+          writes++;
+          batch = await _reinitializeBatch(batch);
+        }
+      }
+
+      if (listsSnapshot.size > 0) {
         for (int x = 0; x < listsSnapshot.size; x++) {
           batch.delete(_ref
               .collection(collection)
@@ -377,10 +417,15 @@ class BackupRepositoryImpl implements IBackupRepository {
     await user?.reload();
 
     try {
-      final kanjiSnapshot = await _ref
+      final wordSnapshot = await _ref
           .collection(collection)
           .doc(user?.uid)
-          .collection(kanjiLabel)
+          .collection(wordLabel)
+          .get();
+      final grammarSnapshot = await _ref
+          .collection(collection)
+          .doc(user?.uid)
+          .collection(grammarLabel)
           .get();
       final listsSnapshot = await _ref
           .collection(collection)
@@ -409,16 +454,27 @@ class BackupRepositoryImpl implements IBackupRepository {
           .get();
 
       List<Word> backUpWords = [];
+      List<GrammarPoint> backUpGrammar = [];
       List<WordList> backUpLists = [];
       List<Folder> backUpFolders = [];
       List<RelationFolderList> backUpRelationFolderList = [];
       TestData backUpTestData = TestData.empty;
       List<SpecificData> backUpTestSpecData = [];
 
-      if (kanjiSnapshot.size > 0 && listsSnapshot.size > 0) {
-        for (int x = 0; x < kanjiSnapshot.size; x++) {
-          backUpWords.add(Word.fromJson(kanjiSnapshot.docs[x].data()));
+      if (wordSnapshot.size > 0) {
+        for (int x = 0; x < wordSnapshot.size; x++) {
+          backUpWords.add(Word.fromJson(wordSnapshot.docs[x].data()));
         }
+      }
+
+      if (grammarSnapshot.size > 0) {
+        for (int x = 0; x < grammarSnapshot.size; x++) {
+          backUpGrammar
+              .add(GrammarPoint.fromJson(grammarSnapshot.docs[x].data()));
+        }
+      }
+
+      if (listsSnapshot.size > 0) {
         for (int x = 0; x < listsSnapshot.size; x++) {
           backUpLists.add(WordList.fromJson(listsSnapshot.docs[x].data()));
         }
@@ -431,7 +487,22 @@ class BackupRepositoryImpl implements IBackupRepository {
       }
 
       if (testDataSnapshot.size > 0) {
-        backUpTestData = TestData.fromJson(testDataSnapshot.docs[0].data());
+        // Breaking change on 4.0.0 with definition fields being required not null
+        Map<String, dynamic> json = testDataSnapshot.docs[0].data();
+        if (!json
+            .containsKey(TestDataTableFields.testTotalCountDefinitionField)) {
+          json.addEntries([
+            const MapEntry(TestDataTableFields.testTotalCountDefinitionField, 0)
+          ]);
+        }
+        if (!json
+            .containsKey(TestDataTableFields.testTotalWinRateDefinitionField)) {
+          json.addEntries([
+            const MapEntry(
+                TestDataTableFields.testTotalWinRateDefinitionField, 0)
+          ]);
+        }
+        backUpTestData = TestData.fromJson(json);
       }
 
       if (relFolderKanListSnapshot.size > 0) {
@@ -442,32 +513,50 @@ class BackupRepositoryImpl implements IBackupRepository {
       }
 
       if (testSpecDataSnapshot.size > 0) {
+        // Breaking change on 4.0.0 with definition fields being required not null
         for (int x = 0; x < testSpecDataSnapshot.size; x++) {
-          backUpTestSpecData
-              .add(SpecificData.fromJson(testSpecDataSnapshot.docs[x].data()));
+          Map<String, dynamic> json = testSpecDataSnapshot.docs[x].data();
+          if (!json.containsKey(
+              TestSpecificDataTableFields.totalDefinitionCountField)) {
+            json.addEntries([
+              const MapEntry(
+                  TestSpecificDataTableFields.totalDefinitionCountField, 0)
+            ]);
+          }
+          if (!json.containsKey(
+              TestSpecificDataTableFields.totalWinRateDefinitionField)) {
+            json.addEntries([
+              const MapEntry(
+                  TestSpecificDataTableFields.totalWinRateDefinitionField, 0)
+            ]);
+          }
+          backUpTestSpecData.add(SpecificData.fromJson(json));
         }
       }
 
-      /// Order matters as kanji depends on lists.
+      /// Order matters as words and grammar points depends on lists.
       /// Conflict algorithm allows us to merge the data from back up with current one.
       Batch? batch = _database.batch();
 
-      batch = await _listRepository.mergeLists(
+      batch = _listRepository.mergeLists(
           batch, backUpLists, ConflictAlgorithm.replace);
 
-      batch = await _wordRepository.mergeWords(
+      batch = _wordRepository.mergeWords(
           batch, backUpWords, ConflictAlgorithm.ignore);
 
-      batch = await _folderRepository.mergeFolders(
+      batch = _grammarPointRepository.mergeGrammarPoints(
+          batch, backUpGrammar, ConflictAlgorithm.ignore);
+
+      batch = _folderRepository.mergeFolders(
           batch, backUpFolders, ConflictAlgorithm.replace);
 
       batch = _testDataRepository.mergeTestData(
           batch, backUpTestData, ConflictAlgorithm.replace);
 
-      batch = await _relationFolderListRepository.mergeRelationFolderList(
+      batch = _relationFolderListRepository.mergeRelationFolderList(
           batch, backUpRelationFolderList, ConflictAlgorithm.replace);
 
-      batch = await _specificDataRepository.mergeSpecificData(
+      batch = _specificDataRepository.mergeSpecificData(
           batch, backUpTestSpecData, ConflictAlgorithm.replace);
 
       final results = await batch?.commit();

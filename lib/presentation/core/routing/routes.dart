@@ -1,4 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:kanpractice/presentation/add_grammar_point_page/add_grammar_point_page.dart';
+import 'package:kanpractice/presentation/add_grammar_point_page/arguments.dart';
+import 'package:kanpractice/presentation/archive_page/archive_page.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/account_login_page/account_login_page.dart';
@@ -12,6 +15,8 @@ import 'package:kanpractice/presentation/dictionary_details_page/dictionary_deta
 import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
 import 'package:kanpractice/presentation/dictionary_page/dictionary_page.dart';
 import 'package:kanpractice/presentation/folder_details_page/folder_details_page.dart';
+import 'package:kanpractice/presentation/grammar_modes/definition_page.dart';
+import 'package:kanpractice/presentation/grammar_modes/utils/grammar_mode_arguments.dart';
 import 'package:kanpractice/presentation/home_page/home_page.dart';
 import 'package:kanpractice/presentation/list_details_page/list_details_page.dart';
 import 'package:kanpractice/presentation/settings_daily_options_page/settings_daily_options_page.dart';
@@ -59,6 +64,9 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case KanPracticePages.speakingStudyPage:
       ModeArguments args = settings.arguments as ModeArguments;
       return CupertinoPageRoute(builder: (_) => SpeakingStudy(args: args));
+    case KanPracticePages.definitionStudyPage:
+      GrammarModeArguments args = settings.arguments as GrammarModeArguments;
+      return CupertinoPageRoute(builder: (_) => DefinitionStudy(args: args));
     case KanPracticePages.testResultPage:
       TestResultArguments args = settings.arguments as TestResultArguments;
       return CupertinoPageRoute(builder: (_) => TestResultPage(args: args));
@@ -106,6 +114,13 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case KanPracticePages.settingsDailyOptions:
       return CupertinoPageRoute(builder: (_) {
         return const SettingsDailyOptionsPage();
+      });
+    case KanPracticePages.addGrammarPage:
+      AddGrammarPointArgs args = settings.arguments as AddGrammarPointArgs;
+      return CupertinoPageRoute(builder: (_) => AddGrammarPage(args: args));
+    case KanPracticePages.archivePage:
+      return CupertinoPageRoute(builder: (_) {
+        return const ArchivePage();
       });
   }
   return null;

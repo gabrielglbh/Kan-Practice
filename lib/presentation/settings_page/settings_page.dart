@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
+import 'package:kanpractice/application/load_grammar_test/load_grammar_test_bloc.dart';
 import 'package:kanpractice/application/load_test/load_test_bloc.dart';
 import 'package:kanpractice/application/settings/settings_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
@@ -50,7 +51,6 @@ class _SettingsPageState extends State<SettingsPage> {
             await Utils.launch(context, "google_play_link".tr());
           },
         ),
-        const Divider(),
         ListTile(
           leading: const Icon(Icons.device_hub_rounded),
           title: Text("settings_information_contribute".tr()),
@@ -74,14 +74,12 @@ class _SettingsPageState extends State<SettingsPage> {
           onTap: () =>
               Navigator.of(context).pushNamed(KanPracticePages.statisticsPage),
         ),
-        const Divider(),
         ListTile(
           leading: const Icon(Icons.toggle_on),
           title: Text("settings_enhancements_label".tr()),
           onTap: () => Navigator.of(context)
               .pushNamed(KanPracticePages.settingsTogglePage),
         ),
-        const Divider(),
         ListTile(
           leading: const Icon(Icons.calendar_today_rounded,
               color: KPColors.secondaryColor),
@@ -92,10 +90,11 @@ class _SettingsPageState extends State<SettingsPage> {
                 .then((_) {
               getIt<LoadTestBloc>()
                   .add(const LoadTestEventIdle(mode: Tests.daily));
+              getIt<LoadGrammarTestBloc>()
+                  .add(const LoadGrammarTestEventIdle(mode: Tests.daily));
             });
           },
         ),
-        const Divider(),
         ListTile(
           leading: const Icon(Icons.adjust_rounded),
           title: Text("settings_number_of_kanji_in_test".tr()),
@@ -113,14 +112,12 @@ class _SettingsPageState extends State<SettingsPage> {
             }
           },
         ),
-        const Divider(),
         ListTile(
             leading: const Icon(Icons.notifications_active_rounded),
             title: Text("settings_notifications_label".tr()),
             onTap: () {
               AppSettings.openNotificationSettings();
             }),
-        const Divider(),
         ListTile(
           leading: const Icon(Icons.lightbulb, color: Colors.lime),
           title: Text('settings_toggle_theme'.tr()),
@@ -128,7 +125,6 @@ class _SettingsPageState extends State<SettingsPage> {
             ChangeAppTheme.show(context);
           },
         ),
-        const Divider(),
         BlocBuilder<SettingsBloc, SettingsState>(
           builder: (context, state) {
             if (state is SettingsStateBackUpDateLoaded) {
@@ -172,17 +168,14 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
         ),
-        const Divider(),
         ListTile(
             leading: const Icon(Icons.handyman),
             title: Text("settings_information_developer_label".tr()),
             onTap: () => DevInfo.callModalSheet(context)),
-        const Divider(),
         ListTile(
             leading: const Icon(Icons.copyright_rounded),
             title: Text("settings_information_about_label".tr()),
             onTap: () => CopyrightInfo.callModalSheet(context)),
-        const Divider(),
         ListTile(
             leading: const Icon(Icons.apps),
             title: Text("settings_information_license_label".tr()),
@@ -204,7 +197,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 }),
               );
             }),
-        const Divider(),
         Padding(
           padding: const EdgeInsets.only(bottom: KPMargins.margin48),
           child: ListTile(

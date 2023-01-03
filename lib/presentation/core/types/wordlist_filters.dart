@@ -9,7 +9,8 @@ enum WordListFilters {
   reading,
   recognition,
   listening,
-  speaking
+  speaking,
+  definition,
 }
 
 extension KanListFiltersExtensions on WordListFilters {
@@ -31,6 +32,8 @@ extension KanListFiltersExtensions on WordListFilters {
         return "${"study_modes_listening".tr()} %";
       case WordListFilters.speaking:
         return "${"study_modes_speaking".tr()} %";
+      case WordListFilters.definition:
+        return "${"study_modes_definition".tr()} %";
     }
   }
 
@@ -52,6 +55,8 @@ extension KanListFiltersExtensions on WordListFilters {
         return ListTableFields.nameField;
       case WordListFilters.recentlyAdded:
         return WordTableFields.dateAddedField;
+      case WordListFilters.definition:
+        return ListTableFields.totalWinRateDefinitionField;
     }
   }
 }
@@ -72,8 +77,10 @@ class KanListFiltersUtils {
       return WordListFilters.recognition;
     } else if (f == ListTableFields.totalWinRateListeningField) {
       return WordListFilters.listening;
-    } else {
+    } else if (f == ListTableFields.totalWinRateSpeakingField) {
       return WordListFilters.speaking;
+    } else {
+      return WordListFilters.definition;
     }
   }
 }

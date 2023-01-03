@@ -3,13 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/test_history/test_history_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
+import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
-import 'package:kanpractice/presentation/core/types/study_modes_filters.dart';
+import 'package:kanpractice/presentation/core/types/test_filters.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes_filters.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_cartesian_chart.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_radial_graph.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_grammar_mode_radial_graph.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_study_mode_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
@@ -19,7 +21,7 @@ import 'package:kanpractice/presentation/statistics_page/widgets/stats_header.da
 class TestHistoryArgs {
   final DateTime firstDate, lastDate;
   final TestFilters testFilters;
-  final StudyModeFilters modeFilters;
+  final TestModeFilters modeFilters;
 
   const TestHistoryArgs(
     this.firstDate,
@@ -31,7 +33,9 @@ class TestHistoryArgs {
 
 class TestHistory extends StatefulWidget {
   final KanPracticeStats stats;
-  const TestHistory({super.key, required this.stats});
+  final bool showGrammar;
+  const TestHistory(
+      {super.key, required this.stats, required this.showGrammar});
 
   @override
   State<TestHistory> createState() => _TestHistoryState();
@@ -41,7 +45,7 @@ class _TestHistoryState extends State<TestHistory>
     with AutomaticKeepAliveClientMixin {
   late DateTime _firstDate, _lastDate;
   TestFilters _testsFilter = TestFilters.all;
-  StudyModeFilters _modesFilter = StudyModeFilters.all;
+  TestModeFilters _modesFilter = TestModeFilters.all;
 
   Future<void> _applyFilters(TestHistoryArgs? filters) async {
     if (filters != null) {
@@ -142,14 +146,20 @@ class _TestHistoryState extends State<TestHistory>
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
-              child: KPRadialGraph(
-                animationDuration: 0,
-                writing: widget.stats.test.testTotalWinRateWriting,
-                reading: widget.stats.test.testTotalWinRateReading,
-                recognition: widget.stats.test.testTotalWinRateRecognition,
-                listening: widget.stats.test.testTotalWinRateListening,
-                speaking: widget.stats.test.testTotalWinRateSpeaking,
-              ),
+              child: !widget.showGrammar
+                  ? KPStudyModeRadialGraph(
+                      animationDuration: 0,
+                      writing: widget.stats.test.testTotalWinRateWriting,
+                      reading: widget.stats.test.testTotalWinRateReading,
+                      recognition:
+                          widget.stats.test.testTotalWinRateRecognition,
+                      listening: widget.stats.test.testTotalWinRateListening,
+                      speaking: widget.stats.test.testTotalWinRateSpeaking,
+                    )
+                  : KPGrammarModeRadialGraph(
+                      animationDuration: 0,
+                      definition: widget.stats.test.testTotalWinRateDefinition,
+                    ),
             ),
             const SizedBox(height: KPMargins.margin32)
           ],
@@ -171,10 +181,19 @@ class _TestHistoryState extends State<TestHistory>
           height: KPSizes.defaultSizeWinRateChart * 3,
           dataSource: List.generate(state.list.length, (index) {
             final test = state.list[index];
+            if (test.studyMode == null) {
+              return TestDataFrame(
+                x: DateTime.fromMillisecondsSinceEpoch(test.takenDate),
+                y: test.testScore,
+                grammarMode: GrammarModes.values[test.grammarMode!],
+                wordsOnTest: test.wordsInTest,
+                mode: Tests.values[test.testMode ?? 0],
+              );
+            }
             return TestDataFrame(
               x: DateTime.fromMillisecondsSinceEpoch(test.takenDate),
               y: test.testScore,
-              studyMode: StudyModes.values[test.studyMode],
+              studyMode: StudyModes.values[test.studyMode!],
               wordsOnTest: test.wordsInTest,
               mode: Tests.values[test.testMode ?? 0],
             );

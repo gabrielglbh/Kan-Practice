@@ -187,7 +187,7 @@ class _MarketPageState extends State<MarketPage>
                   message: "market_empty".tr()))
           : Expanded(
               child: RefreshIndicator(
-                onRefresh: () => _addLoadingEvent(reset: true),
+                onRefresh: () async => _addLoadingEvent(reset: true),
                 color: KPColors.secondaryColor,
                 child: ListView.builder(
                     key: const PageStorageKey<String>('marketListsController'),

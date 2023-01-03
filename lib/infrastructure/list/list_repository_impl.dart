@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
+import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:kanpractice/domain/list/i_list_repository.dart';
@@ -86,8 +87,11 @@ class ListRepositoryImpl implements IListRepository {
         final double acc = list.totalWinRateWriting +
             list.totalWinRateReading +
             list.totalWinRateRecognition +
-            list.totalWinRateListening;
-        listAcc.add((acc <= 0 ? 0 : acc) / StudyModes.values.length);
+            list.totalWinRateListening +
+            list.totalWinRateSpeaking +
+            list.totalWinRateDefinition;
+        listAcc.add((acc <= 0 ? 0 : acc) / StudyModes.values.length +
+            GrammarModes.values.length);
       }
       final double best =
           listAcc.reduce((curr, next) => curr > next ? curr : next);
@@ -128,11 +132,15 @@ class ListRepositoryImpl implements IListRepository {
           "L.${ListTableFields.totalWinRateRecognitionField}, "
           "L.${ListTableFields.totalWinRateListeningField}, "
           "L.${ListTableFields.totalWinRateSpeakingField}, "
+          "L.${ListTableFields.totalWinRateDefinitionField}, "
           "L.${ListTableFields.lastUpdatedField} "
           "FROM ${ListTableFields.listsTable} L JOIN ${WordTableFields.wordTable} K "
           "ON K.${WordTableFields.listNameField}=L.${ListTableFields.nameField} "
+          "JOIN ${GrammarTableFields.grammarTable} G "
+          "ON G.${GrammarTableFields.listNameField}=L.${ListTableFields.nameField} "
           "WHERE L.${ListTableFields.nameField} LIKE '%$query%' OR K.${WordTableFields.meaningField} LIKE '%$query%' "
           "OR K.${WordTableFields.wordField} LIKE '%$query%' OR K.${WordTableFields.pronunciationField} LIKE '%$query%' "
+          "OR G.${GrammarTableFields.nameField} LIKE '%$query%' OR G.${GrammarTableFields.definitionField} LIKE '%$query%' "
           "ORDER BY ${ListTableFields.lastUpdatedField} DESC "
           "LIMIT $limit OFFSET ${offset * limit}");
       return List.generate(res.length, (i) => WordList.fromJson(res![i]));
@@ -155,8 +163,8 @@ class ListRepositoryImpl implements IListRepository {
   }
 
   @override
-  Future<Batch?> mergeLists(Batch? batch, List<WordList> lists,
-      ConflictAlgorithm conflictAlgorithm) async {
+  Batch? mergeLists(
+      Batch? batch, List<WordList> lists, ConflictAlgorithm conflictAlgorithm) {
     for (int x = 0; x < lists.length; x++) {
       batch?.insert(ListTableFields.listsTable, lists[x].toJson(),
           conflictAlgorithm: conflictAlgorithm);

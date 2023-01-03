@@ -4,22 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:kanpractice/application/add_folder/add_folder_bloc.dart';
+import 'package:kanpractice/application/add_grammar_point/add_grammar_point_bloc.dart';
 import 'package:kanpractice/application/add_market_list/add_to_market_bloc.dart';
 import 'package:kanpractice/application/add_word/add_word_bloc.dart';
+import 'package:kanpractice/application/archive_grammar_points/archive_grammar_points_bloc.dart';
+import 'package:kanpractice/application/archive_words/archive_words_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
 import 'package:kanpractice/application/dictionary/dict_bloc.dart';
 import 'package:kanpractice/application/dictionary_details/dictionary_details_bloc.dart';
 import 'package:kanpractice/application/folder_details/folder_details_bloc.dart';
 import 'package:kanpractice/application/folder_list/folder_bloc.dart';
+import 'package:kanpractice/application/grammar_details/grammar_details_bloc.dart';
+import 'package:kanpractice/application/grammar_mode/grammar_mode_bloc.dart';
 import 'package:kanpractice/application/initial/initial_bloc.dart';
 import 'package:kanpractice/application/list/lists_bloc.dart';
 import 'package:kanpractice/application/list_details/list_details_bloc.dart';
+import 'package:kanpractice/application/list_details_grammar_points/list_details_grammar_points_bloc.dart';
+import 'package:kanpractice/application/list_details_words/list_details_words_bloc.dart';
 import 'package:kanpractice/application/load_folder_practice/load_folder_practice_bloc.dart';
+import 'package:kanpractice/application/load_grammar_test/load_grammar_test_bloc.dart';
 import 'package:kanpractice/application/load_test/load_test_bloc.dart';
-import 'package:kanpractice/application/load_test_category_selection/load_test_category_selection_bloc.dart';
-import 'package:kanpractice/application/load_test_folder_selection/load_test_folder_selection_bloc.dart';
-import 'package:kanpractice/application/load_test_list_selection/load_test_list_selection_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
 import 'package:kanpractice/application/rate/rate_bloc.dart';
 import 'package:kanpractice/application/services/messaging_service.dart';
@@ -76,6 +81,9 @@ Future<void> _initSharedPreferences() async {
   }
   if (prefs.readData(SharedKeys.speakingDailyNotification) == null) {
     prefs.saveData(SharedKeys.speakingDailyNotification, true);
+  }
+  if (prefs.readData(SharedKeys.definitionDailyNotification) == null) {
+    prefs.saveData(SharedKeys.definitionDailyNotification, true);
   }
   if (prefs.readData(SharedKeys.dailyTestOnControlledPace) == null) {
     prefs.saveData(SharedKeys.dailyTestOnControlledPace, false);
@@ -167,18 +175,23 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<AddToMarketBloc>()),
         BlocProvider(create: (_) => getIt<AddWordBloc>()),
         BlocProvider(create: (_) => getIt<WordDetailsBloc>()),
-        BlocProvider(create: (_) => getIt<LoadTestCategorySelectionBloc>()),
         BlocProvider(create: (_) => getIt<LoadTestBloc>()),
         BlocProvider(create: (_) => getIt<DictionaryDetailsBloc>()),
         BlocProvider(create: (_) => getIt<FolderDetailsBloc>()),
         BlocProvider(create: (_) => getIt<LoadFolderPracticeBloc>()),
-        BlocProvider(create: (_) => getIt<LoadTestFolderSelectionBloc>()),
-        BlocProvider(create: (_) => getIt<LoadTestListSelectionBloc>()),
         BlocProvider(create: (_) => getIt<RateBloc>()),
         BlocProvider(create: (_) => getIt<StatisticsBloc>()),
         BlocProvider(create: (_) => getIt<TestHistoryBloc>()),
         BlocProvider(create: (_) => getIt<SpecificDataBloc>()),
         BlocProvider(create: (_) => getIt<TestResultBloc>()),
+        BlocProvider(create: (_) => getIt<AddGrammarPointBloc>()),
+        BlocProvider(create: (_) => getIt<ListDetailWordsBloc>()),
+        BlocProvider(create: (_) => getIt<ListDetailGrammarPointsBloc>()),
+        BlocProvider(create: (_) => getIt<GrammarPointDetailsBloc>()),
+        BlocProvider(create: (_) => getIt<GrammarModeBloc>()),
+        BlocProvider(create: (_) => getIt<LoadGrammarTestBloc>()),
+        BlocProvider(create: (_) => getIt<ArchiveGrammarPointsBloc>()),
+        BlocProvider(create: (_) => getIt<ArchiveWordsBloc>()),
       ],
       child: BlocBuilder<InitialBloc, InitialState>(
         builder: (context, state) {

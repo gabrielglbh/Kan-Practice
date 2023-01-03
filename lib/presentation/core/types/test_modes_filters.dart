@@ -10,7 +10,7 @@ enum TestFilters {
   less,
   categories,
   folder,
-  daily
+  daily,
 }
 
 extension TestFiltersExt on TestFilters {

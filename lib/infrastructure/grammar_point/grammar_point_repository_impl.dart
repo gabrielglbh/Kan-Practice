@@ -73,7 +73,7 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
     try {
       List<Map<String, dynamic>>? res = await _database.query(
           GrammarTableFields.grammarTable,
-          orderBy: "${GrammarTableFields.dateAddedField} ASC",
+          orderBy: "${GrammarTableFields.dateAddedField} DESC",
           limit: limit,
           offset: (offset != null && limit != null) ? (offset * limit) : null);
       return List.generate(res.length, (i) => GrammarPoint.fromJson(res[i]));
@@ -233,8 +233,7 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
           "FROM ${GrammarTableFields.grammarTable} "
           "$whereClause "
           "(${GrammarTableFields.nameField} LIKE '%$query%' "
-          "OR ${GrammarTableFields.definitionField} LIKE '%$query%' "
-          "OR ${GrammarTableFields.exampleField} LIKE '%$query%') "
+          "OR ${GrammarTableFields.definitionField} LIKE '%$query%') "
           "ORDER BY ${GrammarTableFields.dateAddedField} ASC "
           "LIMIT $limit OFFSET ${offset * limit}");
       return List.generate(res.length, (i) => GrammarPoint.fromJson(res[i]));

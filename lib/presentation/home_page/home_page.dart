@@ -60,12 +60,35 @@ class _HomePageState extends State<HomePage>
   late TextEditingController _searchTextController;
   bool _searchHasFocus = false;
 
-  WordListFilters _currentAppliedFilter = WordListFilters.all;
-  bool _currentAppliedOrder = true;
-  FolderFilters _currentAppliedFolderFilter = FolderFilters.all;
-  bool _currentAppliedFolderOrder = true;
-  MarketFilters _currentAppliedMarketFilter = MarketFilters.all;
-  bool _currentAppliedMarketOrder = true;
+  WordListFilters get _currentAppliedFilter {
+    final filterText =
+        getIt<PreferencesService>().readData(SharedKeys.filtersOnList) ??
+            ListTableFields.lastUpdatedField;
+    return KanListFiltersUtils.getFilterFrom(filterText);
+  }
+
+  bool get _currentAppliedOrder =>
+      getIt<PreferencesService>().readData(SharedKeys.orderOnList) ?? true;
+
+  FolderFilters get _currentAppliedFolderFilter {
+    final filterFolderText =
+        getIt<PreferencesService>().readData(SharedKeys.filtersOnFolder) ??
+            FolderTableFields.lastUpdatedField;
+    return FolderFiltersUtils.getFilterFrom(filterFolderText);
+  }
+
+  bool get _currentAppliedFolderOrder =>
+      getIt<PreferencesService>().readData(SharedKeys.orderOnFolder) ?? true;
+
+  MarketFilters get _currentAppliedMarketFilter {
+    final filterMarketText =
+        getIt<PreferencesService>().readData(SharedKeys.filtersOnMarket) ??
+            Market.uploadedToMarketField;
+    return MarketFiltersUtils.getFilterFrom(filterMarketText);
+  }
+
+  bool get _currentAppliedMarketOrder =>
+      getIt<PreferencesService>().readData(SharedKeys.orderOnMarket) ?? true;
 
   String _query = "";
   bool _onTutorial = false;
@@ -80,29 +103,6 @@ class _HomePageState extends State<HomePage>
     _controller = PageController();
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_onTabChanged);
-
-    final filterText =
-        getIt<PreferencesService>().readData(SharedKeys.filtersOnList) ??
-            ListTableFields.lastUpdatedField;
-    _currentAppliedFilter = KanListFiltersUtils.getFilterFrom(filterText);
-    _currentAppliedOrder =
-        getIt<PreferencesService>().readData(SharedKeys.orderOnList) ?? true;
-
-    final filterFolderText =
-        getIt<PreferencesService>().readData(SharedKeys.filtersOnFolder) ??
-            FolderTableFields.lastUpdatedField;
-    _currentAppliedFolderFilter =
-        FolderFiltersUtils.getFilterFrom(filterFolderText);
-    _currentAppliedFolderOrder =
-        getIt<PreferencesService>().readData(SharedKeys.orderOnFolder) ?? true;
-
-    final filterMarketText =
-        getIt<PreferencesService>().readData(SharedKeys.filtersOnMarket) ??
-            Market.uploadedToMarketField;
-    _currentAppliedMarketFilter =
-        MarketFiltersUtils.getFilterFrom(filterMarketText);
-    _currentAppliedMarketOrder =
-        getIt<PreferencesService>().readData(SharedKeys.orderOnMarket) ?? true;
 
     getIt<ListBloc>().add(ListEventLoading(
       filter: _currentAppliedFilter,

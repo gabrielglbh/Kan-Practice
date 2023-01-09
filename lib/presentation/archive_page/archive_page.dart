@@ -138,6 +138,7 @@ class _ArchivePageState extends State<ArchivePage> {
               ],
             ),
           ),
+          const SizedBox(height: KPMargins.margin12),
         ],
       ),
     );

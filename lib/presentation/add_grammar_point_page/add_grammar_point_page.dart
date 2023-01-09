@@ -27,6 +27,8 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
   TextEditingController? _exampleController;
   FocusNode? _exampleFocus;
 
+  String _replaceDashesWithCommas(String s) => s.replaceAll('/', ',');
+
   @override
   void initState() {
     _nameController = TextEditingController();
@@ -56,12 +58,15 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
   }
 
   Future<void> _createGrammar({bool exit = true}) async {
+    String name = _nameController?.text ?? '';
+    if ('\n'.allMatches(name).isEmpty) name = '#### __${name}__';
     getIt<AddGrammarPointBloc>().add(AddGrammarPointEventCreate(
         exitMode: exit,
         grammarPoint: GrammarPoint(
-          name: '#### __${_nameController?.text ?? ""}__',
-          definition: _definitionController?.text ?? "",
-          example: _exampleController?.text ?? "",
+          name: _replaceDashesWithCommas(name),
+          definition:
+              _replaceDashesWithCommas(_definitionController?.text ?? ""),
+          example: _replaceDashesWithCommas(_exampleController?.text ?? ""),
           listName: widget.args.listName,
           dateAdded: Utils.getCurrentMilliseconds(),
           dateLastShown: Utils.getCurrentMilliseconds(),
@@ -73,9 +78,12 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
     if (g != null) {
       getIt<AddGrammarPointBloc>().add(
           AddGrammarPointEventUpdate(widget.args.listName, g.name, parameters: {
-        GrammarTableFields.nameField: _nameController?.text ?? "",
-        GrammarTableFields.definitionField: _definitionController?.text ?? "",
-        GrammarTableFields.exampleField: _exampleController?.text ?? "",
+        GrammarTableFields.nameField:
+            _replaceDashesWithCommas(_nameController?.text ?? ""),
+        GrammarTableFields.definitionField:
+            _replaceDashesWithCommas(_definitionController?.text ?? ""),
+        GrammarTableFields.exampleField:
+            _replaceDashesWithCommas(_exampleController?.text ?? "")
       }));
     }
   }
@@ -160,6 +168,8 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
         KPTextForm(
           controller: _nameController,
           focusNode: _nameFocus,
+          action: TextInputAction.newline,
+          inputType: TextInputType.multiline,
           header: "add_grammar_textForm_grammar".tr(),
           autofocus: widget.args.grammarPoint == null,
           hint: "add_grammar_textForm_grammar_ext".tr(),
@@ -172,7 +182,7 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
             focusNode: _definitionFocus,
             action: TextInputAction.newline,
             inputType: TextInputType.multiline,
-            maxLength: 256,
+            maxLength: 512,
             header: "add_grammar_textForm_definition".tr(),
             hint: "add_grammar_textForm_definition_ext".tr(),
             onEditingComplete: () => _exampleFocus?.requestFocus(),

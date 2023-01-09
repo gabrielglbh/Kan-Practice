@@ -103,7 +103,7 @@ class WordRepositoryImpl implements IWordRepository {
     try {
       List<Map<String, dynamic>>? res = await _database.query(
           WordTableFields.wordTable,
-          orderBy: "${WordTableFields.dateAddedField} ASC",
+          orderBy: "${WordTableFields.dateAddedField} DESC",
           limit: limit,
           offset: (offset != null && limit != null) ? (offset * limit) : null);
       return List.generate(res.length, (i) => Word.fromJson(res[i]));

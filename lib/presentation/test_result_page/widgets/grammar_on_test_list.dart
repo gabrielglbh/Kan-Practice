@@ -3,6 +3,7 @@ import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_win_rate_chart.dart';
 import 'package:kanpractice/presentation/core/ui/kp_grammar_point_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/ui/kp_markdown.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class GrammarPointOnTestList extends StatelessWidget {
@@ -43,10 +44,9 @@ class GrammarPointOnTestList extends StatelessWidget {
                       await KPGrammarPointBottomSheet.show(
                           context, gp.listName, gp);
                     },
-                    title: Text(
-                      gp.name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    title: KPMarkdown(
+                      data: gp.name,
+                      type: MarkdownType.body,
                     ),
                     trailing: WinRateChart(
                       winRate: testScore,

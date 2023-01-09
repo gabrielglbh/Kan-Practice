@@ -54,7 +54,7 @@ class ListRepositoryImpl implements IListRepository {
             "SELECT A.${ListTableFields.nameField}, A.${ListTableFields.lastUpdatedField}, "
             "A.${ListTableFields.totalWinRateWritingField}, A.${ListTableFields.totalWinRateReadingField}, "
             "A.${ListTableFields.totalWinRateRecognitionField}, A.${ListTableFields.totalWinRateListeningField}, "
-            "A.${ListTableFields.totalWinRateSpeakingField} "
+            "A.${ListTableFields.totalWinRateSpeakingField}, A.${ListTableFields.totalWinRateDefinitionField} "
             "FROM ${ListTableFields.listsTable} A "
             "JOIN "
             "(SELECT ${WordTableFields.listNameField}, MAX(${filter.filter}) AS ${WordTableFields.dateAddedField} "

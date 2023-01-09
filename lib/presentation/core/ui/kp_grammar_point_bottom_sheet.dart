@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/grammar_details/grammar_details_bloc.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/home_types.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_grammar_mode_radial_graph.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_win_rate_chart.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
@@ -104,35 +105,34 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          KPMarkdown(
-            data: grammarPoint.name,
-            maxHeight: KPMargins.margin64,
-            shrinkWrap: true,
-          ),
-          KPMarkdown(
-            data: grammarPoint.definition,
-            maxHeight: KPMargins.margin64 + KPMargins.margin16,
-            shrinkWrap: true,
-          ),
-          const SizedBox(height: KPMargins.margin8),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
-            child: ExpansionTile(
-              expandedAlignment: Alignment.centerLeft,
-              iconColor: KPColors.secondaryColor,
-              textColor: KPColors.secondaryColor,
-              title: Text('jisho_resultData_examples_label'.tr(),
-                  style: Theme.of(context).textTheme.bodyText2),
-              tilePadding: EdgeInsets.zero,
+          Flexible(
+            child: Row(
               children: [
                 KPMarkdown(
-                  data: grammarPoint.example,
-                  maxHeight: KPMargins.margin64 + KPMargins.margin24,
-                  minWidth: MediaQuery.of(context).size.width,
+                  data: grammarPoint.name,
+                  maxHeight: KPMargins.margin64,
+                  maxWidth: MediaQuery.of(context).size.width -
+                      KPSizes.defaultSizeWinRateChart +
+                      KPMargins.margin32 +
+                      KPMargins.margin4 +
+                      KPMargins.margin2,
                   shrinkWrap: true,
+                ),
+                WinRateChart(
+                  winRate: grammarPoint.winRateDefinition,
+                  backgroundColor: GrammarModes.definition.color,
+                  size: KPSizes.defaultSizeWinRateChart / 3,
+                  rateSize: KPFontSizes.fontSize12,
                 )
               ],
             ),
+          ),
+          KPMarkdown(
+            data: "${grammarPoint.definition}\n\n"
+                "_${"add_grammar_textForm_example".tr()}_\n"
+                "${grammarPoint.example}",
+            maxHeight: KPMargins.margin64 * 3,
+            shrinkWrap: true,
           ),
           if (listName == null)
             Flexible(
@@ -140,7 +140,7 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
                 padding: const EdgeInsets.only(
                   left: KPMargins.margin16,
                   right: KPMargins.margin16,
-                  top: KPMargins.margin8,
+                  top: KPMargins.margin16,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -166,12 +166,6 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
                 ),
               ),
             ),
-          SizedBox(
-            height: 100,
-            child: KPGrammarModeRadialGraph(
-              definition: grammarPoint.winRateDefinition,
-            ),
-          ),
           _lastTimeShownWidget(context, grammarPoint),
           Visibility(
             visible: onTap != null && onRemove != null,

@@ -49,10 +49,11 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
         previousEaseFactor: event.grammarPoint.previousEaseFactorDefinition,
       );
       final toUpdate = {
-        WordTableFields.previousIntervalWritingField: sm2.interval,
-        WordTableFields.previousIntervalAsDateWritingField: sm2.intervalAsDate,
-        WordTableFields.repetitionsWritingField: sm2.repetitions,
-        WordTableFields.previousEaseFactorWritingField: sm2.easeFactor,
+        GrammarTableFields.previousIntervalDefinitionField: sm2.interval,
+        GrammarTableFields.previousIntervalAsDateDefinitionField:
+            sm2.intervalAsDate,
+        GrammarTableFields.repetitionsDefinitionField: sm2.repetitions,
+        GrammarTableFields.previousEaseFactorDefinitionField: sm2.easeFactor,
       };
       await _grammarPointRepository.updateGrammarPoint(
         event.grammarPoint.listName,
@@ -64,7 +65,7 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
 
     on<GrammarModeEventUpdateDateShown>((event, emit) async {
       final toUpdate = {
-        WordTableFields.dateLastShown: Utils.getCurrentMilliseconds(),
+        GrammarTableFields.dateLastShownField: Utils.getCurrentMilliseconds(),
         GrammarTableFields.dateLastShownDefinitionField:
             Utils.getCurrentMilliseconds(),
       };

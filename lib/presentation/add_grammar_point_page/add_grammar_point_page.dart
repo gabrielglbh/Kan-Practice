@@ -56,10 +56,12 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
   }
 
   Future<void> _createGrammar({bool exit = true}) async {
+    String name = _nameController?.text ?? '';
+    if ('\n'.allMatches(name).isEmpty) name = '#### __${name}__';
     getIt<AddGrammarPointBloc>().add(AddGrammarPointEventCreate(
         exitMode: exit,
         grammarPoint: GrammarPoint(
-          name: '#### __${_nameController?.text ?? ""}__',
+          name: name,
           definition: _definitionController?.text ?? "",
           example: _exampleController?.text ?? "",
           listName: widget.args.listName,
@@ -160,6 +162,8 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
         KPTextForm(
           controller: _nameController,
           focusNode: _nameFocus,
+          action: TextInputAction.newline,
+          inputType: TextInputType.multiline,
           header: "add_grammar_textForm_grammar".tr(),
           autofocus: widget.args.grammarPoint == null,
           hint: "add_grammar_textForm_grammar_ext".tr(),

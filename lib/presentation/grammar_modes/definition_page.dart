@@ -194,6 +194,11 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
   }
 
   List<Widget> _header() {
+    final hint = _showGrammarName
+        ? "${_studyList[_macro].definition}\n\n"
+            "_${"add_grammar_textForm_example".tr()}_\n\n"
+            "${_getExample()}"
+        : _studyList[_macro].definition;
     return [
       if (_showGrammarName)
         KPMarkdown(
@@ -205,29 +210,10 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
         Text(_none, style: Theme.of(context).textTheme.headline4),
       const SizedBox(height: KPMargins.margin4),
       KPMarkdown(
-        data: _studyList[_macro].definition,
-        maxHeight: KPMargins.margin64 + KPMargins.margin24,
+        data: hint,
+        maxHeight: KPMargins.margin64 * 3,
         shrinkWrap: true,
       ),
-      const SizedBox(height: KPMargins.margin4),
-      if (_showGrammarName)
-        Column(
-          children: [
-            Text(
-              "${"add_grammar_textForm_example".tr()}:",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    decoration: TextDecoration.underline,
-                  ),
-            ),
-            const SizedBox(height: KPMargins.margin8),
-            KPMarkdown(
-              data: _getExample(),
-              maxHeight: KPMargins.margin64,
-              shrinkWrap: true,
-            ),
-          ],
-        )
     ];
   }
 }

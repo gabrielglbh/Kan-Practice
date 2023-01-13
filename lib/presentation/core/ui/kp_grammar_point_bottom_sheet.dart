@@ -129,7 +129,7 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
           ),
           KPMarkdown(
             data: "${grammarPoint.definition}\n\n"
-                "_${"add_grammar_textForm_example".tr()}_\n"
+                "_${"add_grammar_textForm_example".tr()}_\n\n"
                 "${grammarPoint.example}",
             maxHeight: KPMargins.margin64 * 3,
             shrinkWrap: true,

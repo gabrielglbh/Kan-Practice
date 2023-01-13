@@ -11,6 +11,7 @@ import 'package:kanpractice/presentation/core/ui/graphs/kp_win_rate_chart.dart';
 import 'package:kanpractice/presentation/core/ui/kp_action_button.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/ui/kp_switch.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/test_result_page/arguments.dart';
@@ -91,35 +92,19 @@ class _TestResultPageState extends State<TestResultPage> {
                   child: GrammarPointOnTestList(list: widget.args.grammarList),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Icon(Icons.track_changes_rounded,
-                            color: KPColors.getSecondaryColor(context)),
-                        Expanded(
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: KPMargins.margin16),
-                            child: Text("test_result_do_test_button_label".tr(),
-                                maxLines: 2,
-                                style: Theme.of(context).textTheme.bodyText1),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Switch(
+              const SizedBox(height: KPMargins.margin8),
+              ListTile(
+                  leading: Icon(Icons.track_changes_rounded,
+                      color: KPColors.getSecondaryColor(context)),
+                  title: Text("test_result_do_test_button_label".tr()),
+                  visualDensity: const VisualDensity(vertical: -2),
+                  onTap: () => setState(
+                      () => _performAnotherTest = !_performAnotherTest),
+                  trailing: KPSwitch(
                     value: _performAnotherTest,
-                    activeColor: KPColors.secondaryDarkerColor,
-                    activeTrackColor: KPColors.secondaryColor,
                     onChanged: (value) =>
                         setState(() => _performAnotherTest = value),
-                  ),
-                ],
-              ),
+                  )),
               KPActionButton(
                   label: "test_result_save_button_label".tr(),
                   vertical: KPMargins.margin16,

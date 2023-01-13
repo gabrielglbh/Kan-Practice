@@ -247,14 +247,13 @@ class _KPWordListsState extends State<KPWordLists>
               message: "kanji_lists_load_failed".tr());
         } else if (state is FolderDetailsEventLoading ||
             state is FolderDetailsStateSearching) {
-          return const Expanded(child: KPProgressIndicator());
+          return const KPProgressIndicator();
         } else if (state is FolderDetailsStateLoaded) {
           return state.lists.isEmpty
-              ? Expanded(
-                  child: KPEmptyList(
-                      onRefresh: () => _addLoadingEvent(reset: true),
-                      showTryButton: true,
-                      message: "kanji_lists_empty".tr()))
+              ? KPEmptyList(
+                  onRefresh: () => _addLoadingEvent(reset: true),
+                  showTryButton: true,
+                  message: "kanji_lists_empty".tr())
               : _content(state.lists);
         } else {
           return Container();

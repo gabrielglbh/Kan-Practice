@@ -358,12 +358,12 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
       List<GrammarPoint> gp =
           List.generate(res.length, (i) => GrammarPoint.fromJson(res[i]));
       final int total = gp.length;
-      double definition = 0, grammarPoint = 0;
+      double definition = 0, grammarPoints = 0;
       for (var point in gp) {
         definition += (point.winRateDefinition == DatabaseConstants.emptyWinRate
             ? 0
             : point.winRateDefinition);
-        grammarPoint +=
+        grammarPoints +=
             (point.winRateGrammarPoint == DatabaseConstants.emptyWinRate
                 ? 0
                 : point.winRateGrammarPoint);
@@ -374,7 +374,7 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
         listName: '',
         example: '',
         winRateDefinition: definition == 0 ? 0 : definition / total,
-        winRateGrammarPoint: definition == 0 ? 0 : definition / total,
+        winRateGrammarPoint: grammarPoints == 0 ? 0 : grammarPoints / total,
       );
     } catch (err) {
       print(err.toString());

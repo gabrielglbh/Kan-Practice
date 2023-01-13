@@ -129,7 +129,7 @@
   "kanji_lists_newUpdateAvailable_label": "Neue Version!",
   "kanji_lists_load_failed": "Fehler beim Abrufen der Listen.",
   "kanji_lists_empty": "Keine verfügbaren Listen.\n\nErstellen Sie neue Listen für Ihre Studie, indem Sie auf '+' tippen, oder importieren Sie sie aus Ihrem Backup.",
-  "done_button_label": "Fertig!", 
+  "done_button_label": "Fertig!",
   "perfect_button_label": "Perfekt",
   "mid_perfect_button_label": "Fast",
   "mid_good_button_label": "Gut",
@@ -422,5 +422,7 @@
   "word_change_graphs": "Wörter anzeigen",
   "stats_grammar": "Gesamtzahl der Grammatikpunkte",
   "market_filter_grammar": "Grammatikpunkte",
-  "markdown_support": "Markdown-Unterstützung. Hier klicken für weitere Informationen"
+  "markdown_support": "Markdown-Unterstützung. Hier klicken für weitere Informationen",
+  "study_modes_grammarPoints": "Grammatikpunkt",
+  "study_modes_grammarPoints_ext": "文法のポイント"
 }

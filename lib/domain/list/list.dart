@@ -13,6 +13,7 @@ class WordList {
   double totalWinRateListening;
   double totalWinRateSpeaking;
   double totalWinRateDefinition;
+  double totalWinRateGrammarPoint;
   final int lastUpdated;
 
   WordList(
@@ -23,6 +24,7 @@ class WordList {
       this.totalWinRateListening = DatabaseConstants.emptyWinRate,
       this.totalWinRateSpeaking = DatabaseConstants.emptyWinRate,
       this.totalWinRateDefinition = DatabaseConstants.emptyWinRate,
+      this.totalWinRateGrammarPoint = DatabaseConstants.emptyWinRate,
       required this.lastUpdated});
 
   /// Empty [WordList]
@@ -40,6 +42,7 @@ class WordList {
       totalWinRateListening: totalWinRateListening,
       totalWinRateSpeaking: totalWinRateSpeaking,
       totalWinRateDefinition: totalWinRateDefinition,
+      totalWinRateGrammarPoint: totalWinRateGrammarPoint,
       lastUpdated: lastUpdated ?? this.lastUpdated);
 
   WordList copyWithReset() => WordList(
@@ -50,5 +53,6 @@ class WordList {
       totalWinRateListening: DatabaseConstants.emptyWinRate,
       totalWinRateSpeaking: DatabaseConstants.emptyWinRate,
       totalWinRateDefinition: DatabaseConstants.emptyWinRate,
+      totalWinRateGrammarPoint: DatabaseConstants.emptyWinRate,
       lastUpdated: Utils.getCurrentMilliseconds());
 }

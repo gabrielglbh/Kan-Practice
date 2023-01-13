@@ -7,11 +7,12 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class KPGrammarModeRadialGraph extends StatelessWidget {
-  final double definition;
+  final double definition, grammarPoints;
   final double animationDuration;
   const KPGrammarModeRadialGraph({
     Key? key,
     required this.definition,
+    required this.grammarPoints,
     this.animationDuration = 1000,
   }) : super(key: key);
 
@@ -38,6 +39,11 @@ class KPGrammarModeRadialGraph extends StatelessWidget {
                               x: GrammarModes.definition.mode,
                               y: definition,
                               color: GrammarModes.definition.color);
+                        case GrammarModes.grammarPoints:
+                          return DataFrame(
+                              x: GrammarModes.grammarPoints.mode,
+                              y: grammarPoints,
+                              color: GrammarModes.grammarPoints.color);
                       }
                     },
                   ),
@@ -69,6 +75,9 @@ class KPGrammarModeRadialGraph extends StatelessWidget {
                 switch (GrammarModes.values[index]) {
                   case GrammarModes.definition:
                     rate = definition;
+                    break;
+                  case GrammarModes.grammarPoints:
+                    rate = grammarPoints;
                     break;
                 }
 

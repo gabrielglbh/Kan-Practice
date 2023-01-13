@@ -54,7 +54,8 @@ class ListRepositoryImpl implements IListRepository {
             "SELECT A.${ListTableFields.nameField}, A.${ListTableFields.lastUpdatedField}, "
             "A.${ListTableFields.totalWinRateWritingField}, A.${ListTableFields.totalWinRateReadingField}, "
             "A.${ListTableFields.totalWinRateRecognitionField}, A.${ListTableFields.totalWinRateListeningField}, "
-            "A.${ListTableFields.totalWinRateSpeakingField}, A.${ListTableFields.totalWinRateDefinitionField} "
+            "A.${ListTableFields.totalWinRateSpeakingField}, A.${ListTableFields.totalWinRateDefinitionField}, "
+            "A.${ListTableFields.totalWinRateGrammarPointField} "
             "FROM ${ListTableFields.listsTable} A "
             "JOIN "
             "(SELECT ${WordTableFields.listNameField}, MAX(${filter.filter}) AS ${WordTableFields.dateAddedField} "
@@ -89,7 +90,8 @@ class ListRepositoryImpl implements IListRepository {
             list.totalWinRateRecognition +
             list.totalWinRateListening +
             list.totalWinRateSpeaking +
-            list.totalWinRateDefinition;
+            list.totalWinRateDefinition +
+            list.totalWinRateGrammarPoint;
         listAcc.add((acc <= 0 ? 0 : acc) / StudyModes.values.length +
             GrammarModes.values.length);
       }
@@ -133,6 +135,7 @@ class ListRepositoryImpl implements IListRepository {
           "L.${ListTableFields.totalWinRateListeningField}, "
           "L.${ListTableFields.totalWinRateSpeakingField}, "
           "L.${ListTableFields.totalWinRateDefinitionField}, "
+          "L.${ListTableFields.totalWinRateGrammarPointField}, "
           "L.${ListTableFields.lastUpdatedField} "
           "FROM ${ListTableFields.listsTable} L JOIN ${WordTableFields.wordTable} K "
           "ON K.${WordTableFields.listNameField}=L.${ListTableFields.nameField} "

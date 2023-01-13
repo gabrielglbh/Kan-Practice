@@ -159,6 +159,8 @@ class _TestHistoryState extends State<TestHistory>
                   : KPGrammarModeRadialGraph(
                       animationDuration: 0,
                       definition: widget.stats.test.testTotalWinRateDefinition,
+                      grammarPoints:
+                          widget.stats.test.testTotalWinRateGrammarPoint,
                     ),
             ),
             const SizedBox(height: KPMargins.margin32)

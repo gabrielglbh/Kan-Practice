@@ -79,6 +79,7 @@ class WordListTile extends StatelessWidget {
               )
             : KPGrammarModeRadialGraph(
                 definition: item.totalWinRateDefinition,
+                grammarPoints: item.totalWinRateGrammarPoint,
               ),
       ),
     );

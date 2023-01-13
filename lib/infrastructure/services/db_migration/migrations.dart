@@ -2,6 +2,36 @@ import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Migrations {
+  Future<void> version11to12(Database db) async {
+    await db.rawQuery("ALTER TABLE ${ListTableFields.listsTable} "
+        "ADD COLUMN ${ListTableFields.totalWinRateGrammarPointField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}");
+
+    await db.rawQuery("ALTER TABLE ${TestDataTableFields.testDataTable} "
+        "ADD COLUMN ${TestDataTableFields.testTotalCountGrammarPointField} INTEGER NOT NULL DEFAULT 0");
+    await db.rawQuery("ALTER TABLE ${TestDataTableFields.testDataTable} "
+        "ADD COLUMN ${TestDataTableFields.testTotalWinRateGrammarPointField} INTEGER NOT NULL DEFAULT 0");
+
+    await db.rawQuery(
+        "ALTER TABLE ${TestSpecificDataTableFields.testDataTable} "
+        "ADD COLUMN ${TestSpecificDataTableFields.totalGrammarPointCountField} INTEGER NOT NULL DEFAULT 0");
+    await db.rawQuery(
+        "ALTER TABLE ${TestSpecificDataTableFields.testDataTable} "
+        "ADD COLUMN ${TestSpecificDataTableFields.totalWinRateGrammarPointField} INTEGER NOT NULL DEFAULT 0");
+
+    await db.rawQuery("ALTER TABLE ${GrammarTableFields.grammarTable} "
+        "ADD COLUMN ${GrammarTableFields.winRateGrammarPointField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}");
+    await db.rawQuery("ALTER TABLE ${GrammarTableFields.grammarTable} "
+        "ADD COLUMN ${GrammarTableFields.dateLastShownGrammarPointField} INTEGER NOT NULL DEFAULT 0");
+    await db.rawQuery("ALTER TABLE ${GrammarTableFields.grammarTable} "
+        "ADD COLUMN ${GrammarTableFields.repetitionsGrammarPointField} INTEGER NOT NULL DEFAULT 0");
+    await db.rawQuery("ALTER TABLE ${GrammarTableFields.grammarTable} "
+        "ADD COLUMN ${GrammarTableFields.previousEaseFactorGrammarPointField} INTEGER NOT NULL DEFAULT 2.5");
+    await db.rawQuery("ALTER TABLE ${GrammarTableFields.grammarTable} "
+        "ADD COLUMN ${GrammarTableFields.previousIntervalGrammarPointField} INTEGER NOT NULL DEFAULT 0");
+    await db.rawQuery("ALTER TABLE ${GrammarTableFields.grammarTable} "
+        "ADD COLUMN ${GrammarTableFields.previousIntervalAsDateGrammarPointField} INTEGER NOT NULL DEFAULT 0");
+  }
+
   Future<void> version10to11(Database db) async {
     await db.rawQuery("ALTER TABLE ${ListTableFields.listsTable} "
         "ADD COLUMN ${ListTableFields.totalWinRateDefinitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}");

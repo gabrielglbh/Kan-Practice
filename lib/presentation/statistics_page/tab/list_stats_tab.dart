@@ -55,6 +55,7 @@ class _ListStatsState extends State<ListStats>
               : KPGrammarModeRadialGraph(
                   animationDuration: 0,
                   definition: widget.stats.totalWinRateDefinition,
+                  grammarPoints: widget.stats.totalWinRateGrammarPoint,
                 ),
         ),
         const Divider(),

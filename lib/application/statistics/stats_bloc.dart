@@ -52,6 +52,7 @@ class StatisticsBloc extends Bloc<StatsEvent, StatsState> {
           totalWinRateListening: winRates.winRateListening,
           totalWinRateSpeaking: winRates.winRateSpeaking,
           totalWinRateDefinition: winRatesGrammar.winRateDefinition,
+          totalWinRateGrammarPoint: winRatesGrammar.winRateGrammarPoint,
           bestList: lists[0],
           worstList: lists[1],
           test: test,

@@ -16,6 +16,7 @@ TestData _$TestDataFromJson(Map<String, dynamic> json) => TestData(
       testTotalCountListening: json['testTotalCountListening'] as int,
       testTotalCountSpeaking: json['testTotalCountSpeaking'] as int,
       testTotalCountDefinition: json['testTotalCountDefinition'] as int,
+      testTotalCountGrammarPoint: json['testTotalCountGrammarPoint'] as int,
       testTotalWinRateWriting:
           (json['testTotalWinRateWriting'] as num).toDouble(),
       testTotalWinRateReading:
@@ -28,6 +29,8 @@ TestData _$TestDataFromJson(Map<String, dynamic> json) => TestData(
           (json['testTotalWinRateSpeaking'] as num).toDouble(),
       testTotalWinRateDefinition:
           (json['testTotalWinRateDefinition'] as num).toDouble(),
+      testTotalWinRateGrammarPoint:
+          (json['testTotalWinRateGrammarPoint'] as num).toDouble(),
       selectionTests: json['selectionTests'] as int,
       blitzTests: json['blitzTests'] as int,
       remembranceTests: json['remembranceTests'] as int,
@@ -48,12 +51,14 @@ Map<String, dynamic> _$TestDataToJson(TestData instance) => <String, dynamic>{
       'testTotalCountListening': instance.testTotalCountListening,
       'testTotalCountSpeaking': instance.testTotalCountSpeaking,
       'testTotalCountDefinition': instance.testTotalCountDefinition,
+      'testTotalCountGrammarPoint': instance.testTotalCountGrammarPoint,
       'testTotalWinRateWriting': instance.testTotalWinRateWriting,
       'testTotalWinRateReading': instance.testTotalWinRateReading,
       'testTotalWinRateRecognition': instance.testTotalWinRateRecognition,
       'testTotalWinRateListening': instance.testTotalWinRateListening,
       'testTotalWinRateSpeaking': instance.testTotalWinRateSpeaking,
       'testTotalWinRateDefinition': instance.testTotalWinRateDefinition,
+      'testTotalWinRateGrammarPoint': instance.testTotalWinRateGrammarPoint,
       'selectionTests': instance.selectionTests,
       'blitzTests': instance.blitzTests,
       'remembranceTests': instance.remembranceTests,

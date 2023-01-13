@@ -16,12 +16,14 @@ class TestData {
   final int testTotalCountListening;
   final int testTotalCountSpeaking;
   final int testTotalCountDefinition;
+  final int testTotalCountGrammarPoint;
   final double testTotalWinRateWriting;
   final double testTotalWinRateReading;
   final double testTotalWinRateRecognition;
   final double testTotalWinRateListening;
   final double testTotalWinRateSpeaking;
   final double testTotalWinRateDefinition;
+  final double testTotalWinRateGrammarPoint;
   final int selectionTests;
   @JsonKey(ignore: true)
   final SpecificData selectionTestData;
@@ -57,12 +59,14 @@ class TestData {
     required this.testTotalCountListening,
     required this.testTotalCountSpeaking,
     required this.testTotalCountDefinition,
+    required this.testTotalCountGrammarPoint,
     required this.testTotalWinRateWriting,
     required this.testTotalWinRateReading,
     required this.testTotalWinRateRecognition,
     required this.testTotalWinRateListening,
     required this.testTotalWinRateSpeaking,
     required this.testTotalWinRateDefinition,
+    required this.testTotalWinRateGrammarPoint,
     required this.selectionTests,
     required this.blitzTests,
     required this.remembranceTests,
@@ -92,12 +96,14 @@ class TestData {
       testTotalCountListening: testTotalCountListening,
       testTotalCountSpeaking: testTotalCountSpeaking,
       testTotalCountDefinition: testTotalCountDefinition,
+      testTotalCountGrammarPoint: testTotalCountGrammarPoint,
       testTotalWinRateWriting: testTotalWinRateWriting,
       testTotalWinRateReading: testTotalWinRateReading,
       testTotalWinRateRecognition: testTotalWinRateRecognition,
       testTotalWinRateListening: testTotalWinRateListening,
       testTotalWinRateSpeaking: testTotalWinRateSpeaking,
       testTotalWinRateDefinition: testTotalWinRateDefinition,
+      testTotalWinRateGrammarPoint: testTotalWinRateGrammarPoint,
       selectionTests: selectionTests,
       selectionTestData: test == Tests.lists ? testSpecs : selectionTestData,
       blitzTests: blitzTests,
@@ -128,12 +134,14 @@ class TestData {
     testTotalCountListening: 0,
     testTotalCountSpeaking: 0,
     testTotalCountDefinition: 0,
+    testTotalCountGrammarPoint: 0,
     testTotalWinRateWriting: 0,
     testTotalWinRateReading: 0,
     testTotalWinRateRecognition: 0,
     testTotalWinRateListening: 0,
     testTotalWinRateSpeaking: 0,
     testTotalWinRateDefinition: 0,
+    testTotalWinRateGrammarPoint: 0,
     selectionTests: 0,
     blitzTests: 0,
     remembranceTests: 0,

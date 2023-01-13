@@ -39,6 +39,26 @@ class TestDataRepositoryImpl implements ITestDataRepository {
                         curr.testTotalWinRateRecognition +
                         curr.testTotalWinRateListening +
                         curr.testTotalWinRateSpeaking +
+                        curr.testTotalWinRateGrammarPoint +
+                        newAcc) /
+                    totalLength
+          };
+        case GrammarModes.grammarPoints:
+          final totalTests = curr.testTotalCountGrammarPoint + 1;
+          final newAcc = ((curr.testTotalCountGrammarPoint *
+                      curr.testTotalWinRateGrammarPoint) +
+                  score) /
+              totalTests;
+          return {
+            TestDataTableFields.testTotalCountGrammarPointField: totalTests,
+            TestDataTableFields.testTotalWinRateGrammarPointField: newAcc,
+            TestDataTableFields.totalTestAccuracyField:
+                (curr.testTotalWinRateWriting +
+                        curr.testTotalWinRateReading +
+                        curr.testTotalWinRateRecognition +
+                        curr.testTotalWinRateListening +
+                        curr.testTotalWinRateSpeaking +
+                        curr.testTotalCountDefinition +
                         newAcc) /
                     totalLength
           };
@@ -60,6 +80,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
                         curr.testTotalWinRateListening +
                         curr.testTotalWinRateSpeaking +
                         curr.testTotalWinRateDefinition +
+                        curr.testTotalWinRateGrammarPoint +
                         newAcc) /
                     totalLength
           };
@@ -78,6 +99,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
                         curr.testTotalWinRateListening +
                         curr.testTotalWinRateSpeaking +
                         curr.testTotalWinRateDefinition +
+                        curr.testTotalWinRateGrammarPoint +
                         newAcc) /
                     totalLength
           };
@@ -96,6 +118,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
                         curr.testTotalWinRateListening +
                         curr.testTotalWinRateSpeaking +
                         curr.testTotalWinRateDefinition +
+                        curr.testTotalWinRateGrammarPoint +
                         newAcc) /
                     totalLength
           };
@@ -114,6 +137,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
                         curr.testTotalWinRateRecognition +
                         curr.testTotalWinRateSpeaking +
                         curr.testTotalWinRateDefinition +
+                        curr.testTotalWinRateGrammarPoint +
                         newAcc) /
                     totalLength
           };
@@ -132,6 +156,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
                         curr.testTotalWinRateRecognition +
                         curr.testTotalWinRateListening +
                         curr.testTotalWinRateDefinition +
+                        curr.testTotalWinRateGrammarPoint +
                         newAcc) /
                     totalLength
           };

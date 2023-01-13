@@ -38,7 +38,7 @@ abstract class InjectableModule {
 
     return await openDatabase(
       path,
-      version: 11,
+      version: 12,
       singleInstance: true,
       onConfigure: (db) async {
         await db.execute('PRAGMA foreign_keys = ON');
@@ -47,6 +47,7 @@ abstract class InjectableModule {
         final c = Migrations();
         if (oldVersion <= 9) c.version9to10(db);
         if (oldVersion <= 10) c.version10to11(db);
+        if (oldVersion <= 11) c.version11to12(db);
       },
       onCreate: (Database db, int version) async {
         await db.execute("CREATE TABLE ${WordTableFields.wordTable}("
@@ -100,6 +101,7 @@ abstract class InjectableModule {
             "${ListTableFields.totalWinRateListeningField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${ListTableFields.totalWinRateSpeakingField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${ListTableFields.totalWinRateDefinitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${ListTableFields.totalWinRateGrammarPointField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${ListTableFields.lastUpdatedField} INTEGER NOT NULL DEFAULT 0)");
 
         await db.execute("CREATE TABLE ${TestTableFields.testTable}("
@@ -139,12 +141,14 @@ abstract class InjectableModule {
             "${TestDataTableFields.testTotalCountListeningField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalCountSpeakingField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalCountDefinitionField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestDataTableFields.testTotalCountGrammarPointField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalWinRateWritingField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalWinRateReadingField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalWinRateRecognitionField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalWinRateListeningField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalWinRateSpeakingField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalWinRateDefinitionField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestDataTableFields.testTotalWinRateGrammarPointField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.selectionTestsField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.blitzTestsField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.remembranceTestsField} INTEGER NOT NULL DEFAULT 0, "
@@ -164,12 +168,14 @@ abstract class InjectableModule {
             "${TestSpecificDataTableFields.totalListeningCountField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalSpeakingCountField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalDefinitionCountField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestSpecificDataTableFields.totalGrammarPointCountField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalWinRateWritingField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalWinRateReadingField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalWinRateRecognitionField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalWinRateListeningField} INTEGER NOT NULL DEFAULT 0, "
             "${TestSpecificDataTableFields.totalWinRateSpeakingField} INTEGER NOT NULL DEFAULT 0, "
-            "${TestSpecificDataTableFields.totalWinRateDefinitionField} INTEGER NOT NULL DEFAULT 0)");
+            "${TestSpecificDataTableFields.totalWinRateDefinitionField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestSpecificDataTableFields.totalWinRateGrammarPointField} INTEGER NOT NULL DEFAULT 0)");
 
         await db.execute("CREATE TABLE ${GrammarTableFields.grammarTable}("
             "${GrammarTableFields.nameField} TEXT NOT NULL, "
@@ -177,6 +183,7 @@ abstract class InjectableModule {
             "${GrammarTableFields.exampleField} TEXT NOT NULL, "
             "${GrammarTableFields.listNameField} TEXT NOT NULL, "
             "${GrammarTableFields.winRateDefinitionField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
+            "${GrammarTableFields.winRateGrammarPointField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}, "
             "${GrammarTableFields.dateAddedField} INTEGER NOT NULL DEFAULT 0, "
             "${GrammarTableFields.dateLastShownField} INTEGER NOT NULL DEFAULT 0, "
             "${GrammarTableFields.dateLastShownDefinitionField} INTEGER NOT NULL DEFAULT 0, "
@@ -184,6 +191,11 @@ abstract class InjectableModule {
             "${GrammarTableFields.previousEaseFactorDefinitionField} INTEGER NOT NULL DEFAULT 2.5, "
             "${GrammarTableFields.previousIntervalDefinitionField} INTEGER NOT NULL DEFAULT 0, "
             "${GrammarTableFields.previousIntervalAsDateDefinitionField} INTEGER NOT NULL DEFAULT 0, "
+            "${GrammarTableFields.dateLastShownGrammarPointField} INTEGER NOT NULL DEFAULT 0, "
+            "${GrammarTableFields.repetitionsGrammarPointField} INTEGER NOT NULL DEFAULT 0, "
+            "${GrammarTableFields.previousEaseFactorGrammarPointField} INTEGER NOT NULL DEFAULT 2.5, "
+            "${GrammarTableFields.previousIntervalGrammarPointField} INTEGER NOT NULL DEFAULT 0, "
+            "${GrammarTableFields.previousIntervalAsDateGrammarPointField} INTEGER NOT NULL DEFAULT 0, "
             "PRIMARY KEY (${GrammarTableFields.nameField}, ${GrammarTableFields.definitionField}), "
             "FOREIGN KEY (${GrammarTableFields.listNameField}) "
             "REFERENCES ${ListTableFields.listsTable}(${ListTableFields.nameField}) "

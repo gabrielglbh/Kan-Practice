@@ -53,7 +53,7 @@ class KPGrammarModeRadialGraph extends StatelessWidget {
                       data.y == DatabaseConstants.emptyWinRate ? 0 : data.y,
                   pointColorMapper: (DataFrame data, _) => data.color,
                   radius: "100%",
-                  innerRadius: "80%",
+                  innerRadius: "65%",
                   cornerStyle: CornerStyle.bothCurve,
                   gap: "2",
                   useSeriesColor: true,

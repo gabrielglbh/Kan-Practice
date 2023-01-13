@@ -31,7 +31,7 @@ extension StudyModeFiltersExt on TestModeFilters {
       case TestModeFilters.definition:
         return "study_modes_definition".tr();
       case TestModeFilters.grammarPoint:
-        return "study_modes_grammarPoint".tr();
+        return "study_modes_grammarPoints".tr();
     }
   }
 

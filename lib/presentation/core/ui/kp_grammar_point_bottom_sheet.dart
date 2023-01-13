@@ -6,7 +6,6 @@ import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/home_types.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_grammar_mode_radial_graph.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_win_rate_chart.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
@@ -109,11 +108,6 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
           KPMarkdown(
             data: grammarPoint.name,
             maxHeight: KPMargins.margin64,
-            maxWidth: MediaQuery.of(context).size.width -
-                KPSizes.defaultSizeWinRateChart +
-                KPMargins.margin32 +
-                KPMargins.margin4 +
-                KPMargins.margin2,
             shrinkWrap: true,
           ),
           KPMarkdown(

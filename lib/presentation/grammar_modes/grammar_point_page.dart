@@ -30,7 +30,7 @@ class _GrammarPointStudyState extends State<GrammarPointStudy> {
   /// Current word index
   int _macro = 0;
 
-  bool _showGrammarName = false;
+  bool _showDefinition = false;
   bool _hasFinished = false;
   bool _enableRepOnTest = false;
 
@@ -78,7 +78,7 @@ class _GrammarPointStudyState extends State<GrammarPointStudy> {
         if (_macro < _studyList.length - 1) {
           setState(() {
             _macro++;
-            _showGrammarName = false;
+            _showDefinition = false;
           });
         }
 
@@ -135,7 +135,7 @@ class _GrammarPointStudyState extends State<GrammarPointStudy> {
 
   String _getExample() {
     /// Based on the states, update the meaning
-    if (_showGrammarName) {
+    if (_showDefinition) {
       return _studyList[_macro].example;
     } else {
       return "";
@@ -181,10 +181,10 @@ class _GrammarPointStudyState extends State<GrammarPointStudy> {
                 ],
               ),
               KPValidationButtons(
-                trigger: _showGrammarName,
+                trigger: _showDefinition,
                 submitLabel: "done_button_label".tr(),
                 action: (score) async => await _updateUIOnSubmit(score),
-                onSubmit: () => setState(() => _showGrammarName = true),
+                onSubmit: () => setState(() => _showDefinition = true),
               ),
             ],
           ),
@@ -194,26 +194,26 @@ class _GrammarPointStudyState extends State<GrammarPointStudy> {
   }
 
   List<Widget> _header() {
-    final hint = _showGrammarName
+    final hint = _showDefinition
         ? "${_studyList[_macro].definition}\n\n"
             "_${"add_grammar_textForm_example".tr()}_\n\n"
             "${_getExample()}"
         : _studyList[_macro].definition;
     return [
-      if (_showGrammarName)
+      KPMarkdown(
+        data: _studyList[_macro].name,
+        maxHeight: KPMargins.margin64 * 2,
+        shrinkWrap: true,
+      ),
+      if (_showDefinition)
         KPMarkdown(
-          data: _studyList[_macro].name,
-          maxHeight: KPMargins.margin64 * 2,
+          data: hint,
+          maxHeight: KPMargins.margin64 * 3,
           shrinkWrap: true,
         )
       else
         Text(_none, style: Theme.of(context).textTheme.headline4),
       const SizedBox(height: KPMargins.margin4),
-      KPMarkdown(
-        data: hint,
-        maxHeight: KPMargins.margin64 * 3,
-        shrinkWrap: true,
-      ),
     ];
   }
 }

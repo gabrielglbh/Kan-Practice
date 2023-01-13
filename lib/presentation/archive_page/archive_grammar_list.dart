@@ -128,6 +128,7 @@ class _ArchiveGrammarListWidgetState extends State<ArchiveGrammarListWidget>
         return KPGrammarPointItem(
           index: k,
           grammarPoint: gp,
+          aggregateStats: true,
           selectedMode: _selectedMode,
           onShowModal: () => widget.searchBarFn?.unfocus(),
         );

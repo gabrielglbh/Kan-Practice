@@ -196,7 +196,7 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
               focusNode: _exampleFocus,
               action: TextInputAction.newline,
               inputType: TextInputType.multiline,
-              maxLength: 256,
+              maxLength: 128,
               header: "add_grammar_textForm_example".tr(),
               hint: "add_grammar_textForm_example_ext".tr(),
               onEditingComplete: () {},

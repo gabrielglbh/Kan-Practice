@@ -228,6 +228,7 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
         return KPGrammarPointItem(
           index: k,
           grammarPoint: gp,
+          aggregateStats: _aggrStats,
           listName: widget.listName,
           selectedMode: _selectedMode,
           onShowModal: () => widget.searchBarFn?.unfocus(),

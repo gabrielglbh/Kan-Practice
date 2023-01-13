@@ -5,6 +5,7 @@ import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/home_types.dart';
+import 'package:kanpractice/presentation/core/ui/graphs/kp_grammar_mode_radial_graph.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_win_rate_chart.dart';
 import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
@@ -105,27 +106,15 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Flexible(
-            child: Row(
-              children: [
-                KPMarkdown(
-                  data: grammarPoint.name,
-                  maxHeight: KPMargins.margin64,
-                  maxWidth: MediaQuery.of(context).size.width -
-                      KPSizes.defaultSizeWinRateChart +
-                      KPMargins.margin32 +
-                      KPMargins.margin4 +
-                      KPMargins.margin2,
-                  shrinkWrap: true,
-                ),
-                WinRateChart(
-                  winRate: grammarPoint.winRateDefinition,
-                  backgroundColor: GrammarModes.definition.color,
-                  size: KPSizes.defaultSizeWinRateChart / 3,
-                  rateSize: KPFontSizes.fontSize12,
-                )
-              ],
-            ),
+          KPMarkdown(
+            data: grammarPoint.name,
+            maxHeight: KPMargins.margin64,
+            maxWidth: MediaQuery.of(context).size.width -
+                KPSizes.defaultSizeWinRateChart +
+                KPMargins.margin32 +
+                KPMargins.margin4 +
+                KPMargins.margin2,
+            shrinkWrap: true,
           ),
           KPMarkdown(
             data: "${grammarPoint.definition}\n\n"
@@ -166,6 +155,10 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
                 ),
               ),
             ),
+          KPGrammarModeRadialGraph(
+            definition: grammarPoint.winRateDefinition,
+            grammarPoints: grammarPoint.winRateGrammarPoint,
+          ),
           _lastTimeShownWidget(context, grammarPoint),
           Visibility(
             visible: onTap != null && onRemove != null,
@@ -182,19 +175,75 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
 
   Widget _lastTimeShownWidget(BuildContext context, GrammarPoint grammarPoint) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
-      child: ListTile(
-        iconColor: KPColors.secondaryColor,
-        textColor: KPColors.secondaryColor,
-        visualDensity: const VisualDensity(vertical: -3),
-        contentPadding: EdgeInsets.zero,
-        title: Text(
-            "${"created_label".tr()} "
-            "${Utils.parseDateMilliseconds(context, grammarPoint.dateAdded)} • "
-            "${"last_seen_label".tr()} "
-            "${Utils.parseDateMilliseconds(context, grammarPoint.dateLastShown)}",
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyText2),
+        padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
+        child: ExpansionTile(
+            iconColor: KPColors.secondaryColor,
+            textColor: KPColors.secondaryColor,
+            tilePadding: const EdgeInsets.all(0),
+            title: Text(
+                "${"created_label".tr()} "
+                "${Utils.parseDateMilliseconds(context, grammarPoint.dateAdded)} • "
+                "${"last_seen_label".tr()} "
+                "${Utils.parseDateMilliseconds(context, grammarPoint.dateLastShown)}",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyText2),
+            children: [
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: GrammarModes.values.length,
+                itemBuilder: (context, index) {
+                  return _lastSeenOnModes(
+                      context, grammarPoint, GrammarModes.values[index]);
+                },
+              )
+            ]));
+  }
+
+  Widget _lastSeenOnModes(
+      BuildContext context, GrammarPoint grammarPoint, GrammarModes mode) {
+    int? date = 0;
+    String parsedDate = "-";
+    switch (mode) {
+      case GrammarModes.definition:
+        date = grammarPoint.dateLastShownDefinition;
+        break;
+      case GrammarModes.grammarPoints:
+        date = grammarPoint.dateLastShownGrammarPoint;
+        break;
+    }
+    if (date != 0) {
+      parsedDate =
+          "${"last_seen_label".tr()} ${Utils.parseDateMilliseconds(context, date)}";
+    }
+
+    return Container(
+      height: KPMargins.margin24,
+      padding: const EdgeInsets.only(
+          left: KPMargins.margin8,
+          right: KPMargins.margin16,
+          bottom: KPMargins.margin8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Text(" • ${(mode.mode).capitalized}:",
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.left,
+                style: Theme.of(context).textTheme.subtitle2),
+          ),
+          Expanded(
+              child: Container(
+            alignment: Alignment.centerRight,
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: Text(parsedDate,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.right,
+                  style: Theme.of(context).textTheme.subtitle2),
+            ),
+          ))
+        ],
       ),
     );
   }

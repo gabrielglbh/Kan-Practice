@@ -8,7 +8,12 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class GrammarPointOnTestList extends StatelessWidget {
   final Map<String, List<Map<GrammarPoint, double>>>? list;
-  const GrammarPointOnTestList({super.key, required this.list});
+  final GrammarModes mode;
+  const GrammarPointOnTestList({
+    super.key,
+    required this.list,
+    required this.mode,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +55,7 @@ class GrammarPointOnTestList extends StatelessWidget {
                     ),
                     trailing: WinRateChart(
                       winRate: testScore,
-                      backgroundColor: GrammarModes.definition.color,
+                      backgroundColor: mode.color,
                       size: KPSizes.defaultSizeWinRateChart / 3,
                       rateSize: KPFontSizes.fontSize12,
                     ),

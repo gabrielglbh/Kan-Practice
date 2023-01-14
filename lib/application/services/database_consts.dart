@@ -101,7 +101,6 @@ class TestDataTableFields {
   static const String testDataTable = "TEST_DATA_TABLE";
   static const String statsIdField = "statsId";
   static const String totalTestsField = "totalTests";
-  static const String totalTestAccuracyField = "totalTestAccuracy";
   static const String testTotalCountWritingField = "testTotalCountWriting";
   static const String testTotalCountReadingField = "testTotalCountReading";
   static const String testTotalCountRecognitionField =

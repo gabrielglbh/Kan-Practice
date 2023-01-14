@@ -9,7 +9,6 @@ part of 'test_data.dart';
 TestData _$TestDataFromJson(Map<String, dynamic> json) => TestData(
       statsId: json['statsId'] as String? ?? TestDataTableFields.statsMainId,
       totalTests: json['totalTests'] as int,
-      totalTestAccuracy: (json['totalTestAccuracy'] as num).toDouble(),
       testTotalCountWriting: json['testTotalCountWriting'] as int,
       testTotalCountReading: json['testTotalCountReading'] as int,
       testTotalCountRecognition: json['testTotalCountRecognition'] as int,
@@ -44,7 +43,6 @@ TestData _$TestDataFromJson(Map<String, dynamic> json) => TestData(
 Map<String, dynamic> _$TestDataToJson(TestData instance) => <String, dynamic>{
       'statsId': instance.statsId,
       'totalTests': instance.totalTests,
-      'totalTestAccuracy': instance.totalTestAccuracy,
       'testTotalCountWriting': instance.testTotalCountWriting,
       'testTotalCountReading': instance.testTotalCountReading,
       'testTotalCountRecognition': instance.testTotalCountRecognition,

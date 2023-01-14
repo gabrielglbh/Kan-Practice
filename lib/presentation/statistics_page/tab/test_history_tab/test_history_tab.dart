@@ -80,14 +80,21 @@ class _TestHistoryState extends State<TestHistory>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final mean = (widget.stats.test.testTotalWinRateWriting +
+            widget.stats.test.testTotalWinRateReading +
+            widget.stats.test.testTotalWinRateRecognition +
+            widget.stats.test.testTotalWinRateListening +
+            widget.stats.test.testTotalWinRateSpeaking +
+            widget.stats.test.testTotalWinRateDefinition +
+            widget.stats.test.testTotalWinRateGrammarPoint) /
+        (StudyModes.values.length + GrammarModes.values.length);
     return BlocBuilder<TestHistoryBloc, TestHistoryState>(
       builder: (context, state) => SingleChildScrollView(
         child: Column(
           children: [
             StatsHeader(
               title: "stats_tests_total_acc".tr(),
-              value: Utils.getFixedPercentageAsString(
-                  widget.stats.test.totalTestAccuracy),
+              value: Utils.getFixedPercentageAsString(mean),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),

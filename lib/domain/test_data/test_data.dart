@@ -9,7 +9,6 @@ part 'test_data.g.dart';
 class TestData {
   final String statsId;
   final int totalTests;
-  final double totalTestAccuracy;
   final int testTotalCountWriting;
   final int testTotalCountReading;
   final int testTotalCountRecognition;
@@ -52,7 +51,6 @@ class TestData {
   const TestData({
     this.statsId = TestDataTableFields.statsMainId,
     required this.totalTests,
-    required this.totalTestAccuracy,
     required this.testTotalCountWriting,
     required this.testTotalCountReading,
     required this.testTotalCountRecognition,
@@ -89,7 +87,6 @@ class TestData {
     final test = Tests.values[testSpecs.id];
     return TestData(
       totalTests: totalTests,
-      totalTestAccuracy: totalTestAccuracy,
       testTotalCountWriting: testTotalCountWriting,
       testTotalCountReading: testTotalCountReading,
       testTotalCountRecognition: testTotalCountRecognition,
@@ -127,7 +124,6 @@ class TestData {
   static const TestData empty = TestData(
     statsId: TestDataTableFields.statsMainId,
     totalTests: 0,
-    totalTestAccuracy: 0,
     testTotalCountWriting: 0,
     testTotalCountReading: 0,
     testTotalCountRecognition: 0,

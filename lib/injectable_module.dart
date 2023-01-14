@@ -134,7 +134,6 @@ abstract class InjectableModule {
         await db.execute("CREATE TABLE ${TestDataTableFields.testDataTable}("
             "${TestDataTableFields.statsIdField} TEXT NOT NULL PRIMARY KEY, "
             "${TestDataTableFields.totalTestsField} INTEGER NOT NULL DEFAULT 0, "
-            "${TestDataTableFields.totalTestAccuracyField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalCountWritingField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalCountReadingField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalCountRecognitionField} INTEGER NOT NULL DEFAULT 0, "

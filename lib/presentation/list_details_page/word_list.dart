@@ -218,20 +218,13 @@ class _WordListWidgetState extends State<WordListWidget>
             ? Expanded(child: _kanjiList(state))
             : Expanded(
                 child: GestureDetector(
-                /// Dismiss keyboard if possible whenever a vertical or horizontal
-                /// drag down occurs on screen
-                onVerticalDragStart: (details) {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                },
-                onHorizontalDragStart: (details) {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                },
-                onHorizontalDragEnd: (details) {
-                  double? pv = details.primaryVelocity;
-                  if (pv != null) _updateSelectedModePageView(pv);
-                },
-                child: _kanjiList(state),
-              )),
+                  onHorizontalDragEnd: (details) {
+                    double? pv = details.primaryVelocity;
+                    if (pv != null) _updateSelectedModePageView(pv);
+                  },
+                  child: _kanjiList(state),
+                ),
+              ),
         KPButton(
             title1: "list_details_practice_button_label_ext".tr(),
             title2: "list_details_practice_button_label".tr(),

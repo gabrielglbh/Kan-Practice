@@ -29,32 +29,72 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
       /// kanji yet. Therefore, the score should be untouched.
       /// If the winRate is different than -1, the user has already studied this kanji
       /// and then, a mean is calculated between the upcoming score and the previous one.
-      if (event.grammarPoint.winRateDefinition ==
-          DatabaseConstants.emptyWinRate) {
-        actualScore = event.score;
-      } else {
-        actualScore = (event.score + event.grammarPoint.winRateDefinition) / 2;
+      switch (event.mode) {
+        case GrammarModes.definition:
+          if (event.grammarPoint.winRateDefinition ==
+              DatabaseConstants.emptyWinRate) {
+            actualScore = event.score;
+          } else {
+            actualScore =
+                (event.score + event.grammarPoint.winRateDefinition) / 2;
+          }
+          toUpdate = {GrammarTableFields.winRateDefinitionField: actualScore};
+          break;
+        case GrammarModes.grammarPoints:
+          if (event.grammarPoint.winRateGrammarPoint ==
+              DatabaseConstants.emptyWinRate) {
+            actualScore = event.score;
+          } else {
+            actualScore =
+                (event.score + event.grammarPoint.winRateGrammarPoint) / 2;
+          }
+          toUpdate = {GrammarTableFields.winRateGrammarPointField: actualScore};
+          break;
       }
-      toUpdate = {GrammarTableFields.winRateDefinitionField: actualScore};
       final res = await _grammarPointRepository.updateGrammarPoint(
           event.grammarPoint.listName, event.grammarPoint.name, toUpdate);
       emit(GrammarModeStateScoreCalculated(res));
     });
 
     on<GrammarModeEventCalculateSM2Params>((event, emit) async {
-      final sm2 = SMAlgorithm.calc(
-        quality: event.score,
-        repetitions: event.grammarPoint.repetitionsDefinition,
-        previousInterval: event.grammarPoint.previousIntervalDefinition,
-        previousEaseFactor: event.grammarPoint.previousEaseFactorDefinition,
-      );
-      final toUpdate = {
-        GrammarTableFields.previousIntervalDefinitionField: sm2.interval,
-        GrammarTableFields.previousIntervalAsDateDefinitionField:
-            sm2.intervalAsDate,
-        GrammarTableFields.repetitionsDefinitionField: sm2.repetitions,
-        GrammarTableFields.previousEaseFactorDefinitionField: sm2.easeFactor,
-      };
+      Map<String, dynamic> toUpdate = {};
+
+      switch (event.mode) {
+        case GrammarModes.definition:
+          final sm2 = SMAlgorithm.calc(
+            quality: event.score,
+            repetitions: event.grammarPoint.repetitionsDefinition,
+            previousInterval: event.grammarPoint.previousIntervalDefinition,
+            previousEaseFactor: event.grammarPoint.previousEaseFactorDefinition,
+          );
+          toUpdate = {
+            GrammarTableFields.previousIntervalDefinitionField: sm2.interval,
+            GrammarTableFields.previousIntervalAsDateDefinitionField:
+                sm2.intervalAsDate,
+            GrammarTableFields.repetitionsDefinitionField: sm2.repetitions,
+            GrammarTableFields.previousEaseFactorDefinitionField:
+                sm2.easeFactor,
+          };
+          break;
+        case GrammarModes.grammarPoints:
+          final sm2 = SMAlgorithm.calc(
+            quality: event.score,
+            repetitions: event.grammarPoint.repetitionsGrammarPoint,
+            previousInterval: event.grammarPoint.previousIntervalGrammarPoint,
+            previousEaseFactor:
+                event.grammarPoint.previousEaseFactorGrammarPoint,
+          );
+          toUpdate = {
+            GrammarTableFields.previousIntervalGrammarPointField: sm2.interval,
+            GrammarTableFields.previousIntervalAsDateGrammarPointField:
+                sm2.intervalAsDate,
+            GrammarTableFields.repetitionsGrammarPointField: sm2.repetitions,
+            GrammarTableFields.previousEaseFactorGrammarPointField:
+                sm2.easeFactor,
+          };
+          break;
+      }
+
       await _grammarPointRepository.updateGrammarPoint(
         event.grammarPoint.listName,
         event.grammarPoint.name,
@@ -66,9 +106,22 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
     on<GrammarModeEventUpdateDateShown>((event, emit) async {
       final toUpdate = {
         GrammarTableFields.dateLastShownField: Utils.getCurrentMilliseconds(),
-        GrammarTableFields.dateLastShownDefinitionField:
-            Utils.getCurrentMilliseconds(),
       };
+
+      switch (event.mode) {
+        case GrammarModes.definition:
+          toUpdate.addEntries([
+            MapEntry(GrammarTableFields.dateLastShownDefinitionField,
+                Utils.getCurrentMilliseconds())
+          ]);
+          break;
+        case GrammarModes.grammarPoints:
+          toUpdate.addEntries([
+            MapEntry(GrammarTableFields.dateLastShownGrammarPointField,
+                Utils.getCurrentMilliseconds())
+          ]);
+          break;
+      }
 
       await _grammarPointRepository.updateGrammarPoint(
           event.listName, event.name, toUpdate);
@@ -105,9 +158,19 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
       for (int x = 0; x < orderedMap.keys.toList().length; x++) {
         String kanListName = orderedMap.keys.toList()[x];
         orderedMap[kanListName]?.forEach((p) {
-          if (p.winRateDefinition != DatabaseConstants.emptyWinRate) {
-            overallScore[kanListName] =
-                (overallScore[kanListName] ?? 0) + p.winRateDefinition;
+          switch (event.mode) {
+            case GrammarModes.definition:
+              if (p.winRateDefinition != DatabaseConstants.emptyWinRate) {
+                overallScore[kanListName] =
+                    (overallScore[kanListName] ?? 0) + p.winRateDefinition;
+              }
+              break;
+            case GrammarModes.grammarPoints:
+              if (p.winRateGrammarPoint != DatabaseConstants.emptyWinRate) {
+                overallScore[kanListName] =
+                    (overallScore[kanListName] ?? 0) + p.winRateGrammarPoint;
+              }
+              break;
           }
         });
 
@@ -117,7 +180,17 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
 
         /// We just need to update the totalWinRate as a reflection of the already
         /// meaned out words in the KanList
-        final toUpdate = {ListTableFields.totalWinRateDefinitionField: overall};
+        Map<String, dynamic> toUpdate = {};
+
+        switch (event.mode) {
+          case GrammarModes.definition:
+            toUpdate = {ListTableFields.totalWinRateDefinitionField: overall};
+            break;
+          case GrammarModes.grammarPoints:
+            toUpdate = {ListTableFields.totalWinRateGrammarPointField: overall};
+            break;
+        }
+
         await _listRepository.updateList(kanListName, toUpdate);
       }
     });
@@ -130,8 +203,17 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
       List<GrammarPoint> points = await _grammarPointRepository
           .getAllGrammarPointsFromList(event.listName);
       for (var p in points) {
-        if (p.winRateDefinition != DatabaseConstants.emptyWinRate) {
-          overallScore += p.winRateDefinition;
+        switch (event.mode) {
+          case GrammarModes.definition:
+            if (p.winRateDefinition != DatabaseConstants.emptyWinRate) {
+              overallScore += p.winRateDefinition;
+            }
+            break;
+          case GrammarModes.grammarPoints:
+            if (p.winRateGrammarPoint != DatabaseConstants.emptyWinRate) {
+              overallScore += p.winRateGrammarPoint;
+            }
+            break;
         }
       }
 
@@ -139,11 +221,20 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
     });
 
     on<GrammarModeEventUpdateListScore>((event, emit) async {
+      Map<String, dynamic> toUpdate = {};
+
       /// We just need to update the totalWinRate as a reflection of the already
       /// meaned out words in the KanList
-      final toUpdate = {
-        ListTableFields.totalWinRateDefinitionField: event.score
-      };
+      switch (event.mode) {
+        case GrammarModes.definition:
+          toUpdate = {ListTableFields.totalWinRateDefinitionField: event.score};
+          break;
+        case GrammarModes.grammarPoints:
+          toUpdate = {
+            ListTableFields.totalWinRateGrammarPointField: event.score
+          };
+          break;
+      }
       await _listRepository.updateList(event.listName, toUpdate);
     });
   }

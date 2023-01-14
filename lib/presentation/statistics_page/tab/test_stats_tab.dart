@@ -73,12 +73,19 @@ class _TestStatsState extends State<TestStats>
                 y: v.toDouble(),
                 color: StudyModes.speaking.color,
               );
-            } else {
+            } else if (index == 5) {
               final v = widget.stats.test.testTotalCountDefinition;
               return DataFrame(
                 x: GrammarModes.definition.mode,
                 y: v.toDouble(),
                 color: GrammarModes.definition.color,
+              );
+            } else {
+              final v = widget.stats.test.testTotalCountGrammarPoint;
+              return DataFrame(
+                x: GrammarModes.grammarPoints.mode,
+                y: v.toDouble(),
+                color: GrammarModes.grammarPoints.color,
               );
             }
           }),

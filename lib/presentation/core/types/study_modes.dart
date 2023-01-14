@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 
-/// TODO When adding a new study mode, be sure to update [TestHistoryFilters] too
+/// TODO when updating:
+/// When adding a new study mode, be sure to update [WordListFilter, TestHistoryFilters] too
+/// Be aware of changing the stats page and bloc to match the newly created mode
 enum StudyModes { writing, reading, recognition, listening, speaking }
 
 extension StudyModesExt on StudyModes {

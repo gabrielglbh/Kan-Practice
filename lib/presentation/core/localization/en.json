@@ -422,5 +422,7 @@
   "word_change_graphs": "Show words",
   "stats_grammar": "Total Number of Grammar Points",
   "market_filter_grammar": "Grammar points",
-  "markdown_support": "Markdown support. Tap here for more information."
+  "markdown_support": "Markdown support. Tap here for more information.",
+  "study_modes_grammarPoints": "Grammar Points",
+  "study_modes_grammarPoints_ext": "文法点"
 }

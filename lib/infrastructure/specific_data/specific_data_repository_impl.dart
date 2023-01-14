@@ -42,12 +42,14 @@ class SpecificDataRepositoryImpl implements ISpecificDataRepository {
         totalListeningCount: 0,
         totalSpeakingCount: 0,
         totalDefinitionCount: 0,
+        totalGrammarPointCount: 0,
         totalWinRateWriting: writing / list.length,
         totalWinRateReading: reading / list.length,
         totalWinRateRecognition: recognition / list.length,
         totalWinRateListening: listening / list.length,
         totalWinRateSpeaking: speaking / list.length,
         totalWinRateDefinition: 0,
+        totalWinRateGrammarPoint: 0,
       );
     } catch (err) {
       print(err.toString());
@@ -159,6 +161,16 @@ class SpecificDataRepositoryImpl implements ISpecificDataRepository {
                       count
             };
             break;
+          case GrammarModes.grammarPoints:
+            final count = raw.totalGrammarPointCount + 1;
+            map = {
+              TestSpecificDataTableFields.totalGrammarPointCountField: count,
+              TestSpecificDataTableFields.totalWinRateGrammarPointField:
+                  ((raw.totalWinRateGrammarPoint * raw.totalGrammarPointCount) +
+                          test.testScore) /
+                      count
+            };
+            break;
         }
       }
 
@@ -181,6 +193,7 @@ class SpecificDataRepositoryImpl implements ISpecificDataRepository {
             totalListeningCount: m == StudyModes.listening ? 1 : 0,
             totalSpeakingCount: m == StudyModes.speaking ? 1 : 0,
             totalDefinitionCount: 0,
+            totalGrammarPointCount: 0,
             totalWinRateWriting: m == StudyModes.writing ? test.testScore : 0,
             totalWinRateReading: m == StudyModes.reading ? test.testScore : 0,
             totalWinRateRecognition:
@@ -189,6 +202,7 @@ class SpecificDataRepositoryImpl implements ISpecificDataRepository {
                 m == StudyModes.listening ? test.testScore : 0,
             totalWinRateSpeaking: m == StudyModes.speaking ? test.testScore : 0,
             totalWinRateDefinition: -1,
+            totalWinRateGrammarPoint: -1,
           ).toJson(),
         );
       } else {
@@ -203,6 +217,7 @@ class SpecificDataRepositoryImpl implements ISpecificDataRepository {
             totalListeningCount: 0,
             totalSpeakingCount: 0,
             totalDefinitionCount: m == GrammarModes.definition ? 1 : 0,
+            totalGrammarPointCount: m == GrammarModes.grammarPoints ? 1 : 0,
             totalWinRateWriting: 0,
             totalWinRateReading: 0,
             totalWinRateRecognition: 0,
@@ -210,6 +225,8 @@ class SpecificDataRepositoryImpl implements ISpecificDataRepository {
             totalWinRateSpeaking: 0,
             totalWinRateDefinition:
                 m == GrammarModes.definition ? test.testScore : 0,
+            totalWinRateGrammarPoint:
+                m == GrammarModes.grammarPoints ? test.testScore : 0,
           ).toJson(),
         );
       }

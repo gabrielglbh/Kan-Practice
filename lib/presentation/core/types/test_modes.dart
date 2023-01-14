@@ -1,13 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-// TODO:
+/// TODO when updating:
 /// When adding a new test, be aware of the need to update the DB
 /// [TestDataTableFields] and [TestSpecificDataTableFields] along
 /// the [TestQueries] and [BackUpQueries] queries.  Dont forget
 /// the switch checks in the base code (see Usages on [Tests]).
 /// Also, add them to [TestFilters]
-
+/// Be aware of the stats page and bloc as the rates will change.
 enum Tests {
   lists,
   blitz,

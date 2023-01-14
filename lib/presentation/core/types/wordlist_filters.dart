@@ -11,6 +11,7 @@ enum WordListFilters {
   listening,
   speaking,
   definition,
+  grammarPoint
 }
 
 extension KanListFiltersExtensions on WordListFilters {
@@ -34,6 +35,8 @@ extension KanListFiltersExtensions on WordListFilters {
         return "${"study_modes_speaking".tr()} %";
       case WordListFilters.definition:
         return "${"study_modes_definition".tr()} %";
+      case WordListFilters.grammarPoint:
+        return "${"study_modes_grammarPoints".tr()} %";
     }
   }
 
@@ -57,6 +60,8 @@ extension KanListFiltersExtensions on WordListFilters {
         return WordTableFields.dateAddedField;
       case WordListFilters.definition:
         return ListTableFields.totalWinRateDefinitionField;
+      case WordListFilters.grammarPoint:
+        return ListTableFields.totalWinRateGrammarPointField;
     }
   }
 }
@@ -79,8 +84,10 @@ class KanListFiltersUtils {
       return WordListFilters.listening;
     } else if (f == ListTableFields.totalWinRateSpeakingField) {
       return WordListFilters.speaking;
-    } else {
+    } else if (f == ListTableFields.totalWinRateDefinitionField) {
       return WordListFilters.definition;
+    } else {
+      return WordListFilters.grammarPoint;
     }
   }
 }

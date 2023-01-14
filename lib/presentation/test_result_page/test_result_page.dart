@@ -89,7 +89,10 @@ class _TestResultPageState extends State<TestResultPage> {
               Visibility(
                 visible: widget.args.grammarList != null,
                 child: Expanded(
-                  child: GrammarPointOnTestList(list: widget.args.grammarList),
+                  child: GrammarPointOnTestList(
+                    list: widget.args.grammarList,
+                    mode: GrammarModes.values[widget.args.grammarMode ?? 0],
+                  ),
                 ),
               ),
               const SizedBox(height: KPMargins.margin8),

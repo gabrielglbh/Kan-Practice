@@ -422,5 +422,7 @@
   "word_change_graphs": "Mostrar palabras",
   "stats_grammar": "Número Total de Puntos Gramaticales",
   "market_filter_grammar": "Puntos gramaticales",
-  "markdown_support": "Soporte de Markdown. Pulsa aquí para más información."
+  "markdown_support": "Soporte de Markdown. Pulsa aquí para más información.",
+  "study_modes_grammarPoints": "Puntos Gramaticales",
+  "study_modes_grammarPoints_ext": "文法点"
 }

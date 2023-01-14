@@ -85,6 +85,9 @@ Future<void> _initSharedPreferences() async {
   if (prefs.readData(SharedKeys.definitionDailyNotification) == null) {
     prefs.saveData(SharedKeys.definitionDailyNotification, true);
   }
+  if (prefs.readData(SharedKeys.grammarPointDailyNotification) == null) {
+    prefs.saveData(SharedKeys.grammarPointDailyNotification, true);
+  }
   if (prefs.readData(SharedKeys.dailyTestOnControlledPace) == null) {
     prefs.saveData(SharedKeys.dailyTestOnControlledPace, false);
   }

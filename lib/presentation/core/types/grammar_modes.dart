@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 
-/// TODO When adding a new grammar mode, be sure to update [TestHistoryFilters] too
-enum GrammarModes { definition }
+/// TODO when updating:
+/// When adding a new grammar mode, be sure to update [WordListFilter, TestHistoryFilters] too
+/// Be aware of changing the stats page and bloc to match the newly created mode
+enum GrammarModes { definition, grammarPoints }
 
 extension GrammarModesExt on GrammarModes {
   String get mode {
     switch (this) {
       case GrammarModes.definition:
         return "study_modes_definition".tr();
+      case GrammarModes.grammarPoints:
+        return "study_modes_grammarPoints".tr();
     }
   }
 
@@ -17,6 +21,8 @@ extension GrammarModesExt on GrammarModes {
     switch (this) {
       case GrammarModes.definition:
         return Icons.school_rounded;
+      case GrammarModes.grammarPoints:
+        return Icons.translate_rounded;
     }
   }
 
@@ -24,6 +30,8 @@ extension GrammarModesExt on GrammarModes {
     switch (this) {
       case GrammarModes.definition:
         return "study_modes_definition_ext".tr();
+      case GrammarModes.grammarPoints:
+        return "study_modes_grammarPoints_ext".tr();
     }
   }
 
@@ -31,6 +39,8 @@ extension GrammarModesExt on GrammarModes {
     switch (this) {
       case GrammarModes.definition:
         return Colors.indigo.shade300;
+      case GrammarModes.grammarPoints:
+        return Colors.pink.shade300;
     }
   }
 
@@ -38,6 +48,8 @@ extension GrammarModesExt on GrammarModes {
     switch (this) {
       case GrammarModes.definition:
         return KanPracticePages.definitionStudyPage;
+      case GrammarModes.grammarPoints:
+        return KanPracticePages.grammarPointStudyPage;
     }
   }
 }

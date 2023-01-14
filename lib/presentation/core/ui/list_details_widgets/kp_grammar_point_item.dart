@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_win_rate_chart.dart';
@@ -7,6 +8,7 @@ import 'package:kanpractice/presentation/core/ui/kp_markdown.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KPGrammarPointItem extends StatelessWidget {
+  final bool aggregateStats;
   final String? listName;
   final GrammarPoint grammarPoint;
   final GrammarModes selectedMode;
@@ -17,6 +19,7 @@ class KPGrammarPointItem extends StatelessWidget {
   const KPGrammarPointItem({
     Key? key,
     this.listName,
+    this.aggregateStats = false,
     required this.grammarPoint,
     this.onRemoval,
     this.onTap,
@@ -24,6 +27,29 @@ class KPGrammarPointItem extends StatelessWidget {
     required this.index,
     required this.onShowModal,
   }) : super(key: key);
+
+  double _getProperGpWinRate(GrammarPoint gp) {
+    if (aggregateStats) {
+      final definition = (gp.winRateDefinition == DatabaseConstants.emptyWinRate
+          ? 0
+          : gp.winRateDefinition);
+      final grammarPoints =
+          (gp.winRateGrammarPoint == DatabaseConstants.emptyWinRate
+              ? 0
+              : gp.winRateGrammarPoint);
+
+      final aggregate = definition + grammarPoints;
+      if (aggregate == 0) return -1;
+      return aggregate / GrammarModes.values.length;
+    }
+
+    switch (selectedMode) {
+      case GrammarModes.definition:
+        return gp.winRateDefinition;
+      case GrammarModes.grammarPoints:
+        return gp.winRateGrammarPoint;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +68,9 @@ class KPGrammarPointItem extends StatelessWidget {
         type: MarkdownType.body,
       ),
       trailing: WinRateChart(
-        winRate: grammarPoint.winRateDefinition,
-        backgroundColor: selectedMode.color,
+        winRate: _getProperGpWinRate(grammarPoint),
+        backgroundColor:
+            aggregateStats ? KPColors.secondaryColor : selectedMode.color,
         size: KPSizes.defaultSizeWinRateChart / 3,
         rateSize: KPFontSizes.fontSize12,
       ),

@@ -97,6 +97,10 @@ class GrammarGrid extends StatelessWidget {
                       isAvailable = getIt<PreferencesService>()
                           .readData(SharedKeys.definitionDailyPerformed);
                       break;
+                    case GrammarModes.grammarPoints:
+                      isAvailable = getIt<PreferencesService>()
+                          .readData(SharedKeys.grammarPointDailyPerformed);
+                      break;
                   }
                 }
 

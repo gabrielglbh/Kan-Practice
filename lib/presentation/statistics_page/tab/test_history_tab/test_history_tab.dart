@@ -80,10 +80,42 @@ class _TestHistoryState extends State<TestHistory>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final mean = (widget.stats.test.testTotalWinRateWriting +
+            widget.stats.test.testTotalWinRateReading +
+            widget.stats.test.testTotalWinRateRecognition +
+            widget.stats.test.testTotalWinRateListening +
+            widget.stats.test.testTotalWinRateSpeaking +
+            widget.stats.test.testTotalWinRateDefinition +
+            widget.stats.test.testTotalWinRateGrammarPoint) /
+        (StudyModes.values.length + GrammarModes.values.length);
     return BlocBuilder<TestHistoryBloc, TestHistoryState>(
       builder: (context, state) => SingleChildScrollView(
         child: Column(
           children: [
+            StatsHeader(
+              title: "stats_tests_total_acc".tr(),
+              value: Utils.getFixedPercentageAsString(mean),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
+              child: !widget.showGrammar
+                  ? KPStudyModeRadialGraph(
+                      animationDuration: 0,
+                      writing: widget.stats.test.testTotalWinRateWriting,
+                      reading: widget.stats.test.testTotalWinRateReading,
+                      recognition:
+                          widget.stats.test.testTotalWinRateRecognition,
+                      listening: widget.stats.test.testTotalWinRateListening,
+                      speaking: widget.stats.test.testTotalWinRateSpeaking,
+                    )
+                  : KPGrammarModeRadialGraph(
+                      animationDuration: 0,
+                      definition: widget.stats.test.testTotalWinRateDefinition,
+                      grammarPoints:
+                          widget.stats.test.testTotalWinRateGrammarPoint,
+                    ),
+            ),
+            const Divider(),
             Row(
               mainAxisSize: MainAxisSize.max,
               children: [
@@ -137,29 +169,6 @@ class _TestHistoryState extends State<TestHistory>
             Padding(
               padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
               child: _body(state),
-            ),
-            const Divider(),
-            StatsHeader(
-              title: "stats_tests_total_acc".tr(),
-              value: Utils.getFixedPercentageAsString(
-                  widget.stats.test.totalTestAccuracy),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
-              child: !widget.showGrammar
-                  ? KPStudyModeRadialGraph(
-                      animationDuration: 0,
-                      writing: widget.stats.test.testTotalWinRateWriting,
-                      reading: widget.stats.test.testTotalWinRateReading,
-                      recognition:
-                          widget.stats.test.testTotalWinRateRecognition,
-                      listening: widget.stats.test.testTotalWinRateListening,
-                      speaking: widget.stats.test.testTotalWinRateSpeaking,
-                    )
-                  : KPGrammarModeRadialGraph(
-                      animationDuration: 0,
-                      definition: widget.stats.test.testTotalWinRateDefinition,
-                    ),
             ),
             const SizedBox(height: KPMargins.margin32)
           ],

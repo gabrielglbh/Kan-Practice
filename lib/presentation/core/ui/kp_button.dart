@@ -59,11 +59,17 @@ class KPButton extends StatelessWidget {
                   visible: title1 != null,
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: KPMargins.margin8),
-                    child: Text(title1 ?? "",
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headline6?.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: KPColors.primaryLight)),
+                    child: FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text(title1 ?? "",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline6
+                              ?.copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  color: KPColors.primaryLight)),
+                    ),
                   ),
                 ),
                 Visibility(

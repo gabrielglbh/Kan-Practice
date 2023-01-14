@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
+import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
+import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
@@ -41,6 +43,7 @@ class KPBarChart extends StatelessWidget {
           tooltipBehavior: TooltipBehavior(enable: enableTooltip),
           primaryXAxis: CategoryAxis(
             labelIntersectAction: AxisLabelIntersectAction.trim,
+            isVisible: isHorizontalChart ? true : false,
             isInversed: isHorizontalChart ? true : false,
           ),
           primaryYAxis: axysType,
@@ -54,6 +57,54 @@ class KPBarChart extends StatelessWidget {
                     name: graphName,
                     dataSource: dataSource,
                     pointColorMapper: (DataFrame data, _) => data.color,
+                    dataLabelSettings: DataLabelSettings(
+                      builder: ((data, point, series, pointIndex, seriesIndex) {
+                        if (pointIndex == 0) {
+                          return Icon(
+                            StudyModes.writing.icon,
+                            size: 18,
+                            color: StudyModes.writing.color,
+                          );
+                        } else if (pointIndex == 1) {
+                          return Icon(
+                            StudyModes.reading.icon,
+                            size: 18,
+                            color: StudyModes.reading.color,
+                          );
+                        } else if (pointIndex == 2) {
+                          return Icon(
+                            StudyModes.recognition.icon,
+                            size: 18,
+                            color: StudyModes.recognition.color,
+                          );
+                        } else if (pointIndex == 3) {
+                          return Icon(
+                            StudyModes.listening.icon,
+                            size: 18,
+                            color: StudyModes.listening.color,
+                          );
+                        } else if (pointIndex == 4) {
+                          return Icon(
+                            StudyModes.speaking.icon,
+                            size: 18,
+                            color: StudyModes.speaking.color,
+                          );
+                        } else if (pointIndex == 5) {
+                          return Icon(
+                            GrammarModes.definition.icon,
+                            size: 18,
+                            color: GrammarModes.definition.color,
+                          );
+                        } else {
+                          return Icon(
+                            GrammarModes.grammarPoints.icon,
+                            size: 18,
+                            color: GrammarModes.grammarPoints.color,
+                          );
+                        }
+                      }),
+                      isVisible: true,
+                    ),
                     xValueMapper: (DataFrame data, _) => data.x,
                     yValueMapper: (DataFrame data, _) =>
                         data.y == DatabaseConstants.emptyWinRate ? 0 : data.y,

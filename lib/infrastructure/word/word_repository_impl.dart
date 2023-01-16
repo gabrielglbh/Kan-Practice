@@ -256,7 +256,9 @@ class WordRepositoryImpl implements IWordRepository {
       final newestWordsList = List.generate(
           newestWords.length, (i) => Word.fromJson(newestWords[i]));
       newestWordsList.addAll(list);
-      final finalList = newestWordsList.toSet().toList().take(limit).toList();
+      final setList = <Word>{};
+      final finalList =
+          newestWordsList.where((w) => setList.add(w)).take(limit).toList();
       return finalList;
     } catch (e) {
       return [];

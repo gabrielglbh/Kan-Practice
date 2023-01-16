@@ -54,6 +54,17 @@ class GrammarPoint {
       _$GrammarPointFromJson(json);
   Map<String, dynamic> toJson() => _$GrammarPointToJson(this);
 
+  @override
+  bool operator ==(other) {
+    if (other is! GrammarPoint) return false;
+    return name == other.name &&
+        definition == other.definition &&
+        example == other.example;
+  }
+
+  @override
+  int get hashCode => (name + definition + example).hashCode;
+
   GrammarPoint copyWithUpdatedDate({int? dateAdded, int? dateLastShown}) =>
       GrammarPoint(
         name: name,

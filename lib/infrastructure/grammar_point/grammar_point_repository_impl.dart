@@ -185,8 +185,11 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
       final newestGrammarPointsList = List.generate(newestGrammarPoints.length,
           (i) => GrammarPoint.fromJson(newestGrammarPoints[i]));
       newestGrammarPointsList.addAll(list);
-      final finalList =
-          newestGrammarPointsList.toSet().toList().take(limit).toList();
+      final setList = <GrammarPoint>{};
+      final finalList = newestGrammarPointsList
+          .where((gp) => setList.add(gp))
+          .take(limit)
+          .toList();
       return finalList;
     } catch (e) {
       return [];

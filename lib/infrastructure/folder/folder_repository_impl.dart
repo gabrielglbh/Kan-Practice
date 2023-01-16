@@ -70,23 +70,50 @@ class FolderRepositoryImpl implements IFolderRepository {
       int? offset,
       int? limit}) async {
     try {
+      List<Map<String, dynamic>>? res = [];
       final limitParsed = limit != null ? "LIMIT $limit" : "";
       final offsetParsed =
           offset != null && limit != null ? "OFFSET ${offset * limit}" : "";
-      final res = await _database.rawQuery(
-          "SELECT DISTINCT R.${ListTableFields.nameField}, "
-          "R.${ListTableFields.totalWinRateWritingField}, "
-          "R.${ListTableFields.totalWinRateReadingField}, "
-          "R.${ListTableFields.totalWinRateRecognitionField}, "
-          "R.${ListTableFields.totalWinRateListeningField}, "
-          "R.${ListTableFields.totalWinRateSpeakingField}, "
-          "R.${ListTableFields.lastUpdatedField} "
-          "FROM ${RelationFolderListTableFields.relTable} L JOIN ${ListTableFields.listsTable} R "
-          "ON L.${RelationFolderListTableFields.listNameField}=R.${ListTableFields.nameField} "
-          "WHERE L.${RelationFolderListTableFields.nameField} LIKE '$folder' "
-          "ORDER BY R.${filter.filter} $order "
-          "$limitParsed $offsetParsed");
-      return List.generate(res.length, (i) => WordList.fromJson(res[i]));
+
+      if (filter != WordListFilters.recentlyAdded) {
+        res = await _database.rawQuery(
+            "SELECT DISTINCT R.${ListTableFields.nameField}, "
+            "R.${ListTableFields.totalWinRateWritingField}, "
+            "R.${ListTableFields.totalWinRateReadingField}, "
+            "R.${ListTableFields.totalWinRateRecognitionField}, "
+            "R.${ListTableFields.totalWinRateListeningField}, "
+            "R.${ListTableFields.totalWinRateSpeakingField}, "
+            "R.${ListTableFields.totalWinRateDefinitionField}, "
+            "R.${ListTableFields.totalWinRateGrammarPointField}, "
+            "R.${ListTableFields.lastUpdatedField} "
+            "FROM ${RelationFolderListTableFields.relTable} L JOIN ${ListTableFields.listsTable} R "
+            "ON L.${RelationFolderListTableFields.listNameField}=R.${ListTableFields.nameField} "
+            "WHERE L.${RelationFolderListTableFields.nameField} LIKE '$folder' "
+            "ORDER BY R.${filter.filter} $order "
+            "$limitParsed $offsetParsed");
+      } else {
+        res = await _database.rawQuery(
+            "SELECT A.${ListTableFields.nameField}, A.${ListTableFields.lastUpdatedField}, "
+            "A.${ListTableFields.totalWinRateWritingField}, A.${ListTableFields.totalWinRateReadingField}, "
+            "A.${ListTableFields.totalWinRateRecognitionField}, A.${ListTableFields.totalWinRateListeningField}, "
+            "A.${ListTableFields.totalWinRateSpeakingField}, A.${ListTableFields.totalWinRateDefinitionField}, "
+            "A.${ListTableFields.totalWinRateGrammarPointField}, "
+            "FROM ${ListTableFields.listsTable} A "
+            "JOIN "
+            "(SELECT ${WordTableFields.listNameField}, MAX(${filter.filter}) AS ${WordTableFields.dateAddedField} "
+            "FROM ${WordTableFields.wordTable} "
+            "GROUP BY ${WordTableFields.listNameField} "
+            "ORDER BY ${WordTableFields.dateAddedField}) B "
+            "ON A.${ListTableFields.nameField} = B.${WordTableFields.listNameField} "
+            "JOIN "
+            "${RelationFolderListTableFields.relTable} L "
+            "ON L.${RelationFolderListTableFields.listNameField}=A.${ListTableFields.nameField} "
+            "WHERE L.${RelationFolderListTableFields.nameField} LIKE '$folder' "
+            "ORDER BY B.${filter.filter} $order "
+            "$limitParsed $offsetParsed");
+      }
+      final list = List.generate(res.length, (i) => WordList.fromJson(res![i]));
+      return list;
     } catch (err) {
       print(err.toString());
       return [];
@@ -107,6 +134,8 @@ class FolderRepositoryImpl implements IFolderRepository {
           "R.${ListTableFields.totalWinRateRecognitionField}, "
           "R.${ListTableFields.totalWinRateListeningField}, "
           "R.${ListTableFields.totalWinRateSpeakingField}, "
+          "R.${ListTableFields.totalWinRateDefinitionField}, "
+          "R.${ListTableFields.totalWinRateGrammarPointField}, "
           "R.${ListTableFields.lastUpdatedField} "
           "FROM ${RelationFolderListTableFields.relTable} L JOIN ${ListTableFields.listsTable} R "
           "ON L.${RelationFolderListTableFields.listNameField}=R.${ListTableFields.nameField} "
@@ -292,9 +321,11 @@ class FolderRepositoryImpl implements IFolderRepository {
           "K.${GrammarTableFields.exampleField}, "
           "K.${GrammarTableFields.listNameField}, "
           "K.${GrammarTableFields.winRateDefinitionField}, "
+          "K.${GrammarTableFields.winRateGrammarPointField}, "
           "K.${GrammarTableFields.dateAddedField}, "
           "K.${GrammarTableFields.dateLastShownField}, "
           "K.${GrammarTableFields.dateLastShownDefinitionField}, "
+          "K.${GrammarTableFields.dateLastShownGrammarPointField}, "
           "FROM ${RelationFolderListTableFields.relTable} L JOIN ${ListTableFields.listsTable} R "
           "ON L.${RelationFolderListTableFields.listNameField}=R.${ListTableFields.nameField} "
           "JOIN ${GrammarTableFields.grammarTable} K "
@@ -309,6 +340,11 @@ class FolderRepositoryImpl implements IFolderRepository {
                   "$joinSelection ORDER BY K.${GrammarTableFields.dateLastShownDefinitionField} ASC, "
                   "K.${GrammarTableFields.winRateDefinitionField} ASC";
               break;
+            case GrammarModes.grammarPoints:
+              query =
+                  "$joinSelection ORDER BY K.${GrammarTableFields.dateLastShownGrammarPointField} ASC, "
+                  "K.${GrammarTableFields.winRateGrammarPointField} ASC";
+              break;
           }
         } else {
           return [];
@@ -320,6 +356,10 @@ class FolderRepositoryImpl implements IFolderRepository {
               query =
                   "$joinSelection ORDER BY K.${GrammarTableFields.dateLastShownDefinitionField} ASC";
               break;
+            case GrammarModes.grammarPoints:
+              query =
+                  "$joinSelection ORDER BY K.${GrammarTableFields.dateLastShownGrammarPointField} ASC";
+              break;
           }
         } else {
           return [];
@@ -330,6 +370,10 @@ class FolderRepositoryImpl implements IFolderRepository {
             case GrammarModes.definition:
               query =
                   "$joinSelection ORDER BY K.${GrammarTableFields.winRateDefinitionField} ASC";
+              break;
+            case GrammarModes.grammarPoints:
+              query =
+                  "$joinSelection ORDER BY K.${GrammarTableFields.winRateGrammarPointField} ASC";
               break;
           }
         } else {

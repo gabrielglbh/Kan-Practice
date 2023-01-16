@@ -40,7 +40,7 @@ class ExamplePhrases extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ScrollableText(
-                label: data[i].kanji,
+                label: data[i].word,
                 initial: true,
                 style: Theme.of(context)
                     .textTheme

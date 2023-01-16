@@ -6,7 +6,7 @@ import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/grammar_modes/utils/grammar_mode_arguments.dart';
 import 'package:kanpractice/presentation/test_result_page/arguments.dart';
 
@@ -93,7 +93,7 @@ class GrammarModeUpdateHandler {
 
                   /// If the user went back in mid list, update the list accordingly
                   else if (isPracticePopped) {
-                    /// If I am in the first kanji, just pop
+                    /// If I am in the first word, just pop
                     if (lastIndex == 0) {
                       Navigator.of(context).pop();
                     } else {
@@ -117,8 +117,8 @@ class GrammarModeUpdateHandler {
       _getMapOfGrammarPointInTest(
           List<GrammarPoint> studyList, List<double> testScores) {
     Map<String, List<Map<GrammarPoint, double>>> orderedMap = {};
-    for (var kanji in studyList) {
-      orderedMap[kanji.listName] = [];
+    for (var word in studyList) {
+      orderedMap[word.listName] = [];
     }
     for (int x = 0; x < studyList.length; x++) {
       orderedMap[studyList[x].listName]?.add({studyList[x]: testScores[x]});

@@ -102,12 +102,12 @@ class LoadTestBloc extends Bloc<LoadTestEvent, LoadTestState> {
       if (event.type == Tests.daily && controlledPace == true) {
         emit(LoadTestStateLoadedList(finalList, event.mode));
       } else {
-        final kanjiInTest =
-            _preferencesRepository.readData(SharedKeys.numberOfKanjiInTest) ??
-                KPSizes.numberOfKanjiInTest;
+        final wordsInTest =
+            _preferencesRepository.readData(SharedKeys.numberOfWordInTest) ??
+                KPSizes.numberOfWordInTest;
 
         List<Word> sortedList = finalList.sublist(
-            0, finalList.length < kanjiInTest ? finalList.length : kanjiInTest);
+            0, finalList.length < wordsInTest ? finalList.length : wordsInTest);
 
         emit(LoadTestStateLoadedList(sortedList, event.mode));
       }

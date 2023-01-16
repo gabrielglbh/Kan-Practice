@@ -8,13 +8,13 @@ import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
-import 'package:kanpractice/presentation/core/ui/kp_learning_header_animation.dart';
-import 'package:kanpractice/presentation/core/ui/kp_learning_header_container.dart';
-import 'package:kanpractice/presentation/core/ui/kp_list_percentage_indicator.dart';
-import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
-import 'package:kanpractice/presentation/core/ui/kp_study_mode_app_bar.dart';
-import 'package:kanpractice/presentation/core/ui/kp_tts_icon_button.dart';
-import 'package:kanpractice/presentation/core/ui/kp_validation_buttons.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_learning_header_animation.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_learning_header_container.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_list_percentage_indicator.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_study_mode_app_bar.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_tts_icon_button.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_validation_buttons.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
@@ -76,7 +76,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
       /// repetition, then do NOT calculate the score and return 0 directly.
       final condition =
           _hasRepetition && _macro >= widget.args.studyList.length;
-      final code = !condition ? await _calculateKanjiScore(score) : 0;
+      final code = !condition ? await _calculateWordScore(score) : 0;
 
       /// If everything went well, and we have words left in the list,
       /// update _macro to the next one.
@@ -113,7 +113,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
     }
   }
 
-  Future<int> _calculateKanjiScore(double score) async {
+  Future<int> _calculateWordScore(double score) async {
     getIt<StudyModeBloc>().add(StudyModeEventUpdateDateShown(
       listName: _studyList[_macro].listName,
       word: _studyList[_macro].word,

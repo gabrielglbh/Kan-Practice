@@ -7,13 +7,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
-import 'package:kanpractice/presentation/core/ui/kp_learning_header_animation.dart';
-import 'package:kanpractice/presentation/core/ui/kp_learning_header_container.dart';
-import 'package:kanpractice/presentation/core/ui/kp_list_percentage_indicator.dart';
-import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
-import 'package:kanpractice/presentation/core/ui/kp_study_mode_app_bar.dart';
-import 'package:kanpractice/presentation/core/ui/kp_tts_icon_button.dart';
-import 'package:kanpractice/presentation/core/ui/kp_validation_buttons.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_learning_header_animation.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_learning_header_container.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_list_percentage_indicator.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_study_mode_app_bar.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_tts_icon_button.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_validation_buttons.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
@@ -71,7 +71,7 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
       /// repetition, then do NOT calculate the score and return 0 directly.
       final condition =
           _hasRepetition && _macro >= widget.args.studyList.length;
-      final code = !condition ? await _calculateKanjiScore(score) : 0;
+      final code = !condition ? await _calculateWordScore(score) : 0;
 
       /// If everything went well, and we have words left in the list,
       /// update _macro to the next one.
@@ -108,7 +108,7 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
     }
   }
 
-  Future<int> _calculateKanjiScore(double score) async {
+  Future<int> _calculateWordScore(double score) async {
     /// Updates the dateLastShown attribute of the finished word AND
     /// the current specific last shown mode attribute
     getIt<StudyModeBloc>().add(StudyModeEventUpdateDateShown(
@@ -145,8 +145,8 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
     }
   }
 
-  String _getProperKanji() {
-    /// Based on the states, update the kanji
+  String _getProperWord() {
+    /// Based on the states, update the word
     if (_showInfo) {
       return _studyList[_macro].word;
     } else {
@@ -213,7 +213,7 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
       KPLearningHeaderContainer(
           fontSize: KPFontSizes.fontSize64,
           height: KPSizes.listStudyHeight,
-          text: _getProperKanji()),
+          text: _getProperWord()),
       KPLearningHeaderContainer(
           height: KPSizes.defaultSizeLearningExtContainer,
           text: _studyList[_macro].meaning,

@@ -11,7 +11,7 @@ import 'package:kanpractice/domain/word/word.dart';
 part 'word_details_event.dart';
 part 'word_details_state.dart';
 
-/// This bloc is used in kanji_lists.dart and jisho.dart
+/// This bloc is used in word_lists.dart and jisho.dart
 @lazySingleton
 class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
   final IListRepository _listRepository;
@@ -25,17 +25,17 @@ class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
       try {
         emit(WordDetailsStateLoading());
         if (event.isArchive) {
-          final kanji = await _wordRepository.getWord(
+          final word = await _wordRepository.getWord(
             event.word.word,
             meaning: event.word.meaning,
           );
-          emit(WordDetailsStateLoaded(kanji: kanji));
+          emit(WordDetailsStateLoaded(word: word));
         } else {
-          final kanji = await _wordRepository.getWord(
+          final word = await _wordRepository.getWord(
             event.word.word,
             listName: event.word.listName,
           );
-          emit(WordDetailsStateLoaded(kanji: kanji));
+          emit(WordDetailsStateLoaded(word: word));
         }
       } on Exception {
         emit(const WordDetailsStateFailure(error: ":("));
@@ -80,14 +80,14 @@ class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
 
             if (k.winRateWriting != DatabaseConstants.emptyWinRate) {
               /// Get the y value: total length of list prior to removal of
-              /// kanji multiplied by the overall win rate
+              /// word multiplied by the overall win rate
               double y = (words.length + 1) * list.totalWinRateWriting;
 
-              /// Subtract the winRate of the removed kanji to y
+              /// Subtract the winRate of the removed word to y
               double partialScore = y - k.winRateWriting;
 
               /// Calculate the new overall score with the partialScore divided
-              /// by the list without the kanji
+              /// by the list without the word
               wNewScore = partialScore / words.length;
             }
             if (k.winRateReading != DatabaseConstants.emptyWinRate) {
@@ -123,17 +123,17 @@ class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
         } else if (code == 1) {
           emit(WordDetailsStateFailure(
               error:
-                  "kanji_bottom_sheet_createDialogForDeletingKanji_removal_failed"
+                  "word_bottom_sheet_createDialogForDeletingWord_removal_failed"
                       .tr()));
         } else {
           emit(WordDetailsStateFailure(
-              error: "kanji_bottom_sheet_createDialogForDeletingKanji_failed"
-                  .tr()));
+              error:
+                  "word_bottom_sheet_createDialogForDeletingWord_failed".tr()));
         }
       } else {
         emit(WordDetailsStateFailure(
             error:
-                "kanji_bottom_sheet_createDialogForDeletingKanji_removal_failed"
+                "word_bottom_sheet_createDialogForDeletingWord_removal_failed"
                     .tr()));
       }
     });

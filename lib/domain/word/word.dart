@@ -93,6 +93,19 @@ class Word {
   factory Word.fromJson(Map<String, dynamic> json) => _$WordFromJson(json);
   Map<String, dynamic> toJson() => _$WordToJson(this);
 
+  @override
+  bool operator ==(other) {
+    if (other is! Word) return false;
+    return word == other.word &&
+        meaning == other.meaning &&
+        pronunciation == other.pronunciation &&
+        category == other.category;
+  }
+
+  @override
+  int get hashCode =>
+      (word + meaning + pronunciation + category.toString()).hashCode;
+
   Word copyWithUpdatedDate({int? dateAdded, int? dateLastShown}) => Word(
         word: word,
         listName: listName,

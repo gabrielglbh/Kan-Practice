@@ -8,13 +8,13 @@ import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/injection.dart';
-import 'package:kanpractice/presentation/core/ui/kp_learning_header_animation.dart';
-import 'package:kanpractice/presentation/core/ui/kp_learning_header_container.dart';
-import 'package:kanpractice/presentation/core/ui/kp_list_percentage_indicator.dart';
-import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
-import 'package:kanpractice/presentation/core/ui/kp_study_mode_app_bar.dart';
-import 'package:kanpractice/presentation/core/ui/kp_tts_icon_button.dart';
-import 'package:kanpractice/presentation/core/ui/kp_validation_buttons.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_learning_header_animation.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_learning_header_container.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_list_percentage_indicator.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_study_mode_app_bar.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_tts_icon_button.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_validation_buttons.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
@@ -52,7 +52,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
         .readData(SharedKeys.enableRepetitionOnTests);
     _studyList.addAll(widget.args.studyList);
 
-    /// Execute the TTS when passing to the next kanji
+    /// Execute the TTS when passing to the next word
     getIt<TextToSpeechService>().speakWord(_studyList[_macro].pronunciation);
     super.initState();
   }
@@ -73,7 +73,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
       /// repetition, then do NOT calculate the score and return 0 directly.
       final condition =
           _hasRepetition && _macro >= widget.args.studyList.length;
-      final code = !condition ? await _calculateKanjiScore(score) : 0;
+      final code = !condition ? await _calculateWordScore(score) : 0;
 
       /// If everything went well, and we have words left in the list,
       /// update _macro to the next one.
@@ -84,7 +84,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
             _showWord = false;
           });
 
-          /// Execute the TTS when passing to the next kanji
+          /// Execute the TTS when passing to the next word
           await getIt<TextToSpeechService>()
               .speakWord(_studyList[_macro].pronunciation);
         }
@@ -114,7 +114,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
     }
   }
 
-  Future<int> _calculateKanjiScore(double score) async {
+  Future<int> _calculateWordScore(double score) async {
     if (widget.args.isNumberTest) {
       /// If we are on a Number Test, just add the _testScores as the used numbers
       /// are not stored in the Database

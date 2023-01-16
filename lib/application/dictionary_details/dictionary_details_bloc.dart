@@ -24,9 +24,9 @@ class DictionaryDetailsBloc
       emit(DictionaryDetailsStateLoading());
       try {
         final infra = _dictionaryDetailsRepository;
-        KanjiResultData? resultData = await infra.searchWord(event.kanji);
-        List<JishoResult> resultPhrase = await infra.searchPhrase(event.kanji);
-        List<WordExample> example = await infra.searchForExample(event.kanji);
+        KanjiResultData? resultData = await infra.searchWord(event.word);
+        List<JishoResult> resultPhrase = await infra.searchPhrase(event.word);
+        List<WordExample> example = await infra.searchForExample(event.word);
 
         WordData data = WordData(
             resultData: resultData,

@@ -26,8 +26,8 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
       Map<String, dynamic> toUpdate = {};
 
       /// If winRate of any mode is -1, it means that the user has not studied this
-      /// kanji yet. Therefore, the score should be untouched.
-      /// If the winRate is different than -1, the user has already studied this kanji
+      /// word yet. Therefore, the score should be untouched.
+      /// If the winRate is different than -1, the user has already studied this word
       /// and then, a mean is calculated between the upcoming score and the previous one.
       switch (event.mode) {
         case StudyModes.writing:
@@ -223,7 +223,7 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
         overallScore[word.listName] = 0;
       }
 
-      /// For every entry, populate the list with all of the kanji of each list
+      /// For every entry, populate the list with all of the word of each list
       /// that appeared on the test
       for (int x = 0; x < orderedMap.keys.toList().length; x++) {
         String kanListName = orderedMap.keys.toList()[x];
@@ -301,35 +301,35 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
     on<StudyModeEventGetScore>((event, emit) async {
       double overallScore = 0;
 
-      /// Get the kanji from the DB rather than the args instance as the args
+      /// Get the word from the DB rather than the args instance as the args
       /// instance does not have the updated values
-      List<Word> kanji =
+      List<Word> words =
           await _wordRepository.getAllWordsFromList(event.listName);
-      for (var k in kanji) {
+      for (var w in words) {
         switch (event.mode) {
           case StudyModes.writing:
-            if (k.winRateWriting != DatabaseConstants.emptyWinRate) {
-              overallScore += k.winRateWriting;
+            if (w.winRateWriting != DatabaseConstants.emptyWinRate) {
+              overallScore += w.winRateWriting;
             }
             break;
           case StudyModes.reading:
-            if (k.winRateReading != DatabaseConstants.emptyWinRate) {
-              overallScore += k.winRateReading;
+            if (w.winRateReading != DatabaseConstants.emptyWinRate) {
+              overallScore += w.winRateReading;
             }
             break;
           case StudyModes.recognition:
-            if (k.winRateRecognition != DatabaseConstants.emptyWinRate) {
-              overallScore += k.winRateRecognition;
+            if (w.winRateRecognition != DatabaseConstants.emptyWinRate) {
+              overallScore += w.winRateRecognition;
             }
             break;
           case StudyModes.listening:
-            if (k.winRateListening != DatabaseConstants.emptyWinRate) {
-              overallScore += k.winRateListening;
+            if (w.winRateListening != DatabaseConstants.emptyWinRate) {
+              overallScore += w.winRateListening;
             }
             break;
           case StudyModes.speaking:
-            if (k.winRateSpeaking != DatabaseConstants.emptyWinRate) {
-              overallScore += k.winRateSpeaking;
+            if (w.winRateSpeaking != DatabaseConstants.emptyWinRate) {
+              overallScore += w.winRateSpeaking;
             }
             break;
         }

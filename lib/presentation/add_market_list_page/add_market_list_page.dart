@@ -5,10 +5,10 @@ import 'package:kanpractice/application/add_market_list/add_to_market_bloc.dart'
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/types/market_list_type.dart';
 import 'package:kanpractice/presentation/add_market_list_page/widgets/add_to_market_bottom_sheet.dart';
-import 'package:kanpractice/presentation/core/ui/folder_list_bottom_sheet.dart';
-import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
-import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
-import 'package:kanpractice/presentation/core/ui/kp_text_form.dart';
+import 'package:kanpractice/presentation/core/widgets/folder_list_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_text_form.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 

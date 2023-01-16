@@ -37,7 +37,7 @@ extension HomeTypeExt on HomeType {
   String get searchBarHint {
     switch (this) {
       case HomeType.kanlist:
-        return "kanji_lists_searchBar_hint".tr();
+        return "word_lists_searchBar_hint".tr();
       case HomeType.market:
         return "market_lists_searchBar_hint".tr();
       case HomeType.dictionary:

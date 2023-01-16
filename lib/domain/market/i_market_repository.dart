@@ -24,7 +24,7 @@ abstract class IMarketRepository {
     bool filterByMine = false,
   });
 
-  /// Uploads a Kanlist to the market place. Every list and kanji will be
+  /// Uploads a Kanlist to the market place. Every list and word will be
   /// reset upon upload.
   /// [list] and [word] will reset their win rates and dates upon upload.
   ///
@@ -38,7 +38,7 @@ abstract class IMarketRepository {
     String description,
   );
 
-  /// Uploads a Folder to the market place. Every list and kanji will be
+  /// Uploads a Folder to the market place. Every list and word will be
   /// reset upon upload.
   /// [list] and [word] will reset their win rates and dates upon upload.
   ///

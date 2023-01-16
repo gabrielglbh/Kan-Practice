@@ -6,11 +6,11 @@ import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:kanpractice/presentation/core/types/tab_types.dart';
-import 'package:kanpractice/presentation/core/ui/kp_button.dart';
-import 'package:kanpractice/presentation/core/ui/word_lists/kp_word_lists.dart';
-import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
-import 'package:kanpractice/presentation/core/ui/kp_search_bar.dart';
-import 'package:kanpractice/presentation/core/ui/kp_test_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
+import 'package:kanpractice/presentation/core/widgets/kanlists/kp_kanlists.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_search_bar.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_test_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/folder_details_page/widgets/practice_on_folder.dart';
 
@@ -110,7 +110,7 @@ class _FolderDetailsPageState extends State<FolderDetailsPage> {
                   },
                 ),
                 Expanded(
-                  child: KPWordLists(
+                  child: KPKanlists(
                     folder: widget.folder,
                     withinFolder: true,
                     removeFocus: () => _searchBarFn.unfocus(),

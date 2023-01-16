@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/domain/word/word.dart';
-import 'package:kanpractice/presentation/core/ui/kp_word_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_word_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 
@@ -38,7 +38,7 @@ class WordsOnTestList extends StatelessWidget {
                   Word? word = list?[listName]?[inner].keys.first;
                   double? testScore = list?[listName]?[inner].values.first;
                   return Container(
-                    width: KPSizes.defaultSizeKanjiItemOnResultTest,
+                    width: KPSizes.defaultSizeWordItemOnResultTest,
                     margin: const EdgeInsets.only(
                         left: KPMargins.margin4,
                         right: KPMargins.margin4,
@@ -64,7 +64,6 @@ class WordsOnTestList extends StatelessWidget {
                             await KPWordBottomSheet.show(
                                 context, (word?.listName ?? ""), word);
                           },
-                          // _createDialogForDeletingKanji(context, kanji.kanji),,
                           child: Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: KPMargins.margin2),

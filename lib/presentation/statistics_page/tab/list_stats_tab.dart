@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/specific_data/specific_data_bloc.dart';
 import 'package:kanpractice/presentation/core/types/word_categories.dart';
 import 'package:kanpractice/injection.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_bar_chart.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_grammar_mode_radial_graph.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_study_mode_radial_graph.dart';
+import 'package:kanpractice/presentation/core/widgets/graphs/kp_bar_chart.dart';
+import 'package:kanpractice/presentation/core/widgets/graphs/kp_data_frame.dart';
+import 'package:kanpractice/presentation/core/widgets/graphs/kp_grammar_mode_radial_graph.dart';
+import 'package:kanpractice/presentation/core/widgets/graphs/kp_study_mode_radial_graph.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/domain/stats/stats.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/spec_bottom_sheet.dart';
@@ -55,6 +55,7 @@ class _ListStatsState extends State<ListStats>
               : KPGrammarModeRadialGraph(
                   animationDuration: 0,
                   definition: widget.stats.totalWinRateDefinition,
+                  grammarPoints: widget.stats.totalWinRateGrammarPoint,
                 ),
         ),
         const Divider(),
@@ -71,7 +72,7 @@ class _ListStatsState extends State<ListStats>
             }
           },
           child: KPBarChart(
-            graphName: "kanji_category_label".tr(),
+            graphName: "word_category_label".tr(),
             animationDuration: 0,
             heightRatio: 3.5,
             enableTooltip: false,

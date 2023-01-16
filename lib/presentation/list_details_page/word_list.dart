@@ -10,10 +10,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/add_word_page/arguments.dart';
-import 'package:kanpractice/presentation/core/ui/kp_button.dart';
-import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
-import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
-import 'package:kanpractice/presentation/core/ui/list_details_widgets/kp_word_item.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/widgets/list_details_widgets/kp_word_item.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/list_details_page/widgets/practice_words_bottom_sheet.dart';
@@ -215,23 +215,16 @@ class _WordListWidgetState extends State<WordListWidget>
                 })),
           ),
         _aggrStats
-            ? Expanded(child: _kanjiList(state))
+            ? Expanded(child: _wordList(state))
             : Expanded(
                 child: GestureDetector(
-                /// Dismiss keyboard if possible whenever a vertical or horizontal
-                /// drag down occurs on screen
-                onVerticalDragStart: (details) {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                },
-                onHorizontalDragStart: (details) {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                },
-                onHorizontalDragEnd: (details) {
-                  double? pv = details.primaryVelocity;
-                  if (pv != null) _updateSelectedModePageView(pv);
-                },
-                child: _kanjiList(state),
-              )),
+                  onHorizontalDragEnd: (details) {
+                    double? pv = details.primaryVelocity;
+                    if (pv != null) _updateSelectedModePageView(pv);
+                  },
+                  child: _wordList(state),
+                ),
+              ),
         KPButton(
             title1: "list_details_practice_button_label_ext".tr(),
             title2: "list_details_practice_button_label".tr(),
@@ -251,7 +244,7 @@ class _WordListWidgetState extends State<WordListWidget>
     );
   }
 
-  Widget _kanjiList(ListDetailWordsStateLoaded state) {
+  Widget _wordList(ListDetailWordsStateLoaded state) {
     if (state.list.isEmpty) {
       return KPEmptyList(
           showTryButton: true,
@@ -259,7 +252,7 @@ class _WordListWidgetState extends State<WordListWidget>
           message: "list_details_empty".tr());
     }
     return GridView.builder(
-      key: const PageStorageKey<String>('kanjiListController'),
+      key: const PageStorageKey<String>('wordListController'),
       itemCount: state.list.length,
       controller: _scrollController,
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -276,7 +269,7 @@ class _WordListWidgetState extends State<WordListWidget>
           onShowModal: () => widget.searchBarFn?.unfocus(),
           onTap: () async {
             await Navigator.of(context)
-                .pushNamed(KanPracticePages.addKanjiPage,
+                .pushNamed(KanPracticePages.addWordPage,
                     arguments:
                         AddWordArgs(listName: widget.listName, word: word))
                 .then((code) {

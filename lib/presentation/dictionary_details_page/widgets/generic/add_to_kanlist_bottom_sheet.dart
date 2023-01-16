@@ -8,30 +8,29 @@ import 'package:kanpractice/presentation/core/types/word_categories.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/injection.dart';
-import 'package:kanpractice/presentation/core/ui/kp_create_kanlist_dialog.dart';
-import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
-import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
-import 'package:kanpractice/presentation/core/ui/kp_word_category_list.dart';
-import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_create_kanlist_dialog.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_word_category_list.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class AddToKanListBottomSheet extends StatefulWidget {
-  final String? kanji;
+  final String? word;
   final WordData data;
   const AddToKanListBottomSheet(
-      {Key? key, required this.kanji, required this.data})
+      {Key? key, required this.word, required this.data})
       : super(key: key);
 
   /// Creates and calls the [BottomSheet] with the content for a regular test
-  static Future<String?> callAddToKanListBottomSheet(
-      BuildContext context, String? kanji, WordData data) async {
+  static Future<String?> show(
+      BuildContext context, String? word, WordData data) async {
     return await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
-        builder: (context) =>
-            AddToKanListBottomSheet(kanji: kanji, data: data));
+        builder: (context) => AddToKanListBottomSheet(word: word, data: data));
   }
 
   @override
@@ -48,16 +47,16 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
     String? wordMeaning =
         widget.data.resultPhrase[0].senses[0].englishDefinitions[0];
     String? wordReading = widget.data.resultPhrase[0].japanese[0].reading ?? "";
-    String? singleKanjiMeaning = widget.data.resultData?.meaning.split(", ")[0];
-    String? singleKanjiReading = widget.data.resultData?.onyomi[0];
+    String? singleWordMeaning = widget.data.resultData?.meaning.split(", ")[0];
+    String? singleWordReading = widget.data.resultData?.onyomi[0];
 
-    String meaning = singleKanjiMeaning ?? wordMeaning;
-    String reading = singleKanjiReading ?? wordReading;
+    String meaning = singleWordMeaning ?? wordMeaning;
+    String reading = singleWordReading ?? wordReading;
 
     getIt<AddWordBloc>().add(
       AddWordEventCreate(
         word: Word(
-          word: widget.kanji ?? "",
+          word: widget.word ?? "",
           meaning:
               "${meaning[0].toUpperCase()}${meaning.substring(1).toLowerCase()}",
           pronunciation: reading,
@@ -87,8 +86,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
           listener: (context, state) {
             if (state is AddWordStateDoneCreating) {
               Navigator.of(context).pop();
-              Utils.getSnackBar(
-                  context, "add_kanji_createKanji_successful".tr());
+              Utils.getSnackBar(context, "add_word_createWord_successful".tr());
             } else if (state is AddWordStateFailure) {
               setState(() => _error = state.message);
             }
@@ -107,7 +105,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
                             vertical: KPMargins.margin8,
                             horizontal: KPMargins.margin32),
                         child: Text(
-                            "dict_jisho_add_kanji_bottom_sheet_title".tr(),
+                            "dict_jisho_add_word_bottom_sheet_title".tr(),
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.headline6),
                       ),

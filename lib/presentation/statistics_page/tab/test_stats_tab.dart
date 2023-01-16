@@ -6,8 +6,8 @@ import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/injection.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_bar_chart.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';
+import 'package:kanpractice/presentation/core/widgets/graphs/kp_bar_chart.dart';
+import 'package:kanpractice/presentation/core/widgets/graphs/kp_data_frame.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/domain/stats/stats.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/spec_bottom_sheet.dart';
@@ -73,12 +73,19 @@ class _TestStatsState extends State<TestStats>
                 y: v.toDouble(),
                 color: StudyModes.speaking.color,
               );
-            } else {
+            } else if (index == 5) {
               final v = widget.stats.test.testTotalCountDefinition;
               return DataFrame(
                 x: GrammarModes.definition.mode,
                 y: v.toDouble(),
                 color: GrammarModes.definition.color,
+              );
+            } else {
+              final v = widget.stats.test.testTotalCountGrammarPoint;
+              return DataFrame(
+                x: GrammarModes.grammarPoints.mode,
+                y: v.toDouble(),
+                color: GrammarModes.grammarPoints.color,
               );
             }
           }),

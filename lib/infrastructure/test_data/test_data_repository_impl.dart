@@ -20,7 +20,6 @@ class TestDataRepositoryImpl implements ITestDataRepository {
   @override
   Map<String, num> getAdditionalParams(TestData curr, Test test) {
     final score = test.testScore;
-    final totalLength = StudyModes.values.length + GrammarModes.values.length;
 
     if (test.grammarMode != null) {
       switch (GrammarModes.values[test.grammarMode!]) {
@@ -33,14 +32,16 @@ class TestDataRepositoryImpl implements ITestDataRepository {
           return {
             TestDataTableFields.testTotalCountDefinitionField: totalTests,
             TestDataTableFields.testTotalWinRateDefinitionField: newAcc,
-            TestDataTableFields.totalTestAccuracyField:
-                (curr.testTotalWinRateWriting +
-                        curr.testTotalWinRateReading +
-                        curr.testTotalWinRateRecognition +
-                        curr.testTotalWinRateListening +
-                        curr.testTotalWinRateSpeaking +
-                        newAcc) /
-                    totalLength
+          };
+        case GrammarModes.grammarPoints:
+          final totalTests = curr.testTotalCountGrammarPoint + 1;
+          final newAcc = ((curr.testTotalCountGrammarPoint *
+                      curr.testTotalWinRateGrammarPoint) +
+                  score) /
+              totalTests;
+          return {
+            TestDataTableFields.testTotalCountGrammarPointField: totalTests,
+            TestDataTableFields.testTotalWinRateGrammarPointField: newAcc,
           };
       }
     } else {
@@ -54,14 +55,6 @@ class TestDataRepositoryImpl implements ITestDataRepository {
           return {
             TestDataTableFields.testTotalCountWritingField: totalTests,
             TestDataTableFields.testTotalWinRateWritingField: newAcc,
-            TestDataTableFields.totalTestAccuracyField:
-                (curr.testTotalWinRateReading +
-                        curr.testTotalWinRateRecognition +
-                        curr.testTotalWinRateListening +
-                        curr.testTotalWinRateSpeaking +
-                        curr.testTotalWinRateDefinition +
-                        newAcc) /
-                    totalLength
           };
         case StudyModes.reading:
           final totalTests = curr.testTotalCountReading + 1;
@@ -72,14 +65,6 @@ class TestDataRepositoryImpl implements ITestDataRepository {
           return {
             TestDataTableFields.testTotalCountReadingField: totalTests,
             TestDataTableFields.testTotalWinRateReadingField: newAcc,
-            TestDataTableFields.totalTestAccuracyField:
-                (curr.testTotalWinRateWriting +
-                        curr.testTotalWinRateRecognition +
-                        curr.testTotalWinRateListening +
-                        curr.testTotalWinRateSpeaking +
-                        curr.testTotalWinRateDefinition +
-                        newAcc) /
-                    totalLength
           };
         case StudyModes.recognition:
           final totalTests = curr.testTotalCountRecognition + 1;
@@ -90,14 +75,6 @@ class TestDataRepositoryImpl implements ITestDataRepository {
           return {
             TestDataTableFields.testTotalCountRecognitionField: totalTests,
             TestDataTableFields.testTotalWinRateRecognitionField: newAcc,
-            TestDataTableFields.totalTestAccuracyField:
-                (curr.testTotalWinRateWriting +
-                        curr.testTotalWinRateReading +
-                        curr.testTotalWinRateListening +
-                        curr.testTotalWinRateSpeaking +
-                        curr.testTotalWinRateDefinition +
-                        newAcc) /
-                    totalLength
           };
         case StudyModes.listening:
           final totalTests = curr.testTotalCountListening + 1;
@@ -108,14 +85,6 @@ class TestDataRepositoryImpl implements ITestDataRepository {
           return {
             TestDataTableFields.testTotalCountListeningField: totalTests,
             TestDataTableFields.testTotalWinRateListeningField: newAcc,
-            TestDataTableFields.totalTestAccuracyField:
-                (curr.testTotalWinRateWriting +
-                        curr.testTotalWinRateReading +
-                        curr.testTotalWinRateRecognition +
-                        curr.testTotalWinRateSpeaking +
-                        curr.testTotalWinRateDefinition +
-                        newAcc) /
-                    totalLength
           };
         case StudyModes.speaking:
           final totalTests = curr.testTotalCountSpeaking + 1;
@@ -126,14 +95,6 @@ class TestDataRepositoryImpl implements ITestDataRepository {
           return {
             TestDataTableFields.testTotalCountSpeakingField: totalTests,
             TestDataTableFields.testTotalWinRateSpeakingField: newAcc,
-            TestDataTableFields.totalTestAccuracyField:
-                (curr.testTotalWinRateWriting +
-                        curr.testTotalWinRateReading +
-                        curr.testTotalWinRateRecognition +
-                        curr.testTotalWinRateListening +
-                        curr.testTotalWinRateDefinition +
-                        newAcc) /
-                    totalLength
           };
       }
     }

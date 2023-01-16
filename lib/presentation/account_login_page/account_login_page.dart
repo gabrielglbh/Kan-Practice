@@ -5,10 +5,10 @@ import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/sign_in_mode.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
-import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
-import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
-import 'package:kanpractice/presentation/core/ui/kp_text_form.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_text_form.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class LoginPage extends StatefulWidget {

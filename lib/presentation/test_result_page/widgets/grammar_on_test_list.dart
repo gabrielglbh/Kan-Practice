@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_win_rate_chart.dart';
-import 'package:kanpractice/presentation/core/ui/kp_grammar_point_bottom_sheet.dart';
-import 'package:kanpractice/presentation/core/ui/kp_markdown.dart';
+import 'package:kanpractice/presentation/core/widgets/graphs/kp_win_rate_chart.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_grammar_point_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_markdown.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class GrammarPointOnTestList extends StatelessWidget {
   final Map<String, List<Map<GrammarPoint, double>>>? list;
-  const GrammarPointOnTestList({super.key, required this.list});
+  final GrammarModes mode;
+  const GrammarPointOnTestList({
+    super.key,
+    required this.list,
+    required this.mode,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +53,9 @@ class GrammarPointOnTestList extends StatelessWidget {
                       data: gp.name,
                       type: MarkdownType.body,
                     ),
-                    trailing: WinRateChart(
+                    trailing: KPWinRateChart(
                       winRate: testScore,
-                      backgroundColor: GrammarModes.definition.color,
+                      backgroundColor: mode.color,
                       size: KPSizes.defaultSizeWinRateChart / 3,
                       rateSize: KPFontSizes.fontSize12,
                     ),

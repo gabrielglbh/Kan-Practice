@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:timeago/timeago.dart' as t;
@@ -161,19 +161,18 @@ class Utils {
       builder: (context) {
         return KPDialog(
           title: Text(version != null
-              ? "kanji_lists_versionDialog_title".tr()
-              : "${"kanji_lists_versionDialog_notes".tr()} ${pi.version}"),
+              ? "word_lists_versionDialog_title".tr()
+              : "${"word_lists_versionDialog_notes".tr()} ${pi.version}"),
           content: version != null
               ? Wrap(
                   children: [
-                    Text(
-                        "${"kanji_lists_versionDialog_notes".tr()} $version\n"),
+                    Text("${"word_lists_versionDialog_notes".tr()} $version\n"),
                     child
                   ],
                 )
               : child,
           positiveButtonText: version != null
-              ? 'kanji_lists_versionDialog_button_label'.tr()
+              ? 'word_lists_versionDialog_button_label'.tr()
               : 'Ok',
           onPositive: () async {
             if (version != null) {

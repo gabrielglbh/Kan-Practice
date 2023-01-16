@@ -8,12 +8,12 @@ abstract class DictionaryDetailsEvent extends Equatable {
 }
 
 class DictionaryDetailsLoadingEvent extends DictionaryDetailsEvent {
-  final String kanji;
+  final String word;
 
-  const DictionaryDetailsLoadingEvent({required this.kanji});
+  const DictionaryDetailsLoadingEvent({required this.word});
 
   @override
-  List<Object> get props => [kanji];
+  List<Object> get props => [word];
 }
 
 class DictionaryDetailsEventAddToHistory extends DictionaryDetailsEvent {

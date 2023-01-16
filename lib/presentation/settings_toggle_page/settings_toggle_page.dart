@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
-import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
-import 'package:kanpractice/presentation/core/ui/kp_switch.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_switch.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class SettingsTogglePage extends StatefulWidget {
@@ -90,10 +90,10 @@ class _SettingsTogglePageState extends State<SettingsTogglePage> {
           ListTile(
             leading: const Icon(Icons.group_work_rounded,
                 color: Colors.orangeAccent),
-            title: Text("settings_general_kanji_list".tr()),
+            title: Text("settings_general_word_list".tr()),
             subtitle: Padding(
                 padding: const EdgeInsets.only(top: KPMargins.margin8),
-                child: Text("settings_general_kanji_list_description".tr(),
+                child: Text("settings_general_word_list_description".tr(),
                     style: Theme.of(context)
                         .textTheme
                         .bodyText2

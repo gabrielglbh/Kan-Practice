@@ -7,12 +7,12 @@ import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
-import 'package:kanpractice/presentation/core/ui/kp_learning_header_animation.dart';
-import 'package:kanpractice/presentation/core/ui/kp_list_percentage_indicator.dart';
-import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
-import 'package:kanpractice/presentation/core/ui/kp_study_mode_app_bar.dart';
-import 'package:kanpractice/presentation/core/ui/kp_validation_buttons.dart';
-import 'package:kanpractice/presentation/core/ui/kp_markdown.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_learning_header_animation.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_list_percentage_indicator.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_study_mode_app_bar.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_validation_buttons.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_markdown.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/grammar_modes/utils/grammar_mode_arguments.dart';
@@ -194,6 +194,11 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
   }
 
   List<Widget> _header() {
+    final hint = _showGrammarName
+        ? "${_studyList[_macro].definition}\n\n"
+            "_${"add_grammar_textForm_example".tr()}_\n\n"
+            "${_getExample()}"
+        : _studyList[_macro].definition;
     return [
       if (_showGrammarName)
         KPMarkdown(
@@ -205,29 +210,10 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
         Text(_none, style: Theme.of(context).textTheme.headline4),
       const SizedBox(height: KPMargins.margin4),
       KPMarkdown(
-        data: _studyList[_macro].definition,
-        maxHeight: KPMargins.margin64 + KPMargins.margin24,
+        data: hint,
+        maxHeight: MediaQuery.of(context).size.height / 4,
         shrinkWrap: true,
       ),
-      const SizedBox(height: KPMargins.margin4),
-      if (_showGrammarName)
-        Column(
-          children: [
-            Text(
-              "${"add_grammar_textForm_example".tr()}:",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    decoration: TextDecoration.underline,
-                  ),
-            ),
-            const SizedBox(height: KPMargins.margin8),
-            KPMarkdown(
-              data: _getExample(),
-              maxHeight: KPMargins.margin64,
-              shrinkWrap: true,
-            ),
-          ],
-        )
     ];
   }
 }

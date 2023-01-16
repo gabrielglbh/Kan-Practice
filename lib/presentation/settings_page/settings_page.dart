@@ -12,7 +12,7 @@ import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
-import 'package:kanpractice/presentation/settings_page/widgets/change_kanji_test.dart';
+import 'package:kanpractice/presentation/settings_page/widgets/change_words_test.dart';
 import 'package:kanpractice/presentation/settings_page/widgets/change_theme.dart';
 import 'package:kanpractice/presentation/settings_page/widgets/copyrigh_info.dart';
 import 'package:kanpractice/presentation/settings_page/widgets/dev_info.dart';
@@ -27,13 +27,13 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  int _kanjiInTest = KPSizes.numberOfKanjiInTest;
+  int _wordsInTest = KPSizes.numberOfWordInTest;
 
   @override
   void initState() {
-    _kanjiInTest =
-        getIt<PreferencesService>().readData(SharedKeys.numberOfKanjiInTest) ??
-            KPSizes.numberOfKanjiInTest;
+    _wordsInTest =
+        getIt<PreferencesService>().readData(SharedKeys.numberOfWordInTest) ??
+            KPSizes.numberOfWordInTest;
     getIt<SettingsBloc>().add(SettingsLoadingBackUpDate(context));
     super.initState();
   }
@@ -97,18 +97,18 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         ListTile(
           leading: const Icon(Icons.adjust_rounded),
-          title: Text("settings_number_of_kanji_in_test".tr()),
-          trailing: Text("$_kanjiInTest",
+          title: Text("settings_number_of_word_in_test".tr()),
+          trailing: Text("$_wordsInTest",
               style: Theme.of(context)
                   .textTheme
                   .bodyText2
                   ?.copyWith(color: KPColors.midGrey)),
           onTap: () async {
-            final newValue = await ChangeKanjiInTest.show(context);
+            final newValue = await ChangeWordsInTest.show(context);
             if (newValue != null) {
-              setState(() => _kanjiInTest = newValue);
+              setState(() => _wordsInTest = newValue);
               getIt<PreferencesService>()
-                  .saveData(SharedKeys.numberOfKanjiInTest, _kanjiInTest);
+                  .saveData(SharedKeys.numberOfWordInTest, _wordsInTest);
             }
           },
         ),

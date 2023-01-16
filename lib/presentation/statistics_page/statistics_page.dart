@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/statistics/stats_bloc.dart';
 import 'package:kanpractice/application/test_history/test_history_bloc.dart';
 import 'package:kanpractice/injection.dart';
-import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
-import 'package:kanpractice/presentation/core/ui/kp_grammar_word_chip.dart';
-import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
-import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/types/list_details_types.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/domain/stats/stats.dart';
 import 'package:kanpractice/presentation/statistics_page/tab/list_stats_tab.dart';
@@ -73,6 +73,16 @@ class _StatisticsPageState extends State<StatisticsPage>
     return KPScaffold(
       appBarTitle: "settings_general_statistics".tr(),
       appBarActions: [
+        IconButton(
+          icon: Icon(
+            _showGrammarGraphs
+                ? ListDetailsType.words.icon
+                : ListDetailsType.grammar.icon,
+          ),
+          onPressed: () {
+            setState(() => _showGrammarGraphs = !_showGrammarGraphs);
+          },
+        ),
         if (_controller.index == _tabs.length - 1)
           BlocBuilder<TestHistoryBloc, TestHistoryState>(
             builder: (context, state) {
@@ -105,26 +115,12 @@ class _StatisticsPageState extends State<StatisticsPage>
         TabBar(controller: _controller, tabs: _tabs),
         const SizedBox(height: KPMargins.margin16),
         Expanded(
-          child: Stack(
-            alignment: Alignment.bottomCenter,
+          child: TabBarView(
+            controller: _controller,
             children: [
-              TabBarView(
-                controller: _controller,
-                children: [
-                  ListStats(stats: stats, showGrammar: _showGrammarGraphs),
-                  TestStats(stats: stats),
-                  TestHistory(stats: stats, showGrammar: _showGrammarGraphs),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: KPMargins.margin8),
-                child: KPGrammarWordChip(
-                  controller: _showGrammarGraphs,
-                  onPressed: () {
-                    setState(() => _showGrammarGraphs = !_showGrammarGraphs);
-                  },
-                ),
-              )
+              ListStats(stats: stats, showGrammar: _showGrammarGraphs),
+              TestStats(stats: stats),
+              TestHistory(stats: stats, showGrammar: _showGrammarGraphs),
             ],
           ),
         ),

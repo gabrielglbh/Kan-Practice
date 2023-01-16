@@ -72,7 +72,7 @@ class MarketRepositoryImpl implements IMarketRepository {
       return "market_need_auth".tr();
     } else {
       try {
-        /// Get sub collections for Folder, Relations, KanList and Kanji
+        /// Get sub collections for Folder, Relations, KanList and Word
         final folderSnapshot = await _ref
             .collection(collection)
             .doc(id)
@@ -147,7 +147,7 @@ class MarketRepositoryImpl implements IMarketRepository {
         batch = _folderRepository.mergeFolders(
             batch, [backUpFolder], ConflictAlgorithm.ignore);
 
-        /// Order matters as kanji depends on lists.
+        /// Order matters as words depends on lists.
         /// Conflict algorithm allows us to ignore if the insertion if the list already exists.
         batch = _listRepository.mergeLists(
             batch, backUpList, ConflictAlgorithm.ignore);
@@ -181,7 +181,7 @@ class MarketRepositoryImpl implements IMarketRepository {
       return "market_need_auth".tr();
     } else {
       try {
-        /// Get sub collections for KanList and Kanji
+        /// Get sub collections for KanList and Word
         final listSnapshot = await _ref
             .collection(collection)
             .doc(id)
@@ -235,7 +235,7 @@ class MarketRepositoryImpl implements IMarketRepository {
           return "market_download_already_installed".tr();
         }
 
-        /// Order matters as kanji depends on lists.
+        /// Order matters as words depends on lists.
         /// Conflict algorithm allows us to ignore if the insertion if the list already exists.
         Batch? batch = _database.batch();
 
@@ -603,7 +603,7 @@ class MarketRepositoryImpl implements IMarketRepository {
           return -3;
         }
 
-        /// Initialize Market, KanList and Kanjis
+        /// Initialize Market, KanList and Words
         final Market market = Market(
           name: name,
           words: words.length,

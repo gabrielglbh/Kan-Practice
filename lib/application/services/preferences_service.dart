@@ -33,7 +33,7 @@ class SharedKeys {
   static const String haveSeenKanListDetailCoachMark =
       "haveSeenKanListDetailCoachMark";
 
-  static const String numberOfKanjiInTest = "numberOfKanjiInTest";
+  static const String numberOfWordInTest = "numberOfKanjiInTest";
   static const String folderWhenOnTest = "folderWhenOnTest";
   static const String enableRepetitionOnTests = "enableRepetitionOnTests";
 
@@ -45,6 +45,8 @@ class SharedKeys {
   static const String speakingDailyNotification = "speakingDailyNotification";
   static const String definitionDailyNotification =
       "definitionDailyNotification";
+  static const String grammarPointDailyNotification =
+      "grammarPointDailyNotification";
 
   static const String dailyTestOnControlledPace = "dailyTestOnControlledPace";
   static const String writingDailyPerformed = "writingDailyPerformed";
@@ -53,6 +55,7 @@ class SharedKeys {
   static const String listeningDailyPerformed = "listeningDailyPerformed";
   static const String speakingDailyPerformed = "speakingDailyPerformed";
   static const String definitionDailyPerformed = "definitionDailyPerformed";
+  static const String grammarPointDailyPerformed = "grammarPointDailyPerformed";
 
   static const String showGrammarGraphs = "showGrammarGraphs";
 }

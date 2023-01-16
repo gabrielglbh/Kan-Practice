@@ -5,9 +5,9 @@ import 'package:kanpractice/injection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
-import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
-import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
-import 'package:kanpractice/presentation/core/ui/list_details_widgets/kp_word_item.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/widgets/list_details_widgets/kp_word_item.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class ArchiveWordListWidget extends StatefulWidget {
@@ -101,11 +101,11 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
 
   Column _body(ArchiveWordsStateLoaded state) {
     return Column(
-      children: [Expanded(child: _kanjiList(state))],
+      children: [Expanded(child: _wordList(state))],
     );
   }
 
-  Widget _kanjiList(ArchiveWordsStateLoaded state) {
+  Widget _wordList(ArchiveWordsStateLoaded state) {
     if (state.list.isEmpty) {
       return KPEmptyList(
           showTryButton: true,
@@ -113,7 +113,7 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
           message: "list_details_empty".tr());
     }
     return GridView.builder(
-      key: const PageStorageKey<String>('kanjiListController'),
+      key: const PageStorageKey<String>('wordListController'),
       itemCount: state.list.length,
       controller: _scrollController,
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,

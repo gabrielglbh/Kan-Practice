@@ -10,6 +10,7 @@ enum TestModeFilters {
   listening,
   speaking,
   definition,
+  grammarPoint,
 }
 
 extension StudyModeFiltersExt on TestModeFilters {
@@ -29,6 +30,8 @@ extension StudyModeFiltersExt on TestModeFilters {
         return "study_modes_speaking".tr();
       case TestModeFilters.definition:
         return "study_modes_definition".tr();
+      case TestModeFilters.grammarPoint:
+        return "study_modes_grammarPoints".tr();
     }
   }
 
@@ -48,6 +51,8 @@ extension StudyModeFiltersExt on TestModeFilters {
         return Colors.red.shade200;
       case TestModeFilters.definition:
         return Colors.indigo.shade300;
+      case TestModeFilters.grammarPoint:
+        return Colors.pink.shade300;
     }
   }
 }

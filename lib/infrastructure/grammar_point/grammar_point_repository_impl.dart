@@ -6,7 +6,6 @@ import 'package:kanpractice/domain/grammar_point/i_grammar_point_repository.dart
 import 'package:kanpractice/domain/services/i_preferences_repository.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
-import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:sqflite/sqflite.dart';
 
 @LazySingleton(as: IGrammarPointRepository)
@@ -40,6 +39,10 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
               query = "SELECT * FROM ${GrammarTableFields.grammarTable} "
                   "ORDER BY ${GrammarTableFields.dateLastShownDefinitionField} ASC";
               break;
+            case GrammarModes.grammarPoints:
+              query = "SELECT * FROM ${GrammarTableFields.grammarTable} "
+                  "ORDER BY ${GrammarTableFields.dateLastShownGrammarPointField} ASC";
+              break;
           }
         } else {
           return [];
@@ -50,6 +53,10 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
             case GrammarModes.definition:
               query = "SELECT * FROM ${GrammarTableFields.grammarTable} "
                   "ORDER BY ${GrammarTableFields.winRateDefinitionField} ASC";
+              break;
+            case GrammarModes.grammarPoints:
+              query = "SELECT * FROM ${GrammarTableFields.grammarTable} "
+                  "ORDER BY ${GrammarTableFields.winRateGrammarPointField} ASC";
               break;
           }
         } else {
@@ -109,7 +116,7 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
       final controlledPace =
           _preferencesRepository.readData(SharedKeys.dailyTestOnControlledPace);
       int limit =
-          _preferencesRepository.readData(SharedKeys.numberOfKanjiInTest);
+          _preferencesRepository.readData(SharedKeys.numberOfWordInTest);
 
       if (controlledPace) {
         // Divide number of total words of the user's db by the weekdays
@@ -123,6 +130,11 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
           case GrammarModes.definition:
             final canBePerformed = _preferencesRepository
                 .readData(SharedKeys.definitionDailyPerformed);
+            if (canBePerformed != 0 && canBePerformed != null) return [];
+            break;
+          case GrammarModes.grammarPoints:
+            final canBePerformed = _preferencesRepository
+                .readData(SharedKeys.grammarPointDailyPerformed);
             if (canBePerformed != 0 && canBePerformed != null) return [];
             break;
         }
@@ -150,6 +162,20 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
               "${GrammarTableFields.dateAddedField} DESC "
               "LIMIT $limit";
           break;
+        case GrammarModes.grammarPoints:
+          query = "SELECT * FROM ${GrammarTableFields.grammarTable} "
+              "WHERE ${GrammarTableFields.previousIntervalAsDateGrammarPointField} <= $today "
+              "ORDER BY ${GrammarTableFields.previousIntervalAsDateGrammarPointField} DESC, "
+              "${GrammarTableFields.winRateGrammarPointField} ASC, "
+              "${GrammarTableFields.dateAddedField} DESC "
+              "LIMIT $limit";
+          newestGrammarPointsQuery =
+              "SELECT * FROM ${GrammarTableFields.grammarTable} "
+              "WHERE ${GrammarTableFields.previousIntervalAsDateGrammarPointField} == 0 "
+              "ORDER BY ${GrammarTableFields.winRateGrammarPointField} ASC, "
+              "${GrammarTableFields.dateAddedField} DESC "
+              "LIMIT $limit";
+          break;
       }
       final res = await _database.rawQuery(query);
       final newestGrammarPoints =
@@ -159,8 +185,11 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
       final newestGrammarPointsList = List.generate(newestGrammarPoints.length,
           (i) => GrammarPoint.fromJson(newestGrammarPoints[i]));
       newestGrammarPointsList.addAll(list);
-      final finalList =
-          newestGrammarPointsList.toSet().toList().take(limit).toList();
+      final setList = <GrammarPoint>{};
+      final finalList = newestGrammarPointsList
+          .where((gp) => setList.add(gp))
+          .take(limit)
+          .toList();
       return finalList;
     } catch (e) {
       return [];
@@ -250,7 +279,7 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
       final controlledPace =
           prefs.readData(SharedKeys.dailyTestOnControlledPace);
       List<String> limitQuery =
-          List.generate(StudyModes.values.length, (_) => '');
+          List.generate(GrammarModes.values.length, (_) => '');
       // Resets check on daily performed tests based on the ms on
       // the saved key and the next day's 00:00 ms.
       //
@@ -271,10 +300,18 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
           prefs.saveData(SharedKeys.definitionDailyPerformed, 0);
           limitQuery[0] = "LIMIT $limit";
         }
+
+        final g = prefs.readData(SharedKeys.grammarPointDailyPerformed);
+        if (g == null || (g != null && g <= now)) {
+          prefs.saveData(SharedKeys.grammarPointDailyPerformed, 0);
+          limitQuery[1] = "LIMIT $limit";
+        }
       }
 
       final definitionNotification =
           prefs.readData(SharedKeys.definitionDailyNotification);
+      final grammarPointNotification =
+          prefs.readData(SharedKeys.grammarPointDailyNotification);
       final today = DateTime.now().millisecondsSinceEpoch;
 
       final resDefinition = definitionNotification
@@ -287,7 +324,17 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
                   "WHERE ${GrammarTableFields.previousIntervalAsDateDefinitionField} <= $today "
                   "${limitQuery[0]}")
           : [];
-      return [resDefinition.length];
+      final resGrammarPoint = grammarPointNotification
+          // If no limit has been set and we are in controlledPace mode
+          // it means that there is no available tests for now.
+          ? controlledPace && limitQuery[1].isEmpty
+              ? []
+              : await _database.rawQuery(
+                  "SELECT ${GrammarTableFields.definitionField} FROM ${GrammarTableFields.grammarTable} "
+                  "WHERE ${GrammarTableFields.previousIntervalAsDateGrammarPointField} <= $today "
+                  "${limitQuery[1]}")
+          : [];
+      return [resDefinition.length, resGrammarPoint.length];
     } catch (err) {
       print(err.toString());
       return [];
@@ -314,18 +361,24 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
       List<GrammarPoint> gp =
           List.generate(res.length, (i) => GrammarPoint.fromJson(res[i]));
       final int total = gp.length;
-      double definition = 0;
+      double definition = 0, grammarPoints = 0;
       for (var point in gp) {
         definition += (point.winRateDefinition == DatabaseConstants.emptyWinRate
             ? 0
             : point.winRateDefinition);
+        grammarPoints +=
+            (point.winRateGrammarPoint == DatabaseConstants.emptyWinRate
+                ? 0
+                : point.winRateGrammarPoint);
       }
       return GrammarPoint(
-          name: '',
-          definition: '',
-          listName: '',
-          example: '',
-          winRateDefinition: definition == 0 ? 0 : definition / total);
+        name: '',
+        definition: '',
+        listName: '',
+        example: '',
+        winRateDefinition: definition == 0 ? 0 : definition / total,
+        winRateGrammarPoint: grammarPoints == 0 ? 0 : grammarPoints / total,
+      );
     } catch (err) {
       print(err.toString());
       return GrammarPoint.empty;

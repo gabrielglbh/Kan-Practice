@@ -4,8 +4,8 @@ import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
-import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
-import 'package:kanpractice/presentation/core/ui/kp_switch.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_switch.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class SettingsDailyOptionsPage extends StatefulWidget {
@@ -23,6 +23,7 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
   bool _listeningNotification = true;
   bool _speakingNotification = true;
   bool _definitionNotification = true;
+  bool _grammarPointNotification = true;
   bool _controlledPace = true;
 
   @override
@@ -39,6 +40,8 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
         .readData(SharedKeys.speakingDailyNotification);
     _definitionNotification = getIt<PreferencesService>()
         .readData(SharedKeys.definitionDailyNotification);
+    _grammarPointNotification = getIt<PreferencesService>()
+        .readData(SharedKeys.grammarPointDailyNotification);
     _controlledPace = getIt<PreferencesService>()
         .readData(SharedKeys.dailyTestOnControlledPace);
     super.initState();
@@ -157,6 +160,17 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
               getIt<PreferencesService>()
                   .saveData(SharedKeys.definitionDailyNotification, v);
               setState(() => _definitionNotification = v);
+            },
+          ),
+          _notificationDaily(
+            _grammarPointNotification,
+            Icon(GrammarModes.grammarPoints.icon,
+                color: GrammarModes.grammarPoints.color),
+            GrammarModes.grammarPoints.mode,
+            (v) {
+              getIt<PreferencesService>()
+                  .saveData(SharedKeys.grammarPointDailyNotification, v);
+              setState(() => _grammarPointNotification = v);
             },
           ),
           const Divider(),

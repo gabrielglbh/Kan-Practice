@@ -8,10 +8,10 @@ import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/folder_filters.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
-import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
-import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
-import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
-import 'package:kanpractice/presentation/core/ui/kp_test_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_test_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 
@@ -200,7 +200,7 @@ class _FolderListPageState extends State<FolderListPage>
     return ListTile(
       onTap: () {
         Navigator.of(context).pushNamed(
-          KanPracticePages.kanjiListOnFolderPage,
+          KanPracticePages.wordListOnFolderPage,
           arguments: folder.folder,
         );
         widget.removeFocus();

@@ -18,7 +18,7 @@ class BackUp {
   final List<RelationFolderList> relationFolderList;
   final int lastUpdated;
 
-  static const String kanjiLabel = "kanji";
+  static const String wordsLabel = "kanji";
   static const String listLabel = "lists";
   static const String testLabel = "testData";
   static const String testSpecLabel = "testSpecData";

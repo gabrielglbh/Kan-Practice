@@ -5,9 +5,9 @@ import 'package:kanpractice/application/archive_grammar_points/archive_grammar_p
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
-import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
-import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
-import 'package:kanpractice/presentation/core/ui/list_details_widgets/kp_grammar_point_item.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/widgets/list_details_widgets/kp_grammar_point_item.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class ArchiveGrammarListWidget extends StatefulWidget {
@@ -128,6 +128,7 @@ class _ArchiveGrammarListWidgetState extends State<ArchiveGrammarListWidget>
         return KPGrammarPointItem(
           index: k,
           grammarPoint: gp,
+          aggregateStats: true,
           selectedMode: _selectedMode,
           onShowModal: () => widget.searchBarFn?.unfocus(),
         );

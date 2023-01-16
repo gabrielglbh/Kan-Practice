@@ -14,12 +14,12 @@ class WordDetailsStateLoading extends WordDetailsState {}
 class WordDetailsStateRemoved extends WordDetailsState {}
 
 class WordDetailsStateLoaded extends WordDetailsState {
-  final Word kanji;
+  final Word word;
 
-  const WordDetailsStateLoaded({this.kanji = Word.empty});
+  const WordDetailsStateLoaded({this.word = Word.empty});
 
   @override
-  List<Object> get props => [kanji];
+  List<Object> get props => [word];
 }
 
 class WordDetailsStateFailure extends WordDetailsState {

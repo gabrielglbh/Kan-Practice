@@ -5,13 +5,13 @@ import 'package:kanpractice/application/dictionary/dict_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/presentation/core/ui/canvas/kp_custom_canvas.dart';
-import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
-import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/widgets/canvas/kp_custom_canvas.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
 import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
-import 'package:kanpractice/presentation/dictionary_page/widgets/kanji_search_bar.dart';
+import 'package:kanpractice/presentation/dictionary_page/widgets/word_search_bar.dart';
 
 import '../core/util/utils.dart';
 
@@ -55,7 +55,7 @@ class _DictionaryPageState extends State<DictionaryPage>
       setGestureDetector: false,
       appBarTitle: widget.args.searchInJisho
           ? "dict_title".tr()
-          : 'dict_add_kanji_title'.tr(),
+          : 'dict_add_word_title'.tr(),
       child: _body(),
     );
   }
@@ -133,12 +133,12 @@ class _DictionaryPageState extends State<DictionaryPage>
     );
   }
 
-  KanjiSearchBar _searchBar() {
-    return KanjiSearchBar(
+  WordSearchBar _searchBar() {
+    return WordSearchBar(
       top: 0,
       hint: widget.args.searchInJisho
           ? "dict_search_bar_hint".tr()
-          : "add_kanji_textForm_kanji_ext".tr(),
+          : "add_word_textForm_word_ext".tr(),
       controller: _searchBarTextController,
       enabled: widget.args.searchInJisho,
       onChange: (value) {
@@ -212,13 +212,13 @@ class _DictionaryPageState extends State<DictionaryPage>
         itemCount: state.predictions.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          final String kanji = state.predictions[index].label.substring(0, 1);
+          final String word = state.predictions[index].label.substring(0, 1);
           final double score = state.predictions[index].score;
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin2),
             child: ActionChip(
                 label: Text(
-                  kanji,
+                  word,
                   style: TextStyle(
                       fontSize: KPFontSizes.fontSize18,
                       color: Utils.getTextColorBasedOnScore(score)),
@@ -229,7 +229,7 @@ class _DictionaryPageState extends State<DictionaryPage>
                 pressElevation: KPMargins.margin2,
                 onPressed: () {
                   FocusManager.instance.primaryFocus?.unfocus();
-                  _searchBarTextController.text += kanji;
+                  _searchBarTextController.text += word;
                   setState(() => _line = []);
                 }),
           );

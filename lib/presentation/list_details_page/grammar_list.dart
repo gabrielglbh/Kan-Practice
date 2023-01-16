@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/list_details_grammar_points/list_details_grammar_points_bloc.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/injection.dart';
@@ -9,10 +10,11 @@ import 'package:kanpractice/presentation/add_grammar_point_page/arguments.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
-import 'package:kanpractice/presentation/core/ui/kp_button.dart';
-import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
-import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
-import 'package:kanpractice/presentation/core/ui/list_details_widgets/kp_grammar_point_item.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/widgets/list_details_widgets/kp_grammar_point_item.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/grammar_modes/utils/grammar_mode_arguments.dart';
 
@@ -37,11 +39,18 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
 
-  final _selectedMode = GrammarModes.definition;
+  TabController? _tabController;
+  GrammarModes _selectedMode = GrammarModes.definition;
+  bool _aggrStats = false;
 
   @override
   void initState() {
+    _tabController =
+        TabController(length: GrammarModes.values.length, vsync: this);
+    _tabController?.addListener(_tabControllerManagement);
     _scrollController.addListener(_scrollListener);
+    _aggrStats = getIt<PreferencesService>()
+        .readData(SharedKeys.kanListListVisualization);
     getIt<ListDetailGrammarPointsBloc>().add(
       ListDetailGrammarPointsEventLoading(widget.listName, reset: true),
     );
@@ -50,6 +59,7 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
 
   @override
   void dispose() {
+    _tabController?.dispose();
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
     super.dispose();
@@ -68,6 +78,34 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
       else {
         _addLoadingEvent();
       }
+    }
+  }
+
+  _tabControllerManagement() {
+    widget.searchBarFn?.unfocus();
+    setState(() {
+      _selectedMode = GrammarModes.values[_tabController?.index ?? 0];
+    });
+  }
+
+  _onModeChange(GrammarModes newMode) {
+    widget.searchBarFn?.unfocus();
+    setState(() {
+      _selectedMode = newMode;
+    });
+    _tabController?.animateTo(newMode.index,
+        duration: const Duration(milliseconds: KPAnimations.ms300),
+        curve: Curves.easeInOut);
+  }
+
+  _updateSelectedModePageView(double pv) {
+    switch (_selectedMode) {
+      case GrammarModes.definition:
+        if (pv < 0) _onModeChange(GrammarModes.grammarPoints);
+        break;
+      case GrammarModes.grammarPoints:
+        if (pv > 0) _onModeChange(GrammarModes.definition);
+        break;
     }
   }
 
@@ -134,7 +172,32 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
   Column _body(ListDetailGrammarPointsStateLoaded state) {
     return Column(
       children: [
-        Expanded(child: _grammarList(state)),
+        if (!_aggrStats)
+          Padding(
+            padding: const EdgeInsets.only(bottom: KPMargins.margin8),
+            child: TabBar(
+                controller: _tabController,
+                tabs: List.generate(GrammarModes.values.length, (index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Icon(
+                      GrammarModes.values[index].icon,
+                      color: GrammarModes.values[index].color,
+                    ),
+                  );
+                })),
+          ),
+        _aggrStats
+            ? Expanded(child: _grammarList(state))
+            : Expanded(
+                child: GestureDetector(
+                  onHorizontalDragEnd: (details) {
+                    double? pv = details.primaryVelocity;
+                    if (pv != null) _updateSelectedModePageView(pv);
+                  },
+                  child: _grammarList(state),
+                ),
+              ),
         KPButton(
             title1: "list_details_practice_button_label_ext".tr(),
             title2: "list_details_practice_button_label".tr(),
@@ -165,6 +228,7 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
         return KPGrammarPointItem(
           index: k,
           grammarPoint: gp,
+          aggregateStats: _aggrStats,
           listName: widget.listName,
           selectedMode: _selectedMode,
           onShowModal: () => widget.searchBarFn?.unfocus(),

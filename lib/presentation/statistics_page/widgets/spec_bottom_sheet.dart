@@ -6,11 +6,11 @@ import 'package:kanpractice/presentation/core/types/list_details_types.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/domain/specific_data/specific_data.dart';
 import 'package:kanpractice/infrastructure/specific_data/specific_data_repository_impl.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_bar_chart.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_data_frame.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_grammar_mode_radial_graph.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_study_mode_radial_graph.dart';
-import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
+import 'package:kanpractice/presentation/core/widgets/graphs/kp_bar_chart.dart';
+import 'package:kanpractice/presentation/core/widgets/graphs/kp_data_frame.dart';
+import 'package:kanpractice/presentation/core/widgets/graphs/kp_grammar_mode_radial_graph.dart';
+import 'package:kanpractice/presentation/core/widgets/graphs/kp_study_mode_radial_graph.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/stats_header.dart';
@@ -58,13 +58,15 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
         widget.data.totalRecognitionCount +
         widget.data.totalListeningCount +
         widget.data.totalSpeakingCount +
-        widget.data.totalDefinitionCount;
+        widget.data.totalDefinitionCount +
+        widget.data.totalGrammarPointCount;
     final aggregate = _getActualWinRate(widget.data.totalWinRateWriting) +
         _getActualWinRate(widget.data.totalWinRateReading) +
         _getActualWinRate(widget.data.totalWinRateRecognition) +
         _getActualWinRate(widget.data.totalWinRateListening) +
         _getActualWinRate(widget.data.totalWinRateSpeaking) +
-        _getActualWinRate(widget.data.totalWinRateDefinition);
+        _getActualWinRate(widget.data.totalWinRateDefinition) +
+        _getActualWinRate(widget.data.totalWinRateGrammarPoint);
     final aggregateWithoutGrammar =
         _getActualWinRate(widget.data.totalWinRateWriting) +
             _getActualWinRate(widget.data.totalWinRateReading) +
@@ -131,12 +133,19 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                             y: v.toDouble(),
                             color: StudyModes.speaking.color,
                           );
-                        } else {
+                        } else if (index == 5) {
                           final v = widget.data.totalDefinitionCount;
                           return DataFrame(
                             x: GrammarModes.definition.mode,
                             y: v.toDouble(),
                             color: GrammarModes.definition.color,
+                          );
+                        } else {
+                          final v = widget.data.totalGrammarPointCount;
+                          return DataFrame(
+                            x: GrammarModes.grammarPoints.mode,
+                            y: v.toDouble(),
+                            color: GrammarModes.grammarPoints.color,
                           );
                         }
                       }),
@@ -206,6 +215,7 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                         : KPGrammarModeRadialGraph(
                             animationDuration: 0,
                             definition: widget.data.totalWinRateDefinition,
+                            grammarPoints: widget.data.totalWinRateGrammarPoint,
                           ),
                   ),
                   const SizedBox(height: KPMargins.margin24)

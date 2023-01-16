@@ -51,8 +51,8 @@ Future<void> _initSharedPreferences() async {
   if (prefs.readData(SharedKeys.kanListListVisualization) == null) {
     prefs.saveData(SharedKeys.kanListListVisualization, false);
   }
-  if (prefs.readData(SharedKeys.numberOfKanjiInTest) == null) {
-    prefs.saveData(SharedKeys.numberOfKanjiInTest, KPSizes.numberOfKanjiInTest);
+  if (prefs.readData(SharedKeys.numberOfWordInTest) == null) {
+    prefs.saveData(SharedKeys.numberOfWordInTest, KPSizes.numberOfWordInTest);
   }
   if (prefs.readData(SharedKeys.enableRepetitionOnTests) == null) {
     prefs.saveData(SharedKeys.enableRepetitionOnTests, true);
@@ -84,6 +84,9 @@ Future<void> _initSharedPreferences() async {
   }
   if (prefs.readData(SharedKeys.definitionDailyNotification) == null) {
     prefs.saveData(SharedKeys.definitionDailyNotification, true);
+  }
+  if (prefs.readData(SharedKeys.grammarPointDailyNotification) == null) {
+    prefs.saveData(SharedKeys.grammarPointDailyNotification, true);
   }
   if (prefs.readData(SharedKeys.dailyTestOnControlledPace) == null) {
     prefs.saveData(SharedKeys.dailyTestOnControlledPace, false);

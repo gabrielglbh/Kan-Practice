@@ -5,6 +5,7 @@ import 'package:kanpractice/presentation/core/routing/pages.dart';
 /// TODO when updating:
 /// When adding a new grammar mode, be sure to update [WordListFilter, TestHistoryFilters] too
 /// Be aware of changing the stats page and bloc to match the newly created mode
+/// and also in the settings_daily_options_page
 enum GrammarModes { definition, grammarPoints }
 
 extension GrammarModesExt on GrammarModes {

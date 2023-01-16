@@ -4,7 +4,7 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-class WinRateChart extends StatelessWidget {
+class KPWinRateChart extends StatelessWidget {
   /// Win rate value to paint in the [SfRadialGauge] as a percentage over 100
   final double winRate;
 
@@ -34,7 +34,7 @@ class WinRateChart extends StatelessWidget {
 
   /// Offset from the actual graph to the line
   final double pointerOffset;
-  const WinRateChart(
+  const KPWinRateChart(
       {Key? key,
       this.title,
       required this.winRate,

@@ -208,7 +208,7 @@ class _GrammarPointStudyState extends State<GrammarPointStudy> {
       if (_showDefinition)
         KPMarkdown(
           data: hint,
-          maxHeight: KPMargins.margin64 * 3,
+          maxHeight: MediaQuery.of(context).size.height / 4,
           shrinkWrap: true,
         )
       else

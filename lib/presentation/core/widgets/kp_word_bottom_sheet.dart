@@ -222,28 +222,31 @@ class KPWordBottomSheet extends StatelessWidget {
   Widget _lastTimeShownWidget(BuildContext context, Word updatedWord) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
-        child: ExpansionTile(
-            iconColor: KPColors.secondaryColor,
-            textColor: KPColors.secondaryColor,
-            tilePadding: const EdgeInsets.all(0),
-            title: Text(
-                "${"created_label".tr()} "
-                "${Utils.parseDateMilliseconds(context, updatedWord.dateAdded)} • "
-                "${"last_seen_label".tr()} "
-                "${Utils.parseDateMilliseconds(context, updatedWord.dateLastShown)}",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyText2),
-            children: [
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: StudyModes.values.length,
-                itemBuilder: (context, index) {
-                  return _lastSeenOnModes(
-                      context, updatedWord, StudyModes.values[index]);
-                },
-              )
-            ]));
+        child: ListTileTheme(
+          dense: true,
+          child: ExpansionTile(
+              iconColor: KPColors.secondaryColor,
+              textColor: KPColors.secondaryColor,
+              tilePadding: const EdgeInsets.all(0),
+              title: Text(
+                  "${"created_label".tr()} "
+                  "${Utils.parseDateMilliseconds(context, updatedWord.dateAdded)} • "
+                  "${"last_seen_label".tr()} "
+                  "${Utils.parseDateMilliseconds(context, updatedWord.dateLastShown)}",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyText2),
+              children: [
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: StudyModes.values.length,
+                  itemBuilder: (context, index) {
+                    return _lastSeenOnModes(
+                        context, updatedWord, StudyModes.values[index]);
+                  },
+                )
+              ]),
+        ));
   }
 
   Widget _lastSeenOnModes(

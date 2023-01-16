@@ -487,7 +487,8 @@ class BackupRepositoryImpl implements IBackupRepository {
       }
 
       if (testDataSnapshot.size > 0) {
-        // Breaking change on 4.0.0 with definition fields being required not null
+        // TODO: Breaking change on 4.1.0
+        // with definition and grammar point fields being required not null
         Map<String, dynamic> json = testDataSnapshot.docs[0].data();
         if (!json
             .containsKey(TestDataTableFields.testTotalCountDefinitionField)) {
@@ -502,6 +503,20 @@ class BackupRepositoryImpl implements IBackupRepository {
                 TestDataTableFields.testTotalWinRateDefinitionField, 0)
           ]);
         }
+        if (!json
+            .containsKey(TestDataTableFields.testTotalCountGrammarPointField)) {
+          json.addEntries([
+            const MapEntry(
+                TestDataTableFields.testTotalCountGrammarPointField, 0)
+          ]);
+        }
+        if (!json.containsKey(
+            TestDataTableFields.testTotalWinRateGrammarPointField)) {
+          json.addEntries([
+            const MapEntry(
+                TestDataTableFields.testTotalWinRateGrammarPointField, 0)
+          ]);
+        }
         backUpTestData = TestData.fromJson(json);
       }
 
@@ -513,7 +528,8 @@ class BackupRepositoryImpl implements IBackupRepository {
       }
 
       if (testSpecDataSnapshot.size > 0) {
-        // Breaking change on 4.0.0 with definition fields being required not null
+        // TODO: Breaking change on 4.1.0
+        // with definition and grammar point fields being required not null
         for (int x = 0; x < testSpecDataSnapshot.size; x++) {
           Map<String, dynamic> json = testSpecDataSnapshot.docs[x].data();
           if (!json.containsKey(
@@ -528,6 +544,20 @@ class BackupRepositoryImpl implements IBackupRepository {
             json.addEntries([
               const MapEntry(
                   TestSpecificDataTableFields.totalWinRateDefinitionField, 0)
+            ]);
+          }
+          if (!json.containsKey(
+              TestSpecificDataTableFields.totalGrammarPointCountField)) {
+            json.addEntries([
+              const MapEntry(
+                  TestSpecificDataTableFields.totalGrammarPointCountField, 0)
+            ]);
+          }
+          if (!json.containsKey(
+              TestSpecificDataTableFields.totalWinRateGrammarPointField)) {
+            json.addEntries([
+              const MapEntry(
+                  TestSpecificDataTableFields.totalWinRateGrammarPointField, 0)
             ]);
           }
           backUpTestSpecData.add(SpecificData.fromJson(json));

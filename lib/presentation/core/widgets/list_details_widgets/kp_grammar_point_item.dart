@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
-import 'package:kanpractice/presentation/core/widgets/graphs/kp_win_rate_chart.dart';
+import 'package:kanpractice/presentation/core/widgets/graphs/kp_linear_graph.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_grammar_point_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_markdown.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -61,18 +61,34 @@ class KPGrammarPointItem extends StatelessWidget {
       },
       title: Padding(
         padding: const EdgeInsets.only(bottom: KPMargins.margin4),
-        child: KPMarkdown(data: grammarPoint.name, type: MarkdownType.body),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            KPMarkdown(
+              data: grammarPoint.name,
+              maxWidth:
+                  MediaQuery.of(context).size.width - (KPMargins.margin64 * 2),
+              type: MarkdownType.body,
+            ),
+            const SizedBox(width: KPMargins.margin8),
+            SizedBox(
+              width: KPMargins.margin64,
+              child: KPLinearGraph(
+                value: _getProperGpWinRate(grammarPoint),
+                color: aggregateStats
+                    ? KPColors.secondaryDarkerColor
+                    : selectedMode.color,
+              ),
+            )
+          ],
+        ),
       ),
-      subtitle: KPMarkdown(
-        data: grammarPoint.definition,
-        type: MarkdownType.body,
-      ),
-      trailing: WinRateChart(
-        winRate: _getProperGpWinRate(grammarPoint),
-        backgroundColor:
-            aggregateStats ? KPColors.secondaryColor : selectedMode.color,
-        size: KPSizes.defaultSizeWinRateChart / 3,
-        rateSize: KPFontSizes.fontSize12,
+      subtitle: Padding(
+        padding: const EdgeInsets.only(top: KPMargins.margin4),
+        child: KPMarkdown(
+          data: grammarPoint.definition,
+          type: MarkdownType.body,
+        ),
       ),
     );
   }

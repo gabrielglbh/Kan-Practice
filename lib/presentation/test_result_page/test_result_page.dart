@@ -66,7 +66,7 @@ class _TestResultPageState extends State<TestResultPage> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headline4,
               ),
-              WinRateChart(
+              KPWinRateChart(
                 winRate: widget.args.score,
                 backgroundColor: widget.args.grammarList != null
                     ? GrammarModes.values[widget.args.grammarMode!].color

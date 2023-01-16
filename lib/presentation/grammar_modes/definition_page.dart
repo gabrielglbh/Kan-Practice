@@ -211,7 +211,7 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
       const SizedBox(height: KPMargins.margin4),
       KPMarkdown(
         data: hint,
-        maxHeight: KPMargins.margin64 * 3,
+        maxHeight: MediaQuery.of(context).size.height / 4,
         shrinkWrap: true,
       ),
     ];

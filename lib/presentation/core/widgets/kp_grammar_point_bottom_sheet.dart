@@ -114,7 +114,7 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
             data: "${grammarPoint.definition}\n\n"
                 "_${"add_grammar_textForm_example".tr()}_\n\n"
                 "${grammarPoint.example}",
-            maxHeight: KPMargins.margin64 * 3,
+            maxHeight: MediaQuery.of(context).size.height / 4,
             shrinkWrap: true,
           ),
           if (listName == null)
@@ -149,9 +149,13 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
                 ),
               ),
             ),
-          KPGrammarModeRadialGraph(
-            definition: grammarPoint.winRateDefinition,
-            grammarPoints: grammarPoint.winRateGrammarPoint,
+          const Divider(),
+          SizedBox(
+            height: 112,
+            child: KPGrammarModeRadialGraph(
+              definition: grammarPoint.winRateDefinition,
+              grammarPoints: grammarPoint.winRateGrammarPoint,
+            ),
           ),
           _lastTimeShownWidget(context, grammarPoint),
           Visibility(
@@ -170,28 +174,31 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
   Widget _lastTimeShownWidget(BuildContext context, GrammarPoint grammarPoint) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
-        child: ExpansionTile(
-            iconColor: KPColors.secondaryColor,
-            textColor: KPColors.secondaryColor,
-            tilePadding: const EdgeInsets.all(0),
-            title: Text(
-                "${"created_label".tr()} "
-                "${Utils.parseDateMilliseconds(context, grammarPoint.dateAdded)} • "
-                "${"last_seen_label".tr()} "
-                "${Utils.parseDateMilliseconds(context, grammarPoint.dateLastShown)}",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyText2),
-            children: [
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: GrammarModes.values.length,
-                itemBuilder: (context, index) {
-                  return _lastSeenOnModes(
-                      context, grammarPoint, GrammarModes.values[index]);
-                },
-              )
-            ]));
+        child: ListTileTheme(
+          dense: true,
+          child: ExpansionTile(
+              iconColor: KPColors.secondaryColor,
+              textColor: KPColors.secondaryColor,
+              tilePadding: const EdgeInsets.all(0),
+              title: Text(
+                  "${"created_label".tr()} "
+                  "${Utils.parseDateMilliseconds(context, grammarPoint.dateAdded)} • "
+                  "${"last_seen_label".tr()} "
+                  "${Utils.parseDateMilliseconds(context, grammarPoint.dateLastShown)}",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyText2),
+              children: [
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: GrammarModes.values.length,
+                  itemBuilder: (context, index) {
+                    return _lastSeenOnModes(
+                        context, grammarPoint, GrammarModes.values[index]);
+                  },
+                )
+              ]),
+        ));
   }
 
   Widget _lastSeenOnModes(

@@ -53,7 +53,7 @@ class GrammarPointOnTestList extends StatelessWidget {
                       data: gp.name,
                       type: MarkdownType.body,
                     ),
-                    trailing: WinRateChart(
+                    trailing: KPWinRateChart(
                       winRate: testScore,
                       backgroundColor: mode.color,
                       size: KPSizes.defaultSizeWinRateChart / 3,

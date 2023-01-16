@@ -20,7 +20,10 @@ class KPLinearGraph extends StatelessWidget {
         Text(
           Utils.getFixedPercentageAsString(
               value == DatabaseConstants.emptyWinRate ? 0 : value),
-          style: Theme.of(context).textTheme.bodySmall,
+          style: Theme.of(context)
+              .textTheme
+              .bodySmall
+              ?.copyWith(color: KPColors.getAccent(context)),
         ),
         const SizedBox(height: KPMargins.margin4),
         SfLinearGauge(

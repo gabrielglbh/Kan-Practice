@@ -22,7 +22,7 @@ extension GrammarModesExt on GrammarModes {
       case GrammarModes.definition:
         return Icons.school_rounded;
       case GrammarModes.grammarPoints:
-        return Icons.translate_rounded;
+        return Icons.history_edu_rounded;
     }
   }
 

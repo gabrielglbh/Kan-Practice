@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/home_types.dart';
-import 'package:kanpractice/presentation/core/ui/kp_create_kanlist_dialog.dart';
-import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
-import 'package:kanpractice/presentation/core/ui/kp_test_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_create_kanlist_dialog.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_test_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class ActionsBottomSheet extends StatelessWidget {

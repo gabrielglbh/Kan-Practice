@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/domain/word/word.dart';
-import 'package:kanpractice/presentation/core/ui/kp_word_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_word_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 

@@ -1,37 +1,37 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/application/load_grammar_test/load_grammar_test_bloc.dart';
+import 'package:kanpractice/application/load_test/load_test_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
-import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
+import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/injection.dart';
-import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
+import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
-import 'package:kanpractice/presentation/core/ui/kp_button.dart';
-import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
-import 'package:kanpractice/presentation/grammar_modes/utils/grammar_mode_arguments.dart';
+import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
-class GrammarGrid extends StatelessWidget {
+class WordGrid extends StatelessWidget {
   final List<String>? selectionQuery;
   final Tests type;
   final String? folder;
   final String testName;
   final String? practiceList;
-  const GrammarGrid({
+  const WordGrid({
     super.key,
     required this.type,
     required this.folder,
     required this.testName,
-    required this.practiceList,
     this.selectionQuery,
+    this.practiceList,
   });
 
-  Future<void> _decideOnGrammarMode(
+  Future<void> _decideOnMode(
     BuildContext context,
-    List<GrammarPoint> list,
-    GrammarModes mode,
+    List<Word> list,
+    StudyModes mode,
   ) async {
     final displayTestName = type.name;
     Navigator.of(context).pop(); // Dismiss this bottom sheet
@@ -45,7 +45,7 @@ class GrammarGrid extends StatelessWidget {
 
     await Navigator.of(context).pushNamed(
       mode.page,
-      arguments: GrammarModeArguments(
+      arguments: ModeArguments(
         studyList: list,
         isTest: true,
         testMode: type,
@@ -58,20 +58,20 @@ class GrammarGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoadGrammarTestBloc, LoadGrammarTestState>(
+    return BlocConsumer<LoadTestBloc, LoadTestState>(
       listener: ((context, state) async {
-        if (state is LoadGrammarTestStateLoadedList) {
-          List<GrammarPoint> list = state.grammar;
+        if (state is LoadTestStateLoadedList) {
+          List<Word> list = state.words;
           if (list.isEmpty) {
             Navigator.of(context).pop();
             Utils.getSnackBar(context, "study_modes_empty".tr());
           } else {
-            await _decideOnGrammarMode(context, list, state.mode);
+            await _decideOnMode(context, list, state.mode);
           }
         }
       }),
       builder: (context, state) {
-        if (state is LoadGrammarTestStateIdle) {
+        if (state is LoadTestStateIdle) {
           return Padding(
             padding: const EdgeInsets.only(
               right: KPMargins.margin16,
@@ -79,7 +79,7 @@ class GrammarGrid extends StatelessWidget {
               bottom: KPMargins.margin8,
             ),
             child: GridView.builder(
-              itemCount: GrammarModes.values.length,
+              itemCount: StudyModes.values.length,
               clipBehavior: Clip.none,
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -92,23 +92,35 @@ class GrammarGrid extends StatelessWidget {
                             .readData(SharedKeys.dailyTestOnControlledPace) ==
                         true &&
                     type == Tests.daily) {
-                  switch (GrammarModes.values[i]) {
-                    case GrammarModes.definition:
+                  switch (StudyModes.values[i]) {
+                    case StudyModes.writing:
                       isAvailable = getIt<PreferencesService>()
-                          .readData(SharedKeys.definitionDailyPerformed);
+                          .readData(SharedKeys.writingDailyPerformed);
                       break;
-                    case GrammarModes.grammarPoints:
+                    case StudyModes.reading:
                       isAvailable = getIt<PreferencesService>()
-                          .readData(SharedKeys.grammarPointDailyPerformed);
+                          .readData(SharedKeys.readingDailyPerformed);
+                      break;
+                    case StudyModes.recognition:
+                      isAvailable = getIt<PreferencesService>()
+                          .readData(SharedKeys.recognitionDailyPerformed);
+                      break;
+                    case StudyModes.listening:
+                      isAvailable = getIt<PreferencesService>()
+                          .readData(SharedKeys.listeningDailyPerformed);
+                      break;
+                    case StudyModes.speaking:
+                      isAvailable = getIt<PreferencesService>()
+                          .readData(SharedKeys.speakingDailyPerformed);
                       break;
                   }
                 }
 
-                return _grammarButton(
+                return _modeBasedButtons(
                   context,
-                  GrammarModes.values[i],
+                  StudyModes.values[i],
                   isAvailable == 0 || isAvailable == null,
-                  state.grammarToReview.isEmpty ? -1 : state.grammarToReview[i],
+                  state.wordsToReview.isEmpty ? -1 : state.wordsToReview[i],
                 );
               },
             ),
@@ -120,16 +132,17 @@ class GrammarGrid extends StatelessWidget {
     );
   }
 
-  Widget _grammarButton(
+  Widget _modeBasedButtons(
     BuildContext context,
-    GrammarModes mode,
+    StudyModes mode,
     bool isAvailable,
-    int grammarToReview,
+    int wordsToReview,
   ) {
-    String toReview = grammarToReview.toString();
-    if (grammarToReview > 5000) {
-      toReview = "> 5000";
+    String toReview = wordsToReview.toString();
+    if (wordsToReview > 500) {
+      toReview = "> 500";
     }
+
     return Stack(
       alignment: Alignment.topRight,
       clipBehavior: Clip.none,
@@ -145,8 +158,8 @@ class GrammarGrid extends StatelessWidget {
                     Navigator.of(context).pop();
                     Utils.getSnackBar(context, "study_modes_empty".tr());
                   } else {
-                    getIt<LoadGrammarTestBloc>().add(
-                      LoadGrammarTestEventLoadList(
+                    getIt<LoadTestBloc>().add(
+                      LoadTestEventLoadList(
                         folder: folder,
                         mode: mode,
                         type: type,
@@ -158,7 +171,7 @@ class GrammarGrid extends StatelessWidget {
                 }
               : null,
         ),
-        if (grammarToReview > 0 && type == Tests.daily)
+        if (wordsToReview > 0 && type == Tests.daily)
           Positioned(
             top: -KPMargins.margin12,
             right: -KPMargins.margin8,

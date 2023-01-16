@@ -12,16 +12,16 @@ import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/add_word_page/arguments.dart';
 import 'package:kanpractice/presentation/core/types/coach_tutorial_parts.dart';
 import 'package:kanpractice/presentation/core/types/list_details_types.dart';
-import 'package:kanpractice/presentation/core/ui/blitz/kp_blitz_bottom_sheet.dart';
-import 'package:kanpractice/presentation/core/ui/folder_list_bottom_sheet.dart';
-import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
-import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
-import 'package:kanpractice/presentation/core/ui/kp_search_bar.dart';
-import 'package:kanpractice/presentation/core/ui/kp_text_form.dart';
+import 'package:kanpractice/presentation/core/widgets/blitz/kp_blitz_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/widgets/folder_list_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_search_bar.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_text_form.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/tutorial_coach.dart';
 import 'package:kanpractice/presentation/list_details_page/grammar_list.dart';
-import 'package:kanpractice/presentation/core/ui/kp_word_grammar_bottom_navigation.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_word_grammar_bottom_navigation.dart';
 import 'package:kanpractice/presentation/list_details_page/word_list.dart';
 
 class ListDetailsPage extends StatefulWidget {

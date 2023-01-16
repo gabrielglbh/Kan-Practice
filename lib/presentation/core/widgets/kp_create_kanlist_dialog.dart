@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/presentation/core/ui/kp_alert_dialog.dart';
-import 'package:kanpractice/presentation/core/ui/kp_text_form.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_text_form.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class KPCreateKanListDialog extends StatelessWidget {

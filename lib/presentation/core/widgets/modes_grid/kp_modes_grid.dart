@@ -8,10 +8,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
-import 'package:kanpractice/presentation/core/ui/modes_grid/grammar_grid.dart';
-import 'package:kanpractice/presentation/core/ui/modes_grid/word_grid.dart';
+import 'package:kanpractice/presentation/core/widgets/modes_grid/grammar_grid.dart';
+import 'package:kanpractice/presentation/core/widgets/modes_grid/word_grid.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/ui/kp_word_grammar_bottom_navigation.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_word_grammar_bottom_navigation.dart';
 
 class KPModesGrid extends StatefulWidget {
   /// List of [Word] to make the test with.

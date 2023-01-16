@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/types/chip_type.dart';
-import 'package:kanpractice/presentation/core/ui/kp_cached_network_image.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_cached_network_image.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/widgets/generic/custom_expansion_tile.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/widgets/generic/info_chip.dart';

@@ -6,9 +6,9 @@ import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/archive_page/archive_grammar_list.dart';
 import 'package:kanpractice/presentation/archive_page/archive_word_list.dart';
 import 'package:kanpractice/presentation/core/types/list_details_types.dart';
-import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
-import 'package:kanpractice/presentation/core/ui/kp_search_bar.dart';
-import 'package:kanpractice/presentation/core/ui/kp_word_grammar_bottom_navigation.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_search_bar.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_word_grammar_bottom_navigation.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class ArchivePage extends StatefulWidget {

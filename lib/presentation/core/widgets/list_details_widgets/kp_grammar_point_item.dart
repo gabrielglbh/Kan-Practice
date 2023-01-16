@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
-import 'package:kanpractice/presentation/core/ui/graphs/kp_win_rate_chart.dart';
-import 'package:kanpractice/presentation/core/ui/kp_grammar_point_bottom_sheet.dart';
-import 'package:kanpractice/presentation/core/ui/kp_markdown.dart';
+import 'package:kanpractice/presentation/core/widgets/graphs/kp_win_rate_chart.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_grammar_point_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_markdown.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KPGrammarPointItem extends StatelessWidget {

@@ -248,7 +248,7 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
       children: [
         Expanded(
           child: ListTile(
-            title: Text("kanji_bottom_sheet_removal_label".tr()),
+            title: Text("word_bottom_sheet_removal_label".tr()),
             trailing: const Icon(Icons.clear),
             visualDensity: const VisualDensity(vertical: -3),
             onTap: () {
@@ -273,7 +273,7 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
         const RotatedBox(quarterTurns: 1, child: Divider()),
         Expanded(
           child: ListTile(
-            title: Text("kanji_bottom_sheet_update_label".tr()),
+            title: Text("word_bottom_sheet_update_label".tr()),
             trailing: const Icon(Icons.arrow_forward_rounded),
             visualDensity: const VisualDensity(vertical: -3),
             onTap: () {

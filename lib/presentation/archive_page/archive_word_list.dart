@@ -101,11 +101,11 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
 
   Column _body(ArchiveWordsStateLoaded state) {
     return Column(
-      children: [Expanded(child: _kanjiList(state))],
+      children: [Expanded(child: _wordList(state))],
     );
   }
 
-  Widget _kanjiList(ArchiveWordsStateLoaded state) {
+  Widget _wordList(ArchiveWordsStateLoaded state) {
     if (state.list.isEmpty) {
       return KPEmptyList(
           showTryButton: true,
@@ -113,7 +113,7 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
           message: "list_details_empty".tr());
     }
     return GridView.builder(
-      key: const PageStorageKey<String>('kanjiListController'),
+      key: const PageStorageKey<String>('wordListController'),
       itemCount: state.list.length,
       controller: _scrollController,
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,

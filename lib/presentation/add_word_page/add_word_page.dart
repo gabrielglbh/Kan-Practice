@@ -24,8 +24,8 @@ class AddWordPage extends StatefulWidget {
 }
 
 class _AddWordPageState extends State<AddWordPage> {
-  TextEditingController? _kanjiController;
-  FocusNode? _kanjiFocus;
+  TextEditingController? _wordController;
+  FocusNode? _wordFocus;
   TextEditingController? _pronunciationController;
   FocusNode? _pronunciationFocus;
   TextEditingController? _meaningController;
@@ -35,26 +35,26 @@ class _AddWordPageState extends State<AddWordPage> {
 
   @override
   void initState() {
-    _kanjiController = TextEditingController();
-    _kanjiFocus = FocusNode();
+    _wordController = TextEditingController();
+    _wordFocus = FocusNode();
     _pronunciationController = TextEditingController();
     _pronunciationFocus = FocusNode();
     _meaningController = TextEditingController();
     _meaningFocus = FocusNode();
-    Word? kanji = widget.args.word;
-    if (kanji != null) {
-      _kanjiController?.text = kanji.word.toString();
-      _pronunciationController?.text = kanji.pronunciation.toString();
-      _meaningController?.text = kanji.meaning.toString();
-      _currentCategory = WordCategory.values[kanji.category];
+    Word? word = widget.args.word;
+    if (word != null) {
+      _wordController?.text = word.word.toString();
+      _pronunciationController?.text = word.pronunciation.toString();
+      _meaningController?.text = word.meaning.toString();
+      _currentCategory = WordCategory.values[word.category];
     }
     super.initState();
   }
 
   @override
   void dispose() {
-    _kanjiController?.dispose();
-    _kanjiFocus?.dispose();
+    _wordController?.dispose();
+    _wordFocus?.dispose();
     _pronunciationController?.dispose();
     _pronunciationFocus?.dispose();
     _meaningController?.dispose();
@@ -62,11 +62,11 @@ class _AddWordPageState extends State<AddWordPage> {
     super.dispose();
   }
 
-  Future<void> _createKanji({bool exit = true}) async {
+  Future<void> _createWord({bool exit = true}) async {
     getIt<AddWordBloc>().add(AddWordEventCreate(
         exitMode: exit,
         word: Word(
-          word: _kanjiController?.text ?? "",
+          word: _wordController?.text ?? "",
           pronunciation: _pronunciationController?.text ?? "",
           meaning: _meaningController?.text ?? "",
           listName: widget.args.listName,
@@ -76,12 +76,12 @@ class _AddWordPageState extends State<AddWordPage> {
         )));
   }
 
-  Future<void> _updateKanji() async {
+  Future<void> _updateWord() async {
     Word? k = widget.args.word;
     if (k != null) {
       getIt<AddWordBloc>()
           .add(AddWordEventUpdate(widget.args.listName, k.word, parameters: {
-        WordTableFields.wordField: _kanjiController?.text ?? "",
+        WordTableFields.wordField: _wordController?.text ?? "",
         WordTableFields.pronunciationField:
             _pronunciationController?.text ?? "",
         WordTableFields.meaningField: _meaningController?.text ?? "",
@@ -90,18 +90,18 @@ class _AddWordPageState extends State<AddWordPage> {
     }
   }
 
-  _validateKanji(Function execute) {
-    if (_kanjiController?.text.trim().isNotEmpty == true &&
+  _validateWord(Function execute) {
+    if (_wordController?.text.trim().isNotEmpty == true &&
         _pronunciationController?.text.trim().isNotEmpty == true &&
         _meaningController?.text.trim().isNotEmpty == true) {
       execute();
     } else {
-      Utils.getSnackBar(context, "add_kanji_validateKanji_failed".tr());
+      Utils.getSnackBar(context, "add_word_validateWord_failed".tr());
     }
   }
 
   _clearFocus() {
-    _kanjiFocus?.unfocus();
+    _wordFocus?.unfocus();
     _meaningFocus?.unfocus();
     _pronunciationFocus?.unfocus();
   }
@@ -111,29 +111,29 @@ class _AddWordPageState extends State<AddWordPage> {
     return KPScaffold(
       resizeToAvoidBottomInset: true,
       appBarTitle: widget.args.word != null
-          ? "add_kanji_update_title".tr()
-          : "add_kanji_new_title".tr(),
+          ? "add_word_update_title".tr()
+          : "add_word_new_title".tr(),
       appBarActions: [
         IconButton(
           icon: const Icon(Icons.create_rounded),
           onPressed: () async {
             _clearFocus();
 
-            /// If we are updating the kanji, pass over to the dictionary
+            /// If we are updating the word, pass over to the dictionary
             /// the word
             /// If not, just go to the next page
-            String? kanji = _kanjiController?.text;
+            String? wordText = _wordController?.text;
             final drawnWord = await Navigator.of(context).pushNamed(
                 KanPracticePages.dictionaryPage,
                 arguments:
-                    DictionaryArguments(searchInJisho: false, word: kanji));
+                    DictionaryArguments(searchInJisho: false, word: wordText));
 
-            /// We wait for the pop and update the _kanjiController with the
+            /// We wait for the pop and update the _wordController with the
             /// new drawn word. If it is empty, do not override the current
             /// input word (if any)
             final String? word = drawnWord as String?;
             if (word != null && word.isNotEmpty) {
-              _kanjiController?.text = word;
+              _wordController?.text = word;
             }
           },
         ),
@@ -143,7 +143,7 @@ class _AddWordPageState extends State<AddWordPage> {
             child: IconButton(
               icon: const Icon(Icons.add),
               onPressed: () {
-                _validateKanji(() => _createKanji(exit: false));
+                _validateWord(() => _createWord(exit: false));
               },
             ),
           ),
@@ -152,11 +152,11 @@ class _AddWordPageState extends State<AddWordPage> {
             builder: (context, state) => IconButton(
                   icon: const Icon(Icons.check_rounded),
                   onPressed: () {
-                    _validateKanji(() {
+                    _validateWord(() {
                       if (widget.args.word != null) {
-                        _updateKanji();
+                        _updateWord();
                       } else {
-                        _createKanji();
+                        _createWord();
                       }
                     });
                   },
@@ -174,14 +174,14 @@ class _AddWordPageState extends State<AddWordPage> {
     return BlocListener<AddWordBloc, AddWordState>(
       listener: (context, state) {
         if (state is AddWordStateDoneCreating) {
-          /// If exit is true, only one kanji should be created and exit
+          /// If exit is true, only one word should be created and exit
           if (state.exitMode) {
             Navigator.of(context).pop(0);
           } else {
-            _kanjiController?.clear();
+            _wordController?.clear();
             _pronunciationController?.clear();
             _meaningController?.clear();
-            _kanjiFocus?.requestFocus();
+            _wordFocus?.requestFocus();
           }
         } else if (state is AddWordStateDoneUpdating) {
           Navigator.of(context).pop(0);
@@ -197,18 +197,18 @@ class _AddWordPageState extends State<AddWordPage> {
     return Column(
       children: [
         KPTextForm(
-          controller: _kanjiController,
-          focusNode: _kanjiFocus,
-          header: "add_kanji_textForm_kanji".tr(),
+          controller: _wordController,
+          focusNode: _wordFocus,
+          header: "add_word_textForm_word".tr(),
           additionalWidget: ElevatedButton(
             onPressed: () {
-              _pronunciationController?.text = _kanjiController?.text ?? "";
+              _pronunciationController?.text = _wordController?.text ?? "";
             },
             child: SizedBox(
               width: MediaQuery.of(context).size.width / 4,
               child: FittedBox(
                 fit: BoxFit.fitWidth,
-                child: Text("add_kanji_copy".tr(),
+                child: Text("add_word_copy".tr(),
                     style: Theme.of(context).textTheme.button),
               ),
             ),
@@ -219,7 +219,7 @@ class _AddWordPageState extends State<AddWordPage> {
               .headline3
               ?.copyWith(fontWeight: FontWeight.bold),
           autofocus: widget.args.word == null,
-          hint: "add_kanji_textForm_kanji_ext".tr(),
+          hint: "add_word_textForm_word_ext".tr(),
           onEditingComplete: () => _pronunciationFocus?.requestFocus(),
         ),
         Padding(
@@ -227,8 +227,8 @@ class _AddWordPageState extends State<AddWordPage> {
           child: KPTextForm(
             controller: _pronunciationController,
             focusNode: _pronunciationFocus,
-            header: "add_kanji_textForm_reading".tr(),
-            hint: "add_kanji_textForm_reading_ext".tr(),
+            header: "add_word_textForm_reading".tr(),
+            hint: "add_word_textForm_reading_ext".tr(),
             onEditingComplete: () => _meaningFocus?.requestFocus(),
           ),
         ),
@@ -242,8 +242,8 @@ class _AddWordPageState extends State<AddWordPage> {
             builder: (context, state) => KPTextForm(
               controller: _meaningController,
               focusNode: _meaningFocus,
-              header: "add_kanji_textForm_meaning".tr(),
-              hint: "add_kanji_textForm_meaning_ext".tr(),
+              header: "add_word_textForm_meaning".tr(),
+              hint: "add_word_textForm_meaning_ext".tr(),
               action: TextInputAction.done,
               onEditingComplete: () {
                 _meaningFocus?.unfocus();
@@ -251,11 +251,11 @@ class _AddWordPageState extends State<AddWordPage> {
                 /// By default, if the user is updating a word, and presses the IME action,
                 /// update it. Else, create the word, empty the fields and continue adding
                 /// more words
-                _validateKanji(() {
+                _validateWord(() {
                   if (widget.args.word == null) {
-                    _createKanji(exit: false);
+                    _createWord(exit: false);
                   } else {
-                    _updateKanji();
+                    _updateWord();
                   }
                 });
               },
@@ -273,7 +273,7 @@ class _AddWordPageState extends State<AddWordPage> {
         Padding(
           padding: const EdgeInsets.only(
               bottom: KPMargins.margin16, left: KPMargins.margin8),
-          child: Text("kanji_category_label".tr(),
+          child: Text("word_category_label".tr(),
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.headline6),
         ),

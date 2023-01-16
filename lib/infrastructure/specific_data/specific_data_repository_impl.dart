@@ -27,12 +27,12 @@ class SpecificDataRepositoryImpl implements ISpecificDataRepository {
           recognition = 0,
           listening = 0,
           speaking = 0;
-      for (var kanji in list) {
-        writing += kanji.winRateWriting;
-        reading += kanji.winRateReading;
-        recognition += kanji.winRateRecognition;
-        listening += kanji.winRateListening;
-        speaking += kanji.winRateSpeaking;
+      for (var word in list) {
+        writing += word.winRateWriting;
+        reading += word.winRateReading;
+        recognition += word.winRateRecognition;
+        listening += word.winRateListening;
+        speaking += word.winRateSpeaking;
       }
       return SpecificData(
         id: categoryId,

@@ -71,7 +71,7 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
       /// repetition, then do NOT calculate the score and return 0 directly.
       final condition =
           _hasRepetition && _macro >= widget.args.studyList.length;
-      final code = !condition ? await _calculateKanjiScore(score) : 0;
+      final code = !condition ? await _calculateWordScore(score) : 0;
 
       /// If everything went well, and we have words left in the list,
       /// update _macro to the next one.
@@ -108,7 +108,7 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
     }
   }
 
-  Future<int> _calculateKanjiScore(double score) async {
+  Future<int> _calculateWordScore(double score) async {
     /// Updates the dateLastShown attribute of the finished word AND
     /// the current specific last shown mode attribute
     getIt<StudyModeBloc>().add(StudyModeEventUpdateDateShown(
@@ -145,8 +145,8 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
     }
   }
 
-  String _getProperKanji() {
-    /// Based on the states, update the kanji
+  String _getProperWord() {
+    /// Based on the states, update the word
     if (_showInfo) {
       return _studyList[_macro].word;
     } else {
@@ -213,7 +213,7 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
       KPLearningHeaderContainer(
           fontSize: KPFontSizes.fontSize64,
           height: KPSizes.listStudyHeight,
-          text: _getProperKanji()),
+          text: _getProperWord()),
       KPLearningHeaderContainer(
           height: KPSizes.defaultSizeLearningExtContainer,
           text: _studyList[_macro].meaning,

@@ -56,7 +56,7 @@ class _AddToMarketBottomSheetState extends State<AddToMarketBottomSheet> {
                         showTryButton: true,
                         onRefresh: () => getIt<ListBloc>()
                           ..add(const ListForTestEventLoading()),
-                        message: "kanji_lists_load_failed".tr());
+                        message: "word_lists_load_failed".tr());
                   } else if (state is ListStateLoading) {
                     return const KPProgressIndicator();
                   } else if (state is ListStateLoaded) {

@@ -6,19 +6,19 @@ import 'package:kanpractice/presentation/dictionary_details_page/widgets/generic
 import 'package:kanpractice/presentation/dictionary_details_page/widgets/generic/jisho_header.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/widgets/generic/jisho_info_tile.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/widgets/generic/scrollable_text.dart';
-import 'package:kanpractice/presentation/dictionary_details_page/widgets/generic/single_kanji_look_up_list.dart';
+import 'package:kanpractice/presentation/dictionary_details_page/widgets/generic/single_word_look_up_list.dart';
 import 'package:unofficial_jisho_api/api.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class WordResult extends StatelessWidget {
-  final String? kanji;
+  final String? word;
   final KanjiResultData? data;
   final List<JishoResult> phrase;
   final String _separator = " • ";
   final bool fromDictionary;
   const WordResult(
       {Key? key,
-      required this.kanji,
+      required this.word,
       required this.data,
       required this.phrase,
       required this.fromDictionary})
@@ -74,9 +74,8 @@ class WordResult extends StatelessWidget {
                 children: [
                   JishoHeader(
                       header: "jisho_phraseData_search_individually".tr()),
-                  SingleKanjiLookUpList(
-                      kanjiList: kanji?.split(""),
-                      fromDictionary: fromDictionary)
+                  SingleWordLookUpList(
+                      wordList: word?.split(""), fromDictionary: fromDictionary)
                 ],
               ),
             )),

@@ -200,7 +200,7 @@ class _FolderListPageState extends State<FolderListPage>
     return ListTile(
       onTap: () {
         Navigator.of(context).pushNamed(
-          KanPracticePages.kanjiListOnFolderPage,
+          KanPracticePages.wordListOnFolderPage,
           arguments: folder.folder,
         );
         widget.removeFocus();

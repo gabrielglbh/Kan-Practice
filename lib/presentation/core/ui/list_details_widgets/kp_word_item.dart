@@ -27,7 +27,7 @@ class KPWordItem extends StatelessWidget {
     required this.onShowModal,
   }) : super(key: key);
 
-  double _getProperKanjiWinRate(Word word) {
+  double _getProperWordWinRate(Word word) {
     if (aggregateStats) {
       final writing = (word.winRateWriting == DatabaseConstants.emptyWinRate
           ? 0
@@ -73,7 +73,7 @@ class KPWordItem extends StatelessWidget {
       padding: const EdgeInsets.all(KPMargins.margin2),
       margin: const EdgeInsets.all(KPMargins.margin4),
       decoration: BoxDecoration(
-          color: Utils.getColorBasedOnWinRate(_getProperKanjiWinRate(word)),
+          color: Utils.getColorBasedOnWinRate(_getProperWordWinRate(word)),
           borderRadius:
               const BorderRadius.all(Radius.circular(KPRadius.radius8)),
           boxShadow: const [

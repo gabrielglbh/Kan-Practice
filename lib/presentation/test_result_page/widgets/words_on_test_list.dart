@@ -38,7 +38,7 @@ class WordsOnTestList extends StatelessWidget {
                   Word? word = list?[listName]?[inner].keys.first;
                   double? testScore = list?[listName]?[inner].values.first;
                   return Container(
-                    width: KPSizes.defaultSizeKanjiItemOnResultTest,
+                    width: KPSizes.defaultSizeWordItemOnResultTest,
                     margin: const EdgeInsets.only(
                         left: KPMargins.margin4,
                         right: KPMargins.margin4,
@@ -64,7 +64,6 @@ class WordsOnTestList extends StatelessWidget {
                             await KPWordBottomSheet.show(
                                 context, (word?.listName ?? ""), word);
                           },
-                          // _createDialogForDeletingKanji(context, kanji.kanji),,
                           child: Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: KPMargins.margin2),

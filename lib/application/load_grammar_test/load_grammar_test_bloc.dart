@@ -91,8 +91,8 @@ class LoadGrammarTestBloc
         emit(LoadGrammarTestStateLoadedList(finalList, event.mode));
       } else {
         final gpInTest =
-            _preferencesRepository.readData(SharedKeys.numberOfKanjiInTest) ??
-                KPSizes.numberOfKanjiInTest;
+            _preferencesRepository.readData(SharedKeys.numberOfWordInTest) ??
+                KPSizes.numberOfWordInTest;
 
         List<GrammarPoint> sortedList = finalList.sublist(
             0, finalList.length < gpInTest ? finalList.length : gpInTest);

@@ -11,7 +11,7 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/widgets/example_phrases.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/widgets/generic/add_to_kanlist_bottom_sheet.dart';
-import 'package:kanpractice/presentation/dictionary_details_page/widgets/single_kanji_result.dart';
+import 'package:kanpractice/presentation/dictionary_details_page/widgets/single_word_result.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/widgets/word_result.dart';
 
 class DictionaryDetailsPage extends StatefulWidget {
@@ -27,7 +27,7 @@ class _DictionaryDetailsPageState extends State<DictionaryDetailsPage> {
   @override
   void initState() {
     getIt<DictionaryDetailsBloc>()
-        .add(DictionaryDetailsLoadingEvent(kanji: widget.args.word ?? ""));
+        .add(DictionaryDetailsLoadingEvent(word: widget.args.word ?? ""));
     super.initState();
   }
 
@@ -82,13 +82,13 @@ class _DictionaryDetailsPageState extends State<DictionaryDetailsPage> {
           child: ListView(
             children: [
               /// All info is based on the value of state.data.
-              /// If resultData is null, it means that the kanji searched is actually a
+              /// If resultData is null, it means that the word searched is actually a
               /// compound one.
               /// Example, in the other hand, will be visible for single or compound
-              /// kanji.
+              /// word.
               Visibility(
                   visible: state.data.resultData != null,
-                  child: SingleKanjiResult(
+                  child: SingleWordResult(
                     data: state.data.resultData,
                     phrase: state.data.resultPhrase,
                     fromDictionary: widget.args.fromDictionary,
@@ -96,7 +96,7 @@ class _DictionaryDetailsPageState extends State<DictionaryDetailsPage> {
               Visibility(
                   visible: state.data.resultPhrase.isNotEmpty,
                   child: WordResult(
-                    kanji: widget.args.word,
+                    word: widget.args.word,
                     data: state.data.resultData,
                     phrase: state.data.resultPhrase,
                     fromDictionary: widget.args.fromDictionary,
@@ -114,10 +114,10 @@ class _DictionaryDetailsPageState extends State<DictionaryDetailsPage> {
         Visibility(
           visible: widget.args.fromDictionary,
           child: KPButton(
-            title2: "dict_jisho_add_kanji_label".tr(),
+            title2: "dict_jisho_add_word_label".tr(),
             icon: Icons.add,
             onTap: () {
-              AddToKanListBottomSheet.callAddToKanListBottomSheet(
+              AddToKanListBottomSheet.show(
                   context, widget.args.word, state.data);
             },
           ),

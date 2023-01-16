@@ -32,13 +32,13 @@ class _WritingStudyState extends State<WritingStudy> {
   /// Current drawn line in the canvas
   List<Offset?> _line = [];
 
-  /// Matrix for displaying each individual kanji once validated
-  final List<List<String>> _currentKanji = [];
+  /// Matrix for displaying each individual word once validated
+  final List<List<String>> _currentWord = [];
 
   /// Array that saves all scores without any previous context for the test result
   final List<double> _testScores = [];
 
-  /// Score granted for each individual kanji of the word
+  /// Score granted for each individual word of the word
   final List<double> _score = [];
 
   /// Maximum score the user can achieve on a certain word
@@ -47,11 +47,11 @@ class _WritingStudyState extends State<WritingStudy> {
   /// Current word index
   int _macro = 0;
 
-  /// Current kanji within word index
+  /// Current word within word index
   int _inner = 0;
 
-  bool _showActualKanji = false;
-  bool _goNextKanji = false;
+  bool _showActualWord = false;
+  bool _goNextWord = false;
   bool _hasFinished = false;
   bool _enableRepOnTest = false;
 
@@ -69,58 +69,58 @@ class _WritingStudyState extends State<WritingStudy> {
     _enableRepOnTest = getIt<PreferencesService>()
         .readData(SharedKeys.enableRepetitionOnTests);
     _studyList.addAll(widget.args.studyList);
-    _initAuxKanjiArray();
+    _initAuxWordArray();
     super.initState();
   }
 
-  _initAuxKanjiArray() {
+  _initAuxWordArray() {
     /// Clears all arrays if previously defined
-    _currentKanji.clear();
+    _currentWord.clear();
     _score.clear();
     _maxScore.clear();
 
     /// For every word:
     ///   - Add the current score of the word
-    ///   - Add an empty array for displaying the kanji
+    ///   - Add an empty array for displaying the word
     ///   - Add the maximum score the user can have in this word
-    /// For each kanji:
-    ///   - Add a " ? " string to the _currentKanji matrix which we will
-    ///     later use for displaying each individual kanji once validated
+    /// For each word:
+    ///   - Add a " ? " string to the _currentWord matrix which we will
+    ///     later use for displaying each individual word once validated
     for (int x = 0; x < _studyList.length; x++) {
       _initScoreArray(x);
     }
   }
 
   _initScoreArray(int x) {
-    String kanji = _studyList[x].word;
+    String word = _studyList[x].word;
     _score.add(0);
-    _currentKanji.add([]);
-    _maxScore.add(kanji.length.toDouble());
-    for (int y = 0; y < kanji.length; y++) {
-      _currentKanji[x].add(_none);
+    _currentWord.add([]);
+    _maxScore.add(word.length.toDouble());
+    for (int y = 0; y < word.length; y++) {
+      _currentWord[x].add(_none);
     }
   }
 
   _updateUIOnSubmit(double score) {
-    /// Update the macro of the word with the current score of each kanji
+    /// Update the macro of the word with the current score of each word
     _score[_macro] += score;
 
     setState(() {
-      /// When done, show the kanji in the header
+      /// When done, show the word in the header
       /// Update the _inner index
       /// And if the current _inner index is the last one of the word, go to the next word
-      _showActualKanji = false;
+      _showActualWord = false;
       _inner++;
-      if (_inner == _studyList[_macro].word.length) _goNextKanji = true;
+      if (_inner == _studyList[_macro].word.length) _goNextWord = true;
     });
 
     /// Empty the current canvas
     _clear();
   }
 
-  _resetKanji() async {
+  _resetWord() async {
     /// If we are done with the current word...
-    if (_goNextKanji) {
+    if (_goNextWord) {
       /// If the score is less PARTIAL or WRONG and the Learning Mode is
       /// SPATIAL, the append the current word to the list, to review it again.
       /// Only do this when NOT on test
@@ -142,7 +142,7 @@ class _WritingStudyState extends State<WritingStudy> {
         /// repetition, then do NOT calculate the score and return 0 directly.
         final condition =
             _hasRepetition && _macro >= widget.args.studyList.length;
-        final code = !condition ? await _calculateKanjiScore() : 0;
+        final code = !condition ? await _calculateWordScore() : 0;
 
         /// If everything went well, and we have words left in the list,
         /// update _macro to the next one and reset _inner.
@@ -151,7 +151,7 @@ class _WritingStudyState extends State<WritingStudy> {
             setState(() {
               _macro++;
               _inner = 0;
-              _goNextKanji = false;
+              _goNextWord = false;
             });
           }
 
@@ -163,11 +163,11 @@ class _WritingStudyState extends State<WritingStudy> {
       }
     }
 
-    /// If we are within a word with various kanji, show the current one.
+    /// If we are within a word with various word, show the current one.
     else {
       setState(() {
-        _showActualKanji = true;
-        _currentKanji[_macro][_inner] = _studyList[_macro].word[_inner];
+        _showActualWord = true;
+        _currentWord[_macro][_inner] = _studyList[_macro].word[_inner];
       });
     }
   }
@@ -189,7 +189,7 @@ class _WritingStudyState extends State<WritingStudy> {
     }
   }
 
-  Future<int> _calculateKanjiScore() async {
+  Future<int> _calculateWordScore() async {
     getIt<StudyModeBloc>().add(StudyModeEventUpdateDateShown(
       listName: _studyList[_macro].listName,
       word: _studyList[_macro].word,
@@ -239,7 +239,7 @@ class _WritingStudyState extends State<WritingStudy> {
           centerTitle: true,
           appBarActions: [
             Visibility(
-              visible: _goNextKanji,
+              visible: _goNextWord,
               child: TTSIconButton(word: _studyList[_macro].pronunciation),
             ),
             if (_hasRepetition && widget.args.testMode != Tests.daily)
@@ -262,7 +262,7 @@ class _WritingStudyState extends State<WritingStudy> {
                 children: [
                   KPCustomCanvas(
                     line: _line,
-                    allowEdit: !_showActualKanji,
+                    allowEdit: !_showActualWord,
                   ),
                   Positioned(
                     top: threshold
@@ -280,20 +280,20 @@ class _WritingStudyState extends State<WritingStudy> {
               WritingButtonsAnimations(
                 id: _macro,
 
-                /// Whenever a new kanji is shown, _inner will be 0. That's
+                /// Whenever a new word is shown, _inner will be 0. That's
                 /// the key to toggle the slide animation on the button.
                 triggerSlide: _inner == 0,
-                trigger: _showActualKanji,
-                submitLabel: _goNextKanji
-                    ? "writing_next_kanji_label".tr()
+                trigger: _showActualWord,
+                submitLabel: _goNextWord
+                    ? "writing_next_word_label".tr()
                     : "done_button_label".tr(),
                 action: (score) async => await _updateUIOnSubmit(score),
                 onSubmit: () {
                   if (_macro <= _studyList.length - 1) {
-                    _resetKanji();
+                    _resetWord();
                   } else {
                     if (_line.isNotEmpty) {
-                      _resetKanji();
+                      _resetWord();
                     } else {
                       Utils.getSnackBar(
                           context, "writing_validation_failed".tr());
@@ -312,7 +312,7 @@ class _WritingStudyState extends State<WritingStudy> {
     return [
       KPLearningHeaderContainer(
           height: KPSizes.defaultSizeLearningExtContainer + KPMargins.margin4,
-          text: _goNextKanji ? _studyList[_macro].pronunciation : ""),
+          text: _goNextWord ? _studyList[_macro].pronunciation : ""),
       SizedBox(
         height: 80,
         child: ListView.builder(
@@ -321,9 +321,9 @@ class _WritingStudyState extends State<WritingStudy> {
           physics: const NeverScrollableScrollPhysics(),
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
-            String? kanji = _studyList[_macro].word;
+            String? word = _studyList[_macro].word;
             return Text(
-                _currentKanji[_macro][index] == _none ? _none : kanji[index],
+                _currentWord[_macro][index] == _none ? _none : word[index],
                 style: TextStyle(
                     fontSize: KPFontSizes.fontSize64,
                     color: index == _inner ? KPColors.secondaryColor : null));

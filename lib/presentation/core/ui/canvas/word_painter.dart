@@ -3,15 +3,15 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
-class KanjiPainter extends CustomPainter {
+class WordPainter extends CustomPainter {
   List<Offset?> points;
   double size;
-  KanjiPainter({required this.points, required this.size});
+  WordPainter({required this.points, required this.size});
 
   List<Offset> offsetPoints = [];
 
-  /// Actual brush to paint the kanji with
-  static final Paint kanjiPaint = Paint()
+  /// Actual brush to paint the word with
+  static final Paint wordPaint = Paint()
     ..color = KPColors.accentLight
     ..strokeWidth = 10
     ..isAntiAlias = true
@@ -32,12 +32,12 @@ class KanjiPainter extends CustomPainter {
 
     for (int i = 0; i < points.length - 1; i++) {
       if (points[i] != null && points[i + 1] != null) {
-        canvas.drawLine(points[i]!, points[i + 1]!, kanjiPaint);
+        canvas.drawLine(points[i]!, points[i + 1]!, wordPaint);
       } else if (points[i] != null && points[i + 1] == null) {
         offsetPoints.clear();
         offsetPoints.add(points[i]!);
         offsetPoints.add(Offset(points[i]!.dx + 0.1, points[i]!.dy + 0.1));
-        canvas.drawPoints(PointMode.points, offsetPoints, kanjiPaint);
+        canvas.drawPoints(PointMode.points, offsetPoints, wordPaint);
       }
     }
   }

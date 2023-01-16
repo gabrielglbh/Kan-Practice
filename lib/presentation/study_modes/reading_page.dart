@@ -76,7 +76,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
       /// repetition, then do NOT calculate the score and return 0 directly.
       final condition =
           _hasRepetition && _macro >= widget.args.studyList.length;
-      final code = !condition ? await _calculateKanjiScore(score) : 0;
+      final code = !condition ? await _calculateWordScore(score) : 0;
 
       /// If everything went well, and we have words left in the list,
       /// update _macro to the next one.
@@ -113,7 +113,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
     }
   }
 
-  Future<int> _calculateKanjiScore(double score) async {
+  Future<int> _calculateWordScore(double score) async {
     getIt<StudyModeBloc>().add(StudyModeEventUpdateDateShown(
       listName: _studyList[_macro].listName,
       word: _studyList[_macro].word,

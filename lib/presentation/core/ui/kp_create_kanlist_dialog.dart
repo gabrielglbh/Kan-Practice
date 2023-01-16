@@ -24,13 +24,13 @@ class KPCreateKanListDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return KPDialog(
-      title: Text("kanji_lists_createDialogForAddingKanList_title".tr()),
+      title: Text("word_lists_createDialogForAddingKanList_title".tr()),
       content: KPTextForm(
-        header: "kanji_lists_createDialogForAddingKanList_header".tr(),
+        header: "word_lists_createDialogForAddingKanList_header".tr(),
         maxLength: 32,
         controller: controller,
         action: TextInputAction.done,
-        hint: "kanji_lists_createDialogForAddingKanList_hint".tr(),
+        hint: "word_lists_createDialogForAddingKanList_hint".tr(),
         autofocus: true,
         onSubmitted: (name) {
           if (onSubmit != null) onSubmit!(name);
@@ -43,7 +43,7 @@ class KPCreateKanListDialog extends StatelessWidget {
       /// Manage the state of the KPDialog from here to pass the name
       popDialog: onSubmit != null,
       positiveButtonText:
-          "kanji_lists_createDialogForAddingKanList_positive".tr(),
+          "word_lists_createDialogForAddingKanList_positive".tr(),
       onPositive: () {
         if (onSubmit != null) {
           onSubmit!(controller.text);

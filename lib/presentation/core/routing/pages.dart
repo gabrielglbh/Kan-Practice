@@ -1,6 +1,6 @@
 class KanPracticePages {
-  static const String kanjiListDetailsPage = "/WordListDetailsPage";
-  static const String addKanjiPage = "/addKanjiPage";
+  static const String wordListDetailsPage = "/WordListDetailsPage";
+  static const String addWordPage = "/addWordPage";
   static const String writingStudyPage = "/writingStudyPage";
   static const String readingStudyPage = "/readingStudyPage";
   static const String recognitionStudyPage = "/recognitionStudyPage";
@@ -17,7 +17,7 @@ class KanPracticePages {
   static const String marketAddListPage = "/marketAddListPage";
   static const String homePage = "/homePage";
   static const String folderAddPage = "/folderAddPage";
-  static const String kanjiListOnFolderPage = "/kanjiListOnFolder";
+  static const String wordListOnFolderPage = "/wordListOnFolder";
   static const String historyWordPage = "/historyWordPage";
   static const String historyTestExpandedPage = "/historyTestExpandedPage";
   static const String historyTestFiltersPage = "/historyTestFiltersPage";

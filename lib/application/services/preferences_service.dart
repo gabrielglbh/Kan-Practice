@@ -33,7 +33,7 @@ class SharedKeys {
   static const String haveSeenKanListDetailCoachMark =
       "haveSeenKanListDetailCoachMark";
 
-  static const String numberOfKanjiInTest = "numberOfKanjiInTest";
+  static const String numberOfWordInTest = "numberOfKanjiInTest";
   static const String folderWhenOnTest = "folderWhenOnTest";
   static const String enableRepetitionOnTests = "enableRepetitionOnTests";
 

@@ -24,11 +24,11 @@ class LoadFolderPracticeBloc
           await _folderRepository.getAllWordsOnListsOnFolder([event.folder]);
       list.shuffle();
 
-      final kanjiInTest =
-          _preferencesRepository.readData(SharedKeys.numberOfKanjiInTest) ??
-              KPSizes.numberOfKanjiInTest;
+      final wordsInTest =
+          _preferencesRepository.readData(SharedKeys.numberOfWordInTest) ??
+              KPSizes.numberOfWordInTest;
       List<Word> sortedList = list.sublist(
-          0, list.length < kanjiInTest ? list.length : kanjiInTest);
+          0, list.length < wordsInTest ? list.length : wordsInTest);
 
       emit(LoadFolderPracticeStateLoadedList(sortedList, event.mode));
     });

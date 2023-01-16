@@ -57,7 +57,7 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
                 .getAllGrammarPointsFromList(event.name);
 
             if (words.isEmpty && grammar.isEmpty) {
-              emit(AddToMarketStateFailure("add_to_market_kanji_empty".tr()));
+              emit(AddToMarketStateFailure("add_to_market_word_empty".tr()));
             } else {
               final res = await _marketRepository.uploadListToMarketPlace(
                   event.listNameForMarket,
@@ -88,7 +88,7 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
                 .getAllGrammarPointsOnListsOnFolder([event.name]);
 
             if (words.isEmpty && grammar.isEmpty) {
-              emit(AddToMarketStateFailure("add_to_market_kanji_empty".tr()));
+              emit(AddToMarketStateFailure("add_to_market_word_empty".tr()));
             } else {
               final res = await _marketRepository.uploadFolderToMarketPlace(
                   event.listNameForMarket,

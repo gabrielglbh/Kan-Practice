@@ -122,7 +122,7 @@ class BackupRepositoryImpl implements IBackupRepository {
         /// Making sure the back up only contains the actual data of the device
         await removeBackUp();
 
-        /// Kanji list
+        /// Word list
         for (int x = 0; x < word.length; x++) {
           final DocumentReference doc = _ref
               .collection(collection)

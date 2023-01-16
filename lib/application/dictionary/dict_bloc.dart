@@ -33,7 +33,7 @@ class DictBloc extends Bloc<DictEvent, DictState> {
         emit(DictStateLoading());
         List<Category> categories = _classifierRepository.predict(event.image);
         categories =
-            categories.getRange(0, KPSizes.numberOfPredictedKanji).toList();
+            categories.getRange(0, KPSizes.numberOfPredictedWords).toList();
         emit(DictStateLoaded(categories));
       } on Exception {
         emit(DictStateFailure());

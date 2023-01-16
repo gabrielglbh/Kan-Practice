@@ -105,8 +105,8 @@ class KPTextForm extends StatelessWidget {
           decoration: InputDecoration(hintText: hint),
           enabled: enabled,
           onEditingComplete: () => onEditingComplete(),
-          onSubmitted: (kanji) {
-            if (onSubmitted != null) onSubmitted!(kanji);
+          onSubmitted: (word) {
+            if (onSubmitted != null) onSubmitted!(word);
           },
         ),
       ],

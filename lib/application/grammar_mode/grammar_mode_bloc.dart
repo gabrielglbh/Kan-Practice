@@ -26,8 +26,8 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
       Map<String, dynamic> toUpdate = {};
 
       /// If winRate of any mode is -1, it means that the user has not studied this
-      /// kanji yet. Therefore, the score should be untouched.
-      /// If the winRate is different than -1, the user has already studied this kanji
+      /// word yet. Therefore, the score should be untouched.
+      /// If the winRate is different than -1, the user has already studied this word
       /// and then, a mean is calculated between the upcoming score and the previous one.
       switch (event.mode) {
         case GrammarModes.definition:
@@ -198,7 +198,7 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
     on<GrammarModeEventGetScore>((event, emit) async {
       double overallScore = 0;
 
-      /// Get the kanji from the DB rather than the args instance as the args
+      /// Get the word from the DB rather than the args instance as the args
       /// instance does not have the updated values
       List<GrammarPoint> points = await _grammarPointRepository
           .getAllGrammarPointsFromList(event.listName);

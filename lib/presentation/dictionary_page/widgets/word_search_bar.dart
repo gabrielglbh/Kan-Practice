@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
-class KanjiSearchBar extends StatelessWidget {
+class WordSearchBar extends StatelessWidget {
   /// Hint text to show on the search bar when not used
   final String hint;
 
@@ -14,7 +14,7 @@ class KanjiSearchBar extends StatelessWidget {
   final Function() onClear;
   final Function() onRemoveLast;
   final void Function(String) onChange;
-  const KanjiSearchBar({
+  const WordSearchBar({
     Key? key,
     required this.hint,
     required this.controller,

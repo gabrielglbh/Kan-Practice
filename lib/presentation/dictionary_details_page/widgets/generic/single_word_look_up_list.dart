@@ -3,11 +3,11 @@ import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
 
-class SingleKanjiLookUpList extends StatelessWidget {
-  final List<String>? kanjiList;
+class SingleWordLookUpList extends StatelessWidget {
+  final List<String>? wordList;
   final bool fromDictionary;
-  const SingleKanjiLookUpList(
-      {Key? key, required this.kanjiList, required this.fromDictionary})
+  const SingleWordLookUpList(
+      {Key? key, required this.wordList, required this.fromDictionary})
       : super(key: key);
 
   @override
@@ -16,7 +16,7 @@ class SingleKanjiLookUpList extends StatelessWidget {
       height: KPSizes.defaultJishoAPIContainer,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: kanjiList?.length,
+        itemCount: wordList?.length,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin4),
@@ -26,10 +26,10 @@ class SingleKanjiLookUpList extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
                     arguments: DictionaryDetailsArguments(
-                        word: kanjiList?[index],
+                        word: wordList?[index],
                         fromDictionary: fromDictionary));
               },
-              label: Text(kanjiList?[index] ?? ""),
+              label: Text(wordList?[index] ?? ""),
             ),
           );
         },

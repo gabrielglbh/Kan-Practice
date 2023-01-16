@@ -215,14 +215,14 @@ class _WordListWidgetState extends State<WordListWidget>
                 })),
           ),
         _aggrStats
-            ? Expanded(child: _kanjiList(state))
+            ? Expanded(child: _wordList(state))
             : Expanded(
                 child: GestureDetector(
                   onHorizontalDragEnd: (details) {
                     double? pv = details.primaryVelocity;
                     if (pv != null) _updateSelectedModePageView(pv);
                   },
-                  child: _kanjiList(state),
+                  child: _wordList(state),
                 ),
               ),
         KPButton(
@@ -244,7 +244,7 @@ class _WordListWidgetState extends State<WordListWidget>
     );
   }
 
-  Widget _kanjiList(ListDetailWordsStateLoaded state) {
+  Widget _wordList(ListDetailWordsStateLoaded state) {
     if (state.list.isEmpty) {
       return KPEmptyList(
           showTryButton: true,
@@ -252,7 +252,7 @@ class _WordListWidgetState extends State<WordListWidget>
           message: "list_details_empty".tr());
     }
     return GridView.builder(
-      key: const PageStorageKey<String>('kanjiListController'),
+      key: const PageStorageKey<String>('wordListController'),
       itemCount: state.list.length,
       controller: _scrollController,
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -269,7 +269,7 @@ class _WordListWidgetState extends State<WordListWidget>
           onShowModal: () => widget.searchBarFn?.unfocus(),
           onTap: () async {
             await Navigator.of(context)
-                .pushNamed(KanPracticePages.addKanjiPage,
+                .pushNamed(KanPracticePages.addWordPage,
                     arguments:
                         AddWordArgs(listName: widget.listName, word: word))
                 .then((code) {

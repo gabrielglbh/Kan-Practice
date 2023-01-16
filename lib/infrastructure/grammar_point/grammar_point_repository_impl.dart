@@ -116,7 +116,7 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
       final controlledPace =
           _preferencesRepository.readData(SharedKeys.dailyTestOnControlledPace);
       int limit =
-          _preferencesRepository.readData(SharedKeys.numberOfKanjiInTest);
+          _preferencesRepository.readData(SharedKeys.numberOfWordInTest);
 
       if (controlledPace) {
         // Divide number of total words of the user's db by the weekdays

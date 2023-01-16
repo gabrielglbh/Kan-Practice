@@ -77,7 +77,7 @@ class StudyModeUpdateHandler {
                         );
                       }
                       studyList =
-                          _getMapOfKanjiInTest(args.studyList, testScores);
+                          _getMapOfWordsInTest(args.studyList, testScores);
                     }
                     navigator.pushReplacementNamed(
                         KanPracticePages.testResultPage,
@@ -92,7 +92,7 @@ class StudyModeUpdateHandler {
 
                   /// If the user went back in mid list, update the list accordingly
                   else if (isPracticePopped) {
-                    /// If I am in the first kanji, just pop
+                    /// If I am in the first word, just pop
                     if (lastIndex == 0) {
                       Navigator.of(context).pop();
                     } else {
@@ -112,11 +112,11 @@ class StudyModeUpdateHandler {
     return false;
   }
 
-  static Map<String, List<Map<Word, double>>> _getMapOfKanjiInTest(
+  static Map<String, List<Map<Word, double>>> _getMapOfWordsInTest(
       List<Word> studyList, List<double> testScores) {
     Map<String, List<Map<Word, double>>> orderedMap = {};
-    for (var kanji in studyList) {
-      orderedMap[kanji.listName] = [];
+    for (var word in studyList) {
+      orderedMap[word.listName] = [];
     }
     for (int x = 0; x < studyList.length; x++) {
       orderedMap[studyList[x].listName]?.add({studyList[x]: testScores[x]});

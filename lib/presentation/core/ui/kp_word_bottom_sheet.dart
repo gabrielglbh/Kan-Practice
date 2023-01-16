@@ -18,33 +18,30 @@ import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class KPWordBottomSheet extends StatelessWidget {
-  /// Kanji object to be displayed
+  /// Word object to be displayed
   final String? listName;
-  final Word? kanji;
+  final Word? word;
   final Function()? onRemove;
   final Function()? onTap;
   const KPWordBottomSheet(
       {Key? key,
       required this.listName,
-      required this.kanji,
+      required this.word,
       this.onTap,
       this.onRemove})
       : super(key: key);
 
   /// Creates and calls the [BottomSheet] with the content for displaying the data
-  /// of the current selected kanji
+  /// of the current selected word
   static Future<String?> show(
-      BuildContext context, String? listName, Word? kanji,
+      BuildContext context, String? listName, Word? word,
       {Function()? onRemove, Function()? onTap}) async {
     return await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (context) => KPWordBottomSheet(
-            listName: listName,
-            kanji: kanji,
-            onTap: onTap,
-            onRemove: onRemove));
+            listName: listName, word: word, onTap: onTap, onRemove: onRemove));
   }
 
   @override
@@ -56,7 +53,7 @@ class KPWordBottomSheet extends StatelessWidget {
       onClosing: () {},
       builder: (context) {
         getIt<WordDetailsBloc>().add(WordDetailsEventLoading(
-          kanji ?? Word.empty,
+          word ?? Word.empty,
           isArchive: listName == null,
         ));
         return Wrap(children: [
@@ -89,7 +86,7 @@ class KPWordBottomSheet extends StatelessWidget {
                                 horizontal: KPMargins.margin16),
                             child: Text(state.error));
                       } else if (state is WordDetailsStateLoaded) {
-                        return _body(context, state.kanji);
+                        return _body(context, state.word);
                       } else {
                         return Container();
                       }
@@ -102,17 +99,17 @@ class KPWordBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _body(BuildContext context, Word updatedKanji) {
+  Widget _body(BuildContext context, Word updatedWord) {
     return Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _header(context, updatedKanji),
+          _header(context, updatedWord),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
             child: FittedBox(
               fit: BoxFit.contain,
-              child: Text(updatedKanji.word,
+              child: Text(updatedWord.word,
                   textAlign: TextAlign.center,
                   style: Theme.of(context)
                       .textTheme
@@ -132,12 +129,12 @@ class KPWordBottomSheet extends StatelessWidget {
                   text: TextSpan(children: [
                     TextSpan(
                       text:
-                          "(${WordCategory.values[updatedKanji.category].category}) ",
+                          "(${WordCategory.values[updatedWord.category].category}) ",
                       style: Theme.of(context).textTheme.bodyText2?.copyWith(
                           color: KPColors.midGrey, fontStyle: FontStyle.italic),
                     ),
                     TextSpan(
-                        text: updatedKanji.meaning,
+                        text: updatedWord.meaning,
                         style: Theme.of(context).textTheme.bodyText2)
                   ])),
             ),
@@ -161,7 +158,7 @@ class KPWordBottomSheet extends StatelessWidget {
                     padding: const EdgeInsets.only(left: KPMargins.margin8),
                     child: FittedBox(
                       fit: BoxFit.contain,
-                      child: Text(updatedKanji.listName,
+                      child: Text(updatedWord.listName,
                           textAlign: TextAlign.center,
                           style: Theme.of(context)
                               .textTheme
@@ -174,13 +171,13 @@ class KPWordBottomSheet extends StatelessWidget {
             ),
           const Divider(),
           KPStudyModeRadialGraph(
-            writing: updatedKanji.winRateWriting,
-            reading: updatedKanji.winRateReading,
-            recognition: updatedKanji.winRateRecognition,
-            listening: updatedKanji.winRateListening,
-            speaking: updatedKanji.winRateSpeaking,
+            writing: updatedWord.winRateWriting,
+            reading: updatedWord.winRateReading,
+            recognition: updatedWord.winRateRecognition,
+            listening: updatedWord.winRateListening,
+            speaking: updatedWord.winRateSpeaking,
           ),
-          _lastTimeShownWidget(context, updatedKanji),
+          _lastTimeShownWidget(context, updatedWord),
           Visibility(
             visible: onTap != null && onRemove != null,
             child: Column(
@@ -194,7 +191,7 @@ class KPWordBottomSheet extends StatelessWidget {
         ]);
   }
 
-  Widget _header(BuildContext context, Word updatedKanji) {
+  Widget _header(BuildContext context, Word updatedWord) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
         child: Row(
@@ -205,24 +202,24 @@ class KPWordBottomSheet extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
                     arguments:
-                        DictionaryDetailsArguments(word: updatedKanji.word));
+                        DictionaryDetailsArguments(word: updatedWord.word));
               },
             ),
             SizedBox(
               height: KPMargins.margin24,
               child: FittedBox(
                 fit: BoxFit.contain,
-                child: Text(updatedKanji.pronunciation,
+                child: Text(updatedWord.pronunciation,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyText1),
               ),
             ),
-            TTSIconButton(word: updatedKanji.pronunciation)
+            TTSIconButton(word: updatedWord.pronunciation)
           ],
         ));
   }
 
-  Widget _lastTimeShownWidget(BuildContext context, Word updatedKanji) {
+  Widget _lastTimeShownWidget(BuildContext context, Word updatedWord) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
         child: ExpansionTile(
@@ -231,9 +228,9 @@ class KPWordBottomSheet extends StatelessWidget {
             tilePadding: const EdgeInsets.all(0),
             title: Text(
                 "${"created_label".tr()} "
-                "${Utils.parseDateMilliseconds(context, updatedKanji.dateAdded)} • "
+                "${Utils.parseDateMilliseconds(context, updatedWord.dateAdded)} • "
                 "${"last_seen_label".tr()} "
-                "${Utils.parseDateMilliseconds(context, updatedKanji.dateLastShown)}",
+                "${Utils.parseDateMilliseconds(context, updatedWord.dateLastShown)}",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyText2),
             children: [
@@ -243,31 +240,31 @@ class KPWordBottomSheet extends StatelessWidget {
                 itemCount: StudyModes.values.length,
                 itemBuilder: (context, index) {
                   return _lastSeenOnModes(
-                      context, updatedKanji, StudyModes.values[index]);
+                      context, updatedWord, StudyModes.values[index]);
                 },
               )
             ]));
   }
 
   Widget _lastSeenOnModes(
-      BuildContext context, Word updatedKanji, StudyModes mode) {
+      BuildContext context, Word updatedWord, StudyModes mode) {
     int? date = 0;
     String parsedDate = "-";
     switch (mode) {
       case StudyModes.writing:
-        date = updatedKanji.dateLastShownWriting;
+        date = updatedWord.dateLastShownWriting;
         break;
       case StudyModes.reading:
-        date = updatedKanji.dateLastShownReading;
+        date = updatedWord.dateLastShownReading;
         break;
       case StudyModes.recognition:
-        date = updatedKanji.dateLastShownRecognition;
+        date = updatedWord.dateLastShownRecognition;
         break;
       case StudyModes.listening:
-        date = updatedKanji.dateLastShownListening;
+        date = updatedWord.dateLastShownListening;
         break;
       case StudyModes.speaking:
-        date = updatedKanji.dateLastShownSpeaking;
+        date = updatedWord.dateLastShownSpeaking;
         break;
     }
     if (date != 0) {
@@ -312,22 +309,22 @@ class KPWordBottomSheet extends StatelessWidget {
       children: [
         Expanded(
           child: ListTile(
-            title: Text("kanji_bottom_sheet_removal_label".tr()),
+            title: Text("word_bottom_sheet_removal_label".tr()),
             trailing: const Icon(Icons.clear),
             visualDensity: const VisualDensity(vertical: -3),
             onTap: () {
               showDialog(
                   context: bloc,
                   builder: (context) => KPDialog(
-                      title: Text("kanji_bottom_sheet_removeKanji_title".tr()),
+                      title: Text("word_bottom_sheet_removeWord_title".tr()),
                       content:
-                          Text("kanji_bottom_sheet_removeKanji_content".tr()),
+                          Text("word_bottom_sheet_removeWord_content".tr()),
                       positiveButtonText:
-                          "kanji_bottom_sheet_removeKanji_positive".tr(),
+                          "word_bottom_sheet_removeWord_positive".tr(),
                       onPositive: () {
                         Navigator.of(context).pop();
                         getIt<WordDetailsBloc>()
-                            .add(WordDetailsEventDelete(kanji));
+                            .add(WordDetailsEventDelete(word));
                         if (onRemove != null) onRemove!();
                       }));
             },
@@ -336,7 +333,7 @@ class KPWordBottomSheet extends StatelessWidget {
         const RotatedBox(quarterTurns: 1, child: Divider()),
         Expanded(
           child: ListTile(
-            title: Text("kanji_bottom_sheet_update_label".tr()),
+            title: Text("word_bottom_sheet_update_label".tr()),
             trailing: const Icon(Icons.arrow_forward_rounded),
             visualDensity: const VisualDensity(vertical: -3),
             onTap: () {

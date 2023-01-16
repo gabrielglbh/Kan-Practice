@@ -21,9 +21,9 @@ class AddWordBloc extends Bloc<AddWordEvent, AddWordState> {
         emit(AddWordStateDoneUpdating());
       } else if (code == -1) {
         emit(AddWordStateFailure(
-            message: "add_kanji_updateKanji_failed_update".tr()));
+            message: "add_word_updateWord_failed_update".tr()));
       } else {
-        emit(AddWordStateFailure(message: "add_kanji_updateKanji_failed".tr()));
+        emit(AddWordStateFailure(message: "add_word_updateWord_failed".tr()));
       }
     });
 
@@ -34,9 +34,9 @@ class AddWordBloc extends Bloc<AddWordEvent, AddWordState> {
         emit(AddWordStateDoneCreating(exitMode: event.exitMode));
       } else if (code == -1) {
         emit(AddWordStateFailure(
-            message: "add_kanji_createKanji_failed_insertion".tr()));
+            message: "add_word_createWord_failed_insertion".tr()));
       } else {
-        emit(AddWordStateFailure(message: "add_kanji_createKanji_failed".tr()));
+        emit(AddWordStateFailure(message: "add_word_createWord_failed".tr()));
       }
     });
   }

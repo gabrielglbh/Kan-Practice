@@ -9,7 +9,7 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KPBlitzBottomSheet extends StatelessWidget {
   /// String defining if the user wants to perform a Blitz Test on a practice
-  /// lesson specifically. If null, all kanji available will be taken into consideration.
+  /// lesson specifically. If null, all word available will be taken into consideration.
   final String? practiceList;
 
   /// Folder for UI on history test
@@ -56,9 +56,9 @@ class KPBlitzBottomSheet extends StatelessWidget {
             ? "less_pct_bottom_sheet_title".tr()
             : "blitz_bottom_sheet_title".tr();
     final folderTitle = folder != null ? ": $folder" : "";
-    final kanjiInTest =
-        getIt<PreferencesService>().readData(SharedKeys.numberOfKanjiInTest) ??
-            KPSizes.numberOfKanjiInTest;
+    final wordsInTest =
+        getIt<PreferencesService>().readData(SharedKeys.numberOfWordInTest) ??
+            KPSizes.numberOfWordInTest;
     final type = remembranceTest
         ? Tests.time
         : lessPctTest
@@ -115,7 +115,7 @@ class KPBlitzBottomSheet extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     vertical: KPMargins.margin8,
                     horizontal: KPMargins.margin32),
-                child: Text("$kanjiInTest $description",
+                child: Text("$wordsInTest $description",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyText1),
               ),

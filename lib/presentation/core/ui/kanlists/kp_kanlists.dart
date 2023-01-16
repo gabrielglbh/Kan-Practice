@@ -8,19 +8,19 @@ import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/ui/kp_grammar_word_chip.dart';
-import 'package:kanpractice/presentation/core/ui/word_lists/widgets/word_list_tile.dart';
+import 'package:kanpractice/presentation/core/ui/kanlists/widgets/kanlist_tile.dart';
 import 'package:kanpractice/presentation/core/ui/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/ui/kp_switch.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class KPWordLists extends StatefulWidget {
+class KPKanlists extends StatefulWidget {
   final Function() removeFocus;
   final Function() onScrolledToBottom;
   final String? folder;
   final bool withinFolder;
-  const KPWordLists({
+  const KPKanlists({
     Key? key,
     required this.removeFocus,
     required this.onScrolledToBottom,
@@ -29,10 +29,10 @@ class KPWordLists extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<KPWordLists> createState() => _KPWordListsState();
+  State<KPKanlists> createState() => _KPKanlistsState();
 }
 
-class _KPWordListsState extends State<KPWordLists>
+class _KPKanlistsState extends State<KPKanlists>
     with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
 
@@ -222,7 +222,7 @@ class _KPWordListsState extends State<KPWordLists>
             return KPEmptyList(
                 showTryButton: true,
                 onRefresh: () => _addLoadingEvent(reset: true),
-                message: "kanji_lists_load_failed".tr());
+                message: "word_lists_load_failed".tr());
           } else if (state is ListStateLoading || state is ListStateSearching) {
             return const KPProgressIndicator();
           } else if (state is ListStateLoaded) {
@@ -230,7 +230,7 @@ class _KPWordListsState extends State<KPWordLists>
                 ? KPEmptyList(
                     onRefresh: () => _addLoadingEvent(reset: true),
                     showTryButton: true,
-                    message: "kanji_lists_empty".tr())
+                    message: "word_lists_empty".tr())
                 : _content(state.lists);
           } else {
             return Container();
@@ -244,7 +244,7 @@ class _KPWordListsState extends State<KPWordLists>
           return KPEmptyList(
               showTryButton: true,
               onRefresh: () => _addLoadingEvent(reset: true),
-              message: "kanji_lists_load_failed".tr());
+              message: "word_lists_load_failed".tr());
         } else if (state is FolderDetailsEventLoading ||
             state is FolderDetailsStateSearching) {
           return const KPProgressIndicator();
@@ -253,7 +253,7 @@ class _KPWordListsState extends State<KPWordLists>
               ? KPEmptyList(
                   onRefresh: () => _addLoadingEvent(reset: true),
                   showTryButton: true,
-                  message: "kanji_lists_empty".tr())
+                  message: "word_lists_empty".tr())
               : _content(state.lists);
         } else {
           return Container();
@@ -274,7 +274,7 @@ class _KPWordListsState extends State<KPWordLists>
           SliverToBoxAdapter(child: _grammarSwitch()),
           SliverList(
             delegate: SliverChildBuilderDelegate((_, k) {
-              return WordListTile(
+              return KanlistTile(
                 item: lists[k],
                 onTap: widget.removeFocus,
                 withinFolder: widget.withinFolder,

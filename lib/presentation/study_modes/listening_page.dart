@@ -52,7 +52,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
         .readData(SharedKeys.enableRepetitionOnTests);
     _studyList.addAll(widget.args.studyList);
 
-    /// Execute the TTS when passing to the next kanji
+    /// Execute the TTS when passing to the next word
     getIt<TextToSpeechService>().speakWord(_studyList[_macro].pronunciation);
     super.initState();
   }
@@ -73,7 +73,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
       /// repetition, then do NOT calculate the score and return 0 directly.
       final condition =
           _hasRepetition && _macro >= widget.args.studyList.length;
-      final code = !condition ? await _calculateKanjiScore(score) : 0;
+      final code = !condition ? await _calculateWordScore(score) : 0;
 
       /// If everything went well, and we have words left in the list,
       /// update _macro to the next one.
@@ -84,7 +84,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
             _showWord = false;
           });
 
-          /// Execute the TTS when passing to the next kanji
+          /// Execute the TTS when passing to the next word
           await getIt<TextToSpeechService>()
               .speakWord(_studyList[_macro].pronunciation);
         }
@@ -114,7 +114,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
     }
   }
 
-  Future<int> _calculateKanjiScore(double score) async {
+  Future<int> _calculateWordScore(double score) async {
     if (widget.args.isNumberTest) {
       /// If we are on a Number Test, just add the _testScores as the used numbers
       /// are not stored in the Database

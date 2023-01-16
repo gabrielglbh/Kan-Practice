@@ -9,8 +9,8 @@ class KPSizes {
   static const double defaultSizeSearchBarIcons = 50;
   static const double defaultJishoAPIContainer = 52;
   static const double defaultSizeActionButton = 60;
-  static const double defaultSizeKanjiItemOnResultTest = 60;
-  static const double actionButtonsKanjiDetail = 55;
+  static const double defaultSizeWordItemOnResultTest = 60;
+  static const double actionButtonsWordDetail = 55;
   static const double appBarHeight = 80;
   static const double listStudyHeight = 85;
   static const double defaultSizeDragContainerWidth = 90;
@@ -25,8 +25,8 @@ class KPSizes {
 
   static const double minimumHeight = 750;
 
-  static const int numberOfKanjiInTest = 30;
-  static const int numberOfPredictedKanji = 20;
+  static const int numberOfWordInTest = 30;
+  static const int numberOfPredictedWords = 20;
 }
 
 class LazyLoadingLimits {
@@ -83,7 +83,7 @@ class KPRadius {
 class KPAnimations {
   static const double dxCardInfo = 2;
 
-  static const int kanjiItemDuration = 25;
+  static const int wordItemDuration = 25;
   static const int ms200 = 200;
   static const int ms300 = 300;
   static const int ms400 = 400;

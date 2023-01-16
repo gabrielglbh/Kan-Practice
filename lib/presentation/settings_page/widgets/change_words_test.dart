@@ -5,8 +5,8 @@ import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/ui/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
-class ChangeKanjiInTest extends StatefulWidget {
-  const ChangeKanjiInTest({Key? key}) : super(key: key);
+class ChangeWordsInTest extends StatefulWidget {
+  const ChangeWordsInTest({Key? key}) : super(key: key);
 
   static Future<int?> show(BuildContext context) async {
     int? value;
@@ -15,22 +15,22 @@ class ChangeKanjiInTest extends StatefulWidget {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         isDismissible: true,
-        builder: (context) => const ChangeKanjiInTest()).then((v) => value = v);
+        builder: (context) => const ChangeWordsInTest()).then((v) => value = v);
     return value;
   }
 
   @override
-  State<ChangeKanjiInTest> createState() => _ChangeKanjiInTestState();
+  State<ChangeWordsInTest> createState() => _ChangeWordsInTestState();
 }
 
-class _ChangeKanjiInTestState extends State<ChangeKanjiInTest> {
-  int _kanjiInTest = KPSizes.numberOfKanjiInTest;
+class _ChangeWordsInTestState extends State<ChangeWordsInTest> {
+  int _wordsInTest = KPSizes.numberOfWordInTest;
 
   @override
   void initState() {
-    _kanjiInTest =
-        getIt<PreferencesService>().readData(SharedKeys.numberOfKanjiInTest) ??
-            KPSizes.numberOfKanjiInTest;
+    _wordsInTest =
+        getIt<PreferencesService>().readData(SharedKeys.numberOfWordInTest) ??
+            KPSizes.numberOfWordInTest;
     super.initState();
   }
 
@@ -56,7 +56,7 @@ class _ChangeKanjiInTestState extends State<ChangeKanjiInTest> {
                         child: Padding(
                           padding:
                               const EdgeInsets.only(bottom: KPMargins.margin8),
-                          child: Text("change_kanji_in_test_selection".tr(),
+                          child: Text("change_word_in_test_selection".tr(),
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.headline5),
                         )),
@@ -70,8 +70,8 @@ class _ChangeKanjiInTestState extends State<ChangeKanjiInTest> {
   }
 
   _onTileSelected(int? val) {
-    setState(() => _kanjiInTest = val ?? KPSizes.numberOfKanjiInTest);
-    Navigator.of(context).pop(_kanjiInTest);
+    setState(() => _wordsInTest = val ?? KPSizes.numberOfWordInTest);
+    Navigator.of(context).pop(_wordsInTest);
   }
 
   Widget _selection(BuildContext context) {
@@ -80,25 +80,25 @@ class _ChangeKanjiInTestState extends State<ChangeKanjiInTest> {
         RadioListTile<int>(
             title: const Text("30"),
             value: 30,
-            groupValue: _kanjiInTest,
+            groupValue: _wordsInTest,
             activeColor: KPColors.secondaryColor,
             onChanged: _onTileSelected),
         RadioListTile<int>(
             title: const Text("40"),
             value: 40,
-            groupValue: _kanjiInTest,
+            groupValue: _wordsInTest,
             activeColor: KPColors.secondaryColor,
             onChanged: _onTileSelected),
         RadioListTile<int>(
             title: const Text("50"),
             value: 50,
-            groupValue: _kanjiInTest,
+            groupValue: _wordsInTest,
             activeColor: KPColors.secondaryColor,
             onChanged: _onTileSelected),
         RadioListTile<int>(
             title: const Text("60"),
             value: 60,
-            groupValue: _kanjiInTest,
+            groupValue: _wordsInTest,
             activeColor: KPColors.secondaryColor,
             onChanged: _onTileSelected),
       ],

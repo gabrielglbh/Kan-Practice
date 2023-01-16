@@ -20,7 +20,7 @@ import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:kanpractice/presentation/core/types/market_filters.dart';
 import 'package:kanpractice/presentation/core/types/tab_types.dart';
 import 'package:kanpractice/domain/market/market.dart';
-import 'package:kanpractice/presentation/core/ui/word_lists/kp_word_lists.dart';
+import 'package:kanpractice/presentation/core/ui/kanlists/kp_kanlists.dart';
 import 'package:kanpractice/presentation/core/ui/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/ui/kp_search_bar.dart';
 import 'package:kanpractice/presentation/core/ui/kp_test_bottom_sheet.dart';
@@ -422,7 +422,7 @@ class _HomePageState extends State<HomePage>
         TabBarView(
           controller: _tabController,
           children: [
-            KPWordLists(
+            KPKanlists(
               key: lists,
               removeFocus: () => _searchBarFn.unfocus(),
               onScrolledToBottom: () {

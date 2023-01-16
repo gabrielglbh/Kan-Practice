@@ -33,7 +33,7 @@ class KPNumberTestBottomSheet extends StatefulWidget {
 
 class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
   final List<Ranges> _selectedLists = [];
-  int _kanjiInTest = KPSizes.numberOfKanjiInTest;
+  int _wordsInTest = KPSizes.numberOfWordInTest;
 
   List<Word> _loadBlitzTest() {
     /// If no range is selected, 0 to 10K will be taken
@@ -48,7 +48,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
       max = _selectedLists[_selectedLists.length - 1].max;
     }
 
-    return List.generate(_kanjiInTest, (n) {
+    return List.generate(_wordsInTest, (n) {
       String num = (min + random.nextInt((max + 1) - min)).toString();
       return Word(
           word: num, pronunciation: num, meaning: num, listName: "Numbers");
@@ -57,9 +57,9 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
 
   @override
   void initState() {
-    _kanjiInTest =
-        getIt<PreferencesService>().readData(SharedKeys.numberOfKanjiInTest) ??
-            KPSizes.numberOfKanjiInTest;
+    _wordsInTest =
+        getIt<PreferencesService>().readData(SharedKeys.numberOfWordInTest) ??
+            KPSizes.numberOfWordInTest;
     super.initState();
   }
 
@@ -87,7 +87,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
                     vertical: KPMargins.margin8,
                     horizontal: KPMargins.margin32),
                 child: Text(
-                    "$_kanjiInTest "
+                    "$_wordsInTest "
                     "${"number_bottom_sheet_content".tr()}",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyText1),

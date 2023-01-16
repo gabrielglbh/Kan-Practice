@@ -139,7 +139,7 @@ class WordRepositoryImpl implements IWordRepository {
       final controlledPace =
           _preferencesRepository.readData(SharedKeys.dailyTestOnControlledPace);
       int limit =
-          _preferencesRepository.readData(SharedKeys.numberOfKanjiInTest);
+          _preferencesRepository.readData(SharedKeys.numberOfWordInTest);
 
       if (controlledPace) {
         // Divide number of total words of the user's db by the weekdays
@@ -405,23 +405,23 @@ class WordRepositoryImpl implements IWordRepository {
       double recognition = 0;
       double listening = 0;
       double speaking = 0;
-      for (var kanji in l) {
-        writing += (kanji.winRateWriting == DatabaseConstants.emptyWinRate
+      for (var word in l) {
+        writing += (word.winRateWriting == DatabaseConstants.emptyWinRate
             ? 0
-            : kanji.winRateWriting);
-        reading += (kanji.winRateReading == DatabaseConstants.emptyWinRate
+            : word.winRateWriting);
+        reading += (word.winRateReading == DatabaseConstants.emptyWinRate
             ? 0
-            : kanji.winRateReading);
+            : word.winRateReading);
         recognition +=
-            (kanji.winRateRecognition == DatabaseConstants.emptyWinRate
+            (word.winRateRecognition == DatabaseConstants.emptyWinRate
                 ? 0
-                : kanji.winRateRecognition);
-        listening += (kanji.winRateListening == DatabaseConstants.emptyWinRate
+                : word.winRateRecognition);
+        listening += (word.winRateListening == DatabaseConstants.emptyWinRate
             ? 0
-            : kanji.winRateListening);
-        speaking += (kanji.winRateSpeaking == DatabaseConstants.emptyWinRate
+            : word.winRateListening);
+        speaking += (word.winRateSpeaking == DatabaseConstants.emptyWinRate
             ? 0
-            : kanji.winRateSpeaking);
+            : word.winRateSpeaking);
       }
       return Word(
           meaning: '',

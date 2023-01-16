@@ -33,30 +33,30 @@ class InitialRepositoryImpl implements IInitialRepository {
           await rootBundle.loadString("assets/initialData/$currentLocale.json");
       final Map<String, dynamic> kanLists = jsonDecode(initialKanLists);
       final List<dynamic> listsNonCasted = kanLists["Lists"];
-      final List<dynamic> kanjiNonCasted = kanLists["Kanji"];
+      final List<dynamic> wordsNonCasted = kanLists["Kanji"];
       final List<WordList> lists = [];
-      final List<Word> kanji = [];
+      final List<Word> words = [];
 
       /// Cast the JSON to the proper type
       for (var item in listsNonCasted) {
         lists.add(WordList.fromJson(item));
       }
-      for (var item in kanjiNonCasted) {
-        kanji.add(Word.fromJson(item));
+      for (var item in wordsNonCasted) {
+        words.add(Word.fromJson(item));
       }
 
-      /// Order matters as kanji depends on lists.
+      /// Order matters as words depends on lists.
       Batch? batch = _database.batch();
 
-      /// For all KanLists and Kanji, set the last updated field to current time
+      /// For all KanLists and Word, set the last updated field to current time
       for (int x = 0; x < lists.length; x++) {
         final WordList k = lists[x]
             .copyWithUpdatedDate(lastUpdated: Utils.getCurrentMilliseconds());
         batch =
             _listRepository.mergeLists(batch, [k], ConflictAlgorithm.replace);
       }
-      for (int x = 0; x < kanji.length; x++) {
-        final Word k = kanji[x].copyWithUpdatedDate(
+      for (int x = 0; x < words.length; x++) {
+        final Word k = words[x].copyWithUpdatedDate(
             dateAdded: Utils.getCurrentMilliseconds(),
             dateLastShown: Utils.getCurrentMilliseconds());
         batch =

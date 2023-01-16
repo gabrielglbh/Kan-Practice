@@ -188,7 +188,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
               onPressed: () async {
                 if (_currentPage == ListDetailsType.words) {
                   await Navigator.of(context)
-                      .pushNamed(KanPracticePages.addKanjiPage,
+                      .pushNamed(KanPracticePages.addWordPage,
                           arguments: AddWordArgs(listName: _listName))
                       .then((code) => _addWordLoadingEvent(reset: true));
                 } else {

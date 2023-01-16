@@ -13,29 +13,29 @@ enum WordCategory {
   interjection
 }
 
-extension KanjiCategoryExt on WordCategory {
+extension WordCategoryExt on WordCategory {
   String get category {
     switch (this) {
       case WordCategory.noun:
-        return "kanji_category_noun".tr();
+        return "word_category_noun".tr();
       case WordCategory.pronoun:
-        return "kanji_category_pronoun".tr();
+        return "word_category_pronoun".tr();
       case WordCategory.verb:
-        return "kanji_category_verb".tr();
+        return "word_category_verb".tr();
       case WordCategory.adjective:
-        return "kanji_category_adjective".tr();
+        return "word_category_adjective".tr();
       case WordCategory.adverb:
-        return "kanji_category_adverb".tr();
+        return "word_category_adverb".tr();
       case WordCategory.expression:
-        return "kanji_category_expression".tr();
+        return "word_category_expression".tr();
       case WordCategory.counter:
-        return "kanji_category_counter".tr();
+        return "word_category_counter".tr();
       case WordCategory.preposition:
-        return "kanji_category_preposition".tr();
+        return "word_category_preposition".tr();
       case WordCategory.conjunction:
-        return "kanji_category_conjunction".tr();
+        return "word_category_conjunction".tr();
       case WordCategory.interjection:
-        return "kanji_category_interjection".tr();
+        return "word_category_interjection".tr();
     }
   }
 }

@@ -34,7 +34,7 @@ class KPModesGrid extends StatefulWidget {
   /// ONLY VALID FOR BLITZ OR REMEMBRANCE TESTS.
   ///
   /// String defining if the user wants to perform a Blitz Test on a practice
-  /// lesson specifically. If null, all kanji available will be taken into consideration.
+  /// lesson specifically. If null, all words available will be taken into consideration.
   final String? practiceList;
 
   /// ONLY VALID FOR FOLDER TEST

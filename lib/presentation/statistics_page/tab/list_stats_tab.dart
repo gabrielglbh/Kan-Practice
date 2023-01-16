@@ -72,7 +72,7 @@ class _ListStatsState extends State<ListStats>
             }
           },
           child: KPBarChart(
-            graphName: "kanji_category_label".tr(),
+            graphName: "word_category_label".tr(),
             animationDuration: 0,
             heightRatio: 3.5,
             enableTooltip: false,

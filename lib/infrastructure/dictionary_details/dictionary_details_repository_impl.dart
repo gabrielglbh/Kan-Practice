@@ -11,7 +11,7 @@ class DictionaryDetailsRepositoryImpl implements IDictionaryDetailsRepository {
     List<WordExample> examples = [];
     for (var example in res.results) {
       examples.add(WordExample(
-          kanji: example.kanji,
+          word: example.kanji,
           kana: example.kana,
           english: example.english,
           jishoUri: res.uri));

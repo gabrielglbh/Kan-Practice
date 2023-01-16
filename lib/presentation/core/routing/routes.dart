@@ -44,10 +44,10 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       bool? showTestBottomSheet = settings.arguments as bool?;
       return CupertinoPageRoute(
           builder: (_) => HomePage(showTestBottomSheet: showTestBottomSheet));
-    case KanPracticePages.kanjiListDetailsPage:
+    case KanPracticePages.wordListDetailsPage:
       WordList list = settings.arguments as WordList;
       return CupertinoPageRoute(builder: (_) => ListDetailsPage(list: list));
-    case KanPracticePages.addKanjiPage:
+    case KanPracticePages.addWordPage:
       AddWordArgs args = settings.arguments as AddWordArgs;
       return CupertinoPageRoute(builder: (_) => AddWordPage(args: args));
     case KanPracticePages.writingStudyPage:
@@ -95,7 +95,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case KanPracticePages.folderAddPage:
       String? folder = settings.arguments as String?;
       return CupertinoPageRoute(builder: (_) => AddFolderPage(folder: folder));
-    case KanPracticePages.kanjiListOnFolderPage:
+    case KanPracticePages.wordListOnFolderPage:
       String folder = settings.arguments as String;
       return CupertinoPageRoute(
           builder: (_) => FolderDetailsPage(folder: folder));

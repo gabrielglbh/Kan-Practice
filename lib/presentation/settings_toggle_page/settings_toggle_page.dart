@@ -90,10 +90,10 @@ class _SettingsTogglePageState extends State<SettingsTogglePage> {
           ListTile(
             leading: const Icon(Icons.group_work_rounded,
                 color: Colors.orangeAccent),
-            title: Text("settings_general_kanji_list".tr()),
+            title: Text("settings_general_word_list".tr()),
             subtitle: Padding(
                 padding: const EdgeInsets.only(top: KPMargins.margin8),
-                child: Text("settings_general_kanji_list_description".tr(),
+                child: Text("settings_general_word_list_description".tr(),
                     style: Theme.of(context)
                         .textTheme
                         .bodyText2

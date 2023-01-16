@@ -93,7 +93,7 @@ class GrammarModeUpdateHandler {
 
                   /// If the user went back in mid list, update the list accordingly
                   else if (isPracticePopped) {
-                    /// If I am in the first kanji, just pop
+                    /// If I am in the first word, just pop
                     if (lastIndex == 0) {
                       Navigator.of(context).pop();
                     } else {
@@ -117,8 +117,8 @@ class GrammarModeUpdateHandler {
       _getMapOfGrammarPointInTest(
           List<GrammarPoint> studyList, List<double> testScores) {
     Map<String, List<Map<GrammarPoint, double>>> orderedMap = {};
-    for (var kanji in studyList) {
-      orderedMap[kanji.listName] = [];
+    for (var word in studyList) {
+      orderedMap[word.listName] = [];
     }
     for (int x = 0; x < studyList.length; x++) {
       orderedMap[studyList[x].listName]?.add({studyList[x]: testScores[x]});

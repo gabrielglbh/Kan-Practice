@@ -8,11 +8,11 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class WordListTile extends StatelessWidget {
+class KanlistTile extends StatelessWidget {
   /// [WordList] item to paint as a Tile.
   final WordList item;
 
-  /// Action to perform when tapping on a [WordList], in addition to navigating to kanji_list_details
+  /// Action to perform when tapping on a [WordList], in addition to navigating to word_list_details
   final Function onTap;
 
   /// Action to perform when removing a [WordList]
@@ -21,7 +21,7 @@ class WordListTile extends StatelessWidget {
   /// Tells the widget that [this] is a [WordList] within a Folder
   final bool withinFolder;
   final bool showGrammarGraphs;
-  const WordListTile({
+  const KanlistTile({
     Key? key,
     required this.item,
     required this.onTap,
@@ -37,8 +37,8 @@ class WordListTile extends StatelessWidget {
       child: ListTile(
         onTap: () {
           onTap();
-          Navigator.of(context).pushNamed(KanPracticePages.kanjiListDetailsPage,
-              arguments: item);
+          Navigator.of(context)
+              .pushNamed(KanPracticePages.wordListDetailsPage, arguments: item);
         },
         onLongPress: () {
           if (withinFolder) {

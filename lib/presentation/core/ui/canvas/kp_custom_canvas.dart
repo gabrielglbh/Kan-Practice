@@ -5,7 +5,7 @@ import 'package:image/image.dart' as im;
 import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
-import 'kanji_painter.dart';
+import 'word_painter.dart';
 
 class KPCustomCanvas extends StatefulWidget {
   /// List of [Offset] points to draw over the canvas
@@ -14,7 +14,7 @@ class KPCustomCanvas extends StatefulWidget {
   /// Whether to allow the user to paint or not
   final bool allowEdit;
 
-  /// Whether the canvas allow to predict the drawn kanji or not
+  /// Whether the canvas allow to predict the drawn word or not
   final bool allowPrediction;
 
   /// Function to perform when the [im.Image] has been extracted
@@ -40,7 +40,7 @@ class _KPCustomCanvasState extends State<KPCustomCanvas> {
     final ui.PictureRecorder recorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(recorder,
         Rect.fromPoints(const Offset(0, 0), Offset(canvasSize, canvasSize)));
-    final Paint paint = KanjiPainter.kanjiPaint;
+    final Paint paint = WordPainter.wordPaint;
 
     /// Repaints again the _line of Offsets in a new Canvas to get the proper
     /// picture with PictureRecorder
@@ -98,7 +98,7 @@ class _KPCustomCanvasState extends State<KPCustomCanvas> {
                     color: KPColors.getCardColor(context),
                   ),
                   child: CustomPaint(
-                    painter: KanjiPainter(points: widget.line, size: size),
+                    painter: WordPainter(points: widget.line, size: size),
                     size: Size.square(MediaQuery.of(context).size.width),
                   )),
             )),

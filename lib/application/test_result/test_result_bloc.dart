@@ -29,7 +29,7 @@ class TestResultBloc extends Bloc<TestResultEvent, TestResultState> {
       await _testRepository.createTest(event.test);
       await _testDataRepository.updateStats(event.test);
 
-      // Update timestamps on daily test only if needed on desired study mode
+      // TODO: Update timestamps on daily test only if needed on desired study mode
       final controlledPace =
           _preferencesRepository.readData(SharedKeys.dailyTestOnControlledPace);
       if (controlledPace == true && event.test.testMode == Tests.daily.index) {
@@ -60,6 +60,10 @@ class TestResultBloc extends Bloc<TestResultEvent, TestResultState> {
         if (event.test.grammarMode == GrammarModes.definition.index) {
           _preferencesRepository.saveData(
               SharedKeys.definitionDailyPerformed, nextMidnight);
+        }
+        if (event.test.grammarMode == GrammarModes.grammarPoints.index) {
+          _preferencesRepository.saveData(
+              SharedKeys.grammarPointDailyPerformed, nextMidnight);
         }
       }
       emit(TestResultStateSaved());

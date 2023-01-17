@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/test_history/test_history_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
+import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_filters.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
@@ -111,11 +112,22 @@ class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
                         ),
                         dataSource: List.generate(state.list.length, (index) {
                           final test = state.list[index];
+                          if (test.studyMode == null) {
+                            return TestDataFrame(
+                              x: DateTime.fromMillisecondsSinceEpoch(
+                                  test.takenDate),
+                              y: test.testScore,
+                              grammarMode:
+                                  GrammarModes.values[test.grammarMode!],
+                              wordsOnTest: test.wordsInTest,
+                              mode: Tests.values[test.testMode ?? 0],
+                            );
+                          }
                           return TestDataFrame(
                             x: DateTime.fromMillisecondsSinceEpoch(
                                 test.takenDate),
                             y: test.testScore,
-                            studyMode: StudyModes.values[test.studyMode ?? 0],
+                            studyMode: StudyModes.values[test.studyMode!],
                             wordsOnTest: test.wordsInTest,
                             mode: Tests.values[test.testMode ?? 0],
                           );

@@ -9,6 +9,7 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 @LazySingleton(as: IListRepository)
+// TODO: Add any new study or grammar modes onto the queries
 class ListRepositoryImpl implements IListRepository {
   final Database _database;
 

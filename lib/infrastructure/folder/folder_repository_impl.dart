@@ -15,6 +15,7 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 @LazySingleton(as: IFolderRepository)
+// TODO: Add any new study or grammar modes onto the queries
 class FolderRepositoryImpl implements IFolderRepository {
   final Database _database;
   final IRelationFolderListRepository _relationFolderListRepository;
@@ -97,7 +98,7 @@ class FolderRepositoryImpl implements IFolderRepository {
             "A.${ListTableFields.totalWinRateWritingField}, A.${ListTableFields.totalWinRateReadingField}, "
             "A.${ListTableFields.totalWinRateRecognitionField}, A.${ListTableFields.totalWinRateListeningField}, "
             "A.${ListTableFields.totalWinRateSpeakingField}, A.${ListTableFields.totalWinRateDefinitionField}, "
-            "A.${ListTableFields.totalWinRateGrammarPointField}, "
+            "A.${ListTableFields.totalWinRateGrammarPointField} "
             "FROM ${ListTableFields.listsTable} A "
             "JOIN "
             "(SELECT ${WordTableFields.listNameField}, MAX(${filter.filter}) AS ${WordTableFields.dateAddedField} "

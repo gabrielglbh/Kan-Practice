@@ -21,15 +21,15 @@ class StatsHeader extends StatelessWidget {
         mainAxisAlignment: align ?? MainAxisAlignment.start,
         children: [
           Flexible(
-            child: Text(title, style: Theme.of(context).textTheme.headline6),
+            child: Text(title, style: Theme.of(context).textTheme.titleLarge),
           ),
           if (value != null)
-            Text("  •  ", style: Theme.of(context).textTheme.headline6),
+            Text("  •  ", style: Theme.of(context).textTheme.titleLarge),
           if (value != null)
             Text(value!,
                 style: Theme.of(context)
                     .textTheme
-                    .headline6
+                    .titleLarge
                     ?.copyWith(fontWeight: FontWeight.normal))
         ],
       ),

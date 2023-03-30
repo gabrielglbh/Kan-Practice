@@ -53,7 +53,7 @@ class KPActionButton extends StatelessWidget {
               maxLines: 2,
               style: Theme.of(context)
                   .textTheme
-                  .button
+                  .labelLarge
                   ?.copyWith(color: textColor),
             ),
           ),

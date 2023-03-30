@@ -207,7 +207,7 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
           shrinkWrap: true,
         )
       else
-        Text(_none, style: Theme.of(context).textTheme.headline4),
+        Text(_none, style: Theme.of(context).textTheme.headlineMedium),
       const SizedBox(height: KPMargins.margin4),
       KPMarkdown(
         data: hint,

@@ -115,7 +115,7 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
                 "settings_daily_notification_sub".tr(),
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText2
+                    .bodyMedium
                     ?.copyWith(color: KPColors.midGrey),
               ),
             ),
@@ -191,7 +191,7 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
                 "settings_daily_pace_sub".tr(),
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText2
+                    .bodyMedium
                     ?.copyWith(color: KPColors.midGrey),
               ),
             ),

@@ -30,7 +30,7 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
               title: Text("word_history_showRemoveHistorysDialog_title".tr()),
               content: Text(
                   "word_history_showRemoveHistorysDialog_content".tr(),
-                  style: Theme.of(context).textTheme.bodyText1),
+                  style: Theme.of(context).textTheme.bodyLarge),
               positiveButtonText:
                   "word_history_showRemoveHistorysDialog_positive".tr(),
               onPositive: () =>
@@ -120,7 +120,7 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
             title: Text(wordHistory.word,
                 style: Theme.of(context)
                     .textTheme
-                    .headline5
+                    .headlineSmall
                     ?.copyWith(fontWeight: FontWeight.normal),
                 overflow: TextOverflow.ellipsis),
             subtitle: Text("${"searched_label".tr()} $date"),

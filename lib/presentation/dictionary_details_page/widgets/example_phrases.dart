@@ -44,17 +44,17 @@ class ExamplePhrases extends StatelessWidget {
                 initial: true,
                 style: Theme.of(context)
                     .textTheme
-                    .headline6
+                    .titleLarge
                     ?.copyWith(fontWeight: FontWeight.w500)),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: KPMargins.margin4),
               child: ScrollableText(
                   label: "(${data[i].kana})",
-                  style: Theme.of(context).textTheme.bodyText2),
+                  style: Theme.of(context).textTheme.bodyMedium),
             ),
             ScrollableText(
                 label: data[i].english,
-                style: Theme.of(context).textTheme.bodyText2),
+                style: Theme.of(context).textTheme.bodyMedium),
             const Padding(
               padding: EdgeInsets.only(
                   right: KPMargins.margin64,

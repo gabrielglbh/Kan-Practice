@@ -229,7 +229,7 @@ class _FolderListPageState extends State<FolderListPage>
       title: Text(folder.folder,
           style: Theme.of(context)
               .textTheme
-              .headline5
+              .headlineSmall
               ?.copyWith(fontWeight: FontWeight.normal),
           overflow: TextOverflow.ellipsis),
       subtitle: Text("${"created_label".tr()} $date"),

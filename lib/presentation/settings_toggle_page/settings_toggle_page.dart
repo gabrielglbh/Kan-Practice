@@ -44,7 +44,7 @@ class _SettingsTogglePageState extends State<SettingsTogglePage> {
                 child: Text("settings_general_toggle_sub".tr(),
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2
+                        .bodyMedium
                         ?.copyWith(color: KPColors.midGrey))),
             trailing: KPSwitch(
               onChanged: (bool value) {
@@ -70,7 +70,7 @@ class _SettingsTogglePageState extends State<SettingsTogglePage> {
                 child: Text("settings_general_repetition_sub".tr(),
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2
+                        .bodyMedium
                         ?.copyWith(color: KPColors.midGrey))),
             trailing: KPSwitch(
               onChanged: (bool value) {
@@ -96,7 +96,7 @@ class _SettingsTogglePageState extends State<SettingsTogglePage> {
                 child: Text("settings_general_word_list_description".tr(),
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2
+                        .bodyMedium
                         ?.copyWith(color: KPColors.midGrey))),
             trailing: KPSwitch(
               onChanged: (bool value) {

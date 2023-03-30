@@ -109,7 +109,7 @@ class KPBlitzBottomSheet extends StatelessWidget {
                     horizontal: KPMargins.margin32),
                 child: Text("$title$folderTitle",
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6),
+                    style: Theme.of(context).textTheme.titleLarge),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
@@ -117,7 +117,7 @@ class KPBlitzBottomSheet extends StatelessWidget {
                     horizontal: KPMargins.margin32),
                 child: Text("$wordsInTest $description",
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyText1),
+                    style: Theme.of(context).textTheme.bodyLarge),
               ),
               KPModesGrid(
                 practiceList: practiceList,

@@ -56,14 +56,14 @@ class KanlistTile extends StatelessWidget {
                 width: MediaQuery.of(context).size.width / 2,
                 child: Text(item.name,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.headline5),
+                    style: Theme.of(context).textTheme.headlineSmall),
               ),
               const SizedBox(width: 16),
               Expanded(
                 child: Text(
                   "${"created_label".tr()} $date",
                   textAlign: TextAlign.end,
-                  style: Theme.of(context).textTheme.subtitle2,
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
               )
             ],

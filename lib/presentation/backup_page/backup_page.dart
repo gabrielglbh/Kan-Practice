@@ -81,7 +81,7 @@ class BackUpPage extends StatelessWidget {
                 return KPDialog(
                   title: Text("backup_creation_dialog_title".tr()),
                   content: Text("backup_creation_dialog_content".tr(),
-                      style: Theme.of(context).textTheme.bodyText1),
+                      style: Theme.of(context).textTheme.bodyLarge),
                   positiveButtonText: "backup_creation_dialog_positive".tr(),
                   onPositive: () =>
                       getIt<BackUpBloc>().add(BackUpLoadingCreateBackUp()),
@@ -96,7 +96,7 @@ class BackUpPage extends StatelessWidget {
         builder: (context) => KPDialog(
               title: Text("backup_merge_dialog_title".tr()),
               content: Text("backup_merge_dialog_content".tr(),
-                  style: Theme.of(context).textTheme.bodyText1),
+                  style: Theme.of(context).textTheme.bodyLarge),
               positiveButtonText: "backup_merge_dialog_positive".tr(),
               onPositive: () =>
                   getIt<BackUpBloc>().add(BackUpLoadingMergeBackUp()),
@@ -109,7 +109,7 @@ class BackUpPage extends StatelessWidget {
         builder: (context) => KPDialog(
               title: Text("backup_removal_dialog_title".tr()),
               content: Text("backup_removal_dialog_content".tr(),
-                  style: Theme.of(context).textTheme.bodyText1),
+                  style: Theme.of(context).textTheme.bodyLarge),
               positiveButtonText: "backup_removal_dialog_positive".tr(),
               onPositive: () =>
                   getIt<BackUpBloc>().add(BackUpLoadingRemoveBackUp()),

@@ -15,37 +15,36 @@ final ThemeData dark = ThemeData(
   ),
   iconTheme: const IconThemeData(color: KPColors.accentDark),
   textTheme: TextTheme(
-      headline1: const TextStyle(color: KPColors.accentDark),
-      headline2: const TextStyle(color: KPColors.accentDark),
-      headline3: const TextStyle(
+      displayLarge: const TextStyle(color: KPColors.accentDark),
+      displaySmall: const TextStyle(
           color: KPColors.accentDark, fontSize: KPFontSizes.fontSize64),
-      headline4: const TextStyle(
+      headlineMedium: const TextStyle(
           color: KPColors.accentDark, fontSize: KPFontSizes.fontSize32),
-      headline5: const TextStyle(
+      headlineSmall: const TextStyle(
           color: KPColors.accentDark,
           fontSize: KPFontSizes.fontSize24,
           fontWeight: FontWeight.bold),
-      headline6: const TextStyle(
+      titleLarge: const TextStyle(
           color: KPColors.accentDark,
           fontSize: KPFontSizes.fontSize18,
           fontWeight: FontWeight.bold),
-      subtitle1: const TextStyle(color: KPColors.accentDark),
-      subtitle2: const TextStyle(
+      titleMedium: const TextStyle(color: KPColors.accentDark),
+      titleSmall: const TextStyle(
           color: KPColors.accentDark,
           fontSize: KPFontSizes.fontSize12,
           fontWeight: FontWeight.w400),
-      bodyText1: const TextStyle(
+      bodyLarge: const TextStyle(
           color: KPColors.accentDark,
           fontSize: KPFontSizes.fontSize16,
           fontWeight: FontWeight.w400),
-      bodyText2: const TextStyle(
+      bodyMedium: const TextStyle(
           color: KPColors.accentDark, fontSize: KPFontSizes.fontSize14),
-      caption: TextStyle(color: KPColors.subtleDark),
-      button: const TextStyle(
+      bodySmall: TextStyle(color: KPColors.subtleDark),
+      labelLarge: const TextStyle(
           color: KPColors.accentDark,
           fontSize: KPFontSizes.fontSize16,
           fontWeight: FontWeight.bold),
-      overline: const TextStyle(
+      labelSmall: const TextStyle(
           color: KPColors.secondaryDarkerColor,
           decoration: TextDecoration.underline,
           fontSize: KPFontSizes.fontSize14)),

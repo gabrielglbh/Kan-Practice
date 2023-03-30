@@ -38,7 +38,7 @@ class _StatisticsPageState extends State<StatisticsPage>
         builder: (context) => KPDialog(
               title: Text("test_history_showRemoveTestsDialog_title".tr()),
               content: Text("test_history_showRemoveTestsDialog_content".tr(),
-                  style: Theme.of(context).textTheme.bodyText1),
+                  style: Theme.of(context).textTheme.bodyLarge),
               positiveButtonText:
                   "test_history_showRemoveTestsDialog_positive".tr(),
               onPositive: () =>

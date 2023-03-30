@@ -66,11 +66,11 @@ class _TestHistoryFiltersState extends State<TestHistoryFilters> {
                 children: [
                   ListTile(
                     title: Text("filter_select_dates_label".tr(),
-                        style: Theme.of(context).textTheme.headline6),
+                        style: Theme.of(context).textTheme.titleLarge),
                     contentPadding: const EdgeInsets.all(0),
                     trailing: Text(
                       _parseDate(_firstDate, _lastDate),
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     onTap: () async {
                       DateTimeRange? range = await Utils.showRangeTimeDialog(
@@ -97,7 +97,7 @@ class _TestHistoryFiltersState extends State<TestHistoryFilters> {
                             padding: const EdgeInsets.only(
                                 right: KPMargins.margin16),
                             child: Text("filter_select_test_type_label".tr(),
-                                style: Theme.of(context).textTheme.headline6),
+                                style: Theme.of(context).textTheme.titleLarge),
                           ),
                         ),
                         DropdownButtonHideUnderline(
@@ -144,7 +144,7 @@ class _TestHistoryFiltersState extends State<TestHistoryFilters> {
                             padding: const EdgeInsets.only(
                                 right: KPMargins.margin16),
                             child: Text("filter_select_study_mode_label".tr(),
-                                style: Theme.of(context).textTheme.headline6),
+                                style: Theme.of(context).textTheme.titleLarge),
                           ),
                         ),
                         DropdownButtonHideUnderline(

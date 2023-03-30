@@ -209,14 +209,14 @@ class _AddWordPageState extends State<AddWordPage> {
               child: FittedBox(
                 fit: BoxFit.fitWidth,
                 child: Text("add_word_copy".tr(),
-                    style: Theme.of(context).textTheme.button),
+                    style: Theme.of(context).textTheme.labelLarge),
               ),
             ),
           ),
           centerText: TextAlign.center,
           style: Theme.of(context)
               .textTheme
-              .headline3
+              .displaySmall
               ?.copyWith(fontWeight: FontWeight.bold),
           autofocus: widget.args.word == null,
           hint: "add_word_textForm_word_ext".tr(),
@@ -275,7 +275,7 @@ class _AddWordPageState extends State<AddWordPage> {
               bottom: KPMargins.margin16, left: KPMargins.margin8),
           child: Text("word_category_label".tr(),
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.headline6),
+              style: Theme.of(context).textTheme.titleLarge),
         ),
         KPWordCategoryList(
             selected: (index) => index == _currentCategory.index,

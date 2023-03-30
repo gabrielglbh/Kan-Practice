@@ -44,7 +44,7 @@ class CopyrightInfo extends StatelessWidget {
                             const EdgeInsets.only(bottom: KPMargins.margin8),
                         child: Text("settings_information_about_label".tr(),
                             textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headline5),
+                            style: Theme.of(context).textTheme.headlineSmall),
                       )),
                   Padding(
                     padding: const EdgeInsets.only(top: KPMargins.margin8),
@@ -57,11 +57,11 @@ class CopyrightInfo extends StatelessWidget {
                                 "and compiled in 9 datasets (ETL-1 to ETL-9). This database "
                                 "has been collected by Electrotechnical Laboratory (currently "
                                 "reorganized as the ",
-                            style: Theme.of(context).textTheme.bodyText2),
+                            style: Theme.of(context).textTheme.bodyMedium),
                         TextSpan(
                           text:
                               "National Institute of Advanced Industrial Science and Technology (AIST)",
-                          style: Theme.of(context).textTheme.overline,
+                          style: Theme.of(context).textTheme.labelSmall,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () async {
                               await _launch(context,
@@ -72,11 +72,11 @@ class CopyrightInfo extends StatelessWidget {
                             text:
                                 " under the cooperation with Japan Electronic "
                                 "Industry Developement Association (currently reorganized as ",
-                            style: Theme.of(context).textTheme.bodyText2),
+                            style: Theme.of(context).textTheme.bodyMedium),
                         TextSpan(
                           text:
                               "Japan Electronics and Information Technology Industries Association",
-                          style: Theme.of(context).textTheme.overline,
+                          style: Theme.of(context).textTheme.labelSmall,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () async {
                               await _launch(
@@ -87,7 +87,7 @@ class CopyrightInfo extends StatelessWidget {
                             text: "), universities and other research "
                                 "organizations for character recognition researches "
                                 "from 1973 to 1984.",
-                            style: Theme.of(context).textTheme.bodyText2),
+                            style: Theme.of(context).textTheme.bodyMedium),
                       ]),
                     ),
                   ),
@@ -97,7 +97,7 @@ class CopyrightInfo extends StatelessWidget {
                       text: TextSpan(children: [
                         TextSpan(
                           text: "About the ETL Character Database",
-                          style: Theme.of(context).textTheme.overline,
+                          style: Theme.of(context).textTheme.labelSmall,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () async {
                               await _launch(
@@ -107,10 +107,10 @@ class CopyrightInfo extends StatelessWidget {
                         TextSpan(
                             text: ". From all the 9 datasets, the one used "
                                 "in this app is ",
-                            style: Theme.of(context).textTheme.bodyText2),
+                            style: Theme.of(context).textTheme.bodyMedium),
                         TextSpan(
                           text: "ETL-9.",
-                          style: Theme.of(context).textTheme.overline,
+                          style: Theme.of(context).textTheme.labelSmall,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () async {
                               await _launch(context,

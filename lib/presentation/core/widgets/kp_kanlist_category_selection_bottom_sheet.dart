@@ -54,7 +54,7 @@ class _KPKanListCategorySelectionBottomSheetState
                   child: Text(
                       "${"categories_test_bottom_sheet_title".tr()}$folder",
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headline6),
+                      style: Theme.of(context).textTheme.titleLarge),
                 ),
                 Visibility(
                   visible: _onListEmpty,
@@ -62,7 +62,7 @@ class _KPKanListCategorySelectionBottomSheetState
                       textAlign: TextAlign.center,
                       style: Theme.of(context)
                           .textTheme
-                          .headline6
+                          .titleLarge
                           ?.copyWith(fontWeight: FontWeight.w400)),
                 ),
                 Visibility(

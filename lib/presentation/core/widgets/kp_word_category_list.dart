@@ -43,7 +43,7 @@ class KPWordCategoryList extends StatelessWidget {
             alignment: Alignment.center,
             child: Text(
               WordCategory.values[index].category,
-              style: Theme.of(context).textTheme.bodyText2?.copyWith(
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: selected(index)
                         ? KPColors.primaryLight
                         : KPColors.getAccent(context),

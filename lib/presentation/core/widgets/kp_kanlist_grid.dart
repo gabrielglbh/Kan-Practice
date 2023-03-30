@@ -49,7 +49,7 @@ class KPKanListGrid<T> extends StatelessWidget {
                 fit: BoxFit.contain,
                 child: Text(
                   name,
-                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: isSelected(name)
                             ? KPColors.primaryLight
                             : KPColors.getAccent(context),

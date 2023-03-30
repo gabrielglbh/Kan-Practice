@@ -43,7 +43,7 @@ class ActionsBottomSheet extends StatelessWidget {
                     horizontal: KPMargins.margin32),
                 child: Text("bottom_nav_actions".tr(),
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6),
+                    style: Theme.of(context).textTheme.titleLarge),
               ),
               Padding(
                   padding: const EdgeInsets.symmetric(

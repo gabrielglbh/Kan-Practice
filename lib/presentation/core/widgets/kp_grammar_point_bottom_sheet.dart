@@ -141,7 +141,7 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
                             textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText2
+                                .bodyMedium
                                 ?.copyWith(fontWeight: FontWeight.bold)),
                       ),
                     ),
@@ -186,7 +186,7 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
                   "${"last_seen_label".tr()} "
                   "${Utils.parseDateMilliseconds(context, grammarPoint.dateLastShown)}",
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyText2),
+                  style: Theme.of(context).textTheme.bodyMedium),
               children: [
                 ListView.builder(
                   shrinkWrap: true,
@@ -231,7 +231,7 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
             child: Text(" • ${(mode.mode).capitalized}:",
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.subtitle2),
+                style: Theme.of(context).textTheme.titleSmall),
           ),
           Expanded(
               child: Container(
@@ -241,7 +241,7 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
               child: Text(parsedDate,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.right,
-                  style: Theme.of(context).textTheme.subtitle2),
+                  style: Theme.of(context).textTheme.titleSmall),
             ),
           ))
         ],

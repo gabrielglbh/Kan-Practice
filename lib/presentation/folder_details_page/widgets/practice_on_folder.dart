@@ -62,7 +62,7 @@ class _PracticeFolderBottomSheetState extends State<PracticeFolderBottomSheet> {
                     child: Text(
                         "${"list_details_practice_button_label".tr()}: ${widget.folder}",
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headline6),
+                        style: Theme.of(context).textTheme.titleLarge),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -70,7 +70,7 @@ class _PracticeFolderBottomSheetState extends State<PracticeFolderBottomSheet> {
                         horizontal: KPMargins.margin32),
                     child: Text("folder_practice_title".tr(),
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyText1),
+                        style: Theme.of(context).textTheme.bodyLarge),
                   ),
                   Column(
                     children: [

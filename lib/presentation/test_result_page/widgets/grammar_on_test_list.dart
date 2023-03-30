@@ -32,7 +32,7 @@ class GrammarPointOnTestList extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2
+                        .bodyMedium
                         ?.copyWith(fontWeight: FontWeight.bold)),
               ),
               ListView.separated(

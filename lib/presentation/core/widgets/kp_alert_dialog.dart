@@ -51,7 +51,7 @@ class KPDialog extends StatelessWidget {
               child: Text("back_button_label".tr(),
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2
+                      .bodyMedium
                       ?.copyWith(color: KPColors.primaryLight))),
         ),
         ElevatedButton(
@@ -68,7 +68,7 @@ class KPDialog extends StatelessWidget {
             child: Text(positiveButtonText,
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText2
+                    .bodyMedium
                     ?.copyWith(color: KPColors.primaryLight))),
       ],
     );

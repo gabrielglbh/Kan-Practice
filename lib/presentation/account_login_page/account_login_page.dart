@@ -122,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: KPMargins.margin16),
                     child: Text("login_removeAccountDialog_content".tr(),
-                        style: Theme.of(context).textTheme.bodyText1),
+                        style: Theme.of(context).textTheme.bodyLarge),
                   ),
                   KPTextForm(
                     hint: 'login_removeAccountDialog_hint'.tr(),
@@ -200,7 +200,7 @@ class _LoginPageState extends State<LoginPage> {
           padding: const EdgeInsets.only(
               top: KPMargins.margin16, bottom: KPMargins.margin16),
           child: Text("login_formDisclaimer".tr(),
-              style: Theme.of(context).textTheme.bodyText1),
+              style: Theme.of(context).textTheme.bodyLarge),
         ),
         KPTextForm(
             header: "login_email_header".tr(),
@@ -228,7 +228,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Text("login_authentication_failed".tr(),
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText1
+                    .bodyLarge
                     ?.copyWith(color: KPColors.getSecondaryColor(context))),
           ),
         ),
@@ -237,7 +237,7 @@ class _LoginPageState extends State<LoginPage> {
           child: ElevatedButton(
             onPressed: () => _handleLogin(),
             child: Text("login_form_positive".tr(),
-                style: Theme.of(context).textTheme.button),
+                style: Theme.of(context).textTheme.labelLarge),
           ),
         ),
         GestureDetector(
@@ -256,7 +256,7 @@ class _LoginPageState extends State<LoginPage> {
                   : SignMode.login.name,
               style: Theme.of(context)
                   .textTheme
-                  .bodyText1
+                  .bodyLarge
                   ?.copyWith(decoration: TextDecoration.underline),
             ),
           ),
@@ -277,7 +277,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Text(
               "${"login_current_account_logged".tr()} ${state.user.email}.",
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyText1),
+              style: Theme.of(context).textTheme.bodyLarge),
         ),
         SizedBox(
           height: KPSizes.appBarHeight,
@@ -288,13 +288,13 @@ class _LoginPageState extends State<LoginPage> {
                   KanPracticePages.backUpPage,
                   arguments: state.user.uid),
               child: Text("login_manage_backup_title".tr(),
-                  style: Theme.of(context).textTheme.button),
+                  style: Theme.of(context).textTheme.labelLarge),
             ),
           ),
         ),
         ListTile(
           title: Text("login_miscellaneous_title".tr(),
-              style: Theme.of(context).textTheme.headline5),
+              style: Theme.of(context).textTheme.headlineSmall),
         ),
         _loggedUserActions()
       ],

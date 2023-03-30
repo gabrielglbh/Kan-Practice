@@ -47,7 +47,7 @@ class _AddToMarketBottomSheetState extends State<AddToMarketBottomSheet> {
                     horizontal: KPMargins.margin32),
                 child: Text("add_to_market_select_list".tr(),
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6),
+                    style: Theme.of(context).textTheme.titleLarge),
               ),
               BlocBuilder<ListBloc, ListState>(
                 builder: (context, state) {

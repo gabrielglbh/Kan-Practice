@@ -107,7 +107,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
                         child: Text(
                             "dict_jisho_add_word_bottom_sheet_title".tr(),
                             textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headline6),
+                            style: Theme.of(context).textTheme.titleLarge),
                       ),
                     ),
                     IconButton(
@@ -134,7 +134,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
                         textAlign: TextAlign.center,
                         style: Theme.of(context)
                             .textTheme
-                            .button
+                            .labelLarge
                             ?.copyWith(color: KPColors.secondaryColor)),
                   ),
                 ),

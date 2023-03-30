@@ -105,7 +105,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                         ),
                         Expanded(
                             child: Text("add_to_market_needs_registration".tr(),
-                                style: Theme.of(context).textTheme.bodyText1))
+                                style: Theme.of(context).textTheme.bodyLarge))
                       ],
                     ),
                   ),
@@ -181,7 +181,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                     padding: const EdgeInsets.all(KPMargins.margin16),
                     child: Text("add_to_market_successfully_created".tr(),
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyText1),
+                        style: Theme.of(context).textTheme.bodyLarge),
                   )
                 ],
               ));

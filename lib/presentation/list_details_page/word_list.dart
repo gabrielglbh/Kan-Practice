@@ -284,11 +284,13 @@ class _WordListWidgetState extends State<WordListWidget>
                 crossAxisCount: 5, childAspectRatio: 2),
             itemBuilder: (context, k) => wordElem(k, true),
           )
-        : ListView.builder(
+        : ListView.separated(
             key: const PageStorageKey<String>('wordListController'),
             itemCount: state.list.length,
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             controller: _scrollController,
+            separatorBuilder: (_, __) =>
+                const Divider(height: KPMargins.margin4),
             itemBuilder: (context, k) => wordElem(k, false),
           );
   }

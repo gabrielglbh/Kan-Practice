@@ -274,30 +274,35 @@ class _KPKanlistsState extends State<KPKanlists>
           SliverToBoxAdapter(child: _grammarSwitch()),
           SliverList(
             delegate: SliverChildBuilderDelegate((_, k) {
-              return KanlistTile(
-                item: lists[k],
-                onTap: widget.removeFocus,
-                withinFolder: widget.withinFolder,
-                showGrammarGraphs: _showGrammarGraphs,
-                onRemoval: () {
-                  if (widget.folder == null) {
-                    getIt<ListBloc>().add(ListEventDelete(
-                      lists[k],
-                      filter: _currentAppliedFilter,
-                      order: _currentAppliedOrder,
-                    ));
-                  } else {
-                    getIt<FolderDetailsBloc>().add(
-                      FolderDetailsEventDelete(
-                        widget.folder!,
-                        lists[k],
-                        filter: _currentAppliedFilter,
-                        order: _currentAppliedOrder,
-                      ),
-                    );
-                  }
-                  _resetScroll();
-                },
+              return Column(
+                children: [
+                  KanlistTile(
+                    item: lists[k],
+                    onTap: widget.removeFocus,
+                    withinFolder: widget.withinFolder,
+                    showGrammarGraphs: _showGrammarGraphs,
+                    onRemoval: () {
+                      if (widget.folder == null) {
+                        getIt<ListBloc>().add(ListEventDelete(
+                          lists[k],
+                          filter: _currentAppliedFilter,
+                          order: _currentAppliedOrder,
+                        ));
+                      } else {
+                        getIt<FolderDetailsBloc>().add(
+                          FolderDetailsEventDelete(
+                            widget.folder!,
+                            lists[k],
+                            filter: _currentAppliedFilter,
+                            order: _currentAppliedOrder,
+                          ),
+                        );
+                      }
+                      _resetScroll();
+                    },
+                  ),
+                  const Divider(height: KPMargins.margin4),
+                ],
               );
             }, childCount: lists.length),
           ),

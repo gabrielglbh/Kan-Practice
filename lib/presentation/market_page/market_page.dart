@@ -189,12 +189,14 @@ class _MarketPageState extends State<MarketPage>
               child: RefreshIndicator(
                 onRefresh: () async => _addLoadingEvent(reset: true),
                 color: KPColors.secondaryColor,
-                child: ListView.builder(
+                child: ListView.separated(
                     key: const PageStorageKey<String>('marketListsController'),
                     controller: _scrollController,
                     itemCount: state.lists.length,
                     keyboardDismissBehavior:
                         ScrollViewKeyboardDismissBehavior.onDrag,
+                    separatorBuilder: (_, __) =>
+                        const Divider(height: KPMargins.margin4),
                     padding: const EdgeInsets.only(bottom: KPMargins.margin24),
                     itemBuilder: (context, k) {
                       return MarketListTile(

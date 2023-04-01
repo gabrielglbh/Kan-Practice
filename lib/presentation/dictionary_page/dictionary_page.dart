@@ -70,6 +70,7 @@ class _DictionaryPageState extends State<DictionaryPage>
         return Column(
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(child: _searchBar()),
                 _searchWidget(canSearchEitherWay)
@@ -177,7 +178,9 @@ class _DictionaryPageState extends State<DictionaryPage>
         height: KPSizes.defaultSizeSearchBarIcons,
         duration: const Duration(milliseconds: 400),
         margin: EdgeInsets.symmetric(
-            horizontal: canSearchEitherWay ? KPMargins.margin8 : 0),
+          horizontal: canSearchEitherWay ? KPMargins.margin8 : 0,
+          vertical: KPMargins.margin4,
+        ),
         decoration: const BoxDecoration(
             shape: BoxShape.circle, color: KPColors.secondaryColor),
         child: Icon(

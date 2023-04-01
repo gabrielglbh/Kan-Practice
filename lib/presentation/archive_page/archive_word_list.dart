@@ -6,6 +6,7 @@ import 'package:kanpractice/injection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/list_details_widgets/kp_word_item.dart';
@@ -136,11 +137,13 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
                 crossAxisCount: 5, childAspectRatio: 2),
             itemBuilder: (context, k) => wordElem(k, true),
           )
-        : ListView.builder(
+        : ListView.separated(
             key: const PageStorageKey<String>('wordListController'),
             itemCount: state.list.length,
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             controller: _scrollController,
+            separatorBuilder: (_, __) =>
+                const Divider(height: KPMargins.margin4),
             itemBuilder: (context, k) => wordElem(k, false),
           );
   }

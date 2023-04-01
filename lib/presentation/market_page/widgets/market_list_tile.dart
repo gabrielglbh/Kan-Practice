@@ -24,24 +24,22 @@ class MarketListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-          title: Padding(
-            padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
-            child: _header(context),
-          ),
-          subtitle: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: KPMargins.margin8),
-                  child: _subtitle(context),
-                ),
+    return ListTile(
+        title: Padding(
+          padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
+          child: _header(context),
+        ),
+        subtitle: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: KPMargins.margin8),
+                child: _subtitle(context),
               ),
-            ],
-          )),
-    );
+            ),
+          ],
+        ));
   }
 
   Widget _header(BuildContext context) {

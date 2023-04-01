@@ -65,7 +65,8 @@ class _AddToMarketBottomSheetState extends State<AddToMarketBottomSheet> {
                             maxHeight: MediaQuery.of(context).size.height / 3),
                         margin: const EdgeInsets.all(KPMargins.margin8),
                         child: ListView.separated(
-                          separatorBuilder: (context, index) => const Divider(),
+                          separatorBuilder: (context, index) =>
+                              const Divider(height: KPMargins.margin4),
                           itemCount: state.lists.length,
                           itemBuilder: (context, index) {
                             String listName = state.lists[index].name;

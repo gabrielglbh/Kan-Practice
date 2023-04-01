@@ -112,6 +112,7 @@ class KPWordItem extends StatelessWidget {
     );
 
     final tile = ListTile(
+      horizontalTitleGap: KPMargins.margin8,
       leading: Container(
         width: KPMargins.margin16,
         height: KPMargins.margin16,
@@ -135,10 +136,14 @@ class KPWordItem extends StatelessWidget {
                       ?.copyWith(fontWeight: FontWeight.bold)),
             ),
           ),
-          const SizedBox(width: KPMargins.margin16),
-          Text(word.meaning,
-              textAlign: TextAlign.end,
-              style: Theme.of(context).textTheme.bodyMedium)
+          const SizedBox(width: KPMargins.margin8),
+          ConstrainedBox(
+            constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width / 2.5),
+            child: Text(word.meaning,
+                textAlign: TextAlign.end,
+                style: Theme.of(context).textTheme.bodyMedium),
+          )
         ],
       ),
       onTap: () async {

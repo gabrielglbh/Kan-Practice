@@ -33,55 +33,53 @@ class KanlistTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final date = Utils.parseDateMilliseconds(context, item.lastUpdated);
-    return Card(
-      child: ListTile(
-        onTap: () {
-          onTap();
-          Navigator.of(context)
-              .pushNamed(KanPracticePages.wordListDetailsPage, arguments: item);
-        },
-        onLongPress: () {
-          if (withinFolder) {
-            _createDialogForDeletingKanListWithinFolder(context);
-          } else {
-            _createDialogForDeletingKanList(context);
-          }
-        },
-        title: Padding(
-          padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width / 2,
-                child: Text(item.name,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.headlineSmall),
+    return ListTile(
+      onTap: () {
+        onTap();
+        Navigator.of(context)
+            .pushNamed(KanPracticePages.wordListDetailsPage, arguments: item);
+      },
+      onLongPress: () {
+        if (withinFolder) {
+          _createDialogForDeletingKanListWithinFolder(context);
+        } else {
+          _createDialogForDeletingKanList(context);
+        }
+      },
+      title: Padding(
+        padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 2,
+              child: Text(item.name,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.headlineSmall),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                "${"created_label".tr()} $date",
+                textAlign: TextAlign.end,
+                style: Theme.of(context).textTheme.titleSmall,
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Text(
-                  "${"created_label".tr()} $date",
-                  textAlign: TextAlign.end,
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
-        subtitle: !showGrammarGraphs
-            ? KPStudyModeRadialGraph(
-                writing: item.totalWinRateWriting,
-                reading: item.totalWinRateReading,
-                recognition: item.totalWinRateRecognition,
-                listening: item.totalWinRateListening,
-                speaking: item.totalWinRateSpeaking,
-              )
-            : KPGrammarModeRadialGraph(
-                definition: item.totalWinRateDefinition,
-                grammarPoints: item.totalWinRateGrammarPoint,
-              ),
       ),
+      subtitle: !showGrammarGraphs
+          ? KPStudyModeRadialGraph(
+              writing: item.totalWinRateWriting,
+              reading: item.totalWinRateReading,
+              recognition: item.totalWinRateRecognition,
+              listening: item.totalWinRateListening,
+              speaking: item.totalWinRateSpeaking,
+            )
+          : KPGrammarModeRadialGraph(
+              definition: item.totalWinRateDefinition,
+              grammarPoints: item.totalWinRateGrammarPoint,
+            ),
     );
   }
 

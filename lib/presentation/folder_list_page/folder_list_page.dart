@@ -180,7 +180,8 @@ class _FolderListPageState extends State<FolderListPage>
                             ScrollViewKeyboardDismissBehavior.onDrag,
                         padding:
                             const EdgeInsets.only(bottom: KPMargins.margin24),
-                        separatorBuilder: (_, __) => const Divider(),
+                        separatorBuilder: (_, __) =>
+                            const Divider(height: KPMargins.margin4),
                         itemBuilder: (context, k) {
                           final folder = state.lists[k];
                           final date = Utils.parseDateMilliseconds(

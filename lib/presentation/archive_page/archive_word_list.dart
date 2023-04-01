@@ -5,6 +5,8 @@ import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
+import 'package:kanpractice/presentation/add_word_page/arguments.dart';
+import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
@@ -113,6 +115,15 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
         selectedMode: StudyModes.writing,
         onShowModal: () => widget.removeFocus(),
         isBadge: isBadge,
+        onTap: () async {
+          await Navigator.of(context)
+              .pushNamed(KanPracticePages.addWordPage,
+                  arguments: AddWordArgs(listName: word.listName, word: word))
+              .then((code) {
+            if (code == 0) _addLoadingEvent(reset: true);
+          });
+        },
+        onRemoval: () => _addLoadingEvent(reset: true),
       );
     }
 

@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/archive_grammar_points/archive_grammar_points_bloc.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/presentation/add_grammar_point_page/arguments.dart';
+import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
@@ -122,6 +124,16 @@ class _ArchiveGrammarListWidgetState extends State<ArchiveGrammarListWidget>
           aggregateStats: true,
           selectedMode: _selectedMode,
           onShowModal: () => widget.removeFocus(),
+          onTap: () async {
+            await Navigator.of(context)
+                .pushNamed(KanPracticePages.addGrammarPage,
+                    arguments: AddGrammarPointArgs(
+                        listName: gp.listName, grammarPoint: gp))
+                .then((code) {
+              if (code == 0) _addLoadingEvent(reset: true);
+            });
+          },
+          onRemoval: () => _addLoadingEvent(reset: true),
         );
       },
     );

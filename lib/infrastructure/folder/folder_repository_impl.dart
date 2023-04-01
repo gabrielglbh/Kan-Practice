@@ -326,7 +326,7 @@ class FolderRepositoryImpl implements IFolderRepository {
           "K.${GrammarTableFields.dateAddedField}, "
           "K.${GrammarTableFields.dateLastShownField}, "
           "K.${GrammarTableFields.dateLastShownDefinitionField}, "
-          "K.${GrammarTableFields.dateLastShownGrammarPointField}, "
+          "K.${GrammarTableFields.dateLastShownGrammarPointField} "
           "FROM ${RelationFolderListTableFields.relTable} L JOIN ${ListTableFields.listsTable} R "
           "ON L.${RelationFolderListTableFields.listNameField}=R.${ListTableFields.nameField} "
           "JOIN ${GrammarTableFields.grammarTable} K "

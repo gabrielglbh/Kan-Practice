@@ -109,33 +109,37 @@ class _ArchiveGrammarListWidgetState extends State<ArchiveGrammarListWidget>
           onRefresh: () => _addLoadingEvent(reset: true),
           message: "list_details_empty_grammar".tr());
     }
-    return ListView.separated(
-      key: const PageStorageKey<String>('grammarPointListController'),
-      itemCount: state.list.length,
-      controller: _scrollController,
-      padding: const EdgeInsets.only(bottom: KPMargins.margin32),
-      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      separatorBuilder: (_, __) => const Divider(),
-      itemBuilder: (context, k) {
-        GrammarPoint? gp = state.list[k];
-        return KPGrammarPointItem(
-          index: k,
-          grammarPoint: gp,
-          aggregateStats: true,
-          selectedMode: _selectedMode,
-          onShowModal: () => widget.removeFocus(),
-          onTap: () async {
-            await Navigator.of(context)
-                .pushNamed(KanPracticePages.addGrammarPage,
-                    arguments: AddGrammarPointArgs(
-                        listName: gp.listName, grammarPoint: gp))
-                .then((code) {
-              if (code == 0) _addLoadingEvent(reset: true);
-            });
-          },
-          onRemoval: () => _addLoadingEvent(reset: true),
-        );
-      },
+    return RefreshIndicator(
+      onRefresh: () async => _addLoadingEvent(reset: true),
+      color: KPColors.secondaryColor,
+      child: ListView.separated(
+        key: const PageStorageKey<String>('grammarPointListController'),
+        itemCount: state.list.length,
+        controller: _scrollController,
+        padding: const EdgeInsets.only(bottom: KPMargins.margin32),
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        separatorBuilder: (_, __) => const Divider(),
+        itemBuilder: (context, k) {
+          GrammarPoint? gp = state.list[k];
+          return KPGrammarPointItem(
+            index: k,
+            grammarPoint: gp,
+            aggregateStats: true,
+            selectedMode: _selectedMode,
+            onShowModal: () => widget.removeFocus(),
+            onTap: () async {
+              await Navigator.of(context)
+                  .pushNamed(KanPracticePages.addGrammarPage,
+                      arguments: AddGrammarPointArgs(
+                          listName: gp.listName, grammarPoint: gp))
+                  .then((code) {
+                if (code == 0) _addLoadingEvent(reset: true);
+              });
+            },
+            onRemoval: () => _addLoadingEvent(reset: true),
+          );
+        },
+      ),
     );
   }
 

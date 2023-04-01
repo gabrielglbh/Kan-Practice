@@ -127,27 +127,31 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
       );
     }
 
-    return getIt<PreferencesService>().readData(SharedKeys.showBadgeWords)
-        ? GridView.builder(
-            key: const PageStorageKey<String>('wordListController'),
-            itemCount: state.list.length,
-            controller: _scrollController,
-            padding: const EdgeInsets.only(bottom: KPMargins.margin32),
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 5, childAspectRatio: 2),
-            itemBuilder: (context, k) => wordElem(k, true),
-          )
-        : ListView.separated(
-            key: const PageStorageKey<String>('wordListController'),
-            itemCount: state.list.length,
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            controller: _scrollController,
-            padding: const EdgeInsets.only(bottom: KPMargins.margin32),
-            separatorBuilder: (_, __) =>
-                const Divider(height: KPMargins.margin4),
-            itemBuilder: (context, k) => wordElem(k, false),
-          );
+    return RefreshIndicator(
+      onRefresh: () async => _addLoadingEvent(reset: true),
+      color: KPColors.secondaryColor,
+      child: getIt<PreferencesService>().readData(SharedKeys.showBadgeWords)
+          ? GridView.builder(
+              key: const PageStorageKey<String>('wordListController'),
+              itemCount: state.list.length,
+              controller: _scrollController,
+              padding: const EdgeInsets.only(bottom: KPMargins.margin32),
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 5, childAspectRatio: 2),
+              itemBuilder: (context, k) => wordElem(k, true),
+            )
+          : ListView.separated(
+              key: const PageStorageKey<String>('wordListController'),
+              itemCount: state.list.length,
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              controller: _scrollController,
+              padding: const EdgeInsets.only(bottom: KPMargins.margin32),
+              separatorBuilder: (_, __) =>
+                  const Divider(height: KPMargins.margin4),
+              itemBuilder: (context, k) => wordElem(k, false),
+            ),
+    );
   }
 
   @override

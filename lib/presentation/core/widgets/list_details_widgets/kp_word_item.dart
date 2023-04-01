@@ -70,12 +70,13 @@ class KPWordItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final score = _getProperWordWinRate(word);
     final badge = AnimatedContainer(
       duration: const Duration(milliseconds: KPAnimations.ms300),
       padding: const EdgeInsets.all(KPMargins.margin2),
       margin: const EdgeInsets.all(KPMargins.margin4),
       decoration: BoxDecoration(
-          color: Utils.getColorBasedOnWinRate(_getProperWordWinRate(word)),
+          color: Utils.getColorBasedOnWinRate(score),
           borderRadius:
               const BorderRadius.all(Radius.circular(KPRadius.radius8)),
           boxShadow: const [
@@ -113,16 +114,18 @@ class KPWordItem extends StatelessWidget {
 
     final tile = ListTile(
       horizontalTitleGap: KPMargins.margin8,
-      leading: Container(
-        width: KPMargins.margin16,
-        height: KPMargins.margin16,
-        margin: const EdgeInsets.only(top: KPMargins.margin4),
-        decoration: BoxDecoration(
-          color: Utils.getColorBasedOnWinRate(_getProperWordWinRate(word)),
-          shape: BoxShape.circle,
-          border: Border.all(color: KPColors.getSubtle(context)),
-        ),
-      ),
+      leading: score == -1
+          ? null
+          : Container(
+              width: KPMargins.margin16,
+              height: KPMargins.margin16,
+              margin: const EdgeInsets.only(top: KPMargins.margin4),
+              decoration: BoxDecoration(
+                color: Utils.getColorBasedOnWinRate(score),
+                shape: BoxShape.circle,
+                border: Border.all(color: KPColors.getSubtle(context)),
+              ),
+            ),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

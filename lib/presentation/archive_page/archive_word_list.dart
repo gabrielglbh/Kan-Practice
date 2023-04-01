@@ -14,11 +14,13 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class ArchiveWordListWidget extends StatefulWidget {
   final String query;
-  final FocusNode? searchBarFn;
+  final Function() onScrolledToBottom;
+  final Function() removeFocus;
   const ArchiveWordListWidget({
     Key? key,
     required this.query,
-    this.searchBarFn,
+    required this.onScrolledToBottom,
+    required this.removeFocus,
   }) : super(key: key);
 
   @override
@@ -49,26 +51,13 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
     /// When reaching last pixel of the list
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      /// If the query is empty, use the pagination for search bar
-      if (widget.query.isNotEmpty) {
-        _addSearchingEvent(widget.query);
-      }
-
-      /// Else use the normal pagination
-      else {
-        _addLoadingEvent();
-      }
+      widget.onScrolledToBottom();
     }
   }
 
   _addLoadingEvent({bool reset = false}) {
     return getIt<ArchiveWordsBloc>()
         .add(ArchiveWordsEventLoading(reset: reset));
-  }
-
-  _addSearchingEvent(String query, {bool reset = false}) {
-    return getIt<ArchiveWordsBloc>()
-        .add(ArchiveWordsEventSearching(query, reset: reset));
   }
 
   @override
@@ -122,7 +111,7 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
         index: index,
         word: word,
         selectedMode: StudyModes.writing,
-        onShowModal: () => widget.searchBarFn?.unfocus(),
+        onShowModal: () => widget.removeFocus(),
         isBadge: isBadge,
       );
     }
@@ -132,6 +121,7 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
             key: const PageStorageKey<String>('wordListController'),
             itemCount: state.list.length,
             controller: _scrollController,
+            padding: const EdgeInsets.only(bottom: KPMargins.margin32),
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 5, childAspectRatio: 2),
@@ -142,6 +132,7 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
             itemCount: state.list.length,
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             controller: _scrollController,
+            padding: const EdgeInsets.only(bottom: KPMargins.margin32),
             separatorBuilder: (_, __) =>
                 const Divider(height: KPMargins.margin4),
             itemBuilder: (context, k) => wordElem(k, false),

@@ -1,25 +1,27 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/archive_grammar_points/archive_grammar_points_bloc.dart';
+import 'package:kanpractice/application/archive_words/archive_words_bloc.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
 import 'package:kanpractice/application/folder_list/folder_bloc.dart';
 import 'package:kanpractice/application/list/lists_bloc.dart';
 import 'package:kanpractice/application/load_grammar_test/load_grammar_test_bloc.dart';
 import 'package:kanpractice/application/load_test/load_test_bloc.dart';
-import 'package:kanpractice/application/market/market_bloc.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/presentation/archive_page/archive_grammar_list.dart';
+import 'package:kanpractice/presentation/archive_page/archive_word_list.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
+import 'package:kanpractice/presentation/core/types/list_details_types.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/util/tutorial_coach.dart';
 import 'package:kanpractice/presentation/core/types/coach_tutorial_parts.dart';
 import 'package:kanpractice/presentation/core/types/folder_filters.dart';
 import 'package:kanpractice/presentation/core/types/home_types.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
-import 'package:kanpractice/presentation/core/types/market_filters.dart';
 import 'package:kanpractice/presentation/core/types/tab_types.dart';
-import 'package:kanpractice/domain/market/market.dart';
 import 'package:kanpractice/presentation/core/widgets/kanlists/kp_kanlists.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_search_bar.dart';
@@ -30,7 +32,6 @@ import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
 import 'package:kanpractice/presentation/dictionary_page/dictionary_page.dart';
 import 'package:kanpractice/presentation/folder_list_page/folder_list_page.dart';
 import 'package:kanpractice/presentation/home_page/widgets/home_bottom_navigation.dart';
-import 'package:kanpractice/presentation/market_page/market_page.dart';
 import 'package:kanpractice/presentation/settings_page/settings_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -41,20 +42,21 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   final lists = GlobalKey();
   final folders = GlobalKey();
   final kanList = GlobalKey();
   final dictionary = GlobalKey();
   final actions = GlobalKey();
   final market = GlobalKey();
+  final archive = GlobalKey();
   final settings = GlobalKey();
 
   late PageController _controller;
-  late TabController _tabController;
+  late TabController _tabController, _archiveTabController;
   HomeType _currentPage = HomeType.kanlist;
   TabType _currentTab = TabType.kanlist;
+  ListDetailsType _currentArchiveTab = ListDetailsType.words;
 
   late FocusNode _searchBarFn;
   late TextEditingController _searchTextController;
@@ -80,16 +82,6 @@ class _HomePageState extends State<HomePage>
   bool get _currentAppliedFolderOrder =>
       getIt<PreferencesService>().readData(SharedKeys.orderOnFolder) ?? true;
 
-  MarketFilters get _currentAppliedMarketFilter {
-    final filterMarketText =
-        getIt<PreferencesService>().readData(SharedKeys.filtersOnMarket) ??
-            Market.uploadedToMarketField;
-    return MarketFiltersUtils.getFilterFrom(filterMarketText);
-  }
-
-  bool get _currentAppliedMarketOrder =>
-      getIt<PreferencesService>().readData(SharedKeys.orderOnMarket) ?? true;
-
   String _query = "";
   bool _onTutorial = false;
   String _newVersion = "";
@@ -101,6 +93,8 @@ class _HomePageState extends State<HomePage>
     _searchTextController = TextEditingController();
     _searchBarFn.addListener(_focusListener);
     _controller = PageController();
+    _archiveTabController = TabController(length: 2, vsync: this);
+    _archiveTabController.addListener(_onArchiveTabChanged);
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_onTabChanged);
 
@@ -162,29 +156,45 @@ class _HomePageState extends State<HomePage>
   _addFolderListSearchingEvent(String query, {bool reset = true}) =>
       getIt<FolderBloc>().add(FolderEventSearching(query, reset: reset));
 
-  _addMarketLoadingEvent({bool reset = true}) =>
-      getIt<MarketBloc>().add(MarketEventLoading(
-          filter: _currentAppliedMarketFilter,
-          order: _currentAppliedMarketOrder,
-          reset: reset));
+  _addWordsLoadingEvent({bool reset = true}) {
+    return getIt<ArchiveWordsBloc>()
+        .add(ArchiveWordsEventLoading(reset: reset));
+  }
 
-  _addMarketSearchingEvent(String query, {bool reset = true}) =>
-      getIt<MarketBloc>().add(MarketEventSearching(query,
-          reset: reset,
-          order: _currentAppliedMarketOrder,
-          filter: _currentAppliedMarketFilter));
+  _addWordsSearchingEvent(String query, {bool reset = true}) {
+    return getIt<ArchiveWordsBloc>()
+        .add(ArchiveWordsEventSearching(query, reset: reset));
+  }
+
+  _addGrammarPointLoadingEvent({bool reset = true}) {
+    return getIt<ArchiveGrammarPointsBloc>()
+        .add(ArchiveGrammarPointsEventLoading(reset: reset));
+  }
+
+  _addGrammarPointSearchingEvent(String query, {bool reset = true}) {
+    return getIt<ArchiveGrammarPointsBloc>()
+        .add(ArchiveGrammarPointsEventSearching(query, reset: reset));
+  }
 
   _focusListener() => _searchHasFocus = _searchBarFn.hasFocus;
 
   _onTabChanged() =>
       setState(() => _currentTab = TabType.values[_tabController.index]);
 
+  _onArchiveTabChanged() => setState(() =>
+      _currentArchiveTab = ListDetailsType.values[_archiveTabController.index]);
+
   _resetLists() {
     if (_currentPage == HomeType.kanlist) {
       if (_currentTab == TabType.kanlist) return _addListLoadingEvent();
       return _addFolderListLoadingEvent();
     }
-    return _addMarketLoadingEvent();
+    if (_currentPage == HomeType.archive) {
+      if (_currentArchiveTab == ListDetailsType.words) {
+        return _addWordsLoadingEvent();
+      }
+      return _addGrammarPointLoadingEvent();
+    }
   }
 
   bool _showPendingReview(List<int> toReview) {
@@ -217,23 +227,24 @@ class _HomePageState extends State<HomePage>
       },
       icon: const Icon(Icons.history_rounded),
     );
-    final listArchive = IconButton(
+    final marketIcon = IconButton(
+      key: market,
       onPressed: () {
-        Navigator.of(context).pushNamed(KanPracticePages.archivePage);
+        Navigator.of(context).pushNamed(KanPracticePages.marketPage);
       },
-      icon: const Icon(Icons.all_inbox),
+      icon: const Icon(Icons.shopping_bag_rounded),
     );
 
     final List<IconButton> updateWithAppBarIcons =
         _currentPage == HomeType.dictionary
             ? [updateIcon, dictHistory]
             : _currentPage == HomeType.kanlist
-                ? [updateIcon, listArchive]
+                ? [updateIcon, marketIcon]
                 : [updateIcon];
     final List<IconButton> appBarIcons = _currentPage == HomeType.dictionary
         ? [dictHistory]
         : _currentPage == HomeType.kanlist
-            ? [listArchive]
+            ? [marketIcon]
             : [];
 
     return BlocListener<BackUpBloc, BackUpState>(
@@ -245,7 +256,7 @@ class _HomePageState extends State<HomePage>
           });
         }
       },
-      child: BlocConsumer<ListBloc, ListState>(
+      child: BlocListener<ListBloc, ListState>(
         listener: (context, state) async {
           if (state is ListStateLoaded) {
             if (getIt<PreferencesService>()
@@ -258,6 +269,7 @@ class _HomePageState extends State<HomePage>
                 kanList,
                 dictionary,
                 actions,
+                archive,
                 market,
                 settings,
               ], CoachTutorialParts.kanList)
@@ -265,134 +277,150 @@ class _HomePageState extends State<HomePage>
             }
           }
         },
-        builder: (c, state) => BlocBuilder<FolderBloc, FolderState>(
-          builder: (cFolder, stateFolder) =>
-              BlocBuilder<MarketBloc, MarketState>(
-            builder: (cMarket, stateMarket) => KPScaffold(
-              setGestureDetector: false,
-              onWillPop: () async {
-                if (_onTutorial) return false;
-                if (_searchHasFocus) {
-                  _resetLists();
-                  _searchBarFn.unfocus();
-                  return false;
+        child: KPScaffold(
+          setGestureDetector: false,
+          onWillPop: () async {
+            if (_onTutorial) return false;
+            if (_searchHasFocus) {
+              _resetLists();
+              _searchBarFn.unfocus();
+              return false;
+            }
+            if (_currentPage.index != 0) {
+              _controller.jumpToPage(0);
+              setState(() => _currentPage = HomeType.kanlist);
+              return false;
+            }
+            return true;
+          },
+          appBarTitle: _currentPage.appBarTitle,
+          appBarActions:
+              _newVersion.isNotEmpty ? updateWithAppBarIcons : appBarIcons,
+          bottomNavigationWidget: HomeBottomNavigation(
+            tutorialKeys: [kanList, dictionary, actions, archive, settings],
+            currentPage: _currentPage,
+            onPageChanged: (type) {
+              if (_currentPage != type && type != HomeType.actions) {
+                setState(() => _currentPage = type);
+                _searchBarFn.unfocus();
+                _searchTextController.text = "";
+                _controller.jumpToPage(type.page);
+                if (_currentPage == HomeType.archive) {
+                  _addWordsLoadingEvent();
                 }
-                if (_currentPage.index != 0) {
-                  _controller.jumpToPage(0);
-                  setState(() => _currentPage = HomeType.kanlist);
-                  return false;
+              }
+            },
+            onShowActions: (name) {
+              _addReviewEvent();
+              if (name != null) {
+                if (name == "__folder") {
+                  _addFolderListLoadingEvent();
+                } else {
+                  getIt<ListBloc>().add(ListEventCreate(name,
+                      filter: _currentAppliedFilter,
+                      order: _currentAppliedOrder));
                 }
-                return true;
-              },
-              appBarTitle: _currentPage.appBarTitle,
-              appBarActions:
-                  _newVersion.isNotEmpty ? updateWithAppBarIcons : appBarIcons,
-              bottomNavigationWidget: HomeBottomNavigation(
-                tutorialKeys: [kanList, dictionary, actions, market, settings],
-                currentPage: _currentPage,
-                onPageChanged: (type) {
-                  if (_currentPage != type && type != HomeType.actions) {
-                    setState(() => _currentPage = type);
-                    _searchBarFn.unfocus();
-                    _searchTextController.text = "";
-                    _controller.jumpToPage(type.page);
-                    if (_currentPage == HomeType.market) {
-                      _addMarketLoadingEvent();
+              }
+            },
+          ),
+          child: Column(
+            children: [
+              if (HomeType.kanlist == _currentPage ||
+                  HomeType.archive == _currentPage)
+                KPSearchBar(
+                  controller: _searchTextController,
+                  hint: _currentPage == HomeType.archive
+                      ? _currentArchiveTab.searchBarHint
+                      : _currentTab.searchBarHint,
+                  focus: _searchBarFn,
+                  onQuery: (String query) {
+                    _query = query;
+                    if (_currentPage == HomeType.kanlist) {
+                      if (_currentTab == TabType.kanlist) {
+                        return _addListSearchingEvent(query);
+                      }
+                      return _addFolderListSearchingEvent(query);
                     }
-                  }
-                },
-                onShowActions: (name) {
-                  _addReviewEvent();
-                  if (name != null) {
-                    if (name == "__folder") {
-                      _addFolderListLoadingEvent();
-                    } else {
-                      getIt<ListBloc>().add(ListEventCreate(name,
-                          filter: _currentAppliedFilter,
-                          order: _currentAppliedOrder));
+                    if (_currentPage == HomeType.archive) {
+                      if (_currentArchiveTab == ListDetailsType.words) {
+                        return _addWordsSearchingEvent(query);
+                      }
+                      return _addGrammarPointSearchingEvent(query);
                     }
-                  }
-                },
-              ),
-              child: Column(
-                children: [
-                  if (HomeType.kanlist == _currentPage ||
-                      HomeType.market == _currentPage)
-                    KPSearchBar(
-                      controller: _searchTextController,
-                      hint: _currentPage == HomeType.market
-                          ? _currentPage.searchBarHint
-                          : _currentTab.searchBarHint,
-                      focus: _searchBarFn,
-                      onQuery: (String query) {
-                        _query = query;
-                        if (_currentPage == HomeType.kanlist) {
-                          if (_currentTab == TabType.kanlist) {
-                            return _addListSearchingEvent(query);
-                          }
-                          return _addFolderListSearchingEvent(query);
-                        }
-                        return _addMarketSearchingEvent(query);
-                      },
-                      onExitSearch: () {
-                        _query = "";
-                        _resetLists();
-                      },
-                    ),
-                  Expanded(
-                    child: Stack(
-                      alignment: Alignment.bottomCenter,
+                  },
+                  onExitSearch: () {
+                    _query = "";
+                    _resetLists();
+                  },
+                ),
+              Expanded(
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    Column(
                       children: [
-                        Column(
-                          children: [
-                            if (_currentPage == HomeType.kanlist)
-                              TabBar(
-                                key: folders,
-                                controller: _tabController,
-                                padding: const EdgeInsets.only(
-                                    bottom: KPMargins.margin4),
-                                onTap: (tab) {
-                                  if (tab == 0) {
-                                    _addListLoadingEvent();
-                                    return;
-                                  }
-                                  _addFolderListLoadingEvent();
-                                },
-                                tabs: const [
-                                  Tab(icon: Icon(Icons.table_rows_rounded)),
-                                  Tab(icon: Icon(Icons.folder_rounded)),
-                                ],
-                              ),
-                            Expanded(child: _body()),
-                          ],
-                        ),
-                        BlocBuilder<LoadTestBloc, LoadTestState>(
-                          builder: (context, state) {
-                            if (state is LoadTestStateIdle) {
-                              final show =
-                                  _showPendingReview(state.wordsToReview);
-                              if (show) return _actionChipReview();
-                              return BlocBuilder<LoadGrammarTestBloc,
-                                  LoadGrammarTestState>(
-                                builder: (context, state) {
-                                  if (state is LoadGrammarTestStateIdle) {
-                                    final show = _showPendingReview(
-                                        state.grammarToReview);
-                                    if (show) return _actionChipReview();
-                                  }
-                                  return const SizedBox();
-                                },
-                              );
-                            }
-                            return const SizedBox();
-                          },
-                        ),
+                        if (_currentPage == HomeType.kanlist)
+                          TabBar(
+                            key: folders,
+                            controller: _tabController,
+                            padding: const EdgeInsets.only(
+                                bottom: KPMargins.margin4),
+                            onTap: (tab) {
+                              if (tab == 0) {
+                                _addListLoadingEvent();
+                                return;
+                              }
+                              _addFolderListLoadingEvent();
+                            },
+                            tabs: const [
+                              Tab(icon: Icon(Icons.table_rows_rounded)),
+                              Tab(icon: Icon(Icons.folder_rounded)),
+                            ],
+                          ),
+                        if (_currentPage == HomeType.archive)
+                          TabBar(
+                            controller: _archiveTabController,
+                            padding: const EdgeInsets.only(
+                                bottom: KPMargins.margin4),
+                            onTap: (tab) {
+                              if (tab == 0) {
+                                _addWordsLoadingEvent();
+                                return;
+                              }
+                              _addGrammarPointLoadingEvent();
+                            },
+                            tabs: [
+                              Tab(icon: Icon(ListDetailsType.words.icon)),
+                              Tab(icon: Icon(ListDetailsType.grammar.icon)),
+                            ],
+                          ),
+                        Expanded(child: _body()),
                       ],
                     ),
-                  ),
-                ],
+                    BlocBuilder<LoadTestBloc, LoadTestState>(
+                      builder: (context, state) {
+                        if (state is LoadTestStateIdle) {
+                          final show = _showPendingReview(state.wordsToReview);
+                          if (show) return _actionChipReview();
+                          return BlocBuilder<LoadGrammarTestBloc,
+                              LoadGrammarTestState>(
+                            builder: (context, state) {
+                              if (state is LoadGrammarTestStateIdle) {
+                                final show =
+                                    _showPendingReview(state.grammarToReview);
+                                if (show) return _actionChipReview();
+                              }
+                              return const SizedBox();
+                            },
+                          );
+                        }
+                        return const SizedBox();
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),
@@ -444,14 +472,30 @@ class _HomePageState extends State<HomePage>
           ],
         ),
         const DictionaryPage(args: DictionaryArguments(searchInJisho: true)),
-        MarketPage(
-          removeFocus: () => _searchBarFn.unfocus(),
-          onScrolledToBottom: () {
-            if (_query.isNotEmpty) {
-              return _addMarketSearchingEvent(_query, reset: false);
-            }
-            return _addMarketLoadingEvent(reset: false);
-          },
+        TabBarView(
+          controller: _archiveTabController,
+          children: [
+            ArchiveWordListWidget(
+              query: _query,
+              removeFocus: () => _searchBarFn.unfocus(),
+              onScrolledToBottom: () {
+                if (_query.isNotEmpty) {
+                  return _addWordsSearchingEvent(_query, reset: false);
+                }
+                return _addWordsLoadingEvent(reset: false);
+              },
+            ),
+            ArchiveGrammarListWidget(
+              query: _query,
+              removeFocus: () => _searchBarFn.unfocus(),
+              onScrolledToBottom: () {
+                if (_query.isNotEmpty) {
+                  return _addGrammarPointSearchingEvent(_query, reset: false);
+                }
+                return _addGrammarPointLoadingEvent(reset: false);
+              },
+            ),
+          ],
         ),
         const SettingsPage()
       ],

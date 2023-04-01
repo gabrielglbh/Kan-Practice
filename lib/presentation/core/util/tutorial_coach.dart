@@ -25,6 +25,7 @@ class TutorialCoach {
         case CoachTutorialParts.kanList:
           if (y == 1) align = ContentAlign.bottom;
           if (y == 0) offset = const Offset(0, KPMargins.margin64);
+          if (y == 6) align = ContentAlign.bottom;
           break;
         case CoachTutorialParts.details:
           if (y != 0) align = ContentAlign.bottom;

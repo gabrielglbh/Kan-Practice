@@ -238,8 +238,9 @@
   "coach_tutorial_kanlists_3": "Ihre Vokabellisten ansehen",
   "coach_tutorial_kanlists_4": "Wörter, die Sie nicht kennen, mit Hilfe des Wörterbuchs nachschlagen und sie direkt zu Ihren Listen hinzufügen.",
   "coach_tutorial_kanlists_5": "Eine neue Liste sowohl zum Markt als auch zu Ihren eigenen Listen hinzufügen UND einen Test machen. Sie können die Listen nach Lektionen eines Buches, Thema, Schwierigkeitsgrad... erstellen.\n\nWenn Sie eine Liste löschen möchten, lassen Sie die Taste gedrückt und es erscheint ein Dialog, um diese Aktion durchzuführen.",
-  "coach_tutorial_kanlists_6": "Zugang zum Marktplatz, wo Sie von anderen Benutzern erstellte und hochgeladene Vokabellisten herunterladen können.",
-  "coach_tutorial_kanlists_7": "Schließlich die Einstellungen, wo Sie Ihre Statistiken einsehen und andere Funktionen ändern können",
+  "coach_tutorial_kanlists_6": "Alle von Ihnen erstellten Wörter und Grammatikpunkte werden auf dieser Seite für eine schnelle Suche zur Verfügung stehen",
+  "coach_tutorial_kanlists_7": "Zugang zum Marktplatz, wo Sie von anderen Benutzern erstellte und hochgeladene Vokabellisten herunterladen können.",
+  "coach_tutorial_kanlists_8": "Schließlich die Einstellungen, wo Sie Ihre Statistiken einsehen und andere Funktionen ändern können",
   "coach_tutorial_detail_1": "Hier werden alle Vokabeln aus der Liste angezeigt. Sie können im Laufe Ihres Studiums jederzeit mehr hinzufügen.\n\nJedes Mal, wenn Sie in einem Bereich (z. B. Schreiben) üben, wird das Vokabular aktualisiert und der Prozentsatz des Erfolgs in diesem Bereich angezeigt.",
   "coach_tutorial_detail_2": "Sie können auf allen Listen zwischen Wörtern und Grammatik wechseln, indem Sie auf diese Schaltflächen klicken. Sie können Wörter und/oder Grammatik hinzufügen, während Ihr Studium fortschreitet.",
   "coach_tutorial_detail_3": "Hier sind die zusätzlichen Aktionen. Sie können einen Blitztest dieser Vokabelliste machen (links), die Liste zu einem bestimmten Ordner hinzufügen (Mitte) oder weitere Vokabeln zu Ihrer Liste hinzufügen, wenn Sie sie auf der Straße, beim Lernen, beim Lesen, in Videospielen oder Animes sehen.\n\nBeim Üben wird die räumliche Wiederholung verwendet: alle Vokabeln, die Sie nicht lernen, werden im weiteren Verlauf der Übung wieder auftauchen.",
@@ -426,5 +427,6 @@
   "study_modes_grammarPoints": "Grammatikpunkt",
   "study_modes_grammarPoints_ext": "文法点",
   "settings_general_badge_words": "Wörter als Badges anzeigen",
-  "settings_general_badge_words_description": "Ob Wörter in Listen als Abzeichen oder als Listenelemente angezeigt werden sollen."
+  "settings_general_badge_words_description": "Ob Wörter in Listen als Abzeichen oder als Listenelemente angezeigt werden sollen.",
+  "archive_title": "Archiv"
 }

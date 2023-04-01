@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:kanpractice/presentation/add_grammar_point_page/add_grammar_point_page.dart';
 import 'package:kanpractice/presentation/add_grammar_point_page/arguments.dart';
-import 'package:kanpractice/presentation/archive_page/archive_page.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/account_login_page/account_login_page.dart';
@@ -20,6 +19,7 @@ import 'package:kanpractice/presentation/grammar_modes/grammar_point_page.dart';
 import 'package:kanpractice/presentation/grammar_modes/utils/grammar_mode_arguments.dart';
 import 'package:kanpractice/presentation/home_page/home_page.dart';
 import 'package:kanpractice/presentation/list_details_page/list_details_page.dart';
+import 'package:kanpractice/presentation/market_page/market_page.dart';
 import 'package:kanpractice/presentation/settings_daily_options_page/settings_daily_options_page.dart';
 import 'package:kanpractice/presentation/settings_toggle_page/settings_toggle_page.dart';
 import 'package:kanpractice/presentation/statistics_page/statistics_page.dart';
@@ -122,9 +122,9 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case KanPracticePages.addGrammarPage:
       AddGrammarPointArgs args = settings.arguments as AddGrammarPointArgs;
       return CupertinoPageRoute(builder: (_) => AddGrammarPage(args: args));
-    case KanPracticePages.archivePage:
+    case KanPracticePages.marketPage:
       return CupertinoPageRoute(builder: (_) {
-        return const ArchivePage();
+        return const MarketPage();
       });
   }
   return null;

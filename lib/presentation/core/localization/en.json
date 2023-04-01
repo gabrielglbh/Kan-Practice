@@ -238,8 +238,9 @@
   "coach_tutorial_kanlists_3": "View your vocabulary lists.",
   "coach_tutorial_kanlists_4": "Look up words you don't know using the dictionary and add them directly to your lists.",
   "coach_tutorial_kanlists_5": "Add a new list both to the market and to your own lists AND take a test. You can create the lists by lessons of a book, subject, difficulty...\n\nIf you want to delete a list, leave it pressed and a dialog will appear to perform this action.",
-  "coach_tutorial_kanlists_6": "Access to the market, where you can download vocabulary lists that have been created and uploaded by other users.",
-  "coach_tutorial_kanlists_7": "Finally, the settings where you can view your statistics and change other functions.",
+  "coach_tutorial_kanlists_6": "All of your created words and grammar points will be available in this page all together for fast searches",
+  "coach_tutorial_kanlists_7": "Access to the market, where you can download vocabulary lists that have been created and uploaded by other users.",
+  "coach_tutorial_kanlists_8": "Finally, the settings where you can view your statistics and change other functions.",
   "coach_tutorial_detail_1": "All the vocabulary in the list is displayed here. You can add more at any time as your study progresses.\n\nEach time you practise in an area (e.g. writing), the vocabulary will be updated showing the percentage of success in that area.",
   "coach_tutorial_detail_2": "You can swap between words and grammar on all lists by clicking these buttons. You can add words and/or grammar as your study progresses.",
   "coach_tutorial_detail_3": "Here are the supplementary actions. You can do a Blitz test of this vocabulary list (left), add the list to a certain folder (center) or add more vocabulary to your list when you see it on the street, studying, reading, video games or anime.\n\nWhen practicing, spatial repetition is used: all the words that you fail to study, will appear again further in the practice.",
@@ -426,5 +427,6 @@
   "study_modes_grammarPoints": "Grammar Points",
   "study_modes_grammarPoints_ext": "文法点",
   "settings_general_badge_words": "Show words as badges",
-  "settings_general_badge_words_description": "Whether to show words in lists as badges or as list items."
+  "settings_general_badge_words_description": "Whether to show words in lists as badges or as list items.",
+  "archive_title": "Archive"
 }

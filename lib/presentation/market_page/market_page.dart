@@ -10,14 +10,12 @@ import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_search_bar.dart';
 import 'package:kanpractice/presentation/market_page/widgets/market_list_tile.dart';
 
 class MarketPage extends StatefulWidget {
-  final Function() onScrolledToBottom;
-  final Function() removeFocus;
-  const MarketPage(
-      {Key? key, required this.removeFocus, required this.onScrolledToBottom})
-      : super(key: key);
+  const MarketPage({Key? key}) : super(key: key);
 
   @override
   State<MarketPage> createState() => _MarketPageState();
@@ -25,7 +23,11 @@ class MarketPage extends StatefulWidget {
 
 class _MarketPageState extends State<MarketPage>
     with AutomaticKeepAliveClientMixin {
+  final _searchBarFn = FocusNode();
+  final _searchTextController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  String _query = "";
+  bool _searchHasFocus = false;
 
   MarketFilters _currentAppliedFilter = MarketFilters.all;
 
@@ -36,6 +38,7 @@ class _MarketPageState extends State<MarketPage>
 
   @override
   void initState() {
+    _searchBarFn.addListener(_focusListener);
     _scrollController.addListener(_scrollListener);
 
     final filterText =
@@ -50,24 +53,14 @@ class _MarketPageState extends State<MarketPage>
 
   @override
   void dispose() {
+    _searchBarFn.removeListener(_focusListener);
+    _searchBarFn.dispose();
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
     super.dispose();
   }
 
-  _scrollListener() {
-    /// When reaching last pixel of the list
-    if (_scrollController.offset ==
-        _scrollController.position.maxScrollExtent) {
-      widget.onScrolledToBottom();
-    }
-  }
-
-  _resetScroll() {
-    /// Scroll to the top
-    _scrollController.animateTo(0,
-        duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
-  }
+  _focusListener() => setState(() => _searchHasFocus = _searchBarFn.hasFocus);
 
   _addLoadingEvent({bool reset = false}) {
     return getIt<MarketBloc>()
@@ -75,6 +68,30 @@ class _MarketPageState extends State<MarketPage>
           filter: _currentAppliedFilter,
           order: _currentAppliedOrder,
           reset: reset));
+  }
+
+  _addSearchingEvent(String query, {bool reset = true}) =>
+      getIt<MarketBloc>().add(MarketEventSearching(query,
+          reset: reset,
+          order: _currentAppliedOrder,
+          filter: _currentAppliedFilter));
+
+  _scrollListener() {
+    /// When reaching last pixel of the list
+    if (_scrollController.offset ==
+        _scrollController.position.maxScrollExtent) {
+      if (_query.trim().isNotEmpty) {
+        _addSearchingEvent(_query, reset: false);
+      } else {
+        _addLoadingEvent(reset: false);
+      }
+    }
+  }
+
+  _resetScroll() {
+    /// Scroll to the top
+    _scrollController.animateTo(0,
+        duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
   }
 
   _onFilterSelected(int index) {
@@ -85,7 +102,7 @@ class _MarketPageState extends State<MarketPage>
     }
 
     _resetScroll();
-    widget.removeFocus();
+    _searchBarFn.unfocus();
 
     /// If the user taps on the same filter twice, just change back and forth the
     /// order value.
@@ -113,29 +130,56 @@ class _MarketPageState extends State<MarketPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Column(
-      children: [
-        _filterChips(),
-        BlocConsumer<MarketBloc, MarketState>(listener: (context, state) {
-          if (state is MarketStateSuccess) {
-            Utils.getSnackBar(context, state.message);
-          } else if (state is MarketStateFailure) {
-            Utils.getSnackBar(context, state.message);
-          }
-        }, builder: (context, state) {
-          if (state is MarketStateLoading || state is MarketStateSearching) {
-            return Column(
-              children: [
-                const KPProgressIndicator(),
-                const SizedBox(height: KPMargins.margin16),
-                Text('can_take_a_while_loading'.tr()),
-              ],
-            );
-          } else {
-            return _lists(state);
-          }
-        }),
-      ],
+    return KPScaffold(
+      appBarTitle: 'market_place_title'.tr(),
+      onWillPop: () async {
+        if (_searchHasFocus) {
+          _searchBarFn.unfocus();
+          return false;
+        } else {
+          return true;
+        }
+      },
+      child: Column(
+        children: [
+          KPSearchBar(
+            controller: _searchTextController,
+            hint: "market_lists_searchBar_hint".tr(),
+            focus: _searchBarFn,
+            onQuery: (String query) {
+              /// Everytime the user queries, reset the query itself and
+              /// the pagination index
+              _query = query;
+              _addSearchingEvent(_query, reset: true);
+            },
+            onExitSearch: () {
+              /// Empty the query
+              _query = "";
+              _addLoadingEvent();
+            },
+          ),
+          _filterChips(),
+          BlocConsumer<MarketBloc, MarketState>(listener: (context, state) {
+            if (state is MarketStateSuccess) {
+              Utils.getSnackBar(context, state.message);
+            } else if (state is MarketStateFailure) {
+              Utils.getSnackBar(context, state.message);
+            }
+          }, builder: (context, state) {
+            if (state is MarketStateLoading || state is MarketStateSearching) {
+              return Column(
+                children: [
+                  const KPProgressIndicator(),
+                  const SizedBox(height: KPMargins.margin16),
+                  Text('can_take_a_while_loading'.tr()),
+                ],
+              );
+            } else {
+              return _lists(state);
+            }
+          }),
+        ],
+      ),
     );
   }
 

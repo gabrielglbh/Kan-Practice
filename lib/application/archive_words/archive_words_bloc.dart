@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
+import 'package:kanpractice/domain/services/i_preferences_repository.dart';
 import 'package:kanpractice/domain/word/i_word_repository.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -10,15 +12,18 @@ part 'archive_words_state.dart';
 
 @lazySingleton
 class ArchiveWordsBloc extends Bloc<ArchiveWordsEvent, ArchiveWordsState> {
+  final IPreferencesRepository _preferencesRepository;
   final IWordRepository _wordRepository;
 
-  ArchiveWordsBloc(this._wordRepository) : super(ArchiveWordsStateIdle()) {
+  ArchiveWordsBloc(
+    this._wordRepository,
+    this._preferencesRepository,
+  ) : super(ArchiveWordsStateIdle()) {
     /// Maintain the list for pagination purposes
     List<Word> list = [];
 
     /// Maintain the list for pagination purposes on search
     List<Word> searchList = [];
-    const int limit = LazyLoadingLimits.wordList;
 
     /// Loading offset for normal pagination
     int loadingTimes = 0;
@@ -34,6 +39,10 @@ class ArchiveWordsBloc extends Bloc<ArchiveWordsEvent, ArchiveWordsState> {
           list.clear();
           loadingTimes = 0;
         }
+
+        final limit = _preferencesRepository.readData(SharedKeys.showBadgeWords)
+            ? LazyLoadingLimits.wordBadgeList
+            : LazyLoadingLimits.wordTileList;
 
         /// For every time we want to retrieve data, we need to instantiate
         /// a new list in order for Equatable to trigger and perform a change
@@ -58,6 +67,10 @@ class ArchiveWordsBloc extends Bloc<ArchiveWordsEvent, ArchiveWordsState> {
           searchList.clear();
           loadingTimesForSearch = 0;
         }
+
+        final limit = _preferencesRepository.readData(SharedKeys.showBadgeWords)
+            ? LazyLoadingLimits.wordBadgeList
+            : LazyLoadingLimits.wordTileList;
 
         /// For every time we want to retrieve data, we need to instantiate
         /// a new list in order for Equatable to trigger and perform a change

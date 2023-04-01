@@ -24,24 +24,22 @@ class MarketListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-          title: Padding(
-            padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
-            child: _header(context),
-          ),
-          subtitle: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: KPMargins.margin8),
-                  child: _subtitle(context),
-                ),
+    return ListTile(
+        title: Padding(
+          padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
+          child: _header(context),
+        ),
+        subtitle: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: KPMargins.margin8),
+                child: _subtitle(context),
               ),
-            ],
-          )),
-    );
+            ),
+          ],
+        ));
   }
 
   Widget _header(BuildContext context) {
@@ -53,13 +51,13 @@ class MarketListTile extends StatelessWidget {
             Expanded(
               child: Text(list.name,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.headline5),
+                  style: Theme.of(context).textTheme.headlineSmall),
             ),
             Padding(
               padding: const EdgeInsets.only(left: KPMargins.margin8),
               child: Text(
                   "${"created_label".tr()} ${Utils.parseDateMilliseconds(context, list.uploadedToMarket)}",
-                  style: Theme.of(context).textTheme.subtitle2),
+                  style: Theme.of(context).textTheme.titleSmall),
             ),
           ],
         ),
@@ -71,7 +69,7 @@ class MarketListTile extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
-                        .headline6
+                        .titleLarge
                         ?.copyWith(fontWeight: FontWeight.w500)),
               ),
             Row(
@@ -80,7 +78,7 @@ class MarketListTile extends StatelessWidget {
                 Text(list.rating.toString(),
                     style: Theme.of(context)
                         .textTheme
-                        .headline6
+                        .titleLarge
                         ?.copyWith(fontWeight: FontWeight.w500)),
                 const Padding(
                     padding: EdgeInsets.only(left: KPMargins.margin4),
@@ -106,7 +104,7 @@ class MarketListTile extends StatelessWidget {
             children: [
               Text("${"market_filter_words".tr()}: ${list.words}",
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyText2),
+                  style: Theme.of(context).textTheme.bodyMedium),
               if (list.isFolder)
                 Padding(
                   padding: const EdgeInsets.only(left: KPMargins.margin8),
@@ -121,10 +119,10 @@ class MarketListTile extends StatelessWidget {
         ),
         Text("${"market_filter_grammar".tr()}: ${list.grammar}",
             overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.bodyText2),
+            style: Theme.of(context).textTheme.bodyMedium),
         Text("${"market_filter_downloads".tr()}: ${list.downloads}",
             overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.bodyText2),
+            style: Theme.of(context).textTheme.bodyMedium),
         Row(
           children: [
             BlocBuilder<AuthBloc, AuthState>(

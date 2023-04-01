@@ -53,7 +53,7 @@ class _ChangeAppThemeState extends State<ChangeAppTheme> {
                               const EdgeInsets.only(bottom: KPMargins.margin8),
                           child: Text("settings_toggle_theme".tr(),
                               textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.headline5),
+                              style: Theme.of(context).textTheme.headlineSmall),
                         )),
                     _selection(context)
                   ],

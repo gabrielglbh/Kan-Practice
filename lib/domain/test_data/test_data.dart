@@ -24,28 +24,28 @@ class TestData {
   final double testTotalWinRateDefinition;
   final double testTotalWinRateGrammarPoint;
   final int selectionTests;
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final SpecificData selectionTestData;
   final int blitzTests;
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final SpecificData blitzTestData;
   final int remembranceTests;
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final SpecificData remembranceTestData;
   final int numberTests;
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final SpecificData numberTestData;
   final int lessPctTests;
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final SpecificData lessPctTestData;
   final int categoryTests;
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final SpecificData categoryTestData;
   final int folderTests;
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final SpecificData folderTestData;
   final int dailyTests;
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final SpecificData dailyTestData;
 
   const TestData({

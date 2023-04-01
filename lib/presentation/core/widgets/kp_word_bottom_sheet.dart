@@ -113,7 +113,7 @@ class KPWordBottomSheet extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: Theme.of(context)
                       .textTheme
-                      .headline5
+                      .headlineSmall
                       ?.copyWith(fontWeight: FontWeight.bold)),
             ),
           ),
@@ -130,12 +130,12 @@ class KPWordBottomSheet extends StatelessWidget {
                     TextSpan(
                       text:
                           "(${WordCategory.values[updatedWord.category].category}) ",
-                      style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: KPColors.midGrey, fontStyle: FontStyle.italic),
                     ),
                     TextSpan(
                         text: updatedWord.meaning,
-                        style: Theme.of(context).textTheme.bodyText2)
+                        style: Theme.of(context).textTheme.bodyMedium)
                   ])),
             ),
           ),
@@ -162,7 +162,7 @@ class KPWordBottomSheet extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText2
+                              .bodyMedium
                               ?.copyWith(fontWeight: FontWeight.bold)),
                     ),
                   ),
@@ -211,7 +211,7 @@ class KPWordBottomSheet extends StatelessWidget {
                 fit: BoxFit.contain,
                 child: Text(updatedWord.pronunciation,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyText1),
+                    style: Theme.of(context).textTheme.bodyLarge),
               ),
             ),
             TTSIconButton(word: updatedWord.pronunciation)
@@ -234,7 +234,7 @@ class KPWordBottomSheet extends StatelessWidget {
                   "${"last_seen_label".tr()} "
                   "${Utils.parseDateMilliseconds(context, updatedWord.dateLastShown)}",
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyText2),
+                  style: Theme.of(context).textTheme.bodyMedium),
               children: [
                 ListView.builder(
                   shrinkWrap: true,
@@ -288,7 +288,7 @@ class KPWordBottomSheet extends StatelessWidget {
             child: Text(" • ${(mode.mode).capitalized}:",
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.subtitle2),
+                style: Theme.of(context).textTheme.titleSmall),
           ),
           Expanded(
               child: Container(
@@ -298,7 +298,7 @@ class KPWordBottomSheet extends StatelessWidget {
               child: Text(parsedDate,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.right,
-                  style: Theme.of(context).textTheme.subtitle2),
+                  style: Theme.of(context).textTheme.titleSmall),
             ),
           ))
         ],

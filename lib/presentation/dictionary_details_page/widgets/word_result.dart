@@ -136,7 +136,7 @@ class WordResult extends StatelessWidget {
                     : "",
             paddingTop: true,
             rawText: true,
-            style: Theme.of(context).textTheme.bodyText2,
+            style: Theme.of(context).textTheme.bodyMedium,
           )
         ],
       ),

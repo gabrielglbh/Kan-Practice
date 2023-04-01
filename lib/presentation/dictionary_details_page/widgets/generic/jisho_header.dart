@@ -21,7 +21,7 @@ class JishoHeader extends StatelessWidget {
         Text(header,
             style: Theme.of(context)
                 .textTheme
-                .bodyText1
+                .bodyLarge
                 ?.copyWith(fontWeight: FontWeight.bold))
       ],
     );

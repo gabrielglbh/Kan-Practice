@@ -80,7 +80,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
                     horizontal: KPMargins.margin32),
                 child: Text("number_bottom_sheet_title".tr(),
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6),
+                    style: Theme.of(context).textTheme.titleLarge),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
@@ -90,7 +90,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
                     "$_wordsInTest "
                     "${"number_bottom_sheet_content".tr()}",
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyText1),
+                    style: Theme.of(context).textTheme.bodyLarge),
               ),
               GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -133,7 +133,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
                           range.label,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText2
+                              .bodyMedium
                               ?.copyWith(
                                   color: _selectedLists.contains(range)
                                       ? KPColors.primaryLight

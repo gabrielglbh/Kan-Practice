@@ -22,7 +22,7 @@ class TappableInfo extends StatelessWidget {
           Flexible(
             child: Text(
               "stats_tests_tap_to_specs".tr(),
-              style: Theme.of(context).textTheme.caption,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
         ],

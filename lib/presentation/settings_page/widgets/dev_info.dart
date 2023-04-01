@@ -40,7 +40,7 @@ class DevInfo extends StatelessWidget {
                               const EdgeInsets.only(bottom: KPMargins.margin8),
                           child: Text("developer_info_label".tr(),
                               textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.headline5),
+                              style: Theme.of(context).textTheme.headlineSmall),
                         )),
                     _developer(context)
                   ],

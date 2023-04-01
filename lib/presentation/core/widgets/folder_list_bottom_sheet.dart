@@ -51,7 +51,7 @@ class _FolderListBottomSheetState extends State<FolderListBottomSheet> {
                         ? "add_to_folder_from_list_title".tr()
                         : "add_to_market_select_list".tr(),
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6),
+                    style: Theme.of(context).textTheme.titleLarge),
               ),
               BlocConsumer<FolderBloc, FolderState>(
                 listener: (context, state) {
@@ -95,7 +95,8 @@ class _FolderListBottomSheetState extends State<FolderListBottomSheet> {
 
   Widget _listSelection(FolderStateLoaded state) {
     return ListView.separated(
-      separatorBuilder: (context, index) => const Divider(),
+      separatorBuilder: (context, index) =>
+          const Divider(height: KPMargins.margin4),
       itemCount: state.lists.length,
       itemBuilder: (context, index) {
         String listName = state.lists[index].folder;

@@ -25,7 +25,7 @@ class WordsOnTestList extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2
+                        .bodyMedium
                         ?.copyWith(fontWeight: FontWeight.bold)),
               ),
               GridView.builder(
@@ -73,7 +73,7 @@ class WordsOnTestList extends StatelessWidget {
                                     textAlign: TextAlign.center,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyText2
+                                        .bodyMedium
                                         ?.copyWith(
                                             color: KPColors.accentLight)),
                               ))),

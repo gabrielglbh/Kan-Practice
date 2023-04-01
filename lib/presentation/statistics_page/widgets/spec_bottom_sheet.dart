@@ -161,7 +161,7 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                           total.toString(),
                           style: Theme.of(context)
                               .textTheme
-                              .headline3
+                              .displaySmall
                               ?.copyWith(
                                   fontSize: KPFontSizes.fontSize32 +
                                       KPFontSizes.fontSize16),

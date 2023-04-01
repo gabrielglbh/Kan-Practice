@@ -17,6 +17,7 @@ class _SettingsTogglePageState extends State<SettingsTogglePage> {
   bool _aggStats = false;
   bool _toggleAffect = false;
   bool _enableRep = false;
+  bool _showBadgeWords = false;
 
   @override
   void initState() {
@@ -26,6 +27,8 @@ class _SettingsTogglePageState extends State<SettingsTogglePage> {
         .readData(SharedKeys.kanListListVisualization);
     _enableRep = getIt<PreferencesService>()
         .readData(SharedKeys.enableRepetitionOnTests);
+    _showBadgeWords =
+        getIt<PreferencesService>().readData(SharedKeys.showBadgeWords);
     super.initState();
   }
 
@@ -44,7 +47,7 @@ class _SettingsTogglePageState extends State<SettingsTogglePage> {
                 child: Text("settings_general_toggle_sub".tr(),
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2
+                        .bodyMedium
                         ?.copyWith(color: KPColors.midGrey))),
             trailing: KPSwitch(
               onChanged: (bool value) {
@@ -70,7 +73,7 @@ class _SettingsTogglePageState extends State<SettingsTogglePage> {
                 child: Text("settings_general_repetition_sub".tr(),
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2
+                        .bodyMedium
                         ?.copyWith(color: KPColors.midGrey))),
             trailing: KPSwitch(
               onChanged: (bool value) {
@@ -96,7 +99,7 @@ class _SettingsTogglePageState extends State<SettingsTogglePage> {
                 child: Text("settings_general_word_list_description".tr(),
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2
+                        .bodyMedium
                         ?.copyWith(color: KPColors.midGrey))),
             trailing: KPSwitch(
               onChanged: (bool value) {
@@ -110,6 +113,31 @@ class _SettingsTogglePageState extends State<SettingsTogglePage> {
               getIt<PreferencesService>()
                   .saveData(SharedKeys.kanListListVisualization, !_aggStats);
               setState(() => _aggStats = !_aggStats);
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.list_rounded, color: Colors.blueGrey),
+            title: Text("settings_general_badge_words".tr()),
+            subtitle: Padding(
+                padding: const EdgeInsets.only(top: KPMargins.margin8),
+                child: Text("settings_general_badge_words_description".tr(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: KPColors.midGrey))),
+            trailing: KPSwitch(
+              onChanged: (bool value) {
+                getIt<PreferencesService>()
+                    .saveData(SharedKeys.showBadgeWords, value);
+                setState(() => _showBadgeWords = value);
+              },
+              value: _showBadgeWords,
+            ),
+            onTap: () async {
+              getIt<PreferencesService>()
+                  .saveData(SharedKeys.showBadgeWords, !_showBadgeWords);
+              setState(() => _showBadgeWords = !_showBadgeWords);
             },
           ),
         ],

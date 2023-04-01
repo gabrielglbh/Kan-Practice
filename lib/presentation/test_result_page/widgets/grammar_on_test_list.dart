@@ -32,11 +32,12 @@ class GrammarPointOnTestList extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2
+                        .bodyMedium
                         ?.copyWith(fontWeight: FontWeight.bold)),
               ),
               ListView.separated(
-                separatorBuilder: (_, __) => const Divider(),
+                separatorBuilder: (_, __) =>
+                    const Divider(height: KPMargins.margin4),
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: list?[listName]?.length ?? 0,

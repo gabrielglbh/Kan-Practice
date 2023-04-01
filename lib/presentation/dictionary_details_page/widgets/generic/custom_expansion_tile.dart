@@ -20,7 +20,7 @@ class CustomExpansionTile extends StatelessWidget {
       iconColor: KPColors.secondaryColor,
       textColor: KPColors.secondaryColor,
       title: Text(label,
-          style: Theme.of(context).textTheme.bodyText1?.copyWith(
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.bold, fontStyle: FontStyle.italic)),
       children: children,
     );

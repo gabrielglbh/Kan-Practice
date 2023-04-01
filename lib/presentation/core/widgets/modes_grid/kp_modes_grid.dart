@@ -98,7 +98,7 @@ class _KPModesGridState extends State<KPModesGrid> {
                   child: Text(
                 "settings_general_toggle".tr(),
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               )),
               const Padding(
                 padding: EdgeInsets.only(left: KPMargins.margin16),
@@ -131,7 +131,7 @@ class _KPModesGridState extends State<KPModesGrid> {
                   child: Text(
                 "test_info_controlled_pace".tr(),
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               )),
               Padding(
                 padding: const EdgeInsets.only(left: KPMargins.margin16),

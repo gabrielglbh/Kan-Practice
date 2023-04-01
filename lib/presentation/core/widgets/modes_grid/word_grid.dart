@@ -180,7 +180,7 @@ class WordGrid extends StatelessWidget {
                 toReview,
                 style: Theme.of(context)
                     .textTheme
-                    .caption
+                    .bodySmall
                     ?.copyWith(color: Colors.white),
               ),
               backgroundColor: KPColors.secondaryDarkerColor,

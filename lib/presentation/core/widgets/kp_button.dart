@@ -65,7 +65,7 @@ class KPButton extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: Theme.of(context)
                               .textTheme
-                              .headline6
+                              .titleLarge
                               ?.copyWith(
                                   fontWeight: FontWeight.w400,
                                   color: KPColors.primaryLight)),
@@ -87,7 +87,7 @@ class KPButton extends StatelessWidget {
                   child: Text(title2,
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.button),
+                      style: Theme.of(context).textTheme.labelLarge),
                 )
               ],
             ),

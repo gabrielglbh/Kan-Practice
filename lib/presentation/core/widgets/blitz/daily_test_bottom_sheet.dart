@@ -39,7 +39,7 @@ class DailyBottomSheet extends StatelessWidget {
                           horizontal: KPMargins.margin32),
                       child: Text("daily_test_bottom_sheet_title".tr(),
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headline6),
+                          style: Theme.of(context).textTheme.titleLarge),
                     ),
                   ),
                   IconButton(
@@ -57,7 +57,7 @@ class DailyBottomSheet extends StatelessWidget {
                     horizontal: KPMargins.margin32),
                 child: Text("daily_test_description".tr(),
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyText1),
+                    style: Theme.of(context).textTheme.bodyLarge),
               ),
               KPModesGrid(
                 type: Tests.daily,

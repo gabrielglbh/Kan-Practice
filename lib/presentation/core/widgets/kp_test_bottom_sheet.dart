@@ -64,7 +64,7 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                     horizontal: KPMargins.margin32),
                 child: Text("test_selection_label".tr(),
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6),
+                    style: Theme.of(context).textTheme.titleLarge),
               ),
               BlocBuilder<LoadTestBloc, LoadTestState>(
                 builder: (context, state) {
@@ -154,7 +154,7 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                     mode.name,
                     style: Theme.of(context)
                         .textTheme
-                        .button
+                        .labelLarge
                         ?.copyWith(fontSize: 14),
                   ),
                 ),

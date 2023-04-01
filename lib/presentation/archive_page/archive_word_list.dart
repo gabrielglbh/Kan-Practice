@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/archive_words/archive_words_bloc.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
+import 'package:kanpractice/presentation/add_word_page/arguments.dart';
+import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/list_details_widgets/kp_word_item.dart';
@@ -12,11 +16,13 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class ArchiveWordListWidget extends StatefulWidget {
   final String query;
-  final FocusNode? searchBarFn;
+  final Function() onScrolledToBottom;
+  final Function() removeFocus;
   const ArchiveWordListWidget({
     Key? key,
     required this.query,
-    this.searchBarFn,
+    required this.onScrolledToBottom,
+    required this.removeFocus,
   }) : super(key: key);
 
   @override
@@ -47,26 +53,13 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
     /// When reaching last pixel of the list
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      /// If the query is empty, use the pagination for search bar
-      if (widget.query.isNotEmpty) {
-        _addSearchingEvent(widget.query);
-      }
-
-      /// Else use the normal pagination
-      else {
-        _addLoadingEvent();
-      }
+      widget.onScrolledToBottom();
     }
   }
 
   _addLoadingEvent({bool reset = false}) {
     return getIt<ArchiveWordsBloc>()
         .add(ArchiveWordsEventLoading(reset: reset));
-  }
-
-  _addSearchingEvent(String query, {bool reset = false}) {
-    return getIt<ArchiveWordsBloc>()
-        .add(ArchiveWordsEventSearching(query, reset: reset));
   }
 
   @override
@@ -112,23 +105,52 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
           onRefresh: () => _addLoadingEvent(reset: true),
           message: "list_details_empty".tr());
     }
-    return GridView.builder(
-      key: const PageStorageKey<String>('wordListController'),
-      itemCount: state.list.length,
-      controller: _scrollController,
-      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 5, childAspectRatio: 2),
-      itemBuilder: (context, k) {
-        Word? word = state.list[k];
-        return KPWordItem(
-          aggregateStats: true,
-          index: k,
-          word: word,
-          selectedMode: StudyModes.writing,
-          onShowModal: () => widget.searchBarFn?.unfocus(),
-        );
-      },
+
+    KPWordItem wordElem(int index, bool isBadge) {
+      Word? word = state.list[index];
+      return KPWordItem(
+        aggregateStats: true,
+        index: index,
+        word: word,
+        selectedMode: StudyModes.writing,
+        onShowModal: () => widget.removeFocus(),
+        isBadge: isBadge,
+        onTap: () async {
+          await Navigator.of(context)
+              .pushNamed(KanPracticePages.addWordPage,
+                  arguments: AddWordArgs(listName: word.listName, word: word))
+              .then((code) {
+            if (code == 0) _addLoadingEvent(reset: true);
+          });
+        },
+        onRemoval: () => _addLoadingEvent(reset: true),
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: () async => _addLoadingEvent(reset: true),
+      color: KPColors.secondaryColor,
+      child: getIt<PreferencesService>().readData(SharedKeys.showBadgeWords)
+          ? GridView.builder(
+              key: const PageStorageKey<String>('wordListController'),
+              itemCount: state.list.length,
+              controller: _scrollController,
+              padding: const EdgeInsets.only(bottom: KPMargins.margin32),
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 5, childAspectRatio: 2),
+              itemBuilder: (context, k) => wordElem(k, true),
+            )
+          : ListView.separated(
+              key: const PageStorageKey<String>('wordListController'),
+              itemCount: state.list.length,
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              controller: _scrollController,
+              padding: const EdgeInsets.only(bottom: KPMargins.margin32),
+              separatorBuilder: (_, __) =>
+                  const Divider(height: KPMargins.margin4),
+              itemBuilder: (context, k) => wordElem(k, false),
+            ),
     );
   }
 

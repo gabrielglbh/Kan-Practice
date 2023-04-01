@@ -238,8 +238,9 @@
   "coach_tutorial_kanlists_3": "Visualizar tus listas de vocabulario.",
   "coach_tutorial_kanlists_4": "Buscar palabras que no conozcas mediante el diccionario y añadirlas directamente a tus listas.",
   "coach_tutorial_kanlists_5": "Añadir una nueva lista tanto al mercado como a tus propias listas Y realizar un test. Puedes crear las listas por lecciones de un libro, temática, dificultad...\n\nSi quieres eliminar una lista, dejala pulsada y aparecerá un diálogo para realizar dicha acción.",
-  "coach_tutorial_kanlists_6": "Acceso al mercado, donde podrás descargar listas de vocabulario que han creado y subido otros usuarios.",
-  "coach_tutorial_kanlists_7": "Por último, los ajustes donde podrás ver tus estadísticas y cambiar otras funciones.",
+  "coach_tutorial_kanlists_6": "Todas tus palabras y puntos gramaticales creados estarán disponibles en esta página, todos juntos, para realizar búsquedas rápidas.",
+  "coach_tutorial_kanlists_7": "Acceso al mercado, donde podrás descargar listas de vocabulario que han creado y subido otros usuarios.",
+  "coach_tutorial_kanlists_8": "Por último, los ajustes donde podrás ver tus estadísticas y cambiar otras funciones.",
   "coach_tutorial_detail_1": "Aquí se muestra todo el vocabulario de la lista. Podrás añadir más en cualquier momento a medida que tu estudio avance.\n\nCada vez que practiques en una área (escritura por ejemplo), el vocabulario se actualizará mostrando el porcentaje de acierto de la misma.",
   "coach_tutorial_detail_2": "Puedes alternar entre palabras y gramática en tus listas al pulsar estos botones. Podrás añadir más en cualquier momento a medida que tu estudio avance.",
   "coach_tutorial_detail_3": "Aquí están las acciones suplementarias. Podrás realizar un test Blitz solamente de esta lista de vocabulario (izquierda), añadir esta lista a una carpeta determinada (centro) o añadir más vocabulario a la lista que veas por la calle, estudiando, leyendo, en videojuegos o anime.\n\nAl practicar, se usa la repetición espaciada: cuando fallas el estudio de una palabra, esta saldrá más adelante en tu práctica.",
@@ -424,5 +425,8 @@
   "market_filter_grammar": "Puntos gramaticales",
   "markdown_support": "Soporte de Markdown. Pulsa aquí para más información.",
   "study_modes_grammarPoints": "Puntos Gramaticales",
-  "study_modes_grammarPoints_ext": "文法点"
+  "study_modes_grammarPoints_ext": "文法点",
+  "settings_general_badge_words": "Mostrar medallas de palabras",
+  "settings_general_badge_words_description": "Si está activo, se mostrarán las palabras de las listas como medallas, si no, se mostrarán como elementos de una lista.",
+  "archive_title": "Archivo"
 }

@@ -35,7 +35,7 @@ class ScrollableText extends StatelessWidget {
           style: style ??
               Theme.of(context)
                   .textTheme
-                  .bodyText1
+                  .bodyLarge
                   ?.copyWith(fontStyle: FontStyle.italic)),
     );
   }

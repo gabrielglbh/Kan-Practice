@@ -70,6 +70,7 @@ class _DictionaryPageState extends State<DictionaryPage>
         return Column(
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(child: _searchBar()),
                 _searchWidget(canSearchEitherWay)
@@ -86,7 +87,7 @@ class _DictionaryPageState extends State<DictionaryPage>
                   child: Padding(
                 padding: const EdgeInsets.all(KPMargins.margin16),
                 child: Text("dict_model_not_loaded".tr(),
-                    style: Theme.of(context).textTheme.bodyText2),
+                    style: Theme.of(context).textTheme.bodyMedium),
               ))
             else if (state is DictStateLoaded)
               Column(
@@ -102,7 +103,7 @@ class _DictionaryPageState extends State<DictionaryPage>
                             "< ${"dict_predictions_most_likely".tr()}",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodyText2,
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ),
                         Expanded(
@@ -111,7 +112,7 @@ class _DictionaryPageState extends State<DictionaryPage>
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.end,
-                            style: Theme.of(context).textTheme.bodyText2,
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         )
                       ],
@@ -177,7 +178,9 @@ class _DictionaryPageState extends State<DictionaryPage>
         height: KPSizes.defaultSizeSearchBarIcons,
         duration: const Duration(milliseconds: 400),
         margin: EdgeInsets.symmetric(
-            horizontal: canSearchEitherWay ? KPMargins.margin8 : 0),
+          horizontal: canSearchEitherWay ? KPMargins.margin8 : 0,
+          vertical: KPMargins.margin4,
+        ),
         decoration: const BoxDecoration(
             shape: BoxShape.circle, color: KPColors.secondaryColor),
         child: Icon(

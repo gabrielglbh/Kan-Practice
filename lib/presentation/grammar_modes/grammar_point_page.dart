@@ -212,7 +212,7 @@ class _GrammarPointStudyState extends State<GrammarPointStudy> {
           shrinkWrap: true,
         )
       else
-        Text(_none, style: Theme.of(context).textTheme.headline4),
+        Text(_none, style: Theme.of(context).textTheme.headlineMedium),
       const SizedBox(height: KPMargins.margin4),
     ];
   }

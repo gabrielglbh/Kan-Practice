@@ -5,6 +5,7 @@ import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word_history/word_history.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
@@ -30,7 +31,7 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
               title: Text("word_history_showRemoveHistorysDialog_title".tr()),
               content: Text(
                   "word_history_showRemoveHistorysDialog_content".tr(),
-                  style: Theme.of(context).textTheme.bodyText1),
+                  style: Theme.of(context).textTheme.bodyLarge),
               positiveButtonText:
                   "word_history_showRemoveHistorysDialog_positive".tr(),
               onPositive: () =>
@@ -105,7 +106,7 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
     return ListView.separated(
         key: const PageStorageKey<String>('wordHistoryController'),
         controller: _scrollController,
-        separatorBuilder: (_, __) => const Divider(),
+        separatorBuilder: (_, __) => const Divider(height: KPMargins.margin4),
         itemCount: state.list.length,
         itemBuilder: (context, k) {
           WordHistory wordHistory = state.list[k];
@@ -120,10 +121,11 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
             title: Text(wordHistory.word,
                 style: Theme.of(context)
                     .textTheme
-                    .headline5
+                    .headlineSmall
                     ?.copyWith(fontWeight: FontWeight.normal),
                 overflow: TextOverflow.ellipsis),
-            subtitle: Text("${"searched_label".tr()} $date"),
+            trailing: Text("${"searched_label".tr()} $date",
+                style: Theme.of(context).textTheme.bodySmall),
           );
         });
   }

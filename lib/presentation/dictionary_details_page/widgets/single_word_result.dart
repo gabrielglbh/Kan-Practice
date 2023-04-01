@@ -99,7 +99,7 @@ class SingleWordResult extends StatelessWidget {
               label: data,
               paddingTop: true,
               rawText: true,
-              style: Theme.of(context).textTheme.bodyText2),
+              style: Theme.of(context).textTheme.bodyMedium),
         ],
       ),
     );
@@ -129,7 +129,7 @@ class SingleWordResult extends StatelessWidget {
           ScrollableText(
             label: data?.toSet().toList().join(_separator),
             paddingTop: true,
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyLarge,
             rawText: true,
           ),
           Visibility(
@@ -163,11 +163,11 @@ class SingleWordResult extends StatelessWidget {
                 initial: true,
                 style: Theme.of(context)
                     .textTheme
-                    .headline6
+                    .titleLarge
                     ?.copyWith(fontWeight: FontWeight.w500)),
             ScrollableText(
                 label: example?[i].meaning,
-                style: Theme.of(context).textTheme.bodyText2),
+                style: Theme.of(context).textTheme.bodyMedium),
           ],
         ),
       ));

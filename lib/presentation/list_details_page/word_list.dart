@@ -251,35 +251,48 @@ class _WordListWidgetState extends State<WordListWidget>
           onRefresh: () => _addLoadingEvent(reset: true),
           message: "list_details_empty".tr());
     }
-    return GridView.builder(
-      key: const PageStorageKey<String>('wordListController'),
-      itemCount: state.list.length,
-      controller: _scrollController,
-      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 5, childAspectRatio: 2),
-      itemBuilder: (context, k) {
-        Word? word = state.list[k];
-        return KPWordItem(
-          aggregateStats: _aggrStats,
-          index: k,
-          word: word,
-          listName: widget.listName,
-          selectedMode: _selectedMode,
-          onShowModal: () => widget.searchBarFn?.unfocus(),
-          onTap: () async {
-            await Navigator.of(context)
-                .pushNamed(KanPracticePages.addWordPage,
-                    arguments:
-                        AddWordArgs(listName: widget.listName, word: word))
-                .then((code) {
-              if (code == 0) _addLoadingEvent(reset: true);
-            });
-          },
-          onRemoval: () => _addLoadingEvent(reset: true),
-        );
-      },
-    );
+
+    KPWordItem wordElem(int index, bool isBadge) {
+      Word? word = state.list[index];
+      return KPWordItem(
+        aggregateStats: _aggrStats,
+        index: index,
+        word: word,
+        listName: widget.listName,
+        selectedMode: _selectedMode,
+        onShowModal: () => widget.searchBarFn?.unfocus(),
+        isBadge: isBadge,
+        onTap: () async {
+          await Navigator.of(context)
+              .pushNamed(KanPracticePages.addWordPage,
+                  arguments: AddWordArgs(listName: widget.listName, word: word))
+              .then((code) {
+            if (code == 0) _addLoadingEvent(reset: true);
+          });
+        },
+        onRemoval: () => _addLoadingEvent(reset: true),
+      );
+    }
+
+    return getIt<PreferencesService>().readData(SharedKeys.showBadgeWords)
+        ? GridView.builder(
+            key: const PageStorageKey<String>('wordListController'),
+            itemCount: state.list.length,
+            controller: _scrollController,
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 5, childAspectRatio: 2),
+            itemBuilder: (context, k) => wordElem(k, true),
+          )
+        : ListView.separated(
+            key: const PageStorageKey<String>('wordListController'),
+            itemCount: state.list.length,
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            controller: _scrollController,
+            separatorBuilder: (_, __) =>
+                const Divider(height: KPMargins.margin4),
+            itemBuilder: (context, k) => wordElem(k, false),
+          );
   }
 
   @override

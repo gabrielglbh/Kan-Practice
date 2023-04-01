@@ -107,7 +107,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
                         child: Text(
                             "dict_jisho_add_word_bottom_sheet_title".tr(),
                             textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headline6),
+                            style: Theme.of(context).textTheme.titleLarge),
                       ),
                     ),
                     IconButton(
@@ -134,7 +134,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
                         textAlign: TextAlign.center,
                         style: Theme.of(context)
                             .textTheme
-                            .button
+                            .labelLarge
                             ?.copyWith(color: KPColors.secondaryColor)),
                   ),
                 ),
@@ -184,7 +184,8 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
         Expanded(
           flex: 2,
           child: ListView.separated(
-            separatorBuilder: (context, index) => const Divider(),
+            separatorBuilder: (context, index) =>
+                const Divider(height: KPMargins.margin4),
             itemCount: state.lists.length,
             itemBuilder: (context, index) {
               String listName = state.lists[index].name;

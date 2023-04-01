@@ -58,7 +58,7 @@ class _ChangeWordsInTestState extends State<ChangeWordsInTest> {
                               const EdgeInsets.only(bottom: KPMargins.margin8),
                           child: Text("change_word_in_test_selection".tr(),
                               textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.headline5),
+                              style: Theme.of(context).textTheme.headlineSmall),
                         )),
                     _selection(context)
                   ],

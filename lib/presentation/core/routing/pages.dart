@@ -24,5 +24,5 @@ class KanPracticePages {
   static const String settingsTogglePage = "/settingsTogglePage";
   static const String settingsDailyOptions = "/settingsDailyOptions";
   static const String addGrammarPage = "/addGrammarPage";
-  static const String archivePage = "/archivePage";
+  static const String marketPage = "/marketPage";
 }

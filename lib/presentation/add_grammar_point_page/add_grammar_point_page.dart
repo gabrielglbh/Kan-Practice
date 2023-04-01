@@ -229,7 +229,7 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
                       "M",
                       style: Theme.of(context)
                           .textTheme
-                          .caption
+                          .bodySmall
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     Icon(Icons.arrow_downward_rounded,
@@ -242,7 +242,7 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
                 child: Text(
                   "markdown_support".tr(),
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.caption,
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
             ],

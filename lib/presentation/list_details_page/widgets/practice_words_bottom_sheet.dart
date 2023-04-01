@@ -54,7 +54,7 @@ class _PracticeWordsBottomSheetState extends State<PracticeWordsBottomSheet> {
                 child: Text(
                     "${"list_details_practice_button_label".tr()}: ${widget.listName}",
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6),
+                    style: Theme.of(context).textTheme.titleLarge),
               ),
               Column(
                 children: [

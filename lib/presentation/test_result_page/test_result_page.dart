@@ -64,7 +64,7 @@ class _TestResultPageState extends State<TestResultPage> {
               Text(
                 "test_result_title".tr(),
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline4,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
               KPWinRateChart(
                 winRate: widget.args.score,
@@ -78,7 +78,7 @@ class _TestResultPageState extends State<TestResultPage> {
                 padding: const EdgeInsets.only(bottom: KPMargins.margin8),
                 child: Text("test_result_disclaimer".tr(),
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyText1),
+                    style: Theme.of(context).textTheme.bodyLarge),
               ),
               Visibility(
                 visible: widget.args.studyList != null,

@@ -73,6 +73,7 @@ class Utils {
       await launchUrl(Uri.parse(url),
           mode: LaunchMode.externalNonBrowserApplication);
     } else {
+      // ignore: use_build_context_synchronously
       getSnackBar(context, "launch_url_failed".tr());
     }
   }
@@ -155,6 +156,7 @@ class Utils {
       child = Text(versionNotes);
     }
 
+    // ignore: use_build_context_synchronously
     await showDialog(
       context: context,
       barrierDismissible: true,
@@ -192,9 +194,9 @@ class Utils {
       builder: (context) {
         return KPDialog(
           title: Text("list_details_learningMode_spatial".tr(),
-              style: Theme.of(context).textTheme.headline6),
+              style: Theme.of(context).textTheme.titleLarge),
           content: Text("disclaimer_spatial_repetition".tr(),
-              style: Theme.of(context).textTheme.bodyText1),
+              style: Theme.of(context).textTheme.bodyLarge),
           positiveButtonText: "Ok",
           negativeButton: false,
           onPositive: () {},

@@ -44,7 +44,7 @@ class KPTextForm extends StatelessWidget {
   /// Max lines of this. Defaults to null
   final int? maxLines;
 
-  /// Text Style of the input. Defaults to headline5
+  /// Text Style of the input. Defaults to headlineSmall
   final TextStyle? style;
 
   /// Whehter the input is enabled or not
@@ -85,7 +85,7 @@ class KPTextForm extends StatelessWidget {
               Expanded(
                   child: Text(header,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.headline6)),
+                      style: Theme.of(context).textTheme.titleLarge)),
               additionalWidget ?? Container()
             ],
           ),
@@ -94,7 +94,7 @@ class KPTextForm extends StatelessWidget {
           controller: controller,
           focusNode: focusNode,
           textAlign: centerText,
-          style: style ?? Theme.of(context).textTheme.bodyText1,
+          style: style ?? Theme.of(context).textTheme.bodyLarge,
           textInputAction: action,
           keyboardType: inputType,
           maxLength: maxLength,

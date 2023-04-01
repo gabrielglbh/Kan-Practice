@@ -101,7 +101,7 @@ class _SettingsPageState extends State<SettingsPage> {
           trailing: Text("$_wordsInTest",
               style: Theme.of(context)
                   .textTheme
-                  .bodyText2
+                  .bodyMedium
                   ?.copyWith(color: KPColors.midGrey)),
           onTap: () async {
             final newValue = await ChangeWordsInTest.show(context);
@@ -213,12 +213,12 @@ class _SettingsPageState extends State<SettingsPage> {
 
   ListTile _header(String title, {String? subtitle, bool hasTrailing = false}) {
     return ListTile(
-      title: Text(title, style: Theme.of(context).textTheme.headline6),
+      title: Text(title, style: Theme.of(context).textTheme.titleLarge),
       subtitle: subtitle != null
           ? Text(subtitle,
               style: Theme.of(context)
                   .textTheme
-                  .bodyText2
+                  .bodyMedium
                   ?.copyWith(color: KPColors.midGrey))
           : null,
       trailing: hasTrailing

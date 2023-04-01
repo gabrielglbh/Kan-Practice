@@ -13,8 +13,8 @@ class StudyModeAppBar extends StatelessWidget {
         fit: BoxFit.fitWidth,
         child: Column(
           children: [
-            Text(title, style: Theme.of(context).textTheme.headline5),
-            Text(studyMode, style: Theme.of(context).textTheme.bodyText2)
+            Text(title, style: Theme.of(context).textTheme.headlineSmall),
+            Text(studyMode, style: Theme.of(context).textTheme.bodyMedium)
           ],
         ));
   }

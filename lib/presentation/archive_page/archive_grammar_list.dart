@@ -4,7 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/archive_grammar_points/archive_grammar_points_bloc.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/presentation/add_grammar_point_page/arguments.dart';
+import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
+import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/list_details_widgets/kp_grammar_point_item.dart';
@@ -12,11 +15,13 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class ArchiveGrammarListWidget extends StatefulWidget {
   final String query;
-  final FocusNode? searchBarFn;
+  final Function() onScrolledToBottom;
+  final Function() removeFocus;
   const ArchiveGrammarListWidget({
     Key? key,
     required this.query,
-    this.searchBarFn,
+    required this.onScrolledToBottom,
+    required this.removeFocus,
   }) : super(key: key);
 
   @override
@@ -50,26 +55,13 @@ class _ArchiveGrammarListWidgetState extends State<ArchiveGrammarListWidget>
     /// When reaching last pixel of the list
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      /// If the query is empty, use the pagination for search bar
-      if (widget.query.isNotEmpty) {
-        _addSearchingEvent(widget.query);
-      }
-
-      /// Else use the normal pagination
-      else {
-        _addLoadingEvent();
-      }
+      widget.onScrolledToBottom();
     }
   }
 
   _addLoadingEvent({bool reset = false}) {
     return getIt<ArchiveGrammarPointsBloc>()
         .add(ArchiveGrammarPointsEventLoading(reset: reset));
-  }
-
-  _addSearchingEvent(String query, {bool reset = false}) {
-    return getIt<ArchiveGrammarPointsBloc>()
-        .add(ArchiveGrammarPointsEventSearching(query, reset: reset));
   }
 
   @override
@@ -117,22 +109,37 @@ class _ArchiveGrammarListWidgetState extends State<ArchiveGrammarListWidget>
           onRefresh: () => _addLoadingEvent(reset: true),
           message: "list_details_empty_grammar".tr());
     }
-    return ListView.separated(
-      key: const PageStorageKey<String>('grammarPointListController'),
-      itemCount: state.list.length,
-      controller: _scrollController,
-      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      separatorBuilder: (_, __) => const Divider(),
-      itemBuilder: (context, k) {
-        GrammarPoint? gp = state.list[k];
-        return KPGrammarPointItem(
-          index: k,
-          grammarPoint: gp,
-          aggregateStats: true,
-          selectedMode: _selectedMode,
-          onShowModal: () => widget.searchBarFn?.unfocus(),
-        );
-      },
+    return RefreshIndicator(
+      onRefresh: () async => _addLoadingEvent(reset: true),
+      color: KPColors.secondaryColor,
+      child: ListView.separated(
+        key: const PageStorageKey<String>('grammarPointListController'),
+        itemCount: state.list.length,
+        controller: _scrollController,
+        padding: const EdgeInsets.only(bottom: KPMargins.margin32),
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        separatorBuilder: (_, __) => const Divider(),
+        itemBuilder: (context, k) {
+          GrammarPoint? gp = state.list[k];
+          return KPGrammarPointItem(
+            index: k,
+            grammarPoint: gp,
+            aggregateStats: true,
+            selectedMode: _selectedMode,
+            onShowModal: () => widget.removeFocus(),
+            onTap: () async {
+              await Navigator.of(context)
+                  .pushNamed(KanPracticePages.addGrammarPage,
+                      arguments: AddGrammarPointArgs(
+                          listName: gp.listName, grammarPoint: gp))
+                  .then((code) {
+                if (code == 0) _addLoadingEvent(reset: true);
+              });
+            },
+            onRemoval: () => _addLoadingEvent(reset: true),
+          );
+        },
+      ),
     );
   }
 

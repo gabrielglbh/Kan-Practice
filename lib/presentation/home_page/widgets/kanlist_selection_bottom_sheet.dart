@@ -55,7 +55,7 @@ class _KanListSelectionBottomSheetState
                     horizontal: KPMargins.margin32),
                 child: Text("study_bottom_sheet_title".tr(),
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6),
+                    style: Theme.of(context).textTheme.titleLarge),
               ),
               Visibility(
                 visible: _onListEmpty,
@@ -63,7 +63,7 @@ class _KanListSelectionBottomSheetState
                     textAlign: TextAlign.center,
                     style: Theme.of(context)
                         .textTheme
-                        .headline6
+                        .titleLarge
                         ?.copyWith(fontWeight: FontWeight.w400)),
               ),
               Visibility(

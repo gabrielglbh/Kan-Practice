@@ -32,7 +32,8 @@ class KPSizes {
 class LazyLoadingLimits {
   static const int folderList = 12;
   static const int kanList = 12;
-  static const int wordList = 100;
+  static const int wordBadgeList = 100;
+  static const int wordTileList = 20;
   static const int grammarPointList = 20;
   static const int testHistory = 20;
   static const int wordHistory = 20;

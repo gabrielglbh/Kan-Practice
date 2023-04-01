@@ -58,4 +58,6 @@ class SharedKeys {
   static const String grammarPointDailyPerformed = "grammarPointDailyPerformed";
 
   static const String showGrammarGraphs = "showGrammarGraphs";
+
+  static const String showBadgeWords = "showBadgeWords";
 }

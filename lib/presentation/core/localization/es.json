@@ -424,5 +424,7 @@
   "market_filter_grammar": "Puntos gramaticales",
   "markdown_support": "Soporte de Markdown. Pulsa aquí para más información.",
   "study_modes_grammarPoints": "Puntos Gramaticales",
-  "study_modes_grammarPoints_ext": "文法点"
+  "study_modes_grammarPoints_ext": "文法点",
+  "settings_general_badge_words": "Mostrar medallas de palabras",
+  "settings_general_badge_words_description": "Si está activo, se mostrarán las palabras de las listas como medallas, si no, se mostrarán como elementos de una lista."
 }

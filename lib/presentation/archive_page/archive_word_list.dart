@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/archive_words/archive_words_bloc.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
@@ -112,24 +113,36 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
           onRefresh: () => _addLoadingEvent(reset: true),
           message: "list_details_empty".tr());
     }
-    return GridView.builder(
-      key: const PageStorageKey<String>('wordListController'),
-      itemCount: state.list.length,
-      controller: _scrollController,
-      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 5, childAspectRatio: 2),
-      itemBuilder: (context, k) {
-        Word? word = state.list[k];
-        return KPWordItem(
-          aggregateStats: true,
-          index: k,
-          word: word,
-          selectedMode: StudyModes.writing,
-          onShowModal: () => widget.searchBarFn?.unfocus(),
-        );
-      },
-    );
+
+    KPWordItem wordElem(int index, bool isBadge) {
+      Word? word = state.list[index];
+      return KPWordItem(
+        aggregateStats: true,
+        index: index,
+        word: word,
+        selectedMode: StudyModes.writing,
+        onShowModal: () => widget.searchBarFn?.unfocus(),
+        isBadge: isBadge,
+      );
+    }
+
+    return getIt<PreferencesService>().readData(SharedKeys.showBadgeWords)
+        ? GridView.builder(
+            key: const PageStorageKey<String>('wordListController'),
+            itemCount: state.list.length,
+            controller: _scrollController,
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 5, childAspectRatio: 2),
+            itemBuilder: (context, k) => wordElem(k, true),
+          )
+        : ListView.builder(
+            key: const PageStorageKey<String>('wordListController'),
+            itemCount: state.list.length,
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            controller: _scrollController,
+            itemBuilder: (context, k) => wordElem(k, false),
+          );
   }
 
   @override

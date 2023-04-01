@@ -424,5 +424,7 @@
   "market_filter_grammar": "Grammar points",
   "markdown_support": "Markdown support. Tap here for more information.",
   "study_modes_grammarPoints": "Grammar Points",
-  "study_modes_grammarPoints_ext": "文法点"
+  "study_modes_grammarPoints_ext": "文法点",
+  "settings_general_badge_words": "Show words as badges",
+  "settings_general_badge_words_description": "Whether to show words in lists as badges or as list items."
 }

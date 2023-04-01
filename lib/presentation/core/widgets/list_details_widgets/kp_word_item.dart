@@ -15,6 +15,7 @@ class KPWordItem extends StatelessWidget {
   final Function()? onTap;
   final int index;
   final Function() onShowModal;
+  final bool isBadge;
   const KPWordItem({
     Key? key,
     this.aggregateStats = false,
@@ -25,6 +26,7 @@ class KPWordItem extends StatelessWidget {
     required this.selectedMode,
     required this.index,
     required this.onShowModal,
+    this.isBadge = true,
   }) : super(key: key);
 
   double _getProperWordWinRate(Word word) {
@@ -68,7 +70,7 @@ class KPWordItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
+    final badge = AnimatedContainer(
       duration: const Duration(milliseconds: KPAnimations.ms300),
       padding: const EdgeInsets.all(KPMargins.margin2),
       margin: const EdgeInsets.all(KPMargins.margin4),
@@ -108,5 +110,44 @@ class KPWordItem extends StatelessWidget {
         ),
       ),
     );
+
+    final tile = ListTile(
+      leading: Container(
+        width: KPMargins.margin16,
+        height: KPMargins.margin16,
+        margin: const EdgeInsets.only(top: KPMargins.margin4),
+        decoration: BoxDecoration(
+          color: Utils.getColorBasedOnWinRate(_getProperWordWinRate(word)),
+          shape: BoxShape.circle,
+          border: Border.all(color: KPColors.getSubtle(context)),
+        ),
+      ),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: KPMargins.margin4),
+              child: Text(word.word,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.copyWith(fontWeight: FontWeight.bold)),
+            ),
+          ),
+          const SizedBox(width: KPMargins.margin16),
+          Text(word.meaning,
+              textAlign: TextAlign.end,
+              style: Theme.of(context).textTheme.bodyMedium)
+        ],
+      ),
+      onTap: () async {
+        onShowModal();
+        await KPWordBottomSheet.show(context, listName, word,
+            onTap: onTap, onRemove: onRemoval);
+      },
+    );
+
+    return isBadge ? badge : tile;
   }
 }

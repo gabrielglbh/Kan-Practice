@@ -127,17 +127,19 @@ class MarketListTile extends StatelessWidget {
           children: [
             BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
-                if (state is AuthStateSuccessful) {
-                  return Expanded(
-                    child: Transform.translate(
-                        offset: const Offset(-KPMargins.margin4, 0),
-                        child: MarketListRating(
-                          listId: list.name,
-                          initialRating: list.ratingMap[state.user.uid],
-                        )),
-                  );
-                }
-                return const Expanded(child: SizedBox());
+                return state.maybeWhen(
+                  loaded: (user) {
+                    return Expanded(
+                      child: Transform.translate(
+                          offset: const Offset(-KPMargins.margin4, 0),
+                          child: MarketListRating(
+                            listId: list.name,
+                            initialRating: list.ratingMap[user.uid],
+                          )),
+                    );
+                  },
+                  orElse: () => const SizedBox(),
+                );
               },
             ),
             IconButton(

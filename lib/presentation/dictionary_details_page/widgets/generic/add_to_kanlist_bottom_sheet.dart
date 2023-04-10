@@ -72,7 +72,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
 
   @override
   void initState() {
-    getIt<ListBloc>().add(const ListForTestEventLoading());
+    getIt<ListsBloc>().add(const ListForTestEventLoading());
     super.initState();
   }
 
@@ -114,7 +114,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
                       onPressed: () {
                         KPCreateKanListDialog.show(context,
                             onSubmit: (String name) {
-                          getIt<ListBloc>().add(ListEventCreate(name,
+                          getIt<ListsBloc>().add(ListEventCreate(name,
                               filter: WordListFilters.all,
                               order: false,
                               useLazyLoading: false));
@@ -138,12 +138,12 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
                             ?.copyWith(color: KPColors.secondaryColor)),
                   ),
                 ),
-                BlocBuilder<ListBloc, ListState>(
+                BlocBuilder<ListsBloc, ListsState>(
                   builder: (context, state) {
                     if (state is ListStateFailure) {
                       return KPEmptyList(
                           showTryButton: true,
-                          onRefresh: () => getIt<ListBloc>()
+                          onRefresh: () => getIt<ListsBloc>()
                             ..add(const ListForTestEventLoading()),
                           message: "study_bottom_sheet_load_failed".tr());
                     } else if (state is ListStateLoading) {

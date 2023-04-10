@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/application/services/sm2_algorithm.dart';
@@ -12,6 +13,8 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 part 'grammar_mode_event.dart';
 part 'grammar_mode_state.dart';
 
+part 'grammar_mode_bloc.freezed.dart';
+
 @lazySingleton
 class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
   final IGrammarPointRepository _grammarPointRepository;
@@ -20,7 +23,7 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
   GrammarModeBloc(
     this._grammarPointRepository,
     this._listRepository,
-  ) : super(GrammarModeStateLoaded()) {
+  ) : super(const GrammarModeState.loaded()) {
     on<GrammarModeEventCalculateScore>((event, emit) async {
       double actualScore = 0;
       Map<String, dynamic> toUpdate = {};
@@ -53,7 +56,7 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
       }
       final res = await _grammarPointRepository.updateGrammarPoint(
           event.grammarPoint.listName, event.grammarPoint.name, toUpdate);
-      emit(GrammarModeStateScoreCalculated(res));
+      emit(GrammarModeState.scoreCalculated(res));
     });
 
     on<GrammarModeEventCalculateSM2Params>((event, emit) async {
@@ -100,7 +103,7 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
         event.grammarPoint.name,
         toUpdate,
       );
-      emit(GrammarModeStateSM2Calculated());
+      emit(const GrammarModeState.sm2Calculated());
     });
 
     on<GrammarModeEventUpdateDateShown>((event, emit) async {
@@ -217,7 +220,7 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
         }
       }
 
-      emit(GrammarModeStateScoreObtained(overallScore));
+      emit(GrammarModeState.scoreObtained(overallScore));
     });
 
     on<GrammarModeEventUpdateListScore>((event, emit) async {

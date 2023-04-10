@@ -54,7 +54,7 @@ class _WordListWidgetState extends State<WordListWidget>
     _scrollController.addListener(_scrollListener);
     _aggrStats = getIt<PreferencesService>()
         .readData(SharedKeys.kanListListVisualization);
-    getIt<ListDetailWordsBloc>().add(
+    getIt<ListDetailsWordsBloc>().add(
       ListDetailWordsEventLoading(widget.listName, reset: true),
     );
     super.initState();
@@ -134,12 +134,12 @@ class _WordListWidgetState extends State<WordListWidget>
   }
 
   _addLoadingEvent({bool reset = false}) {
-    return getIt<ListDetailWordsBloc>()
+    return getIt<ListDetailsWordsBloc>()
         .add(ListDetailWordsEventLoading(widget.listName, reset: reset));
   }
 
   _addSearchingEvent(String query, {bool reset = false}) {
-    return getIt<ListDetailWordsBloc>().add(
+    return getIt<ListDetailsWordsBloc>().add(
         ListDetailWordsEventSearching(query, widget.listName, reset: reset));
   }
 
@@ -160,7 +160,7 @@ class _WordListWidgetState extends State<WordListWidget>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocConsumer<ListDetailWordsBloc, ListDetailWordsState>(
+    return BlocConsumer<ListDetailsWordsBloc, ListDetailWordsState>(
       listener: (context, state) async {
         if (state is ListDetailWordsStateLoadedPractice) {
           await _goToPractice(state);
@@ -236,7 +236,7 @@ class _WordListWidgetState extends State<WordListWidget>
                   (value) => _addLoadingEvent(reset: true),
                 );
               }
-              getIt<ListDetailWordsBloc>().add(
+              getIt<ListDetailsWordsBloc>().add(
                   ListDetailWordsEventLoadUpPractice(
                       widget.listName, _selectedMode));
             }),

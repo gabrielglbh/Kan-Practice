@@ -1,23 +1,10 @@
 part of 'word_history_bloc.dart';
 
-class WordHistoryState extends Equatable {
-  const WordHistoryState();
-
-  @override
-  List<Object?> get props => [];
+@freezed
+class WordHistoryState with _$WordHistoryState {
+  const factory WordHistoryState.initial() = WordHistoryInitial;
+  const factory WordHistoryState.loading() = WordHistoryLoading;
+  const factory WordHistoryState.error() = WordHistoryError;
+  const factory WordHistoryState.loaded(List<WordHistory> list) =
+      WordHistoryLoaded;
 }
-
-class WordHistoryStateIdle extends WordHistoryState {}
-
-class WordHistoryStateLoading extends WordHistoryState {}
-
-class WordHistoryStateLoaded extends WordHistoryState {
-  final List<WordHistory> list;
-
-  const WordHistoryStateLoaded([this.list = const []]);
-
-  @override
-  List<Object> get props => [list];
-}
-
-class WordHistoryStateFailure extends WordHistoryState {}

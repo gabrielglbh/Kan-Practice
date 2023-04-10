@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:kanpractice/domain/folder/i_folder_repository.dart';
@@ -10,6 +11,8 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 part 'folder_details_event.dart';
 part 'folder_details_state.dart';
 
+part 'folder_details_bloc.freezed.dart';
+
 /// This bloc is used in Folders.dart, jisho.dart and add_marketlist.dart.
 @lazySingleton
 class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
@@ -19,7 +22,7 @@ class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
   FolderDetailsBloc(
     this._folderRepository,
     this._relationFolderListRepository,
-  ) : super(FolderDetailsStateIdle()) {
+  ) : super(const FolderDetailsState.initial()) {
     /// Maintain the list for pagination purposes
     List<WordList> list = [];
 
@@ -37,7 +40,7 @@ class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
       try {
         loadingTimesForSearch = 0;
         if (event.reset) {
-          emit(FolderDetailsStateLoading());
+          emit(const FolderDetailsState.loading());
           list.clear();
           loadingTimes = 0;
         }
@@ -57,20 +60,20 @@ class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
         fullList.addAll(pagination);
         list.addAll(pagination);
         loadingTimes += 1;
-        emit(FolderDetailsStateLoaded(lists: fullList));
+        emit(FolderDetailsState.loaded(fullList));
       } on Exception {
-        emit(FolderDetailsStateFailure());
+        emit(const FolderDetailsState.error());
       }
     });
 
     on<FolderForTestEventLoading>((event, emit) async {
       try {
-        emit(FolderDetailsStateLoading());
+        emit(const FolderDetailsState.loading());
         final List<WordList> lists =
             await _folderRepository.getAllListsOnFolder(event.folder);
-        emit(FolderDetailsStateTestLoaded(lists: lists));
+        emit(FolderDetailsState.testLoaded(lists));
       } on Exception {
-        emit(FolderDetailsStateFailure());
+        emit(const FolderDetailsState.error());
       }
     });
 
@@ -78,7 +81,7 @@ class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
       try {
         loadingTimes = 0;
         if (event.reset) {
-          emit(FolderDetailsStateLoading());
+          emit(const FolderDetailsState.loading());
           searchList.clear();
           loadingTimesForSearch = 0;
         }
@@ -97,20 +100,20 @@ class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
         fullList.addAll(pagination);
         searchList.addAll(pagination);
         loadingTimesForSearch += 1;
-        emit(FolderDetailsStateLoaded(lists: fullList));
+        emit(FolderDetailsState.loaded(fullList));
       } on Exception {
-        emit(FolderDetailsStateFailure());
+        emit(const FolderDetailsState.error());
       }
     });
 
     on<FolderDetailsEventDelete>((event, emit) async {
-      if (state is FolderDetailsStateLoaded) {
+      if (state is FolderDetailsLoaded) {
         String name = event.list.name;
 
         final code = await _relationFolderListRepository.removeListToFolder(
             event.folder, name);
         if (code == 0) {
-          emit(FolderDetailsStateLoading());
+          emit(const FolderDetailsState.loading());
           List<WordList> newList =
               await _getNewAllListsAndUpdateLazyLoadingState(
             event.folder,
@@ -123,7 +126,7 @@ class FolderDetailsBloc extends Bloc<FolderDetailsEvent, FolderDetailsState> {
           /// Reset offsets
           loadingTimes = 0;
           loadingTimesForSearch = 0;
-          emit(FolderDetailsStateLoaded(lists: newList));
+          emit(FolderDetailsState.loaded(newList));
         }
       }
     });

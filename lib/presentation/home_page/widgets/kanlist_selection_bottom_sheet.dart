@@ -43,7 +43,7 @@ class _KanListSelectionBottomSheetState
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        getIt<ListBloc>().add(const ListForTestEventLoading());
+        getIt<ListsBloc>().add(const ListForTestEventLoading());
         return Wrap(children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -76,12 +76,12 @@ class _KanListSelectionBottomSheetState
               ),
               Visibility(
                 visible: !_selectionMode,
-                child: BlocBuilder<ListBloc, ListState>(
+                child: BlocBuilder<ListsBloc, ListsState>(
                   builder: (context, state) {
                     if (state is ListStateFailure) {
                       return KPEmptyList(
                           showTryButton: true,
-                          onRefresh: () => getIt<ListBloc>()
+                          onRefresh: () => getIt<ListsBloc>()
                             ..add(const ListForTestEventLoading()),
                           message: "study_bottom_sheet_load_failed".tr());
                     } else if (state is ListStateLoading) {

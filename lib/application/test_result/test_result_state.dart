@@ -1,14 +1,8 @@
 part of 'test_result_bloc.dart';
 
-abstract class TestResultState extends Equatable {
-  const TestResultState();
-
-  @override
-  List<Object> get props => [];
+@freezed
+class TestResultState with _$TestResultState {
+  const factory TestResultState.saved() = TestResultSaved;
+  const factory TestResultState.initial() = TestResultInitial;
+  const factory TestResultState.saving() = TestResultSaving;
 }
-
-class TestResultStateIdle extends TestResultState {}
-
-class TestResultStateSaved extends TestResultState {}
-
-class TestResultStateSaving extends TestResultState {}

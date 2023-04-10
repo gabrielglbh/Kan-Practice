@@ -62,7 +62,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
     _aggrStats = getIt<PreferencesService>()
             .readData(SharedKeys.kanListListVisualization) ??
         false;
-    getIt<ListDetailBloc>().add(ListDetailEventIdle(widget.list.name));
+    getIt<ListDetailsBloc>().add(ListDetailEventIdle(widget.list.name));
     super.initState();
   }
 
@@ -77,28 +77,28 @@ class _ListDetailsPageState extends State<ListDetailsPage>
   _focusListener() => setState(() => _searchHasFocus = _searchBarFn.hasFocus);
 
   _addWordLoadingEvent({bool reset = false}) {
-    return getIt<ListDetailWordsBloc>()
+    return getIt<ListDetailsWordsBloc>()
         .add(ListDetailWordsEventLoading(_listName, reset: reset));
   }
 
   _addWordSearchingEvent(String query, {bool reset = false}) {
-    return getIt<ListDetailWordsBloc>()
+    return getIt<ListDetailsWordsBloc>()
         .add(ListDetailWordsEventSearching(query, _listName, reset: reset));
   }
 
   _addGrammarPointLoadingEvent({bool reset = false}) {
-    return getIt<ListDetailGrammarPointsBloc>()
+    return getIt<ListDetailsGrammarPointsBloc>()
         .add(ListDetailGrammarPointsEventLoading(_listName, reset: reset));
   }
 
   _addGrammarPointSearchingEvent(String query, {bool reset = false}) {
-    return getIt<ListDetailGrammarPointsBloc>().add(
+    return getIt<ListDetailsGrammarPointsBloc>().add(
         ListDetailGrammarPointsEventSearching(query, _listName, reset: reset));
   }
 
   _updateName(String name) {
     if (name.isNotEmpty) {
-      getIt<ListDetailBloc>().add(ListDetailUpdateName(name, _listName));
+      getIt<ListDetailsBloc>().add(ListDetailUpdateName(name, _listName));
     }
   }
 
@@ -142,7 +142,7 @@ class _ListDetailsPageState extends State<ListDetailsPage>
           return true;
         }
       },
-      appBarTitle: BlocConsumer<ListDetailBloc, ListDetailState>(
+      appBarTitle: BlocConsumer<ListDetailsBloc, ListDetailState>(
         listener: ((context, state) {
           if (state is ListDetailStateLoaded) {
             final oldName = _listName;

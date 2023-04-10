@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/presentation/core/types/market_filters.dart';
 import 'package:kanpractice/domain/market/i_market_repository.dart';
@@ -9,12 +10,14 @@ import 'package:kanpractice/domain/market/market.dart';
 part 'market_event.dart';
 part 'market_state.dart';
 
+part 'market_bloc.freezed.dart';
+
 /// Used on market.dart and manage_market.dart.
 @lazySingleton
 class MarketBloc extends Bloc<MarketEvent, MarketState> {
   final IMarketRepository _marketRepository;
 
-  MarketBloc(this._marketRepository) : super(MarketStateIdle()) {
+  MarketBloc(this._marketRepository) : super(const MarketState.initial()) {
     /// Maintain the list for pagination purposes
     List<Market> list = [];
 
@@ -53,7 +56,7 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
       try {
         lastRetrievedDocumentIdWhenSearching = "";
         if (event.reset) {
-          emit(MarketStateLoading());
+          emit(const MarketState.loading());
           list.clear();
           lastRetrievedDocumentId = "";
         }
@@ -70,9 +73,9 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
             filterByMine: event.filter == MarketFilters.mine);
         fullList.addAll(pagination);
         list.addAll(pagination);
-        emit(MarketStateLoaded(lists: fullList));
+        emit(MarketState.loaded(fullList));
       } catch (err) {
-        emit(MarketStateFailure(err.toString()));
+        emit(MarketState.error(err.toString()));
       }
     });
 
@@ -80,7 +83,7 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
       try {
         lastRetrievedDocumentId = "";
         if (event.reset) {
-          emit(MarketStateLoading());
+          emit(const MarketState.loading());
           searchList.clear();
           lastRetrievedDocumentIdWhenSearching = "";
         }
@@ -99,14 +102,14 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
             filterByMine: event.filter == MarketFilters.mine);
         fullList.addAll(pagination);
         searchList.addAll(pagination);
-        emit(MarketStateLoaded(lists: fullList));
+        emit(MarketState.loaded(fullList));
       } catch (err) {
-        emit(MarketStateFailure(err.toString()));
+        emit(MarketState.error(err.toString()));
       }
     });
 
     on<MarketEventDownload>((event, emit) async {
-      emit(MarketStateLoading());
+      emit(const MarketState.loading());
       String res = "";
       if (!event.isFolder) {
         res = await _marketRepository.downloadListFromMarketPlace(event.id);
@@ -115,16 +118,16 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
       }
 
       if (res.isEmpty) {
-        emit(MarketStateSuccess("market_downloaded_successfully".tr()));
+        emit(MarketState.succeeded("market_downloaded_successfully".tr()));
       } else {
-        emit(MarketStateFailure(res));
+        emit(MarketState.error(res));
       }
       final fullList = await resetCache(event.filter, event.order);
-      emit(MarketStateLoaded(lists: fullList));
+      emit(MarketState.loaded(fullList));
     });
 
     on<MarketEventRemove>((event, emit) async {
-      emit(MarketStateLoading());
+      emit(const MarketState.loading());
       String res = "";
       if (!event.isFolder) {
         res = await _marketRepository.removeListFromMarketPlace(event.id);
@@ -133,12 +136,12 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
       }
 
       if (res.isEmpty) {
-        emit(MarketStateSuccess("market_removed_successfully".tr()));
+        emit(MarketState.succeeded("market_removed_successfully".tr()));
       } else {
-        emit(MarketStateFailure(res));
+        emit(MarketState.error(res));
       }
       final fullList = await resetCache(event.filter, event.order);
-      emit(MarketStateLoaded(lists: fullList));
+      emit(MarketState.loaded(fullList));
     });
   }
 }

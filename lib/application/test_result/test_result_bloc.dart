@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
@@ -13,6 +14,8 @@ import 'package:kanpractice/presentation/core/types/test_modes.dart';
 part 'test_result_event.dart';
 part 'test_result_state.dart';
 
+part 'test_result_bloc.freezed.dart';
+
 @lazySingleton
 class TestResultBloc extends Bloc<TestResultEvent, TestResultState> {
   final ITestRepository _testRepository;
@@ -23,9 +26,9 @@ class TestResultBloc extends Bloc<TestResultEvent, TestResultState> {
     this._testRepository,
     this._testDataRepository,
     this._preferencesRepository,
-  ) : super(TestResultStateIdle()) {
+  ) : super(const TestResultState.initial()) {
     on<TestResultEventSaveTest>((event, emit) async {
-      emit(TestResultStateSaving());
+      emit(const TestResultState.saving());
       await _testRepository.createTest(event.test);
       await _testDataRepository.updateStats(event.test);
 
@@ -66,7 +69,7 @@ class TestResultBloc extends Bloc<TestResultEvent, TestResultState> {
               SharedKeys.grammarPointDailyPerformed, nextMidnight);
         }
       }
-      emit(TestResultStateSaved());
+      emit(const TestResultState.saved());
     });
   }
 }

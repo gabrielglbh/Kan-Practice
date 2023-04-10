@@ -1,32 +1,12 @@
 part of 'add_grammar_point_bloc.dart';
 
-class AddGrammarPointState extends Equatable {
-  const AddGrammarPointState();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class AddGrammarPointStateIdle extends AddGrammarPointState {}
-
-class AddGrammarPointStateLoading extends AddGrammarPointState {}
-
-class AddGrammarPointStateDoneCreating extends AddGrammarPointState {
-  final bool exitMode;
-
-  const AddGrammarPointStateDoneCreating({required this.exitMode});
-
-  @override
-  List<Object?> get props => [exitMode];
-}
-
-class AddGrammarPointStateDoneUpdating extends AddGrammarPointState {}
-
-class AddGrammarPointStateFailure extends AddGrammarPointState {
-  final String message;
-
-  const AddGrammarPointStateFailure({required this.message});
-
-  @override
-  List<Object?> get props => [message];
+@freezed
+class AddGrammarPointState with _$AddGrammarPointState {
+  const factory AddGrammarPointState.loading() = AddGrammarPointLoading;
+  const factory AddGrammarPointState.updateDone() = AddGrammarPointUpdateDone;
+  const factory AddGrammarPointState.initial() = AddGrammarPointInitial;
+  const factory AddGrammarPointState.creationDone(bool exitMode) =
+      AddGrammarPointCreationDone;
+  const factory AddGrammarPointState.error(String message) =
+      AddGrammarPointError;
 }

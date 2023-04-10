@@ -84,7 +84,7 @@ class _KPKanlistsState extends State<KPKanlists>
 
   _addLoadingEvent({bool reset = false}) {
     if (widget.folder == null) {
-      return getIt<ListBloc>()
+      return getIt<ListsBloc>()
         ..add(ListEventLoading(
             filter: _currentAppliedFilter,
             order: _currentAppliedOrder,
@@ -216,7 +216,7 @@ class _KPKanlistsState extends State<KPKanlists>
 
   BlocBuilder _lists() {
     if (widget.folder == null) {
-      return BlocBuilder<ListBloc, ListState>(
+      return BlocBuilder<ListsBloc, ListsState>(
         builder: (context, state) {
           if (state is ListStateFailure) {
             return KPEmptyList(
@@ -283,7 +283,7 @@ class _KPKanlistsState extends State<KPKanlists>
                     showGrammarGraphs: _showGrammarGraphs,
                     onRemoval: () {
                       if (widget.folder == null) {
-                        getIt<ListBloc>().add(ListEventDelete(
+                        getIt<ListsBloc>().add(ListEventDelete(
                           lists[k],
                           filter: _currentAppliedFilter,
                           order: _currentAppliedOrder,

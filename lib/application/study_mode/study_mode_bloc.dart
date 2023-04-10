@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/application/services/sm2_algorithm.dart';
@@ -12,6 +13,8 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 part 'study_mode_event.dart';
 part 'study_mode_state.dart';
 
+part 'study_mode_bloc.freezed.dart';
+
 @lazySingleton
 class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
   final IWordRepository _wordRepository;
@@ -20,7 +23,7 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
   StudyModeBloc(
     this._wordRepository,
     this._listRepository,
-  ) : super(StudyModeStateLoaded()) {
+  ) : super(const StudyModeState.loaded()) {
     on<StudyModeEventCalculateScore>((event, emit) async {
       double actualScore = 0;
       Map<String, dynamic> toUpdate = {};
@@ -73,7 +76,7 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
       }
       final res = await _wordRepository.updateWord(
           event.word.listName, event.word.word, toUpdate);
-      emit(StudyModeStateScoreCalculated(res));
+      emit(StudyModeState.scoreCalculated(res));
     });
 
     on<StudyModeEventCalculateSM2Params>((event, emit) async {
@@ -161,7 +164,7 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
         event.word.word,
         toUpdate,
       );
-      emit(StudyModeStateSM2Calculated());
+      emit(const StudyModeState.sm2Calculated());
     });
 
     on<StudyModeEventUpdateDateShown>((event, emit) async {
@@ -335,7 +338,7 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
         }
       }
 
-      emit(StudyModeStateScoreObtained(overallScore));
+      emit(StudyModeState.scoreObtained(overallScore));
     });
 
     on<StudyModeEventUpdateListScore>((event, emit) async {

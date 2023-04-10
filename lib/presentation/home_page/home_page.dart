@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_onTabChanged);
 
-    getIt<ListBloc>().add(ListEventLoading(
+    getIt<ListsBloc>().add(ListEventLoading(
       filter: _currentAppliedFilter,
       order: _currentAppliedOrder,
       reset: true,
@@ -139,13 +139,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   _addListLoadingEvent({bool reset = true}) =>
-      getIt<ListBloc>().add(ListEventLoading(
+      getIt<ListsBloc>().add(ListEventLoading(
           filter: _currentAppliedFilter,
           order: _currentAppliedOrder,
           reset: reset));
 
   _addListSearchingEvent(String query, {bool reset = true}) =>
-      getIt<ListBloc>().add(ListEventSearching(query, reset: reset));
+      getIt<ListsBloc>().add(ListEventSearching(query, reset: reset));
 
   _addFolderListLoadingEvent({bool reset = true}) =>
       getIt<FolderBloc>().add(FolderEventLoading(
@@ -256,7 +256,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           });
         }
       },
-      child: BlocListener<ListBloc, ListState>(
+      child: BlocListener<ListsBloc, ListsState>(
         listener: (context, state) async {
           if (state is ListStateLoaded) {
             if (getIt<PreferencesService>()
@@ -316,7 +316,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 if (name == "__folder") {
                   _addFolderListLoadingEvent();
                 } else {
-                  getIt<ListBloc>().add(ListEventCreate(name,
+                  getIt<ListsBloc>().add(ListEventCreate(name,
                       filter: _currentAppliedFilter,
                       order: _currentAppliedOrder));
                 }

@@ -1,23 +1,10 @@
 part of 'dictionary_details_bloc.dart';
 
-class DictionaryDetailsState extends Equatable {
-  const DictionaryDetailsState();
-
-  @override
-  List<Object?> get props => [];
+@freezed
+class DictionaryDetailsState with _$DictionaryDetailsState {
+  const factory DictionaryDetailsState.loading() = DictionaryDetailsLoading;
+  const factory DictionaryDetailsState.loaded(WordData data) =
+      DictionaryDetailsLoaded;
+  const factory DictionaryDetailsState.initial() = DictionaryDetailsInitial;
+  const factory DictionaryDetailsState.error() = DictionaryDetailsError;
 }
-
-class DictionaryDetailsStateLoaded extends DictionaryDetailsState {
-  final WordData data;
-
-  const DictionaryDetailsStateLoaded({required this.data});
-
-  @override
-  List<Object> get props => [data];
-}
-
-class DictionaryDetailsStateLoading extends DictionaryDetailsState {}
-
-class DictionaryDetailsStateFailure extends DictionaryDetailsState {}
-
-class DictionaryDetailsStateIdle extends DictionaryDetailsState {}

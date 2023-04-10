@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/domain/services/i_preferences_repository.dart';
@@ -12,16 +13,18 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 part 'list_details_words_event.dart';
 part 'list_details_words_state.dart';
 
+part 'list_details_words_bloc.freezed.dart';
+
 @lazySingleton
-class ListDetailWordsBloc
-    extends Bloc<ListDetailWordsEvent, ListDetailWordsState> {
+class ListDetailsWordsBloc
+    extends Bloc<ListDetailsWordsEvent, ListDetailsWordsState> {
   final IPreferencesRepository _preferencesRepository;
   final IWordRepository _wordRepository;
 
-  ListDetailWordsBloc(
+  ListDetailsWordsBloc(
     this._wordRepository,
     this._preferencesRepository,
-  ) : super(ListDetailWordsStateIdle()) {
+  ) : super(const ListDetailsWordsState.initial()) {
     /// Maintain the list for pagination purposes
     List<Word> list = [];
 
@@ -34,11 +37,11 @@ class ListDetailWordsBloc
     /// Loading offset for search bar list pagination
     int loadingTimesForSearch = 0;
 
-    on<ListDetailWordsEventLoading>((event, emit) async {
+    on<ListDetailsWordsEventLoading>((event, emit) async {
       try {
         loadingTimesForSearch = 0;
         if (event.reset) {
-          emit(ListDetailWordsStateLoading());
+          emit(const ListDetailsWordsState.loading());
           list.clear();
           loadingTimes = 0;
         }
@@ -58,17 +61,17 @@ class ListDetailWordsBloc
         fullList.addAll(pagination);
         list.addAll(pagination);
         loadingTimes += 1;
-        emit(ListDetailWordsStateLoaded(fullList, event.list));
+        emit(ListDetailsWordsState.loaded(fullList, event.list));
       } on Exception {
-        emit(const ListDetailWordsStateFailure());
+        emit(const ListDetailsWordsState.error(''));
       }
     });
 
-    on<ListDetailWordsEventSearching>((event, emit) async {
+    on<ListDetailsWordsEventSearching>((event, emit) async {
       try {
         loadingTimes = 0;
         if (event.reset) {
-          emit(ListDetailWordsStateLoading());
+          emit(const ListDetailsWordsState.loading());
           searchList.clear();
           loadingTimesForSearch = 0;
         }
@@ -89,26 +92,26 @@ class ListDetailWordsBloc
         fullList.addAll(pagination);
         searchList.addAll(pagination);
         loadingTimesForSearch += 1;
-        emit(ListDetailWordsStateLoaded(fullList, event.list));
+        emit(ListDetailsWordsState.loaded(fullList, event.list));
       } on Exception {
-        emit(const ListDetailWordsStateFailure());
+        emit(const ListDetailsWordsState.error(''));
       }
     });
 
-    on<ListDetailWordsEventLoadUpPractice>((event, emit) async {
+    on<ListDetailsWordsEventLoadUpPractice>((event, emit) async {
       try {
         final List<Word> allList =
             await _wordRepository.getAllWordsFromList(event.list);
         if (allList.isNotEmpty) {
           allList.shuffle();
           List<Word> list = allList;
-          emit(ListDetailWordsStateLoadedPractice(event.studyMode, list));
+          emit(ListDetailsWordsState.practiceLoaded(event.studyMode, list));
         } else {
-          emit(ListDetailWordsStateFailure(
-              error: "list_details_loadUpPractice_failed".tr()));
+          emit(ListDetailsWordsState.error(
+              "list_details_loadUpPractice_failed".tr()));
         }
       } on Exception {
-        emit(const ListDetailWordsStateFailure());
+        emit(const ListDetailsWordsState.error(''));
       }
     });
   }

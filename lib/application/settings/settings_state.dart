@@ -1,21 +1,8 @@
 part of 'settings_bloc.dart';
 
-class SettingsState extends Equatable {
-  const SettingsState();
-
-  @override
-  List<Object?> get props => [];
+@freezed
+class SettingsState with _$SettingsState {
+  const factory SettingsState.loading() = SettingsLoading;
+  const factory SettingsState.loaded(String date) = SettingsLoaded;
+  const factory SettingsState.initial() = SettingsInitial;
 }
-
-class SettingsStateBackUpDateLoaded extends SettingsState {
-  final String date;
-
-  const SettingsStateBackUpDateLoaded({this.date = ""});
-
-  @override
-  List<Object> get props => [date];
-}
-
-class SettingsStateBackUpDateLoading extends SettingsState {}
-
-class SettingsStateIdle extends SettingsState {}

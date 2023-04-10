@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/dictionary_details/i_dictionary_details_repository.dart';
 import 'package:kanpractice/domain/dictionary_details/word_data.dart';
@@ -10,6 +11,8 @@ import 'package:unofficial_jisho_api/api.dart';
 part 'dictionary_details_event.dart';
 part 'dictionary_details_state.dart';
 
+part 'dictionary_details_bloc.freezed.dart';
+
 @lazySingleton
 class DictionaryDetailsBloc
     extends Bloc<DictionaryDetailsEvent, DictionaryDetailsState> {
@@ -19,9 +22,9 @@ class DictionaryDetailsBloc
   DictionaryDetailsBloc(
     this._dictionaryDetailsRepository,
     this._wordHistoryRepository,
-  ) : super(DictionaryDetailsStateIdle()) {
+  ) : super(const DictionaryDetailsState.initial()) {
     on<DictionaryDetailsLoadingEvent>((event, emit) async {
-      emit(DictionaryDetailsStateLoading());
+      emit(const DictionaryDetailsState.loading());
       try {
         final infra = _dictionaryDetailsRepository;
         KanjiResultData? resultData = await infra.searchWord(event.word);
@@ -33,12 +36,12 @@ class DictionaryDetailsBloc
             resultPhrase: resultPhrase,
             example: example);
         if (data.resultData == null && data.example.isEmpty) {
-          emit(DictionaryDetailsStateFailure());
+          emit(const DictionaryDetailsState.error());
         } else {
-          emit(DictionaryDetailsStateLoaded(data: data));
+          emit(DictionaryDetailsState.loaded(data));
         }
       } on Exception {
-        emit(DictionaryDetailsStateFailure());
+        emit(const DictionaryDetailsState.error());
       }
     });
 

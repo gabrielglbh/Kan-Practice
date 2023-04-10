@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/grammar_point/i_grammar_point_repository.dart';
 import 'package:kanpractice/presentation/core/types/market_list_type.dart';
@@ -12,6 +13,8 @@ import 'package:kanpractice/domain/word/i_word_repository.dart';
 
 part 'add_to_market_event.dart';
 part 'add_to_market_state.dart';
+
+part 'add_to_market_bloc.freezed.dart';
 
 @lazySingleton
 class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
@@ -29,18 +32,18 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
     this._grammarPointRepository,
     this._listRepository,
     this._folderRepository,
-  ) : super(AddToMarketStateInitial()) {
+  ) : super(const AddToMarketState.initial()) {
     on<AddToMarketEventIdle>((event, emit) {
       final user = _authRepository.getUser();
-      emit(AddToMarketStateGetUser(
+      emit(AddToMarketState.userRetrieved(
           user?.displayName ?? user?.email?.split("@")[0] ?? ""));
     });
 
     on<AddToMarketEventOnUpload>((event, emit) async {
-      emit(AddToMarketStateLoading());
+      emit(const AddToMarketState.loading());
       if (event.name == "add_to_market_select_list".tr() ||
           event.description.trim().isEmpty) {
-        emit(AddToMarketStateFailure("add_to_market_validation_failed".tr()));
+        emit(AddToMarketState.error("add_to_market_validation_failed".tr()));
       } else {
         bool updated = true;
         if (event.author != _authRepository.getUser()?.displayName) {
@@ -48,7 +51,7 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
         }
 
         if (event.author.isEmpty || !updated) {
-          emit(AddToMarketStateFailure("add_to_market_validation_failed".tr()));
+          emit(AddToMarketState.error("add_to_market_validation_failed".tr()));
         } else {
           if (event.type == MarketListType.list) {
             final list = await _listRepository.getList(event.name);
@@ -57,7 +60,7 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
                 .getAllGrammarPointsFromList(event.name);
 
             if (words.isEmpty && grammar.isEmpty) {
-              emit(AddToMarketStateFailure("add_to_market_word_empty".tr()));
+              emit(AddToMarketState.error("add_to_market_word_empty".tr()));
             } else {
               final res = await _marketRepository.uploadListToMarketPlace(
                   event.listNameForMarket,
@@ -66,15 +69,15 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
                   grammar,
                   event.description);
               if (res == 0) {
-                emit(AddToMarketStateSuccess());
+                emit(const AddToMarketState.loaded());
               } else if (res == -2) {
-                emit(AddToMarketStateFailure(
+                emit(AddToMarketState.error(
                     "add_to_market_authentication_failed".tr()));
               } else if (res == -3) {
-                emit(AddToMarketStateFailure(
+                emit(AddToMarketState.error(
                     "add_to_market_already_uploaded".tr()));
               } else {
-                emit(AddToMarketStateFailure(
+                emit(AddToMarketState.error(
                     "add_to_market_something_wrong".tr()));
               }
             }
@@ -88,7 +91,7 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
                 .getAllGrammarPointsOnListsOnFolder([event.name]);
 
             if (words.isEmpty && grammar.isEmpty) {
-              emit(AddToMarketStateFailure("add_to_market_word_empty".tr()));
+              emit(AddToMarketState.error("add_to_market_word_empty".tr()));
             } else {
               final res = await _marketRepository.uploadFolderToMarketPlace(
                   event.listNameForMarket,
@@ -98,15 +101,15 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
                   grammar,
                   event.description);
               if (res == 0) {
-                emit(AddToMarketStateSuccess());
+                emit(const AddToMarketState.loaded());
               } else if (res == -2) {
-                emit(AddToMarketStateFailure(
+                emit(AddToMarketState.error(
                     "add_to_market_authentication_failed".tr()));
               } else if (res == -3) {
-                emit(AddToMarketStateFailure(
+                emit(AddToMarketState.error(
                     "add_to_market_already_uploaded".tr()));
               } else {
-                emit(AddToMarketStateFailure(
+                emit(AddToMarketState.error(
                     "add_to_market_something_wrong".tr()));
               }
             }

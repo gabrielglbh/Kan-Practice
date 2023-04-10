@@ -51,7 +51,7 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
     _scrollController.addListener(_scrollListener);
     _aggrStats = getIt<PreferencesService>()
         .readData(SharedKeys.kanListListVisualization);
-    getIt<ListDetailGrammarPointsBloc>().add(
+    getIt<ListDetailsGrammarPointsBloc>().add(
       ListDetailGrammarPointsEventLoading(widget.listName, reset: true),
     );
     super.initState();
@@ -110,12 +110,12 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
   }
 
   _addLoadingEvent({bool reset = false}) {
-    return getIt<ListDetailGrammarPointsBloc>().add(
+    return getIt<ListDetailsGrammarPointsBloc>().add(
         ListDetailGrammarPointsEventLoading(widget.listName, reset: reset));
   }
 
   _addSearchingEvent(String query, {bool reset = false}) {
-    return getIt<ListDetailGrammarPointsBloc>().add(
+    return getIt<ListDetailsGrammarPointsBloc>().add(
         ListDetailGrammarPointsEventSearching(query, widget.listName,
             reset: reset));
   }
@@ -138,7 +138,7 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocConsumer<ListDetailGrammarPointsBloc,
+    return BlocConsumer<ListDetailsGrammarPointsBloc,
         ListDetailGrammarPointsState>(
       listener: (context, state) async {
         if (state is ListDetailGrammarPointsStateLoadedPractice) {
@@ -202,7 +202,7 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
             title1: "list_details_practice_button_label_ext".tr(),
             title2: "list_details_practice_button_label".tr(),
             onTap: () async {
-              getIt<ListDetailGrammarPointsBloc>().add(
+              getIt<ListDetailsGrammarPointsBloc>().add(
                   ListDetailGrammarPointsEventLoadUpPractice(
                       widget.listName, _selectedMode));
             }),

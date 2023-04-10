@@ -1,49 +1,16 @@
 part of 'backup_bloc.dart';
 
-class BackUpState extends Equatable {
-  const BackUpState();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class BackUpStateIdle extends BackUpState {}
-
-class BackUpStateFailure extends BackUpState {
-  final String message;
-
-  const BackUpStateFailure({this.message = ""});
-
-  @override
-  List<Object> get props => [message];
-}
-
-class BackUpStateSuccess extends BackUpState {
-  final String message;
-
-  const BackUpStateSuccess({this.message = ""});
-
-  @override
-  List<Object> get props => [message];
-}
-
-class BackUpStateLoading extends BackUpState {}
-
-class BackUpStateVersionRetrieved extends BackUpState {
-  final String version;
-  final List<String> notes;
-
-  const BackUpStateVersionRetrieved(this.version, this.notes);
-
-  @override
-  List<Object> get props => [version, notes];
-}
-
-class BackUpStateVersionNotesRetrieved extends BackUpState {
-  final List<String> notes;
-
-  const BackUpStateVersionNotesRetrieved(this.notes);
-
-  @override
-  List<Object> get props => [notes];
+@freezed
+class BackupState with _$BackupState {
+  const factory BackupState.loading() = BackupLoading;
+  const factory BackupState.loaded(String message) = BackupLoaded;
+  const factory BackupState.initial() = BackupInitial;
+  const factory BackupState.error(String message) = BackupError;
+  const factory BackupState.versionRetrieved(
+    String version,
+    List<String> notes,
+  ) = BackupVersionRetrieved;
+  const factory BackupState.notesRetrieved(
+    List<String> notes,
+  ) = BackupNotesRetrieved;
 }

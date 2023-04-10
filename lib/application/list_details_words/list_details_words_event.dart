@@ -1,39 +1,39 @@
 part of 'list_details_words_bloc.dart';
 
-abstract class ListDetailWordsEvent extends Equatable {
-  const ListDetailWordsEvent();
+abstract class ListDetailsWordsEvent extends Equatable {
+  const ListDetailsWordsEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class ListDetailWordsEventLoading extends ListDetailWordsEvent {
+class ListDetailsWordsEventLoading extends ListDetailsWordsEvent {
   final String list;
   final bool reset;
 
-  const ListDetailWordsEventLoading(this.list, {this.reset = false});
+  const ListDetailsWordsEventLoading(this.list, {this.reset = false});
 
   @override
   List<Object> get props => [list, reset];
 }
 
-class ListDetailWordsEventSearching extends ListDetailWordsEvent {
+class ListDetailsWordsEventSearching extends ListDetailsWordsEvent {
   final String query;
   final String list;
   final bool reset;
 
-  const ListDetailWordsEventSearching(this.query, this.list,
+  const ListDetailsWordsEventSearching(this.query, this.list,
       {this.reset = false});
 
   @override
   List<Object> get props => [query, list, reset];
 }
 
-class ListDetailWordsEventLoadUpPractice extends ListDetailWordsEvent {
+class ListDetailsWordsEventLoadUpPractice extends ListDetailsWordsEvent {
   final StudyModes studyMode;
   final String list;
 
-  const ListDetailWordsEventLoadUpPractice(this.list, this.studyMode);
+  const ListDetailsWordsEventLoadUpPractice(this.list, this.studyMode);
 
   @override
   List<Object> get props => [list, studyMode];

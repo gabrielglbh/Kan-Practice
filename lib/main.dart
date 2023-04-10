@@ -11,27 +11,27 @@ import 'package:kanpractice/application/archive_grammar_points/archive_grammar_p
 import 'package:kanpractice/application/archive_words/archive_words_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
-import 'package:kanpractice/application/dictionary/dict_bloc.dart';
+import 'package:kanpractice/application/dictionary/dictionary_bloc.dart';
 import 'package:kanpractice/application/dictionary_details/dictionary_details_bloc.dart';
+import 'package:kanpractice/application/example_data/example_data_bloc.dart';
 import 'package:kanpractice/application/folder_details/folder_details_bloc.dart';
 import 'package:kanpractice/application/folder_list/folder_bloc.dart';
-import 'package:kanpractice/application/grammar_details/grammar_details_bloc.dart';
+import 'package:kanpractice/application/folder_practice/folder_practice_bloc.dart';
+import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
 import 'package:kanpractice/application/grammar_mode/grammar_mode_bloc.dart';
-import 'package:kanpractice/application/initial/initial_bloc.dart';
-import 'package:kanpractice/application/list/lists_bloc.dart';
+import 'package:kanpractice/application/grammar_point_details/grammar_point_details_bloc.dart';
+import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
 import 'package:kanpractice/application/list_details/list_details_bloc.dart';
 import 'package:kanpractice/application/list_details_grammar_points/list_details_grammar_points_bloc.dart';
 import 'package:kanpractice/application/list_details_words/list_details_words_bloc.dart';
-import 'package:kanpractice/application/load_folder_practice/load_folder_practice_bloc.dart';
-import 'package:kanpractice/application/load_grammar_test/load_grammar_test_bloc.dart';
-import 'package:kanpractice/application/load_test/load_test_bloc.dart';
+import 'package:kanpractice/application/lists/lists_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
 import 'package:kanpractice/application/rate/rate_bloc.dart';
 import 'package:kanpractice/application/services/messaging_service.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/application/settings/settings_bloc.dart';
 import 'package:kanpractice/application/specific_data/specific_data_bloc.dart';
-import 'package:kanpractice/application/statistics/stats_bloc.dart';
+import 'package:kanpractice/application/stats/stats_bloc.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
 import 'package:kanpractice/application/test_history/test_history_bloc.dart';
 import 'package:kanpractice/application/test_result/test_result_bloc.dart';
@@ -156,7 +156,7 @@ class _KanPracticeState extends State<KanPractice> {
       if (getIt<PreferencesService>()
               .readData(SharedKeys.haveSeenKanListCoachMark) ==
           false) {
-        getIt<InitialBloc>().add(InitialEventInstallData(context));
+        getIt<ExampleDataBloc>().add(ExampleDataEventInstallData(context));
       }
     });
     super.initState();
@@ -166,14 +166,14 @@ class _KanPracticeState extends State<KanPractice> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => getIt<InitialBloc>()),
-        BlocProvider(create: (_) => getIt<ListBloc>()),
+        BlocProvider(create: (_) => getIt<ExampleDataBloc>()),
+        BlocProvider(create: (_) => getIt<ListsBloc>()),
         BlocProvider(create: (_) => getIt<FolderBloc>()),
         BlocProvider(create: (_) => getIt<BackUpBloc>()),
         BlocProvider(create: (_) => getIt<DictBloc>()),
         BlocProvider(create: (_) => getIt<MarketBloc>()),
         BlocProvider(create: (_) => getIt<SettingsBloc>()),
-        BlocProvider(create: (_) => getIt<ListDetailBloc>()),
+        BlocProvider(create: (_) => getIt<ListDetailsBloc>()),
         BlocProvider(create: (_) => getIt<StudyModeBloc>()),
         BlocProvider(create: (_) => getIt<WordHistoryBloc>()),
         BlocProvider(create: (_) => getIt<AuthBloc>()..add(AuthIdle())),
@@ -181,25 +181,25 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<AddToMarketBloc>()),
         BlocProvider(create: (_) => getIt<AddWordBloc>()),
         BlocProvider(create: (_) => getIt<WordDetailsBloc>()),
-        BlocProvider(create: (_) => getIt<LoadTestBloc>()),
+        BlocProvider(create: (_) => getIt<GenericTestBloc>()),
         BlocProvider(create: (_) => getIt<DictionaryDetailsBloc>()),
         BlocProvider(create: (_) => getIt<FolderDetailsBloc>()),
-        BlocProvider(create: (_) => getIt<LoadFolderPracticeBloc>()),
+        BlocProvider(create: (_) => getIt<FolderPracticeBloc>()),
         BlocProvider(create: (_) => getIt<RateBloc>()),
-        BlocProvider(create: (_) => getIt<StatisticsBloc>()),
+        BlocProvider(create: (_) => getIt<StatsBloc>()),
         BlocProvider(create: (_) => getIt<TestHistoryBloc>()),
         BlocProvider(create: (_) => getIt<SpecificDataBloc>()),
         BlocProvider(create: (_) => getIt<TestResultBloc>()),
         BlocProvider(create: (_) => getIt<AddGrammarPointBloc>()),
-        BlocProvider(create: (_) => getIt<ListDetailWordsBloc>()),
-        BlocProvider(create: (_) => getIt<ListDetailGrammarPointsBloc>()),
+        BlocProvider(create: (_) => getIt<ListDetailsWordsBloc>()),
+        BlocProvider(create: (_) => getIt<ListDetailsGrammarPointsBloc>()),
         BlocProvider(create: (_) => getIt<GrammarPointDetailsBloc>()),
         BlocProvider(create: (_) => getIt<GrammarModeBloc>()),
-        BlocProvider(create: (_) => getIt<LoadGrammarTestBloc>()),
+        BlocProvider(create: (_) => getIt<GrammarTestBloc>()),
         BlocProvider(create: (_) => getIt<ArchiveGrammarPointsBloc>()),
         BlocProvider(create: (_) => getIt<ArchiveWordsBloc>()),
       ],
-      child: BlocBuilder<InitialBloc, InitialState>(
+      child: BlocBuilder<ExampleDataBloc, ExampleDataState>(
         builder: (context, state) {
           return MaterialApp(
             title: 'KanPractice',

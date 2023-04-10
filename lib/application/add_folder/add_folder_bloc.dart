@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/folder/i_folder_repository.dart';
 import 'package:kanpractice/domain/list/i_list_repository.dart';
@@ -9,6 +10,8 @@ import 'package:kanpractice/domain/relation_folder_list/i_relation_folder_list_r
 
 part 'add_folder_event.dart';
 part 'add_folder_state.dart';
+
+part 'add_folder_bloc.freezed.dart';
 
 @lazySingleton
 class AddFolderBloc extends Bloc<AddFolderEvent, AddFolderState> {
@@ -20,7 +23,7 @@ class AddFolderBloc extends Bloc<AddFolderEvent, AddFolderState> {
     this._listRepository,
     this._folderRepository,
     this._relationFolderListRepository,
-  ) : super(AddFolderStateInitial()) {
+  ) : super(const AddFolderState.initial()) {
     on<AddFolderEventIdle>((event, emit) async {
       var lists = await _listRepository.getAllLists();
       final map = {for (var k in lists) k.name: false};
@@ -34,16 +37,16 @@ class AddFolderBloc extends Bloc<AddFolderEvent, AddFolderState> {
         for (var a in alreadyIncludedStrings) {
           if (map.containsKey(a)) map[a] = true;
         }
-        emit(AddFolderStateAvailableKanLists(lists, map));
+        emit(AddFolderState.loadedLists(lists, map));
       } else {
-        emit(AddFolderStateAvailableKanLists(lists, map));
+        emit(AddFolderState.loadedLists(lists, map));
       }
     });
 
     on<AddFolderEventOnUpload>((event, emit) async {
-      emit(AddFolderStateLoading());
+      emit(const AddFolderState.loading());
       if (event.folder.trim().isEmpty) {
-        emit(AddFolderStateFailure("add_folder_name_error".tr()));
+        emit(AddFolderState.error("add_folder_name_error".tr()));
       } else {
         final List<String> map = [];
         event.kanLists.forEach((key, value) {
@@ -52,15 +55,15 @@ class AddFolderBloc extends Bloc<AddFolderEvent, AddFolderState> {
         final code =
             await _folderRepository.createFolder(event.folder, lists: map);
         if (code == 0) {
-          emit(AddFolderStateSuccess());
+          emit(const AddFolderState.loaded());
         } else {
-          emit(AddFolderStateFailure("add_folder_insertion_error".tr()));
+          emit(AddFolderState.error("add_folder_insertion_error".tr()));
         }
       }
     });
 
     on<AddFolderEventOnListAddition>((event, emit) async {
-      emit(AddFolderStateLoading());
+      emit(const AddFolderState.loading());
       try {
         event.kanLists.forEach((key, value) {
           if (value) {
@@ -69,9 +72,9 @@ class AddFolderBloc extends Bloc<AddFolderEvent, AddFolderState> {
             _removeRelation(event.folder, key);
           }
         });
-        emit(AddFolderStateSuccess());
+        emit(const AddFolderState.loaded());
       } catch (e) {
-        emit(AddFolderStateFailure("add_folder_insertion_error".tr()));
+        emit(AddFolderState.error("add_folder_insertion_error".tr()));
       }
     });
   }

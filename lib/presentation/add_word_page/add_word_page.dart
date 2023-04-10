@@ -63,7 +63,7 @@ class _AddWordPageState extends State<AddWordPage> {
   }
 
   Future<void> _createWord({bool exit = true}) async {
-    getIt<AddWordBloc>().add(AddWordEventCreate(
+    context.read<AddWordBloc>().add(AddWordEventCreate(
         exitMode: exit,
         word: Word(
           word: _wordController?.text ?? "",
@@ -79,14 +79,15 @@ class _AddWordPageState extends State<AddWordPage> {
   Future<void> _updateWord() async {
     Word? k = widget.args.word;
     if (k != null) {
-      getIt<AddWordBloc>()
+      context
+          .read<AddWordBloc>()
           .add(AddWordEventUpdate(widget.args.listName, k.word, parameters: {
-        WordTableFields.wordField: _wordController?.text ?? "",
-        WordTableFields.pronunciationField:
-            _pronunciationController?.text ?? "",
-        WordTableFields.meaningField: _meaningController?.text ?? "",
-        WordTableFields.categoryField: _currentCategory.index
-      }));
+            WordTableFields.wordField: _wordController?.text ?? "",
+            WordTableFields.pronunciationField:
+                _pronunciationController?.text ?? "",
+            WordTableFields.meaningField: _meaningController?.text ?? "",
+            WordTableFields.categoryField: _currentCategory.index
+          }));
     }
   }
 
@@ -108,64 +109,67 @@ class _AddWordPageState extends State<AddWordPage> {
 
   @override
   Widget build(BuildContext context) {
-    return KPScaffold(
-      resizeToAvoidBottomInset: true,
-      appBarTitle: widget.args.word != null
-          ? "add_word_update_title".tr()
-          : "add_word_new_title".tr(),
-      appBarActions: [
-        IconButton(
-          icon: const Icon(Icons.create_rounded),
-          onPressed: () async {
-            _clearFocus();
+    return BlocProvider(
+      create: (context) => getIt<AddWordBloc>(),
+      child: KPScaffold(
+        resizeToAvoidBottomInset: true,
+        appBarTitle: widget.args.word != null
+            ? "add_word_update_title".tr()
+            : "add_word_new_title".tr(),
+        appBarActions: [
+          IconButton(
+            icon: const Icon(Icons.create_rounded),
+            onPressed: () async {
+              _clearFocus();
 
-            /// If we are updating the word, pass over to the dictionary
-            /// the word
-            /// If not, just go to the next page
-            String? wordText = _wordController?.text;
-            final drawnWord = await Navigator.of(context).pushNamed(
-                KanPracticePages.dictionaryPage,
-                arguments:
-                    DictionaryArguments(searchInJisho: false, word: wordText));
+              /// If we are updating the word, pass over to the dictionary
+              /// the word
+              /// If not, just go to the next page
+              String? wordText = _wordController?.text;
+              final drawnWord = await Navigator.of(context).pushNamed(
+                  KanPracticePages.dictionaryPage,
+                  arguments: DictionaryArguments(
+                      searchInJisho: false, word: wordText));
 
-            /// We wait for the pop and update the _wordController with the
-            /// new drawn word. If it is empty, do not override the current
-            /// input word (if any)
-            final String? word = drawnWord as String?;
-            if (word != null && word.isNotEmpty) {
-              _wordController?.text = word;
-            }
-          },
-        ),
-        BlocBuilder<AddWordBloc, AddWordState>(
-          builder: (context, state) => Visibility(
-            visible: widget.args.word == null,
-            child: IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () {
-                _validateWord(() => _createWord(exit: false));
-              },
+              /// We wait for the pop and update the _wordController with the
+              /// new drawn word. If it is empty, do not override the current
+              /// input word (if any)
+              final String? word = drawnWord as String?;
+              if (word != null && word.isNotEmpty) {
+                _wordController?.text = word;
+              }
+            },
+          ),
+          BlocBuilder<AddWordBloc, AddWordState>(
+            builder: (context, state) => Visibility(
+              visible: widget.args.word == null,
+              child: IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () {
+                  _validateWord(() => _createWord(exit: false));
+                },
+              ),
             ),
           ),
+          BlocBuilder<AddWordBloc, AddWordState>(
+              builder: (context, state) => IconButton(
+                    icon: const Icon(Icons.check_rounded),
+                    onPressed: () {
+                      _validateWord(() {
+                        if (widget.args.word != null) {
+                          _updateWord();
+                        } else {
+                          _createWord();
+                        }
+                      });
+                    },
+                  ))
+        ],
+        child: SingleChildScrollView(
+          child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
+              child: _builder()),
         ),
-        BlocBuilder<AddWordBloc, AddWordState>(
-            builder: (context, state) => IconButton(
-                  icon: const Icon(Icons.check_rounded),
-                  onPressed: () {
-                    _validateWord(() {
-                      if (widget.args.word != null) {
-                        _updateWord();
-                      } else {
-                        _createWord();
-                      }
-                    });
-                  },
-                ))
-      ],
-      child: SingleChildScrollView(
-        child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
-            child: _builder()),
       ),
     );
   }
@@ -173,73 +177,71 @@ class _AddWordPageState extends State<AddWordPage> {
   BlocListener _builder() {
     return BlocListener<AddWordBloc, AddWordState>(
       listener: (context, state) {
-        if (state is AddWordStateDoneCreating) {
-          /// If exit is true, only one word should be created and exit
-          if (state.exitMode) {
+        state.mapOrNull(
+          creationDone: (cd) {
+            /// If exit is true, only one word should be created and exit
+            if (cd.exitMode) {
+              Navigator.of(context).pop(0);
+            } else {
+              _wordController?.clear();
+              _pronunciationController?.clear();
+              _meaningController?.clear();
+              _wordFocus?.requestFocus();
+            }
+          },
+          updateDone: (_) {
             Navigator.of(context).pop(0);
-          } else {
-            _wordController?.clear();
-            _pronunciationController?.clear();
-            _meaningController?.clear();
-            _wordFocus?.requestFocus();
-          }
-        } else if (state is AddWordStateDoneUpdating) {
-          Navigator.of(context).pop(0);
-        } else if (state is AddWordStateFailure) {
-          Utils.getSnackBar(context, state.message);
-        }
+          },
+          error: (error) {
+            Utils.getSnackBar(context, error.message);
+          },
+        );
       },
-      child: _body(),
-    );
-  }
-
-  Widget _body() {
-    return Column(
-      children: [
-        KPTextForm(
-          controller: _wordController,
-          focusNode: _wordFocus,
-          header: "add_word_textForm_word".tr(),
-          additionalWidget: ElevatedButton(
-            onPressed: () {
-              _pronunciationController?.text = _wordController?.text ?? "";
-            },
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width / 4,
-              child: FittedBox(
-                fit: BoxFit.fitWidth,
-                child: Text("add_word_copy".tr(),
-                    style: Theme.of(context).textTheme.labelLarge),
+      child: Column(
+        children: [
+          KPTextForm(
+            controller: _wordController,
+            focusNode: _wordFocus,
+            header: "add_word_textForm_word".tr(),
+            additionalWidget: ElevatedButton(
+              onPressed: () {
+                _pronunciationController?.text = _wordController?.text ?? "";
+              },
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width / 4,
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text("add_word_copy".tr(),
+                      style: Theme.of(context).textTheme.labelLarge),
+                ),
               ),
             ),
+            centerText: TextAlign.center,
+            style: Theme.of(context)
+                .textTheme
+                .displaySmall
+                ?.copyWith(fontWeight: FontWeight.bold),
+            autofocus: widget.args.word == null,
+            hint: "add_word_textForm_word_ext".tr(),
+            onEditingComplete: () => _pronunciationFocus?.requestFocus(),
           ),
-          centerText: TextAlign.center,
-          style: Theme.of(context)
-              .textTheme
-              .displaySmall
-              ?.copyWith(fontWeight: FontWeight.bold),
-          autofocus: widget.args.word == null,
-          hint: "add_word_textForm_word_ext".tr(),
-          onEditingComplete: () => _pronunciationFocus?.requestFocus(),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: KPMargins.margin16),
-          child: KPTextForm(
-            controller: _pronunciationController,
-            focusNode: _pronunciationFocus,
-            header: "add_word_textForm_reading".tr(),
-            hint: "add_word_textForm_reading_ext".tr(),
-            onEditingComplete: () => _meaningFocus?.requestFocus(),
+          Padding(
+            padding: const EdgeInsets.only(top: KPMargins.margin16),
+            child: KPTextForm(
+              controller: _pronunciationController,
+              focusNode: _pronunciationFocus,
+              header: "add_word_textForm_reading".tr(),
+              hint: "add_word_textForm_reading_ext".tr(),
+              onEditingComplete: () => _meaningFocus?.requestFocus(),
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: KPMargins.margin16),
-          child: _categorySelection(),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: KPMargins.margin16),
-          child: BlocBuilder<AddWordBloc, AddWordState>(
-            builder: (context, state) => KPTextForm(
+          Padding(
+            padding: const EdgeInsets.only(top: KPMargins.margin16),
+            child: _categorySelection(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: KPMargins.margin16),
+            child: KPTextForm(
               controller: _meaningController,
               focusNode: _meaningFocus,
               header: "add_word_textForm_meaning".tr(),
@@ -261,8 +263,8 @@ class _AddWordPageState extends State<AddWordPage> {
               },
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

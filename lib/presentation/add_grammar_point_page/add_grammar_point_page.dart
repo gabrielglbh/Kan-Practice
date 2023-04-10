@@ -60,7 +60,7 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
   Future<void> _createGrammar({bool exit = true}) async {
     String name = _nameController?.text ?? '';
     if ('\n'.allMatches(name).isEmpty) name = '#### __${name}__';
-    getIt<AddGrammarPointBloc>().add(AddGrammarPointEventCreate(
+    context.read<AddGrammarPointBloc>().add(AddGrammarPointEventCreate(
         exitMode: exit,
         grammarPoint: GrammarPoint(
           name: _replaceDashesWithCommas(name),
@@ -76,15 +76,20 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
   Future<void> _updateGrammar() async {
     GrammarPoint? g = widget.args.grammarPoint;
     if (g != null) {
-      getIt<AddGrammarPointBloc>().add(
-          AddGrammarPointEventUpdate(widget.args.listName, g.name, parameters: {
-        GrammarTableFields.nameField:
-            _replaceDashesWithCommas(_nameController?.text ?? ""),
-        GrammarTableFields.definitionField:
-            _replaceDashesWithCommas(_definitionController?.text ?? ""),
-        GrammarTableFields.exampleField:
-            _replaceDashesWithCommas(_exampleController?.text ?? "")
-      }));
+      context.read<AddGrammarPointBloc>().add(
+            AddGrammarPointEventUpdate(
+              widget.args.listName,
+              g.name,
+              parameters: {
+                GrammarTableFields.nameField:
+                    _replaceDashesWithCommas(_nameController?.text ?? ""),
+                GrammarTableFields.definitionField:
+                    _replaceDashesWithCommas(_definitionController?.text ?? ""),
+                GrammarTableFields.exampleField:
+                    _replaceDashesWithCommas(_exampleController?.text ?? "")
+              },
+            ),
+          );
     }
   }
 
@@ -100,41 +105,44 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
 
   @override
   Widget build(BuildContext context) {
-    return KPScaffold(
-      resizeToAvoidBottomInset: true,
-      appBarTitle: widget.args.grammarPoint != null
-          ? "add_grammar_update_title".tr()
-          : "add_grammar_new_title".tr(),
-      appBarActions: [
-        BlocBuilder<AddGrammarPointBloc, AddGrammarPointState>(
-          builder: (context, state) => Visibility(
-            visible: widget.args.grammarPoint == null,
-            child: IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () {
-                _validateGrammar(() => _createGrammar(exit: false));
-              },
+    return BlocProvider(
+      create: (_) => getIt<AddGrammarPointBloc>(),
+      child: KPScaffold(
+        resizeToAvoidBottomInset: true,
+        appBarTitle: widget.args.grammarPoint != null
+            ? "add_grammar_update_title".tr()
+            : "add_grammar_new_title".tr(),
+        appBarActions: [
+          BlocBuilder<AddGrammarPointBloc, AddGrammarPointState>(
+            builder: (context, state) => Visibility(
+              visible: widget.args.grammarPoint == null,
+              child: IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () {
+                  _validateGrammar(() => _createGrammar(exit: false));
+                },
+              ),
             ),
           ),
+          BlocBuilder<AddGrammarPointBloc, AddGrammarPointState>(
+              builder: (context, state) => IconButton(
+                    icon: const Icon(Icons.check_rounded),
+                    onPressed: () {
+                      _validateGrammar(() {
+                        if (widget.args.grammarPoint != null) {
+                          _updateGrammar();
+                        } else {
+                          _createGrammar();
+                        }
+                      });
+                    },
+                  ))
+        ],
+        child: SingleChildScrollView(
+          child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
+              child: _builder()),
         ),
-        BlocBuilder<AddGrammarPointBloc, AddGrammarPointState>(
-            builder: (context, state) => IconButton(
-                  icon: const Icon(Icons.check_rounded),
-                  onPressed: () {
-                    _validateGrammar(() {
-                      if (widget.args.grammarPoint != null) {
-                        _updateGrammar();
-                      } else {
-                        _createGrammar();
-                      }
-                    });
-                  },
-                ))
-      ],
-      child: SingleChildScrollView(
-        child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
-            child: _builder()),
       ),
     );
   }
@@ -142,9 +150,9 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
   BlocListener _builder() {
     return BlocListener<AddGrammarPointBloc, AddGrammarPointState>(
       listener: (context, state) {
-        if (state is AddGrammarPointStateDoneCreating) {
+        state.mapOrNull(creationDone: (cd) {
           /// If exit is true, only one grammar point should be created and exit
-          if (state.exitMode) {
+          if (cd.exitMode) {
             Navigator.of(context).pop(0);
           } else {
             _nameController?.clear();
@@ -152,46 +160,40 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
             _exampleController?.clear();
             _nameFocus?.requestFocus();
           }
-        } else if (state is AddGrammarPointStateDoneUpdating) {
+        }, updateDone: (_) {
           Navigator.of(context).pop(0);
-        } else if (state is AddGrammarPointStateFailure) {
-          Utils.getSnackBar(context, state.message);
-        }
+        }, error: (error) {
+          Utils.getSnackBar(context, error.message);
+        });
       },
-      child: _body(),
-    );
-  }
-
-  Widget _body() {
-    return Column(
-      children: [
-        KPTextForm(
-          controller: _nameController,
-          focusNode: _nameFocus,
-          action: TextInputAction.newline,
-          inputType: TextInputType.multiline,
-          header: "add_grammar_textForm_grammar".tr(),
-          autofocus: widget.args.grammarPoint == null,
-          hint: "add_grammar_textForm_grammar_ext".tr(),
-          onEditingComplete: () => _definitionFocus?.requestFocus(),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: KPMargins.margin16),
-          child: KPTextForm(
-            controller: _definitionController,
-            focusNode: _definitionFocus,
+      child: Column(
+        children: [
+          KPTextForm(
+            controller: _nameController,
+            focusNode: _nameFocus,
             action: TextInputAction.newline,
             inputType: TextInputType.multiline,
-            maxLength: 512,
-            header: "add_grammar_textForm_definition".tr(),
-            hint: "add_grammar_textForm_definition_ext".tr(),
-            onEditingComplete: () => _exampleFocus?.requestFocus(),
+            header: "add_grammar_textForm_grammar".tr(),
+            autofocus: widget.args.grammarPoint == null,
+            hint: "add_grammar_textForm_grammar_ext".tr(),
+            onEditingComplete: () => _definitionFocus?.requestFocus(),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: KPMargins.margin16),
-          child: BlocBuilder<AddGrammarPointBloc, AddGrammarPointState>(
-            builder: (context, state) => KPTextForm(
+          Padding(
+            padding: const EdgeInsets.only(top: KPMargins.margin16),
+            child: KPTextForm(
+              controller: _definitionController,
+              focusNode: _definitionFocus,
+              action: TextInputAction.newline,
+              inputType: TextInputType.multiline,
+              maxLength: 512,
+              header: "add_grammar_textForm_definition".tr(),
+              hint: "add_grammar_textForm_definition_ext".tr(),
+              onEditingComplete: () => _exampleFocus?.requestFocus(),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: KPMargins.margin16),
+            child: KPTextForm(
               controller: _exampleController,
               focusNode: _exampleFocus,
               action: TextInputAction.newline,
@@ -202,53 +204,53 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
               onEditingComplete: () {},
             ),
           ),
-        ),
-        const SizedBox(height: KPMargins.margin8),
-        GestureDetector(
-          onTap: () async {
-            await Utils.launch(context,
-                'https://docs.github.com/es/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#GitHub-flavored-markdown');
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                alignment: Alignment.center,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: KPMargins.margin4),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(KPRadius.radius4),
-                  border: Border.all(
-                    color: KPColors.getAccent(context),
+          const SizedBox(height: KPMargins.margin8),
+          GestureDetector(
+            onTap: () async {
+              await Utils.launch(context,
+                  'https://docs.github.com/es/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#GitHub-flavored-markdown');
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: KPMargins.margin4),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(KPRadius.radius4),
+                    border: Border.all(
+                      color: KPColors.getAccent(context),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "M",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Icon(Icons.arrow_downward_rounded,
+                          size: 16, color: KPColors.getSubtle(context)),
+                    ],
                   ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "M",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall
-                          ?.copyWith(fontWeight: FontWeight.bold),
-                    ),
-                    Icon(Icons.arrow_downward_rounded,
-                        size: 16, color: KPColors.getSubtle(context)),
-                  ],
+                const SizedBox(width: KPMargins.margin8),
+                Flexible(
+                  child: Text(
+                    "markdown_support".tr(),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
                 ),
-              ),
-              const SizedBox(width: KPMargins.margin8),
-              Flexible(
-                child: Text(
-                  "markdown_support".tr(),
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

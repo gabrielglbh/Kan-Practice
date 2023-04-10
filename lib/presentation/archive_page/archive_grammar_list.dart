@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/archive_grammar_points/archive_grammar_points_bloc.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
-import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/add_grammar_point_page/arguments.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
@@ -11,7 +10,6 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/list_details_widgets/kp_grammar_point_item.dart';
-import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class ArchiveGrammarListWidget extends StatefulWidget {
   final String query;
@@ -38,9 +36,9 @@ class _ArchiveGrammarListWidgetState extends State<ArchiveGrammarListWidget>
   @override
   void initState() {
     _scrollController.addListener(_scrollListener);
-    getIt<ArchiveGrammarPointsBloc>().add(
-      const ArchiveGrammarPointsEventLoading(reset: true),
-    );
+    context.read<ArchiveGrammarPointsBloc>().add(
+          const ArchiveGrammarPointsEventLoading(reset: true),
+        );
     super.initState();
   }
 
@@ -60,50 +58,31 @@ class _ArchiveGrammarListWidgetState extends State<ArchiveGrammarListWidget>
   }
 
   _addLoadingEvent({bool reset = false}) {
-    return getIt<ArchiveGrammarPointsBloc>()
+    return context
+        .read<ArchiveGrammarPointsBloc>()
         .add(ArchiveGrammarPointsEventLoading(reset: reset));
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocConsumer<ArchiveGrammarPointsBloc, ArchiveGrammarPointsState>(
-      listener: (context, state) async {
-        if (state is ArchiveGrammarPointsStateFailure) {
-          if (state.error.isNotEmpty) {
-            Utils.getSnackBar(context, state.error);
-          }
-        }
-      },
+    return BlocBuilder<ArchiveGrammarPointsBloc, ArchiveGrammarPointsState>(
       builder: (context, state) {
-        if (state is ArchiveGrammarPointsStateLoaded) {
-          return _body(state);
-        } else if (state is ArchiveGrammarPointsStateLoading ||
-            state is ArchiveGrammarPointsStateSearching ||
-            state is ArchiveGrammarPointsStateIdle) {
-          return const KPProgressIndicator();
-        } else if (state is ArchiveGrammarPointsStateFailure) {
-          return KPEmptyList(
+        return state.maybeWhen(
+          loaded: (grammarPoints) =>
+              Expanded(child: _grammarList(grammarPoints)),
+          error: () => KPEmptyList(
               showTryButton: true,
               onRefresh: () => _addLoadingEvent(reset: true),
-              message: "list_details_load_failed_grammar".tr());
-        } else {
-          return Container();
-        }
+              message: "list_details_load_failed_grammar".tr()),
+          orElse: () => const KPProgressIndicator(),
+        );
       },
     );
   }
 
-  Column _body(ArchiveGrammarPointsStateLoaded state) {
-    return Column(
-      children: [
-        Expanded(child: _grammarList(state)),
-      ],
-    );
-  }
-
-  Widget _grammarList(ArchiveGrammarPointsStateLoaded state) {
-    if (state.list.isEmpty) {
+  Widget _grammarList(List<GrammarPoint> grammarPoints) {
+    if (grammarPoints.isEmpty) {
       return KPEmptyList(
           showTryButton: true,
           onRefresh: () => _addLoadingEvent(reset: true),
@@ -114,13 +93,13 @@ class _ArchiveGrammarListWidgetState extends State<ArchiveGrammarListWidget>
       color: KPColors.secondaryColor,
       child: ListView.separated(
         key: const PageStorageKey<String>('grammarPointListController'),
-        itemCount: state.list.length,
+        itemCount: grammarPoints.length,
         controller: _scrollController,
         padding: const EdgeInsets.only(bottom: KPMargins.margin32),
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         separatorBuilder: (_, __) => const Divider(),
         itemBuilder: (context, k) {
-          GrammarPoint? gp = state.list[k];
+          GrammarPoint? gp = grammarPoints[k];
           return KPGrammarPointItem(
             index: k,
             grammarPoint: gp,

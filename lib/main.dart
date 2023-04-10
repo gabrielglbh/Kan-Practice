@@ -3,10 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:kanpractice/application/add_folder/add_folder_bloc.dart';
-import 'package:kanpractice/application/add_grammar_point/add_grammar_point_bloc.dart';
-import 'package:kanpractice/application/add_market_list/add_to_market_bloc.dart';
-import 'package:kanpractice/application/add_word/add_word_bloc.dart';
 import 'package:kanpractice/application/archive_grammar_points/archive_grammar_points_bloc.dart';
 import 'package:kanpractice/application/archive_words/archive_words_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
@@ -177,9 +173,6 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<StudyModeBloc>()),
         BlocProvider(create: (_) => getIt<WordHistoryBloc>()),
         BlocProvider(create: (_) => getIt<AuthBloc>()..add(AuthIdle())),
-        BlocProvider(create: (_) => getIt<AddFolderBloc>()),
-        BlocProvider(create: (_) => getIt<AddToMarketBloc>()),
-        BlocProvider(create: (_) => getIt<AddWordBloc>()),
         BlocProvider(create: (_) => getIt<WordDetailsBloc>()),
         BlocProvider(create: (_) => getIt<GenericTestBloc>()),
         BlocProvider(create: (_) => getIt<DictionaryDetailsBloc>()),
@@ -190,7 +183,6 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<TestHistoryBloc>()),
         BlocProvider(create: (_) => getIt<SpecificDataBloc>()),
         BlocProvider(create: (_) => getIt<TestResultBloc>()),
-        BlocProvider(create: (_) => getIt<AddGrammarPointBloc>()),
         BlocProvider(create: (_) => getIt<ListDetailsWordsBloc>()),
         BlocProvider(create: (_) => getIt<ListDetailsGrammarPointsBloc>()),
         BlocProvider(create: (_) => getIt<GrammarPointDetailsBloc>()),

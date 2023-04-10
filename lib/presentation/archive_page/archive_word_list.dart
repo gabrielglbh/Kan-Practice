@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/archive_words/archive_words_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
-import 'package:kanpractice/injection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/add_word_page/arguments.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
@@ -12,7 +12,6 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/list_details_widgets/kp_word_item.dart';
-import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class ArchiveWordListWidget extends StatefulWidget {
   final String query;
@@ -36,9 +35,9 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
   @override
   void initState() {
     _scrollController.addListener(_scrollListener);
-    getIt<ArchiveWordsBloc>().add(
-      const ArchiveWordsEventLoading(reset: true),
-    );
+    context.read<ArchiveWordsBloc>().add(
+          const ArchiveWordsEventLoading(reset: true),
+        );
     super.initState();
   }
 
@@ -58,48 +57,30 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
   }
 
   _addLoadingEvent({bool reset = false}) {
-    return getIt<ArchiveWordsBloc>()
+    return context
+        .read<ArchiveWordsBloc>()
         .add(ArchiveWordsEventLoading(reset: reset));
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocConsumer<ArchiveWordsBloc, ArchiveWordsState>(
-      listener: (context, state) async {
-        if (state is ArchiveWordsStateFailure) {
-          if (state.error.isNotEmpty) {
-            Utils.getSnackBar(context, state.error);
-          }
-        }
-      },
+    return BlocBuilder<ArchiveWordsBloc, ArchiveWordsState>(
       builder: (context, state) {
-        if (state is ArchiveWordsStateLoaded) {
-          return _body(state);
-        } else if (state is ArchiveWordsStateLoading ||
-            state is ArchiveWordsStateSearching ||
-            state is ArchiveWordsStateIdle) {
-          return const KPProgressIndicator();
-        } else if (state is ArchiveWordsStateFailure) {
-          return KPEmptyList(
+        return state.maybeWhen(
+          loaded: (words) => Expanded(child: _wordList(words)),
+          error: () => KPEmptyList(
               showTryButton: true,
               onRefresh: () => _addLoadingEvent(reset: true),
-              message: "list_details_load_failed".tr());
-        } else {
-          return Container();
-        }
+              message: "list_details_load_failed".tr()),
+          orElse: () => const KPProgressIndicator(),
+        );
       },
     );
   }
 
-  Column _body(ArchiveWordsStateLoaded state) {
-    return Column(
-      children: [Expanded(child: _wordList(state))],
-    );
-  }
-
-  Widget _wordList(ArchiveWordsStateLoaded state) {
-    if (state.list.isEmpty) {
+  Widget _wordList(List<Word> words) {
+    if (words.isEmpty) {
       return KPEmptyList(
           showTryButton: true,
           onRefresh: () => _addLoadingEvent(reset: true),
@@ -107,7 +88,7 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
     }
 
     KPWordItem wordElem(int index, bool isBadge) {
-      Word? word = state.list[index];
+      Word? word = words[index];
       return KPWordItem(
         aggregateStats: true,
         index: index,
@@ -133,7 +114,7 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
       child: getIt<PreferencesService>().readData(SharedKeys.showBadgeWords)
           ? GridView.builder(
               key: const PageStorageKey<String>('wordListController'),
-              itemCount: state.list.length,
+              itemCount: words.length,
               controller: _scrollController,
               padding: const EdgeInsets.only(bottom: KPMargins.margin32),
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -143,7 +124,7 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
             )
           : ListView.separated(
               key: const PageStorageKey<String>('wordListController'),
-              itemCount: state.list.length,
+              itemCount: words.length,
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               controller: _scrollController,
               padding: const EdgeInsets.only(bottom: KPMargins.margin32),

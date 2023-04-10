@@ -51,6 +51,9 @@ class _FolderListPageState extends State<FolderListPage>
 
     _currentAppliedOrder =
         getIt<PreferencesService>().readData(SharedKeys.orderOnFolder) ?? true;
+
+    getIt<FolderBloc>().add(FolderEventLoading(
+        filter: _currentAppliedFilter, order: _currentAppliedOrder));
     super.initState();
   }
 

@@ -540,7 +540,7 @@ class WordRepositoryImpl implements IWordRepository {
           "(${WordTableFields.meaningField} LIKE '%$query%' "
           "OR ${WordTableFields.wordField} LIKE '%$query%' "
           "OR ${WordTableFields.pronunciationField} LIKE '%$query%') "
-          "ORDER BY ${WordTableFields.dateAddedField} ASC "
+          "ORDER BY ${WordTableFields.dateAddedField} DESC "
           "LIMIT $limit OFFSET ${offset * limit}");
       return List.generate(res.length, (i) => Word.fromJson(res[i]));
     } catch (err) {

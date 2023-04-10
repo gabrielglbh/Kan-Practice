@@ -48,6 +48,9 @@ class _MarketPageState extends State<MarketPage>
 
     _currentAppliedOrder =
         getIt<PreferencesService>().readData(SharedKeys.orderOnMarket) ?? true;
+
+    getIt<MarketBloc>().add(MarketEventLoading(
+        filter: _currentAppliedFilter, order: _currentAppliedOrder));
     super.initState();
   }
 

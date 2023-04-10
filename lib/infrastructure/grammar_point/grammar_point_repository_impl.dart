@@ -263,7 +263,7 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
           "$whereClause "
           "(${GrammarTableFields.nameField} LIKE '%$query%' "
           "OR ${GrammarTableFields.definitionField} LIKE '%$query%') "
-          "ORDER BY ${GrammarTableFields.dateAddedField} ASC "
+          "ORDER BY ${GrammarTableFields.dateAddedField} DESC "
           "LIMIT $limit OFFSET ${offset * limit}");
       return List.generate(res.length, (i) => GrammarPoint.fromJson(res[i]));
     } catch (err) {

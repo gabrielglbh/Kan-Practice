@@ -97,6 +97,7 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                       graphName: "tests".tr(),
                       heightRatio: 1.3,
                       animationDuration: 0,
+                      // TODO: update indexes DataFrame when adding mode
                       dataSource: List.generate(_length, (index) {
                         if (index == 0) {
                           final v = widget.data.totalWritingCount;

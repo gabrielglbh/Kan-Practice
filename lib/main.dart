@@ -17,15 +17,10 @@ import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
 import 'package:kanpractice/application/list_details_grammar_points/list_details_grammar_points_bloc.dart';
 import 'package:kanpractice/application/list_details_words/list_details_words_bloc.dart';
 import 'package:kanpractice/application/lists/lists_bloc.dart';
-import 'package:kanpractice/application/rate/rate_bloc.dart';
 import 'package:kanpractice/application/services/messaging_service.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/application/specific_data/specific_data_bloc.dart';
-import 'package:kanpractice/application/stats/stats_bloc.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
-import 'package:kanpractice/application/test_history/test_history_bloc.dart';
-import 'package:kanpractice/application/test_result/test_result_bloc.dart';
-import 'package:kanpractice/application/word_history/word_history_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -160,15 +155,10 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<FolderBloc>()),
         BlocProvider(create: (_) => getIt<BackupBloc>()),
         BlocProvider(create: (_) => getIt<StudyModeBloc>()),
-        BlocProvider(create: (_) => getIt<WordHistoryBloc>()),
         BlocProvider(create: (_) => getIt<AuthBloc>()..add(AuthIdle())),
         BlocProvider(create: (_) => getIt<GenericTestBloc>()),
         BlocProvider(create: (_) => getIt<FolderDetailsBloc>()),
-        BlocProvider(create: (_) => getIt<RateBloc>()),
-        BlocProvider(create: (_) => getIt<StatsBloc>()),
-        BlocProvider(create: (_) => getIt<TestHistoryBloc>()),
         BlocProvider(create: (_) => getIt<SpecificDataBloc>()),
-        BlocProvider(create: (_) => getIt<TestResultBloc>()),
         BlocProvider(create: (_) => getIt<ListDetailsWordsBloc>()),
         BlocProvider(create: (_) => getIt<ListDetailsGrammarPointsBloc>()),
         BlocProvider(create: (_) => getIt<GrammarModeBloc>()),

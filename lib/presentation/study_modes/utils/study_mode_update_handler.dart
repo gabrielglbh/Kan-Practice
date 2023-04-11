@@ -41,12 +41,12 @@ class StudyModeUpdateHandler {
         builder: (context) {
           return BlocListener<StudyModeBloc, StudyModeState>(
             listener: (context, state) {
-              if (state is StudyModeStateScoreObtained) {
-                final double score = state.score / args.studyList.length;
-                getIt<StudyModeBloc>().add(StudyModeEventUpdateListScore(
+              state.mapOrNull(scoreObtained: (s) {
+                final double score = s.score / args.studyList.length;
+                context.read<StudyModeBloc>().add(StudyModeEventUpdateListScore(
                     score, args.studyList[0].listName, args.mode));
                 Navigator.of(context).pop();
-              }
+              });
             },
             child: KPDialog(
                 title: Text(isTestFinished || isPracticeFinished
@@ -71,10 +71,10 @@ class StudyModeUpdateHandler {
                       if (getIt<PreferencesService>()
                               .readData(SharedKeys.affectOnPractice) ??
                           false) {
-                        getIt<StudyModeBloc>().add(
-                          StudyModeEventUpdateScoreForTestsAffectingPractice(
-                              args.studyList, args.mode),
-                        );
+                        context.read<StudyModeBloc>().add(
+                              StudyModeEventUpdateScoreForTestsAffectingPractice(
+                                  args.studyList, args.mode),
+                            );
                       }
                       studyList =
                           _getMapOfWordsInTest(args.studyList, testScores);
@@ -96,14 +96,14 @@ class StudyModeUpdateHandler {
                     if (lastIndex == 0) {
                       Navigator.of(context).pop();
                     } else {
-                      getIt<StudyModeBloc>().add(StudyModeEventGetScore(
+                      context.read<StudyModeBloc>().add(StudyModeEventGetScore(
                           args.studyList[0].listName, args.mode));
                     }
                   }
 
                   /// If the user went through all the list, update the list accordingly
                   else {
-                    getIt<StudyModeBloc>().add(StudyModeEventGetScore(
+                    context.read<StudyModeBloc>().add(StudyModeEventGetScore(
                         args.studyList[0].listName, args.mode));
                   }
                 }),

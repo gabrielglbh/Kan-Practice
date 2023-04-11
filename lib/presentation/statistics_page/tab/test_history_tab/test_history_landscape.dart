@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/test_history/test_history_bloc.dart';
-import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
@@ -65,19 +64,21 @@ class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
         _testsFilter = filters.testFilters;
         _modesFilter = filters.modeFilters;
       });
-      getIt<TestHistoryBloc>().add(TestHistoryEventLoading(
-        initial: _firstDate,
-        last: _lastDate,
-        testFilter: _testsFilter,
-        modesFilter: _modesFilter,
-      ));
+      if (!mounted) return;
+      context.read<TestHistoryBloc>().add(TestHistoryEventLoading(
+            initial: _firstDate,
+            last: _lastDate,
+            testFilter: _testsFilter,
+            modesFilter: _modesFilter,
+          ));
     }
-    getIt<TestHistoryBloc>().add(TestHistoryEventLoading(
-      initial: _firstDate,
-      last: _lastDate,
-      testFilter: _testsFilter,
-      modesFilter: _modesFilter,
-    ));
+    if (!mounted) return;
+    context.read<TestHistoryBloc>().add(TestHistoryEventLoading(
+          initial: _firstDate,
+          last: _lastDate,
+          testFilter: _testsFilter,
+          modesFilter: _modesFilter,
+        ));
   }
 
   @override
@@ -95,12 +96,11 @@ class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
             padding: const EdgeInsets.all(KPMargins.margin8),
             child: BlocBuilder<TestHistoryBloc, TestHistoryState>(
               builder: (blocContext, state) {
-                if (state is TestHistoryStateFailure) {
-                  return Center(child: Text("test_history_load_failed".tr()));
-                } else if (state is TestHistoryStateLoading) {
-                  return const KPProgressIndicator();
-                } else if (state is TestHistoryStateLoaded) {
-                  return Stack(
+                return state.maybeWhen(
+                  error: () =>
+                      Center(child: Text("test_history_load_failed".tr())),
+                  loading: () => const KPProgressIndicator(),
+                  loaded: (tests) => Stack(
                     alignment: Alignment.centerRight,
                     children: [
                       KPCartesianChart(
@@ -110,8 +110,8 @@ class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
                           enablePinching: true,
                           maximumZoomLevel: 0.3,
                         ),
-                        dataSource: List.generate(state.list.length, (index) {
-                          final test = state.list[index];
+                        dataSource: List.generate(tests.length, (index) {
+                          final test = tests[index];
                           if (test.studyMode == null) {
                             return TestDataFrame(
                               x: DateTime.fromMillisecondsSinceEpoch(
@@ -168,9 +168,9 @@ class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
                         ),
                       ),
                     ],
-                  );
-                }
-                return const SizedBox();
+                  ),
+                  orElse: () => const SizedBox(),
+                );
               },
             ),
           ),

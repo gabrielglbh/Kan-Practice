@@ -29,7 +29,7 @@ class StatsBloc extends Bloc<StatsEvent, StatsState> {
     this._testDataRepository,
     this._grammarPointRepository,
   ) : super(const StatsState.initial()) {
-    on<StatisticsEventLoading>((event, emit) async {
+    on<StatsEventLoading>((event, emit) async {
       emit(const StatsState.loading());
 
       final int totalLists = await _listRepository.getTotalListCount();

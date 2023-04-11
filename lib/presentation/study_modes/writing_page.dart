@@ -190,27 +190,27 @@ class _WritingStudyState extends State<WritingStudy> {
   }
 
   Future<int> _calculateWordScore() async {
-    getIt<StudyModeBloc>().add(StudyModeEventUpdateDateShown(
-      listName: _studyList[_macro].listName,
-      word: _studyList[_macro].word,
-      mode: widget.args.mode,
-    ));
+    context.read<StudyModeBloc>().add(StudyModeEventUpdateDateShown(
+          listName: _studyList[_macro].listName,
+          word: _studyList[_macro].word,
+          mode: widget.args.mode,
+        ));
     final double currentScore = _score[_macro] / _maxScore[_macro];
 
     /// Add the current virgin score to the test scores...
     if (widget.args.isTest) {
       if (getIt<PreferencesService>().readData(SharedKeys.affectOnPractice) ??
           false) {
-        getIt<StudyModeBloc>().add(StudyModeEventCalculateScore(
+        context.read<StudyModeBloc>().add(StudyModeEventCalculateScore(
             widget.args.mode, _studyList[_macro], currentScore));
       }
       _testScores.add(currentScore);
       if (widget.args.testMode == Tests.daily) {
-        getIt<StudyModeBloc>().add(StudyModeEventCalculateSM2Params(
+        context.read<StudyModeBloc>().add(StudyModeEventCalculateSM2Params(
             widget.args.mode, _studyList[_macro], currentScore));
       }
     } else {
-      getIt<StudyModeBloc>().add(StudyModeEventCalculateScore(
+      context.read<StudyModeBloc>().add(StudyModeEventCalculateScore(
           widget.args.mode, _studyList[_macro], currentScore));
     }
     return 0;
@@ -221,90 +221,83 @@ class _WritingStudyState extends State<WritingStudy> {
     final threshold =
         MediaQuery.of(context).size.height <= KPSizes.minimumHeight;
     const marginTop = 164.0;
-    return BlocBuilder<StudyModeBloc, StudyModeState>(
-      builder: (context, state) {
-        return KPScaffold(
-          onWillPop: () async {
-            return StudyModeUpdateHandler.handle(
-              context,
-              widget.args,
-              onPop: true,
-              lastIndex: _macro,
-            );
-          },
-          setGestureDetector: false,
-          appBarTitle: StudyModeAppBar(
-              title: widget.args.studyModeHeaderDisplayName,
-              studyMode: widget.args.mode.mode),
-          centerTitle: true,
-          appBarActions: [
-            Visibility(
-              visible: _goNextWord,
-              child: TTSIconButton(word: _studyList[_macro].pronunciation),
-            ),
-            if (_hasRepetition && widget.args.testMode != Tests.daily)
-              IconButton(
-                onPressed: () => Utils.showSpatialRepetitionDisclaimer(context),
-                icon: const Icon(Icons.info_outline_rounded),
-              )
-          ],
-          child: Column(
-            children: [
-              KPListPercentageIndicator(
-                  value: (_macro + 1) / _studyList.length),
-              SizedBox(
-                height: threshold
-                    ? KPMargins.margin64 + KPMargins.margin8
-                    : marginTop,
-              ),
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  KPCustomCanvas(
-                    line: _line,
-                    allowEdit: !_showActualWord,
-                  ),
-                  Positioned(
-                    top: threshold
-                        ? -(KPMargins.margin64 + KPMargins.margin16)
-                        : -(marginTop + KPMargins.margin4),
-                    right: 0,
-                    left: 0,
-                    child: KPLearningHeaderAnimation(
-                      id: _macro,
-                      children: _header(),
-                    ),
-                  ),
-                ],
-              ),
-              WritingButtonsAnimations(
-                id: _macro,
-
-                /// Whenever a new word is shown, _inner will be 0. That's
-                /// the key to toggle the slide animation on the button.
-                triggerSlide: _inner == 0,
-                trigger: _showActualWord,
-                submitLabel: _goNextWord
-                    ? "writing_next_word_label".tr()
-                    : "done_button_label".tr(),
-                action: (score) async => await _updateUIOnSubmit(score),
-                onSubmit: () {
-                  if (_macro <= _studyList.length - 1) {
-                    _resetWord();
-                  } else {
-                    if (_line.isNotEmpty) {
-                      _resetWord();
-                    } else {
-                      Utils.getSnackBar(
-                          context, "writing_validation_failed".tr());
-                    }
-                  }
-                },
-              )
-            ],
-          ),
+    return KPScaffold(
+      onWillPop: () async {
+        return StudyModeUpdateHandler.handle(
+          context,
+          widget.args,
+          onPop: true,
+          lastIndex: _macro,
         );
       },
+      setGestureDetector: false,
+      appBarTitle: StudyModeAppBar(
+          title: widget.args.studyModeHeaderDisplayName,
+          studyMode: widget.args.mode.mode),
+      centerTitle: true,
+      appBarActions: [
+        Visibility(
+          visible: _goNextWord,
+          child: TTSIconButton(word: _studyList[_macro].pronunciation),
+        ),
+        if (_hasRepetition && widget.args.testMode != Tests.daily)
+          IconButton(
+            onPressed: () => Utils.showSpatialRepetitionDisclaimer(context),
+            icon: const Icon(Icons.info_outline_rounded),
+          )
+      ],
+      child: Column(
+        children: [
+          KPListPercentageIndicator(value: (_macro + 1) / _studyList.length),
+          SizedBox(
+            height:
+                threshold ? KPMargins.margin64 + KPMargins.margin8 : marginTop,
+          ),
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              KPCustomCanvas(
+                line: _line,
+                allowEdit: !_showActualWord,
+              ),
+              Positioned(
+                top: threshold
+                    ? -(KPMargins.margin64 + KPMargins.margin16)
+                    : -(marginTop + KPMargins.margin4),
+                right: 0,
+                left: 0,
+                child: KPLearningHeaderAnimation(
+                  id: _macro,
+                  children: _header(),
+                ),
+              ),
+            ],
+          ),
+          WritingButtonsAnimations(
+            id: _macro,
+
+            /// Whenever a new word is shown, _inner will be 0. That's
+            /// the key to toggle the slide animation on the button.
+            triggerSlide: _inner == 0,
+            trigger: _showActualWord,
+            submitLabel: _goNextWord
+                ? "writing_next_word_label".tr()
+                : "done_button_label".tr(),
+            action: (score) async => await _updateUIOnSubmit(score),
+            onSubmit: () {
+              if (_macro <= _studyList.length - 1) {
+                _resetWord();
+              } else {
+                if (_line.isNotEmpty) {
+                  _resetWord();
+                } else {
+                  Utils.getSnackBar(context, "writing_validation_failed".tr());
+                }
+              }
+            },
+          )
+        ],
+      ),
     );
   }
 

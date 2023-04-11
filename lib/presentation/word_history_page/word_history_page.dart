@@ -34,8 +34,9 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
                   style: Theme.of(context).textTheme.bodyLarge),
               positiveButtonText:
                   "word_history_showRemoveHistorysDialog_positive".tr(),
-              onPositive: () =>
-                  getIt<WordHistoryBloc>().add(WordHistoryEventRemoving()),
+              onPositive: () => context
+                  .read<WordHistoryBloc>()
+                  .add(WordHistoryEventRemoving()),
             ));
   }
 
@@ -54,7 +55,6 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
   @override
   void initState() {
     _scrollController.addListener(_scrollListener);
-    getIt<WordHistoryBloc>().add(const WordHistoryEventLoading());
     super.initState();
   }
 
@@ -67,66 +67,65 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return KPScaffold(
-      appBarTitle: "word_history_title".tr(),
-      appBarActions: [
-        BlocBuilder<WordHistoryBloc, WordHistoryState>(
-          builder: (context, state) => IconButton(
+    return BlocProvider(
+      create: (context) =>
+          getIt<WordHistoryBloc>()..add(const WordHistoryEventLoading()),
+      child: KPScaffold(
+        appBarTitle: "word_history_title".tr(),
+        appBarActions: [
+          IconButton(
             icon: const Icon(Icons.clear_all_rounded),
             onPressed: () => _showRemoveHistorysDialog(),
           ),
-        )
-      ],
-      child: BlocBuilder<WordHistoryBloc, WordHistoryState>(
-          builder: (context, state) => _body(state)),
+        ],
+        child: BlocBuilder<WordHistoryBloc, WordHistoryState>(
+          builder: (context, state) {
+            return state.maybeWhen(
+              error: () => KPEmptyList(
+                  showTryButton: true,
+                  onRefresh: () => _addLoadingEvent(),
+                  message: "word_history_load_failed".tr()),
+              loading: () => const KPProgressIndicator(),
+              loaded: (list) {
+                if (list.isEmpty) {
+                  return KPEmptyList(
+                      onRefresh: () => _addLoadingEvent(),
+                      message: "word_history_empty".tr());
+                }
+                return ListView.separated(
+                    key: const PageStorageKey<String>('wordHistoryController'),
+                    controller: _scrollController,
+                    separatorBuilder: (_, __) =>
+                        const Divider(height: KPMargins.margin4),
+                    itemCount: list.length,
+                    itemBuilder: (context, k) {
+                      WordHistory wordHistory = list[k];
+                      final date = Utils.parseDateMilliseconds(
+                          context, wordHistory.searchedOn);
+                      return ListTile(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                              KanPracticePages.jishoPage,
+                              arguments: DictionaryDetailsArguments(
+                                  word: wordHistory.word,
+                                  fromDictionary: true));
+                        },
+                        title: Text(wordHistory.word,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(fontWeight: FontWeight.normal),
+                            overflow: TextOverflow.ellipsis),
+                        trailing: Text("${"searched_label".tr()} $date",
+                            style: Theme.of(context).textTheme.bodySmall),
+                      );
+                    });
+              },
+              orElse: () => const SizedBox(),
+            );
+          },
+        ),
+      ),
     );
-  }
-
-  _body(WordHistoryState state) {
-    if (state is WordHistoryStateFailure) {
-      return KPEmptyList(
-          showTryButton: true,
-          onRefresh: () => _addLoadingEvent(),
-          message: "word_history_load_failed".tr());
-    } else if (state is WordHistoryStateLoading) {
-      return const KPProgressIndicator();
-    } else if (state is WordHistoryStateLoaded) {
-      if (state.list.isEmpty) {
-        return KPEmptyList(
-            onRefresh: () => _addLoadingEvent(),
-            message: "word_history_empty".tr());
-      }
-      return _testList(state);
-    } else {
-      return Container();
-    }
-  }
-
-  _testList(WordHistoryStateLoaded state) {
-    return ListView.separated(
-        key: const PageStorageKey<String>('wordHistoryController'),
-        controller: _scrollController,
-        separatorBuilder: (_, __) => const Divider(height: KPMargins.margin4),
-        itemCount: state.list.length,
-        itemBuilder: (context, k) {
-          WordHistory wordHistory = state.list[k];
-          final date =
-              Utils.parseDateMilliseconds(context, wordHistory.searchedOn);
-          return ListTile(
-            onTap: () {
-              Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
-                  arguments: DictionaryDetailsArguments(
-                      word: wordHistory.word, fromDictionary: true));
-            },
-            title: Text(wordHistory.word,
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall
-                    ?.copyWith(fontWeight: FontWeight.normal),
-                overflow: TextOverflow.ellipsis),
-            trailing: Text("${"searched_label".tr()} $date",
-                style: Theme.of(context).textTheme.bodySmall),
-          );
-        });
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:kanpractice/application/rate/rate_bloc.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 
@@ -13,15 +14,18 @@ class MarketListRating extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<RateBloc, RateState>(
-      listener: (context, state) {
-        state.mapOrNull(error: (error) {
-          Utils.getSnackBar(context, error.message);
-        });
-      },
-      builder: (context, state) {
-        return _rateSystem(context, initialRating ?? 0);
-      },
+    return BlocProvider(
+      create: (context) => getIt<RateBloc>(),
+      child: BlocConsumer<RateBloc, RateState>(
+        listener: (context, state) {
+          state.mapOrNull(error: (error) {
+            Utils.getSnackBar(context, error.message);
+          });
+        },
+        builder: (context, state) {
+          return _rateSystem(context, initialRating ?? 0);
+        },
+      ),
     );
   }
 

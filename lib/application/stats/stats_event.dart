@@ -7,4 +7,4 @@ abstract class StatsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class StatisticsEventLoading extends StatsEvent {}
+class StatsEventLoading extends StatsEvent {}

@@ -285,14 +285,14 @@ class _KPKanlistsState extends State<KPKanlists>
                               order: _currentAppliedOrder,
                             ));
                       } else {
-                        getIt<FolderDetailsBloc>().add(
-                          FolderDetailsEventDelete(
-                            widget.folder!,
-                            lists[k],
-                            filter: _currentAppliedFilter,
-                            order: _currentAppliedOrder,
-                          ),
-                        );
+                        context.read<FolderDetailsBloc>().add(
+                              FolderDetailsEventDelete(
+                                widget.folder!,
+                                lists[k],
+                                filter: _currentAppliedFilter,
+                                order: _currentAppliedOrder,
+                              ),
+                            );
                       }
                       _resetScroll();
                     },

@@ -93,7 +93,7 @@ class MarketListTile extends StatelessWidget {
   }
 
   Widget _subtitle(BuildContext context) {
-    getIt<AuthBloc>().add(AuthIdle());
+    context.read<AuthBloc>().add(AuthIdle());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

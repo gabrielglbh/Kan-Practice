@@ -49,19 +49,19 @@ class _LoginPageState extends State<LoginPage> {
     String? email = _emailController?.text;
     String? password = _passwordController?.text;
     if (email != null && password != null) {
-      getIt<AuthBloc>().add(AuthSubmitting(_mode, email, password));
+      context.read<AuthBloc>().add(AuthSubmitting(_mode, email, password));
     }
   }
 
   _changePassword(String prevPass, String newPass) {
     if (prevPass.isNotEmpty && newPass.isNotEmpty) {
-      getIt<AuthBloc>().add(ChangePassword(prevPass, newPass));
+      context.read<AuthBloc>().add(ChangePassword(prevPass, newPass));
     }
   }
 
   _removeAccount(String pass) {
     if (pass.isNotEmpty) {
-      getIt<AuthBloc>().add(RemoveAccount(pass));
+      context.read<AuthBloc>().add(RemoveAccount(pass));
     }
   }
 
@@ -317,7 +317,7 @@ class _LoginPageState extends State<LoginPage> {
         ListTile(
           leading: const Icon(Icons.logout),
           title: Text("login_close_session_title".tr()),
-          onTap: () => getIt<AuthBloc>().add(CloseSession()),
+          onTap: () => context.read<AuthBloc>().add(CloseSession()),
         ),
         const Divider(),
         Padding(

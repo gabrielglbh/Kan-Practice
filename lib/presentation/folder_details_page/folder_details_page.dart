@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/folder_details/folder_details_bloc.dart';
-import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:kanpractice/presentation/core/types/tab_types.dart';
@@ -34,7 +33,7 @@ class _FolderDetailsPageState extends State<FolderDetailsPage> {
     _searchBarFn = FocusNode();
     _searchTextController = TextEditingController();
     _searchBarFn.addListener(_focusListener);
-    getIt<FolderDetailsBloc>().add(_addListLoadingEvent());
+    context.read<FolderDetailsBloc>().add(_addListLoadingEvent());
     super.initState();
   }
 
@@ -51,7 +50,7 @@ class _FolderDetailsPageState extends State<FolderDetailsPage> {
       FolderDetailsEventSearching(query, widget.folder, reset: reset);
 
   _resetList(BuildContext context) {
-    getIt<FolderDetailsBloc>().add(_addListLoadingEvent());
+    context.read<FolderDetailsBloc>().add(_addListLoadingEvent());
   }
 
   _focusListener() => _searchHasFocus = _searchBarFn.hasFocus;
@@ -85,7 +84,8 @@ class _FolderDetailsPageState extends State<FolderDetailsPage> {
                   await Navigator.of(context).pushNamed(
                       KanPracticePages.folderAddPage,
                       arguments: widget.folder);
-                  getIt<FolderDetailsBloc>().add(_addListLoadingEvent());
+                  if (!mounted) return;
+                  context.read<FolderDetailsBloc>().add(_addListLoadingEvent());
                 },
               ),
             ],
@@ -100,7 +100,8 @@ class _FolderDetailsPageState extends State<FolderDetailsPage> {
                     /// Everytime the user queries, reset the query itself and
                     /// the pagination index
                     _query = query;
-                    getIt<FolderDetailsBloc>()
+                    context
+                        .read<FolderDetailsBloc>()
                         .add(_addListSearchingEvent(query));
                   },
                   onExitSearch: () {
@@ -117,13 +118,15 @@ class _FolderDetailsPageState extends State<FolderDetailsPage> {
                     onScrolledToBottom: () {
                       /// If the query is empty, use the pagination for search bar
                       if (_query.isNotEmpty) {
-                        getIt<FolderDetailsBloc>()
+                        context
+                            .read<FolderDetailsBloc>()
                             .add(_addListSearchingEvent(_query, reset: false));
                       }
 
                       /// Else use the normal pagination
                       else {
-                        getIt<FolderDetailsBloc>()
+                        context
+                            .read<FolderDetailsBloc>()
                             .add(_addListLoadingEvent(reset: false));
                       }
                     },

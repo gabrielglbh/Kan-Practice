@@ -37,7 +37,7 @@ class _FolderListBottomSheetState extends State<FolderListBottomSheet> {
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        getIt<FolderBloc>().add(FolderForTestEventLoading());
+        context.read<FolderBloc>().add(FolderForTestEventLoading());
         return Wrap(children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -103,7 +103,8 @@ class _FolderListBottomSheetState extends State<FolderListBottomSheet> {
         return ListTile(
           onTap: () {
             if (widget.name != null) {
-              getIt<FolderBloc>()
+              context
+                  .read<FolderBloc>()
                   .add(FolderEventAddSingleList(widget.name!, listName));
             } else {
               Navigator.of(context).pop(listName);

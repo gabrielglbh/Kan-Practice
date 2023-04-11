@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/application/dictionary_details/dictionary_details_bloc.dart';
+import 'package:kanpractice/domain/dictionary_details/word_data.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
@@ -14,68 +15,65 @@ import 'package:kanpractice/presentation/dictionary_details_page/widgets/generic
 import 'package:kanpractice/presentation/dictionary_details_page/widgets/single_word_result.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/widgets/word_result.dart';
 
-class DictionaryDetailsPage extends StatefulWidget {
+class DictionaryDetailsPage extends StatelessWidget {
   final DictionaryDetailsArguments args;
 
   const DictionaryDetailsPage({Key? key, required this.args}) : super(key: key);
 
   @override
-  State<DictionaryDetailsPage> createState() => _DictionaryDetailsPageState();
-}
-
-class _DictionaryDetailsPageState extends State<DictionaryDetailsPage> {
-  @override
-  void initState() {
-    getIt<DictionaryDetailsBloc>()
-        .add(DictionaryDetailsLoadingEvent(word: widget.args.word ?? ""));
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return KPScaffold(
-        appBarTitle: widget.args.word ?? "?",
-        centerTitle: true,
-        appBarActions: [TTSIconButton(word: widget.args.word)],
-        child: Column(
-          children: [
-            Expanded(
-              child:
-                  BlocConsumer<DictionaryDetailsBloc, DictionaryDetailsState>(
-                listener: (context, state) {
-                  if (state is DictionaryDetailsStateLoaded &&
-                      widget.args.word != null) {
-                    getIt<DictionaryDetailsBloc>().add(
-                        DictionaryDetailsEventAddToHistory(
-                            word: widget.args.word!));
-                  }
-                },
-                builder: (context, state) {
-                  if (state is DictionaryDetailsStateLoading) {
-                    return const KPProgressIndicator();
-                  } else if (state is DictionaryDetailsStateFailure) {
-                    return _nothingFound();
-                  } else if (state is DictionaryDetailsStateLoaded) {
-                    return _content(context, state);
-                  } else {
-                    return Container();
-                  }
-                },
+    return BlocProvider(
+      create: (context) => getIt<DictionaryDetailsBloc>()
+        ..add(DictionaryDetailsLoadingEvent(word: args.word ?? "")),
+      child: KPScaffold(
+          appBarTitle: args.word ?? "?",
+          centerTitle: true,
+          appBarActions: [TTSIconButton(word: args.word)],
+          child: Column(
+            children: [
+              Expanded(
+                child:
+                    BlocConsumer<DictionaryDetailsBloc, DictionaryDetailsState>(
+                  listener: (context, state) {
+                    state.mapOrNull(loaded: (_) {
+                      if (args.word != null) {
+                        context.read<DictionaryDetailsBloc>().add(
+                            DictionaryDetailsEventAddToHistory(
+                                word: args.word!));
+                      }
+                    });
+                  },
+                  builder: (context, state) {
+                    return state.maybeWhen(
+                      loaded: (data) => _content(context, data),
+                      loading: () => const KPProgressIndicator(),
+                      error: () => Center(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: KPMargins.margin16),
+                          child: Text("jisho_no_match".tr(),
+                              textAlign: TextAlign.center),
+                        ),
+                      ),
+                      orElse: () => const SizedBox(),
+                    );
+                  },
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: KPMargins.margin8),
-              child: Chip(
-                backgroundColor: Colors.green[200],
-                label: Text("jisho_resultData_powered_by".tr(),
-                    style: const TextStyle(color: KPColors.accentLight)),
+              Padding(
+                padding: const EdgeInsets.only(bottom: KPMargins.margin8),
+                child: Chip(
+                  backgroundColor: Colors.green[200],
+                  label: Text("jisho_resultData_powered_by".tr(),
+                      style: const TextStyle(color: KPColors.accentLight)),
+                ),
               ),
-            ),
-          ],
-        ));
+            ],
+          )),
+    );
   }
 
-  Widget _content(BuildContext context, DictionaryDetailsStateLoaded state) {
+  Widget _content(BuildContext context, WordData data) {
     return Column(
       children: [
         Expanded(
@@ -87,23 +85,23 @@ class _DictionaryDetailsPageState extends State<DictionaryDetailsPage> {
               /// Example, in the other hand, will be visible for single or compound
               /// word.
               Visibility(
-                  visible: state.data.resultData != null,
+                  visible: data.resultData != null,
                   child: SingleWordResult(
-                    data: state.data.resultData,
-                    phrase: state.data.resultPhrase,
-                    fromDictionary: widget.args.fromDictionary,
+                    data: data.resultData,
+                    phrase: data.resultPhrase,
+                    fromDictionary: args.fromDictionary,
                   )),
               Visibility(
-                  visible: state.data.resultPhrase.isNotEmpty,
+                  visible: data.resultPhrase.isNotEmpty,
                   child: WordResult(
-                    word: widget.args.word,
-                    data: state.data.resultData,
-                    phrase: state.data.resultPhrase,
-                    fromDictionary: widget.args.fromDictionary,
+                    word: args.word,
+                    data: data.resultData,
+                    phrase: data.resultPhrase,
+                    fromDictionary: args.fromDictionary,
                   )),
               Visibility(
-                  visible: state.data.example.isNotEmpty,
-                  child: ExamplePhrases(data: state.data.example)),
+                  visible: data.example.isNotEmpty,
+                  child: ExamplePhrases(data: data.example)),
               Container(
                 height: KPMargins.margin32,
                 color: Colors.transparent,
@@ -112,26 +110,16 @@ class _DictionaryDetailsPageState extends State<DictionaryDetailsPage> {
           ),
         ),
         Visibility(
-          visible: widget.args.fromDictionary,
+          visible: args.fromDictionary,
           child: KPButton(
             title2: "dict_jisho_add_word_label".tr(),
             icon: Icons.add,
             onTap: () {
-              AddToKanListBottomSheet.show(
-                  context, widget.args.word, state.data);
+              AddToKanListBottomSheet.show(context, args.word, data);
             },
           ),
         ),
       ],
-    );
-  }
-
-  Widget _nothingFound() {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
-        child: Text("jisho_no_match".tr(), textAlign: TextAlign.center),
-      ),
     );
   }
 }

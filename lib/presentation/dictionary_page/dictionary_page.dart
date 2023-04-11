@@ -12,6 +12,7 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
 import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
 import 'package:kanpractice/presentation/dictionary_page/widgets/word_search_bar.dart';
+import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 
 import '../core/util/utils.dart';
 
@@ -37,7 +38,6 @@ class _DictionaryPageState extends State<DictionaryPage>
     _searchBarTextController = TextEditingController();
     String? word = widget.args.word;
     if (word != null) _searchBarTextController.text = word;
-    getIt<DictBloc>().add(DictEventStart());
     super.initState();
   }
 
@@ -51,12 +51,15 @@ class _DictionaryPageState extends State<DictionaryPage>
   Widget build(BuildContext context) {
     super.build(context);
     if (widget.args.searchInJisho) return _body();
-    return KPScaffold(
-      setGestureDetector: false,
-      appBarTitle: widget.args.searchInJisho
-          ? "dict_title".tr()
-          : 'dict_add_word_title'.tr(),
-      child: _body(),
+    return BlocProvider(
+      create: (context) => getIt<DictionaryBloc>()..add(DictionaryEventStart()),
+      child: KPScaffold(
+        setGestureDetector: false,
+        appBarTitle: widget.args.searchInJisho
+            ? "dict_title".tr()
+            : 'dict_add_word_title'.tr(),
+        child: _body(),
+      ),
     );
   }
 
@@ -65,32 +68,25 @@ class _DictionaryPageState extends State<DictionaryPage>
         _searchBarTextController.text != "" ||
         _searchBarTextController.text.isNotEmpty;
 
-    return BlocBuilder<DictBloc, DictState>(
-      builder: (context, state) {
-        return Column(
+    return Column(
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(child: _searchBar()),
-                _searchWidget(canSearchEitherWay)
-              ],
-            ),
-            if (state is DictStateLoading)
-              const Center(
-                  child: Padding(
-                padding: EdgeInsets.all(KPMargins.margin16),
-                child: KPProgressIndicator(),
-              ))
-            else if (state is DictStateFailure)
-              Center(
-                  child: Padding(
-                padding: const EdgeInsets.all(KPMargins.margin16),
-                child: Text("dict_model_not_loaded".tr(),
-                    style: Theme.of(context).textTheme.bodyMedium),
-              ))
-            else if (state is DictStateLoaded)
-              Column(
+            Expanded(child: _searchBar()),
+            _searchWidget(canSearchEitherWay)
+          ],
+        ),
+        BlocBuilder<DictionaryBloc, DictionaryState>(
+          builder: (context, state) {
+            return state.maybeWhen(
+              loading: () => const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(KPMargins.margin16),
+                  child: KPProgressIndicator(),
+                ),
+              ),
+              loaded: (predictions) => Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -118,19 +114,29 @@ class _DictionaryPageState extends State<DictionaryPage>
                       ],
                     ),
                   ),
-                  _predictions(state),
+                  _predictions(predictions),
                   KPCustomCanvas(
                     line: _line,
                     allowPrediction: true,
                     handleImage: (im.Image image) {
-                      getIt<DictBloc>().add(DictEventLoading(image: image));
+                      context
+                          .read<DictionaryBloc>()
+                          .add(DictionaryEventLoading(image: image));
                     },
                   ),
                 ],
-              )
-          ],
-        );
-      },
+              ),
+              error: () => Center(
+                  child: Padding(
+                padding: const EdgeInsets.all(KPMargins.margin16),
+                child: Text("dict_model_not_loaded".tr(),
+                    style: Theme.of(context).textTheme.bodyMedium),
+              )),
+              orElse: () => const SizedBox(),
+            );
+          },
+        ),
+      ],
     );
   }
 
@@ -208,15 +214,15 @@ class _DictionaryPageState extends State<DictionaryPage>
     );
   }
 
-  SizedBox _predictions(DictStateLoaded state) {
+  SizedBox _predictions(List<Category> predictions) {
     return SizedBox(
       height: KPSizes.defaultSizeFiltersList,
       child: ListView.builder(
-        itemCount: state.predictions.length,
+        itemCount: predictions.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          final String word = state.predictions[index].label.substring(0, 1);
-          final double score = state.predictions[index].score;
+          final String word = predictions[index].label.substring(0, 1);
+          final double score = predictions[index].score;
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin2),
             child: ActionChip(

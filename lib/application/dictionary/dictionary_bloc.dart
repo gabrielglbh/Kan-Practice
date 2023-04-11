@@ -13,12 +13,12 @@ part 'dictionary_state.dart';
 part 'dictionary_bloc.freezed.dart';
 
 @lazySingleton
-class DictBloc extends Bloc<DictEvent, DictionaryState> {
+class DictionaryBloc extends Bloc<DictionaryEvent, DictionaryState> {
   final IClassifierRepository _classifierRepository;
 
-  DictBloc(this._classifierRepository)
+  DictionaryBloc(this._classifierRepository)
       : super(const DictionaryState.initial()) {
-    on<DictEventStart>((event, emit) async {
+    on<DictionaryEventStart>((event, emit) async {
       try {
         emit(const DictionaryState.loading());
 
@@ -32,7 +32,7 @@ class DictBloc extends Bloc<DictEvent, DictionaryState> {
       }
     });
 
-    on<DictEventLoading>((event, emit) async {
+    on<DictionaryEventLoading>((event, emit) async {
       try {
         emit(const DictionaryState.loading());
         List<Category> categories = _classifierRepository.predict(event.image);

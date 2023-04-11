@@ -3,16 +3,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:kanpractice/application/add_word/add_word_bloc.dart';
 import 'package:kanpractice/application/archive_grammar_points/archive_grammar_points_bloc.dart';
 import 'package:kanpractice/application/archive_words/archive_words_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
-import 'package:kanpractice/application/dictionary/dictionary_bloc.dart';
-import 'package:kanpractice/application/dictionary_details/dictionary_details_bloc.dart';
 import 'package:kanpractice/application/example_data/example_data_bloc.dart';
 import 'package:kanpractice/application/folder_details/folder_details_bloc.dart';
 import 'package:kanpractice/application/folder_list/folder_bloc.dart';
-import 'package:kanpractice/application/folder_practice/folder_practice_bloc.dart';
 import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
 import 'package:kanpractice/application/grammar_mode/grammar_mode_bloc.dart';
 import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
@@ -164,7 +162,6 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<ListsBloc>()),
         BlocProvider(create: (_) => getIt<FolderBloc>()),
         BlocProvider(create: (_) => getIt<BackupBloc>()),
-        BlocProvider(create: (_) => getIt<DictBloc>()),
         BlocProvider(create: (_) => getIt<MarketBloc>()),
         BlocProvider(create: (_) => getIt<SettingsBloc>()),
         BlocProvider(create: (_) => getIt<ListDetailsBloc>()),
@@ -172,9 +169,7 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<WordHistoryBloc>()),
         BlocProvider(create: (_) => getIt<AuthBloc>()..add(AuthIdle())),
         BlocProvider(create: (_) => getIt<GenericTestBloc>()),
-        BlocProvider(create: (_) => getIt<DictionaryDetailsBloc>()),
         BlocProvider(create: (_) => getIt<FolderDetailsBloc>()),
-        BlocProvider(create: (_) => getIt<FolderPracticeBloc>()),
         BlocProvider(create: (_) => getIt<RateBloc>()),
         BlocProvider(create: (_) => getIt<StatsBloc>()),
         BlocProvider(create: (_) => getIt<TestHistoryBloc>()),
@@ -186,6 +181,7 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<GrammarTestBloc>()),
         BlocProvider(create: (_) => getIt<ArchiveGrammarPointsBloc>()),
         BlocProvider(create: (_) => getIt<ArchiveWordsBloc>()),
+        BlocProvider(create: (_) => getIt<AddWordBloc>()),
       ],
       child: BlocBuilder<ExampleDataBloc, ExampleDataState>(
         builder: (context, state) {

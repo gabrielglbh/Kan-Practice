@@ -1,19 +1,19 @@
 part of 'dictionary_bloc.dart';
 
-abstract class DictEvent extends Equatable {
-  const DictEvent();
+abstract class DictionaryEvent extends Equatable {
+  const DictionaryEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class DictEventLoading extends DictEvent {
+class DictionaryEventLoading extends DictionaryEvent {
   final Image image;
 
-  const DictEventLoading({required this.image});
+  const DictionaryEventLoading({required this.image});
 
   @override
   List<Object> get props => [];
 }
 
-class DictEventStart extends DictEvent {}
+class DictionaryEventStart extends DictionaryEvent {}

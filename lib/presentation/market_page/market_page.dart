@@ -48,9 +48,6 @@ class _MarketPageState extends State<MarketPage>
 
     _currentAppliedOrder =
         getIt<PreferencesService>().readData(SharedKeys.orderOnMarket) ?? true;
-
-    getIt<MarketBloc>().add(MarketEventLoading(
-        filter: _currentAppliedFilter, order: _currentAppliedOrder));
     super.initState();
   }
 
@@ -66,7 +63,7 @@ class _MarketPageState extends State<MarketPage>
   _focusListener() => setState(() => _searchHasFocus = _searchBarFn.hasFocus);
 
   _addLoadingEvent({bool reset = false}) {
-    return getIt<MarketBloc>()
+    return context.read<MarketBloc>()
       ..add(MarketEventLoading(
           filter: _currentAppliedFilter,
           order: _currentAppliedOrder,
@@ -74,7 +71,7 @@ class _MarketPageState extends State<MarketPage>
   }
 
   _addSearchingEvent(String query, {bool reset = true}) =>
-      getIt<MarketBloc>().add(MarketEventSearching(query,
+      context.read<MarketBloc>().add(MarketEventSearching(query,
           reset: reset,
           order: _currentAppliedOrder,
           filter: _currentAppliedFilter));
@@ -133,55 +130,117 @@ class _MarketPageState extends State<MarketPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return KPScaffold(
-      appBarTitle: 'market_place_title'.tr(),
-      onWillPop: () async {
-        if (_searchHasFocus) {
-          _searchBarFn.unfocus();
-          return false;
-        } else {
-          return true;
-        }
-      },
-      child: Column(
-        children: [
-          KPSearchBar(
-            controller: _searchTextController,
-            hint: "market_lists_searchBar_hint".tr(),
-            focus: _searchBarFn,
-            onQuery: (String query) {
-              /// Everytime the user queries, reset the query itself and
-              /// the pagination index
-              _query = query;
-              _addSearchingEvent(_query, reset: true);
-            },
-            onExitSearch: () {
-              /// Empty the query
-              _query = "";
-              _addLoadingEvent();
-            },
-          ),
-          _filterChips(),
-          BlocConsumer<MarketBloc, MarketState>(listener: (context, state) {
-            if (state is MarketStateSuccess) {
-              Utils.getSnackBar(context, state.message);
-            } else if (state is MarketStateFailure) {
-              Utils.getSnackBar(context, state.message);
-            }
-          }, builder: (context, state) {
-            if (state is MarketStateLoading || state is MarketStateSearching) {
-              return Column(
-                children: [
-                  const KPProgressIndicator(),
-                  const SizedBox(height: KPMargins.margin16),
-                  Text('can_take_a_while_loading'.tr()),
-                ],
-              );
-            } else {
-              return _lists(state);
-            }
-          }),
-        ],
+    return BlocProvider(
+      create: (context) => getIt<MarketBloc>()
+        ..add(MarketEventLoading(
+            filter: _currentAppliedFilter, order: _currentAppliedOrder)),
+      child: KPScaffold(
+        appBarTitle: 'market_place_title'.tr(),
+        onWillPop: () async {
+          if (_searchHasFocus) {
+            _searchBarFn.unfocus();
+            return false;
+          } else {
+            return true;
+          }
+        },
+        child: Column(
+          children: [
+            KPSearchBar(
+              controller: _searchTextController,
+              hint: "market_lists_searchBar_hint".tr(),
+              focus: _searchBarFn,
+              onQuery: (String query) {
+                /// Everytime the user queries, reset the query itself and
+                /// the pagination index
+                _query = query;
+                _addSearchingEvent(_query, reset: true);
+              },
+              onExitSearch: () {
+                /// Empty the query
+                _query = "";
+                _addLoadingEvent();
+              },
+            ),
+            _filterChips(),
+            BlocConsumer<MarketBloc, MarketState>(
+              listener: (context, state) {
+                state.mapOrNull(succeeded: (msg) {
+                  Utils.getSnackBar(context, msg.message);
+                }, error: (error) {
+                  Utils.getSnackBar(context, error.message);
+                });
+              },
+              builder: (context, state) {
+                return state.maybeWhen(
+                  loading: () => Column(
+                    children: [
+                      const KPProgressIndicator(),
+                      const SizedBox(height: KPMargins.margin16),
+                      Text('can_take_a_while_loading'.tr()),
+                    ],
+                  ),
+                  error: (_) => KPEmptyList(
+                      showTryButton: true,
+                      onRefresh: () => _addLoadingEvent(reset: true),
+                      message: "market_load_failed".tr()),
+                  loaded: (lists) => lists.isEmpty
+                      ? Expanded(
+                          child: KPEmptyList(
+                              onRefresh: () => _addLoadingEvent(reset: true),
+                              showTryButton: true,
+                              message: "market_empty".tr()))
+                      : Expanded(
+                          child: RefreshIndicator(
+                            onRefresh: () async =>
+                                _addLoadingEvent(reset: true),
+                            color: KPColors.secondaryColor,
+                            child: ListView.separated(
+                                key: const PageStorageKey<String>(
+                                    'marketListsController'),
+                                controller: _scrollController,
+                                itemCount: lists.length,
+                                keyboardDismissBehavior:
+                                    ScrollViewKeyboardDismissBehavior.onDrag,
+                                separatorBuilder: (_, __) =>
+                                    const Divider(height: KPMargins.margin4),
+                                padding: const EdgeInsets.only(
+                                    bottom: KPMargins.margin24),
+                                itemBuilder: (context, k) {
+                                  return MarketListTile(
+                                    list: lists[k],
+                                    isManaging: _currentAppliedFilter ==
+                                        MarketFilters.mine,
+                                    onDownload: (listId, isFolder) {
+                                      context
+                                          .read<MarketBloc>()
+                                          .add(MarketEventDownload(
+                                            listId,
+                                            isFolder,
+                                            _currentAppliedFilter,
+                                            _currentAppliedOrder,
+                                          ));
+                                    },
+                                    onRemove: (listId, isFolder) {
+                                      context
+                                          .read<MarketBloc>()
+                                          .add(MarketEventRemove(
+                                            listId,
+                                            isFolder,
+                                            _currentAppliedFilter,
+                                            _currentAppliedOrder,
+                                          ));
+                                    },
+                                  );
+                                }),
+                          ),
+                        ),
+                  orElse: () => const SizedBox(),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -217,61 +276,6 @@ class _MarketPageState extends State<MarketPage>
                 ),
               );
             }));
-  }
-
-  Widget _lists(MarketState state) {
-    if (state is MarketStateFailure) {
-      return KPEmptyList(
-          showTryButton: true,
-          onRefresh: () => _addLoadingEvent(reset: true),
-          message: "market_load_failed".tr());
-    } else if (state is MarketStateLoaded) {
-      return state.lists.isEmpty
-          ? Expanded(
-              child: KPEmptyList(
-                  onRefresh: () => _addLoadingEvent(reset: true),
-                  showTryButton: true,
-                  message: "market_empty".tr()))
-          : Expanded(
-              child: RefreshIndicator(
-                onRefresh: () async => _addLoadingEvent(reset: true),
-                color: KPColors.secondaryColor,
-                child: ListView.separated(
-                    key: const PageStorageKey<String>('marketListsController'),
-                    controller: _scrollController,
-                    itemCount: state.lists.length,
-                    keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.onDrag,
-                    separatorBuilder: (_, __) =>
-                        const Divider(height: KPMargins.margin4),
-                    padding: const EdgeInsets.only(bottom: KPMargins.margin24),
-                    itemBuilder: (context, k) {
-                      return MarketListTile(
-                        list: state.lists[k],
-                        isManaging: _currentAppliedFilter == MarketFilters.mine,
-                        onDownload: (listId, isFolder) {
-                          getIt<MarketBloc>().add(MarketEventDownload(
-                            listId,
-                            isFolder,
-                            _currentAppliedFilter,
-                            _currentAppliedOrder,
-                          ));
-                        },
-                        onRemove: (listId, isFolder) {
-                          getIt<MarketBloc>().add(MarketEventRemove(
-                            listId,
-                            isFolder,
-                            _currentAppliedFilter,
-                            _currentAppliedOrder,
-                          ));
-                        },
-                      );
-                    }),
-              ),
-            );
-    } else {
-      return Container();
-    }
   }
 
   @override

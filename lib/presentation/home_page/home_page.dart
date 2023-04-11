@@ -5,9 +5,9 @@ import 'package:kanpractice/application/archive_grammar_points/archive_grammar_p
 import 'package:kanpractice/application/archive_words/archive_words_bloc.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
 import 'package:kanpractice/application/folder_list/folder_bloc.dart';
-import 'package:kanpractice/application/list/lists_bloc.dart';
-import 'package:kanpractice/application/load_grammar_test/load_grammar_test_bloc.dart';
-import 'package:kanpractice/application/load_test/load_test_bloc.dart';
+import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
+import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
+import 'package:kanpractice/application/lists/lists_bloc.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
@@ -98,19 +98,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_onTabChanged);
 
-    getIt<ListsBloc>().add(ListEventLoading(
-      filter: _currentAppliedFilter,
-      order: _currentAppliedOrder,
-      reset: true,
-    ));
+    context.read<ListsBloc>().add(ListsEventLoading(
+          filter: _currentAppliedFilter,
+          order: _currentAppliedOrder,
+          reset: true,
+        ));
 
-    getIt<FolderBloc>().add(FolderEventLoading(
-      filter: _currentAppliedFolderFilter,
-      order: _currentAppliedFolderOrder,
-      reset: true,
-    ));
+    context.read<FolderBloc>().add(FolderEventLoading(
+          filter: _currentAppliedFolderFilter,
+          order: _currentAppliedFolderOrder,
+          reset: true,
+        ));
 
-    getIt<BackupBloc>().add(BackUpGetVersion(context));
+    context.read<BackupBloc>().add(BackupGetVersion(context));
 
     _addReviewEvent();
 
@@ -133,46 +133,53 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   _addReviewEvent() {
-    getIt<LoadTestBloc>().add(const LoadTestEventIdle(mode: Tests.daily));
-    getIt<LoadGrammarTestBloc>()
-        .add(const LoadGrammarTestEventIdle(mode: Tests.daily));
+    context
+        .read<GenericTestBloc>()
+        .add(const GenericTestEventIdle(mode: Tests.daily));
+    context
+        .read<GrammarTestBloc>()
+        .add(const GrammarTestEventIdle(mode: Tests.daily));
   }
 
   _addListLoadingEvent({bool reset = true}) =>
-      getIt<ListsBloc>().add(ListEventLoading(
+      context.read<ListsBloc>().add(ListsEventLoading(
           filter: _currentAppliedFilter,
           order: _currentAppliedOrder,
           reset: reset));
 
   _addListSearchingEvent(String query, {bool reset = true}) =>
-      getIt<ListsBloc>().add(ListEventSearching(query, reset: reset));
+      context.read<ListsBloc>().add(ListsEventSearching(query, reset: reset));
 
   _addFolderListLoadingEvent({bool reset = true}) =>
-      getIt<FolderBloc>().add(FolderEventLoading(
+      context.read<FolderBloc>().add(FolderEventLoading(
           filter: _currentAppliedFolderFilter,
           order: _currentAppliedFolderOrder,
           reset: reset));
 
   _addFolderListSearchingEvent(String query, {bool reset = true}) =>
-      getIt<FolderBloc>().add(FolderEventSearching(query, reset: reset));
+      context.read<FolderBloc>().add(FolderEventSearching(query, reset: reset));
 
   _addWordsLoadingEvent({bool reset = true}) {
-    return getIt<ArchiveWordsBloc>()
+    return context
+        .read<ArchiveWordsBloc>()
         .add(ArchiveWordsEventLoading(reset: reset));
   }
 
   _addWordsSearchingEvent(String query, {bool reset = true}) {
-    return getIt<ArchiveWordsBloc>()
+    return context
+        .read<ArchiveWordsBloc>()
         .add(ArchiveWordsEventSearching(query, reset: reset));
   }
 
   _addGrammarPointLoadingEvent({bool reset = true}) {
-    return getIt<ArchiveGrammarPointsBloc>()
+    return context
+        .read<ArchiveGrammarPointsBloc>()
         .add(ArchiveGrammarPointsEventLoading(reset: reset));
   }
 
   _addGrammarPointSearchingEvent(String query, {bool reset = true}) {
-    return getIt<ArchiveGrammarPointsBloc>()
+    return context
+        .read<ArchiveGrammarPointsBloc>()
         .add(ArchiveGrammarPointsEventSearching(query, reset: reset));
   }
 
@@ -247,18 +254,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ? [marketIcon]
             : [];
 
-    return BlocListener<BackupBloc, BackUpState>(
+    return BlocListener<BackupBloc, BackupState>(
       listener: (context, state) {
-        if (state is BackUpStateVersionRetrieved) {
+        state.mapOrNull(versionRetrieved: (v) {
           setState(() {
-            _newVersion = state.version;
-            _notes = state.notes;
+            _newVersion = v.version;
+            _notes = v.notes;
           });
-        }
+        });
       },
       child: BlocListener<ListsBloc, ListsState>(
         listener: (context, state) async {
-          if (state is ListStateLoaded) {
+          state.mapOrNull(loaded: (_) async {
             if (getIt<PreferencesService>()
                     .readData(SharedKeys.haveSeenKanListCoachMark) ==
                 false) {
@@ -275,7 +282,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ], CoachTutorialParts.kanList)
                   .showTutorial(context, onEnd: () => _onTutorial = false);
             }
-          }
+          });
         },
         child: KPScaffold(
           setGestureDetector: false,
@@ -316,7 +323,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 if (name == "__folder") {
                   _addFolderListLoadingEvent();
                 } else {
-                  getIt<ListsBloc>().add(ListEventCreate(name,
+                  context.read<ListsBloc>().add(ListsEventCreate(name,
                       filter: _currentAppliedFilter,
                       order: _currentAppliedOrder));
                 }
@@ -397,24 +404,29 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         Expanded(child: _body()),
                       ],
                     ),
-                    BlocBuilder<LoadTestBloc, LoadTestState>(
+                    BlocBuilder<GenericTestBloc, GenericTestState>(
                       builder: (context, state) {
-                        if (state is LoadTestStateIdle) {
-                          final show = _showPendingReview(state.wordsToReview);
-                          if (show) return _actionChipReview();
-                          return BlocBuilder<LoadGrammarTestBloc,
-                              LoadGrammarTestState>(
-                            builder: (context, state) {
-                              if (state is LoadGrammarTestStateIdle) {
-                                final show =
-                                    _showPendingReview(state.grammarToReview);
-                                if (show) return _actionChipReview();
-                              }
-                              return const SizedBox();
-                            },
-                          );
-                        }
-                        return const SizedBox();
+                        return state.maybeWhen(
+                          initial: (wordsToReview) {
+                            final show = _showPendingReview(wordsToReview);
+                            if (show) return _actionChipReview();
+                            return BlocBuilder<GrammarTestBloc,
+                                GrammarTestState>(
+                              builder: (context, state) {
+                                return state.maybeWhen(
+                                  initial: (grammarToReview) {
+                                    final show =
+                                        _showPendingReview(grammarToReview);
+                                    if (show) return _actionChipReview();
+                                    return const SizedBox();
+                                  },
+                                  orElse: () => const SizedBox(),
+                                );
+                              },
+                            );
+                          },
+                          orElse: () => const SizedBox(),
+                        );
                       },
                     ),
                   ],

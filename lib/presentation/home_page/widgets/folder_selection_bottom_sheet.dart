@@ -4,7 +4,6 @@ import 'package:kanpractice/application/folder_list/folder_bloc.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
-import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
@@ -44,7 +43,7 @@ class _FolderSelectionBottomSheetState
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        getIt<FolderBloc>().add(FolderForTestEventLoading());
+        context.read<FolderBloc>().add(FolderForTestEventLoading());
         return Wrap(
           children: [
             Column(
@@ -80,24 +79,22 @@ class _FolderSelectionBottomSheetState
                   visible: !_selectionMode,
                   child: BlocBuilder<FolderBloc, FolderState>(
                     builder: (context, state) {
-                      if (state is FolderStateFailure) {
-                        return KPEmptyList(
-                            showTryButton: true,
-                            onRefresh: () => getIt<FolderBloc>()
-                              ..add(FolderForTestEventLoading()),
-                            message: "study_bottom_sheet_load_failed".tr());
-                      } else if (state is FolderStateLoading) {
-                        return const KPProgressIndicator();
-                      } else if (state is FolderStateLoaded) {
-                        return Container(
+                      return state.maybeWhen(
+                        error: () => KPEmptyList(
+                          showTryButton: true,
+                          onRefresh: () => context.read<FolderBloc>()
+                            ..add(FolderForTestEventLoading()),
+                          message: "study_bottom_sheet_load_failed".tr(),
+                        ),
+                        loaded: (folders) => Container(
                             constraints: BoxConstraints(
                                 maxHeight:
                                     MediaQuery.of(context).size.height / 2.5),
                             margin: const EdgeInsets.all(KPMargins.margin8),
-                            child: _listSelection(state));
-                      } else {
-                        return const SizedBox();
-                      }
+                            child: _listSelection(folders)),
+                        loading: () => const KPProgressIndicator(),
+                        orElse: () => const SizedBox(),
+                      );
                     },
                   ),
                 )
@@ -109,12 +106,12 @@ class _FolderSelectionBottomSheetState
     );
   }
 
-  Column _listSelection(FolderStateLoaded state) {
+  Column _listSelection(List<Folder> folders) {
     return Column(
       children: [
         Expanded(
           child: KPKanListGrid<Folder>(
-            items: state.lists,
+            items: folders,
             isSelected: (name) => _selectedFolders.contains(name),
             onTap: (name) {
               setState(() {

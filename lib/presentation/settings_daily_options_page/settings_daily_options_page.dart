@@ -28,50 +28,46 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
 
   @override
   void initState() {
-    _writingNotification = getIt<PreferencesService>()
-        .readData(SharedKeys.writingDailyNotification);
-    _readingNotification = getIt<PreferencesService>()
-        .readData(SharedKeys.readingDailyNotification);
-    _recognitionNotification = getIt<PreferencesService>()
-        .readData(SharedKeys.recognitionDailyNotification);
-    _listeningNotification = getIt<PreferencesService>()
-        .readData(SharedKeys.listeningDailyNotification);
-    _speakingNotification = getIt<PreferencesService>()
-        .readData(SharedKeys.speakingDailyNotification);
-    _definitionNotification = getIt<PreferencesService>()
-        .readData(SharedKeys.definitionDailyNotification);
-    _grammarPointNotification = getIt<PreferencesService>()
-        .readData(SharedKeys.grammarPointDailyNotification);
-    _controlledPace = getIt<PreferencesService>()
-        .readData(SharedKeys.dailyTestOnControlledPace);
+    final service = getIt<PreferencesService>();
+    _writingNotification =
+        service.readData(SharedKeys.writingDailyNotification);
+    _readingNotification =
+        service.readData(SharedKeys.readingDailyNotification);
+    _recognitionNotification =
+        service.readData(SharedKeys.recognitionDailyNotification);
+    _listeningNotification =
+        service.readData(SharedKeys.listeningDailyNotification);
+    _speakingNotification =
+        service.readData(SharedKeys.speakingDailyNotification);
+    _definitionNotification =
+        service.readData(SharedKeys.definitionDailyNotification);
+    _grammarPointNotification =
+        service.readData(SharedKeys.grammarPointDailyNotification);
+    _controlledPace = service.readData(SharedKeys.dailyTestOnControlledPace);
     super.initState();
   }
 
   _saveData(StudyModes mode, bool value) {
+    final service = getIt<PreferencesService>();
     switch (mode) {
       case StudyModes.writing:
-        getIt<PreferencesService>()
-            .saveData(SharedKeys.writingDailyNotification, value);
+        service.saveData(SharedKeys.writingDailyNotification, value);
         setState(() => _writingNotification = value);
         return;
       case StudyModes.reading:
-        getIt<PreferencesService>()
-            .saveData(SharedKeys.readingDailyNotification, value);
+        service.saveData(SharedKeys.readingDailyNotification, value);
         setState(() => _readingNotification = value);
         return;
       case StudyModes.recognition:
-        getIt<PreferencesService>()
-            .saveData(SharedKeys.recognitionDailyNotification, value);
+        service.saveData(SharedKeys.recognitionDailyNotification, value);
         setState(() => _recognitionNotification = value);
         return;
       case StudyModes.listening:
-        getIt<PreferencesService>()
-            .saveData(SharedKeys.listeningDailyNotification, value);
+        service.saveData(SharedKeys.listeningDailyNotification, value);
         setState(() => _listeningNotification = value);
         return;
       case StudyModes.speaking:
-        getIt<PreferencesService>()
-            .saveData(SharedKeys.speakingDailyNotification, value);
+        service.saveData(SharedKeys.speakingDailyNotification, value);
         setState(() => _speakingNotification = value);
         return;
     }

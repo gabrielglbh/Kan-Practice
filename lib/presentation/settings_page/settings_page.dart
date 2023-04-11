@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
-import 'package:kanpractice/application/load_grammar_test/load_grammar_test_bloc.dart';
-import 'package:kanpractice/application/load_test/load_test_bloc.dart';
+import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
+import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
 import 'package:kanpractice/application/settings/settings_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
@@ -34,180 +34,180 @@ class _SettingsPageState extends State<SettingsPage> {
     _wordsInTest =
         getIt<PreferencesService>().readData(SharedKeys.numberOfWordInTest) ??
             KPSizes.numberOfWordInTest;
-    getIt<SettingsBloc>().add(SettingsLoadingBackUpDate(context));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        ListTile(
-          leading: const Icon(Icons.local_florist_rounded,
-              color: Colors.orangeAccent),
-          title: Text("settings_information_rating".tr()),
-          trailing: const Icon(Icons.link),
-          onTap: () async {
-            await Utils.launch(context, "google_play_link".tr());
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.device_hub_rounded),
-          title: Text("settings_information_contribute".tr()),
-          trailing: const Icon(Icons.link),
-          onTap: () async {
-            try {
-              await Utils.launch(
-                  context, "https://github.com/gabrielglbh/Kan-Practice");
-            } catch (err) {
-              Utils.getSnackBar(
-                  context, "settings_information_rating_failed".tr());
-            }
-          },
-        ),
-        _header("settings_general".tr()),
-        const Divider(),
-        ListTile(
-          leading: const Icon(Icons.insert_chart_outlined_rounded,
-              color: Colors.teal),
-          title: Text("settings_general_statistics".tr()),
-          onTap: () =>
-              Navigator.of(context).pushNamed(KanPracticePages.statisticsPage),
-        ),
-        ListTile(
-          leading: const Icon(Icons.toggle_on),
-          title: Text("settings_enhancements_label".tr()),
-          onTap: () => Navigator.of(context)
-              .pushNamed(KanPracticePages.settingsTogglePage),
-        ),
-        ListTile(
-          leading: const Icon(Icons.calendar_today_rounded,
-              color: KPColors.secondaryColor),
-          title: Text("settings_daily_test_options".tr()),
-          onTap: () async {
-            await Navigator.of(context)
-                .pushNamed(KanPracticePages.settingsDailyOptions)
-                .then((_) {
-              getIt<LoadTestBloc>()
-                  .add(const LoadTestEventIdle(mode: Tests.daily));
-              getIt<LoadGrammarTestBloc>()
-                  .add(const LoadGrammarTestEventIdle(mode: Tests.daily));
-            });
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.adjust_rounded),
-          title: Text("settings_number_of_word_in_test".tr()),
-          trailing: Text("$_wordsInTest",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(color: KPColors.midGrey)),
-          onTap: () async {
-            final newValue = await ChangeWordsInTest.show(context);
-            if (newValue != null) {
-              setState(() => _wordsInTest = newValue);
-              getIt<PreferencesService>()
-                  .saveData(SharedKeys.numberOfWordInTest, _wordsInTest);
-            }
-          },
-        ),
-        ListTile(
-            leading: const Icon(Icons.notifications_active_rounded),
-            title: Text("settings_notifications_label".tr()),
+    return BlocProvider(
+      create: (context) =>
+          getIt<SettingsBloc>()..add(SettingsLoadingBackUpDate(context)),
+      child: ListView(
+        children: [
+          ListTile(
+            leading: const Icon(Icons.local_florist_rounded,
+                color: Colors.orangeAccent),
+            title: Text("settings_information_rating".tr()),
+            trailing: const Icon(Icons.link),
+            onTap: () async {
+              await Utils.launch(context, "google_play_link".tr());
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.device_hub_rounded),
+            title: Text("settings_information_contribute".tr()),
+            trailing: const Icon(Icons.link),
+            onTap: () async {
+              try {
+                await Utils.launch(
+                    context, "https://github.com/gabrielglbh/Kan-Practice");
+              } catch (err) {
+                Utils.getSnackBar(
+                    context, "settings_information_rating_failed".tr());
+              }
+            },
+          ),
+          _header("settings_general".tr()),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.insert_chart_outlined_rounded,
+                color: Colors.teal),
+            title: Text("settings_general_statistics".tr()),
+            onTap: () => Navigator.of(context)
+                .pushNamed(KanPracticePages.statisticsPage),
+          ),
+          ListTile(
+            leading: const Icon(Icons.toggle_on),
+            title: Text("settings_enhancements_label".tr()),
+            onTap: () => Navigator.of(context)
+                .pushNamed(KanPracticePages.settingsTogglePage),
+          ),
+          ListTile(
+            leading: const Icon(Icons.calendar_today_rounded,
+                color: KPColors.secondaryColor),
+            title: Text("settings_daily_test_options".tr()),
+            onTap: () async {
+              await Navigator.of(context)
+                  .pushNamed(KanPracticePages.settingsDailyOptions)
+                  .then((_) {
+                context
+                    .read<GenericTestBloc>()
+                    .add(const GenericTestEventIdle(mode: Tests.daily));
+                context
+                    .read<GrammarTestBloc>()
+                    .add(const GrammarTestEventIdle(mode: Tests.daily));
+              });
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.adjust_rounded),
+            title: Text("settings_number_of_word_in_test".tr()),
+            trailing: Text("$_wordsInTest",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: KPColors.midGrey)),
+            onTap: () async {
+              final newValue = await ChangeWordsInTest.show(context);
+              if (newValue != null) {
+                setState(() => _wordsInTest = newValue);
+                getIt<PreferencesService>()
+                    .saveData(SharedKeys.numberOfWordInTest, _wordsInTest);
+              }
+            },
+          ),
+          ListTile(
+              leading: const Icon(Icons.notifications_active_rounded),
+              title: Text("settings_notifications_label".tr()),
+              onTap: () {
+                AppSettings.openNotificationSettings();
+              }),
+          ListTile(
+            leading: const Icon(Icons.lightbulb, color: Colors.lime),
+            title: Text('settings_toggle_theme'.tr()),
             onTap: () {
-              AppSettings.openNotificationSettings();
-            }),
-        ListTile(
-          leading: const Icon(Icons.lightbulb, color: Colors.lime),
-          title: Text('settings_toggle_theme'.tr()),
-          onTap: () {
-            ChangeAppTheme.show(context);
-          },
-        ),
-        BlocBuilder<SettingsBloc, SettingsState>(
-          builder: (context, state) {
-            if (state is SettingsStateBackUpDateLoaded) {
-              return _header(
-                "settings_account_section".tr(),
-                subtitle: state.date,
-                hasTrailing: true,
-              );
-            } else if (state is SettingsStateBackUpDateLoading) {
-              return _header("settings_account_section".tr(),
-                  hasTrailing: true);
-            } else {
-              return Container();
-            }
-          },
-        ),
-        const Divider(),
-        ListTile(
-            leading: const Icon(Icons.whatshot_rounded),
-            title: Text("settings_account_label".tr()),
-            onTap: () =>
-                Navigator.of(context).pushNamed(KanPracticePages.loginPage)),
-        _header("settings_information_section".tr()),
-        const Divider(),
-        BlocListener<BackupBloc, BackUpState>(
-          listener: (context, state) async {
-            if (state is BackUpStateVersionNotesRetrieved) {
-              await Utils.showVersionNotes(
-                context,
-                notes: state.notes,
-              );
-            }
-          },
-          child: ListTile(
-            leading: const Icon(Icons.star, color: Colors.green),
-            title: Text("settings_general_versionNotes".tr()),
-            onTap: () {
-              getIt<BackupBloc>().add(
-                BackUpGetVersion(context, showNotes: true),
+              ChangeAppTheme.show(context);
+            },
+          ),
+          BlocBuilder<SettingsBloc, SettingsState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                loaded: (date) => _header(
+                  "settings_account_section".tr(),
+                  subtitle: date,
+                  hasTrailing: true,
+                ),
+                loading: () =>
+                    _header("settings_account_section".tr(), hasTrailing: true),
+                orElse: () => const SizedBox(),
               );
             },
           ),
-        ),
-        ListTile(
-            leading: const Icon(Icons.handyman),
-            title: Text("settings_information_developer_label".tr()),
-            onTap: () => DevInfo.callModalSheet(context)),
-        ListTile(
-            leading: const Icon(Icons.copyright_rounded),
-            title: Text("settings_information_about_label".tr()),
-            onTap: () => CopyrightInfo.callModalSheet(context)),
-        ListTile(
-            leading: const Icon(Icons.apps),
-            title: Text("settings_information_license_label".tr()),
-            onTap: () {
-              Navigator.of(context).push(
-                CupertinoPageRoute(builder: (context) {
-                  return FutureBuilder<PackageInfo>(
-                      future: PackageInfo.fromPlatform(),
-                      builder: (context, snapshot) {
-                        return LicensePage(
-                          applicationName: "KanPractice",
-                          applicationVersion: snapshot.data?.version,
-                          applicationIcon: SizedBox(
-                              width: KPSizes.appIcon,
-                              height: KPSizes.appIcon,
-                              child: Image.asset("assets/icon/icon.png")),
-                        );
-                      });
-                }),
-              );
-            }),
-        Padding(
-          padding: const EdgeInsets.only(bottom: KPMargins.margin48),
-          child: ListTile(
-              leading: const Icon(Icons.privacy_tip),
-              title: Text("settings_information_terms_label".tr()),
-              trailing: const Icon(Icons.link),
-              onTap: () async {
-                await Utils.launch(context, "https://kanpractice.web.app");
+          const Divider(),
+          ListTile(
+              leading: const Icon(Icons.whatshot_rounded),
+              title: Text("settings_account_label".tr()),
+              onTap: () =>
+                  Navigator.of(context).pushNamed(KanPracticePages.loginPage)),
+          _header("settings_information_section".tr()),
+          const Divider(),
+          BlocListener<BackupBloc, BackupState>(
+            listener: (context, state) async {
+              state.mapOrNull(notesRetrieved: (n) async {
+                await Utils.showVersionNotes(context, notes: n.notes);
+              });
+            },
+            child: ListTile(
+              leading: const Icon(Icons.star, color: Colors.green),
+              title: Text("settings_general_versionNotes".tr()),
+              onTap: () {
+                context.read<BackupBloc>().add(
+                      BackupGetVersion(context, showNotes: true),
+                    );
+              },
+            ),
+          ),
+          ListTile(
+              leading: const Icon(Icons.handyman),
+              title: Text("settings_information_developer_label".tr()),
+              onTap: () => DevInfo.callModalSheet(context)),
+          ListTile(
+              leading: const Icon(Icons.copyright_rounded),
+              title: Text("settings_information_about_label".tr()),
+              onTap: () => CopyrightInfo.callModalSheet(context)),
+          ListTile(
+              leading: const Icon(Icons.apps),
+              title: Text("settings_information_license_label".tr()),
+              onTap: () {
+                Navigator.of(context).push(
+                  CupertinoPageRoute(builder: (context) {
+                    return FutureBuilder<PackageInfo>(
+                        future: PackageInfo.fromPlatform(),
+                        builder: (context, snapshot) {
+                          return LicensePage(
+                            applicationName: "KanPractice",
+                            applicationVersion: snapshot.data?.version,
+                            applicationIcon: SizedBox(
+                                width: KPSizes.appIcon,
+                                height: KPSizes.appIcon,
+                                child: Image.asset("assets/icon/icon.png")),
+                          );
+                        });
+                  }),
+                );
               }),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.only(bottom: KPMargins.margin48),
+            child: ListTile(
+                leading: const Icon(Icons.privacy_tip),
+                title: Text("settings_information_terms_label".tr()),
+                trailing: const Icon(Icons.link),
+                onTap: () async {
+                  await Utils.launch(context, "https://kanpractice.web.app");
+                }),
+          ),
+        ],
+      ),
     );
   }
 

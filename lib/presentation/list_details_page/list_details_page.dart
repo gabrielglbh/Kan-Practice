@@ -62,7 +62,6 @@ class _ListDetailsPageState extends State<ListDetailsPage>
     _aggrStats = getIt<PreferencesService>()
             .readData(SharedKeys.kanListListVisualization) ??
         false;
-    getIt<ListDetailsBloc>().add(ListDetailEventIdle(widget.list.name));
     super.initState();
   }
 
@@ -77,28 +76,33 @@ class _ListDetailsPageState extends State<ListDetailsPage>
   _focusListener() => setState(() => _searchHasFocus = _searchBarFn.hasFocus);
 
   _addWordLoadingEvent({bool reset = false}) {
-    return getIt<ListDetailsWordsBloc>()
-        .add(ListDetailWordsEventLoading(_listName, reset: reset));
+    return context
+        .read<ListDetailsWordsBloc>()
+        .add(ListDetailsWordsEventLoading(_listName, reset: reset));
   }
 
   _addWordSearchingEvent(String query, {bool reset = false}) {
-    return getIt<ListDetailsWordsBloc>()
-        .add(ListDetailWordsEventSearching(query, _listName, reset: reset));
+    return context
+        .read<ListDetailsWordsBloc>()
+        .add(ListDetailsWordsEventSearching(query, _listName, reset: reset));
   }
 
   _addGrammarPointLoadingEvent({bool reset = false}) {
-    return getIt<ListDetailsGrammarPointsBloc>()
-        .add(ListDetailGrammarPointsEventLoading(_listName, reset: reset));
+    return context
+        .read<ListDetailsGrammarPointsBloc>()
+        .add(ListDetailsGrammarPointsEventLoading(_listName, reset: reset));
   }
 
   _addGrammarPointSearchingEvent(String query, {bool reset = false}) {
-    return getIt<ListDetailsGrammarPointsBloc>().add(
-        ListDetailGrammarPointsEventSearching(query, _listName, reset: reset));
+    return context.read<ListDetailsGrammarPointsBloc>().add(
+        ListDetailsGrammarPointsEventSearching(query, _listName, reset: reset));
   }
 
   _updateName(String name) {
     if (name.isNotEmpty) {
-      getIt<ListDetailsBloc>().add(ListDetailUpdateName(name, _listName));
+      context
+          .read<ListDetailsBloc>()
+          .add(ListDetailsUpdateName(name, _listName));
     }
   }
 
@@ -130,157 +134,163 @@ class _ListDetailsPageState extends State<ListDetailsPage>
 
   @override
   Widget build(BuildContext context) {
-    return KPScaffold(
-      onWillPop: () async {
-        if (_onTutorial) return false;
-        if (_searchHasFocus) {
-          _addWordLoadingEvent(reset: true);
-          _addGrammarPointLoadingEvent(reset: true);
-          _searchBarFn.unfocus();
-          return false;
-        } else {
-          return true;
-        }
-      },
-      appBarTitle: BlocConsumer<ListDetailsBloc, ListDetailState>(
-        listener: ((context, state) {
-          if (state is ListDetailStateLoaded) {
-            final oldName = _listName;
-            setState(() => _listName = state.name);
-            if (_listName != oldName) {
-              _addWordLoadingEvent(reset: true);
-              _addGrammarPointLoadingEvent(reset: true);
-            }
-          }
-        }),
-        builder: (context, state) {
-          if (state is ListDetailStateLoaded) {
-            return FittedBox(
-                fit: BoxFit.fitWidth,
-                child: GestureDetector(
-                  onTap: () async => await _updateKanListName(context),
-                  child: Text(state.name,
-                      key: changeName,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).appBarTheme.titleTextStyle),
-                ));
+    return BlocProvider(
+      create: (context) =>
+          getIt<ListDetailsBloc>()..add(ListDetailsEventIdle(widget.list.name)),
+      child: KPScaffold(
+        onWillPop: () async {
+          if (_onTutorial) return false;
+          if (_searchHasFocus) {
+            _addWordLoadingEvent(reset: true);
+            _addGrammarPointLoadingEvent(reset: true);
+            _searchBarFn.unfocus();
+            return false;
           } else {
-            return const SizedBox();
+            return true;
           }
         },
-      ),
-      appBarActions: [
-        Row(
-          key: actions,
-          children: [
-            IconButton(
-              onPressed: () async => await KPBlitzBottomSheet.show(context,
-                  practiceList: _listName),
-              icon: const Icon(Icons.flash_on_rounded),
-            ),
-            IconButton(
-              onPressed: () {
-                FolderListBottomSheet.show(context, _listName);
-              },
-              icon: const Icon(Icons.create_new_folder_rounded),
-            ),
-            IconButton(
-              onPressed: () async {
-                if (_currentPage == ListDetailsType.words) {
-                  await Navigator.of(context)
-                      .pushNamed(KanPracticePages.addWordPage,
-                          arguments: AddWordArgs(listName: _listName))
-                      .then((code) => _addWordLoadingEvent(reset: true));
-                } else {
-                  await Navigator.of(context)
-                      .pushNamed(KanPracticePages.addGrammarPage,
-                          arguments: AddGrammarPointArgs(listName: _listName))
-                      .then(
-                          (code) => _addGrammarPointLoadingEvent(reset: true));
+        appBarTitle: BlocConsumer<ListDetailsBloc, ListDetailsState>(
+          listener: ((context, state) {
+            state.mapOrNull(
+              loaded: (v) {
+                final oldName = _listName;
+                setState(() => _listName = v.name);
+                if (_listName != oldName) {
+                  _addWordLoadingEvent(reset: true);
+                  _addGrammarPointLoadingEvent(reset: true);
                 }
               },
-              icon: const Icon(Icons.add),
-            )
-          ],
+            );
+          }),
+          builder: (context, state) {
+            return state.maybeWhen(
+              loaded: (name) => FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: GestureDetector(
+                    onTap: () async => await _updateKanListName(context),
+                    child: Text(name,
+                        key: changeName,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).appBarTheme.titleTextStyle),
+                  )),
+              orElse: () => const SizedBox(),
+            );
+          },
         ),
-      ],
-      bottomNavigationWidget: KPWordGrammarBottomNavigation(
-        key: navigation,
-        currentPage: _currentPage,
-        onPageChanged: (type) {
-          setState(() => _currentPage = type);
-          _searchBarFn.unfocus();
-          _searchTextController.text = "";
-          _pageController.animateToPage(
-            type.page,
-            duration: const Duration(milliseconds: KPAnimations.ms300),
-            curve: Curves.easeInOut,
-          );
-        },
-      ),
-      child: Column(
-        children: [
-          KPSearchBar(
-            controller: _searchTextController,
-            hint: _currentPage == ListDetailsType.words
-                ? "list_details_searchBar_hint".tr()
-                : "list_details_searchBar_hint_grammar".tr(),
-            focus: _searchBarFn,
-            onQuery: (String query) {
-              /// Everytime the user queries, reset the query itself and
-              /// the pagination index
-              _query = query;
-              if (_currentPage == ListDetailsType.words) {
-                _addWordSearchingEvent(query, reset: true);
-              } else {
-                _addGrammarPointSearchingEvent(query, reset: true);
-              }
-            },
-            onExitSearch: () {
-              /// Empty the query
-              _query = "";
-              if (_currentPage == ListDetailsType.words) {
-                _addWordLoadingEvent(reset: true);
-              } else {
-                _addGrammarPointLoadingEvent(reset: true);
-              }
-            },
-          ),
-          Expanded(
-            child: PageView(
-              controller: _pageController,
-              physics: _aggrStats ? null : const NeverScrollableScrollPhysics(),
-              onPageChanged: (p) {
-                setState(() {
-                  _currentPage = ListDetailsType.values[p];
-                });
-              },
-              children: [
-                WordListWidget(
-                  key: vocabulary,
-                  list: widget.list,
-                  listName: _listName,
-                  query: _query,
-                  searchBarFn: _searchBarFn,
-                  onStartTutorial: () async {
-                    _onTutorial = true;
-                    await TutorialCoach(
-                            [vocabulary, navigation, actions, changeName],
-                            CoachTutorialParts.details)
-                        .showTutorial(context,
-                            onEnd: () => _onTutorial = false);
-                  },
-                ),
-                GrammarListWidget(
-                  list: widget.list,
-                  listName: _listName,
-                  query: _query,
-                  searchBarFn: _searchBarFn,
-                ),
-              ],
-            ),
+        appBarActions: [
+          Row(
+            key: actions,
+            children: [
+              IconButton(
+                onPressed: () async => await KPBlitzBottomSheet.show(context,
+                    practiceList: _listName),
+                icon: const Icon(Icons.flash_on_rounded),
+              ),
+              IconButton(
+                onPressed: () {
+                  FolderListBottomSheet.show(context, _listName);
+                },
+                icon: const Icon(Icons.create_new_folder_rounded),
+              ),
+              IconButton(
+                onPressed: () async {
+                  if (_currentPage == ListDetailsType.words) {
+                    await Navigator.of(context)
+                        .pushNamed(KanPracticePages.addWordPage,
+                            arguments: AddWordArgs(listName: _listName))
+                        .then((code) => _addWordLoadingEvent(reset: true));
+                  } else {
+                    await Navigator.of(context)
+                        .pushNamed(KanPracticePages.addGrammarPage,
+                            arguments: AddGrammarPointArgs(listName: _listName))
+                        .then((code) =>
+                            _addGrammarPointLoadingEvent(reset: true));
+                  }
+                },
+                icon: const Icon(Icons.add),
+              )
+            ],
           ),
         ],
+        bottomNavigationWidget: KPWordGrammarBottomNavigation(
+          key: navigation,
+          currentPage: _currentPage,
+          onPageChanged: (type) {
+            setState(() => _currentPage = type);
+            _searchBarFn.unfocus();
+            _searchTextController.text = "";
+            _pageController.animateToPage(
+              type.page,
+              duration: const Duration(milliseconds: KPAnimations.ms300),
+              curve: Curves.easeInOut,
+            );
+          },
+        ),
+        child: Column(
+          children: [
+            KPSearchBar(
+              controller: _searchTextController,
+              hint: _currentPage == ListDetailsType.words
+                  ? "list_details_searchBar_hint".tr()
+                  : "list_details_searchBar_hint_grammar".tr(),
+              focus: _searchBarFn,
+              onQuery: (String query) {
+                /// Everytime the user queries, reset the query itself and
+                /// the pagination index
+                _query = query;
+                if (_currentPage == ListDetailsType.words) {
+                  _addWordSearchingEvent(query, reset: true);
+                } else {
+                  _addGrammarPointSearchingEvent(query, reset: true);
+                }
+              },
+              onExitSearch: () {
+                /// Empty the query
+                _query = "";
+                if (_currentPage == ListDetailsType.words) {
+                  _addWordLoadingEvent(reset: true);
+                } else {
+                  _addGrammarPointLoadingEvent(reset: true);
+                }
+              },
+            ),
+            Expanded(
+              child: PageView(
+                controller: _pageController,
+                physics:
+                    _aggrStats ? null : const NeverScrollableScrollPhysics(),
+                onPageChanged: (p) {
+                  setState(() {
+                    _currentPage = ListDetailsType.values[p];
+                  });
+                },
+                children: [
+                  WordListWidget(
+                    key: vocabulary,
+                    list: widget.list,
+                    listName: _listName,
+                    query: _query,
+                    searchBarFn: _searchBarFn,
+                    onStartTutorial: () async {
+                      _onTutorial = true;
+                      await TutorialCoach(
+                              [vocabulary, navigation, actions, changeName],
+                              CoachTutorialParts.details)
+                          .showTutorial(context,
+                              onEnd: () => _onTutorial = false);
+                    },
+                  ),
+                  GrammarListWidget(
+                    list: widget.list,
+                    listName: _listName,
+                    query: _query,
+                    searchBarFn: _searchBarFn,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

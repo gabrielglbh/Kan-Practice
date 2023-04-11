@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       reset: true,
     ));
 
-    getIt<BackUpBloc>().add(BackUpGetVersion(context));
+    getIt<BackupBloc>().add(BackUpGetVersion(context));
 
     _addReviewEvent();
 
@@ -247,7 +247,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ? [marketIcon]
             : [];
 
-    return BlocListener<BackUpBloc, BackUpState>(
+    return BlocListener<BackupBloc, BackUpState>(
       listener: (context, state) {
         if (state is BackUpStateVersionRetrieved) {
           setState(() {

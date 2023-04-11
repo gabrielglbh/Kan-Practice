@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/application/load_grammar_test/load_grammar_test_bloc.dart';
-import 'package:kanpractice/application/load_test/load_test_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
+import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/presentation/core/types/list_details_types.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
@@ -72,9 +73,12 @@ class _KPModesGridState extends State<KPModesGrid> {
         });
       }
     });
-    getIt<LoadTestBloc>().add(LoadTestEventIdle(mode: widget.type));
-    getIt<LoadGrammarTestBloc>()
-        .add(LoadGrammarTestEventIdle(mode: widget.type));
+    context
+        .read<GenericTestBloc>()
+        .add(GenericTestEventIdle(mode: widget.type));
+    context
+        .read<GrammarTestBloc>()
+        .add(GrammarTestEventIdle(mode: widget.type));
     super.initState();
   }
 

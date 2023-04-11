@@ -149,7 +149,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 Navigator.of(context).pushNamed(KanPracticePages.loginPage)),
         _header("settings_information_section".tr()),
         const Divider(),
-        BlocListener<BackUpBloc, BackUpState>(
+        BlocListener<BackupBloc, BackUpState>(
           listener: (context, state) async {
             if (state is BackUpStateVersionNotesRetrieved) {
               await Utils.showVersionNotes(
@@ -162,7 +162,7 @@ class _SettingsPageState extends State<SettingsPage> {
             leading: const Icon(Icons.star, color: Colors.green),
             title: Text("settings_general_versionNotes".tr()),
             onTap: () {
-              getIt<BackUpBloc>().add(
+              getIt<BackupBloc>().add(
                 BackUpGetVersion(context, showNotes: true),
               );
             },

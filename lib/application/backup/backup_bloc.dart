@@ -13,11 +13,11 @@ part 'backup_state.dart';
 part 'backup_bloc.freezed.dart';
 
 @lazySingleton
-class BackUpBloc extends Bloc<BackUpEvent, BackupState> {
+class BackupBloc extends Bloc<BackupEvent, BackupState> {
   final IBackupRepository _backupRepository;
 
-  BackUpBloc(this._backupRepository) : super(const BackupState.initial()) {
-    on<BackUpLoadingCreateBackUp>((event, emit) async {
+  BackupBloc(this._backupRepository) : super(const BackupState.initial()) {
+    on<BackupLoadingCreateBackUp>((event, emit) async {
       emit(const BackupState.loading());
       final error = await _backupRepository.createBackUp();
       if (error == "") {
@@ -27,7 +27,7 @@ class BackUpBloc extends Bloc<BackUpEvent, BackupState> {
       }
     });
 
-    on<BackUpLoadingMergeBackUp>((event, emit) async {
+    on<BackupLoadingMergeBackUp>((event, emit) async {
       emit(const BackupState.loading());
       final error = await _backupRepository.restoreBackUp();
       if (error == "") {
@@ -37,7 +37,7 @@ class BackUpBloc extends Bloc<BackUpEvent, BackupState> {
       }
     });
 
-    on<BackUpLoadingRemoveBackUp>((event, emit) async {
+    on<BackupLoadingRemoveBackUp>((event, emit) async {
       emit(const BackupState.loading());
       final error = await _backupRepository.removeBackUp();
       if (error == "") {
@@ -47,7 +47,7 @@ class BackUpBloc extends Bloc<BackUpEvent, BackupState> {
       }
     });
 
-    on<BackUpGetVersion>((event, emit) async {
+    on<BackupGetVersion>((event, emit) async {
       emit(const BackupState.loading());
       final version = await _backupRepository.getVersion();
       PackageInfo pi = await PackageInfo.fromPlatform();

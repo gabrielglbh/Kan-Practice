@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/folder_details/folder_details_bloc.dart';
-import 'package:kanpractice/application/list/lists_bloc.dart';
+import 'package:kanpractice/application/lists/lists_bloc.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
@@ -84,13 +84,13 @@ class _KPKanlistsState extends State<KPKanlists>
 
   _addLoadingEvent({bool reset = false}) {
     if (widget.folder == null) {
-      return getIt<ListsBloc>()
-        ..add(ListEventLoading(
+      return context.read<ListsBloc>()
+        ..add(ListsEventLoading(
             filter: _currentAppliedFilter,
             order: _currentAppliedOrder,
             reset: reset));
     }
-    return getIt<FolderDetailsBloc>()
+    return context.read<FolderDetailsBloc>()
       ..add(FolderDetailsEventLoading(
           folder: widget.folder!,
           filter: _currentAppliedFilter,
@@ -218,46 +218,42 @@ class _KPKanlistsState extends State<KPKanlists>
     if (widget.folder == null) {
       return BlocBuilder<ListsBloc, ListsState>(
         builder: (context, state) {
-          if (state is ListStateFailure) {
-            return KPEmptyList(
-                showTryButton: true,
-                onRefresh: () => _addLoadingEvent(reset: true),
-                message: "word_lists_load_failed".tr());
-          } else if (state is ListStateLoading || state is ListStateSearching) {
-            return const KPProgressIndicator();
-          } else if (state is ListStateLoaded) {
-            return state.lists.isEmpty
+          return state.maybeWhen(
+            loading: () => const KPProgressIndicator(),
+            loaded: (lists) => lists.isEmpty
                 ? KPEmptyList(
                     onRefresh: () => _addLoadingEvent(reset: true),
                     showTryButton: true,
-                    message: "word_lists_empty".tr())
-                : _content(state.lists);
-          } else {
-            return Container();
-          }
+                    message: "word_lists_empty".tr(),
+                  )
+                : _content(lists),
+            orElse: () => KPEmptyList(
+              showTryButton: true,
+              onRefresh: () => _addLoadingEvent(reset: true),
+              message: "word_lists_load_failed".tr(),
+            ),
+          );
         },
       );
     }
     return BlocBuilder<FolderDetailsBloc, FolderDetailsState>(
       builder: (context, state) {
-        if (state is FolderDetailsStateFailure) {
-          return KPEmptyList(
-              showTryButton: true,
-              onRefresh: () => _addLoadingEvent(reset: true),
-              message: "word_lists_load_failed".tr());
-        } else if (state is FolderDetailsEventLoading ||
-            state is FolderDetailsStateSearching) {
-          return const KPProgressIndicator();
-        } else if (state is FolderDetailsStateLoaded) {
-          return state.lists.isEmpty
+        return state.maybeWhen(
+          loading: () => const KPProgressIndicator(),
+          loaded: (lists) => lists.isEmpty
               ? KPEmptyList(
                   onRefresh: () => _addLoadingEvent(reset: true),
                   showTryButton: true,
-                  message: "word_lists_empty".tr())
-              : _content(state.lists);
-        } else {
-          return Container();
-        }
+                  message: "word_lists_empty".tr(),
+                )
+              : _content(lists),
+          error: () => KPEmptyList(
+            showTryButton: true,
+            onRefresh: () => _addLoadingEvent(reset: true),
+            message: "word_lists_load_failed".tr(),
+          ),
+          orElse: () => const SizedBox(),
+        );
       },
     );
   }
@@ -283,11 +279,11 @@ class _KPKanlistsState extends State<KPKanlists>
                     showGrammarGraphs: _showGrammarGraphs,
                     onRemoval: () {
                       if (widget.folder == null) {
-                        getIt<ListsBloc>().add(ListEventDelete(
-                          lists[k],
-                          filter: _currentAppliedFilter,
-                          order: _currentAppliedOrder,
-                        ));
+                        context.read<ListsBloc>().add(ListsEventDelete(
+                              lists[k],
+                              filter: _currentAppliedFilter,
+                              order: _currentAppliedOrder,
+                            ));
                       } else {
                         getIt<FolderDetailsBloc>().add(
                           FolderDetailsEventDelete(

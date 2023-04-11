@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
-import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
@@ -15,20 +14,19 @@ class BackUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<BackUpBloc, BackUpState>(
+    return BlocConsumer<BackupBloc, BackupState>(
       listener: (context, state) {
-        if (state is BackUpStateFailure) {
-          Utils.getSnackBar(context, state.message);
-        }
-        if (state is BackUpStateSuccess) {
-          Utils.getSnackBar(context, state.message);
+        state.mapOrNull(error: (error) {
+          Utils.getSnackBar(context, error.message);
+        }, loaded: (l) {
+          Utils.getSnackBar(context, l.message);
           Navigator.of(context).pop(); // Go to manage account, pop
           Navigator.of(context).pop(); // Go to settings, pop
-        }
+        });
       },
       builder: (context, state) {
-        if (state is BackUpStateLoading) {
-          return KPScaffold(
+        return state.maybeWhen(
+          loading: () => KPScaffold(
             appBarTitle: "backup_title".tr(),
             onWillPop: () async => false,
             child: Column(
@@ -39,9 +37,8 @@ class BackUpPage extends StatelessWidget {
                 Text('can_take_a_while_loading'.tr()),
               ],
             ),
-          );
-        } else {
-          return KPScaffold(
+          ),
+          orElse: () => KPScaffold(
             appBarTitle: "backup_title".tr(),
             child: SingleChildScrollView(
               child: Column(
@@ -67,8 +64,8 @@ class BackUpPage extends StatelessWidget {
                 ],
               ),
             ),
-          );
-        }
+          ),
+        );
       },
     );
   }
@@ -83,8 +80,9 @@ class BackUpPage extends StatelessWidget {
                   content: Text("backup_creation_dialog_content".tr(),
                       style: Theme.of(context).textTheme.bodyLarge),
                   positiveButtonText: "backup_creation_dialog_positive".tr(),
-                  onPositive: () =>
-                      getIt<BackUpBloc>().add(BackUpLoadingCreateBackUp()),
+                  onPositive: () => context
+                      .read<BackupBloc>()
+                      .add(BackupLoadingCreateBackUp()),
                 );
               },
             ));
@@ -99,7 +97,7 @@ class BackUpPage extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyLarge),
               positiveButtonText: "backup_merge_dialog_positive".tr(),
               onPositive: () =>
-                  getIt<BackUpBloc>().add(BackUpLoadingMergeBackUp()),
+                  context.read<BackupBloc>().add(BackupLoadingMergeBackUp()),
             ));
   }
 
@@ -112,7 +110,7 @@ class BackUpPage extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyLarge),
               positiveButtonText: "backup_removal_dialog_positive".tr(),
               onPositive: () =>
-                  getIt<BackUpBloc>().add(BackUpLoadingRemoveBackUp()),
+                  context.read<BackupBloc>().add(BackupLoadingRemoveBackUp()),
             ));
   }
 }

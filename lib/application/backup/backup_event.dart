@@ -1,23 +1,23 @@
 part of 'backup_bloc.dart';
 
-abstract class BackUpEvent extends Equatable {
-  const BackUpEvent();
+abstract class BackupEvent extends Equatable {
+  const BackupEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class BackUpLoadingCreateBackUp extends BackUpEvent {}
+class BackupLoadingCreateBackUp extends BackupEvent {}
 
-class BackUpLoadingMergeBackUp extends BackUpEvent {}
+class BackupLoadingMergeBackUp extends BackupEvent {}
 
-class BackUpLoadingRemoveBackUp extends BackUpEvent {}
+class BackupLoadingRemoveBackUp extends BackupEvent {}
 
-class BackUpGetVersion extends BackUpEvent {
+class BackupGetVersion extends BackupEvent {
   final BuildContext context;
   final bool showNotes;
 
-  const BackUpGetVersion(this.context, {this.showNotes = false});
+  const BackupGetVersion(this.context, {this.showNotes = false});
 
   @override
   List<Object> get props => [context, showNotes];

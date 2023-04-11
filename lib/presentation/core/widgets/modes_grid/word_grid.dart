@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/application/load_test/load_test_bloc.dart';
+import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/injection.dart';
@@ -58,21 +58,21 @@ class WordGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoadTestBloc, LoadTestState>(
+    return BlocConsumer<GenericTestBloc, GenericTestState>(
       listener: ((context, state) async {
-        if (state is LoadTestStateLoadedList) {
-          List<Word> list = state.words;
+        state.mapOrNull(loaded: (l) async {
+          List<Word> list = l.words;
           if (list.isEmpty) {
             Navigator.of(context).pop();
             Utils.getSnackBar(context, "study_modes_empty".tr());
           } else {
-            await _decideOnMode(context, list, state.mode);
+            await _decideOnMode(context, list, l.mode);
           }
-        }
+        });
       }),
       builder: (context, state) {
-        if (state is LoadTestStateIdle) {
-          return Padding(
+        return state.maybeWhen(
+          initial: (wordsToReview) => Padding(
             padding: const EdgeInsets.only(
               right: KPMargins.margin16,
               left: KPMargins.margin16,
@@ -87,31 +87,31 @@ class WordGrid extends StatelessWidget {
                   crossAxisCount: 3, childAspectRatio: 1.2),
               itemBuilder: (context, i) {
                 int? isAvailable = 0;
+                final service = getIt<PreferencesService>();
 
-                if (getIt<PreferencesService>()
-                            .readData(SharedKeys.dailyTestOnControlledPace) ==
+                if (service.readData(SharedKeys.dailyTestOnControlledPace) ==
                         true &&
                     type == Tests.daily) {
                   switch (StudyModes.values[i]) {
                     case StudyModes.writing:
-                      isAvailable = getIt<PreferencesService>()
-                          .readData(SharedKeys.writingDailyPerformed);
+                      isAvailable =
+                          service.readData(SharedKeys.writingDailyPerformed);
                       break;
                     case StudyModes.reading:
-                      isAvailable = getIt<PreferencesService>()
-                          .readData(SharedKeys.readingDailyPerformed);
+                      isAvailable =
+                          service.readData(SharedKeys.readingDailyPerformed);
                       break;
                     case StudyModes.recognition:
-                      isAvailable = getIt<PreferencesService>()
+                      isAvailable = service
                           .readData(SharedKeys.recognitionDailyPerformed);
                       break;
                     case StudyModes.listening:
-                      isAvailable = getIt<PreferencesService>()
-                          .readData(SharedKeys.listeningDailyPerformed);
+                      isAvailable =
+                          service.readData(SharedKeys.listeningDailyPerformed);
                       break;
                     case StudyModes.speaking:
-                      isAvailable = getIt<PreferencesService>()
-                          .readData(SharedKeys.speakingDailyPerformed);
+                      isAvailable =
+                          service.readData(SharedKeys.speakingDailyPerformed);
                       break;
                   }
                 }
@@ -120,14 +120,13 @@ class WordGrid extends StatelessWidget {
                   context,
                   StudyModes.values[i],
                   isAvailable == 0 || isAvailable == null,
-                  state.wordsToReview.isEmpty ? -1 : state.wordsToReview[i],
+                  wordsToReview.isEmpty ? -1 : wordsToReview[i],
                 );
               },
             ),
-          );
-        } else {
-          return const Center(child: KPProgressIndicator());
-        }
+          ),
+          orElse: () => const Center(child: KPProgressIndicator()),
+        );
       },
     );
   }
@@ -158,15 +157,15 @@ class WordGrid extends StatelessWidget {
                     Navigator.of(context).pop();
                     Utils.getSnackBar(context, "study_modes_empty".tr());
                   } else {
-                    getIt<LoadTestBloc>().add(
-                      LoadTestEventLoadList(
-                        folder: folder,
-                        mode: mode,
-                        type: type,
-                        practiceList: practiceList,
-                        selectionQuery: selectionQuery,
-                      ),
-                    );
+                    context.read<GenericTestBloc>().add(
+                          GenericTestEventLoadList(
+                            folder: folder,
+                            mode: mode,
+                            type: type,
+                            practiceList: practiceList,
+                            selectionQuery: selectionQuery,
+                          ),
+                        );
                   }
                 }
               : null,

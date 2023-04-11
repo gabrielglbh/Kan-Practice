@@ -52,49 +52,51 @@ class KPWordBottomSheet extends StatelessWidget {
       constraints: BoxConstraints(maxHeight: maxHeight),
       onClosing: () {},
       builder: (context) {
-        getIt<WordDetailsBloc>().add(WordDetailsEventLoading(
-          word ?? Word.empty,
-          isArchive: listName == null,
-        ));
-        return Wrap(children: [
-          Padding(
-              padding: const EdgeInsets.all(KPMargins.margin8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const KPDragContainer(),
-                  BlocConsumer<WordDetailsBloc, WordDetailsState>(
-                    listener: (context, state) {
-                      if (state is WordDetailsStateFailure) {
-                        Utils.getSnackBar(context, state.error);
-                      }
-                      if (state is WordDetailsStateRemoved) {
-                        if (onRemove != null) onRemove!();
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is WordDetailsStateLoading) {
-                        return Center(
+        return BlocProvider(
+          create: (context) => getIt<WordDetailsBloc>()
+            ..add(WordDetailsEventLoading(
+              word ?? Word.empty,
+              isArchive: listName == null,
+            )),
+          child: Wrap(children: [
+            Padding(
+                padding: const EdgeInsets.all(KPMargins.margin8),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const KPDragContainer(),
+                    BlocConsumer<WordDetailsBloc, WordDetailsState>(
+                      listener: (context, state) {
+                        state.mapOrNull(error: (error) {
+                          Utils.getSnackBar(context, error.message);
+                        }, removed: (_) {
+                          if (onRemove != null) onRemove!();
+                        });
+                      },
+                      builder: (context, state) {
+                        return state.maybeWhen(
+                          loading: () => Center(
                             child: SizedBox(
-                                height: MediaQuery.of(context).size.height / 2,
-                                child: const KPProgressIndicator()));
-                      } else if (state is WordDetailsStateFailure) {
-                        return Container(
+                              height: MediaQuery.of(context).size.height / 2,
+                              child: const KPProgressIndicator(),
+                            ),
+                          ),
+                          error: (error) => Container(
                             height: MediaQuery.of(context).size.height / 2,
                             alignment: Alignment.center,
                             margin: const EdgeInsets.symmetric(
                                 horizontal: KPMargins.margin16),
-                            child: Text(state.error));
-                      } else if (state is WordDetailsStateLoaded) {
-                        return _body(context, state.word);
-                      } else {
-                        return Container();
-                      }
-                    },
-                  ),
-                ],
-              )),
-        ]);
+                            child: Text(error),
+                          ),
+                          loaded: (word) => _body(context, word),
+                          orElse: () => const SizedBox(),
+                        );
+                      },
+                    ),
+                  ],
+                )),
+          ]),
+        );
       },
     );
   }
@@ -326,7 +328,8 @@ class KPWordBottomSheet extends StatelessWidget {
                           "word_bottom_sheet_removeWord_positive".tr(),
                       onPositive: () {
                         Navigator.of(context).pop();
-                        getIt<WordDetailsBloc>()
+                        context
+                            .read<WordDetailsBloc>()
                             .add(WordDetailsEventDelete(word));
                         if (onRemove != null) onRemove!();
                       }));

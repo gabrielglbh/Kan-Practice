@@ -12,7 +12,7 @@ part 'test_history_state.dart';
 
 part 'test_history_bloc.freezed.dart';
 
-@lazySingleton
+@injectable
 class TestHistoryBloc extends Bloc<TestHistoryEvent, TestHistoryState> {
   final ITestRepository _testRepository;
 

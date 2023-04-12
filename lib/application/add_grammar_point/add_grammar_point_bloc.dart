@@ -11,7 +11,7 @@ part 'add_grammar_point_state.dart';
 
 part 'add_grammar_point_bloc.freezed.dart';
 
-@lazySingleton
+@injectable
 class AddGrammarPointBloc
     extends Bloc<AddGrammarPointEvent, AddGrammarPointState> {
   final IGrammarPointRepository _grammarPointRepository;

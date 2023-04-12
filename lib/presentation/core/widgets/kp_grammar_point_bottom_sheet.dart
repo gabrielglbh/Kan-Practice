@@ -273,7 +273,7 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
                           "grammar_bottom_sheet_removeGrammar_positive".tr(),
                       onPositive: () {
                         Navigator.of(context).pop();
-                        context
+                        bloc
                             .read<GrammarPointDetailsBloc>()
                             .add(GrammarPointDetailsEventDelete(grammarPoint));
                         if (onRemove != null) onRemove!();

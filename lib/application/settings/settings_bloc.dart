@@ -10,7 +10,7 @@ part 'settings_state.dart';
 
 part 'settings_bloc.freezed.dart';
 
-@lazySingleton
+@injectable
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final IBackupRepository _backupRepository;
 

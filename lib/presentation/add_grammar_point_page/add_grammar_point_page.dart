@@ -57,10 +57,10 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
     super.dispose();
   }
 
-  Future<void> _createGrammar({bool exit = true}) async {
+  Future<void> _createGrammar(BuildContext bloc, {bool exit = true}) async {
     String name = _nameController?.text ?? '';
     if ('\n'.allMatches(name).isEmpty) name = '#### __${name}__';
-    context.read<AddGrammarPointBloc>().add(AddGrammarPointEventCreate(
+    bloc.read<AddGrammarPointBloc>().add(AddGrammarPointEventCreate(
         exitMode: exit,
         grammarPoint: GrammarPoint(
           name: _replaceDashesWithCommas(name),
@@ -73,10 +73,10 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
         )));
   }
 
-  Future<void> _updateGrammar() async {
+  Future<void> _updateGrammar(BuildContext bloc) async {
     GrammarPoint? g = widget.args.grammarPoint;
     if (g != null) {
-      context.read<AddGrammarPointBloc>().add(
+      bloc.read<AddGrammarPointBloc>().add(
             AddGrammarPointEventUpdate(
               widget.args.listName,
               g.name,
@@ -119,7 +119,7 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
               child: IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () {
-                  _validateGrammar(() => _createGrammar(exit: false));
+                  _validateGrammar(() => _createGrammar(context, exit: false));
                 },
               ),
             ),
@@ -130,9 +130,9 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
                     onPressed: () {
                       _validateGrammar(() {
                         if (widget.args.grammarPoint != null) {
-                          _updateGrammar();
+                          _updateGrammar(context);
                         } else {
-                          _createGrammar();
+                          _createGrammar(context);
                         }
                       });
                     },

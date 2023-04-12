@@ -16,7 +16,7 @@ part 'test_result_state.dart';
 
 part 'test_result_bloc.freezed.dart';
 
-@lazySingleton
+@injectable
 class TestResultBloc extends Bloc<TestResultEvent, TestResultState> {
   final ITestRepository _testRepository;
   final ITestDataRepository _testDataRepository;

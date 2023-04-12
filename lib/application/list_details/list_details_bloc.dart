@@ -10,7 +10,7 @@ part 'list_details_state.dart';
 
 part 'list_details_bloc.freezed.dart';
 
-@lazySingleton
+@injectable
 class ListDetailsBloc extends Bloc<ListDetailsEvent, ListDetailsState> {
   final IListRepository _listRepository;
 

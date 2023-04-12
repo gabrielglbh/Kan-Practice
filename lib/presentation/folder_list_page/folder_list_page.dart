@@ -208,7 +208,7 @@ class _FolderListPageState extends State<FolderListPage>
       },
       onLongPress: () {
         showDialog(
-          context: context,
+          context: bloc,
           builder: (context) => KPDialog(
             title:
                 Text("kan_list_tile_createDialogForDeletingFolder_title".tr()),
@@ -217,7 +217,7 @@ class _FolderListPageState extends State<FolderListPage>
             positiveButtonText:
                 "kan_list_tile_createDialogForDeletingFolder_positive".tr(),
             onPositive: () {
-              context.read<FolderBloc>().add(FolderEventDelete(
+              bloc.read<FolderBloc>().add(FolderEventDelete(
                     folder,
                     filter: _currentAppliedFilter,
                     order: _currentAppliedOrder,

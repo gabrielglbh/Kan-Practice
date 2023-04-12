@@ -328,7 +328,7 @@ class KPWordBottomSheet extends StatelessWidget {
                           "word_bottom_sheet_removeWord_positive".tr(),
                       onPositive: () {
                         Navigator.of(context).pop();
-                        context
+                        bloc
                             .read<WordDetailsBloc>()
                             .add(WordDetailsEventDelete(word));
                         if (onRemove != null) onRemove!();

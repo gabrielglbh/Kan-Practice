@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/test_history/test_history_bloc.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
@@ -47,7 +48,16 @@ class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
     super.dispose();
   }
 
-  Future<void> _applyFilters() async {
+  TestHistoryEvent _addLoadingEvent() {
+    return TestHistoryEventLoading(
+      initial: _firstDate,
+      last: _lastDate,
+      testFilter: _testsFilter,
+      modesFilter: _modesFilter,
+    );
+  }
+
+  Future<void> _applyFilters(BuildContext bloc) async {
     final filters = await Navigator.of(context).pushNamed(
       KanPracticePages.historyTestFiltersPage,
       arguments: TestHistoryArgs(
@@ -65,20 +75,10 @@ class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
         _modesFilter = filters.modeFilters;
       });
       if (!mounted) return;
-      context.read<TestHistoryBloc>().add(TestHistoryEventLoading(
-            initial: _firstDate,
-            last: _lastDate,
-            testFilter: _testsFilter,
-            modesFilter: _modesFilter,
-          ));
+      bloc.read<TestHistoryBloc>().add(_addLoadingEvent());
     }
     if (!mounted) return;
-    context.read<TestHistoryBloc>().add(TestHistoryEventLoading(
-          initial: _firstDate,
-          last: _lastDate,
-          testFilter: _testsFilter,
-          modesFilter: _modesFilter,
-        ));
+    bloc.read<TestHistoryBloc>().add(_addLoadingEvent());
   }
 
   @override
@@ -94,84 +94,88 @@ class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(KPMargins.margin8),
-            child: BlocBuilder<TestHistoryBloc, TestHistoryState>(
-              builder: (blocContext, state) {
-                return state.maybeWhen(
-                  error: () =>
-                      Center(child: Text("test_history_load_failed".tr())),
-                  loading: () => const KPProgressIndicator(),
-                  loaded: (tests) => Stack(
-                    alignment: Alignment.centerRight,
-                    children: [
-                      KPCartesianChart(
-                        markerThreshold: 150,
-                        zoomPanBehavior: ZoomPanBehavior(
-                          enablePanning: true,
-                          enablePinching: true,
-                          maximumZoomLevel: 0.3,
-                        ),
-                        dataSource: List.generate(tests.length, (index) {
-                          final test = tests[index];
-                          if (test.studyMode == null) {
+            child: BlocProvider(
+              create: (context) =>
+                  getIt<TestHistoryBloc>()..add(_addLoadingEvent()),
+              child: BlocBuilder<TestHistoryBloc, TestHistoryState>(
+                builder: (bloc, state) {
+                  return state.maybeWhen(
+                    error: () =>
+                        Center(child: Text("test_history_load_failed".tr())),
+                    loading: () => const KPProgressIndicator(),
+                    loaded: (tests) => Stack(
+                      alignment: Alignment.centerRight,
+                      children: [
+                        KPCartesianChart(
+                          markerThreshold: 150,
+                          zoomPanBehavior: ZoomPanBehavior(
+                            enablePanning: true,
+                            enablePinching: true,
+                            maximumZoomLevel: 0.3,
+                          ),
+                          dataSource: List.generate(tests.length, (index) {
+                            final test = tests[index];
+                            if (test.studyMode == null) {
+                              return TestDataFrame(
+                                x: DateTime.fromMillisecondsSinceEpoch(
+                                    test.takenDate),
+                                y: test.testScore,
+                                grammarMode:
+                                    GrammarModes.values[test.grammarMode!],
+                                wordsOnTest: test.wordsInTest,
+                                mode: Tests.values[test.testMode ?? 0],
+                              );
+                            }
                             return TestDataFrame(
                               x: DateTime.fromMillisecondsSinceEpoch(
                                   test.takenDate),
                               y: test.testScore,
-                              grammarMode:
-                                  GrammarModes.values[test.grammarMode!],
+                              studyMode: StudyModes.values[test.studyMode!],
                               wordsOnTest: test.wordsInTest,
                               mode: Tests.values[test.testMode ?? 0],
                             );
-                          }
-                          return TestDataFrame(
-                            x: DateTime.fromMillisecondsSinceEpoch(
-                                test.takenDate),
-                            y: test.testScore,
-                            studyMode: StudyModes.values[test.studyMode!],
-                            wordsOnTest: test.wordsInTest,
-                            mode: Tests.values[test.testMode ?? 0],
-                          );
-                        }),
-                        graphName: "success".tr(),
-                      ),
-                      Positioned(
-                        top: 0,
-                        right: KPMargins.margin64,
-                        child: TextButton(
-                          onPressed: () async {
-                            await _applyFilters();
-                          },
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(KPColors.midGrey),
-                          ),
-                          child: Text(
-                            "history_tests_filter".tr(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge
-                                ?.copyWith(color: KPColors.primaryLight),
+                          }),
+                          graphName: "success".tr(),
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: KPMargins.margin64,
+                          child: TextButton(
+                            onPressed: () async {
+                              await _applyFilters(bloc);
+                            },
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(KPColors.midGrey),
+                            ),
+                            child: Text(
+                              "history_tests_filter".tr(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(color: KPColors.primaryLight),
+                            ),
                           ),
                         ),
-                      ),
-                      Positioned(
-                        top: 0,
-                        right: KPMargins.margin8,
-                        child: IconButton(
-                          onPressed: () {
-                            Navigator.of(context).pop(
-                              TestHistoryArgs(_firstDate, _lastDate,
-                                  _testsFilter, _modesFilter),
-                            );
-                          },
-                          icon: const Icon(Icons.fullscreen_exit_rounded),
+                        Positioned(
+                          top: 0,
+                          right: KPMargins.margin8,
+                          child: IconButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(
+                                TestHistoryArgs(_firstDate, _lastDate,
+                                    _testsFilter, _modesFilter),
+                              );
+                            },
+                            icon: const Icon(Icons.fullscreen_exit_rounded),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  orElse: () => const SizedBox(),
-                );
-              },
+                      ],
+                    ),
+                    orElse: () => const SizedBox(),
+                  );
+                },
+              ),
             ),
           ),
         ),

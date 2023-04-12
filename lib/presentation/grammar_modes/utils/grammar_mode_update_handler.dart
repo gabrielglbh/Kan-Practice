@@ -15,7 +15,7 @@ import 'package:kanpractice/presentation/test_result_page/arguments.dart';
 class GrammarModeUpdateHandler {
   /// Handles the finish of the test/practice. Please, make sure to view the function
   /// itself to understand it better.
-  static Future<bool> handle(BuildContext context, GrammarModeArguments args,
+  static Future<bool> handle(BuildContext bloc, GrammarModeArguments args,
       {bool onPop = false,
       double testScore = 0,
       int lastIndex = 0,
@@ -37,13 +37,13 @@ class GrammarModeUpdateHandler {
     }
 
     showDialog(
-        context: context,
+        context: bloc,
         builder: (context) {
           return BlocListener<GrammarModeBloc, GrammarModeState>(
             listener: (context, state) {
               state.mapOrNull(scoreObtained: (s) {
                 final double score = s.score / args.studyList.length;
-                context.read<GrammarModeBloc>().add(
+                bloc.read<GrammarModeBloc>().add(
                     GrammarModeEventUpdateListScore(
                         score, args.studyList[0].listName, args.mode));
                 Navigator.of(context).pop();
@@ -72,7 +72,7 @@ class GrammarModeUpdateHandler {
                       if (getIt<PreferencesService>()
                               .readData(SharedKeys.affectOnPractice) ??
                           false) {
-                        context.read<GrammarModeBloc>().add(
+                        bloc.read<GrammarModeBloc>().add(
                               GrammarModeEventUpdateScoreForTestsAffectingPractice(
                                   args.studyList, args.mode),
                             );
@@ -98,17 +98,15 @@ class GrammarModeUpdateHandler {
                     if (lastIndex == 0) {
                       Navigator.of(context).pop();
                     } else {
-                      context.read<GrammarModeBloc>().add(
-                          GrammarModeEventGetScore(
-                              args.studyList[0].listName, args.mode));
+                      bloc.read<GrammarModeBloc>().add(GrammarModeEventGetScore(
+                          args.studyList[0].listName, args.mode));
                     }
                   }
 
                   /// If the user went through all the list, update the list accordingly
                   else {
-                    context.read<GrammarModeBloc>().add(
-                        GrammarModeEventGetScore(
-                            args.studyList[0].listName, args.mode));
+                    bloc.read<GrammarModeBloc>().add(GrammarModeEventGetScore(
+                        args.studyList[0].listName, args.mode));
                   }
                 }),
           );

@@ -40,9 +40,8 @@ class _StatisticsPageState extends State<StatisticsPage>
                   style: Theme.of(context).textTheme.bodyLarge),
               positiveButtonText:
                   "test_history_showRemoveTestsDialog_positive".tr(),
-              onPositive: () => context
-                  .read<TestHistoryBloc>()
-                  .add(TestHistoryEventRemoving()),
+              onPositive: () =>
+                  bloc.read<TestHistoryBloc>().add(TestHistoryEventRemoving()),
             ));
   }
 

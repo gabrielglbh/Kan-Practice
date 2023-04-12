@@ -10,7 +10,7 @@ part 'word_history_state.dart';
 
 part 'word_history_bloc.freezed.dart';
 
-@lazySingleton
+@injectable
 class WordHistoryBloc extends Bloc<WordHistoryEvent, WordHistoryState> {
   final IWordHistoryRepository _wordHistoryRepository;
 

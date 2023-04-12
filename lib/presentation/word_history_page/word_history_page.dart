@@ -24,9 +24,9 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
   final ScrollController _scrollController = ScrollController();
   int _loadingTimes = 0;
 
-  _showRemoveHistorysDialog() {
+  _showRemoveHistorysDialog(BuildContext bloc) {
     showDialog(
-        context: context,
+        context: bloc,
         builder: (context) => KPDialog(
               title: Text("word_history_showRemoveHistorysDialog_title".tr()),
               content: Text(
@@ -34,9 +34,8 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
                   style: Theme.of(context).textTheme.bodyLarge),
               positiveButtonText:
                   "word_history_showRemoveHistorysDialog_positive".tr(),
-              onPositive: () => context
-                  .read<WordHistoryBloc>()
-                  .add(WordHistoryEventRemoving()),
+              onPositive: () =>
+                  bloc.read<WordHistoryBloc>().add(WordHistoryEventRemoving()),
             ));
   }
 
@@ -70,17 +69,17 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
     return BlocProvider(
       create: (context) =>
           getIt<WordHistoryBloc>()..add(const WordHistoryEventLoading()),
-      child: KPScaffold(
-        appBarTitle: "word_history_title".tr(),
-        appBarActions: [
-          IconButton(
-            icon: const Icon(Icons.clear_all_rounded),
-            onPressed: () => _showRemoveHistorysDialog(),
-          ),
-        ],
-        child: BlocBuilder<WordHistoryBloc, WordHistoryState>(
-          builder: (context, state) {
-            return state.maybeWhen(
+      child: BlocBuilder<WordHistoryBloc, WordHistoryState>(
+        builder: (context, state) {
+          return KPScaffold(
+            appBarTitle: "word_history_title".tr(),
+            appBarActions: [
+              IconButton(
+                icon: const Icon(Icons.clear_all_rounded),
+                onPressed: () => _showRemoveHistorysDialog(context),
+              ),
+            ],
+            child: state.maybeWhen(
               error: () => KPEmptyList(
                   showTryButton: true,
                   onRefresh: () => _addLoadingEvent(),
@@ -122,9 +121,9 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
                     });
               },
               orElse: () => const SizedBox(),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

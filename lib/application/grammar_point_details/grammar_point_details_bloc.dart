@@ -13,7 +13,7 @@ part 'grammar_point_details_state.dart';
 
 part 'grammar_point_details_bloc.freezed.dart';
 
-@lazySingleton
+@injectable
 class GrammarPointDetailsBloc
     extends Bloc<GrammarPointDetailsEvent, GrammarPointDetailsState> {
   final IGrammarPointRepository _grammarPointRepository;

@@ -15,7 +15,7 @@ part 'word_details_state.dart';
 part 'word_details_bloc.freezed.dart';
 
 /// This bloc is used in word_lists.dart and jisho.dart
-@lazySingleton
+@injectable
 class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
   final IListRepository _listRepository;
   final IWordRepository _wordRepository;

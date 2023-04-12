@@ -134,11 +134,12 @@ class _SettingsPageState extends State<SettingsPage> {
               return state.maybeWhen(
                 loaded: (date) => _header(
                   "settings_account_section".tr(),
+                  bloc: context,
                   subtitle: date,
                   hasTrailing: true,
                 ),
-                loading: () =>
-                    _header("settings_account_section".tr(), hasTrailing: true),
+                loading: () => _header("settings_account_section".tr(),
+                    bloc: context, hasTrailing: true),
                 orElse: () => const SizedBox(),
               );
             },
@@ -151,21 +152,26 @@ class _SettingsPageState extends State<SettingsPage> {
                   Navigator.of(context).pushNamed(KanPracticePages.loginPage)),
           _header("settings_information_section".tr()),
           const Divider(),
-          BlocListener<BackupBloc, BackupState>(
+          BlocConsumer<BackupBloc, BackupState>(
             listener: (context, state) async {
               state.mapOrNull(notesRetrieved: (n) async {
                 await Utils.showVersionNotes(context, notes: n.notes);
               });
             },
-            child: ListTile(
-              leading: const Icon(Icons.star, color: Colors.green),
-              title: Text("settings_general_versionNotes".tr()),
-              onTap: () {
-                context.read<BackupBloc>().add(
-                      BackupGetVersion(context, showNotes: true),
-                    );
-              },
-            ),
+            builder: (context, state) {
+              return state.maybeWhen(
+                versionRetrieved: (_, __) => const SizedBox(),
+                orElse: () => ListTile(
+                  leading: const Icon(Icons.star, color: Colors.green),
+                  title: Text("settings_general_versionNotes".tr()),
+                  onTap: () {
+                    context.read<BackupBloc>().add(
+                          BackupGetVersion(context, showNotes: true),
+                        );
+                  },
+                ),
+              );
+            },
           ),
           ListTile(
               leading: const Icon(Icons.handyman),
@@ -211,7 +217,8 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  ListTile _header(String title, {String? subtitle, bool hasTrailing = false}) {
+  ListTile _header(String title,
+      {BuildContext? bloc, String? subtitle, bool hasTrailing = false}) {
     return ListTile(
       title: Text(title, style: Theme.of(context).textTheme.titleLarge),
       subtitle: subtitle != null
@@ -224,7 +231,7 @@ class _SettingsPageState extends State<SettingsPage> {
       trailing: hasTrailing
           ? IconButton(
               onPressed: () {
-                context
+                (bloc ?? context)
                     .read<SettingsBloc>()
                     .add(SettingsLoadingBackUpDate(context));
               },

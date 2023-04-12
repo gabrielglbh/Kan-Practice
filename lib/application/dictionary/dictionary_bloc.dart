@@ -12,7 +12,7 @@ part 'dictionary_state.dart';
 
 part 'dictionary_bloc.freezed.dart';
 
-@lazySingleton
+@injectable
 class DictionaryBloc extends Bloc<DictionaryEvent, DictionaryState> {
   final IClassifierRepository _classifierRepository;
 

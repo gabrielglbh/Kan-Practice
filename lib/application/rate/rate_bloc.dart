@@ -9,7 +9,7 @@ part 'rate_state.dart';
 
 part 'rate_bloc.freezed.dart';
 
-@lazySingleton
+@injectable
 class RateBloc extends Bloc<RateEvent, RateState> {
   final IMarketRepository _marketRepository;
 

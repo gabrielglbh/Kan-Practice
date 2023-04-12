@@ -24,7 +24,7 @@ class BackUpPage extends StatelessWidget {
           Navigator.of(context).pop(); // Go to settings, pop
         });
       },
-      builder: (context, state) {
+      builder: (bloc, state) {
         return state.maybeWhen(
           loading: () => KPScaffold(
             appBarTitle: "backup_title".tr(),
@@ -46,12 +46,12 @@ class BackUpPage extends StatelessWidget {
                   ListTile(
                       leading: const Icon(Icons.backup_rounded),
                       title: Text("backup_creation_tile".tr()),
-                      onTap: () => _createDialogForCreatingBackUp(context)),
+                      onTap: () => _createDialogForCreatingBackUp(bloc)),
                   const Divider(),
                   ListTile(
                     leading: const Icon(Icons.cloud_download),
                     title: Text("backup_merge_tile".tr()),
-                    onTap: () => _createDialogForMergingBackUp(context),
+                    onTap: () => _createDialogForMergingBackUp(bloc),
                   ),
                   const Divider(),
                   ListTile(
@@ -59,7 +59,7 @@ class BackUpPage extends StatelessWidget {
                     title: Text("backup_removal_tile".tr(),
                         style: TextStyle(
                             color: KPColors.getSecondaryColor(context))),
-                    onTap: () => _createDialogForRemovingBackUp(context),
+                    onTap: () => _createDialogForRemovingBackUp(bloc),
                   ),
                 ],
               ),
@@ -70,9 +70,9 @@ class BackUpPage extends StatelessWidget {
     );
   }
 
-  _createDialogForCreatingBackUp(BuildContext context) {
+  _createDialogForCreatingBackUp(BuildContext bloc) {
     showDialog(
-        context: context,
+        context: bloc,
         builder: (context) => StatefulBuilder(
               builder: (context, setState) {
                 return KPDialog(
@@ -80,37 +80,36 @@ class BackUpPage extends StatelessWidget {
                   content: Text("backup_creation_dialog_content".tr(),
                       style: Theme.of(context).textTheme.bodyLarge),
                   positiveButtonText: "backup_creation_dialog_positive".tr(),
-                  onPositive: () => context
-                      .read<BackupBloc>()
-                      .add(BackupLoadingCreateBackUp()),
+                  onPositive: () =>
+                      bloc.read<BackupBloc>().add(BackupLoadingCreateBackUp()),
                 );
               },
             ));
   }
 
-  _createDialogForMergingBackUp(BuildContext context) {
+  _createDialogForMergingBackUp(BuildContext bloc) {
     showDialog(
-        context: context,
+        context: bloc,
         builder: (context) => KPDialog(
               title: Text("backup_merge_dialog_title".tr()),
               content: Text("backup_merge_dialog_content".tr(),
                   style: Theme.of(context).textTheme.bodyLarge),
               positiveButtonText: "backup_merge_dialog_positive".tr(),
               onPositive: () =>
-                  context.read<BackupBloc>().add(BackupLoadingMergeBackUp()),
+                  bloc.read<BackupBloc>().add(BackupLoadingMergeBackUp()),
             ));
   }
 
-  _createDialogForRemovingBackUp(BuildContext context) {
+  _createDialogForRemovingBackUp(BuildContext bloc) {
     showDialog(
-        context: context,
+        context: bloc,
         builder: (context) => KPDialog(
               title: Text("backup_removal_dialog_title".tr()),
               content: Text("backup_removal_dialog_content".tr(),
                   style: Theme.of(context).textTheme.bodyLarge),
               positiveButtonText: "backup_removal_dialog_positive".tr(),
               onPositive: () =>
-                  context.read<BackupBloc>().add(BackupLoadingRemoveBackUp()),
+                  bloc.read<BackupBloc>().add(BackupLoadingRemoveBackUp()),
             ));
   }
 }

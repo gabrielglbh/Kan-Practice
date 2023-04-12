@@ -13,7 +13,7 @@ part 'dictionary_details_state.dart';
 
 part 'dictionary_details_bloc.freezed.dart';
 
-@lazySingleton
+@injectable
 class DictionaryDetailsBloc
     extends Bloc<DictionaryDetailsEvent, DictionaryDetailsState> {
   final IDictionaryDetailsRepository _dictionaryDetailsRepository;

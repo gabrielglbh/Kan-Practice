@@ -16,7 +16,7 @@ part 'add_to_market_state.dart';
 
 part 'add_to_market_bloc.freezed.dart';
 
-@lazySingleton
+@injectable
 class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
   final IAuthRepository _authRepository;
   final IMarketRepository _marketRepository;

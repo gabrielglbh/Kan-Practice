@@ -17,6 +17,7 @@ import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
 import 'package:kanpractice/application/list_details_grammar_points/list_details_grammar_points_bloc.dart';
 import 'package:kanpractice/application/list_details_words/list_details_words_bloc.dart';
 import 'package:kanpractice/application/lists/lists_bloc.dart';
+import 'package:kanpractice/application/market/market_bloc.dart';
 import 'package:kanpractice/application/services/messaging_service.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/application/specific_data/specific_data_bloc.dart';
@@ -154,6 +155,7 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<ListsBloc>()),
         BlocProvider(create: (_) => getIt<FolderBloc>()),
         BlocProvider(create: (_) => getIt<BackupBloc>()),
+        BlocProvider(create: (_) => getIt<MarketBloc>()),
         BlocProvider(create: (_) => getIt<StudyModeBloc>()),
         BlocProvider(create: (_) => getIt<AuthBloc>()..add(AuthIdle())),
         BlocProvider(create: (_) => getIt<GenericTestBloc>()),

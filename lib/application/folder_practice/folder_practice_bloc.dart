@@ -14,7 +14,7 @@ part 'folder_practice_state.dart';
 
 part 'folder_practice_bloc.freezed.dart';
 
-@lazySingleton
+@injectable
 class FolderPracticeBloc
     extends Bloc<FolderPracticeEvent, FolderPracticeState> {
   final IFolderRepository _folderRepository;

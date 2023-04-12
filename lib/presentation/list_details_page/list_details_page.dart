@@ -98,11 +98,9 @@ class _ListDetailsPageState extends State<ListDetailsPage>
         ListDetailsGrammarPointsEventSearching(query, _listName, reset: reset));
   }
 
-  _updateName(String name) {
+  _updateName(BuildContext bloc, String name) {
     if (name.isNotEmpty) {
-      context
-          .read<ListDetailsBloc>()
-          .add(ListDetailsUpdateName(name, _listName));
+      bloc.read<ListDetailsBloc>().add(ListDetailsUpdateName(name, _listName));
     }
   }
 
@@ -123,12 +121,12 @@ class _ListDetailsPageState extends State<ListDetailsPage>
                 autofocus: true,
                 onEditingComplete: () {
                   Navigator.of(context).pop();
-                  _updateName(nameController.text);
+                  _updateName(bloc, nameController.text);
                 },
               ),
               positiveButtonText:
                   "list_details_updateKanListName_positive".tr(),
-              onPositive: () => _updateName(nameController.text));
+              onPositive: () => _updateName(bloc, nameController.text));
         });
   }
 

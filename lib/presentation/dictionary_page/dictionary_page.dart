@@ -50,16 +50,17 @@ class _DictionaryPageState extends State<DictionaryPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    if (widget.args.searchInJisho) return _body();
     return BlocProvider(
       create: (context) => getIt<DictionaryBloc>()..add(DictionaryEventStart()),
-      child: KPScaffold(
-        setGestureDetector: false,
-        appBarTitle: widget.args.searchInJisho
-            ? "dict_title".tr()
-            : 'dict_add_word_title'.tr(),
-        child: _body(),
-      ),
+      child: widget.args.searchInJisho
+          ? _body()
+          : KPScaffold(
+              setGestureDetector: false,
+              appBarTitle: widget.args.searchInJisho
+                  ? "dict_title".tr()
+                  : 'dict_add_word_title'.tr(),
+              child: _body(),
+            ),
     );
   }
 

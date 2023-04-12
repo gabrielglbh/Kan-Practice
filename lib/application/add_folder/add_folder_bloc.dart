@@ -13,7 +13,7 @@ part 'add_folder_state.dart';
 
 part 'add_folder_bloc.freezed.dart';
 
-@lazySingleton
+@injectable
 class AddFolderBloc extends Bloc<AddFolderEvent, AddFolderState> {
   final IListRepository _listRepository;
   final IFolderRepository _folderRepository;

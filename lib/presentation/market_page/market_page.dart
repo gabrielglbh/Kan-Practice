@@ -48,6 +48,8 @@ class _MarketPageState extends State<MarketPage>
 
     _currentAppliedOrder =
         getIt<PreferencesService>().readData(SharedKeys.orderOnMarket) ?? true;
+    context.read<MarketBloc>().add(MarketEventLoading(
+        filter: _currentAppliedFilter, order: _currentAppliedOrder));
     super.initState();
   }
 
@@ -130,117 +132,111 @@ class _MarketPageState extends State<MarketPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocProvider(
-      create: (context) => getIt<MarketBloc>()
-        ..add(MarketEventLoading(
-            filter: _currentAppliedFilter, order: _currentAppliedOrder)),
-      child: KPScaffold(
-        appBarTitle: 'market_place_title'.tr(),
-        onWillPop: () async {
-          if (_searchHasFocus) {
-            _searchBarFn.unfocus();
-            return false;
-          } else {
-            return true;
-          }
-        },
-        child: Column(
-          children: [
-            KPSearchBar(
-              controller: _searchTextController,
-              hint: "market_lists_searchBar_hint".tr(),
-              focus: _searchBarFn,
-              onQuery: (String query) {
-                /// Everytime the user queries, reset the query itself and
-                /// the pagination index
-                _query = query;
-                _addSearchingEvent(_query, reset: true);
-              },
-              onExitSearch: () {
-                /// Empty the query
-                _query = "";
-                _addLoadingEvent();
-              },
-            ),
-            _filterChips(),
-            BlocConsumer<MarketBloc, MarketState>(
-              listener: (context, state) {
-                state.mapOrNull(succeeded: (msg) {
-                  Utils.getSnackBar(context, msg.message);
-                }, error: (error) {
-                  Utils.getSnackBar(context, error.message);
-                });
-              },
-              builder: (context, state) {
-                return state.maybeWhen(
-                  loading: () => Column(
-                    children: [
-                      const KPProgressIndicator(),
-                      const SizedBox(height: KPMargins.margin16),
-                      Text('can_take_a_while_loading'.tr()),
-                    ],
-                  ),
-                  error: (_) => KPEmptyList(
-                      showTryButton: true,
-                      onRefresh: () => _addLoadingEvent(reset: true),
-                      message: "market_load_failed".tr()),
-                  loaded: (lists) => lists.isEmpty
-                      ? Expanded(
-                          child: KPEmptyList(
-                              onRefresh: () => _addLoadingEvent(reset: true),
-                              showTryButton: true,
-                              message: "market_empty".tr()))
-                      : Expanded(
-                          child: RefreshIndicator(
-                            onRefresh: () async =>
-                                _addLoadingEvent(reset: true),
-                            color: KPColors.secondaryColor,
-                            child: ListView.separated(
-                                key: const PageStorageKey<String>(
-                                    'marketListsController'),
-                                controller: _scrollController,
-                                itemCount: lists.length,
-                                keyboardDismissBehavior:
-                                    ScrollViewKeyboardDismissBehavior.onDrag,
-                                separatorBuilder: (_, __) =>
-                                    const Divider(height: KPMargins.margin4),
-                                padding: const EdgeInsets.only(
-                                    bottom: KPMargins.margin24),
-                                itemBuilder: (context, k) {
-                                  return MarketListTile(
-                                    list: lists[k],
-                                    isManaging: _currentAppliedFilter ==
-                                        MarketFilters.mine,
-                                    onDownload: (listId, isFolder) {
-                                      context
-                                          .read<MarketBloc>()
-                                          .add(MarketEventDownload(
-                                            listId,
-                                            isFolder,
-                                            _currentAppliedFilter,
-                                            _currentAppliedOrder,
-                                          ));
-                                    },
-                                    onRemove: (listId, isFolder) {
-                                      context
-                                          .read<MarketBloc>()
-                                          .add(MarketEventRemove(
-                                            listId,
-                                            isFolder,
-                                            _currentAppliedFilter,
-                                            _currentAppliedOrder,
-                                          ));
-                                    },
-                                  );
-                                }),
-                          ),
+    return KPScaffold(
+      appBarTitle: 'market_place_title'.tr(),
+      onWillPop: () async {
+        if (_searchHasFocus) {
+          _searchBarFn.unfocus();
+          return false;
+        } else {
+          return true;
+        }
+      },
+      child: Column(
+        children: [
+          KPSearchBar(
+            controller: _searchTextController,
+            hint: "market_lists_searchBar_hint".tr(),
+            focus: _searchBarFn,
+            onQuery: (String query) {
+              /// Everytime the user queries, reset the query itself and
+              /// the pagination index
+              _query = query;
+              _addSearchingEvent(_query, reset: true);
+            },
+            onExitSearch: () {
+              /// Empty the query
+              _query = "";
+              _addLoadingEvent();
+            },
+          ),
+          _filterChips(),
+          BlocConsumer<MarketBloc, MarketState>(
+            listener: (context, state) {
+              state.mapOrNull(succeeded: (msg) {
+                Utils.getSnackBar(context, msg.message);
+              }, error: (error) {
+                Utils.getSnackBar(context, error.message);
+              });
+            },
+            builder: (context, state) {
+              return state.maybeWhen(
+                loading: () => Column(
+                  children: [
+                    const KPProgressIndicator(),
+                    const SizedBox(height: KPMargins.margin16),
+                    Text('can_take_a_while_loading'.tr()),
+                  ],
+                ),
+                error: (_) => KPEmptyList(
+                    showTryButton: true,
+                    onRefresh: () => _addLoadingEvent(reset: true),
+                    message: "market_load_failed".tr()),
+                loaded: (lists) => lists.isEmpty
+                    ? Expanded(
+                        child: KPEmptyList(
+                            onRefresh: () => _addLoadingEvent(reset: true),
+                            showTryButton: true,
+                            message: "market_empty".tr()))
+                    : Expanded(
+                        child: RefreshIndicator(
+                          onRefresh: () async => _addLoadingEvent(reset: true),
+                          color: KPColors.secondaryColor,
+                          child: ListView.separated(
+                              key: const PageStorageKey<String>(
+                                  'marketListsController'),
+                              controller: _scrollController,
+                              itemCount: lists.length,
+                              keyboardDismissBehavior:
+                                  ScrollViewKeyboardDismissBehavior.onDrag,
+                              separatorBuilder: (_, __) =>
+                                  const Divider(height: KPMargins.margin4),
+                              padding: const EdgeInsets.only(
+                                  bottom: KPMargins.margin24),
+                              itemBuilder: (context, k) {
+                                return MarketListTile(
+                                  list: lists[k],
+                                  isManaging: _currentAppliedFilter ==
+                                      MarketFilters.mine,
+                                  onDownload: (listId, isFolder) {
+                                    context
+                                        .read<MarketBloc>()
+                                        .add(MarketEventDownload(
+                                          listId,
+                                          isFolder,
+                                          _currentAppliedFilter,
+                                          _currentAppliedOrder,
+                                        ));
+                                  },
+                                  onRemove: (listId, isFolder) {
+                                    context
+                                        .read<MarketBloc>()
+                                        .add(MarketEventRemove(
+                                          listId,
+                                          isFolder,
+                                          _currentAppliedFilter,
+                                          _currentAppliedOrder,
+                                        ));
+                                  },
+                                );
+                              }),
                         ),
-                  orElse: () => const SizedBox(),
-                );
-              },
-            ),
-          ],
-        ),
+                      ),
+                orElse: () => const SizedBox(),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

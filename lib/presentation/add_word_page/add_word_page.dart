@@ -61,8 +61,8 @@ class _AddWordPageState extends State<AddWordPage> {
     super.dispose();
   }
 
-  Future<void> _createWord({bool exit = true}) async {
-    context.read<AddWordBloc>().add(AddWordEventCreate(
+  Future<void> _createWord(BuildContext bloc, {bool exit = true}) async {
+    bloc.read<AddWordBloc>().add(AddWordEventCreate(
         exitMode: exit,
         word: Word(
           word: _wordController?.text ?? "",
@@ -75,10 +75,10 @@ class _AddWordPageState extends State<AddWordPage> {
         )));
   }
 
-  Future<void> _updateWord() async {
+  Future<void> _updateWord(BuildContext bloc) async {
     Word? k = widget.args.word;
     if (k != null) {
-      context
+      bloc
           .read<AddWordBloc>()
           .add(AddWordEventUpdate(widget.args.listName, k.word, parameters: {
             WordTableFields.wordField: _wordController?.text ?? "",
@@ -143,7 +143,7 @@ class _AddWordPageState extends State<AddWordPage> {
             child: IconButton(
               icon: const Icon(Icons.add),
               onPressed: () {
-                _validateWord(() => _createWord(exit: false));
+                _validateWord(() => _createWord(context, exit: false));
               },
             ),
           ),
@@ -154,9 +154,9 @@ class _AddWordPageState extends State<AddWordPage> {
                   onPressed: () {
                     _validateWord(() {
                       if (widget.args.word != null) {
-                        _updateWord();
+                        _updateWord(context);
                       } else {
-                        _createWord();
+                        _createWord(context);
                       }
                     });
                   },
@@ -251,9 +251,9 @@ class _AddWordPageState extends State<AddWordPage> {
                 /// more words
                 _validateWord(() {
                   if (widget.args.word == null) {
-                    _createWord(exit: false);
+                    _createWord(context, exit: false);
                   } else {
-                    _updateWord();
+                    _updateWord(context);
                   }
                 });
               },

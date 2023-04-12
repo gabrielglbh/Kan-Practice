@@ -12,7 +12,6 @@ part 'market_state.dart';
 
 part 'market_bloc.freezed.dart';
 
-/// Used on market.dart and manage_market.dart.
 @lazySingleton
 class MarketBloc extends Bloc<MarketEvent, MarketState> {
   final IMarketRepository _marketRepository;

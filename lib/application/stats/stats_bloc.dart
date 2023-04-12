@@ -16,7 +16,7 @@ part 'stats_state.dart';
 
 part 'stats_bloc.freezed.dart';
 
-@lazySingleton
+@injectable
 class StatsBloc extends Bloc<StatsEvent, StatsState> {
   final IListRepository _listRepository;
   final IWordRepository _wordRepository;

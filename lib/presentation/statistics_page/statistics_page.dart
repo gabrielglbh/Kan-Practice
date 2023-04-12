@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/stats/stats_bloc.dart';
 import 'package:kanpractice/application/test_history/test_history_bloc.dart';
 import 'package:kanpractice/injection.dart';
-import 'package:kanpractice/presentation/core/types/list_details_types.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_grammar_switch.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -77,16 +77,6 @@ class _StatisticsPageState extends State<StatisticsPage>
       child: KPScaffold(
         appBarTitle: "settings_general_statistics".tr(),
         appBarActions: [
-          IconButton(
-            icon: Icon(
-              _showGrammarGraphs
-                  ? ListDetailsType.words.icon
-                  : ListDetailsType.grammar.icon,
-            ),
-            onPressed: () {
-              setState(() => _showGrammarGraphs = !_showGrammarGraphs);
-            },
-          ),
           if (_controller.index == _tabs.length - 1)
             IconButton(
               icon: const Icon(Icons.clear_all_rounded),
@@ -99,14 +89,22 @@ class _StatisticsPageState extends State<StatisticsPage>
               loaded: (stats) => Column(
                 children: [
                   TabBar(controller: _controller, tabs: _tabs),
-                  const SizedBox(height: KPMargins.margin16),
+                  const SizedBox(height: KPMargins.margin8),
+                  KPGrammarSwitch(
+                    usesService: false,
+                    onChanged: (value) {
+                      setState(() => _showGrammarGraphs = value);
+                    },
+                  ),
+                  const Divider(height: 8),
                   Expanded(
                     child: TabBarView(
                       controller: _controller,
                       children: [
                         ListStats(
                             stats: stats, showGrammar: _showGrammarGraphs),
-                        TestStats(stats: stats),
+                        TestStats(
+                            stats: stats, showGrammar: _showGrammarGraphs),
                         TestHistory(
                             stats: stats, showGrammar: _showGrammarGraphs),
                       ],

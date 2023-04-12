@@ -15,7 +15,8 @@ import 'package:kanpractice/presentation/statistics_page/widgets/stats_tappable_
 
 class TestStats extends StatefulWidget {
   final KanPracticeStats stats;
-  const TestStats({super.key, required this.stats});
+  final bool showGrammar;
+  const TestStats({super.key, required this.stats, required this.showGrammar});
 
   @override
   State<TestStats> createState() => _TestStatsState();
@@ -103,7 +104,8 @@ class _TestStatsState extends State<TestStats>
     return BlocListener<SpecificDataBloc, SpecificDataState>(
       listener: (context, state) {
         state.mapOrNull(testRetrieved: (t) {
-          SpecBottomSheet.show(context, t.test.name, t.data);
+          SpecBottomSheet.show(
+              context, t.test.name, widget.showGrammar, t.data);
         });
       },
       child: KPBarChart(

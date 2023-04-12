@@ -57,39 +57,40 @@ class _FolderDetailsPageState extends State<FolderDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FolderDetailsBloc, FolderDetailsState>(
-      builder: (context, state) {
-        return KPScaffold(
-            onWillPop: () async {
-              if (_searchHasFocus) {
-                _resetList(context);
-                _searchBarFn.unfocus();
-                return false;
-              } else {
-                return true;
-              }
-            },
-            appBarTitle: widget.folder,
-            appBarActions: [
-              IconButton(
-                onPressed: () async {
-                  await KPTestBottomSheet.show(context, folder: widget.folder);
-                },
-                icon: const Icon(Icons.track_changes_rounded,
-                    color: KPColors.secondaryColor),
-              ),
-              IconButton(
-                icon: const Icon(Icons.auto_awesome_motion_rounded),
-                onPressed: () async {
-                  await Navigator.of(context).pushNamed(
-                      KanPracticePages.folderAddPage,
-                      arguments: widget.folder);
-                  if (!mounted) return;
-                  context.read<FolderDetailsBloc>().add(_addListLoadingEvent());
-                },
-              ),
-            ],
-            child: Column(
+    return KPScaffold(
+      onWillPop: () async {
+        if (_searchHasFocus) {
+          _resetList(context);
+          _searchBarFn.unfocus();
+          return false;
+        } else {
+          return true;
+        }
+      },
+      appBarTitle: widget.folder,
+      appBarActions: [
+        IconButton(
+          onPressed: () async {
+            await KPTestBottomSheet.show(context, folder: widget.folder);
+          },
+          icon: const Icon(Icons.track_changes_rounded,
+              color: KPColors.secondaryColor),
+        ),
+        IconButton(
+          icon: const Icon(Icons.auto_awesome_motion_rounded),
+          onPressed: () async {
+            await Navigator.of(context).pushNamed(
+                KanPracticePages.folderAddPage,
+                arguments: widget.folder);
+            if (!mounted) return;
+            context.read<FolderDetailsBloc>().add(_addListLoadingEvent());
+          },
+        ),
+      ],
+      child: BlocBuilder<FolderDetailsBloc, FolderDetailsState>(
+        builder: (context, state) {
+          return state.maybeWhen(
+            loaded: (lists) => Column(
               children: [
                 KPSearchBar(
                   controller: _searchTextController,
@@ -132,20 +133,24 @@ class _FolderDetailsPageState extends State<FolderDetailsPage> {
                     },
                   ),
                 ),
-                SizedBox(
-                  height: 85,
-                  child: KPButton(
-                    title1: "list_details_practice_button_label_ext".tr(),
-                    title2: "list_details_practice_button_label".tr(),
-                    onTap: () async {
-                      await PracticeFolderBottomSheet.show(
-                          context, widget.folder);
-                    },
+                if (lists.isNotEmpty)
+                  SizedBox(
+                    height: 85,
+                    child: KPButton(
+                      title1: "list_details_practice_button_label_ext".tr(),
+                      title2: "list_details_practice_button_label".tr(),
+                      onTap: () async {
+                        await PracticeFolderBottomSheet.show(
+                            context, widget.folder);
+                      },
+                    ),
                   ),
-                ),
               ],
-            ));
-      },
+            ),
+            orElse: () => const SizedBox(),
+          );
+        },
+      ),
     );
   }
 }

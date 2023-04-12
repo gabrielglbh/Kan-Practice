@@ -28,11 +28,21 @@ class SpecificDataRepositoryImpl implements ISpecificDataRepository {
           listening = 0,
           speaking = 0;
       for (var word in list) {
-        writing += word.winRateWriting;
-        reading += word.winRateReading;
-        recognition += word.winRateRecognition;
-        listening += word.winRateListening;
-        speaking += word.winRateSpeaking;
+        writing += word.winRateWriting == DatabaseConstants.emptyWinRate
+            ? 0
+            : word.winRateWriting;
+        reading += word.winRateReading == DatabaseConstants.emptyWinRate
+            ? 0
+            : word.winRateReading;
+        recognition += word.winRateRecognition == DatabaseConstants.emptyWinRate
+            ? 0
+            : word.winRateRecognition;
+        listening += word.winRateListening == DatabaseConstants.emptyWinRate
+            ? 0
+            : word.winRateListening;
+        speaking += word.winRateSpeaking == DatabaseConstants.emptyWinRate
+            ? 0
+            : word.winRateSpeaking;
       }
       return SpecificData(
         id: categoryId,

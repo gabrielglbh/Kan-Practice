@@ -27,7 +27,7 @@ class TestResultPage extends StatefulWidget {
 }
 
 class _TestResultPageState extends State<TestResultPage> {
-  bool _performAnotherTest = false;
+  bool _performAnotherTest = true;
   late Test test;
 
   @override

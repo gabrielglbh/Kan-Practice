@@ -7,10 +7,9 @@ import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
-import 'package:kanpractice/presentation/core/widgets/kp_grammar_word_chip.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_grammar_switch.dart';
 import 'package:kanpractice/presentation/core/widgets/kanlists/widgets/kanlist_tile.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
-import 'package:kanpractice/presentation/core/widgets/kp_switch.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -135,11 +134,6 @@ class _KPKanlistsState extends State<KPKanlists>
     }
   }
 
-  _toggleGraphs(bool value) {
-    getIt<PreferencesService>().saveData(SharedKeys.showGrammarGraphs, value);
-    setState(() => _showGrammarGraphs = value);
-  }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -152,10 +146,10 @@ class _KPKanlistsState extends State<KPKanlists>
             children: [
               _lists(),
               if (_showGrammarSwitchOnStack)
-                KPGrammarWordChip(
-                  controller: _showGrammarGraphs,
-                  onPressed: () {
-                    setState(() => _showGrammarGraphs = !_showGrammarGraphs);
+                KPGrammarSwitch(
+                  isActionChip: true,
+                  onChanged: (value) {
+                    setState(() => _showGrammarGraphs = value);
                   },
                 ),
             ],
@@ -192,26 +186,6 @@ class _KPKanlistsState extends State<KPKanlists>
                 ),
               );
             }));
-  }
-
-  ListTile _grammarSwitch() {
-    return ListTile(
-      title: Text(
-        'grammar_change_graphs'.tr(),
-        style: Theme.of(context)
-            .textTheme
-            .bodyMedium
-            ?.copyWith(color: KPColors.getAccent(context)),
-      ),
-      trailing: KPSwitch(
-        onChanged: _toggleGraphs,
-        value: _showGrammarGraphs,
-      ),
-      visualDensity: const VisualDensity(vertical: -4),
-      onTap: () {
-        _toggleGraphs(!_showGrammarGraphs);
-      },
-    );
   }
 
   BlocBuilder _lists() {
@@ -267,7 +241,13 @@ class _KPKanlistsState extends State<KPKanlists>
         controller: _scrollController,
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         slivers: [
-          SliverToBoxAdapter(child: _grammarSwitch()),
+          SliverToBoxAdapter(
+            child: KPGrammarSwitch(
+              onChanged: (value) {
+                setState(() => _showGrammarGraphs = value);
+              },
+            ),
+          ),
           SliverList(
             delegate: SliverChildBuilderDelegate((_, k) {
               return Column(

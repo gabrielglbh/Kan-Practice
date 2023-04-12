@@ -183,7 +183,53 @@ class _WordListWidgetState extends State<WordListWidget>
       },
       builder: (context, state) {
         return state.maybeWhen(
-          loaded: (words, _) => _body(words),
+          loaded: (words, _) => Column(
+            children: [
+              if (!_aggrStats)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: KPMargins.margin8),
+                  child: TabBar(
+                      controller: _tabController,
+                      tabs: List.generate(StudyModes.values.length, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Icon(
+                            StudyModes.values[index].icon,
+                            color: StudyModes.values[index].color,
+                          ),
+                        );
+                      })),
+                ),
+              _aggrStats
+                  ? Expanded(child: _wordList(words))
+                  : Expanded(
+                      child: GestureDetector(
+                        onHorizontalDragEnd: (details) {
+                          double? pv = details.primaryVelocity;
+                          if (pv != null) _updateSelectedModePageView(pv);
+                        },
+                        child: _wordList(words),
+                      ),
+                    ),
+              if (words.isNotEmpty)
+                KPButton(
+                  title1: "list_details_practice_button_label_ext".tr(),
+                  title2: "list_details_practice_button_label".tr(),
+                  onTap: () async {
+                    if (_aggrStats) {
+                      return await PracticeWordsBottomSheet.show(
+                              context, widget.listName, words)
+                          .then(
+                        (value) => _addLoadingEvent(reset: true),
+                      );
+                    }
+                    context.read<ListDetailsWordsBloc>().add(
+                        ListDetailsWordsEventLoadUpPractice(
+                            widget.listName, _selectedMode));
+                  },
+                ),
+            ],
+          ),
           error: (_) => KPEmptyList(
               showTryButton: true,
               onRefresh: () => _addLoadingEvent(reset: true),
@@ -191,54 +237,6 @@ class _WordListWidgetState extends State<WordListWidget>
           orElse: () => const KPProgressIndicator(),
         );
       },
-    );
-  }
-
-  Column _body(List<Word> words) {
-    return Column(
-      children: [
-        if (!_aggrStats)
-          Padding(
-            padding: const EdgeInsets.only(bottom: KPMargins.margin8),
-            child: TabBar(
-                controller: _tabController,
-                tabs: List.generate(StudyModes.values.length, (index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Icon(
-                      StudyModes.values[index].icon,
-                      color: StudyModes.values[index].color,
-                    ),
-                  );
-                })),
-          ),
-        _aggrStats
-            ? Expanded(child: _wordList(words))
-            : Expanded(
-                child: GestureDetector(
-                  onHorizontalDragEnd: (details) {
-                    double? pv = details.primaryVelocity;
-                    if (pv != null) _updateSelectedModePageView(pv);
-                  },
-                  child: _wordList(words),
-                ),
-              ),
-        KPButton(
-            title1: "list_details_practice_button_label_ext".tr(),
-            title2: "list_details_practice_button_label".tr(),
-            onTap: () async {
-              if (_aggrStats) {
-                return await PracticeWordsBottomSheet.show(
-                        context, widget.listName, words)
-                    .then(
-                  (value) => _addLoadingEvent(reset: true),
-                );
-              }
-              context.read<ListDetailsWordsBloc>().add(
-                  ListDetailsWordsEventLoadUpPractice(
-                      widget.listName, _selectedMode));
-            }),
-      ],
     );
   }
 

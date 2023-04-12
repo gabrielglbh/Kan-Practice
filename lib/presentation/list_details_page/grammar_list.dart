@@ -149,7 +149,45 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
       },
       builder: (context, state) {
         return state.maybeWhen(
-          loaded: (grammar, _) => _body(grammar),
+          loaded: (grammar, _) => Column(
+            children: [
+              if (!_aggrStats)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: KPMargins.margin8),
+                  child: TabBar(
+                      controller: _tabController,
+                      tabs: List.generate(GrammarModes.values.length, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Icon(
+                            GrammarModes.values[index].icon,
+                            color: GrammarModes.values[index].color,
+                          ),
+                        );
+                      })),
+                ),
+              _aggrStats
+                  ? Expanded(child: _grammarList(grammar))
+                  : Expanded(
+                      child: GestureDetector(
+                        onHorizontalDragEnd: (details) {
+                          double? pv = details.primaryVelocity;
+                          if (pv != null) _updateSelectedModePageView(pv);
+                        },
+                        child: _grammarList(grammar),
+                      ),
+                    ),
+              if (grammar.isNotEmpty)
+                KPButton(
+                    title1: "list_details_practice_button_label_ext".tr(),
+                    title2: "list_details_practice_button_label".tr(),
+                    onTap: () async {
+                      context.read<ListDetailsGrammarPointsBloc>().add(
+                          ListDetailsGrammarPointsEventLoadUpPractice(
+                              widget.listName, _selectedMode));
+                    }),
+            ],
+          ),
           error: (_) => KPEmptyList(
               showTryButton: true,
               onRefresh: () => _addLoadingEvent(reset: true),
@@ -157,47 +195,6 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
           orElse: () => const KPProgressIndicator(),
         );
       },
-    );
-  }
-
-  Column _body(List<GrammarPoint> grammar) {
-    return Column(
-      children: [
-        if (!_aggrStats)
-          Padding(
-            padding: const EdgeInsets.only(bottom: KPMargins.margin8),
-            child: TabBar(
-                controller: _tabController,
-                tabs: List.generate(GrammarModes.values.length, (index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Icon(
-                      GrammarModes.values[index].icon,
-                      color: GrammarModes.values[index].color,
-                    ),
-                  );
-                })),
-          ),
-        _aggrStats
-            ? Expanded(child: _grammarList(grammar))
-            : Expanded(
-                child: GestureDetector(
-                  onHorizontalDragEnd: (details) {
-                    double? pv = details.primaryVelocity;
-                    if (pv != null) _updateSelectedModePageView(pv);
-                  },
-                  child: _grammarList(grammar),
-                ),
-              ),
-        KPButton(
-            title1: "list_details_practice_button_label_ext".tr(),
-            title2: "list_details_practice_button_label".tr(),
-            onTap: () async {
-              context.read<ListDetailsGrammarPointsBloc>().add(
-                  ListDetailsGrammarPointsEventLoadUpPractice(
-                      widget.listName, _selectedMode));
-            }),
-      ],
     );
   }
 

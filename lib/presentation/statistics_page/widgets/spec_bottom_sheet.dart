@@ -17,20 +17,29 @@ import 'package:kanpractice/presentation/statistics_page/widgets/stats_header.da
 
 class SpecBottomSheet extends StatefulWidget {
   final String title;
+  final bool showGrammar;
   final SpecificData data;
-  const SpecBottomSheet({Key? key, required this.title, required this.data})
-      : super(key: key);
+  const SpecBottomSheet({
+    Key? key,
+    required this.title,
+    required this.showGrammar,
+    required this.data,
+  }) : super(key: key);
 
   /// Creates and calls the [BottomSheet] with the content for a regular test specs
   static Future<String?> show(
-      BuildContext context, String title, SpecificData data) async {
+    BuildContext context,
+    String title,
+    bool showGrammar,
+    SpecificData data,
+  ) async {
     String? resultName;
     await showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            backgroundColor: Colors.transparent,
-            builder: (context) => SpecBottomSheet(title: title, data: data))
-        .then((value) {
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (context) => SpecBottomSheet(
+            title: title, showGrammar: showGrammar, data: data)).then((value) {
       resultName = value;
     });
     return resultName;
@@ -41,7 +50,7 @@ class SpecBottomSheet extends StatefulWidget {
 }
 
 class _SpecBottomSheetState extends State<SpecBottomSheet> {
-  bool _showWords = true;
+  late bool _showGrammar;
   bool get _isCategory =>
       widget.data.id == SpecificDataRepositoryImpl.categoryId;
   int get _length => _isCategory
@@ -50,6 +59,12 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
 
   double _getActualWinRate(double v) =>
       v == DatabaseConstants.emptyWinRate ? 0 : v;
+
+  @override
+  void initState() {
+    _showGrammar = widget.showGrammar;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -191,12 +206,12 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                           child: IconButton(
                             onPressed: () {
                               setState(() {
-                                _showWords = !_showWords;
+                                _showGrammar = !_showGrammar;
                               });
                             },
-                            icon: Icon(_showWords
-                                ? ListDetailsType.grammar.icon
-                                : ListDetailsType.words.icon),
+                            icon: Icon(_showGrammar
+                                ? ListDetailsType.words.icon
+                                : ListDetailsType.grammar.icon),
                           ),
                         ),
                     ],
@@ -204,7 +219,7 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: KPMargins.margin24),
-                    child: _showWords
+                    child: !_showGrammar
                         ? KPStudyModeRadialGraph(
                             animationDuration: 0,
                             writing: widget.data.totalWinRateWriting,

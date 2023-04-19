@@ -142,11 +142,8 @@ class _KanPracticeState extends State<KanPractice> {
       if (getIt<PreferencesService>()
               .readData(SharedKeys.haveSeenKanListCoachMark) ==
           false) {
-        context
-            .read<ExampleDataBloc>()
-            .add(ExampleDataEventInstallData(context));
+        getIt<ExampleDataBloc>().add(ExampleDataEventInstallData(context));
       }
-      context.read<DailyOptionsBloc>().add(DailyOptionsEventLoadData());
     });
     super.initState();
   }
@@ -174,21 +171,24 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<AddWordBloc>()),
         BlocProvider(create: (_) => getIt<DailyOptionsBloc>()),
       ],
-      child: BlocBuilder<ExampleDataBloc, ExampleDataState>(
-        builder: (context, state) {
-          return MaterialApp(
-            title: 'KanPractice',
-            locale: context.locale,
-            supportedLocales: context.supportedLocales,
-            localizationsDelegates: context.localizationDelegates,
-            debugShowCheckedModeBanner: false,
-            theme: ThemeManager.instance.currentLightThemeData,
-            darkTheme: ThemeManager.instance.currentDarkThemeData,
-            themeMode: ThemeManager.instance.themeMode,
-            initialRoute: KanPracticePages.homePage,
-            onGenerateRoute: onGenerateRoute,
-          );
+      child: BlocListener<ExampleDataBloc, ExampleDataState>(
+        listener: (context, state) {
+          state.mapOrNull(loaded: (_) {
+            getIt<DailyOptionsBloc>().add(DailyOptionsEventLoadData());
+          });
         },
+        child: MaterialApp(
+          title: 'KanPractice',
+          locale: context.locale,
+          supportedLocales: context.supportedLocales,
+          localizationsDelegates: context.localizationDelegates,
+          debugShowCheckedModeBanner: false,
+          theme: ThemeManager.instance.currentLightThemeData,
+          darkTheme: ThemeManager.instance.currentDarkThemeData,
+          themeMode: ThemeManager.instance.themeMode,
+          initialRoute: KanPracticePages.homePage,
+          onGenerateRoute: onGenerateRoute,
+        ),
       ),
     );
   }

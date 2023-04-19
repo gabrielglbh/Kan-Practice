@@ -30,6 +30,9 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
   bool _grammarPointNotification = true;
   bool _controlledPace = true;
   late TextEditingController _wordsController, _grammarController;
+  late FocusNode _wordsFocusNode, _grammarFocusNode;
+
+  int _words = 0, _wordsMean = 0, _grammar = 0, _grammarMean = 0;
 
   @override
   void initState() {
@@ -53,6 +56,8 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
         text: service.readData(SharedKeys.maxWordsOnDaily).toString());
     _grammarController = TextEditingController(
         text: service.readData(SharedKeys.maxGrammarOnDaily).toString());
+    _wordsFocusNode = FocusNode();
+    _grammarFocusNode = FocusNode();
     context.read<DailyOptionsBloc>().add(DailyOptionsEventLoadData());
     super.initState();
   }
@@ -106,8 +111,50 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
     );
   }
 
+  _onSubmitMaxLimit(
+    TextEditingController textController,
+    FocusNode focusNode,
+    String key,
+    int max,
+    int mean,
+  ) {
+    if (textController.text.isNotEmpty) {
+      final number =
+          int.tryParse(textController.text.split(RegExp(r'[,\. \-]'))[0]);
+      final threshold = number == null || number <= 0 || number > max;
+      getIt<PreferencesService>().saveData(key, threshold ? mean : number);
+      textController.text = threshold ? mean.toString() : number.toString();
+      focusNode.unfocus();
+    }
+  }
+
   @override
   void dispose() {
+    if (getIt<PreferencesService>()
+            .readData(SharedKeys.maxWordsOnDaily)
+            .toString() !=
+        _wordsController.text) {
+      _onSubmitMaxLimit(
+        _wordsController,
+        _wordsFocusNode,
+        SharedKeys.maxWordsOnDaily,
+        _words,
+        _wordsMean,
+      );
+    }
+    if (getIt<PreferencesService>()
+            .readData(SharedKeys.maxGrammarOnDaily)
+            .toString() !=
+        _grammarController.text) {
+      _onSubmitMaxLimit(
+        _grammarController,
+        _grammarFocusNode,
+        SharedKeys.maxGrammarOnDaily,
+        _grammar,
+        _grammarMean,
+      );
+    }
+
     _wordsController.dispose();
     _grammarController.dispose();
     super.dispose();
@@ -148,56 +195,88 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
             },
           ),
           if (_controlledPace)
-            BlocBuilder<DailyOptionsBloc, DailyOptionsState>(
+            BlocConsumer<DailyOptionsBloc, DailyOptionsState>(
+              listener: (context, state) {
+                state.mapOrNull(loaded: (s) {
+                  _words = s.words;
+                  _grammar = s.grammar;
+                  _wordsMean = s.wordsMean;
+                  _grammarMean = s.grammarMean;
+                });
+              },
               builder: (context, state) {
                 return state.maybeWhen(
                   loaded: (words, grammar, wordsMean, grammarMean) => Padding(
                     padding: const EdgeInsets.only(
+                        right: KPMargins.margin8,
                         left: KPMargins.margin32 + KPMargins.margin12),
                     child: Column(
                       children: [
                         const SizedBox(height: KPMargins.margin12),
-                        KPTextForm(
-                          header: 'Maximum words per day',
-                          hint: wordsMean.toString(),
-                          controller: _wordsController,
-                          focusNode: FocusNode(),
-                          onEditingComplete: () {
-                            if (_wordsController.text.isNotEmpty) {
-                              final number = int.parse(_wordsController.text);
-                              if (number < 0 || number > words) {
-                                getIt<PreferencesService>().saveData(
-                                    SharedKeys.maxWordsOnDaily, wordsMean);
-                                return;
-                              }
-                              getIt<PreferencesService>()
-                                  .saveData(SharedKeys.maxWordsOnDaily, number);
-                            }
-                          },
-                          inputType: TextInputType.number,
-                          action: TextInputAction.done,
+                        Row(
+                          children: [
+                            Text("•",
+                                style: Theme.of(context).textTheme.bodyMedium),
+                            const SizedBox(width: KPMargins.margin8),
+                            Flexible(
+                              child: KPTextForm(
+                                header: 'daily_max_words_limit'.tr(),
+                                hint: wordsMean.toString(),
+                                controller: _wordsController,
+                                focusNode: _wordsFocusNode,
+                                maxLines: 1,
+                                isHorizontalForm: true,
+                                centerText: TextAlign.end,
+                                headerTextStyle:
+                                    Theme.of(context).textTheme.bodyMedium,
+                                onEditingComplete: () {
+                                  _onSubmitMaxLimit(
+                                    _wordsController,
+                                    _wordsFocusNode,
+                                    SharedKeys.maxWordsOnDaily,
+                                    words,
+                                    wordsMean,
+                                  );
+                                },
+                                inputType: TextInputType.number,
+                                action: TextInputAction.done,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: KPMargins.margin18),
+                        Row(
+                          children: [
+                            Text("•",
+                                style: Theme.of(context).textTheme.bodyMedium),
+                            const SizedBox(width: KPMargins.margin8),
+                            Flexible(
+                              child: KPTextForm(
+                                header: 'daily_max_grammar_limit'.tr(),
+                                hint: grammarMean.toString(),
+                                controller: _grammarController,
+                                focusNode: _grammarFocusNode,
+                                maxLines: 1,
+                                isHorizontalForm: true,
+                                centerText: TextAlign.end,
+                                headerTextStyle:
+                                    Theme.of(context).textTheme.bodyMedium,
+                                onEditingComplete: () {
+                                  _onSubmitMaxLimit(
+                                    _grammarController,
+                                    _grammarFocusNode,
+                                    SharedKeys.maxGrammarOnDaily,
+                                    grammar,
+                                    grammarMean,
+                                  );
+                                },
+                                inputType: TextInputType.number,
+                                action: TextInputAction.done,
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: KPMargins.margin12),
-                        KPTextForm(
-                          header: 'Maximum grammar points per day',
-                          hint: grammarMean.toString(),
-                          controller: _grammarController,
-                          focusNode: FocusNode(),
-                          onEditingComplete: () {
-                            if (_grammarController.text.isNotEmpty) {
-                              final number = int.parse(_grammarController.text);
-                              if (number < 0 || number > grammar) {
-                                getIt<PreferencesService>().saveData(
-                                    SharedKeys.maxGrammarOnDaily, grammarMean);
-                                return;
-                              }
-                              getIt<PreferencesService>().saveData(
-                                  SharedKeys.maxGrammarOnDaily, number);
-                            }
-                          },
-                          inputType: TextInputType.number,
-                          action: TextInputAction.done,
-                        ),
                       ],
                     ),
                   ),
@@ -274,6 +353,7 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
               setState(() => _grammarPointNotification = v);
             },
           ),
+          const SizedBox(height: KPMargins.margin32),
         ],
       ),
     );

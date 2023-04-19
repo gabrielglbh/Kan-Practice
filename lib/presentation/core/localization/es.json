@@ -428,5 +428,7 @@
   "study_modes_grammarPoints_ext": "文法点",
   "settings_general_badge_words": "Mostrar medallas de palabras",
   "settings_general_badge_words_description": "Si está activo, se mostrarán las palabras de las listas como medallas, si no, se mostrarán como elementos de una lista.",
-  "archive_title": "Archivo"
+  "archive_title": "Archivo",
+  "daily_max_words_limit": "Máximo de palabras al día",
+  "daily_max_grammar_limit": "Máximo de puntos gramaticales al día"
 }

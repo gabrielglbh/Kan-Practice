@@ -113,9 +113,10 @@ class KPWordItem extends StatelessWidget {
     );
 
     final tile = ListTile(
-      horizontalTitleGap: KPMargins.margin8,
+      horizontalTitleGap: 0,
       leading: score == -1
-          ? null
+          ? const SizedBox(
+              width: KPMargins.margin16, height: KPMargins.margin16)
           : Container(
               width: KPMargins.margin16,
               height: KPMargins.margin16,

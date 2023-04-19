@@ -119,7 +119,8 @@ class WordGrid extends StatelessWidget {
                 return _modeBasedButtons(
                   context,
                   StudyModes.values[i],
-                  isAvailable == 0 || isAvailable == null,
+                  (isAvailable == 0 || isAvailable == null) &&
+                      wordsToReview[i] != 0,
                   wordsToReview.isEmpty ? -1 : wordsToReview[i],
                 );
               },

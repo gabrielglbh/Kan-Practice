@@ -109,7 +109,8 @@ class GrammarGrid extends StatelessWidget {
                 return _grammarButton(
                   context,
                   GrammarModes.values[i],
-                  isAvailable == 0 || isAvailable == null,
+                  (isAvailable == 0 || isAvailable == null) &&
+                      grammarToReview[i] != 0,
                   grammarToReview.isEmpty ? -1 : grammarToReview[i],
                 );
               },
@@ -128,8 +129,8 @@ class GrammarGrid extends StatelessWidget {
     int grammarToReview,
   ) {
     String toReview = grammarToReview.toString();
-    if (grammarToReview > 5000) {
-      toReview = "> 5000";
+    if (grammarToReview > 500) {
+      toReview = "> 500";
     }
     return Stack(
       alignment: Alignment.topRight,

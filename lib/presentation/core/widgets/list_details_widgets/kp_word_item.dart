@@ -115,8 +115,38 @@ class KPWordItem extends StatelessWidget {
     final tile = ListTile(
       horizontalTitleGap: 0,
       leading: score == -1
-          ? const SizedBox(
-              width: KPMargins.margin16, height: KPMargins.margin16)
+          ? Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: KPMargins.margin16,
+                  height: KPMargins.margin16,
+                  margin: const EdgeInsets.only(top: KPMargins.margin4),
+                  decoration: BoxDecoration(
+                    color: KPColors.getSubtle(context),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                Container(
+                  width: KPMargins.margin16 - 3,
+                  height: KPMargins.margin16 - 3,
+                  margin: const EdgeInsets.only(top: KPMargins.margin4),
+                  decoration: BoxDecoration(
+                    color: KPColors.getPrimary(context),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                Container(
+                  width: KPMargins.margin4,
+                  height: KPMargins.margin4,
+                  margin: const EdgeInsets.only(top: KPMargins.margin4),
+                  decoration: BoxDecoration(
+                    color: KPColors.getSubtle(context),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ],
+            )
           : Container(
               width: KPMargins.margin16,
               height: KPMargins.margin16,

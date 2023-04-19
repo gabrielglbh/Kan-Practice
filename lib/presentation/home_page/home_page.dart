@@ -16,6 +16,7 @@ import 'package:kanpractice/presentation/archive_page/archive_word_list.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/list_details_types.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
+import 'package:kanpractice/presentation/core/types/word_categories_filters.dart';
 import 'package:kanpractice/presentation/core/util/tutorial_coach.dart';
 import 'package:kanpractice/presentation/core/types/coach_tutorial_parts.dart';
 import 'package:kanpractice/presentation/core/types/folder_filters.dart';
@@ -160,9 +161,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       context.read<FolderBloc>().add(FolderEventSearching(query, reset: reset));
 
   _addWordsLoadingEvent({bool reset = true}) {
-    return context
-        .read<ArchiveWordsBloc>()
-        .add(ArchiveWordsEventLoading(reset: reset));
+    return context.read<ArchiveWordsBloc>().add(ArchiveWordsEventLoading(
+        filter: WordCategoryFilter.all, order: true, reset: reset));
   }
 
   _addWordsSearchingEvent(String query, {bool reset = true}) {
@@ -312,9 +312,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 _searchBarFn.unfocus();
                 _searchTextController.text = "";
                 _controller.jumpToPage(type.page);
-                if (_currentPage == HomeType.archive) {
-                  _addWordsLoadingEvent();
-                }
               }
             },
             onShowActions: (name) {
@@ -389,13 +386,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             controller: _archiveTabController,
                             padding: const EdgeInsets.only(
                                 bottom: KPMargins.margin4),
-                            onTap: (tab) {
-                              if (tab == 0) {
-                                _addWordsLoadingEvent();
-                                return;
-                              }
-                              _addGrammarPointLoadingEvent();
-                            },
                             tabs: [
                               Tab(icon: Icon(ListDetailsType.words.icon)),
                               Tab(icon: Icon(ListDetailsType.grammar.icon)),
@@ -494,7 +484,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 if (_query.isNotEmpty) {
                   return _addWordsSearchingEvent(_query, reset: false);
                 }
-                return _addWordsLoadingEvent(reset: false);
               },
             ),
             ArchiveGrammarListWidget(

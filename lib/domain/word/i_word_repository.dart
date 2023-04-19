@@ -1,6 +1,7 @@
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/domain/word/word.dart';
+import 'package:kanpractice/presentation/core/types/word_categories_filters.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 abstract class IWordRepository {
@@ -58,6 +59,8 @@ abstract class IWordRepository {
   /// their last shown parameter or worst accuracy parameter. See [Tests].
   Future<List<Word>> getAllWords({StudyModes? mode, Tests? type});
   Future<List<Word>> getArchiveWords({
+    WordCategoryFilter filter = WordCategoryFilter.all,
+    String order = "DESC",
     int? offset,
     int? limit,
   });

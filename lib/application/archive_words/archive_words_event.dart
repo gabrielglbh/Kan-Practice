@@ -10,7 +10,14 @@ abstract class ArchiveWordsEvent extends Equatable {
 class ArchiveWordsEventLoading extends ArchiveWordsEvent {
   final bool reset;
 
-  const ArchiveWordsEventLoading({this.reset = false});
+  /// Maintains the filter applied by the user for loading new lists
+  final WordCategoryFilter filter;
+
+  /// Maintains the order applied by the user for loading new lists
+  final bool order;
+
+  const ArchiveWordsEventLoading(
+      {required this.filter, required this.order, this.reset = false});
 
   @override
   List<Object> get props => [reset];

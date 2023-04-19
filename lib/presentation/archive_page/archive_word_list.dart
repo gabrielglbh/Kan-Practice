@@ -8,6 +8,7 @@ import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/add_word_page/arguments.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
+import 'package:kanpractice/presentation/core/types/word_categories_filters.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
@@ -31,13 +32,13 @@ class ArchiveWordListWidget extends StatefulWidget {
 class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
     with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
+  WordCategoryFilter _currentAppliedFilter = WordCategoryFilter.all;
+  bool _currentAppliedOrder = true;
 
   @override
   void initState() {
     _scrollController.addListener(_scrollListener);
-    context.read<ArchiveWordsBloc>().add(
-          const ArchiveWordsEventLoading(reset: true),
-        );
+    _addLoadingEvent(reset: true);
     super.initState();
   }
 
@@ -53,30 +54,95 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
       widget.onScrolledToBottom();
+      _addLoadingEvent();
     }
   }
 
   _addLoadingEvent({bool reset = false}) {
-    return context
-        .read<ArchiveWordsBloc>()
-        .add(ArchiveWordsEventLoading(reset: reset));
+    return context.read<ArchiveWordsBloc>().add(ArchiveWordsEventLoading(
+        filter: _currentAppliedFilter,
+        order: _currentAppliedOrder,
+        reset: reset));
+  }
+
+  _resetScroll() {
+    /// Scroll to the top
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(0,
+          duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
+    }
+  }
+
+  _onFilterSelected(int index) {
+    _resetScroll();
+    widget.removeFocus();
+
+    /// If the user taps on the same filter twice, just change back and forth the
+    /// order value.
+    /// Else, means the user has changed the filter, therefore default the order to DESC
+    if (_currentAppliedFilter.index == index) {
+      setState(() => _currentAppliedOrder = !_currentAppliedOrder);
+    } else {
+      setState(() => _currentAppliedOrder = true);
+    }
+
+    /// Change the current applied filter based on the index selected on the ChoiceChip
+    /// and change the value on _filterValues map to reflect the change on the UI
+    _currentAppliedFilter = WordCategoryFilter.values[index];
+
+    /// Adds the loading event to the bloc builder to load the new specified list
+    _addLoadingEvent(reset: true);
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocBuilder<ArchiveWordsBloc, ArchiveWordsState>(
-      builder: (context, state) {
-        return state.maybeWhen(
-          loaded: (words) => Expanded(child: _wordList(words)),
-          error: () => KPEmptyList(
-              showTryButton: true,
-              onRefresh: () => _addLoadingEvent(reset: true),
-              message: "list_details_load_failed".tr()),
-          orElse: () => const KPProgressIndicator(),
-        );
-      },
+    return Column(
+      children: [
+        _filterChips(),
+        BlocBuilder<ArchiveWordsBloc, ArchiveWordsState>(
+          builder: (context, state) {
+            return state.maybeWhen(
+              loaded: (words) => Expanded(child: _wordList(words)),
+              error: () => KPEmptyList(
+                  showTryButton: true,
+                  onRefresh: () => _addLoadingEvent(reset: true),
+                  message: "list_details_load_failed".tr()),
+              orElse: () => const KPProgressIndicator(),
+            );
+          },
+        ),
+      ],
     );
+  }
+
+  SizedBox _filterChips() {
+    Icon icon = Icon(
+        _currentAppliedOrder
+            ? Icons.arrow_downward_rounded
+            : Icons.arrow_upward_rounded,
+        color: KPColors.getAlterAccent(context));
+
+    return SizedBox(
+        height: KPSizes.defaultSizeFiltersList,
+        child: ListView.builder(
+            itemCount: WordCategoryFilter.values.length,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: KPMargins.margin2),
+                child: ChoiceChip(
+                  label: Text(WordCategoryFilter.values[index].category),
+                  avatar: _currentAppliedFilter.index != index ? null : icon,
+                  pressElevation: KPMargins.margin4,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: KPMargins.margin8),
+                  onSelected: (bool selected) => _onFilterSelected(index),
+                  selected: _currentAppliedFilter.index == index,
+                ),
+              );
+            }));
   }
 
   Widget _wordList(List<Word> words) {

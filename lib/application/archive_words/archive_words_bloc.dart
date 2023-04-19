@@ -6,6 +6,7 @@ import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/domain/services/i_preferences_repository.dart';
 import 'package:kanpractice/domain/word/i_word_repository.dart';
 import 'package:kanpractice/domain/word/word.dart';
+import 'package:kanpractice/presentation/core/types/word_categories_filters.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 part 'archive_words_event.dart';
@@ -52,7 +53,11 @@ class ArchiveWordsBloc extends Bloc<ArchiveWordsEvent, ArchiveWordsState> {
         /// of state. After, add to list the elements for the next iteration.
         List<Word> fullList = List.of(list);
         final List<Word> pagination = await _wordRepository.getArchiveWords(
-            offset: loadingTimes, limit: limit);
+          filter: event.filter,
+          order: _getSelectedOrder(event.order),
+          offset: loadingTimes,
+          limit: limit,
+        );
         fullList.addAll(pagination);
         list.addAll(pagination);
         loadingTimes += 1;
@@ -91,4 +96,6 @@ class ArchiveWordsBloc extends Bloc<ArchiveWordsEvent, ArchiveWordsState> {
       }
     });
   }
+
+  String _getSelectedOrder(bool order) => order ? "DESC" : "ASC";
 }

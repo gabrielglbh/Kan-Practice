@@ -151,8 +151,7 @@ class WordRepositoryImpl implements IWordRepository {
 
       if (controlledPace) {
         // Divide number of total words of the user's db by the weekdays
-        limit = ((await _database.query(WordTableFields.wordTable)).length / 7)
-            .ceil();
+        limit = _preferencesRepository.readData(SharedKeys.maxWordsOnDaily);
 
         // Also check if the daily test can be performed
         switch (mode) {
@@ -292,8 +291,7 @@ class WordRepositoryImpl implements IWordRepository {
       if (controlledPace) {
         final now = DateTime.now().millisecondsSinceEpoch;
         final limit =
-            ((await _database.query(WordTableFields.wordTable)).length / 7)
-                .ceil();
+            _preferencesRepository.readData(SharedKeys.maxWordsOnDaily);
 
         final w = prefs.readData(SharedKeys.writingDailyPerformed);
         if (w == null || (w != null && w <= now)) {

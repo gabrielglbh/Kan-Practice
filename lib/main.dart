@@ -8,6 +8,7 @@ import 'package:kanpractice/application/archive_grammar_points/archive_grammar_p
 import 'package:kanpractice/application/archive_words/archive_words_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
+import 'package:kanpractice/application/daily_options/daily_options_bloc.dart';
 import 'package:kanpractice/application/example_data/example_data_bloc.dart';
 import 'package:kanpractice/application/folder_details/folder_details_bloc.dart';
 import 'package:kanpractice/application/folder_list/folder_bloc.dart';
@@ -141,8 +142,11 @@ class _KanPracticeState extends State<KanPractice> {
       if (getIt<PreferencesService>()
               .readData(SharedKeys.haveSeenKanListCoachMark) ==
           false) {
-        getIt<ExampleDataBloc>().add(ExampleDataEventInstallData(context));
+        context
+            .read<ExampleDataBloc>()
+            .add(ExampleDataEventInstallData(context));
       }
+      context.read<DailyOptionsBloc>().add(DailyOptionsEventLoadData());
     });
     super.initState();
   }
@@ -168,6 +172,7 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<ArchiveGrammarPointsBloc>()),
         BlocProvider(create: (_) => getIt<ArchiveWordsBloc>()),
         BlocProvider(create: (_) => getIt<AddWordBloc>()),
+        BlocProvider(create: (_) => getIt<DailyOptionsBloc>()),
       ],
       child: BlocBuilder<ExampleDataBloc, ExampleDataState>(
         builder: (context, state) {

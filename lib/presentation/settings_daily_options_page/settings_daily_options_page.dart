@@ -1,12 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/daily_options/daily_options_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_switch.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_text_form.dart';
 
 class SettingsDailyOptionsPage extends StatefulWidget {
   const SettingsDailyOptionsPage({super.key});
@@ -25,6 +29,7 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
   bool _definitionNotification = true;
   bool _grammarPointNotification = true;
   bool _controlledPace = true;
+  late TextEditingController _wordsController, _grammarController;
 
   @override
   void initState() {
@@ -44,6 +49,11 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
     _grammarPointNotification =
         service.readData(SharedKeys.grammarPointDailyNotification);
     _controlledPace = service.readData(SharedKeys.dailyTestOnControlledPace);
+    _wordsController = TextEditingController(
+        text: service.readData(SharedKeys.maxWordsOnDaily).toString());
+    _grammarController = TextEditingController(
+        text: service.readData(SharedKeys.maxGrammarOnDaily).toString());
+    context.read<DailyOptionsBloc>().add(DailyOptionsEventLoadData());
     super.initState();
   }
 
@@ -97,11 +107,106 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
   }
 
   @override
+  void dispose() {
+    _wordsController.dispose();
+    _grammarController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return KPScaffold(
       appBarTitle: 'settings_daily_test_options'.tr(),
+      resizeToAvoidBottomInset: true,
       child: ListView(
         children: [
+          ListTile(
+            leading: const Icon(Icons.sports_gymnastics_rounded),
+            title: Text("settings_daily_pace".tr()),
+            trailing: KPSwitch(
+              onChanged: (bool value) {
+                getIt<PreferencesService>()
+                    .saveData(SharedKeys.dailyTestOnControlledPace, value);
+                setState(() => _controlledPace = value);
+              },
+              value: _controlledPace,
+            ),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: KPMargins.margin8),
+              child: Text(
+                "settings_daily_pace_sub".tr(),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: KPColors.midGrey),
+              ),
+            ),
+            onTap: () {
+              getIt<PreferencesService>().saveData(
+                  SharedKeys.dailyTestOnControlledPace, !_controlledPace);
+              setState(() => _controlledPace = !_controlledPace);
+            },
+          ),
+          if (_controlledPace)
+            BlocBuilder<DailyOptionsBloc, DailyOptionsState>(
+              builder: (context, state) {
+                return state.maybeWhen(
+                  loaded: (words, grammar, wordsMean, grammarMean) => Padding(
+                    padding: const EdgeInsets.only(
+                        left: KPMargins.margin32 + KPMargins.margin12),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: KPMargins.margin12),
+                        KPTextForm(
+                          header: 'Maximum words per day',
+                          hint: wordsMean.toString(),
+                          controller: _wordsController,
+                          focusNode: FocusNode(),
+                          onEditingComplete: () {
+                            if (_wordsController.text.isNotEmpty) {
+                              final number = int.parse(_wordsController.text);
+                              if (number < 0 || number > words) {
+                                getIt<PreferencesService>().saveData(
+                                    SharedKeys.maxWordsOnDaily, wordsMean);
+                                return;
+                              }
+                              getIt<PreferencesService>()
+                                  .saveData(SharedKeys.maxWordsOnDaily, number);
+                            }
+                          },
+                          inputType: TextInputType.number,
+                          action: TextInputAction.done,
+                        ),
+                        const SizedBox(height: KPMargins.margin12),
+                        KPTextForm(
+                          header: 'Maximum grammar points per day',
+                          hint: grammarMean.toString(),
+                          controller: _grammarController,
+                          focusNode: FocusNode(),
+                          onEditingComplete: () {
+                            if (_grammarController.text.isNotEmpty) {
+                              final number = int.parse(_grammarController.text);
+                              if (number < 0 || number > grammar) {
+                                getIt<PreferencesService>().saveData(
+                                    SharedKeys.maxGrammarOnDaily, grammarMean);
+                                return;
+                              }
+                              getIt<PreferencesService>().saveData(
+                                  SharedKeys.maxGrammarOnDaily, number);
+                            }
+                          },
+                          inputType: TextInputType.number,
+                          action: TextInputAction.done,
+                        ),
+                      ],
+                    ),
+                  ),
+                  loading: () => const KPProgressIndicator(),
+                  orElse: () => const SizedBox(),
+                );
+              },
+            ),
+          const Divider(),
           ListTile(
             leading: const Icon(Icons.calendar_view_day_rounded),
             title: Text("settings_daily_notification_title".tr()),
@@ -167,34 +272,6 @@ class _SettingsDailyOptionsPageState extends State<SettingsDailyOptionsPage> {
               getIt<PreferencesService>()
                   .saveData(SharedKeys.grammarPointDailyNotification, v);
               setState(() => _grammarPointNotification = v);
-            },
-          ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(Icons.sports_gymnastics_rounded),
-            title: Text("settings_daily_pace".tr()),
-            trailing: KPSwitch(
-              onChanged: (bool value) {
-                getIt<PreferencesService>()
-                    .saveData(SharedKeys.dailyTestOnControlledPace, value);
-                setState(() => _controlledPace = value);
-              },
-              value: _controlledPace,
-            ),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(top: KPMargins.margin8),
-              child: Text(
-                "settings_daily_pace_sub".tr(),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: KPColors.midGrey),
-              ),
-            ),
-            onTap: () {
-              getIt<PreferencesService>().saveData(
-                  SharedKeys.dailyTestOnControlledPace, !_controlledPace);
-              setState(() => _controlledPace = !_controlledPace);
             },
           ),
         ],

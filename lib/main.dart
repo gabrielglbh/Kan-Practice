@@ -139,6 +139,9 @@ class _KanPracticeState extends State<KanPractice> {
     ThemeManager.instance.addListenerTo(() => setState(() {}));
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       getIt<MessagingService>().handler(context);
+
+      /// For users that already have the tutorial done
+      getIt<DailyOptionsBloc>().add(DailyOptionsEventLoadData());
       if (getIt<PreferencesService>()
               .readData(SharedKeys.haveSeenKanListCoachMark) ==
           false) {

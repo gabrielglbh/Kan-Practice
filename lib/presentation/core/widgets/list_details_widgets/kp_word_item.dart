@@ -163,11 +163,8 @@ class KPWordItem extends StatelessWidget {
           Flexible(
             child: Padding(
               padding: const EdgeInsets.only(bottom: KPMargins.margin4),
-              child: Text(word.word,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.copyWith(fontWeight: FontWeight.bold)),
+              child:
+                  Text(word.word, style: Theme.of(context).textTheme.bodyLarge),
             ),
           ),
           const SizedBox(width: KPMargins.margin8),

@@ -109,8 +109,7 @@ class GrammarGrid extends StatelessWidget {
                 return _grammarButton(
                   context,
                   GrammarModes.values[i],
-                  (isAvailable == 0 || isAvailable == null) &&
-                      grammarToReview[i] != 0,
+                  isAvailable == 0 || isAvailable == null,
                   grammarToReview.isEmpty ? -1 : grammarToReview[i],
                 );
               },

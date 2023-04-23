@@ -57,6 +57,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
         .readData(SharedKeys.enableRepetitionOnTests);
     _studyList.addAll(widget.args.studyList);
     _kanaKit = const KanaKit();
+    context.read<StudyModeBloc>().add(StudyModeEventResetTracking());
     super.initState();
   }
 
@@ -114,18 +115,16 @@ class _ReadingStudyState extends State<ReadingStudy> {
   }
 
   Future<int> _calculateWordScore(double score) async {
-    context.read<StudyModeBloc>().add(StudyModeEventUpdateDateShown(
-          listName: _studyList[_macro].listName,
-          word: _studyList[_macro].word,
-          mode: widget.args.mode,
-        ));
-
     /// Add the current virgin score to the test scores...
     if (widget.args.isTest) {
       if (getIt<PreferencesService>().readData(SharedKeys.affectOnPractice) ??
           false) {
         context.read<StudyModeBloc>().add(StudyModeEventCalculateScore(
-            widget.args.mode, _studyList[_macro], score));
+              widget.args.mode,
+              _studyList[_macro],
+              score,
+              isTest: true,
+            ));
       }
       _testScores.add(score);
       if (widget.args.testMode == Tests.daily) {

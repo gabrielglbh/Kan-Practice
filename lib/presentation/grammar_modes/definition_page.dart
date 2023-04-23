@@ -51,6 +51,7 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
     _enableRepOnTest = getIt<PreferencesService>()
         .readData(SharedKeys.enableRepetitionOnTests);
     _studyList.addAll(widget.args.studyList);
+    context.read<GrammarModeBloc>().add(GrammarModeEventResetTracking());
     super.initState();
   }
 
@@ -108,18 +109,16 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
   }
 
   Future<int> _calculateGrammarPointScore(double score) async {
-    context.read<GrammarModeBloc>().add(GrammarModeEventUpdateDateShown(
-          listName: _studyList[_macro].listName,
-          name: _studyList[_macro].name,
-          mode: widget.args.mode,
-        ));
-
     /// Add the current virgin score to the test scores...
     if (widget.args.isTest) {
       if (getIt<PreferencesService>().readData(SharedKeys.affectOnPractice) ??
           false) {
         context.read<GrammarModeBloc>().add(GrammarModeEventCalculateScore(
-            widget.args.mode, _studyList[_macro], score));
+              widget.args.mode,
+              _studyList[_macro],
+              score,
+              isTest: true,
+            ));
       }
       _testScores.add(score);
       if (widget.args.testMode == Tests.daily) {

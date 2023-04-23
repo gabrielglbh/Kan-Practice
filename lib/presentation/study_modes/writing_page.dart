@@ -70,6 +70,7 @@ class _WritingStudyState extends State<WritingStudy> {
         .readData(SharedKeys.enableRepetitionOnTests);
     _studyList.addAll(widget.args.studyList);
     _initAuxWordArray();
+    context.read<StudyModeBloc>().add(StudyModeEventResetTracking());
     super.initState();
   }
 
@@ -190,11 +191,6 @@ class _WritingStudyState extends State<WritingStudy> {
   }
 
   Future<int> _calculateWordScore() async {
-    context.read<StudyModeBloc>().add(StudyModeEventUpdateDateShown(
-          listName: _studyList[_macro].listName,
-          word: _studyList[_macro].word,
-          mode: widget.args.mode,
-        ));
     final double currentScore = _score[_macro] / _maxScore[_macro];
 
     /// Add the current virgin score to the test scores...
@@ -202,7 +198,11 @@ class _WritingStudyState extends State<WritingStudy> {
       if (getIt<PreferencesService>().readData(SharedKeys.affectOnPractice) ??
           false) {
         context.read<StudyModeBloc>().add(StudyModeEventCalculateScore(
-            widget.args.mode, _studyList[_macro], currentScore));
+              widget.args.mode,
+              _studyList[_macro],
+              currentScore,
+              isTest: true,
+            ));
       }
       _testScores.add(currentScore);
       if (widget.args.testMode == Tests.daily) {

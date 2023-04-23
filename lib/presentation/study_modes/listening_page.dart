@@ -54,6 +54,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
 
     /// Execute the TTS when passing to the next word
     getIt<TextToSpeechService>().speakWord(_studyList[_macro].pronunciation);
+    context.read<StudyModeBloc>().add(StudyModeEventResetTracking());
     super.initState();
   }
 
@@ -120,18 +121,18 @@ class _ListeningStudyState extends State<ListeningStudy> {
       /// are not stored in the Database
       _testScores.add(score);
     } else {
-      context.read<StudyModeBloc>().add(StudyModeEventUpdateDateShown(
-            listName: _studyList[_macro].listName,
-            word: _studyList[_macro].word,
-            mode: widget.args.mode,
-          ));
-
       /// Add the current virgin score to the test scores...
       if (widget.args.isTest) {
         if (getIt<PreferencesService>().readData(SharedKeys.affectOnPractice) ??
             false) {
-          context.read<StudyModeBloc>().add(StudyModeEventCalculateScore(
-              widget.args.mode, _studyList[_macro], score));
+          context.read<StudyModeBloc>().add(
+                StudyModeEventCalculateScore(
+                  widget.args.mode,
+                  _studyList[_macro],
+                  score,
+                  isTest: true,
+                ),
+              );
         }
         _testScores.add(score);
         if (widget.args.testMode == Tests.daily) {

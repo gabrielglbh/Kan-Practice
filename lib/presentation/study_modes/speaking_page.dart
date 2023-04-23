@@ -52,6 +52,7 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
     _enableRepOnTest = getIt<PreferencesService>()
         .readData(SharedKeys.enableRepetitionOnTests);
     _studyList.addAll(widget.args.studyList);
+    context.read<StudyModeBloc>().add(StudyModeEventResetTracking());
     super.initState();
   }
 
@@ -109,20 +110,16 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
   }
 
   Future<int> _calculateWordScore(double score) async {
-    /// Updates the dateLastShown attribute of the finished word AND
-    /// the current specific last shown mode attribute
-    context.read<StudyModeBloc>().add(StudyModeEventUpdateDateShown(
-          listName: _studyList[_macro].listName,
-          word: _studyList[_macro].word,
-          mode: widget.args.mode,
-        ));
-
     /// Add the current virgin score to the test scores...
     if (widget.args.isTest) {
       if (getIt<PreferencesService>().readData(SharedKeys.affectOnPractice) ??
           false) {
         context.read<StudyModeBloc>().add(StudyModeEventCalculateScore(
-            widget.args.mode, _studyList[_macro], score));
+              widget.args.mode,
+              _studyList[_macro],
+              score,
+              isTest: true,
+            ));
       }
       _testScores.add(score);
       if (widget.args.testMode == Tests.daily) {

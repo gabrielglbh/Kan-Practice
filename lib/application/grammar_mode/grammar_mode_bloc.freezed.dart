@@ -18,51 +18,63 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$GrammarModeState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() loading,
     required TResult Function() loaded,
     required TResult Function() sm2Calculated,
     required TResult Function(int score) scoreCalculated,
     required TResult Function(double score) scoreObtained,
+    required TResult Function() testFinished,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loading,
     TResult? Function()? loaded,
     TResult? Function()? sm2Calculated,
     TResult? Function(int score)? scoreCalculated,
     TResult? Function(double score)? scoreObtained,
+    TResult? Function()? testFinished,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
     TResult Function()? loaded,
     TResult Function()? sm2Calculated,
     TResult Function(int score)? scoreCalculated,
     TResult Function(double score)? scoreObtained,
+    TResult Function()? testFinished,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(GrammarModeLoading value) loading,
     required TResult Function(GrammarModeLoaded value) loaded,
     required TResult Function(GrammarModeSM2Calculated value) sm2Calculated,
     required TResult Function(GrammarModeScoreCalculated value) scoreCalculated,
     required TResult Function(GrammarModeScoreObtained value) scoreObtained,
+    required TResult Function(GrammarModeTestFinished value) testFinished,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(GrammarModeLoading value)? loading,
     TResult? Function(GrammarModeLoaded value)? loaded,
     TResult? Function(GrammarModeSM2Calculated value)? sm2Calculated,
     TResult? Function(GrammarModeScoreCalculated value)? scoreCalculated,
     TResult? Function(GrammarModeScoreObtained value)? scoreObtained,
+    TResult? Function(GrammarModeTestFinished value)? testFinished,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(GrammarModeLoading value)? loading,
     TResult Function(GrammarModeLoaded value)? loaded,
     TResult Function(GrammarModeSM2Calculated value)? sm2Calculated,
     TResult Function(GrammarModeScoreCalculated value)? scoreCalculated,
     TResult Function(GrammarModeScoreObtained value)? scoreObtained,
+    TResult Function(GrammarModeTestFinished value)? testFinished,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -84,6 +96,132 @@ class _$GrammarModeStateCopyWithImpl<$Res, $Val extends GrammarModeState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+}
+
+/// @nodoc
+abstract class _$$GrammarModeLoadingCopyWith<$Res> {
+  factory _$$GrammarModeLoadingCopyWith(_$GrammarModeLoading value,
+          $Res Function(_$GrammarModeLoading) then) =
+      __$$GrammarModeLoadingCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$GrammarModeLoadingCopyWithImpl<$Res>
+    extends _$GrammarModeStateCopyWithImpl<$Res, _$GrammarModeLoading>
+    implements _$$GrammarModeLoadingCopyWith<$Res> {
+  __$$GrammarModeLoadingCopyWithImpl(
+      _$GrammarModeLoading _value, $Res Function(_$GrammarModeLoading) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$GrammarModeLoading implements GrammarModeLoading {
+  const _$GrammarModeLoading();
+
+  @override
+  String toString() {
+    return 'GrammarModeState.loading()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$GrammarModeLoading);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loading,
+    required TResult Function() loaded,
+    required TResult Function() sm2Calculated,
+    required TResult Function(int score) scoreCalculated,
+    required TResult Function(double score) scoreObtained,
+    required TResult Function() testFinished,
+  }) {
+    return loading();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loading,
+    TResult? Function()? loaded,
+    TResult? Function()? sm2Calculated,
+    TResult? Function(int score)? scoreCalculated,
+    TResult? Function(double score)? scoreObtained,
+    TResult? Function()? testFinished,
+  }) {
+    return loading?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function()? loaded,
+    TResult Function()? sm2Calculated,
+    TResult Function(int score)? scoreCalculated,
+    TResult Function(double score)? scoreObtained,
+    TResult Function()? testFinished,
+    required TResult orElse(),
+  }) {
+    if (loading != null) {
+      return loading();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(GrammarModeLoading value) loading,
+    required TResult Function(GrammarModeLoaded value) loaded,
+    required TResult Function(GrammarModeSM2Calculated value) sm2Calculated,
+    required TResult Function(GrammarModeScoreCalculated value) scoreCalculated,
+    required TResult Function(GrammarModeScoreObtained value) scoreObtained,
+    required TResult Function(GrammarModeTestFinished value) testFinished,
+  }) {
+    return loading(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(GrammarModeLoading value)? loading,
+    TResult? Function(GrammarModeLoaded value)? loaded,
+    TResult? Function(GrammarModeSM2Calculated value)? sm2Calculated,
+    TResult? Function(GrammarModeScoreCalculated value)? scoreCalculated,
+    TResult? Function(GrammarModeScoreObtained value)? scoreObtained,
+    TResult? Function(GrammarModeTestFinished value)? testFinished,
+  }) {
+    return loading?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(GrammarModeLoading value)? loading,
+    TResult Function(GrammarModeLoaded value)? loaded,
+    TResult Function(GrammarModeSM2Calculated value)? sm2Calculated,
+    TResult Function(GrammarModeScoreCalculated value)? scoreCalculated,
+    TResult Function(GrammarModeScoreObtained value)? scoreObtained,
+    TResult Function(GrammarModeTestFinished value)? testFinished,
+    required TResult orElse(),
+  }) {
+    if (loading != null) {
+      return loading(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class GrammarModeLoading implements GrammarModeState {
+  const factory GrammarModeLoading() = _$GrammarModeLoading;
 }
 
 /// @nodoc
@@ -124,10 +262,12 @@ class _$GrammarModeLoaded implements GrammarModeLoaded {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() loading,
     required TResult Function() loaded,
     required TResult Function() sm2Calculated,
     required TResult Function(int score) scoreCalculated,
     required TResult Function(double score) scoreObtained,
+    required TResult Function() testFinished,
   }) {
     return loaded();
   }
@@ -135,10 +275,12 @@ class _$GrammarModeLoaded implements GrammarModeLoaded {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loading,
     TResult? Function()? loaded,
     TResult? Function()? sm2Calculated,
     TResult? Function(int score)? scoreCalculated,
     TResult? Function(double score)? scoreObtained,
+    TResult? Function()? testFinished,
   }) {
     return loaded?.call();
   }
@@ -146,10 +288,12 @@ class _$GrammarModeLoaded implements GrammarModeLoaded {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
     TResult Function()? loaded,
     TResult Function()? sm2Calculated,
     TResult Function(int score)? scoreCalculated,
     TResult Function(double score)? scoreObtained,
+    TResult Function()? testFinished,
     required TResult orElse(),
   }) {
     if (loaded != null) {
@@ -161,10 +305,12 @@ class _$GrammarModeLoaded implements GrammarModeLoaded {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(GrammarModeLoading value) loading,
     required TResult Function(GrammarModeLoaded value) loaded,
     required TResult Function(GrammarModeSM2Calculated value) sm2Calculated,
     required TResult Function(GrammarModeScoreCalculated value) scoreCalculated,
     required TResult Function(GrammarModeScoreObtained value) scoreObtained,
+    required TResult Function(GrammarModeTestFinished value) testFinished,
   }) {
     return loaded(this);
   }
@@ -172,10 +318,12 @@ class _$GrammarModeLoaded implements GrammarModeLoaded {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(GrammarModeLoading value)? loading,
     TResult? Function(GrammarModeLoaded value)? loaded,
     TResult? Function(GrammarModeSM2Calculated value)? sm2Calculated,
     TResult? Function(GrammarModeScoreCalculated value)? scoreCalculated,
     TResult? Function(GrammarModeScoreObtained value)? scoreObtained,
+    TResult? Function(GrammarModeTestFinished value)? testFinished,
   }) {
     return loaded?.call(this);
   }
@@ -183,10 +331,12 @@ class _$GrammarModeLoaded implements GrammarModeLoaded {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(GrammarModeLoading value)? loading,
     TResult Function(GrammarModeLoaded value)? loaded,
     TResult Function(GrammarModeSM2Calculated value)? sm2Calculated,
     TResult Function(GrammarModeScoreCalculated value)? scoreCalculated,
     TResult Function(GrammarModeScoreObtained value)? scoreObtained,
+    TResult Function(GrammarModeTestFinished value)? testFinished,
     required TResult orElse(),
   }) {
     if (loaded != null) {
@@ -239,10 +389,12 @@ class _$GrammarModeSM2Calculated implements GrammarModeSM2Calculated {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() loading,
     required TResult Function() loaded,
     required TResult Function() sm2Calculated,
     required TResult Function(int score) scoreCalculated,
     required TResult Function(double score) scoreObtained,
+    required TResult Function() testFinished,
   }) {
     return sm2Calculated();
   }
@@ -250,10 +402,12 @@ class _$GrammarModeSM2Calculated implements GrammarModeSM2Calculated {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loading,
     TResult? Function()? loaded,
     TResult? Function()? sm2Calculated,
     TResult? Function(int score)? scoreCalculated,
     TResult? Function(double score)? scoreObtained,
+    TResult? Function()? testFinished,
   }) {
     return sm2Calculated?.call();
   }
@@ -261,10 +415,12 @@ class _$GrammarModeSM2Calculated implements GrammarModeSM2Calculated {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
     TResult Function()? loaded,
     TResult Function()? sm2Calculated,
     TResult Function(int score)? scoreCalculated,
     TResult Function(double score)? scoreObtained,
+    TResult Function()? testFinished,
     required TResult orElse(),
   }) {
     if (sm2Calculated != null) {
@@ -276,10 +432,12 @@ class _$GrammarModeSM2Calculated implements GrammarModeSM2Calculated {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(GrammarModeLoading value) loading,
     required TResult Function(GrammarModeLoaded value) loaded,
     required TResult Function(GrammarModeSM2Calculated value) sm2Calculated,
     required TResult Function(GrammarModeScoreCalculated value) scoreCalculated,
     required TResult Function(GrammarModeScoreObtained value) scoreObtained,
+    required TResult Function(GrammarModeTestFinished value) testFinished,
   }) {
     return sm2Calculated(this);
   }
@@ -287,10 +445,12 @@ class _$GrammarModeSM2Calculated implements GrammarModeSM2Calculated {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(GrammarModeLoading value)? loading,
     TResult? Function(GrammarModeLoaded value)? loaded,
     TResult? Function(GrammarModeSM2Calculated value)? sm2Calculated,
     TResult? Function(GrammarModeScoreCalculated value)? scoreCalculated,
     TResult? Function(GrammarModeScoreObtained value)? scoreObtained,
+    TResult? Function(GrammarModeTestFinished value)? testFinished,
   }) {
     return sm2Calculated?.call(this);
   }
@@ -298,10 +458,12 @@ class _$GrammarModeSM2Calculated implements GrammarModeSM2Calculated {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(GrammarModeLoading value)? loading,
     TResult Function(GrammarModeLoaded value)? loaded,
     TResult Function(GrammarModeSM2Calculated value)? sm2Calculated,
     TResult Function(GrammarModeScoreCalculated value)? scoreCalculated,
     TResult Function(GrammarModeScoreObtained value)? scoreObtained,
+    TResult Function(GrammarModeTestFinished value)? testFinished,
     required TResult orElse(),
   }) {
     if (sm2Calculated != null) {
@@ -382,10 +544,12 @@ class _$GrammarModeScoreCalculated implements GrammarModeScoreCalculated {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() loading,
     required TResult Function() loaded,
     required TResult Function() sm2Calculated,
     required TResult Function(int score) scoreCalculated,
     required TResult Function(double score) scoreObtained,
+    required TResult Function() testFinished,
   }) {
     return scoreCalculated(score);
   }
@@ -393,10 +557,12 @@ class _$GrammarModeScoreCalculated implements GrammarModeScoreCalculated {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loading,
     TResult? Function()? loaded,
     TResult? Function()? sm2Calculated,
     TResult? Function(int score)? scoreCalculated,
     TResult? Function(double score)? scoreObtained,
+    TResult? Function()? testFinished,
   }) {
     return scoreCalculated?.call(score);
   }
@@ -404,10 +570,12 @@ class _$GrammarModeScoreCalculated implements GrammarModeScoreCalculated {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
     TResult Function()? loaded,
     TResult Function()? sm2Calculated,
     TResult Function(int score)? scoreCalculated,
     TResult Function(double score)? scoreObtained,
+    TResult Function()? testFinished,
     required TResult orElse(),
   }) {
     if (scoreCalculated != null) {
@@ -419,10 +587,12 @@ class _$GrammarModeScoreCalculated implements GrammarModeScoreCalculated {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(GrammarModeLoading value) loading,
     required TResult Function(GrammarModeLoaded value) loaded,
     required TResult Function(GrammarModeSM2Calculated value) sm2Calculated,
     required TResult Function(GrammarModeScoreCalculated value) scoreCalculated,
     required TResult Function(GrammarModeScoreObtained value) scoreObtained,
+    required TResult Function(GrammarModeTestFinished value) testFinished,
   }) {
     return scoreCalculated(this);
   }
@@ -430,10 +600,12 @@ class _$GrammarModeScoreCalculated implements GrammarModeScoreCalculated {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(GrammarModeLoading value)? loading,
     TResult? Function(GrammarModeLoaded value)? loaded,
     TResult? Function(GrammarModeSM2Calculated value)? sm2Calculated,
     TResult? Function(GrammarModeScoreCalculated value)? scoreCalculated,
     TResult? Function(GrammarModeScoreObtained value)? scoreObtained,
+    TResult? Function(GrammarModeTestFinished value)? testFinished,
   }) {
     return scoreCalculated?.call(this);
   }
@@ -441,10 +613,12 @@ class _$GrammarModeScoreCalculated implements GrammarModeScoreCalculated {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(GrammarModeLoading value)? loading,
     TResult Function(GrammarModeLoaded value)? loaded,
     TResult Function(GrammarModeSM2Calculated value)? sm2Calculated,
     TResult Function(GrammarModeScoreCalculated value)? scoreCalculated,
     TResult Function(GrammarModeScoreObtained value)? scoreObtained,
+    TResult Function(GrammarModeTestFinished value)? testFinished,
     required TResult orElse(),
   }) {
     if (scoreCalculated != null) {
@@ -530,10 +704,12 @@ class _$GrammarModeScoreObtained implements GrammarModeScoreObtained {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() loading,
     required TResult Function() loaded,
     required TResult Function() sm2Calculated,
     required TResult Function(int score) scoreCalculated,
     required TResult Function(double score) scoreObtained,
+    required TResult Function() testFinished,
   }) {
     return scoreObtained(score);
   }
@@ -541,10 +717,12 @@ class _$GrammarModeScoreObtained implements GrammarModeScoreObtained {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loading,
     TResult? Function()? loaded,
     TResult? Function()? sm2Calculated,
     TResult? Function(int score)? scoreCalculated,
     TResult? Function(double score)? scoreObtained,
+    TResult? Function()? testFinished,
   }) {
     return scoreObtained?.call(score);
   }
@@ -552,10 +730,12 @@ class _$GrammarModeScoreObtained implements GrammarModeScoreObtained {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
     TResult Function()? loaded,
     TResult Function()? sm2Calculated,
     TResult Function(int score)? scoreCalculated,
     TResult Function(double score)? scoreObtained,
+    TResult Function()? testFinished,
     required TResult orElse(),
   }) {
     if (scoreObtained != null) {
@@ -567,10 +747,12 @@ class _$GrammarModeScoreObtained implements GrammarModeScoreObtained {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(GrammarModeLoading value) loading,
     required TResult Function(GrammarModeLoaded value) loaded,
     required TResult Function(GrammarModeSM2Calculated value) sm2Calculated,
     required TResult Function(GrammarModeScoreCalculated value) scoreCalculated,
     required TResult Function(GrammarModeScoreObtained value) scoreObtained,
+    required TResult Function(GrammarModeTestFinished value) testFinished,
   }) {
     return scoreObtained(this);
   }
@@ -578,10 +760,12 @@ class _$GrammarModeScoreObtained implements GrammarModeScoreObtained {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(GrammarModeLoading value)? loading,
     TResult? Function(GrammarModeLoaded value)? loaded,
     TResult? Function(GrammarModeSM2Calculated value)? sm2Calculated,
     TResult? Function(GrammarModeScoreCalculated value)? scoreCalculated,
     TResult? Function(GrammarModeScoreObtained value)? scoreObtained,
+    TResult? Function(GrammarModeTestFinished value)? testFinished,
   }) {
     return scoreObtained?.call(this);
   }
@@ -589,10 +773,12 @@ class _$GrammarModeScoreObtained implements GrammarModeScoreObtained {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(GrammarModeLoading value)? loading,
     TResult Function(GrammarModeLoaded value)? loaded,
     TResult Function(GrammarModeSM2Calculated value)? sm2Calculated,
     TResult Function(GrammarModeScoreCalculated value)? scoreCalculated,
     TResult Function(GrammarModeScoreObtained value)? scoreObtained,
+    TResult Function(GrammarModeTestFinished value)? testFinished,
     required TResult orElse(),
   }) {
     if (scoreObtained != null) {
@@ -610,4 +796,131 @@ abstract class GrammarModeScoreObtained implements GrammarModeState {
   @JsonKey(ignore: true)
   _$$GrammarModeScoreObtainedCopyWith<_$GrammarModeScoreObtained>
       get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$GrammarModeTestFinishedCopyWith<$Res> {
+  factory _$$GrammarModeTestFinishedCopyWith(_$GrammarModeTestFinished value,
+          $Res Function(_$GrammarModeTestFinished) then) =
+      __$$GrammarModeTestFinishedCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$GrammarModeTestFinishedCopyWithImpl<$Res>
+    extends _$GrammarModeStateCopyWithImpl<$Res, _$GrammarModeTestFinished>
+    implements _$$GrammarModeTestFinishedCopyWith<$Res> {
+  __$$GrammarModeTestFinishedCopyWithImpl(_$GrammarModeTestFinished _value,
+      $Res Function(_$GrammarModeTestFinished) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$GrammarModeTestFinished implements GrammarModeTestFinished {
+  const _$GrammarModeTestFinished();
+
+  @override
+  String toString() {
+    return 'GrammarModeState.testFinished()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$GrammarModeTestFinished);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loading,
+    required TResult Function() loaded,
+    required TResult Function() sm2Calculated,
+    required TResult Function(int score) scoreCalculated,
+    required TResult Function(double score) scoreObtained,
+    required TResult Function() testFinished,
+  }) {
+    return testFinished();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loading,
+    TResult? Function()? loaded,
+    TResult? Function()? sm2Calculated,
+    TResult? Function(int score)? scoreCalculated,
+    TResult? Function(double score)? scoreObtained,
+    TResult? Function()? testFinished,
+  }) {
+    return testFinished?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function()? loaded,
+    TResult Function()? sm2Calculated,
+    TResult Function(int score)? scoreCalculated,
+    TResult Function(double score)? scoreObtained,
+    TResult Function()? testFinished,
+    required TResult orElse(),
+  }) {
+    if (testFinished != null) {
+      return testFinished();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(GrammarModeLoading value) loading,
+    required TResult Function(GrammarModeLoaded value) loaded,
+    required TResult Function(GrammarModeSM2Calculated value) sm2Calculated,
+    required TResult Function(GrammarModeScoreCalculated value) scoreCalculated,
+    required TResult Function(GrammarModeScoreObtained value) scoreObtained,
+    required TResult Function(GrammarModeTestFinished value) testFinished,
+  }) {
+    return testFinished(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(GrammarModeLoading value)? loading,
+    TResult? Function(GrammarModeLoaded value)? loaded,
+    TResult? Function(GrammarModeSM2Calculated value)? sm2Calculated,
+    TResult? Function(GrammarModeScoreCalculated value)? scoreCalculated,
+    TResult? Function(GrammarModeScoreObtained value)? scoreObtained,
+    TResult? Function(GrammarModeTestFinished value)? testFinished,
+  }) {
+    return testFinished?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(GrammarModeLoading value)? loading,
+    TResult Function(GrammarModeLoaded value)? loaded,
+    TResult Function(GrammarModeSM2Calculated value)? sm2Calculated,
+    TResult Function(GrammarModeScoreCalculated value)? scoreCalculated,
+    TResult Function(GrammarModeScoreObtained value)? scoreObtained,
+    TResult Function(GrammarModeTestFinished value)? testFinished,
+    required TResult orElse(),
+  }) {
+    if (testFinished != null) {
+      return testFinished(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class GrammarModeTestFinished implements GrammarModeState {
+  const factory GrammarModeTestFinished() = _$GrammarModeTestFinished;
 }

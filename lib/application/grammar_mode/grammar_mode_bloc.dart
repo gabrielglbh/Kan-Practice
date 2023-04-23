@@ -15,18 +15,65 @@ part 'grammar_mode_state.dart';
 
 part 'grammar_mode_bloc.freezed.dart';
 
+class GrammarTestTracking {
+  final String listName;
+  final String grammar;
+  final double score;
+  final GrammarModes mode;
+  final int seen;
+
+  const GrammarTestTracking({
+    required this.listName,
+    required this.grammar,
+    required this.score,
+    required this.mode,
+    required this.seen,
+  });
+}
+
+class GrammarSM2TestTracking {
+  final String listName;
+  final String grammar;
+  final GrammarModes mode;
+  final int repetitions;
+  final int previousInterval;
+  final int previousIntervalAsDate;
+  final double previousEaseFactor;
+
+  const GrammarSM2TestTracking({
+    required this.listName,
+    required this.grammar,
+    required this.mode,
+    required this.repetitions,
+    required this.previousInterval,
+    required this.previousIntervalAsDate,
+    required this.previousEaseFactor,
+  });
+}
+
 @lazySingleton
 class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
   final IGrammarPointRepository _grammarPointRepository;
   final IListRepository _listRepository;
 
+  List<GrammarTestTracking> testTracking = [];
+  List<GrammarSM2TestTracking> testSM2Tracking = [];
+
   GrammarModeBloc(
     this._grammarPointRepository,
     this._listRepository,
   ) : super(const GrammarModeState.loaded()) {
+    on<GrammarModeEventResetTracking>((event, emit) {
+      testTracking.clear();
+      testSM2Tracking.clear();
+      emit(const GrammarModeState.loaded());
+    });
+
     on<GrammarModeEventCalculateScore>((event, emit) async {
       double actualScore = 0;
-      Map<String, dynamic> toUpdate = {};
+      Map<String, dynamic> toUpdate = {
+        WordTableFields.dateLastShown: Utils.getCurrentMilliseconds(),
+      };
 
       /// If winRate of any mode is -1, it means that the user has not studied this
       /// word yet. Therefore, the score should be untouched.
@@ -41,7 +88,11 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
             actualScore =
                 (event.score + event.grammarPoint.winRateDefinition) / 2;
           }
-          toUpdate = {GrammarTableFields.winRateDefinitionField: actualScore};
+          toUpdate.addEntries([
+            MapEntry(GrammarTableFields.winRateDefinitionField, actualScore),
+            MapEntry(GrammarTableFields.dateLastShownDefinitionField,
+                Utils.getCurrentMilliseconds()),
+          ]);
           break;
         case GrammarModes.grammarPoints:
           if (event.grammarPoint.winRateGrammarPoint ==
@@ -51,11 +102,26 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
             actualScore =
                 (event.score + event.grammarPoint.winRateGrammarPoint) / 2;
           }
-          toUpdate = {GrammarTableFields.winRateGrammarPointField: actualScore};
+          toUpdate.addEntries([
+            MapEntry(GrammarTableFields.winRateGrammarPointField, actualScore),
+            MapEntry(GrammarTableFields.dateLastShownGrammarPointField,
+                Utils.getCurrentMilliseconds()),
+          ]);
           break;
       }
+      if (event.isTest) {
+        return testTracking.add(GrammarTestTracking(
+          listName: event.grammarPoint.listName,
+          grammar: event.grammarPoint.name,
+          score: actualScore,
+          mode: event.mode,
+          seen: Utils.getCurrentMilliseconds(),
+        ));
+      }
+
       final res = await _grammarPointRepository.updateGrammarPoint(
           event.grammarPoint.listName, event.grammarPoint.name, toUpdate);
+
       emit(GrammarModeState.scoreCalculated(res));
     });
 
@@ -98,55 +164,91 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
           break;
       }
 
-      await _grammarPointRepository.updateGrammarPoint(
-        event.grammarPoint.listName,
-        event.grammarPoint.name,
-        toUpdate,
-      );
+      final keys = toUpdate.keys.toList();
+      testSM2Tracking.add(GrammarSM2TestTracking(
+        listName: event.grammarPoint.listName,
+        grammar: event.grammarPoint.name,
+        mode: event.mode,
+        previousInterval: toUpdate[keys[0]],
+        previousIntervalAsDate: toUpdate[keys[1]],
+        repetitions: toUpdate[keys[2]],
+        previousEaseFactor: toUpdate[keys[3]],
+      ));
       emit(const GrammarModeState.sm2Calculated());
-    });
-
-    on<GrammarModeEventUpdateDateShown>((event, emit) async {
-      final toUpdate = {
-        GrammarTableFields.dateLastShownField: Utils.getCurrentMilliseconds(),
-      };
-
-      switch (event.mode) {
-        case GrammarModes.definition:
-          toUpdate.addEntries([
-            MapEntry(GrammarTableFields.dateLastShownDefinitionField,
-                Utils.getCurrentMilliseconds())
-          ]);
-          break;
-        case GrammarModes.grammarPoints:
-          toUpdate.addEntries([
-            MapEntry(GrammarTableFields.dateLastShownGrammarPointField,
-                Utils.getCurrentMilliseconds())
-          ]);
-          break;
-      }
-
-      await _grammarPointRepository.updateGrammarPoint(
-          event.listName, event.name, toUpdate);
     });
 
     on<GrammarModeEventUpdateScoreForTestsAffectingPractice>(
         (event, emit) async {
+      emit(const GrammarModeState.loading());
+
       /// Map for storing the overall scores on each appearing list on the test
       Map<String, double> overallScore = {};
       Map<String, List<GrammarPoint>> orderedMap = {};
 
-      /// Populate the GrammarPoint arrays by their name in the orderedMap. It will look like this:
-      /// {
-      ///   list2: [],
-      ///   list4: [],
-      ///   ...,
-      ///   listN: [...]
-      /// }
-      /// The map is only populated with the empty lists that appears on the test.
-      for (var point in event.grammarPoints) {
-        orderedMap[point.listName] = [];
-        overallScore[point.listName] = 0;
+      /// Update in DB all words
+      Map<String, dynamic> toUpdate = {};
+
+      for (int i = 0; i < testTracking.length; i++) {
+        final s = testSM2Tracking.isEmpty ? null : testSM2Tracking[i];
+        final g = testTracking[i];
+
+        /// Populate the GrammarPoint arrays by their name in the orderedMap. It will look like this:
+        /// {
+        ///   list2: [],
+        ///   list4: [],
+        ///   ...,
+        ///   listN: [...]
+        /// }
+        /// The map is only populated with the empty lists that appears on the test.
+        orderedMap[g.listName] = [];
+        overallScore[g.listName] = 0;
+
+        switch (testTracking[i].mode) {
+          case GrammarModes.definition:
+            toUpdate.addEntries([
+              MapEntry(GrammarTableFields.dateLastShownField, g.seen),
+              MapEntry(GrammarTableFields.dateLastShownDefinitionField, g.seen),
+              MapEntry(GrammarTableFields.winRateDefinitionField, g.score),
+              if (s != null)
+                MapEntry(GrammarTableFields.previousIntervalDefinitionField,
+                    s.previousInterval),
+              if (s != null)
+                MapEntry(
+                    GrammarTableFields.previousIntervalAsDateDefinitionField,
+                    s.previousIntervalAsDate),
+              if (s != null)
+                MapEntry(GrammarTableFields.repetitionsDefinitionField,
+                    s.repetitions),
+              if (s != null)
+                MapEntry(GrammarTableFields.previousEaseFactorDefinitionField,
+                    s.previousEaseFactor),
+            ]);
+            break;
+          case GrammarModes.grammarPoints:
+            toUpdate.addEntries([
+              MapEntry(GrammarTableFields.dateLastShownField, g.seen),
+              MapEntry(
+                  GrammarTableFields.dateLastShownGrammarPointField, g.seen),
+              MapEntry(GrammarTableFields.winRateGrammarPointField, g.score),
+              if (s != null)
+                MapEntry(GrammarTableFields.previousIntervalGrammarPointField,
+                    s.previousInterval),
+              if (s != null)
+                MapEntry(
+                    GrammarTableFields.previousIntervalAsDateGrammarPointField,
+                    s.previousIntervalAsDate),
+              if (s != null)
+                MapEntry(GrammarTableFields.repetitionsGrammarPointField,
+                    s.repetitions),
+              if (s != null)
+                MapEntry(GrammarTableFields.previousEaseFactorGrammarPointField,
+                    s.previousEaseFactor),
+            ]);
+            break;
+        }
+
+        await _grammarPointRepository.updateGrammarPoint(
+            g.listName, g.grammar, toUpdate);
       }
 
       /// For every entry, populate the list with all of the grammar point of each list
@@ -155,11 +257,8 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
         String kanListName = orderedMap.keys.toList()[x];
         orderedMap[kanListName] = await _grammarPointRepository
             .getAllGrammarPointsFromList(kanListName);
-      }
 
-      /// Calculate the overall score for each list on the treated map
-      for (int x = 0; x < orderedMap.keys.toList().length; x++) {
-        String kanListName = orderedMap.keys.toList()[x];
+        /// Calculate the overall score for each list on the treated map
         orderedMap[kanListName]?.forEach((p) {
           switch (event.mode) {
             case GrammarModes.definition:
@@ -196,6 +295,8 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
 
         await _listRepository.updateList(kanListName, toUpdate);
       }
+
+      emit(const GrammarModeState.testFinished());
     });
 
     on<GrammarModeEventGetScore>((event, emit) async {

@@ -18,51 +18,63 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$StudyModeState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() loading,
     required TResult Function() loaded,
     required TResult Function() sm2Calculated,
     required TResult Function(int score) scoreCalculated,
     required TResult Function(double score) scoreObtained,
+    required TResult Function() testFinished,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loading,
     TResult? Function()? loaded,
     TResult? Function()? sm2Calculated,
     TResult? Function(int score)? scoreCalculated,
     TResult? Function(double score)? scoreObtained,
+    TResult? Function()? testFinished,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
     TResult Function()? loaded,
     TResult Function()? sm2Calculated,
     TResult Function(int score)? scoreCalculated,
     TResult Function(double score)? scoreObtained,
+    TResult Function()? testFinished,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(StudyModeLoading value) loading,
     required TResult Function(StudyModeLoaded value) loaded,
     required TResult Function(StudyModeSM2Calculated value) sm2Calculated,
     required TResult Function(StudyModeScoreCalculated value) scoreCalculated,
     required TResult Function(StudyModeScoreObtained value) scoreObtained,
+    required TResult Function(StudyModeTestFinished value) testFinished,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(StudyModeLoading value)? loading,
     TResult? Function(StudyModeLoaded value)? loaded,
     TResult? Function(StudyModeSM2Calculated value)? sm2Calculated,
     TResult? Function(StudyModeScoreCalculated value)? scoreCalculated,
     TResult? Function(StudyModeScoreObtained value)? scoreObtained,
+    TResult? Function(StudyModeTestFinished value)? testFinished,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(StudyModeLoading value)? loading,
     TResult Function(StudyModeLoaded value)? loaded,
     TResult Function(StudyModeSM2Calculated value)? sm2Calculated,
     TResult Function(StudyModeScoreCalculated value)? scoreCalculated,
     TResult Function(StudyModeScoreObtained value)? scoreObtained,
+    TResult Function(StudyModeTestFinished value)? testFinished,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -84,6 +96,132 @@ class _$StudyModeStateCopyWithImpl<$Res, $Val extends StudyModeState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+}
+
+/// @nodoc
+abstract class _$$StudyModeLoadingCopyWith<$Res> {
+  factory _$$StudyModeLoadingCopyWith(
+          _$StudyModeLoading value, $Res Function(_$StudyModeLoading) then) =
+      __$$StudyModeLoadingCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$StudyModeLoadingCopyWithImpl<$Res>
+    extends _$StudyModeStateCopyWithImpl<$Res, _$StudyModeLoading>
+    implements _$$StudyModeLoadingCopyWith<$Res> {
+  __$$StudyModeLoadingCopyWithImpl(
+      _$StudyModeLoading _value, $Res Function(_$StudyModeLoading) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$StudyModeLoading implements StudyModeLoading {
+  const _$StudyModeLoading();
+
+  @override
+  String toString() {
+    return 'StudyModeState.loading()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$StudyModeLoading);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loading,
+    required TResult Function() loaded,
+    required TResult Function() sm2Calculated,
+    required TResult Function(int score) scoreCalculated,
+    required TResult Function(double score) scoreObtained,
+    required TResult Function() testFinished,
+  }) {
+    return loading();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loading,
+    TResult? Function()? loaded,
+    TResult? Function()? sm2Calculated,
+    TResult? Function(int score)? scoreCalculated,
+    TResult? Function(double score)? scoreObtained,
+    TResult? Function()? testFinished,
+  }) {
+    return loading?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function()? loaded,
+    TResult Function()? sm2Calculated,
+    TResult Function(int score)? scoreCalculated,
+    TResult Function(double score)? scoreObtained,
+    TResult Function()? testFinished,
+    required TResult orElse(),
+  }) {
+    if (loading != null) {
+      return loading();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(StudyModeLoading value) loading,
+    required TResult Function(StudyModeLoaded value) loaded,
+    required TResult Function(StudyModeSM2Calculated value) sm2Calculated,
+    required TResult Function(StudyModeScoreCalculated value) scoreCalculated,
+    required TResult Function(StudyModeScoreObtained value) scoreObtained,
+    required TResult Function(StudyModeTestFinished value) testFinished,
+  }) {
+    return loading(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(StudyModeLoading value)? loading,
+    TResult? Function(StudyModeLoaded value)? loaded,
+    TResult? Function(StudyModeSM2Calculated value)? sm2Calculated,
+    TResult? Function(StudyModeScoreCalculated value)? scoreCalculated,
+    TResult? Function(StudyModeScoreObtained value)? scoreObtained,
+    TResult? Function(StudyModeTestFinished value)? testFinished,
+  }) {
+    return loading?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(StudyModeLoading value)? loading,
+    TResult Function(StudyModeLoaded value)? loaded,
+    TResult Function(StudyModeSM2Calculated value)? sm2Calculated,
+    TResult Function(StudyModeScoreCalculated value)? scoreCalculated,
+    TResult Function(StudyModeScoreObtained value)? scoreObtained,
+    TResult Function(StudyModeTestFinished value)? testFinished,
+    required TResult orElse(),
+  }) {
+    if (loading != null) {
+      return loading(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class StudyModeLoading implements StudyModeState {
+  const factory StudyModeLoading() = _$StudyModeLoading;
 }
 
 /// @nodoc
@@ -124,10 +262,12 @@ class _$StudyModeLoaded implements StudyModeLoaded {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() loading,
     required TResult Function() loaded,
     required TResult Function() sm2Calculated,
     required TResult Function(int score) scoreCalculated,
     required TResult Function(double score) scoreObtained,
+    required TResult Function() testFinished,
   }) {
     return loaded();
   }
@@ -135,10 +275,12 @@ class _$StudyModeLoaded implements StudyModeLoaded {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loading,
     TResult? Function()? loaded,
     TResult? Function()? sm2Calculated,
     TResult? Function(int score)? scoreCalculated,
     TResult? Function(double score)? scoreObtained,
+    TResult? Function()? testFinished,
   }) {
     return loaded?.call();
   }
@@ -146,10 +288,12 @@ class _$StudyModeLoaded implements StudyModeLoaded {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
     TResult Function()? loaded,
     TResult Function()? sm2Calculated,
     TResult Function(int score)? scoreCalculated,
     TResult Function(double score)? scoreObtained,
+    TResult Function()? testFinished,
     required TResult orElse(),
   }) {
     if (loaded != null) {
@@ -161,10 +305,12 @@ class _$StudyModeLoaded implements StudyModeLoaded {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(StudyModeLoading value) loading,
     required TResult Function(StudyModeLoaded value) loaded,
     required TResult Function(StudyModeSM2Calculated value) sm2Calculated,
     required TResult Function(StudyModeScoreCalculated value) scoreCalculated,
     required TResult Function(StudyModeScoreObtained value) scoreObtained,
+    required TResult Function(StudyModeTestFinished value) testFinished,
   }) {
     return loaded(this);
   }
@@ -172,10 +318,12 @@ class _$StudyModeLoaded implements StudyModeLoaded {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(StudyModeLoading value)? loading,
     TResult? Function(StudyModeLoaded value)? loaded,
     TResult? Function(StudyModeSM2Calculated value)? sm2Calculated,
     TResult? Function(StudyModeScoreCalculated value)? scoreCalculated,
     TResult? Function(StudyModeScoreObtained value)? scoreObtained,
+    TResult? Function(StudyModeTestFinished value)? testFinished,
   }) {
     return loaded?.call(this);
   }
@@ -183,10 +331,12 @@ class _$StudyModeLoaded implements StudyModeLoaded {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(StudyModeLoading value)? loading,
     TResult Function(StudyModeLoaded value)? loaded,
     TResult Function(StudyModeSM2Calculated value)? sm2Calculated,
     TResult Function(StudyModeScoreCalculated value)? scoreCalculated,
     TResult Function(StudyModeScoreObtained value)? scoreObtained,
+    TResult Function(StudyModeTestFinished value)? testFinished,
     required TResult orElse(),
   }) {
     if (loaded != null) {
@@ -238,10 +388,12 @@ class _$StudyModeSM2Calculated implements StudyModeSM2Calculated {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() loading,
     required TResult Function() loaded,
     required TResult Function() sm2Calculated,
     required TResult Function(int score) scoreCalculated,
     required TResult Function(double score) scoreObtained,
+    required TResult Function() testFinished,
   }) {
     return sm2Calculated();
   }
@@ -249,10 +401,12 @@ class _$StudyModeSM2Calculated implements StudyModeSM2Calculated {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loading,
     TResult? Function()? loaded,
     TResult? Function()? sm2Calculated,
     TResult? Function(int score)? scoreCalculated,
     TResult? Function(double score)? scoreObtained,
+    TResult? Function()? testFinished,
   }) {
     return sm2Calculated?.call();
   }
@@ -260,10 +414,12 @@ class _$StudyModeSM2Calculated implements StudyModeSM2Calculated {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
     TResult Function()? loaded,
     TResult Function()? sm2Calculated,
     TResult Function(int score)? scoreCalculated,
     TResult Function(double score)? scoreObtained,
+    TResult Function()? testFinished,
     required TResult orElse(),
   }) {
     if (sm2Calculated != null) {
@@ -275,10 +431,12 @@ class _$StudyModeSM2Calculated implements StudyModeSM2Calculated {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(StudyModeLoading value) loading,
     required TResult Function(StudyModeLoaded value) loaded,
     required TResult Function(StudyModeSM2Calculated value) sm2Calculated,
     required TResult Function(StudyModeScoreCalculated value) scoreCalculated,
     required TResult Function(StudyModeScoreObtained value) scoreObtained,
+    required TResult Function(StudyModeTestFinished value) testFinished,
   }) {
     return sm2Calculated(this);
   }
@@ -286,10 +444,12 @@ class _$StudyModeSM2Calculated implements StudyModeSM2Calculated {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(StudyModeLoading value)? loading,
     TResult? Function(StudyModeLoaded value)? loaded,
     TResult? Function(StudyModeSM2Calculated value)? sm2Calculated,
     TResult? Function(StudyModeScoreCalculated value)? scoreCalculated,
     TResult? Function(StudyModeScoreObtained value)? scoreObtained,
+    TResult? Function(StudyModeTestFinished value)? testFinished,
   }) {
     return sm2Calculated?.call(this);
   }
@@ -297,10 +457,12 @@ class _$StudyModeSM2Calculated implements StudyModeSM2Calculated {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(StudyModeLoading value)? loading,
     TResult Function(StudyModeLoaded value)? loaded,
     TResult Function(StudyModeSM2Calculated value)? sm2Calculated,
     TResult Function(StudyModeScoreCalculated value)? scoreCalculated,
     TResult Function(StudyModeScoreObtained value)? scoreObtained,
+    TResult Function(StudyModeTestFinished value)? testFinished,
     required TResult orElse(),
   }) {
     if (sm2Calculated != null) {
@@ -380,10 +542,12 @@ class _$StudyModeScoreCalculated implements StudyModeScoreCalculated {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() loading,
     required TResult Function() loaded,
     required TResult Function() sm2Calculated,
     required TResult Function(int score) scoreCalculated,
     required TResult Function(double score) scoreObtained,
+    required TResult Function() testFinished,
   }) {
     return scoreCalculated(score);
   }
@@ -391,10 +555,12 @@ class _$StudyModeScoreCalculated implements StudyModeScoreCalculated {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loading,
     TResult? Function()? loaded,
     TResult? Function()? sm2Calculated,
     TResult? Function(int score)? scoreCalculated,
     TResult? Function(double score)? scoreObtained,
+    TResult? Function()? testFinished,
   }) {
     return scoreCalculated?.call(score);
   }
@@ -402,10 +568,12 @@ class _$StudyModeScoreCalculated implements StudyModeScoreCalculated {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
     TResult Function()? loaded,
     TResult Function()? sm2Calculated,
     TResult Function(int score)? scoreCalculated,
     TResult Function(double score)? scoreObtained,
+    TResult Function()? testFinished,
     required TResult orElse(),
   }) {
     if (scoreCalculated != null) {
@@ -417,10 +585,12 @@ class _$StudyModeScoreCalculated implements StudyModeScoreCalculated {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(StudyModeLoading value) loading,
     required TResult Function(StudyModeLoaded value) loaded,
     required TResult Function(StudyModeSM2Calculated value) sm2Calculated,
     required TResult Function(StudyModeScoreCalculated value) scoreCalculated,
     required TResult Function(StudyModeScoreObtained value) scoreObtained,
+    required TResult Function(StudyModeTestFinished value) testFinished,
   }) {
     return scoreCalculated(this);
   }
@@ -428,10 +598,12 @@ class _$StudyModeScoreCalculated implements StudyModeScoreCalculated {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(StudyModeLoading value)? loading,
     TResult? Function(StudyModeLoaded value)? loaded,
     TResult? Function(StudyModeSM2Calculated value)? sm2Calculated,
     TResult? Function(StudyModeScoreCalculated value)? scoreCalculated,
     TResult? Function(StudyModeScoreObtained value)? scoreObtained,
+    TResult? Function(StudyModeTestFinished value)? testFinished,
   }) {
     return scoreCalculated?.call(this);
   }
@@ -439,10 +611,12 @@ class _$StudyModeScoreCalculated implements StudyModeScoreCalculated {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(StudyModeLoading value)? loading,
     TResult Function(StudyModeLoaded value)? loaded,
     TResult Function(StudyModeSM2Calculated value)? sm2Calculated,
     TResult Function(StudyModeScoreCalculated value)? scoreCalculated,
     TResult Function(StudyModeScoreObtained value)? scoreObtained,
+    TResult Function(StudyModeTestFinished value)? testFinished,
     required TResult orElse(),
   }) {
     if (scoreCalculated != null) {
@@ -527,10 +701,12 @@ class _$StudyModeScoreObtained implements StudyModeScoreObtained {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() loading,
     required TResult Function() loaded,
     required TResult Function() sm2Calculated,
     required TResult Function(int score) scoreCalculated,
     required TResult Function(double score) scoreObtained,
+    required TResult Function() testFinished,
   }) {
     return scoreObtained(score);
   }
@@ -538,10 +714,12 @@ class _$StudyModeScoreObtained implements StudyModeScoreObtained {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loading,
     TResult? Function()? loaded,
     TResult? Function()? sm2Calculated,
     TResult? Function(int score)? scoreCalculated,
     TResult? Function(double score)? scoreObtained,
+    TResult? Function()? testFinished,
   }) {
     return scoreObtained?.call(score);
   }
@@ -549,10 +727,12 @@ class _$StudyModeScoreObtained implements StudyModeScoreObtained {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
     TResult Function()? loaded,
     TResult Function()? sm2Calculated,
     TResult Function(int score)? scoreCalculated,
     TResult Function(double score)? scoreObtained,
+    TResult Function()? testFinished,
     required TResult orElse(),
   }) {
     if (scoreObtained != null) {
@@ -564,10 +744,12 @@ class _$StudyModeScoreObtained implements StudyModeScoreObtained {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(StudyModeLoading value) loading,
     required TResult Function(StudyModeLoaded value) loaded,
     required TResult Function(StudyModeSM2Calculated value) sm2Calculated,
     required TResult Function(StudyModeScoreCalculated value) scoreCalculated,
     required TResult Function(StudyModeScoreObtained value) scoreObtained,
+    required TResult Function(StudyModeTestFinished value) testFinished,
   }) {
     return scoreObtained(this);
   }
@@ -575,10 +757,12 @@ class _$StudyModeScoreObtained implements StudyModeScoreObtained {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(StudyModeLoading value)? loading,
     TResult? Function(StudyModeLoaded value)? loaded,
     TResult? Function(StudyModeSM2Calculated value)? sm2Calculated,
     TResult? Function(StudyModeScoreCalculated value)? scoreCalculated,
     TResult? Function(StudyModeScoreObtained value)? scoreObtained,
+    TResult? Function(StudyModeTestFinished value)? testFinished,
   }) {
     return scoreObtained?.call(this);
   }
@@ -586,10 +770,12 @@ class _$StudyModeScoreObtained implements StudyModeScoreObtained {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(StudyModeLoading value)? loading,
     TResult Function(StudyModeLoaded value)? loaded,
     TResult Function(StudyModeSM2Calculated value)? sm2Calculated,
     TResult Function(StudyModeScoreCalculated value)? scoreCalculated,
     TResult Function(StudyModeScoreObtained value)? scoreObtained,
+    TResult Function(StudyModeTestFinished value)? testFinished,
     required TResult orElse(),
   }) {
     if (scoreObtained != null) {
@@ -607,4 +793,130 @@ abstract class StudyModeScoreObtained implements StudyModeState {
   @JsonKey(ignore: true)
   _$$StudyModeScoreObtainedCopyWith<_$StudyModeScoreObtained> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$StudyModeTestFinishedCopyWith<$Res> {
+  factory _$$StudyModeTestFinishedCopyWith(_$StudyModeTestFinished value,
+          $Res Function(_$StudyModeTestFinished) then) =
+      __$$StudyModeTestFinishedCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$StudyModeTestFinishedCopyWithImpl<$Res>
+    extends _$StudyModeStateCopyWithImpl<$Res, _$StudyModeTestFinished>
+    implements _$$StudyModeTestFinishedCopyWith<$Res> {
+  __$$StudyModeTestFinishedCopyWithImpl(_$StudyModeTestFinished _value,
+      $Res Function(_$StudyModeTestFinished) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$StudyModeTestFinished implements StudyModeTestFinished {
+  const _$StudyModeTestFinished();
+
+  @override
+  String toString() {
+    return 'StudyModeState.testFinished()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$StudyModeTestFinished);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loading,
+    required TResult Function() loaded,
+    required TResult Function() sm2Calculated,
+    required TResult Function(int score) scoreCalculated,
+    required TResult Function(double score) scoreObtained,
+    required TResult Function() testFinished,
+  }) {
+    return testFinished();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loading,
+    TResult? Function()? loaded,
+    TResult? Function()? sm2Calculated,
+    TResult? Function(int score)? scoreCalculated,
+    TResult? Function(double score)? scoreObtained,
+    TResult? Function()? testFinished,
+  }) {
+    return testFinished?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function()? loaded,
+    TResult Function()? sm2Calculated,
+    TResult Function(int score)? scoreCalculated,
+    TResult Function(double score)? scoreObtained,
+    TResult Function()? testFinished,
+    required TResult orElse(),
+  }) {
+    if (testFinished != null) {
+      return testFinished();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(StudyModeLoading value) loading,
+    required TResult Function(StudyModeLoaded value) loaded,
+    required TResult Function(StudyModeSM2Calculated value) sm2Calculated,
+    required TResult Function(StudyModeScoreCalculated value) scoreCalculated,
+    required TResult Function(StudyModeScoreObtained value) scoreObtained,
+    required TResult Function(StudyModeTestFinished value) testFinished,
+  }) {
+    return testFinished(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(StudyModeLoading value)? loading,
+    TResult? Function(StudyModeLoaded value)? loaded,
+    TResult? Function(StudyModeSM2Calculated value)? sm2Calculated,
+    TResult? Function(StudyModeScoreCalculated value)? scoreCalculated,
+    TResult? Function(StudyModeScoreObtained value)? scoreObtained,
+    TResult? Function(StudyModeTestFinished value)? testFinished,
+  }) {
+    return testFinished?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(StudyModeLoading value)? loading,
+    TResult Function(StudyModeLoaded value)? loaded,
+    TResult Function(StudyModeSM2Calculated value)? sm2Calculated,
+    TResult Function(StudyModeScoreCalculated value)? scoreCalculated,
+    TResult Function(StudyModeScoreObtained value)? scoreObtained,
+    TResult Function(StudyModeTestFinished value)? testFinished,
+    required TResult orElse(),
+  }) {
+    if (testFinished != null) {
+      return testFinished(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class StudyModeTestFinished implements StudyModeState {
+  const factory StudyModeTestFinished() = _$StudyModeTestFinished;
 }

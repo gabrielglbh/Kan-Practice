@@ -5,7 +5,6 @@ import 'package:kanpractice/application/specific_data/specific_data_bloc.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
-import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/widgets/graphs/kp_bar_chart.dart';
 import 'package:kanpractice/presentation/core/widgets/graphs/kp_data_frame.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -16,7 +15,8 @@ import 'package:kanpractice/presentation/statistics_page/widgets/stats_tappable_
 
 class TestStats extends StatefulWidget {
   final KanPracticeStats stats;
-  const TestStats({super.key, required this.stats});
+  final bool showGrammar;
+  const TestStats({super.key, required this.stats, required this.showGrammar});
 
   @override
   State<TestStats> createState() => _TestStatsState();
@@ -33,6 +33,7 @@ class _TestStatsState extends State<TestStats>
           title: "stats_tests".tr(),
           value: widget.stats.test.totalTests.toString(),
         ),
+        // TODO: update indexes DataFrame when adding mode
         KPBarChart(
           graphName: "tests".tr(),
           animationDuration: 0,
@@ -102,9 +103,10 @@ class _TestStatsState extends State<TestStats>
   Widget _expandedTestCount(BuildContext context, KanPracticeStats s) {
     return BlocListener<SpecificDataBloc, SpecificDataState>(
       listener: (context, state) {
-        if (state is SpecificDataStateGatheredTest) {
-          SpecBottomSheet.show(context, state.test.name, state.data);
-        }
+        state.mapOrNull(testRetrieved: (t) {
+          SpecBottomSheet.show(
+              context, t.test.name, widget.showGrammar, t.data);
+        });
       },
       child: KPBarChart(
         enableTooltip: false,
@@ -115,7 +117,8 @@ class _TestStatsState extends State<TestStats>
         onBarTapped: (model) async {
           if (model.dataPoints?.isNotEmpty == true) {
             final test = Tests.values[model.pointIndex ?? -1];
-            getIt<SpecificDataBloc>()
+            context
+                .read<SpecificDataBloc>()
                 .add(SpecificDataEventGatherTest(test: test));
           }
         },

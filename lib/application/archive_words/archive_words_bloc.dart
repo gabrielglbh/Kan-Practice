@@ -1,14 +1,18 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/domain/services/i_preferences_repository.dart';
 import 'package:kanpractice/domain/word/i_word_repository.dart';
 import 'package:kanpractice/domain/word/word.dart';
+import 'package:kanpractice/presentation/core/types/word_categories_filters.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 part 'archive_words_event.dart';
 part 'archive_words_state.dart';
+
+part 'archive_words_bloc.freezed.dart';
 
 @lazySingleton
 class ArchiveWordsBloc extends Bloc<ArchiveWordsEvent, ArchiveWordsState> {
@@ -18,7 +22,7 @@ class ArchiveWordsBloc extends Bloc<ArchiveWordsEvent, ArchiveWordsState> {
   ArchiveWordsBloc(
     this._wordRepository,
     this._preferencesRepository,
-  ) : super(ArchiveWordsStateIdle()) {
+  ) : super(const ArchiveWordsState.initial()) {
     /// Maintain the list for pagination purposes
     List<Word> list = [];
 
@@ -35,7 +39,7 @@ class ArchiveWordsBloc extends Bloc<ArchiveWordsEvent, ArchiveWordsState> {
       try {
         loadingTimesForSearch = 0;
         if (event.reset) {
-          emit(ArchiveWordsStateLoading());
+          emit(const ArchiveWordsState.loading());
           list.clear();
           loadingTimes = 0;
         }
@@ -49,13 +53,17 @@ class ArchiveWordsBloc extends Bloc<ArchiveWordsEvent, ArchiveWordsState> {
         /// of state. After, add to list the elements for the next iteration.
         List<Word> fullList = List.of(list);
         final List<Word> pagination = await _wordRepository.getArchiveWords(
-            offset: loadingTimes, limit: limit);
+          filter: event.filter,
+          order: _getSelectedOrder(event.order),
+          offset: loadingTimes,
+          limit: limit,
+        );
         fullList.addAll(pagination);
         list.addAll(pagination);
         loadingTimes += 1;
-        emit(ArchiveWordsStateLoaded(fullList));
+        emit(ArchiveWordsState.loaded(fullList));
       } on Exception {
-        emit(const ArchiveWordsStateFailure());
+        emit(const ArchiveWordsState.error());
       }
     });
 
@@ -63,7 +71,7 @@ class ArchiveWordsBloc extends Bloc<ArchiveWordsEvent, ArchiveWordsState> {
       try {
         loadingTimes = 0;
         if (event.reset) {
-          emit(ArchiveWordsStateLoading());
+          emit(const ArchiveWordsState.loading());
           searchList.clear();
           loadingTimesForSearch = 0;
         }
@@ -82,10 +90,12 @@ class ArchiveWordsBloc extends Bloc<ArchiveWordsEvent, ArchiveWordsState> {
         fullList.addAll(pagination);
         searchList.addAll(pagination);
         loadingTimesForSearch += 1;
-        emit(ArchiveWordsStateLoaded(fullList));
+        emit(ArchiveWordsState.loaded(fullList));
       } on Exception {
-        emit(const ArchiveWordsStateFailure());
+        emit(const ArchiveWordsState.error());
       }
     });
   }
+
+  String _getSelectedOrder(bool order) => order ? "DESC" : "ASC";
 }

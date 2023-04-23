@@ -113,9 +113,40 @@ class KPWordItem extends StatelessWidget {
     );
 
     final tile = ListTile(
-      horizontalTitleGap: KPMargins.margin8,
+      horizontalTitleGap: 0,
       leading: score == -1
-          ? null
+          ? Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: KPMargins.margin16,
+                  height: KPMargins.margin16,
+                  margin: const EdgeInsets.only(top: KPMargins.margin4),
+                  decoration: BoxDecoration(
+                    color: KPColors.getSubtle(context),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                Container(
+                  width: KPMargins.margin16 - 3,
+                  height: KPMargins.margin16 - 3,
+                  margin: const EdgeInsets.only(top: KPMargins.margin4),
+                  decoration: BoxDecoration(
+                    color: KPColors.getPrimary(context),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                Container(
+                  width: KPMargins.margin4,
+                  height: KPMargins.margin4,
+                  margin: const EdgeInsets.only(top: KPMargins.margin4),
+                  decoration: BoxDecoration(
+                    color: KPColors.getSubtle(context),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ],
+            )
           : Container(
               width: KPMargins.margin16,
               height: KPMargins.margin16,
@@ -132,11 +163,8 @@ class KPWordItem extends StatelessWidget {
           Flexible(
             child: Padding(
               padding: const EdgeInsets.only(bottom: KPMargins.margin4),
-              child: Text(word.word,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.copyWith(fontWeight: FontWeight.bold)),
+              child:
+                  Text(word.word, style: Theme.of(context).textTheme.bodyLarge),
             ),
           ),
           const SizedBox(width: KPMargins.margin8),

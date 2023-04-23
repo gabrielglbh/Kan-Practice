@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/application/services/sm2_algorithm.dart';
@@ -12,18 +13,67 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 part 'study_mode_event.dart';
 part 'study_mode_state.dart';
 
+part 'study_mode_bloc.freezed.dart';
+
+class WordTestTracking {
+  final String listName;
+  final String word;
+  final double score;
+  final StudyModes mode;
+  final int seen;
+
+  const WordTestTracking({
+    required this.listName,
+    required this.word,
+    required this.score,
+    required this.mode,
+    required this.seen,
+  });
+}
+
+class WordSM2TestTracking {
+  final String listName;
+  final String word;
+  final StudyModes mode;
+  final int repetitions;
+  final int previousInterval;
+  final int previousIntervalAsDate;
+  final double previousEaseFactor;
+
+  const WordSM2TestTracking({
+    required this.listName,
+    required this.word,
+    required this.mode,
+    required this.repetitions,
+    required this.previousInterval,
+    required this.previousIntervalAsDate,
+    required this.previousEaseFactor,
+  });
+}
+
 @lazySingleton
 class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
   final IWordRepository _wordRepository;
   final IListRepository _listRepository;
 
+  List<WordTestTracking> testTracking = [];
+  List<WordSM2TestTracking> testSM2Tracking = [];
+
   StudyModeBloc(
     this._wordRepository,
     this._listRepository,
-  ) : super(StudyModeStateLoaded()) {
+  ) : super(const StudyModeState.loaded()) {
+    on<StudyModeEventResetTracking>((event, emit) {
+      testTracking.clear();
+      testSM2Tracking.clear();
+      emit(const StudyModeState.loaded());
+    });
+
     on<StudyModeEventCalculateScore>((event, emit) async {
       double actualScore = 0;
-      Map<String, dynamic> toUpdate = {};
+      Map<String, dynamic> toUpdate = {
+        WordTableFields.dateLastShown: Utils.getCurrentMilliseconds(),
+      };
 
       /// If winRate of any mode is -1, it means that the user has not studied this
       /// word yet. Therefore, the score should be untouched.
@@ -36,7 +86,11 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
           } else {
             actualScore = (event.score + event.word.winRateWriting) / 2;
           }
-          toUpdate = {WordTableFields.winRateWritingField: actualScore};
+          toUpdate.addEntries([
+            MapEntry(WordTableFields.winRateWritingField, actualScore),
+            MapEntry(WordTableFields.dateLastShownWriting,
+                Utils.getCurrentMilliseconds()),
+          ]);
           break;
         case StudyModes.reading:
           if (event.word.winRateReading == DatabaseConstants.emptyWinRate) {
@@ -44,7 +98,11 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
           } else {
             actualScore = (event.score + event.word.winRateReading) / 2;
           }
-          toUpdate = {WordTableFields.winRateReadingField: actualScore};
+          toUpdate.addEntries([
+            MapEntry(WordTableFields.winRateReadingField, actualScore),
+            MapEntry(WordTableFields.dateLastShownReading,
+                Utils.getCurrentMilliseconds()),
+          ]);
           break;
         case StudyModes.recognition:
           if (event.word.winRateRecognition == DatabaseConstants.emptyWinRate) {
@@ -52,7 +110,11 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
           } else {
             actualScore = (event.score + event.word.winRateRecognition) / 2;
           }
-          toUpdate = {WordTableFields.winRateRecognitionField: actualScore};
+          toUpdate.addEntries([
+            MapEntry(WordTableFields.winRateRecognitionField, actualScore),
+            MapEntry(WordTableFields.dateLastShownRecognition,
+                Utils.getCurrentMilliseconds()),
+          ]);
           break;
         case StudyModes.listening:
           if (event.word.winRateListening == DatabaseConstants.emptyWinRate) {
@@ -60,7 +122,11 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
           } else {
             actualScore = (event.score + event.word.winRateListening) / 2;
           }
-          toUpdate = {WordTableFields.winRateListeningField: actualScore};
+          toUpdate.addEntries([
+            MapEntry(WordTableFields.winRateListeningField, actualScore),
+            MapEntry(WordTableFields.dateLastShownListening,
+                Utils.getCurrentMilliseconds()),
+          ]);
           break;
         case StudyModes.speaking:
           if (event.word.winRateSpeaking == DatabaseConstants.emptyWinRate) {
@@ -68,12 +134,27 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
           } else {
             actualScore = (event.score + event.word.winRateSpeaking) / 2;
           }
-          toUpdate = {WordTableFields.winRateSpeakingField: actualScore};
+          toUpdate.addEntries([
+            MapEntry(WordTableFields.winRateSpeakingField, actualScore),
+            MapEntry(WordTableFields.dateLastShownSpeaking,
+                Utils.getCurrentMilliseconds()),
+          ]);
           break;
       }
+      if (event.isTest) {
+        return testTracking.add(WordTestTracking(
+          listName: event.word.listName,
+          word: event.word.word,
+          score: actualScore,
+          mode: event.mode,
+          seen: Utils.getCurrentMilliseconds(),
+        ));
+      }
+
       final res = await _wordRepository.updateWord(
           event.word.listName, event.word.word, toUpdate);
-      emit(StudyModeStateScoreCalculated(res));
+
+      emit(StudyModeState.scoreCalculated(res));
     });
 
     on<StudyModeEventCalculateSM2Params>((event, emit) async {
@@ -156,71 +237,144 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
           };
           break;
       }
-      await _wordRepository.updateWord(
-        event.word.listName,
-        event.word.word,
-        toUpdate,
-      );
-      emit(StudyModeStateSM2Calculated());
-    });
 
-    on<StudyModeEventUpdateDateShown>((event, emit) async {
-      final toUpdate = {
-        WordTableFields.dateLastShown: Utils.getCurrentMilliseconds(),
-      };
-
-      switch (event.mode) {
-        case StudyModes.writing:
-          toUpdate.addEntries([
-            MapEntry(WordTableFields.dateLastShownWriting,
-                Utils.getCurrentMilliseconds())
-          ]);
-          break;
-        case StudyModes.reading:
-          toUpdate.addEntries([
-            MapEntry(WordTableFields.dateLastShownReading,
-                Utils.getCurrentMilliseconds())
-          ]);
-          break;
-        case StudyModes.recognition:
-          toUpdate.addEntries([
-            MapEntry(WordTableFields.dateLastShownRecognition,
-                Utils.getCurrentMilliseconds())
-          ]);
-          break;
-        case StudyModes.listening:
-          toUpdate.addEntries([
-            MapEntry(WordTableFields.dateLastShownListening,
-                Utils.getCurrentMilliseconds())
-          ]);
-          break;
-        case StudyModes.speaking:
-          toUpdate.addEntries([
-            MapEntry(WordTableFields.dateLastShownSpeaking,
-                Utils.getCurrentMilliseconds())
-          ]);
-          break;
-      }
-
-      await _wordRepository.updateWord(event.listName, event.word, toUpdate);
+      final keys = toUpdate.keys.toList();
+      testSM2Tracking.add(WordSM2TestTracking(
+        listName: event.word.listName,
+        word: event.word.word,
+        mode: event.mode,
+        previousInterval: toUpdate[keys[0]],
+        previousIntervalAsDate: toUpdate[keys[1]],
+        repetitions: toUpdate[keys[2]],
+        previousEaseFactor: toUpdate[keys[3]],
+      ));
+      emit(const StudyModeState.sm2Calculated());
     });
 
     on<StudyModeEventUpdateScoreForTestsAffectingPractice>((event, emit) async {
+      emit(const StudyModeState.loading());
+
       /// Map for storing the overall scores on each appearing list on the test
       Map<String, double> overallScore = {};
       Map<String, List<Word>> orderedMap = {};
 
-      /// Populate the Word arrays by their name in the orderedMap. It will look like this:
-      /// {
-      ///   list2: [],
-      ///   list4: [],
-      ///   ...,
-      ///   listN: [...]
-      /// }
-      /// The map is only populated with the empty lists that appears on the test.
-      for (var word in event.words) {
-        orderedMap[word.listName] = [];
-        overallScore[word.listName] = 0;
+      /// Update in DB all words
+      Map<String, dynamic> toUpdate = {};
+
+      for (int i = 0; i < testTracking.length; i++) {
+        final s = testSM2Tracking.isEmpty ? null : testSM2Tracking[i];
+        final w = testTracking[i];
+
+        /// Populate the Word arrays by their name in the orderedMap. It will look like this:
+        /// {
+        ///   list2: [],
+        ///   list4: [],
+        ///   ...,
+        ///   listN: [...]
+        /// }
+        /// The map is only populated with the empty lists that appears on the test.
+        orderedMap[w.listName] = [];
+        overallScore[w.listName] = 0;
+
+        switch (testTracking[i].mode) {
+          case StudyModes.writing:
+            toUpdate.addEntries([
+              MapEntry(WordTableFields.dateLastShown, w.seen),
+              MapEntry(WordTableFields.dateLastShownWriting, w.seen),
+              MapEntry(WordTableFields.winRateWritingField, w.score),
+              if (s != null)
+                MapEntry(WordTableFields.previousIntervalWritingField,
+                    s.previousInterval),
+              if (s != null)
+                MapEntry(WordTableFields.previousIntervalAsDateWritingField,
+                    s.previousIntervalAsDate),
+              if (s != null)
+                MapEntry(
+                    WordTableFields.repetitionsWritingField, s.repetitions),
+              if (s != null)
+                MapEntry(WordTableFields.previousEaseFactorWritingField,
+                    s.previousEaseFactor),
+            ]);
+            break;
+          case StudyModes.reading:
+            toUpdate.addEntries([
+              MapEntry(WordTableFields.dateLastShown, w.seen),
+              MapEntry(WordTableFields.dateLastShownReading, w.seen),
+              MapEntry(WordTableFields.winRateReadingField, w.score),
+              if (s != null)
+                MapEntry(WordTableFields.previousIntervalReadingField,
+                    s.previousInterval),
+              if (s != null)
+                MapEntry(WordTableFields.previousIntervalAsDateReadingField,
+                    s.previousIntervalAsDate),
+              if (s != null)
+                MapEntry(
+                    WordTableFields.repetitionsReadingField, s.repetitions),
+              if (s != null)
+                MapEntry(WordTableFields.previousEaseFactorReadingField,
+                    s.previousEaseFactor),
+            ]);
+            break;
+          case StudyModes.recognition:
+            toUpdate.addEntries([
+              MapEntry(WordTableFields.dateLastShown, w.seen),
+              MapEntry(WordTableFields.dateLastShownRecognition, w.seen),
+              MapEntry(WordTableFields.winRateRecognitionField, w.score),
+              if (s != null)
+                MapEntry(WordTableFields.previousIntervalRecognitionField,
+                    s.previousInterval),
+              if (s != null)
+                MapEntry(WordTableFields.previousIntervalAsDateRecognitionField,
+                    s.previousIntervalAsDate),
+              if (s != null)
+                MapEntry(
+                    WordTableFields.repetitionsRecognitionField, s.repetitions),
+              if (s != null)
+                MapEntry(WordTableFields.previousEaseFactorRecognitionField,
+                    s.previousEaseFactor),
+            ]);
+            break;
+          case StudyModes.listening:
+            toUpdate.addEntries([
+              MapEntry(WordTableFields.dateLastShown, w.seen),
+              MapEntry(WordTableFields.dateLastShownListening, w.seen),
+              MapEntry(WordTableFields.winRateListeningField, w.score),
+              if (s != null)
+                MapEntry(WordTableFields.previousIntervalListeningField,
+                    s.previousInterval),
+              if (s != null)
+                MapEntry(WordTableFields.previousIntervalAsDateListeningField,
+                    s.previousIntervalAsDate),
+              if (s != null)
+                MapEntry(
+                    WordTableFields.repetitionsListeningField, s.repetitions),
+              if (s != null)
+                MapEntry(WordTableFields.previousEaseFactorListeningField,
+                    s.previousEaseFactor),
+            ]);
+            break;
+          case StudyModes.speaking:
+            toUpdate.addEntries([
+              MapEntry(WordTableFields.dateLastShown, w.seen),
+              MapEntry(WordTableFields.dateLastShownSpeaking, w.seen),
+              MapEntry(WordTableFields.winRateSpeakingField, w.score),
+              if (s != null)
+                MapEntry(WordTableFields.previousIntervalSpeakingField,
+                    s.previousInterval),
+              if (s != null)
+                MapEntry(WordTableFields.previousIntervalAsDateSpeakingField,
+                    s.previousIntervalAsDate),
+              if (s != null)
+                MapEntry(
+                    WordTableFields.repetitionsSpeakingField, s.repetitions),
+              if (s != null)
+                MapEntry(WordTableFields.previousEaseFactorSpeakingField,
+                    s.previousEaseFactor),
+            ]);
+            break;
+        }
+
+        await _wordRepository.updateWord(w.listName, w.word, toUpdate);
       }
 
       /// For every entry, populate the list with all of the word of each list
@@ -229,11 +383,8 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
         String kanListName = orderedMap.keys.toList()[x];
         orderedMap[kanListName] =
             await _wordRepository.getAllWordsFromList(kanListName);
-      }
 
-      /// Calculate the overall score for each list on the treated map
-      for (int x = 0; x < orderedMap.keys.toList().length; x++) {
-        String kanListName = orderedMap.keys.toList()[x];
+        /// Calculate the overall score for each list on the treated map
         orderedMap[kanListName]?.forEach((k) {
           switch (event.mode) {
             case StudyModes.writing:
@@ -296,6 +447,8 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
         }
         await _listRepository.updateList(kanListName, toUpdate);
       }
+
+      emit(const StudyModeState.testFinished());
     });
 
     on<StudyModeEventGetScore>((event, emit) async {
@@ -335,7 +488,7 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
         }
       }
 
-      emit(StudyModeStateScoreObtained(overallScore));
+      emit(StudyModeState.scoreObtained(overallScore));
     });
 
     on<StudyModeEventUpdateListScore>((event, emit) async {

@@ -52,6 +52,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
     _enableRepOnTest = getIt<PreferencesService>()
         .readData(SharedKeys.enableRepetitionOnTests);
     _studyList.addAll(widget.args.studyList);
+    context.read<StudyModeBloc>().add(StudyModeEventResetTracking());
     super.initState();
   }
 
@@ -108,26 +109,24 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
   }
 
   Future<int> _calculateWordScore(double score) async {
-    getIt<StudyModeBloc>().add(StudyModeEventUpdateDateShown(
-      listName: _studyList[_macro].listName,
-      word: _studyList[_macro].word,
-      mode: widget.args.mode,
-    ));
-
     /// Add the current virgin score to the test scores...
     if (widget.args.isTest) {
       if (getIt<PreferencesService>().readData(SharedKeys.affectOnPractice) ??
           false) {
-        getIt<StudyModeBloc>().add(StudyModeEventCalculateScore(
-            widget.args.mode, _studyList[_macro], score));
+        context.read<StudyModeBloc>().add(StudyModeEventCalculateScore(
+              widget.args.mode,
+              _studyList[_macro],
+              score,
+              isTest: true,
+            ));
       }
       _testScores.add(score);
       if (widget.args.testMode == Tests.daily) {
-        getIt<StudyModeBloc>().add(StudyModeEventCalculateSM2Params(
+        context.read<StudyModeBloc>().add(StudyModeEventCalculateSM2Params(
             widget.args.mode, _studyList[_macro], score));
       }
     } else {
-      getIt<StudyModeBloc>().add(StudyModeEventCalculateScore(
+      context.read<StudyModeBloc>().add(StudyModeEventCalculateScore(
           widget.args.mode, _studyList[_macro], score));
     }
     return 0;
@@ -153,52 +152,47 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<StudyModeBloc, StudyModeState>(
-      builder: (context, state) {
-        return KPScaffold(
-            onWillPop: () async {
-              return StudyModeUpdateHandler.handle(
-                context,
-                widget.args,
-                onPop: true,
-                lastIndex: _macro,
-              );
-            },
-            appBarTitle: StudyModeAppBar(
-                title: widget.args.studyModeHeaderDisplayName,
-                studyMode: widget.args.mode.mode),
-            centerTitle: true,
-            appBarActions: [
-              Visibility(
-                visible: _showMeaning,
-                child: TTSIconButton(word: _studyList[_macro].pronunciation),
-              ),
-              if (_hasRepetition && widget.args.testMode != Tests.daily)
-                IconButton(
-                  onPressed: () =>
-                      Utils.showSpatialRepetitionDisclaimer(context),
-                  icon: const Icon(Icons.info_outline_rounded),
-                )
-            ],
-            child: Column(
+    return KPScaffold(
+        onWillPop: () async {
+          return StudyModeUpdateHandler.handle(
+            context,
+            widget.args,
+            onPop: true,
+            lastIndex: _macro,
+          );
+        },
+        appBarTitle: StudyModeAppBar(
+            title: widget.args.studyModeHeaderDisplayName,
+            studyMode: widget.args.mode.mode),
+        centerTitle: true,
+        appBarActions: [
+          Visibility(
+            visible: _showMeaning,
+            child: TTSIconButton(word: _studyList[_macro].pronunciation),
+          ),
+          if (_hasRepetition && widget.args.testMode != Tests.daily)
+            IconButton(
+              onPressed: () => Utils.showSpatialRepetitionDisclaimer(context),
+              icon: const Icon(Icons.info_outline_rounded),
+            )
+        ],
+        child: Column(
+          children: [
+            Column(
               children: [
-                Column(
-                  children: [
-                    KPListPercentageIndicator(
-                        value: (_macro + 1) / _studyList.length),
-                    KPLearningHeaderAnimation(id: _macro, children: _header()),
-                  ],
-                ),
-                KPValidationButtons(
-                  trigger: _showMeaning,
-                  submitLabel: "done_button_label".tr(),
-                  action: (score) async => await _updateUIOnSubmit(score),
-                  onSubmit: () => setState(() => _showMeaning = true),
-                )
+                KPListPercentageIndicator(
+                    value: (_macro + 1) / _studyList.length),
+                KPLearningHeaderAnimation(id: _macro, children: _header()),
               ],
-            ));
-      },
-    );
+            ),
+            KPValidationButtons(
+              trigger: _showMeaning,
+              submitLabel: "done_button_label".tr(),
+              action: (score) async => await _updateUIOnSubmit(score),
+              onSubmit: () => setState(() => _showMeaning = true),
+            )
+          ],
+        ));
   }
 
   List<Widget> _header() {

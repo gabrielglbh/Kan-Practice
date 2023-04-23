@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/word_history/i_word_history_repository.dart';
 import 'package:kanpractice/domain/word_history/word_history.dart';
@@ -7,18 +8,21 @@ import 'package:kanpractice/domain/word_history/word_history.dart';
 part 'word_history_event.dart';
 part 'word_history_state.dart';
 
-@lazySingleton
+part 'word_history_bloc.freezed.dart';
+
+@injectable
 class WordHistoryBloc extends Bloc<WordHistoryEvent, WordHistoryState> {
   final IWordHistoryRepository _wordHistoryRepository;
 
-  WordHistoryBloc(this._wordHistoryRepository) : super(WordHistoryStateIdle()) {
+  WordHistoryBloc(this._wordHistoryRepository)
+      : super(const WordHistoryState.initial()) {
     /// Maintain the history for pagination purposes
     List<WordHistory> history = [];
 
     on<WordHistoryEventLoading>((event, emit) async {
       try {
         if (event.offset == 0) {
-          emit(WordHistoryStateLoading());
+          emit(const WordHistoryState.loading());
           history.clear();
         }
 
@@ -30,24 +34,24 @@ class WordHistoryBloc extends Bloc<WordHistoryEvent, WordHistoryState> {
             await _wordHistoryRepository.getHistory(event.offset);
         fullList.addAll(pagination);
         history.addAll(pagination);
-        emit(WordHistoryStateLoaded(fullList));
+        emit(WordHistoryState.loaded(fullList));
       } on Exception {
-        emit(WordHistoryStateFailure());
+        emit(const WordHistoryState.error());
       }
     });
 
     on<WordHistoryEventRemoving>((event, emit) async {
       try {
-        emit(WordHistoryStateLoading());
+        emit(const WordHistoryState.loading());
         final int code = await _wordHistoryRepository.removeAll();
         if (code == 0) {
           history.clear();
-          emit(const WordHistoryStateLoaded([]));
+          emit(const WordHistoryState.loaded([]));
         } else {
-          emit(WordHistoryStateFailure());
+          emit(const WordHistoryState.error());
         }
       } on Exception {
-        emit(WordHistoryStateFailure());
+        emit(const WordHistoryState.error());
       }
     });
   }

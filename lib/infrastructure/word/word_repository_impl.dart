@@ -7,6 +7,7 @@ import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/domain/word/i_word_repository.dart';
 import 'package:kanpractice/domain/word/word.dart';
+import 'package:kanpractice/presentation/core/types/word_categories_filters.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 @LazySingleton(as: IWordRepository)
@@ -99,11 +100,18 @@ class WordRepositoryImpl implements IWordRepository {
   }
 
   @override
-  Future<List<Word>> getArchiveWords({int? offset, int? limit}) async {
+  Future<List<Word>> getArchiveWords(
+      {WordCategoryFilter filter = WordCategoryFilter.all,
+      String order = "DESC",
+      int? offset,
+      int? limit}) async {
     try {
+      final isAll = filter == WordCategoryFilter.all;
       List<Map<String, dynamic>>? res = await _database.query(
           WordTableFields.wordTable,
-          orderBy: "${WordTableFields.dateAddedField} DESC",
+          where: isAll ? null : "${WordTableFields.categoryField}=?",
+          whereArgs: isAll ? null : [filter.filter],
+          orderBy: "${WordTableFields.dateAddedField} $order",
           limit: limit,
           offset: (offset != null && limit != null) ? (offset * limit) : null);
       return List.generate(res.length, (i) => Word.fromJson(res[i]));
@@ -143,8 +151,7 @@ class WordRepositoryImpl implements IWordRepository {
 
       if (controlledPace) {
         // Divide number of total words of the user's db by the weekdays
-        limit = ((await _database.query(WordTableFields.wordTable)).length / 7)
-            .ceil();
+        limit = _preferencesRepository.readData(SharedKeys.maxWordsOnDaily);
 
         // Also check if the daily test can be performed
         switch (mode) {
@@ -284,8 +291,7 @@ class WordRepositoryImpl implements IWordRepository {
       if (controlledPace) {
         final now = DateTime.now().millisecondsSinceEpoch;
         final limit =
-            ((await _database.query(WordTableFields.wordTable)).length / 7)
-                .ceil();
+            _preferencesRepository.readData(SharedKeys.maxWordsOnDaily);
 
         final w = prefs.readData(SharedKeys.writingDailyPerformed);
         if (w == null || (w != null && w <= now)) {
@@ -540,7 +546,7 @@ class WordRepositoryImpl implements IWordRepository {
           "(${WordTableFields.meaningField} LIKE '%$query%' "
           "OR ${WordTableFields.wordField} LIKE '%$query%' "
           "OR ${WordTableFields.pronunciationField} LIKE '%$query%') "
-          "ORDER BY ${WordTableFields.dateAddedField} ASC "
+          "ORDER BY ${WordTableFields.dateAddedField} DESC "
           "LIMIT $limit OFFSET ${offset * limit}");
       return List.generate(res.length, (i) => Word.fromJson(res[i]));
     } catch (err) {

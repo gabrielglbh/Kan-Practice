@@ -1,23 +1,9 @@
 part of 'test_history_bloc.dart';
 
-class TestHistoryState extends Equatable {
-  const TestHistoryState();
-
-  @override
-  List<Object?> get props => [];
+@freezed
+class TestHistoryState with _$TestHistoryState {
+  const factory TestHistoryState.loaded(List<Test> list) = TestHistoryLoaded;
+  const factory TestHistoryState.loading() = TestHistoryLoading;
+  const factory TestHistoryState.initial() = TestHistoryInitial;
+  const factory TestHistoryState.error() = TestHistoryError;
 }
-
-class TestHistoryStateIdle extends TestHistoryState {}
-
-class TestHistoryStateLoading extends TestHistoryState {}
-
-class TestHistoryStateLoaded extends TestHistoryState {
-  final List<Test> list;
-
-  const TestHistoryStateLoaded([this.list = const []]);
-
-  @override
-  List<Object> get props => [list];
-}
-
-class TestHistoryStateFailure extends TestHistoryState {}

@@ -3,40 +3,26 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:kanpractice/application/add_folder/add_folder_bloc.dart';
-import 'package:kanpractice/application/add_grammar_point/add_grammar_point_bloc.dart';
-import 'package:kanpractice/application/add_market_list/add_to_market_bloc.dart';
 import 'package:kanpractice/application/add_word/add_word_bloc.dart';
 import 'package:kanpractice/application/archive_grammar_points/archive_grammar_points_bloc.dart';
 import 'package:kanpractice/application/archive_words/archive_words_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
-import 'package:kanpractice/application/dictionary/dict_bloc.dart';
-import 'package:kanpractice/application/dictionary_details/dictionary_details_bloc.dart';
+import 'package:kanpractice/application/daily_options/daily_options_bloc.dart';
+import 'package:kanpractice/application/example_data/example_data_bloc.dart';
 import 'package:kanpractice/application/folder_details/folder_details_bloc.dart';
 import 'package:kanpractice/application/folder_list/folder_bloc.dart';
-import 'package:kanpractice/application/grammar_details/grammar_details_bloc.dart';
+import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
 import 'package:kanpractice/application/grammar_mode/grammar_mode_bloc.dart';
-import 'package:kanpractice/application/initial/initial_bloc.dart';
-import 'package:kanpractice/application/list/lists_bloc.dart';
-import 'package:kanpractice/application/list_details/list_details_bloc.dart';
+import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
 import 'package:kanpractice/application/list_details_grammar_points/list_details_grammar_points_bloc.dart';
 import 'package:kanpractice/application/list_details_words/list_details_words_bloc.dart';
-import 'package:kanpractice/application/load_folder_practice/load_folder_practice_bloc.dart';
-import 'package:kanpractice/application/load_grammar_test/load_grammar_test_bloc.dart';
-import 'package:kanpractice/application/load_test/load_test_bloc.dart';
+import 'package:kanpractice/application/lists/lists_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
-import 'package:kanpractice/application/rate/rate_bloc.dart';
 import 'package:kanpractice/application/services/messaging_service.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
-import 'package:kanpractice/application/settings/settings_bloc.dart';
 import 'package:kanpractice/application/specific_data/specific_data_bloc.dart';
-import 'package:kanpractice/application/statistics/stats_bloc.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
-import 'package:kanpractice/application/test_history/test_history_bloc.dart';
-import 'package:kanpractice/application/test_result/test_result_bloc.dart';
-import 'package:kanpractice/application/word_details/word_details_bloc.dart';
-import 'package:kanpractice/application/word_history/word_history_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -153,10 +139,13 @@ class _KanPracticeState extends State<KanPractice> {
     ThemeManager.instance.addListenerTo(() => setState(() {}));
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       getIt<MessagingService>().handler(context);
+
+      /// For users that already have the tutorial done
+      getIt<DailyOptionsBloc>().add(DailyOptionsEventLoadData());
       if (getIt<PreferencesService>()
               .readData(SharedKeys.haveSeenKanListCoachMark) ==
           false) {
-        getIt<InitialBloc>().add(InitialEventInstallData(context));
+        getIt<ExampleDataBloc>().add(ExampleDataEventInstallData(context));
       }
     });
     super.initState();
@@ -166,54 +155,43 @@ class _KanPracticeState extends State<KanPractice> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => getIt<InitialBloc>()),
-        BlocProvider(create: (_) => getIt<ListBloc>()),
+        BlocProvider(create: (_) => getIt<ExampleDataBloc>()),
+        BlocProvider(create: (_) => getIt<ListsBloc>()),
         BlocProvider(create: (_) => getIt<FolderBloc>()),
-        BlocProvider(create: (_) => getIt<BackUpBloc>()),
-        BlocProvider(create: (_) => getIt<DictBloc>()),
+        BlocProvider(create: (_) => getIt<BackupBloc>()),
         BlocProvider(create: (_) => getIt<MarketBloc>()),
-        BlocProvider(create: (_) => getIt<SettingsBloc>()),
-        BlocProvider(create: (_) => getIt<ListDetailBloc>()),
         BlocProvider(create: (_) => getIt<StudyModeBloc>()),
-        BlocProvider(create: (_) => getIt<WordHistoryBloc>()),
         BlocProvider(create: (_) => getIt<AuthBloc>()..add(AuthIdle())),
-        BlocProvider(create: (_) => getIt<AddFolderBloc>()),
-        BlocProvider(create: (_) => getIt<AddToMarketBloc>()),
-        BlocProvider(create: (_) => getIt<AddWordBloc>()),
-        BlocProvider(create: (_) => getIt<WordDetailsBloc>()),
-        BlocProvider(create: (_) => getIt<LoadTestBloc>()),
-        BlocProvider(create: (_) => getIt<DictionaryDetailsBloc>()),
+        BlocProvider(create: (_) => getIt<GenericTestBloc>()),
         BlocProvider(create: (_) => getIt<FolderDetailsBloc>()),
-        BlocProvider(create: (_) => getIt<LoadFolderPracticeBloc>()),
-        BlocProvider(create: (_) => getIt<RateBloc>()),
-        BlocProvider(create: (_) => getIt<StatisticsBloc>()),
-        BlocProvider(create: (_) => getIt<TestHistoryBloc>()),
         BlocProvider(create: (_) => getIt<SpecificDataBloc>()),
-        BlocProvider(create: (_) => getIt<TestResultBloc>()),
-        BlocProvider(create: (_) => getIt<AddGrammarPointBloc>()),
-        BlocProvider(create: (_) => getIt<ListDetailWordsBloc>()),
-        BlocProvider(create: (_) => getIt<ListDetailGrammarPointsBloc>()),
-        BlocProvider(create: (_) => getIt<GrammarPointDetailsBloc>()),
+        BlocProvider(create: (_) => getIt<ListDetailsWordsBloc>()),
+        BlocProvider(create: (_) => getIt<ListDetailsGrammarPointsBloc>()),
         BlocProvider(create: (_) => getIt<GrammarModeBloc>()),
-        BlocProvider(create: (_) => getIt<LoadGrammarTestBloc>()),
+        BlocProvider(create: (_) => getIt<GrammarTestBloc>()),
         BlocProvider(create: (_) => getIt<ArchiveGrammarPointsBloc>()),
         BlocProvider(create: (_) => getIt<ArchiveWordsBloc>()),
+        BlocProvider(create: (_) => getIt<AddWordBloc>()),
+        BlocProvider(create: (_) => getIt<DailyOptionsBloc>()),
       ],
-      child: BlocBuilder<InitialBloc, InitialState>(
-        builder: (context, state) {
-          return MaterialApp(
-            title: 'KanPractice',
-            locale: context.locale,
-            supportedLocales: context.supportedLocales,
-            localizationsDelegates: context.localizationDelegates,
-            debugShowCheckedModeBanner: false,
-            theme: ThemeManager.instance.currentLightThemeData,
-            darkTheme: ThemeManager.instance.currentDarkThemeData,
-            themeMode: ThemeManager.instance.themeMode,
-            initialRoute: KanPracticePages.homePage,
-            onGenerateRoute: onGenerateRoute,
-          );
+      child: BlocListener<ExampleDataBloc, ExampleDataState>(
+        listener: (context, state) {
+          state.mapOrNull(loaded: (_) {
+            getIt<DailyOptionsBloc>().add(DailyOptionsEventLoadData());
+          });
         },
+        child: MaterialApp(
+          title: 'KanPractice',
+          locale: context.locale,
+          supportedLocales: context.supportedLocales,
+          localizationsDelegates: context.localizationDelegates,
+          debugShowCheckedModeBanner: false,
+          theme: ThemeManager.instance.currentLightThemeData,
+          darkTheme: ThemeManager.instance.currentDarkThemeData,
+          themeMode: ThemeManager.instance.themeMode,
+          initialRoute: KanPracticePages.homePage,
+          onGenerateRoute: onGenerateRoute,
+        ),
       ),
     );
   }

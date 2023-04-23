@@ -30,7 +30,6 @@ class _AddFolderPageState extends State<AddFolderPage> {
     _tc = TextEditingController();
     _fn = FocusNode();
     if (widget.folder != null) _tc.text = widget.folder!;
-    getIt<AddFolderBloc>().add(AddFolderEventIdle(widget.folder));
     super.initState();
   }
 
@@ -43,104 +42,106 @@ class _AddFolderPageState extends State<AddFolderPage> {
 
   @override
   Widget build(BuildContext context) {
-    return KPScaffold(
-      resizeToAvoidBottomInset: true,
-      appBarTitle: widget.folder != null
-          ? "add_folder_update_title".tr()
-          : "add_folder_title".tr(),
-      appBarActions: [
-        BlocBuilder<AddFolderBloc, AddFolderState>(
-          builder: (context, state) {
-            if (state is AddFolderStateLoading ||
-                state is AddFolderStateSuccess) {
-              return const SizedBox();
-            } else {
-              return IconButton(
-                onPressed: () {
-                  if (widget.folder != null) {
-                    getIt<AddFolderBloc>().add(AddFolderEventOnListAddition(
-                      widget.folder!,
-                      _selectedLists,
-                    ));
-                  } else {
-                    getIt<AddFolderBloc>()
-                        .add(AddFolderEventOnUpload(_tc.text, _selectedLists));
-                  }
-                },
-                icon: const Icon(Icons.check),
-              );
-            }
-          },
-        )
-      ],
-      child: BlocConsumer<AddFolderBloc, AddFolderState>(
-        listener: (context, state) {
-          if (state is AddFolderStateFailure) {
-            Utils.getSnackBar(context, state.message);
-          }
-          if (state is AddFolderStateSuccess) {
-            Navigator.of(context).pop();
-          }
-          if (state is AddFolderStateAvailableKanLists) {
-            setState(() {
-              _availableLists = state.lists;
-              _selectedLists.addAll(state.alreadyAdded);
-            });
-          }
-        },
-        builder: (context, state) {
-          if (state is AddFolderStateInitial ||
-              state is AddFolderStateFailure ||
-              state is AddFolderStateAvailableKanLists) {
-            return Column(
-              children: [
-                KPTextForm(
-                  header: "add_folder_name_label".tr(),
-                  hint: "add_folder_name_hint".tr(),
-                  controller: _tc,
-                  focusNode: _fn,
-                  maxLines: 1,
-                  maxLength: 32,
-                  action: TextInputAction.done,
-                  enabled: widget.folder == null,
-                  onEditingComplete: () => _fn.unfocus(),
+    return BlocProvider(
+      create: (_) =>
+          getIt<AddFolderBloc>()..add(AddFolderEventIdle(widget.folder)),
+      child: KPScaffold(
+        resizeToAvoidBottomInset: true,
+        appBarTitle: widget.folder != null
+            ? "add_folder_update_title".tr()
+            : "add_folder_title".tr(),
+        appBarActions: [
+          BlocBuilder<AddFolderBloc, AddFolderState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                loading: () => const SizedBox(),
+                loaded: () => const SizedBox(),
+                orElse: () => IconButton(
+                  onPressed: () {
+                    if (widget.folder != null) {
+                      context
+                          .read<AddFolderBloc>()
+                          .add(AddFolderEventOnListAddition(
+                            widget.folder!,
+                            _selectedLists,
+                          ));
+                    } else {
+                      context.read<AddFolderBloc>().add(
+                          AddFolderEventOnUpload(_tc.text, _selectedLists));
+                    }
+                  },
+                  icon: const Icon(Icons.check),
                 ),
-                (state is AddFolderStateAvailableKanLists &&
-                            state.lists.isNotEmpty) ||
-                        state is AddFolderStateInitial ||
-                        state is AddFolderStateFailure
-                    ? Expanded(
-                        child: Column(
-                          children: [
-                            _headline("add_folder_lists_selection".tr()),
-                            Expanded(
-                              child: KPKanListGrid(
-                                items: _availableLists,
-                                isSelected: (name) =>
-                                    _selectedLists[name] == true,
-                                onTap: (name) {
-                                  setState(() {
-                                    if (_selectedLists[name] == true) {
-                                      _selectedLists[name] = false;
-                                    } else {
-                                      _selectedLists[name] = true;
-                                    }
-                                  });
-                                },
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    : _headline("add_folder_lists_selection_empty".tr())
-              ],
+              );
+            },
+          )
+        ],
+        child: BlocConsumer<AddFolderBloc, AddFolderState>(
+          listener: (context, state) {
+            state.mapOrNull(
+              error: (error) {
+                Utils.getSnackBar(context, error.message);
+              },
+              loaded: (_) {
+                Navigator.of(context).pop();
+              },
+              loadedLists: (loaded) {
+                setState(() {
+                  _availableLists = loaded.lists;
+                  _selectedLists.addAll(loaded.alreadyAdded);
+                });
+              },
             );
-          } else if (state is AddFolderStateLoading) {
-            return const KPProgressIndicator();
-          } else {
-            return const SizedBox();
-          }
-        },
+          },
+          builder: (context, state) {
+            return state.maybeWhen(
+              loading: () => const KPProgressIndicator(),
+              loaded: () => const SizedBox(),
+              orElse: () => Column(
+                children: [
+                  KPTextForm(
+                    header: "add_folder_name_label".tr(),
+                    hint: "add_folder_name_hint".tr(),
+                    controller: _tc,
+                    focusNode: _fn,
+                    maxLines: 1,
+                    maxLength: 32,
+                    action: TextInputAction.done,
+                    enabled: widget.folder == null,
+                    onEditingComplete: () => _fn.unfocus(),
+                  ),
+                  (state is AddFolderLoadedLists && state.lists.isNotEmpty) ||
+                          state is AddFolderInitial ||
+                          state is AddFolderError
+                      ? Expanded(
+                          child: Column(
+                            children: [
+                              _headline("add_folder_lists_selection".tr()),
+                              Expanded(
+                                child: KPKanListGrid(
+                                  items: _availableLists,
+                                  isSelected: (name) =>
+                                      _selectedLists[name] == true,
+                                  onTap: (name) {
+                                    setState(() {
+                                      if (_selectedLists[name] == true) {
+                                        _selectedLists[name] = false;
+                                      } else {
+                                        _selectedLists[name] = true;
+                                      }
+                                    });
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      : _headline("add_folder_lists_selection_empty".tr())
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

@@ -21,14 +21,11 @@ class _SettingsTogglePageState extends State<SettingsTogglePage> {
 
   @override
   void initState() {
-    _toggleAffect =
-        getIt<PreferencesService>().readData(SharedKeys.affectOnPractice);
-    _aggStats = getIt<PreferencesService>()
-        .readData(SharedKeys.kanListListVisualization);
-    _enableRep = getIt<PreferencesService>()
-        .readData(SharedKeys.enableRepetitionOnTests);
-    _showBadgeWords =
-        getIt<PreferencesService>().readData(SharedKeys.showBadgeWords);
+    final service = getIt<PreferencesService>();
+    _toggleAffect = service.readData(SharedKeys.affectOnPractice);
+    _aggStats = service.readData(SharedKeys.kanListListVisualization);
+    _enableRep = service.readData(SharedKeys.enableRepetitionOnTests);
+    _showBadgeWords = service.readData(SharedKeys.showBadgeWords);
     super.initState();
   }
 

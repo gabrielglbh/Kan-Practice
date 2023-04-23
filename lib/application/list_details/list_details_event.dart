@@ -1,23 +1,23 @@
 part of 'list_details_bloc.dart';
 
-abstract class ListDetailEvent extends Equatable {
-  const ListDetailEvent();
+abstract class ListDetailsEvent extends Equatable {
+  const ListDetailsEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class ListDetailEventIdle extends ListDetailEvent {
+class ListDetailsEventIdle extends ListDetailsEvent {
   final String name;
 
-  const ListDetailEventIdle(this.name);
+  const ListDetailsEventIdle(this.name);
 }
 
-class ListDetailUpdateName extends ListDetailEvent {
+class ListDetailsUpdateName extends ListDetailsEvent {
   final String name;
   final String og;
 
-  const ListDetailUpdateName(this.name, this.og);
+  const ListDetailsUpdateName(this.name, this.og);
 
   @override
   List<Object> get props => [name, og];

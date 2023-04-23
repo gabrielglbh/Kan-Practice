@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/add_word/add_word_bloc.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
-import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/word_categories.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -62,8 +61,8 @@ class _AddWordPageState extends State<AddWordPage> {
     super.dispose();
   }
 
-  Future<void> _createWord({bool exit = true}) async {
-    getIt<AddWordBloc>().add(AddWordEventCreate(
+  Future<void> _createWord(BuildContext bloc, {bool exit = true}) async {
+    bloc.read<AddWordBloc>().add(AddWordEventCreate(
         exitMode: exit,
         word: Word(
           word: _wordController?.text ?? "",
@@ -76,17 +75,18 @@ class _AddWordPageState extends State<AddWordPage> {
         )));
   }
 
-  Future<void> _updateWord() async {
+  Future<void> _updateWord(BuildContext bloc) async {
     Word? k = widget.args.word;
     if (k != null) {
-      getIt<AddWordBloc>()
+      bloc
+          .read<AddWordBloc>()
           .add(AddWordEventUpdate(widget.args.listName, k.word, parameters: {
-        WordTableFields.wordField: _wordController?.text ?? "",
-        WordTableFields.pronunciationField:
-            _pronunciationController?.text ?? "",
-        WordTableFields.meaningField: _meaningController?.text ?? "",
-        WordTableFields.categoryField: _currentCategory.index
-      }));
+            WordTableFields.wordField: _wordController?.text ?? "",
+            WordTableFields.pronunciationField:
+                _pronunciationController?.text ?? "",
+            WordTableFields.meaningField: _meaningController?.text ?? "",
+            WordTableFields.categoryField: _currentCategory.index
+          }));
     }
   }
 
@@ -143,7 +143,7 @@ class _AddWordPageState extends State<AddWordPage> {
             child: IconButton(
               icon: const Icon(Icons.add),
               onPressed: () {
-                _validateWord(() => _createWord(exit: false));
+                _validateWord(() => _createWord(context, exit: false));
               },
             ),
           ),
@@ -154,9 +154,9 @@ class _AddWordPageState extends State<AddWordPage> {
                   onPressed: () {
                     _validateWord(() {
                       if (widget.args.word != null) {
-                        _updateWord();
+                        _updateWord(context);
                       } else {
-                        _createWord();
+                        _createWord(context);
                       }
                     });
                   },
@@ -173,73 +173,71 @@ class _AddWordPageState extends State<AddWordPage> {
   BlocListener _builder() {
     return BlocListener<AddWordBloc, AddWordState>(
       listener: (context, state) {
-        if (state is AddWordStateDoneCreating) {
-          /// If exit is true, only one word should be created and exit
-          if (state.exitMode) {
+        state.mapOrNull(
+          creationDone: (cd) {
+            /// If exit is true, only one word should be created and exit
+            if (cd.exitMode) {
+              Navigator.of(context).pop(0);
+            } else {
+              _wordController?.clear();
+              _pronunciationController?.clear();
+              _meaningController?.clear();
+              _wordFocus?.requestFocus();
+            }
+          },
+          updateDone: (_) {
             Navigator.of(context).pop(0);
-          } else {
-            _wordController?.clear();
-            _pronunciationController?.clear();
-            _meaningController?.clear();
-            _wordFocus?.requestFocus();
-          }
-        } else if (state is AddWordStateDoneUpdating) {
-          Navigator.of(context).pop(0);
-        } else if (state is AddWordStateFailure) {
-          Utils.getSnackBar(context, state.message);
-        }
+          },
+          error: (error) {
+            Utils.getSnackBar(context, error.message);
+          },
+        );
       },
-      child: _body(),
-    );
-  }
-
-  Widget _body() {
-    return Column(
-      children: [
-        KPTextForm(
-          controller: _wordController,
-          focusNode: _wordFocus,
-          header: "add_word_textForm_word".tr(),
-          additionalWidget: ElevatedButton(
-            onPressed: () {
-              _pronunciationController?.text = _wordController?.text ?? "";
-            },
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width / 4,
-              child: FittedBox(
-                fit: BoxFit.fitWidth,
-                child: Text("add_word_copy".tr(),
-                    style: Theme.of(context).textTheme.labelLarge),
+      child: Column(
+        children: [
+          KPTextForm(
+            controller: _wordController,
+            focusNode: _wordFocus,
+            header: "add_word_textForm_word".tr(),
+            additionalWidget: ElevatedButton(
+              onPressed: () {
+                _pronunciationController?.text = _wordController?.text ?? "";
+              },
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width / 4,
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text("add_word_copy".tr(),
+                      style: Theme.of(context).textTheme.labelLarge),
+                ),
               ),
             ),
+            centerText: TextAlign.center,
+            style: Theme.of(context)
+                .textTheme
+                .displaySmall
+                ?.copyWith(fontWeight: FontWeight.bold),
+            autofocus: widget.args.word == null,
+            hint: "add_word_textForm_word_ext".tr(),
+            onEditingComplete: () => _pronunciationFocus?.requestFocus(),
           ),
-          centerText: TextAlign.center,
-          style: Theme.of(context)
-              .textTheme
-              .displaySmall
-              ?.copyWith(fontWeight: FontWeight.bold),
-          autofocus: widget.args.word == null,
-          hint: "add_word_textForm_word_ext".tr(),
-          onEditingComplete: () => _pronunciationFocus?.requestFocus(),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: KPMargins.margin16),
-          child: KPTextForm(
-            controller: _pronunciationController,
-            focusNode: _pronunciationFocus,
-            header: "add_word_textForm_reading".tr(),
-            hint: "add_word_textForm_reading_ext".tr(),
-            onEditingComplete: () => _meaningFocus?.requestFocus(),
+          Padding(
+            padding: const EdgeInsets.only(top: KPMargins.margin16),
+            child: KPTextForm(
+              controller: _pronunciationController,
+              focusNode: _pronunciationFocus,
+              header: "add_word_textForm_reading".tr(),
+              hint: "add_word_textForm_reading_ext".tr(),
+              onEditingComplete: () => _meaningFocus?.requestFocus(),
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: KPMargins.margin16),
-          child: _categorySelection(),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: KPMargins.margin16),
-          child: BlocBuilder<AddWordBloc, AddWordState>(
-            builder: (context, state) => KPTextForm(
+          Padding(
+            padding: const EdgeInsets.only(top: KPMargins.margin16),
+            child: _categorySelection(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: KPMargins.margin16),
+            child: KPTextForm(
               controller: _meaningController,
               focusNode: _meaningFocus,
               header: "add_word_textForm_meaning".tr(),
@@ -253,16 +251,16 @@ class _AddWordPageState extends State<AddWordPage> {
                 /// more words
                 _validateWord(() {
                   if (widget.args.word == null) {
-                    _createWord(exit: false);
+                    _createWord(context, exit: false);
                   } else {
-                    _updateWord();
+                    _updateWord(context);
                   }
                 });
               },
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

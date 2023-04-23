@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/folder_details/folder_details_bloc.dart';
-import 'package:kanpractice/application/list/lists_bloc.dart';
+import 'package:kanpractice/application/lists/lists_bloc.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
-import 'package:kanpractice/presentation/core/widgets/kp_grammar_word_chip.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_grammar_switch.dart';
 import 'package:kanpractice/presentation/core/widgets/kanlists/widgets/kanlist_tile.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
-import 'package:kanpractice/presentation/core/widgets/kp_switch.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -84,13 +83,13 @@ class _KPKanlistsState extends State<KPKanlists>
 
   _addLoadingEvent({bool reset = false}) {
     if (widget.folder == null) {
-      return getIt<ListBloc>()
-        ..add(ListEventLoading(
+      return context.read<ListsBloc>()
+        ..add(ListsEventLoading(
             filter: _currentAppliedFilter,
             order: _currentAppliedOrder,
             reset: reset));
     }
-    return getIt<FolderDetailsBloc>()
+    return context.read<FolderDetailsBloc>()
       ..add(FolderDetailsEventLoading(
           folder: widget.folder!,
           filter: _currentAppliedFilter,
@@ -135,11 +134,6 @@ class _KPKanlistsState extends State<KPKanlists>
     }
   }
 
-  _toggleGraphs(bool value) {
-    getIt<PreferencesService>().saveData(SharedKeys.showGrammarGraphs, value);
-    setState(() => _showGrammarGraphs = value);
-  }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -152,10 +146,10 @@ class _KPKanlistsState extends State<KPKanlists>
             children: [
               _lists(),
               if (_showGrammarSwitchOnStack)
-                KPGrammarWordChip(
-                  controller: _showGrammarGraphs,
-                  onPressed: () {
-                    setState(() => _showGrammarGraphs = !_showGrammarGraphs);
+                KPGrammarSwitch(
+                  isActionChip: true,
+                  onChanged: (value) {
+                    setState(() => _showGrammarGraphs = value);
                   },
                 ),
             ],
@@ -194,70 +188,46 @@ class _KPKanlistsState extends State<KPKanlists>
             }));
   }
 
-  ListTile _grammarSwitch() {
-    return ListTile(
-      title: Text(
-        'grammar_change_graphs'.tr(),
-        style: Theme.of(context)
-            .textTheme
-            .bodyMedium
-            ?.copyWith(color: KPColors.getAccent(context)),
-      ),
-      trailing: KPSwitch(
-        onChanged: _toggleGraphs,
-        value: _showGrammarGraphs,
-      ),
-      visualDensity: const VisualDensity(vertical: -4),
-      onTap: () {
-        _toggleGraphs(!_showGrammarGraphs);
-      },
-    );
-  }
-
   BlocBuilder _lists() {
     if (widget.folder == null) {
-      return BlocBuilder<ListBloc, ListState>(
+      return BlocBuilder<ListsBloc, ListsState>(
         builder: (context, state) {
-          if (state is ListStateFailure) {
-            return KPEmptyList(
-                showTryButton: true,
-                onRefresh: () => _addLoadingEvent(reset: true),
-                message: "word_lists_load_failed".tr());
-          } else if (state is ListStateLoading || state is ListStateSearching) {
-            return const KPProgressIndicator();
-          } else if (state is ListStateLoaded) {
-            return state.lists.isEmpty
+          return state.maybeWhen(
+            loading: () => const KPProgressIndicator(),
+            loaded: (lists) => lists.isEmpty
                 ? KPEmptyList(
                     onRefresh: () => _addLoadingEvent(reset: true),
                     showTryButton: true,
-                    message: "word_lists_empty".tr())
-                : _content(state.lists);
-          } else {
-            return Container();
-          }
+                    message: "word_lists_empty".tr(),
+                  )
+                : _content(lists),
+            orElse: () => KPEmptyList(
+              showTryButton: true,
+              onRefresh: () => _addLoadingEvent(reset: true),
+              message: "word_lists_load_failed".tr(),
+            ),
+          );
         },
       );
     }
     return BlocBuilder<FolderDetailsBloc, FolderDetailsState>(
       builder: (context, state) {
-        if (state is FolderDetailsStateFailure) {
-          return KPEmptyList(
-              showTryButton: true,
-              onRefresh: () => _addLoadingEvent(reset: true),
-              message: "word_lists_load_failed".tr());
-        } else if (state is FolderDetailsEventLoading ||
-            state is FolderDetailsStateSearching) {
-          return const KPProgressIndicator();
-        } else if (state is FolderDetailsStateLoaded) {
-          return state.lists.isEmpty
+        return state.maybeWhen(
+          loading: () => const KPProgressIndicator(),
+          loaded: (lists) => lists.isEmpty
               ? KPEmptyList(
                   onRefresh: () => _addLoadingEvent(reset: true),
                   showTryButton: true,
-                  message: "word_lists_empty".tr())
-              : _content(state.lists);
-        } else {
-          return Container();
-        }
+                  message: "word_lists_empty".tr(),
+                )
+              : _content(lists),
+          error: () => KPEmptyList(
+            showTryButton: true,
+            onRefresh: () => _addLoadingEvent(reset: true),
+            message: "word_lists_load_failed".tr(),
+          ),
+          orElse: () => const SizedBox(),
+        );
       },
     );
   }
@@ -271,7 +241,13 @@ class _KPKanlistsState extends State<KPKanlists>
         controller: _scrollController,
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         slivers: [
-          SliverToBoxAdapter(child: _grammarSwitch()),
+          SliverToBoxAdapter(
+            child: KPGrammarSwitch(
+              onChanged: (value) {
+                setState(() => _showGrammarGraphs = value);
+              },
+            ),
+          ),
           SliverList(
             delegate: SliverChildBuilderDelegate((_, k) {
               return Column(
@@ -283,20 +259,20 @@ class _KPKanlistsState extends State<KPKanlists>
                     showGrammarGraphs: _showGrammarGraphs,
                     onRemoval: () {
                       if (widget.folder == null) {
-                        getIt<ListBloc>().add(ListEventDelete(
-                          lists[k],
-                          filter: _currentAppliedFilter,
-                          order: _currentAppliedOrder,
-                        ));
+                        context.read<ListsBloc>().add(ListsEventDelete(
+                              lists[k],
+                              filter: _currentAppliedFilter,
+                              order: _currentAppliedOrder,
+                            ));
                       } else {
-                        getIt<FolderDetailsBloc>().add(
-                          FolderDetailsEventDelete(
-                            widget.folder!,
-                            lists[k],
-                            filter: _currentAppliedFilter,
-                            order: _currentAppliedOrder,
-                          ),
-                        );
+                        context.read<FolderDetailsBloc>().add(
+                              FolderDetailsEventDelete(
+                                widget.folder!,
+                                lists[k],
+                                filter: _currentAppliedFilter,
+                                order: _currentAppliedOrder,
+                              ),
+                            );
                       }
                       _resetScroll();
                     },

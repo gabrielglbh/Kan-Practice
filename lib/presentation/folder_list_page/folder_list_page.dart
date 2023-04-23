@@ -51,6 +51,9 @@ class _FolderListPageState extends State<FolderListPage>
 
     _currentAppliedOrder =
         getIt<PreferencesService>().readData(SharedKeys.orderOnFolder) ?? true;
+
+    context.read<FolderBloc>().add(FolderEventLoading(
+        filter: _currentAppliedFilter, order: _currentAppliedOrder));
     super.initState();
   }
 
@@ -70,7 +73,7 @@ class _FolderListPageState extends State<FolderListPage>
   }
 
   _addLoadingEvent({bool reset = false}) {
-    return getIt<FolderBloc>()
+    return context.read<FolderBloc>()
       ..add(FolderEventLoading(
           filter: _currentAppliedFilter,
           order: _currentAppliedOrder,
@@ -152,16 +155,13 @@ class _FolderListPageState extends State<FolderListPage>
   BlocBuilder _lists() {
     return BlocBuilder<FolderBloc, FolderState>(
       builder: (bloc, state) {
-        if (state is FolderStateFailure) {
-          return KPEmptyList(
-              showTryButton: true,
-              onRefresh: () => _addLoadingEvent(reset: true),
-              message: "folder_list_load_failed".tr());
-        } else if (state is FolderStateLoading ||
-            state is FolderStateSearching) {
-          return const Expanded(child: KPProgressIndicator());
-        } else if (state is FolderStateLoaded) {
-          return state.lists.isEmpty
+        return state.maybeWhen(
+          error: () => KPEmptyList(
+            showTryButton: true,
+            onRefresh: () => _addLoadingEvent(reset: true),
+            message: "folder_list_load_failed".tr(),
+          ),
+          loaded: (folders) => folders.isEmpty
               ? Expanded(
                   child: KPEmptyList(
                       onRefresh: () => _addLoadingEvent(reset: true),
@@ -175,7 +175,7 @@ class _FolderListPageState extends State<FolderListPage>
                         key: const PageStorageKey<String>(
                             'folderListsController'),
                         controller: _scrollController,
-                        itemCount: state.lists.length,
+                        itemCount: folders.length,
                         keyboardDismissBehavior:
                             ScrollViewKeyboardDismissBehavior.onDrag,
                         padding:
@@ -183,16 +183,16 @@ class _FolderListPageState extends State<FolderListPage>
                         separatorBuilder: (_, __) =>
                             const Divider(height: KPMargins.margin4),
                         itemBuilder: (context, k) {
-                          final folder = state.lists[k];
+                          final folder = folders[k];
                           final date = Utils.parseDateMilliseconds(
                               context, folder.lastUpdated);
                           return _tile(bloc, folder, date);
                         }),
                   ),
-                );
-        } else {
-          return Container();
-        }
+                ),
+          loading: () => const Expanded(child: KPProgressIndicator()),
+          orElse: () => const SizedBox(),
+        );
       },
     );
   }
@@ -208,7 +208,7 @@ class _FolderListPageState extends State<FolderListPage>
       },
       onLongPress: () {
         showDialog(
-          context: context,
+          context: bloc,
           builder: (context) => KPDialog(
             title:
                 Text("kan_list_tile_createDialogForDeletingFolder_title".tr()),
@@ -217,11 +217,11 @@ class _FolderListPageState extends State<FolderListPage>
             positiveButtonText:
                 "kan_list_tile_createDialogForDeletingFolder_positive".tr(),
             onPositive: () {
-              getIt<FolderBloc>().add(FolderEventDelete(
-                folder,
-                filter: _currentAppliedFilter,
-                order: _currentAppliedOrder,
-              ));
+              bloc.read<FolderBloc>().add(FolderEventDelete(
+                    folder,
+                    filter: _currentAppliedFilter,
+                    order: _currentAppliedOrder,
+                  ));
               _resetScroll();
             },
           ),

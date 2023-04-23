@@ -7,28 +7,18 @@ abstract class GrammarModeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GrammarModeEventUpdateDateShown extends GrammarModeEvent {
-  final String listName;
-  final String name;
-  final GrammarModes mode;
-
-  const GrammarModeEventUpdateDateShown({
-    required this.listName,
-    required this.name,
-    required this.mode,
-  });
-
-  @override
-  List<Object> get props => [listName, name, mode];
-}
-
 class GrammarModeEventCalculateScore extends GrammarModeEvent {
   final GrammarModes mode;
   final double score;
   final GrammarPoint grammarPoint;
+  final bool isTest;
 
   const GrammarModeEventCalculateScore(
-      this.mode, this.grammarPoint, this.score);
+    this.mode,
+    this.grammarPoint,
+    this.score, {
+    this.isTest = false,
+  });
 
   @override
   List<Object> get props => [mode, score, grammarPoint];
@@ -78,3 +68,5 @@ class GrammarModeEventUpdateListScore extends GrammarModeEvent {
   @override
   List<Object> get props => [score, listName, mode];
 }
+
+class GrammarModeEventResetTracking extends GrammarModeEvent {}

@@ -49,6 +49,11 @@ class KPTextForm extends StatelessWidget {
 
   /// Whehter the input is enabled or not
   final bool enabled;
+
+  /// Whehter the text form field is horizontal or not
+  final bool isHorizontalForm;
+
+  final TextStyle? headerTextStyle;
   const KPTextForm({
     Key? key,
     required this.header,
@@ -67,10 +72,61 @@ class KPTextForm extends StatelessWidget {
     this.maxLines,
     this.style,
     this.enabled = true,
+    this.isHorizontalForm = false,
+    this.headerTextStyle,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final headerWidget = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+            child: Text(header,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                style:
+                    headerTextStyle ?? Theme.of(context).textTheme.titleLarge)),
+        additionalWidget ?? Container()
+      ],
+    );
+    if (isHorizontalForm) {
+      return SizedBox(
+        height: KPMargins.margin64,
+        child: Row(
+          children: [
+            Flexible(
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.only(right: KPMargins.margin16),
+                child: headerWidget,
+              ),
+            ),
+            Flexible(
+              child: TextField(
+                controller: controller,
+                focusNode: focusNode,
+                textAlign: centerText,
+                style: style ?? Theme.of(context).textTheme.bodyLarge,
+                textInputAction: action,
+                keyboardType: inputType,
+                maxLength: maxLength,
+                maxLines: obscure ? 1 : maxLines,
+                textCapitalization: TextCapitalization.sentences,
+                autofocus: autofocus,
+                obscureText: obscure,
+                decoration: InputDecoration(hintText: hint),
+                enabled: enabled,
+                onEditingComplete: () => onEditingComplete(),
+                onSubmitted: (word) {
+                  if (onSubmitted != null) onSubmitted!(word);
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -79,16 +135,7 @@ class KPTextForm extends StatelessWidget {
               bottom: KPMargins.margin16,
               right: KPMargins.margin8,
               left: KPMargins.margin8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                  child: Text(header,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.titleLarge)),
-              additionalWidget ?? Container()
-            ],
-          ),
+          child: headerWidget,
         ),
         TextField(
           controller: controller,

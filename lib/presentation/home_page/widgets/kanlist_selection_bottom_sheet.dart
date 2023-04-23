@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/application/list/lists_bloc.dart';
+import 'package:kanpractice/application/lists/lists_bloc.dart';
+import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
@@ -43,7 +43,7 @@ class _KanListSelectionBottomSheetState
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        getIt<ListBloc>().add(const ListForTestEventLoading());
+        context.read<ListsBloc>().add(const ListForTestEventLoading());
         return Wrap(children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -76,26 +76,24 @@ class _KanListSelectionBottomSheetState
               ),
               Visibility(
                 visible: !_selectionMode,
-                child: BlocBuilder<ListBloc, ListState>(
+                child: BlocBuilder<ListsBloc, ListsState>(
                   builder: (context, state) {
-                    if (state is ListStateFailure) {
-                      return KPEmptyList(
-                          showTryButton: true,
-                          onRefresh: () => getIt<ListBloc>()
-                            ..add(const ListForTestEventLoading()),
-                          message: "study_bottom_sheet_load_failed".tr());
-                    } else if (state is ListStateLoading) {
-                      return const KPProgressIndicator();
-                    } else if (state is ListStateLoaded) {
-                      return Container(
+                    return state.maybeWhen(
+                      error: () => KPEmptyList(
+                        showTryButton: true,
+                        onRefresh: () => context.read<ListsBloc>()
+                          ..add(const ListForTestEventLoading()),
+                        message: "study_bottom_sheet_load_failed".tr(),
+                      ),
+                      loading: () => const KPProgressIndicator(),
+                      loaded: (lists) => Container(
                           constraints: BoxConstraints(
                               maxHeight:
                                   MediaQuery.of(context).size.height / 2.5),
                           margin: const EdgeInsets.all(KPMargins.margin8),
-                          child: _listSelection(state));
-                    } else {
-                      return Container();
-                    }
+                          child: _listSelection(lists)),
+                      orElse: () => const SizedBox(),
+                    );
                   },
                 ),
               )
@@ -106,12 +104,12 @@ class _KanListSelectionBottomSheetState
     );
   }
 
-  Column _listSelection(ListStateLoaded state) {
+  Column _listSelection(List<WordList> lists) {
     return Column(
       children: [
         Expanded(
           child: KPKanListGrid(
-            items: state.lists,
+            items: lists,
             isSelected: (name) => _selectedLists.contains(name),
             onTap: (name) {
               setState(() {

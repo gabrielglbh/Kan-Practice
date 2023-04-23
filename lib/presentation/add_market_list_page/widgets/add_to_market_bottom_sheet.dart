@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/application/list/lists_bloc.dart';
-import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/application/lists/lists_bloc.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
@@ -35,7 +34,7 @@ class _AddToMarketBottomSheetState extends State<AddToMarketBottomSheet> {
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        getIt<ListBloc>().add(const ListForTestEventLoading());
+        context.read<ListsBloc>().add(const ListForTestEventLoading());
         return Wrap(children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -49,36 +48,36 @@ class _AddToMarketBottomSheetState extends State<AddToMarketBottomSheet> {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleLarge),
               ),
-              BlocBuilder<ListBloc, ListState>(
+              BlocBuilder<ListsBloc, ListsState>(
                 builder: (context, state) {
-                  if (state is ListStateFailure) {
-                    return KPEmptyList(
+                  return state.maybeWhen(
+                    error: () {
+                      return KPEmptyList(
                         showTryButton: true,
-                        onRefresh: () => getIt<ListBloc>()
+                        onRefresh: () => context.read<ListsBloc>()
                           ..add(const ListForTestEventLoading()),
-                        message: "word_lists_load_failed".tr());
-                  } else if (state is ListStateLoading) {
-                    return const KPProgressIndicator();
-                  } else if (state is ListStateLoaded) {
-                    return Container(
+                        message: "word_lists_load_failed".tr(),
+                      );
+                    },
+                    loading: () => const KPProgressIndicator(),
+                    loaded: (lists) => Container(
                         constraints: BoxConstraints(
                             maxHeight: MediaQuery.of(context).size.height / 3),
                         margin: const EdgeInsets.all(KPMargins.margin8),
                         child: ListView.separated(
                           separatorBuilder: (context, index) =>
                               const Divider(height: KPMargins.margin4),
-                          itemCount: state.lists.length,
+                          itemCount: lists.length,
                           itemBuilder: (context, index) {
-                            String listName = state.lists[index].name;
+                            String listName = lists[index].name;
                             return ListTile(
                               onTap: () => Navigator.of(context).pop(listName),
                               title: Text(listName),
                             );
                           },
-                        ));
-                  } else {
-                    return Container();
-                  }
+                        )),
+                    orElse: () => const SizedBox(),
+                  );
                 },
               )
             ],

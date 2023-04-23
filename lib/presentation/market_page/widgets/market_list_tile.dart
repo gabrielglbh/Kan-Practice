@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
 import 'package:kanpractice/domain/market/market.dart';
-import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
@@ -93,7 +92,7 @@ class MarketListTile extends StatelessWidget {
   }
 
   Widget _subtitle(BuildContext context) {
-    getIt<AuthBloc>().add(AuthIdle());
+    context.read<AuthBloc>().add(AuthIdle());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -127,17 +126,19 @@ class MarketListTile extends StatelessWidget {
           children: [
             BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
-                if (state is AuthStateSuccessful) {
-                  return Expanded(
-                    child: Transform.translate(
-                        offset: const Offset(-KPMargins.margin4, 0),
-                        child: MarketListRating(
-                          listId: list.name,
-                          initialRating: list.ratingMap[state.user.uid],
-                        )),
-                  );
-                }
-                return const Expanded(child: SizedBox());
+                return state.maybeWhen(
+                  loaded: (user) {
+                    return Expanded(
+                      child: Transform.translate(
+                          offset: const Offset(-KPMargins.margin4, 0),
+                          child: MarketListRating(
+                            listId: list.name,
+                            initialRating: list.ratingMap[user.uid],
+                          )),
+                    );
+                  },
+                  orElse: () => const SizedBox(),
+                );
               },
             ),
             IconButton(

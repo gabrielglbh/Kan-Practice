@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/presentation/core/types/folder_filters.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
@@ -10,6 +11,8 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 part 'folder_event.dart';
 part 'folder_state.dart';
 
+part 'folder_bloc.freezed.dart';
+
 /// This bloc is used in Folders.dart, jisho.dart and add_marketlist.dart.
 @lazySingleton
 class FolderBloc extends Bloc<FolderEvent, FolderState> {
@@ -19,7 +22,7 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
   FolderBloc(
     this._folderRepository,
     this._relationFolderListRepository,
-  ) : super(FolderStateLoading()) {
+  ) : super(const FolderState.loading()) {
     /// Maintain the list for pagination purposes
     List<Folder> list = [];
 
@@ -37,7 +40,7 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
       try {
         loadingTimesForSearch = 0;
         if (event.reset) {
-          emit(FolderStateLoading());
+          emit(const FolderState.loading());
           list.clear();
           loadingTimes = 0;
         }
@@ -54,9 +57,9 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
         fullList.addAll(pagination);
         list.addAll(pagination);
         loadingTimes += 1;
-        emit(FolderStateLoaded(lists: fullList));
+        emit(FolderState.loaded(fullList));
       } on Exception {
-        emit(FolderStateFailure());
+        emit(const FolderState.error());
       }
     });
 
@@ -64,7 +67,7 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
       try {
         loadingTimes = 0;
         if (event.reset) {
-          emit(FolderStateLoading());
+          emit(const FolderState.loading());
           searchList.clear();
           loadingTimesForSearch = 0;
         }
@@ -79,19 +82,19 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
         fullList.addAll(pagination);
         searchList.addAll(pagination);
         loadingTimesForSearch += 1;
-        emit(FolderStateLoaded(lists: fullList));
+        emit(FolderState.loaded(fullList));
       } on Exception {
-        emit(FolderStateFailure());
+        emit(const FolderState.error());
       }
     });
 
     on<FolderForTestEventLoading>((event, emit) async {
       try {
-        emit(FolderStateLoading());
+        emit(const FolderState.loading());
         final List<Folder> lists = await _folderRepository.getAllFolders();
-        emit(FolderStateLoaded(lists: lists));
+        emit(FolderState.loaded(lists));
       } on Exception {
-        emit(FolderStateFailure());
+        emit(const FolderState.error());
       }
     });
 
@@ -100,18 +103,18 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
         final code = await _relationFolderListRepository.moveListToFolder(
             event.folder, event.name);
         if (code != 0) throw Exception();
-        emit(FolderStateAddedList());
+        emit(const FolderState.listAdded());
       } catch (e) {
-        emit(FolderStateFailure());
+        emit(const FolderState.error());
       }
     });
 
     on<FolderEventDelete>((event, emit) async {
-      if (state is FolderStateLoaded) {
+      if (state is FolderLoaded) {
         String name = event.list.folder;
         final code = await _folderRepository.removeFolder(name);
         if (code == 0) {
-          emit(FolderStateLoading());
+          emit(const FolderState.loading());
           List<Folder> newList = await _getNewAllListsAndUpdateLazyLoadingState(
               event.filter, event.order,
               limit: limit, l: list);
@@ -119,17 +122,17 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
           /// Reset offsets
           loadingTimes = 0;
           loadingTimesForSearch = 0;
-          emit(FolderStateLoaded(lists: newList));
+          emit(FolderState.loaded(newList));
         }
       }
     });
 
     on<FolderEventCreate>((event, emit) async {
-      if (state is FolderStateLoaded) {
+      if (state is FolderLoaded) {
         String? name = event.name;
         final code = await _folderRepository.createFolder(name);
         if (code == 0) {
-          emit(FolderStateLoading());
+          emit(const FolderState.loading());
           List<Folder> newList = [];
           if (event.useLazyLoading) {
             newList = await _getNewAllListsAndUpdateLazyLoadingState(
@@ -142,7 +145,7 @@ class FolderBloc extends Bloc<FolderEvent, FolderState> {
           /// Reset offsets
           loadingTimes = 0;
           loadingTimesForSearch = 0;
-          emit(FolderStateLoaded(lists: newList));
+          emit(FolderState.loaded(newList));
         }
       }
     });

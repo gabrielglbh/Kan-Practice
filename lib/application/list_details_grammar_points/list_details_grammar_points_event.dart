@@ -1,41 +1,43 @@
 part of 'list_details_grammar_points_bloc.dart';
 
-abstract class ListDetailGrammarPointsEvent extends Equatable {
-  const ListDetailGrammarPointsEvent();
+abstract class ListDetailsGrammarPointsEvent extends Equatable {
+  const ListDetailsGrammarPointsEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class ListDetailGrammarPointsEventLoading extends ListDetailGrammarPointsEvent {
+class ListDetailsGrammarPointsEventLoading
+    extends ListDetailsGrammarPointsEvent {
   final String list;
   final bool reset;
 
-  const ListDetailGrammarPointsEventLoading(this.list, {this.reset = false});
+  const ListDetailsGrammarPointsEventLoading(this.list, {this.reset = false});
 
   @override
   List<Object> get props => [list, reset];
 }
 
-class ListDetailGrammarPointsEventSearching
-    extends ListDetailGrammarPointsEvent {
+class ListDetailsGrammarPointsEventSearching
+    extends ListDetailsGrammarPointsEvent {
   final String query;
   final String list;
   final bool reset;
 
-  const ListDetailGrammarPointsEventSearching(this.query, this.list,
+  const ListDetailsGrammarPointsEventSearching(this.query, this.list,
       {this.reset = false});
 
   @override
   List<Object> get props => [query, list, reset];
 }
 
-class ListDetailGrammarPointsEventLoadUpPractice
-    extends ListDetailGrammarPointsEvent {
+class ListDetailsGrammarPointsEventLoadUpPractice
+    extends ListDetailsGrammarPointsEvent {
   final GrammarModes grammarMode;
   final String list;
 
-  const ListDetailGrammarPointsEventLoadUpPractice(this.list, this.grammarMode);
+  const ListDetailsGrammarPointsEventLoadUpPractice(
+      this.list, this.grammarMode);
 
   @override
   List<Object> get props => [list, grammarMode];

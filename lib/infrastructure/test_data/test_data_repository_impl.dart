@@ -154,7 +154,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
   }
 
   @override
-  Future<void> insertInitialTestData() async {
+  Future<void> insertExampleData() async {
     try {
       await _database.insert(
         TestDataTableFields.testDataTable,

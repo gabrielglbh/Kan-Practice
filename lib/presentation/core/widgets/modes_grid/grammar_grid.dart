@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/application/load_grammar_test/load_grammar_test_bloc.dart';
+import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/injection.dart';
@@ -58,21 +58,23 @@ class GrammarGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoadGrammarTestBloc, LoadGrammarTestState>(
+    return BlocConsumer<GrammarTestBloc, GrammarTestState>(
       listener: ((context, state) async {
-        if (state is LoadGrammarTestStateLoadedList) {
-          List<GrammarPoint> list = state.grammar;
-          if (list.isEmpty) {
-            Navigator.of(context).pop();
-            Utils.getSnackBar(context, "study_modes_empty".tr());
-          } else {
-            await _decideOnGrammarMode(context, list, state.mode);
-          }
-        }
+        state.mapOrNull(
+          loaded: (l) async {
+            List<GrammarPoint> list = l.grammar;
+            if (list.isEmpty) {
+              Navigator.of(context).pop();
+              Utils.getSnackBar(context, "study_modes_empty".tr());
+            } else {
+              await _decideOnGrammarMode(context, list, l.mode);
+            }
+          },
+        );
       }),
       builder: (context, state) {
-        if (state is LoadGrammarTestStateIdle) {
-          return Padding(
+        return state.maybeWhen(
+          initial: (grammarToReview) => Padding(
             padding: const EdgeInsets.only(
               right: KPMargins.margin16,
               left: KPMargins.margin16,
@@ -87,18 +89,18 @@ class GrammarGrid extends StatelessWidget {
                   crossAxisCount: 3, childAspectRatio: 1.2),
               itemBuilder: (context, i) {
                 int? isAvailable = 0;
+                final service = getIt<PreferencesService>();
 
-                if (getIt<PreferencesService>()
-                            .readData(SharedKeys.dailyTestOnControlledPace) ==
+                if (service.readData(SharedKeys.dailyTestOnControlledPace) ==
                         true &&
                     type == Tests.daily) {
                   switch (GrammarModes.values[i]) {
                     case GrammarModes.definition:
-                      isAvailable = getIt<PreferencesService>()
-                          .readData(SharedKeys.definitionDailyPerformed);
+                      isAvailable =
+                          service.readData(SharedKeys.definitionDailyPerformed);
                       break;
                     case GrammarModes.grammarPoints:
-                      isAvailable = getIt<PreferencesService>()
+                      isAvailable = service
                           .readData(SharedKeys.grammarPointDailyPerformed);
                       break;
                   }
@@ -108,14 +110,13 @@ class GrammarGrid extends StatelessWidget {
                   context,
                   GrammarModes.values[i],
                   isAvailable == 0 || isAvailable == null,
-                  state.grammarToReview.isEmpty ? -1 : state.grammarToReview[i],
+                  grammarToReview.isEmpty ? -1 : grammarToReview[i],
                 );
               },
             ),
-          );
-        } else {
-          return const Center(child: KPProgressIndicator());
-        }
+          ),
+          orElse: () => const Center(child: KPProgressIndicator()),
+        );
       },
     );
   }
@@ -127,8 +128,8 @@ class GrammarGrid extends StatelessWidget {
     int grammarToReview,
   ) {
     String toReview = grammarToReview.toString();
-    if (grammarToReview > 5000) {
-      toReview = "> 5000";
+    if (grammarToReview > 500) {
+      toReview = "> 500";
     }
     return Stack(
       alignment: Alignment.topRight,
@@ -145,15 +146,15 @@ class GrammarGrid extends StatelessWidget {
                     Navigator.of(context).pop();
                     Utils.getSnackBar(context, "study_modes_empty".tr());
                   } else {
-                    getIt<LoadGrammarTestBloc>().add(
-                      LoadGrammarTestEventLoadList(
-                        folder: folder,
-                        mode: mode,
-                        type: type,
-                        practiceList: practiceList,
-                        selectionQuery: selectionQuery,
-                      ),
-                    );
+                    context.read<GrammarTestBloc>().add(
+                          GrammarTestEventLoadList(
+                            folder: folder,
+                            mode: mode,
+                            type: type,
+                            practiceList: practiceList,
+                            selectionQuery: selectionQuery,
+                          ),
+                        );
                   }
                 }
               : null,

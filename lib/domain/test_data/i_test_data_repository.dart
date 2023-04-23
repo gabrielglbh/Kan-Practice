@@ -9,7 +9,7 @@ abstract class ITestDataRepository {
     TestData data,
     ConflictAlgorithm conflictAlgorithm,
   );
-  Future<void> insertInitialTestData();
+  Future<void> insertExampleData();
   Future<TestData> getTestDataFromDb();
   Future<void> updateStats(Test test);
 

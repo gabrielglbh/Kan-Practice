@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/application/folder_list/folder_bloc.dart';
-import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/domain/folder/folder.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
@@ -36,7 +36,7 @@ class _FolderListBottomSheetState extends State<FolderListBottomSheet> {
       enableDrag: false,
       onClosing: () {},
       builder: (context) {
-        getIt<FolderBloc>().add(FolderForTestEventLoading());
+        context.read<FolderBloc>().add(FolderForTestEventLoading());
         return Wrap(children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -55,35 +55,34 @@ class _FolderListBottomSheetState extends State<FolderListBottomSheet> {
               ),
               BlocConsumer<FolderBloc, FolderState>(
                 listener: (context, state) {
-                  if (state is FolderStateAddedList) {
+                  state.mapOrNull(listAdded: (_) {
                     Navigator.of(context).pop();
-                  }
+                  });
                 },
                 builder: (context, state) {
-                  if (state is FolderStateFailure) {
-                    return KPEmptyList(
-                        showTryButton: true,
-                        onRefresh: () => context
-                            .read<FolderBloc>()
-                            .add(FolderForTestEventLoading()),
-                        message: "add_to_folder_from_list_error".tr());
-                  } else if (state is FolderStateLoading) {
-                    return const KPProgressIndicator();
-                  } else if (state is FolderStateLoaded) {
-                    return Container(
-                        constraints: BoxConstraints(
-                            maxHeight: MediaQuery.of(context).size.height / 3),
-                        margin: const EdgeInsets.all(KPMargins.margin8),
-                        child: state.lists.isEmpty
-                            ? Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: KPMargins.margin24),
-                                child: Text("folder_list_empty".tr()),
-                              )
-                            : _listSelection(state));
-                  } else {
-                    return const SizedBox();
-                  }
+                  return state.maybeWhen(
+                    error: () => KPEmptyList(
+                      showTryButton: true,
+                      onRefresh: () => context
+                          .read<FolderBloc>()
+                          .add(FolderForTestEventLoading()),
+                      message: "add_to_folder_from_list_error".tr(),
+                    ),
+                    loading: () => const KPProgressIndicator(),
+                    loaded: (folders) => Container(
+                      constraints: BoxConstraints(
+                          maxHeight: MediaQuery.of(context).size.height / 3),
+                      margin: const EdgeInsets.all(KPMargins.margin8),
+                      child: folders.isEmpty
+                          ? Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: KPMargins.margin24),
+                              child: Text("folder_list_empty".tr()),
+                            )
+                          : _listSelection(folders),
+                    ),
+                    orElse: () => const SizedBox(),
+                  );
                 },
               )
             ],
@@ -93,17 +92,18 @@ class _FolderListBottomSheetState extends State<FolderListBottomSheet> {
     );
   }
 
-  Widget _listSelection(FolderStateLoaded state) {
+  Widget _listSelection(List<Folder> folders) {
     return ListView.separated(
       separatorBuilder: (context, index) =>
           const Divider(height: KPMargins.margin4),
-      itemCount: state.lists.length,
+      itemCount: folders.length,
       itemBuilder: (context, index) {
-        String listName = state.lists[index].folder;
+        String listName = folders[index].folder;
         return ListTile(
           onTap: () {
             if (widget.name != null) {
-              getIt<FolderBloc>()
+              context
+                  .read<FolderBloc>()
                   .add(FolderEventAddSingleList(widget.name!, listName));
             } else {
               Navigator.of(context).pop(listName);

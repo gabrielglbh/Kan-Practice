@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/add_word/add_word_bloc.dart';
-import 'package:kanpractice/application/list/lists_bloc.dart';
+import 'package:kanpractice/application/lists/lists_bloc.dart';
 import 'package:kanpractice/domain/dictionary_details/word_data.dart';
+import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:kanpractice/presentation/core/types/word_categories.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
-import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_create_kanlist_dialog.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
@@ -53,26 +53,26 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
     String meaning = singleWordMeaning ?? wordMeaning;
     String reading = singleWordReading ?? wordReading;
 
-    getIt<AddWordBloc>().add(
-      AddWordEventCreate(
-        word: Word(
-          word: widget.word ?? "",
-          meaning:
-              "${meaning[0].toUpperCase()}${meaning.substring(1).toLowerCase()}",
-          pronunciation: reading,
-          category: category.index,
-          listName: listName,
-          dateAdded: Utils.getCurrentMilliseconds(),
-          dateLastShown: Utils.getCurrentMilliseconds(),
-        ),
-        exitMode: false,
-      ),
-    );
+    context.read<AddWordBloc>().add(
+          AddWordEventCreate(
+            word: Word(
+              word: widget.word ?? "",
+              meaning:
+                  "${meaning[0].toUpperCase()}${meaning.substring(1).toLowerCase()}",
+              pronunciation: reading,
+              category: category.index,
+              listName: listName,
+              dateAdded: Utils.getCurrentMilliseconds(),
+              dateLastShown: Utils.getCurrentMilliseconds(),
+            ),
+            exitMode: false,
+          ),
+        );
   }
 
   @override
   void initState() {
-    getIt<ListBloc>().add(const ListForTestEventLoading());
+    context.read<ListsBloc>().add(const ListForTestEventLoading());
     super.initState();
   }
 
@@ -84,12 +84,12 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
       builder: (context) {
         return BlocListener<AddWordBloc, AddWordState>(
           listener: (context, state) {
-            if (state is AddWordStateDoneCreating) {
+            state.mapOrNull(creationDone: (_) {
               Navigator.of(context).pop();
               Utils.getSnackBar(context, "add_word_createWord_successful".tr());
-            } else if (state is AddWordStateFailure) {
-              setState(() => _error = state.message);
-            }
+            }, error: (error) {
+              setState(() => _error = error.message);
+            });
           },
           child: Wrap(children: [
             Column(
@@ -114,7 +114,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
                       onPressed: () {
                         KPCreateKanListDialog.show(context,
                             onSubmit: (String name) {
-                          getIt<ListBloc>().add(ListEventCreate(name,
+                          context.read<ListsBloc>().add(ListsEventCreate(name,
                               filter: WordListFilters.all,
                               order: false,
                               useLazyLoading: false));
@@ -138,26 +138,24 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
                             ?.copyWith(color: KPColors.secondaryColor)),
                   ),
                 ),
-                BlocBuilder<ListBloc, ListState>(
+                BlocBuilder<ListsBloc, ListsState>(
                   builder: (context, state) {
-                    if (state is ListStateFailure) {
-                      return KPEmptyList(
-                          showTryButton: true,
-                          onRefresh: () => getIt<ListBloc>()
-                            ..add(const ListForTestEventLoading()),
-                          message: "study_bottom_sheet_load_failed".tr());
-                    } else if (state is ListStateLoading) {
-                      return const KPProgressIndicator();
-                    } else if (state is ListStateLoaded) {
-                      return Container(
-                          constraints: BoxConstraints(
-                              maxHeight:
-                                  MediaQuery.of(context).size.height / 2),
-                          margin: const EdgeInsets.all(KPMargins.margin8),
-                          child: _listSelection(state));
-                    } else {
-                      return Container();
-                    }
+                    return state.maybeWhen(
+                      error: () => KPEmptyList(
+                        showTryButton: true,
+                        onRefresh: () => context.read<ListsBloc>()
+                          ..add(const ListForTestEventLoading()),
+                        message: "study_bottom_sheet_load_failed".tr(),
+                      ),
+                      loading: () => const KPProgressIndicator(),
+                      loaded: (lists) => Container(
+                        constraints: BoxConstraints(
+                            maxHeight: MediaQuery.of(context).size.height / 2),
+                        margin: const EdgeInsets.all(KPMargins.margin8),
+                        child: _listSelection(lists),
+                      ),
+                      orElse: () => const SizedBox(),
+                    );
                   },
                 )
               ],
@@ -168,7 +166,7 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
     );
   }
 
-  Widget _listSelection(ListStateLoaded state) {
+  Widget _listSelection(List<WordList> lists) {
     return Column(
       children: [
         Expanded(
@@ -186,9 +184,9 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
           child: ListView.separated(
             separatorBuilder: (context, index) =>
                 const Divider(height: KPMargins.margin4),
-            itemCount: state.lists.length,
+            itemCount: lists.length,
             itemBuilder: (context, index) {
-              String listName = state.lists[index].name;
+              String listName = lists[index].name;
               return ListTile(
                 onTap: () async =>
                     await _addWordToKanList(context, _category, listName),

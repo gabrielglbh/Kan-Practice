@@ -1,32 +1,13 @@
 part of 'grammar_mode_bloc.dart';
 
-class GrammarModeState extends Equatable {
-  const GrammarModeState();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class GrammarModeStateLoading extends GrammarModeState {}
-
-class GrammarModeStateLoaded extends GrammarModeState {}
-
-class GrammarModeStateSM2Calculated extends GrammarModeState {}
-
-class GrammarModeStateScoreCalculated extends GrammarModeState {
-  final int score;
-
-  const GrammarModeStateScoreCalculated(this.score);
-
-  @override
-  List<Object?> get props => [score];
-}
-
-class GrammarModeStateScoreObtained extends GrammarModeState {
-  final double score;
-
-  const GrammarModeStateScoreObtained(this.score);
-
-  @override
-  List<Object?> get props => [score];
+@freezed
+class GrammarModeState with _$GrammarModeState {
+  const factory GrammarModeState.loading() = GrammarModeLoading;
+  const factory GrammarModeState.loaded() = GrammarModeLoaded;
+  const factory GrammarModeState.sm2Calculated() = GrammarModeSM2Calculated;
+  const factory GrammarModeState.scoreCalculated(int score) =
+      GrammarModeScoreCalculated;
+  const factory GrammarModeState.scoreObtained(double score) =
+      GrammarModeScoreObtained;
+  const factory GrammarModeState.testFinished() = GrammarModeTestFinished;
 }

@@ -1,32 +1,13 @@
 part of 'study_mode_bloc.dart';
 
-class StudyModeState extends Equatable {
-  const StudyModeState();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class StudyModeStateLoading extends StudyModeState {}
-
-class StudyModeStateLoaded extends StudyModeState {}
-
-class StudyModeStateSM2Calculated extends StudyModeState {}
-
-class StudyModeStateScoreCalculated extends StudyModeState {
-  final int score;
-
-  const StudyModeStateScoreCalculated(this.score);
-
-  @override
-  List<Object?> get props => [score];
-}
-
-class StudyModeStateScoreObtained extends StudyModeState {
-  final double score;
-
-  const StudyModeStateScoreObtained(this.score);
-
-  @override
-  List<Object?> get props => [score];
+@freezed
+class StudyModeState with _$StudyModeState {
+  const factory StudyModeState.loading() = StudyModeLoading;
+  const factory StudyModeState.loaded() = StudyModeLoaded;
+  const factory StudyModeState.sm2Calculated() = StudyModeSM2Calculated;
+  const factory StudyModeState.scoreCalculated(int score) =
+      StudyModeScoreCalculated;
+  const factory StudyModeState.scoreObtained(double score) =
+      StudyModeScoreObtained;
+  const factory StudyModeState.testFinished() = StudyModeTestFinished;
 }

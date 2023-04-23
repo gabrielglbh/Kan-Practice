@@ -1,32 +1,11 @@
 part of 'add_to_market_bloc.dart';
 
-abstract class AddToMarketState extends Equatable {
-  const AddToMarketState();
-
-  @override
-  List<Object> get props => [];
-}
-
-class AddToMarketStateInitial extends AddToMarketState {}
-
-class AddToMarketStateFailure extends AddToMarketState {
-  final String message;
-
-  const AddToMarketStateFailure(this.message);
-
-  @override
-  List<Object> get props => [message];
-}
-
-class AddToMarketStateLoading extends AddToMarketState {}
-
-class AddToMarketStateSuccess extends AddToMarketState {}
-
-class AddToMarketStateGetUser extends AddToMarketState {
-  final String name;
-
-  const AddToMarketStateGetUser(this.name);
-
-  @override
-  List<Object> get props => [name];
+@freezed
+class AddToMarketState with _$AddToMarketState {
+  const factory AddToMarketState.loading() = AddToMarketLoading;
+  const factory AddToMarketState.loaded() = AddToMarketLoaded;
+  const factory AddToMarketState.initial() = AddToMarketInitial;
+  const factory AddToMarketState.userRetrieved(String name) =
+      AddToMarketUserRetrieved;
+  const factory AddToMarketState.error(String message) = AddToMarketError;
 }

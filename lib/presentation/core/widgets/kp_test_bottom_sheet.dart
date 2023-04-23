@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/application/load_grammar_test/load_grammar_test_bloc.dart';
-import 'package:kanpractice/application/load_test/load_test_bloc.dart';
-import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
+import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/widgets/blitz/kp_blitz_bottom_sheet.dart';
@@ -34,9 +33,12 @@ class KPTestBottomSheet extends StatefulWidget {
 
 class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
   _checkReviewWords() {
-    getIt<LoadTestBloc>().add(const LoadTestEventIdle(mode: Tests.daily));
-    getIt<LoadGrammarTestBloc>()
-        .add(const LoadGrammarTestEventIdle(mode: Tests.daily));
+    context
+        .read<GenericTestBloc>()
+        .add(const GenericTestEventIdle(mode: Tests.daily));
+    context
+        .read<GrammarTestBloc>()
+        .add(const GrammarTestEventIdle(mode: Tests.daily));
   }
 
   @override
@@ -66,22 +68,25 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleLarge),
               ),
-              BlocBuilder<LoadTestBloc, LoadTestState>(
+              BlocBuilder<GenericTestBloc, GenericTestState>(
                 builder: (context, state) {
-                  bool wordsToReview = false;
-                  if (state is LoadTestStateIdle) {
-                    wordsToReview = state.wordsToReview.any((w) => w > 0);
-                  }
-                  return BlocBuilder<LoadGrammarTestBloc, LoadGrammarTestState>(
+                  bool wordsToReview;
+                  wordsToReview = state.mapOrNull(initial: (wTR) {
+                        return wTR.wordsToReview.any((w) => w > 0);
+                      }) ??
+                      false;
+
+                  return BlocBuilder<GrammarTestBloc, GrammarTestState>(
                     builder: (context, grammarState) {
-                      if (grammarState is LoadGrammarTestStateIdle) {
-                        return _body(
-                          hasWords: wordsToReview ||
-                              grammarState.grammarToReview.any((w) => w > 0),
-                        );
-                      } else {
-                        return _body();
-                      }
+                      return grammarState.maybeWhen(
+                        initial: (grammarToReview) {
+                          return _body(
+                            hasWords: wordsToReview ||
+                                grammarToReview.any((w) => w > 0),
+                          );
+                        },
+                        orElse: () => _body(),
+                      );
                     },
                   );
                 },

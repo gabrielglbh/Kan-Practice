@@ -428,5 +428,7 @@
   "study_modes_grammarPoints_ext": "文法点",
   "settings_general_badge_words": "Wörter als Badges anzeigen",
   "settings_general_badge_words_description": "Ob Wörter in Listen als Abzeichen oder als Listenelemente angezeigt werden sollen.",
-  "archive_title": "Archiv"
+  "archive_title": "Archiv",
+  "daily_max_words_limit": "Maximale Wörter pro Tag",
+  "daily_max_grammar_limit": "Maximale Grammatikpunkte pro Tag"
 }

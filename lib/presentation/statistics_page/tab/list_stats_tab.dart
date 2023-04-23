@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/specific_data/specific_data_bloc.dart';
 import 'package:kanpractice/presentation/core/types/word_categories.dart';
-import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/widgets/graphs/kp_bar_chart.dart';
 import 'package:kanpractice/presentation/core/widgets/graphs/kp_data_frame.dart';
 import 'package:kanpractice/presentation/core/widgets/graphs/kp_grammar_mode_radial_graph.dart';
@@ -63,13 +62,9 @@ class _ListStatsState extends State<ListStats>
         const TappableInfo(),
         BlocListener<SpecificDataBloc, SpecificDataState>(
           listener: (context, state) {
-            if (state is SpecificDataStateGatheredCategory) {
-              SpecBottomSheet.show(
-                context,
-                state.category.category,
-                state.data,
-              );
-            }
+            state.mapOrNull(categoryRetrieved: (c) {
+              SpecBottomSheet.show(context, c.category.category, false, c.data);
+            });
           },
           child: KPBarChart(
             graphName: "word_category_label".tr(),
@@ -80,7 +75,8 @@ class _ListStatsState extends State<ListStats>
             onBarTapped: (model) async {
               if (model.dataPoints?.isNotEmpty == true) {
                 final category = WordCategory.values[model.pointIndex ?? -1];
-                getIt<SpecificDataBloc>()
+                context
+                    .read<SpecificDataBloc>()
                     .add(SpecificDataEventGatherCategory(category: category));
               }
             },

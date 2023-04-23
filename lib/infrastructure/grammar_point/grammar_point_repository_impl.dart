@@ -120,10 +120,7 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
 
       if (controlledPace) {
         // Divide number of total words of the user's db by the weekdays
-        limit =
-            ((await _database.query(GrammarTableFields.grammarTable)).length /
-                    7)
-                .ceil();
+        limit = _preferencesRepository.readData(SharedKeys.maxGrammarOnDaily);
 
         // Also check if the daily test can be performed
         switch (mode) {
@@ -263,7 +260,7 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
           "$whereClause "
           "(${GrammarTableFields.nameField} LIKE '%$query%' "
           "OR ${GrammarTableFields.definitionField} LIKE '%$query%') "
-          "ORDER BY ${GrammarTableFields.dateAddedField} ASC "
+          "ORDER BY ${GrammarTableFields.dateAddedField} DESC "
           "LIMIT $limit OFFSET ${offset * limit}");
       return List.generate(res.length, (i) => GrammarPoint.fromJson(res[i]));
     } catch (err) {
@@ -291,9 +288,7 @@ class GrammarPointRepositoryImpl implements IGrammarPointRepository {
       if (controlledPace) {
         final now = DateTime.now().millisecondsSinceEpoch;
         final limit =
-            ((await _database.query(GrammarTableFields.grammarTable)).length /
-                    7)
-                .ceil();
+            _preferencesRepository.readData(SharedKeys.maxGrammarOnDaily);
 
         final d = prefs.readData(SharedKeys.definitionDailyPerformed);
         if (d == null || (d != null && d <= now)) {

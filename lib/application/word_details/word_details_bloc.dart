@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -11,8 +12,10 @@ import 'package:kanpractice/domain/word/word.dart';
 part 'word_details_event.dart';
 part 'word_details_state.dart';
 
+part 'word_details_bloc.freezed.dart';
+
 /// This bloc is used in word_lists.dart and jisho.dart
-@lazySingleton
+@injectable
 class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
   final IListRepository _listRepository;
   final IWordRepository _wordRepository;
@@ -20,31 +23,31 @@ class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
   WordDetailsBloc(
     this._listRepository,
     this._wordRepository,
-  ) : super(WordDetailsStateIdle()) {
+  ) : super(const WordDetailsState.initial()) {
     on<WordDetailsEventLoading>((event, emit) async {
       try {
-        emit(WordDetailsStateLoading());
+        emit(const WordDetailsState.loading());
         if (event.isArchive) {
           final word = await _wordRepository.getWord(
             event.word.word,
             meaning: event.word.meaning,
           );
-          emit(WordDetailsStateLoaded(word: word));
+          emit(WordDetailsState.loaded(word));
         } else {
           final word = await _wordRepository.getWord(
             event.word.word,
             listName: event.word.listName,
           );
-          emit(WordDetailsStateLoaded(word: word));
+          emit(WordDetailsState.loaded(word));
         }
       } on Exception {
-        emit(const WordDetailsStateFailure(error: ":("));
+        emit(const WordDetailsState.error(":("));
       }
     });
 
     on<WordDetailsEventDelete>((event, emit) async {
       final k = event.word;
-      if (state is WordDetailsStateLoaded && k != null) {
+      if (state is WordDetailsLoaded && k != null) {
         final int code = await _wordRepository.removeWord(k.listName, k.word);
         if (code == 0) {
           WordList list = await _listRepository.getList(k.listName);
@@ -119,22 +122,19 @@ class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
               ListTableFields.totalWinRateSpeakingField: speakNewScore
             });
           }
-          emit(WordDetailsStateRemoved());
+          emit(const WordDetailsState.removed());
         } else if (code == 1) {
-          emit(WordDetailsStateFailure(
-              error:
-                  "word_bottom_sheet_createDialogForDeletingWord_removal_failed"
-                      .tr()));
+          emit(WordDetailsState.error(
+              "word_bottom_sheet_createDialogForDeletingWord_removal_failed"
+                  .tr()));
         } else {
-          emit(WordDetailsStateFailure(
-              error:
-                  "word_bottom_sheet_createDialogForDeletingWord_failed".tr()));
+          emit(WordDetailsState.error(
+              "word_bottom_sheet_createDialogForDeletingWord_failed".tr()));
         }
       } else {
-        emit(WordDetailsStateFailure(
-            error:
-                "word_bottom_sheet_createDialogForDeletingWord_removal_failed"
-                    .tr()));
+        emit(WordDetailsState.error(
+            "word_bottom_sheet_createDialogForDeletingWord_removal_failed"
+                .tr()));
       }
     });
   }

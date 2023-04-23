@@ -54,9 +54,9 @@ class _WordListWidgetState extends State<WordListWidget>
     _scrollController.addListener(_scrollListener);
     _aggrStats = getIt<PreferencesService>()
         .readData(SharedKeys.kanListListVisualization);
-    getIt<ListDetailWordsBloc>().add(
-      ListDetailWordsEventLoading(widget.listName, reset: true),
-    );
+    context.read<ListDetailsWordsBloc>().add(
+          ListDetailsWordsEventLoading(widget.listName, reset: true),
+        );
     super.initState();
   }
 
@@ -134,22 +134,23 @@ class _WordListWidgetState extends State<WordListWidget>
   }
 
   _addLoadingEvent({bool reset = false}) {
-    return getIt<ListDetailWordsBloc>()
-        .add(ListDetailWordsEventLoading(widget.listName, reset: reset));
+    return context
+        .read<ListDetailsWordsBloc>()
+        .add(ListDetailsWordsEventLoading(widget.listName, reset: reset));
   }
 
   _addSearchingEvent(String query, {bool reset = false}) {
-    return getIt<ListDetailWordsBloc>().add(
-        ListDetailWordsEventSearching(query, widget.listName, reset: reset));
+    return context.read<ListDetailsWordsBloc>().add(
+        ListDetailsWordsEventSearching(query, widget.listName, reset: reset));
   }
 
-  Future<void> _goToPractice(ListDetailWordsStateLoadedPractice state) async {
+  Future<void> _goToPractice(List<Word> words, StudyModes mode) async {
     await Navigator.of(context)
-        .pushNamed(state.mode.page,
+        .pushNamed(mode.page,
             arguments: ModeArguments(
-                studyList: state.list,
+                studyList: words,
                 isTest: false,
-                mode: state.mode,
+                mode: mode,
                 testMode: Tests.blitz,
                 studyModeHeaderDisplayName: widget.listName))
         .then(
@@ -160,92 +161,87 @@ class _WordListWidgetState extends State<WordListWidget>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocConsumer<ListDetailWordsBloc, ListDetailWordsState>(
+    return BlocConsumer<ListDetailsWordsBloc, ListDetailsWordsState>(
       listener: (context, state) async {
-        if (state is ListDetailWordsStateLoadedPractice) {
-          await _goToPractice(state);
-        } else if (state is ListDetailWordsStateFailure) {
-          if (state.error.isNotEmpty) {
-            Utils.getSnackBar(context, state.error);
-          }
-        } else if (state is ListDetailWordsStateLoaded) {
-          if (getIt<PreferencesService>()
-                  .readData(SharedKeys.haveSeenKanListDetailCoachMark) ==
-              false) {
-            widget.onStartTutorial();
-          }
-        }
+        state.mapOrNull(
+          practiceLoaded: (value) async {
+            await _goToPractice(value.list, value.mode);
+          },
+          error: (error) {
+            if (error.message.isNotEmpty) {
+              Utils.getSnackBar(context, error.message);
+            }
+          },
+          loaded: (_) {
+            if (getIt<PreferencesService>()
+                    .readData(SharedKeys.haveSeenKanListDetailCoachMark) ==
+                false) {
+              widget.onStartTutorial();
+            }
+          },
+        );
       },
       builder: (context, state) {
-        if (state is ListDetailWordsStateLoaded) {
-          return _body(state);
-        } else if (state is ListDetailWordsStateLoading ||
-            state is ListDetailWordsStateSearching ||
-            state is ListDetailWordsStateIdle ||
-            state is ListDetailWordsStateLoadedPractice) {
-          return const KPProgressIndicator();
-        } else if (state is ListDetailWordsStateFailure) {
-          return KPEmptyList(
+        return state.maybeWhen(
+          loaded: (words, _) => Column(
+            children: [
+              if (!_aggrStats)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: KPMargins.margin8),
+                  child: TabBar(
+                      controller: _tabController,
+                      tabs: List.generate(StudyModes.values.length, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Icon(
+                            StudyModes.values[index].icon,
+                            color: StudyModes.values[index].color,
+                          ),
+                        );
+                      })),
+                ),
+              _aggrStats
+                  ? Expanded(child: _wordList(words))
+                  : Expanded(
+                      child: GestureDetector(
+                        onHorizontalDragEnd: (details) {
+                          double? pv = details.primaryVelocity;
+                          if (pv != null) _updateSelectedModePageView(pv);
+                        },
+                        child: _wordList(words),
+                      ),
+                    ),
+              if (words.isNotEmpty)
+                KPButton(
+                  title1: "list_details_practice_button_label_ext".tr(),
+                  title2: "list_details_practice_button_label".tr(),
+                  onTap: () async {
+                    if (_aggrStats) {
+                      return await PracticeWordsBottomSheet.show(
+                              context, widget.listName, words)
+                          .then(
+                        (value) => _addLoadingEvent(reset: true),
+                      );
+                    }
+                    context.read<ListDetailsWordsBloc>().add(
+                        ListDetailsWordsEventLoadUpPractice(
+                            widget.listName, _selectedMode));
+                  },
+                ),
+            ],
+          ),
+          error: (_) => KPEmptyList(
               showTryButton: true,
               onRefresh: () => _addLoadingEvent(reset: true),
-              message: "list_details_load_failed".tr());
-        } else {
-          return Container();
-        }
+              message: "list_details_load_failed".tr()),
+          orElse: () => const KPProgressIndicator(),
+        );
       },
     );
   }
 
-  Column _body(ListDetailWordsStateLoaded state) {
-    return Column(
-      children: [
-        if (!_aggrStats)
-          Padding(
-            padding: const EdgeInsets.only(bottom: KPMargins.margin8),
-            child: TabBar(
-                controller: _tabController,
-                tabs: List.generate(StudyModes.values.length, (index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Icon(
-                      StudyModes.values[index].icon,
-                      color: StudyModes.values[index].color,
-                    ),
-                  );
-                })),
-          ),
-        _aggrStats
-            ? Expanded(child: _wordList(state))
-            : Expanded(
-                child: GestureDetector(
-                  onHorizontalDragEnd: (details) {
-                    double? pv = details.primaryVelocity;
-                    if (pv != null) _updateSelectedModePageView(pv);
-                  },
-                  child: _wordList(state),
-                ),
-              ),
-        KPButton(
-            title1: "list_details_practice_button_label_ext".tr(),
-            title2: "list_details_practice_button_label".tr(),
-            onTap: () async {
-              if (_aggrStats) {
-                return await PracticeWordsBottomSheet.show(
-                        context, widget.listName, state.list)
-                    .then(
-                  (value) => _addLoadingEvent(reset: true),
-                );
-              }
-              getIt<ListDetailWordsBloc>().add(
-                  ListDetailWordsEventLoadUpPractice(
-                      widget.listName, _selectedMode));
-            }),
-      ],
-    );
-  }
-
-  Widget _wordList(ListDetailWordsStateLoaded state) {
-    if (state.list.isEmpty) {
+  Widget _wordList(List<Word> words) {
+    if (words.isEmpty) {
       return KPEmptyList(
           showTryButton: true,
           onRefresh: () => _addLoadingEvent(reset: true),
@@ -253,7 +249,7 @@ class _WordListWidgetState extends State<WordListWidget>
     }
 
     KPWordItem wordElem(int index, bool isBadge) {
-      Word? word = state.list[index];
+      Word? word = words[index];
       return KPWordItem(
         aggregateStats: _aggrStats,
         index: index,
@@ -277,7 +273,7 @@ class _WordListWidgetState extends State<WordListWidget>
     return getIt<PreferencesService>().readData(SharedKeys.showBadgeWords)
         ? GridView.builder(
             key: const PageStorageKey<String>('wordListController'),
-            itemCount: state.list.length,
+            itemCount: words.length,
             controller: _scrollController,
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -286,7 +282,7 @@ class _WordListWidgetState extends State<WordListWidget>
           )
         : ListView.separated(
             key: const PageStorageKey<String>('wordListController'),
-            itemCount: state.list.length,
+            itemCount: words.length,
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             controller: _scrollController,
             separatorBuilder: (_, __) =>

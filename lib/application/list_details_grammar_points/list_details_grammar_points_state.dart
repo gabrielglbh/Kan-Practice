@@ -1,46 +1,16 @@
 part of 'list_details_grammar_points_bloc.dart';
 
-class ListDetailGrammarPointsState extends Equatable {
-  const ListDetailGrammarPointsState();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class ListDetailGrammarPointsStateIdle extends ListDetailGrammarPointsState {}
-
-class ListDetailGrammarPointsStateLoading extends ListDetailGrammarPointsState {
-}
-
-class ListDetailGrammarPointsStateSearching
-    extends ListDetailGrammarPointsState {}
-
-class ListDetailGrammarPointsStateLoadedPractice
-    extends ListDetailGrammarPointsState {
-  final GrammarModes mode;
-  final List<GrammarPoint> list;
-
-  const ListDetailGrammarPointsStateLoadedPractice(this.mode, this.list);
-
-  @override
-  List<Object> get props => [list, mode];
-}
-
-class ListDetailGrammarPointsStateLoaded extends ListDetailGrammarPointsState {
-  final List<GrammarPoint> list;
-  final String name;
-
-  const ListDetailGrammarPointsStateLoaded(this.list, this.name);
-
-  @override
-  List<Object> get props => [list, name];
-}
-
-class ListDetailGrammarPointsStateFailure extends ListDetailGrammarPointsState {
-  final String error;
-
-  const ListDetailGrammarPointsStateFailure({this.error = ""});
-
-  @override
-  List<Object> get props => [error];
+@freezed
+class ListDetailsGrammarPointsState with _$ListDetailsGrammarPointsState {
+  const factory ListDetailsGrammarPointsState.initial() =
+      ListDetailsGrammarPointsInitial;
+  const factory ListDetailsGrammarPointsState.loaded(
+      List<GrammarPoint> list, String name) = ListDetailsGrammarPointsLoaded;
+  const factory ListDetailsGrammarPointsState.practiceLoaded(
+          GrammarModes mode, List<GrammarPoint> list) =
+      ListDetailsGrammarPointsPracticeLoaded;
+  const factory ListDetailsGrammarPointsState.loading() =
+      ListDetailsGrammarPointsLoading;
+  const factory ListDetailsGrammarPointsState.error(String message) =
+      ListDetailsGrammarPointsError;
 }

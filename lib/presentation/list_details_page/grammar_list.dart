@@ -51,9 +51,9 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
     _scrollController.addListener(_scrollListener);
     _aggrStats = getIt<PreferencesService>()
         .readData(SharedKeys.kanListListVisualization);
-    getIt<ListDetailGrammarPointsBloc>().add(
-      ListDetailGrammarPointsEventLoading(widget.listName, reset: true),
-    );
+    context.read<ListDetailsGrammarPointsBloc>().add(
+          ListDetailsGrammarPointsEventLoading(widget.listName, reset: true),
+        );
     super.initState();
   }
 
@@ -110,108 +110,96 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
   }
 
   _addLoadingEvent({bool reset = false}) {
-    return getIt<ListDetailGrammarPointsBloc>().add(
-        ListDetailGrammarPointsEventLoading(widget.listName, reset: reset));
+    return context.read<ListDetailsGrammarPointsBloc>().add(
+        ListDetailsGrammarPointsEventLoading(widget.listName, reset: reset));
   }
 
   _addSearchingEvent(String query, {bool reset = false}) {
-    return getIt<ListDetailGrammarPointsBloc>().add(
-        ListDetailGrammarPointsEventSearching(query, widget.listName,
+    return context.read<ListDetailsGrammarPointsBloc>().add(
+        ListDetailsGrammarPointsEventSearching(query, widget.listName,
             reset: reset));
-  }
-
-  Future<void> _goToPractice(
-      ListDetailGrammarPointsStateLoadedPractice state) async {
-    await Navigator.of(context)
-        .pushNamed(state.mode.page,
-            arguments: GrammarModeArguments(
-                studyList: state.list,
-                isTest: false,
-                mode: state.mode,
-                testMode: Tests.blitz,
-                studyModeHeaderDisplayName: widget.listName))
-        .then(
-          (value) => _addLoadingEvent(reset: true),
-        );
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocConsumer<ListDetailGrammarPointsBloc,
-        ListDetailGrammarPointsState>(
+    return BlocConsumer<ListDetailsGrammarPointsBloc,
+        ListDetailsGrammarPointsState>(
       listener: (context, state) async {
-        if (state is ListDetailGrammarPointsStateLoadedPractice) {
-          await _goToPractice(state);
-        } else if (state is ListDetailGrammarPointsStateFailure) {
-          if (state.error.isNotEmpty) {
-            Utils.getSnackBar(context, state.error);
-          }
-        }
+        state.mapOrNull(
+          practiceLoaded: (s) async {
+            await Navigator.of(context)
+                .pushNamed(s.mode.page,
+                    arguments: GrammarModeArguments(
+                        studyList: s.list,
+                        isTest: false,
+                        mode: s.mode,
+                        testMode: Tests.blitz,
+                        studyModeHeaderDisplayName: widget.listName))
+                .then(
+                  (value) => _addLoadingEvent(reset: true),
+                );
+          },
+          error: (error) {
+            if (error.message.isNotEmpty) {
+              Utils.getSnackBar(context, error.message);
+            }
+          },
+        );
       },
       builder: (context, state) {
-        if (state is ListDetailGrammarPointsStateLoaded) {
-          return _body(state);
-        } else if (state is ListDetailGrammarPointsStateLoading ||
-            state is ListDetailGrammarPointsStateSearching ||
-            state is ListDetailGrammarPointsStateIdle ||
-            state is ListDetailGrammarPointsStateLoadedPractice) {
-          return const KPProgressIndicator();
-        } else if (state is ListDetailGrammarPointsStateFailure) {
-          return KPEmptyList(
+        return state.maybeWhen(
+          loaded: (grammar, _) => Column(
+            children: [
+              if (!_aggrStats)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: KPMargins.margin8),
+                  child: TabBar(
+                      controller: _tabController,
+                      tabs: List.generate(GrammarModes.values.length, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Icon(
+                            GrammarModes.values[index].icon,
+                            color: GrammarModes.values[index].color,
+                          ),
+                        );
+                      })),
+                ),
+              _aggrStats
+                  ? Expanded(child: _grammarList(grammar))
+                  : Expanded(
+                      child: GestureDetector(
+                        onHorizontalDragEnd: (details) {
+                          double? pv = details.primaryVelocity;
+                          if (pv != null) _updateSelectedModePageView(pv);
+                        },
+                        child: _grammarList(grammar),
+                      ),
+                    ),
+              if (grammar.isNotEmpty)
+                KPButton(
+                    title1: "list_details_practice_button_label_ext".tr(),
+                    title2: "list_details_practice_button_label".tr(),
+                    onTap: () async {
+                      context.read<ListDetailsGrammarPointsBloc>().add(
+                          ListDetailsGrammarPointsEventLoadUpPractice(
+                              widget.listName, _selectedMode));
+                    }),
+            ],
+          ),
+          error: (_) => KPEmptyList(
               showTryButton: true,
               onRefresh: () => _addLoadingEvent(reset: true),
-              message: "list_details_load_failed_grammar".tr());
-        } else {
-          return Container();
-        }
+              message: "list_details_load_failed_grammar".tr()),
+          orElse: () => const KPProgressIndicator(),
+        );
       },
     );
   }
 
-  Column _body(ListDetailGrammarPointsStateLoaded state) {
-    return Column(
-      children: [
-        if (!_aggrStats)
-          Padding(
-            padding: const EdgeInsets.only(bottom: KPMargins.margin8),
-            child: TabBar(
-                controller: _tabController,
-                tabs: List.generate(GrammarModes.values.length, (index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Icon(
-                      GrammarModes.values[index].icon,
-                      color: GrammarModes.values[index].color,
-                    ),
-                  );
-                })),
-          ),
-        _aggrStats
-            ? Expanded(child: _grammarList(state))
-            : Expanded(
-                child: GestureDetector(
-                  onHorizontalDragEnd: (details) {
-                    double? pv = details.primaryVelocity;
-                    if (pv != null) _updateSelectedModePageView(pv);
-                  },
-                  child: _grammarList(state),
-                ),
-              ),
-        KPButton(
-            title1: "list_details_practice_button_label_ext".tr(),
-            title2: "list_details_practice_button_label".tr(),
-            onTap: () async {
-              getIt<ListDetailGrammarPointsBloc>().add(
-                  ListDetailGrammarPointsEventLoadUpPractice(
-                      widget.listName, _selectedMode));
-            }),
-      ],
-    );
-  }
-
-  Widget _grammarList(ListDetailGrammarPointsStateLoaded state) {
-    if (state.list.isEmpty) {
+  Widget _grammarList(List<GrammarPoint> grammar) {
+    if (grammar.isEmpty) {
       return KPEmptyList(
           showTryButton: true,
           onRefresh: () => _addLoadingEvent(reset: true),
@@ -219,12 +207,12 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
     }
     return ListView.separated(
       key: const PageStorageKey<String>('grammarPointListController'),
-      itemCount: state.list.length,
+      itemCount: grammar.length,
       controller: _scrollController,
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       separatorBuilder: (_, __) => const Divider(),
       itemBuilder: (context, k) {
-        GrammarPoint? gp = state.list[k];
+        GrammarPoint? gp = grammar[k];
         return KPGrammarPointItem(
           index: k,
           grammarPoint: gp,

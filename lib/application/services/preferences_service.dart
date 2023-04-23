@@ -60,4 +60,7 @@ class SharedKeys {
   static const String showGrammarGraphs = "showGrammarGraphs";
 
   static const String showBadgeWords = "showBadgeWords";
+
+  static const String maxWordsOnDaily = "maxWordsOnDaily";
+  static const String maxGrammarOnDaily = "maxGrammarOnDaily";
 }

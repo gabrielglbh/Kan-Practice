@@ -69,8 +69,7 @@ class _ArchiveGrammarListWidgetState extends State<ArchiveGrammarListWidget>
     return BlocBuilder<ArchiveGrammarPointsBloc, ArchiveGrammarPointsState>(
       builder: (context, state) {
         return state.maybeWhen(
-          loaded: (grammarPoints) =>
-              Expanded(child: _grammarList(grammarPoints)),
+          loaded: (grammarPoints) => _grammarList(grammarPoints),
           error: () => KPEmptyList(
               showTryButton: true,
               onRefresh: () => _addLoadingEvent(reset: true),

@@ -1,4 +1,4 @@
-package com.gabr.garc.kanpractice
+package com.gabr.garc.kanpracticepro
 
 import io.flutter.embedding.android.FlutterActivity
 

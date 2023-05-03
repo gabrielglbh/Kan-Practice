@@ -1,11 +1,13 @@
-# KanPractice
+# KanPractice Pro
 
 A simple app for studying the japanese vocabulary and grammar you will learn in your japanese learning journey based on cards with meaning, pronunciation, kanji and more!
+
+**Now with ChatGPT context to enhance your study!** In some study modes such as Listening and in the new grammar mode 'Translation', you will be provided with random sentences within **your vocabulary** context to help you study with more flexibility. All these sentences are given to you by the most powerful ChatGPT completion model: _da-vinci-003_.
 
 Build your own word, sentences and grammar lists and study them whenever you want.
 
 <p align="center">
-  <a href="https://play.google.com/store/apps/details?id=com.gabr.garc.kanpractice">
+  <a href="https://play.google.com/store/apps/details?id=com.gabr.garc.kanpracticepro">
     <img src="https://cdn.rawgit.com/steverichey/google-play-badge-svg/master/img/en_get.svg" width="30%">
   </a>  
 </p>
@@ -13,45 +15,53 @@ Build your own word, sentences and grammar lists and study them whenever you wan
 ## Screenshots
 
 <p align="center">
+  <img src="documentation/chatgpt.png" width="20%">
   <img src="documentation/kanlist.png" width="20%">
   <img src="documentation/market.png" width="20%">
   <img src="documentation/dictionary.png" width="20%">
-  <img src="documentation/jisho.png" width="20%">
 </p>
 
 <p align="center">
+  <img src="documentation/jisho.png" width="20%">
   <img src="documentation/lists.png" width="20%">
-  <img src="documentation/details.png" width="20%">
   <img src="documentation/grammar.png" width="20%">
   <img src="documentation/stats.png" width="20%">
 </p>
 
-## Making your own KanPractice
+## ⚠️ Releasing ⚠️
+
+- Version management differs from `main`
+- Update `google-services.json` and `key.properties` when releasing
+- Remember to set the real API Key onto [OPENAI_API_TOKEN] in `http_service`.
+
+## Making your own KanPractice Pro
 
 If you want to replicate this app on your device with a custom back-end, fork the repo and include your own Google Services files for iOS or Android. Make sure your back-end matches the models described in code, although you can also change them to match yours!
 
 If you wish to distribute a new app based on this one, remember to change the Bundle ID on iOS and Package on Android and make sure to acknowledge this work on your newly created app!
-- *For iOS*: make sure you create your own Provisioning Profile and Certificate for Apple devices and export them to XCode. 
-- *For Android*: create the `jks` file for signing using `keytool`, and create the `key.properties` file under `android/` as in the [official documentation](https://flutter.dev/docs/deployment/android#create-an-upload-keystore).
+
+- _For iOS_: make sure you create your own Provisioning Profile and Certificate for Apple devices and export them to XCode.
+- _For Android_: create the `jks` file for signing using `keytool`, and create the `key.properties` file under `android/` as in the [official documentation](https://flutter.dev/docs/deployment/android#create-an-upload-keystore).
+
+Aside from this, you will have to provide your own OpenAI API Token inside the `http` service `postOpenAI` method.
 
 ## Code Structure and Architecture
 
 Code is based on the DDD Clean Architecture paradigm, [learn more](https://medium.com/@ushimaru/beginners-guide-to-flutter-with-ddd-87d4c476c3cb). This design pattern uses abstraction (domains) to create code that has very low coupling and that makes it very easy to test, maintain and change data providers at any given moment.
 
-This architecture is reached with __BLoC pattern__ and __Dependencies Injection__.
+This architecture is reached with **BLoC pattern** and **Dependencies Injection**.
 
-- __BLoC pattern__ ([reference](https://pub.dev/packages/flutter_bloc)) separates business logic from the UI. Any heavy loading will be performed and listened from a dedicated BLoC. Custom events and states are created for each BLoC to properly update the necessary UI elements accordingly. Along with BLoC, we use __lazy loading__ or __pagination__ ([reference](https://en.wikipedia.org/wiki/Lazy_loading)). Lazy loading serves as a light weight mode to serve large lists to UI. The method is to load small batches from a large list and loading even more batches when the user reaches the end or a certain point of the list.
+- **BLoC pattern** ([reference](https://pub.dev/packages/flutter_bloc)) separates business logic from the UI. Any heavy loading will be performed and listened from a dedicated BLoC. Custom events and states are created for each BLoC to properly update the necessary UI elements accordingly. Along with BLoC, we use **lazy loading** or **pagination** ([reference](https://en.wikipedia.org/wiki/Lazy_loading)). Lazy loading serves as a light weight mode to serve large lists to UI. The method is to load small batches from a large list and loading even more batches when the user reaches the end or a certain point of the list.
 
-- For __Dependency Injection__ I used __GetIt__ ([reference](https://pub.dev/packages/get_it)) and __Injection__ ([reference](https://pub.dev/packages/injectable)). 
-  - __GetIt__ is a simple Service Locator that allows us to use our services, in this case BLoC classes, without the need of using the context of the app. This makes it easier to access the BLoC class from anywhere in the app, even outside the UI.
-  - __Injection__ is simply a code generator built for GetIt. This makes far more easier the configuration of the service locator using custom annotations to tell the code generator to register either factories, singletons or lazy singletons.
+- For **Dependency Injection** I used **GetIt** ([reference](https://pub.dev/packages/get_it)) and **Injection** ([reference](https://pub.dev/packages/injectable)).
+  - **GetIt** is a simple Service Locator that allows us to use our services, in this case BLoC classes, without the need of using the context of the app. This makes it easier to access the BLoC class from anywhere in the app, even outside the UI.
+  - **Injection** is simply a code generator built for GetIt. This makes far more easier the configuration of the service locator using custom annotations to tell the code generator to register either factories, singletons or lazy singletons.
 
 With this in mind, we divide the code into 4 main folders: `application`, `domain`, `infrastructure` and `presentation`. These folders come from the below figure, representing the 4 different layers that will interact with the `domain`.
 
 <p align="center">
   <img src="documentation/ddd-arch.webp" width="40%">
 </p>
-
 
 ### 1. `application`
 
@@ -69,11 +79,11 @@ The repositories are used in the `application` and `infrastructure` layer to mai
 
 ### 3. `infrastrucure`
 
-This is the only layer that communicates with the data providers, and thus, the only layer we will have to modify in case we want to change providers. This leads to maintaining the `domain` contracts all across the app. 
+This is the only layer that communicates with the data providers, and thus, the only layer we will have to modify in case we want to change providers. This leads to maintaining the `domain` contracts all across the app.
 
 The repository implementations are gathered in here. Again, as constructor parameters they will take the `domain` interfaces, but with the nuance that the implementation actually uses the Data Providers APIs, injected with `getIt` in the constructor.
 
-All repository implementations will be annotated with `@LazySingleton(as: I_x_Repository)` to tell `getIt` to create a lazy singleton instance from the `domain` repository and use it as the `infrastructure` implementation. 
+All repository implementations will be annotated with `@LazySingleton(as: I_x_Repository)` to tell `getIt` to create a lazy singleton instance from the `domain` repository and use it as the `infrastructure` implementation.
 
 ### 4. `presentation`
 

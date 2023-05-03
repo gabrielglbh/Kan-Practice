@@ -41,7 +41,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.gabr.garc.kanpractice"
+        applicationId "com.gabr.garc.kanpracticepro"
         minSdkVersion 26
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()

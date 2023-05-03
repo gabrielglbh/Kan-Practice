@@ -15,9 +15,10 @@ final ThemeData dark = ThemeData(
   ),
   iconTheme: const IconThemeData(color: KPColors.accentDark),
   textTheme: TextTheme(
-      displayLarge: const TextStyle(color: KPColors.accentDark),
-      displaySmall: const TextStyle(
+      displayLarge: const TextStyle(
           color: KPColors.accentDark, fontSize: KPFontSizes.fontSize64),
+      displaySmall: const TextStyle(
+          color: KPColors.accentDark, fontSize: KPFontSizes.fontSize48),
       headlineMedium: const TextStyle(
           color: KPColors.accentDark, fontSize: KPFontSizes.fontSize32),
       headlineSmall: const TextStyle(

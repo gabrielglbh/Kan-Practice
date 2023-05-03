@@ -3,18 +3,16 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KPLearningHeaderAnimation extends StatelessWidget {
   /// Children to be painted in the header
-  final List<Widget> children;
+  final Widget child;
 
   /// Integer value usually referring to the _macro of the list
   /// to control properly the animation and to differ each Card
   /// from each other
   final int id;
-  final bool fitted;
   const KPLearningHeaderAnimation({
     Key? key,
-    required this.children,
+    required this.child,
     required this.id,
-    this.fitted = true,
   }) : super(key: key);
 
   @override
@@ -41,12 +39,7 @@ class KPLearningHeaderAnimation extends StatelessWidget {
             ),
             child: Padding(
               padding: const EdgeInsets.all(KPMargins.margin8),
-              child: fitted
-                  ? FittedBox(
-                      fit: BoxFit.contain,
-                      child: Column(children: children),
-                    )
-                  : Column(children: children),
+              child: child,
             )));
   }
 }

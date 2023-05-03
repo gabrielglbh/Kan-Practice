@@ -9,7 +9,7 @@ import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_learning_header_animation.dart';
-import 'package:kanpractice/presentation/core/widgets/kp_learning_header_container.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_learning_text_box.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_list_percentage_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_study_mode_app_bar.dart';
@@ -198,7 +198,42 @@ class _ReadingStudyState extends State<ReadingStudy> {
             children: [
               KPListPercentageIndicator(
                   value: (_macro + 1) / _studyList.length),
-              KPLearningHeaderAnimation(id: _macro, children: _header()),
+              KPLearningHeaderAnimation(
+                id: _macro,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    children: [
+                      KPLearningTextBox(
+                        textStyle: Theme.of(context)
+                            .textTheme
+                            .bodyLarge
+                            ?.copyWith(color: KPColors.secondaryColor),
+                        bottom: KPMargins.margin4,
+                        text: _getProperAlphabet(),
+                      ),
+                      KPLearningTextBox(
+                        textStyle: Theme.of(context)
+                            .textTheme
+                            .bodyLarge
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                        text: _getProperPronunciation(),
+                      ),
+                      FittedBox(
+                        child: KPLearningTextBox(
+                          textStyle: Theme.of(context).textTheme.displaySmall,
+                          text: _studyList[_macro].word,
+                        ),
+                      ),
+                      KPLearningTextBox(
+                        textStyle: Theme.of(context).textTheme.bodyLarge,
+                        text: _getProperMeaning(),
+                        top: KPMargins.margin8,
+                      )
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
           KPValidationButtons(
@@ -210,26 +245,5 @@ class _ReadingStudyState extends State<ReadingStudy> {
         ],
       ),
     );
-  }
-
-  List<Widget> _header() {
-    return [
-      KPLearningHeaderContainer(
-          color: KPColors.secondaryColor,
-          height: KPSizes.defaultSizeLearningExtContainer,
-          text: _getProperAlphabet()),
-      KPLearningHeaderContainer(
-          height: KPSizes.defaultResultWordListOnTest,
-          fontWeight: FontWeight.bold,
-          text: _getProperPronunciation()),
-      KPLearningHeaderContainer(
-          fontSize: KPFontSizes.fontSize64,
-          height: KPSizes.listStudyHeight,
-          text: _studyList[_macro].word),
-      KPLearningHeaderContainer(
-          height: KPSizes.defaultSizeLearningExtContainer,
-          text: _getProperMeaning(),
-          top: KPMargins.margin8)
-    ];
   }
 }

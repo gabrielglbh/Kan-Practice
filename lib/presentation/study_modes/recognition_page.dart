@@ -8,7 +8,7 @@ import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_learning_header_animation.dart';
-import 'package:kanpractice/presentation/core/widgets/kp_learning_header_container.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_learning_text_box.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_list_percentage_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_study_mode_app_bar.dart';
@@ -182,7 +182,33 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
               children: [
                 KPListPercentageIndicator(
                     value: (_macro + 1) / _studyList.length),
-                KPLearningHeaderAnimation(id: _macro, children: _header()),
+                KPLearningHeaderAnimation(
+                  id: _macro,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      children: [
+                        KPLearningTextBox(
+                            textStyle: Theme.of(context).textTheme.bodyLarge,
+                            text: _getProperPronunciation()),
+                        FittedBox(
+                          child: KPLearningTextBox(
+                              textStyle:
+                                  Theme.of(context).textTheme.displaySmall,
+                              text: _studyList[_macro].word),
+                        ),
+                        KPLearningTextBox(
+                          text: _getProperMeaning(),
+                          top: KPMargins.margin8,
+                          textStyle: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
             KPValidationButtons(
@@ -193,23 +219,5 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
             )
           ],
         ));
-  }
-
-  List<Widget> _header() {
-    return [
-      KPLearningHeaderContainer(
-          height: KPSizes.defaultSizeLearningExtContainer + KPMargins.margin8,
-          text: _getProperPronunciation()),
-      KPLearningHeaderContainer(
-          fontSize: KPFontSizes.fontSize64,
-          height: KPSizes.listStudyHeight,
-          text: _studyList[_macro].word),
-      KPLearningHeaderContainer(
-        height: KPSizes.defaultSizeLearningExtContainer,
-        text: _getProperMeaning(),
-        top: KPMargins.margin8,
-        fontWeight: FontWeight.bold,
-      ),
-    ];
   }
 }

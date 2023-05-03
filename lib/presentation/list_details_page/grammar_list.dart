@@ -17,6 +17,7 @@ import 'package:kanpractice/presentation/core/widgets/list_details_widgets/kp_gr
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/grammar_modes/utils/grammar_mode_arguments.dart';
+import 'package:kanpractice/presentation/list_details_page/widgets/practice_grammar_bottom_sheet.dart';
 
 class GrammarListWidget extends StatefulWidget {
   final WordList list;
@@ -182,6 +183,13 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
                     title1: "list_details_practice_button_label_ext".tr(),
                     title2: "list_details_practice_button_label".tr(),
                     onTap: () async {
+                      if (_aggrStats) {
+                        return await PracticeGrammarBottomSheet.show(
+                                context, widget.listName, grammar)
+                            .then(
+                          (value) => _addLoadingEvent(reset: true),
+                        );
+                      }
                       context.read<ListDetailsGrammarPointsBloc>().add(
                           ListDetailsGrammarPointsEventLoadUpPractice(
                               widget.listName, _selectedMode));

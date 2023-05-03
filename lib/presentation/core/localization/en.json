@@ -430,5 +430,6 @@
   "settings_general_badge_words_description": "Whether to show words in lists as badges or as list items.",
   "archive_title": "Archive",
   "daily_max_words_limit": "Maximum words per day",
-  "daily_max_grammar_limit": "Maximum grammar points per day"
+  "daily_max_grammar_limit": "Maximum grammar points per day",
+  "listening_example": "Context:"
 }

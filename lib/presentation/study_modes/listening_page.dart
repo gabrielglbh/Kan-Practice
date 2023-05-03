@@ -151,6 +151,29 @@ class _ListeningStudyState extends State<ListeningStudy> {
     return 0;
   }
 
+  Widget _getSentence(String sentence) {
+    final word = _studyList[_macro].word;
+    final theme = Theme.of(context).textTheme.bodyLarge;
+    if (!_showWord) {
+      return Text(
+          '${'listening_example'.tr()}${sentence.replaceAll(word, '「 ____ 」')}',
+          textAlign: TextAlign.center,
+          style: theme);
+    }
+    final parts = sentence.splitMapJoin(word);
+    return RichText(
+      textAlign: TextAlign.center,
+      text: TextSpan(
+        children: List.generate(parts.length, (i) {
+          return TextSpan(
+            text: parts[i] == word ? '[ ${parts[i]} ]' : parts[i],
+            style: theme,
+          );
+        }),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return KPScaffold(
@@ -250,14 +273,13 @@ class _ListeningStudyState extends State<ListeningStudy> {
             ),
           ),
           if (sentence != null)
-            KPLearningTextBox(
-              text: sentence,
-              textStyle: Theme.of(context)
-                  .textTheme
-                  .bodyLarge
-                  ?.copyWith(fontStyle: FontStyle.italic),
-              top: KPMargins.margin12,
-              textAlign: TextAlign.center,
+            Padding(
+              padding: const EdgeInsets.only(
+                top: KPMargins.margin12,
+                left: KPMargins.margin32,
+                right: KPMargins.margin32,
+              ),
+              child: _getSentence(sentence),
             ),
           Visibility(
             visible: _showWord,

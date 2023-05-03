@@ -11,7 +11,7 @@
 .svn/
 symbols/
 
-secrets.txt
+openai-token.txt
 
 # IntelliJ related
 *.iml

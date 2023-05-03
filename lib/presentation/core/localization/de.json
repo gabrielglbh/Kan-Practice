@@ -430,5 +430,6 @@
   "settings_general_badge_words_description": "Ob Wörter in Listen als Abzeichen oder als Listenelemente angezeigt werden sollen.",
   "archive_title": "Archiv",
   "daily_max_words_limit": "Maximale Wörter pro Tag",
-  "daily_max_grammar_limit": "Maximale Grammatikpunkte pro Tag"
+  "daily_max_grammar_limit": "Maximale Grammatikpunkte pro Tag",
+  "listening_example": "Context:"
 }

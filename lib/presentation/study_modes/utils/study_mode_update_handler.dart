@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/sentence_generator/sentence_generator_bloc.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
@@ -73,6 +74,11 @@ class StudyModeUpdateHandler {
                       : "study_mode_update_handler_popped_positive".tr(),
                   popDialog: !isTestFinished,
                   onPositive: () async {
+                    /// Reset the overall SentenceGeneratorBloc state
+                    context
+                        .read<SentenceGeneratorBloc>()
+                        .add(SentenceGeneratorEventReset());
+
                     /// If user went back in mid test, just pop
                     if (isTestPopped) {
                       Navigator.of(context).pop();

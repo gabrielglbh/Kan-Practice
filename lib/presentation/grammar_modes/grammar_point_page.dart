@@ -143,6 +143,12 @@ class _GrammarPointStudyState extends State<GrammarPointStudy> {
 
   @override
   Widget build(BuildContext context) {
+    final hint = _showDefinition
+        ? "${_studyList[_macro].definition}\n\n"
+            "_${"add_grammar_textForm_example".tr()}_\n\n"
+            "${_getExample()}"
+        : _studyList[_macro].definition;
+
     return KPScaffold(
       onWillPop: () async {
         return GrammarModeUpdateHandler.handle(
@@ -172,8 +178,25 @@ class _GrammarPointStudyState extends State<GrammarPointStudy> {
                   value: (_macro + 1) / _studyList.length),
               KPLearningHeaderAnimation(
                 id: _macro,
-                fitted: false,
-                children: _header(),
+                child: Column(
+                  children: [
+                    KPMarkdown(
+                      data: _studyList[_macro].name,
+                      maxHeight: KPMargins.margin64 * 2,
+                      shrinkWrap: true,
+                    ),
+                    if (_showDefinition)
+                      KPMarkdown(
+                        data: hint,
+                        maxHeight: MediaQuery.of(context).size.height / 4,
+                        shrinkWrap: true,
+                      )
+                    else
+                      Text(_none,
+                          style: Theme.of(context).textTheme.headlineMedium),
+                    const SizedBox(height: KPMargins.margin4),
+                  ],
+                ),
               ),
             ],
           ),
@@ -186,29 +209,5 @@ class _GrammarPointStudyState extends State<GrammarPointStudy> {
         ],
       ),
     );
-  }
-
-  List<Widget> _header() {
-    final hint = _showDefinition
-        ? "${_studyList[_macro].definition}\n\n"
-            "_${"add_grammar_textForm_example".tr()}_\n\n"
-            "${_getExample()}"
-        : _studyList[_macro].definition;
-    return [
-      KPMarkdown(
-        data: _studyList[_macro].name,
-        maxHeight: KPMargins.margin64 * 2,
-        shrinkWrap: true,
-      ),
-      if (_showDefinition)
-        KPMarkdown(
-          data: hint,
-          maxHeight: MediaQuery.of(context).size.height / 4,
-          shrinkWrap: true,
-        )
-      else
-        Text(_none, style: Theme.of(context).textTheme.headlineMedium),
-      const SizedBox(height: KPMargins.margin4),
-    ];
   }
 }

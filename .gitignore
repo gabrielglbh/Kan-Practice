@@ -11,6 +11,8 @@
 .svn/
 symbols/
 
+secrets.txt
+
 # IntelliJ related
 *.iml
 *.ipr

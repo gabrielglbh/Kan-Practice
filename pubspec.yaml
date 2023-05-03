@@ -56,6 +56,7 @@ dependencies:
   markdown: ^7.0.1
   freezed: ^2.3.2
   freezed_annotation: ^2.2.0
+  http: ^0.13.6
 
 flutter_icons:
   android: "launcher_icon"

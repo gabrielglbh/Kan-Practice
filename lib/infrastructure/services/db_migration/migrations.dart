@@ -1,6 +1,7 @@
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:sqflite/sqflite.dart';
 
+// TODO: Add new modes in the db migration
 class Migrations {
   Future<void> version11to12(Database db) async {
     await db.rawQuery("ALTER TABLE ${ListTableFields.listsTable} "

@@ -27,6 +27,7 @@ abstract class InjectableModule {
   FlutterTts get tts => FlutterTts();
   @preResolve
   Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
+  // TODO: Add new modes in the db
   @preResolve
   Future<Database> get database async {
     String databasesPath = await getDatabasesPath();

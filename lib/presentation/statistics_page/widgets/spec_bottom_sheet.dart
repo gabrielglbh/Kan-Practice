@@ -175,12 +175,7 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                         fit: BoxFit.contain,
                         child: Text(
                           total.toString(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .displaySmall
-                              ?.copyWith(
-                                  fontSize: KPFontSizes.fontSize32 +
-                                      KPFontSizes.fontSize16),
+                          style: Theme.of(context).textTheme.displaySmall,
                         ),
                       ),
                     ),

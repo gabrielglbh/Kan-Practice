@@ -148,7 +148,6 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
             "_${"add_grammar_textForm_example".tr()}_\n\n"
             "${_getExample()}"
         : _studyList[_macro].definition;
-
     return KPScaffold(
       onWillPop: () async {
         return GrammarModeUpdateHandler.handle(

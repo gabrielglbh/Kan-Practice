@@ -431,5 +431,5 @@
   "archive_title": "Archiv",
   "daily_max_words_limit": "Maximale Wörter pro Tag",
   "daily_max_grammar_limit": "Maximale Grammatikpunkte pro Tag",
-  "listening_example": "Context:"
+  "provide_context": "Context"
 }

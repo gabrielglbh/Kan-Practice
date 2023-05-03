@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/sentence_generator/sentence_generator_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
-import 'package:kanpractice/application/services/text_to_speech_service.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
@@ -12,7 +11,6 @@ import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_learning_header_animation.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_learning_text_box.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_list_percentage_indicator.dart';
-import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_study_mode_app_bar.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_tts_icon_button.dart';
@@ -21,6 +19,9 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 import 'package:kanpractice/presentation/study_modes/utils/study_mode_update_handler.dart';
+import 'package:kanpractice/presentation/study_modes/widgets/context_button.dart';
+import 'package:kanpractice/presentation/study_modes/widgets/context_loader.dart';
+import 'package:kanpractice/presentation/study_modes/widgets/context_widget.dart';
 
 class ListeningStudy extends StatefulWidget {
   final ModeArguments args;
@@ -53,10 +54,6 @@ class _ListeningStudyState extends State<ListeningStudy> {
     _enableRepOnTest = getIt<PreferencesService>()
         .readData(SharedKeys.enableRepetitionOnTests);
     _studyList.addAll(widget.args.studyList);
-
-    context
-        .read<SentenceGeneratorBloc>()
-        .add(SentenceGeneratorEventLoad([_studyList[_macro].word]));
     context.read<StudyModeBloc>().add(StudyModeEventResetTracking());
     super.initState();
   }
@@ -91,7 +88,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
           if (!mounted) return;
           context
               .read<SentenceGeneratorBloc>()
-              .add(SentenceGeneratorEventLoad([_studyList[_macro].word]));
+              .add(SentenceGeneratorEventReset());
         }
 
         /// If we ended the list, update the statistics to DB and exit
@@ -151,29 +148,6 @@ class _ListeningStudyState extends State<ListeningStudy> {
     return 0;
   }
 
-  Widget _getSentence(String sentence) {
-    final word = _studyList[_macro].word;
-    final theme = Theme.of(context).textTheme.bodyLarge;
-    if (!_showWord) {
-      return Text(
-          '${'listening_example'.tr()}${sentence.replaceAll(word, '「 ____ 」')}',
-          textAlign: TextAlign.center,
-          style: theme);
-    }
-    final parts = sentence.splitMapJoin(word);
-    return RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-        children: List.generate(parts.length, (i) {
-          return TextSpan(
-            text: parts[i] == word ? '[ ${parts[i]} ]' : parts[i],
-            style: theme,
-          );
-        }),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return KPScaffold(
@@ -190,9 +164,16 @@ class _ListeningStudyState extends State<ListeningStudy> {
           studyMode: widget.args.mode.mode),
       centerTitle: true,
       appBarActions: [
-        Visibility(
-          visible: _showWord,
-          child: TTSIconButton(word: _studyList[_macro].pronunciation),
+        BlocBuilder<SentenceGeneratorBloc, SentenceGeneratorState>(
+          builder: (context, state) {
+            return state.maybeWhen(
+              initial: () => Visibility(
+                visible: _showWord,
+                child: TTSIconButton(word: _studyList[_macro].pronunciation),
+              ),
+              orElse: () => const SizedBox(),
+            );
+          },
         ),
         if (_hasRepetition && widget.args.testMode != Tests.daily)
           IconButton(
@@ -202,36 +183,22 @@ class _ListeningStudyState extends State<ListeningStudy> {
       ],
       child: Column(
         children: [
-          Column(
-            children: [
-              KPListPercentageIndicator(
-                  value: (_macro + 1) / _studyList.length),
-              KPLearningHeaderAnimation(
-                id: _macro,
-                child:
-                    BlocConsumer<SentenceGeneratorBloc, SentenceGeneratorState>(
-                  listener: (context, state) {
-                    state.mapOrNull(succeeded: (s) async {
-                      /// Execute the TTS when passing to the next word
-                      await getIt<TextToSpeechService>().speakWord(s.sentence);
-                    }, error: (_) async {
-                      await getIt<TextToSpeechService>()
-                          .speakWord(_studyList[_macro].word);
-                    });
-                  },
-                  builder: (context, state) {
-                    return state.maybeWhen(
-                      succeeded: (sentence) => _body(sentence),
-                      loading: () => const SizedBox(
-                        height: KPMargins.margin64 * 2,
-                        child: KPProgressIndicator(),
-                      ),
-                      orElse: () => _body(null),
-                    );
-                  },
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                KPListPercentageIndicator(
+                    value: (_macro + 1) / _studyList.length),
+                KPLearningHeaderAnimation(
+                  id: _macro,
+                  child: ContextLoader(
+                    word: _studyList[_macro].word,
+                    child: _body,
+                  ),
                 ),
-              ),
-            ],
+                if (!_showWord) ContextButton(word: _studyList[_macro].word),
+              ],
+            ),
           ),
           KPValidationButtons(
             trigger: _showWord,
@@ -273,13 +240,10 @@ class _ListeningStudyState extends State<ListeningStudy> {
             ),
           ),
           if (sentence != null)
-            Padding(
-              padding: const EdgeInsets.only(
-                top: KPMargins.margin12,
-                left: KPMargins.margin32,
-                right: KPMargins.margin32,
-              ),
-              child: _getSentence(sentence),
+            ContextWidget(
+              word: _studyList[_macro].word,
+              showWord: _showWord,
+              sentence: sentence,
             ),
           Visibility(
             visible: _showWord,

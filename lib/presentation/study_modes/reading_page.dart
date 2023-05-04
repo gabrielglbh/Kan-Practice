@@ -191,16 +191,9 @@ class _ReadingStudyState extends State<ReadingStudy> {
           studyMode: widget.args.mode.mode),
       centerTitle: true,
       appBarActions: [
-        BlocBuilder<SentenceGeneratorBloc, SentenceGeneratorState>(
-          builder: (context, state) {
-            return state.maybeWhen(
-              initial: () => Visibility(
-                visible: _showPronunciation,
-                child: TTSIconButton(word: _studyList[_macro].pronunciation),
-              ),
-              orElse: () => const SizedBox(),
-            );
-          },
+        Visibility(
+          visible: _showPronunciation,
+          child: TTSIconButton(word: _studyList[_macro].pronunciation),
         ),
         if (_hasRepetition && widget.args.testMode != Tests.daily)
           IconButton(
@@ -270,6 +263,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
               word: _studyList[_macro].word,
               showWord: _showPronunciation,
               sentence: sentence,
+              mode: StudyModes.reading,
             ),
           KPLearningTextBox(
             textStyle: Theme.of(context).textTheme.bodyLarge,

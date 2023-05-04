@@ -244,6 +244,8 @@ class _ListeningStudyState extends State<ListeningStudy> {
               word: _studyList[_macro].word,
               showWord: _showWord,
               sentence: sentence,
+              mode: StudyModes.listening,
+              hasTTS: true,
             ),
           Visibility(
             visible: _showWord,

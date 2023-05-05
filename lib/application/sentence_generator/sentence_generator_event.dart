@@ -8,12 +8,9 @@ abstract class SentenceGeneratorEvent extends Equatable {
 }
 
 class SentenceGeneratorEventLoad extends SentenceGeneratorEvent {
-  final List<String> words;
+  final List<String>? words;
 
-  const SentenceGeneratorEventLoad(this.words);
-
-  @override
-  List<Object> get props => [words];
+  const SentenceGeneratorEventLoad({this.words});
 }
 
 class SentenceGeneratorEventReset extends SentenceGeneratorEvent {}

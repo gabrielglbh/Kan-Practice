@@ -88,7 +88,7 @@ class StudyModeUpdateHandler {
 
                       /// If the test was a number test, just go to the result page with
                       /// a null study list to not show anything.
-                      if (!args.isNumberTest) {
+                      if (!args.isNumberTest || !args.isTranslationTest) {
                         if (getIt<PreferencesService>()
                                 .readData(SharedKeys.affectOnPractice) ??
                             false) {

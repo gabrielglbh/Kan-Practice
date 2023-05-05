@@ -472,6 +472,21 @@ class WordRepositoryImpl implements IWordRepository {
   }
 
   @override
+  Future<Word> getRandomWord(int category) async {
+    try {
+      final res = await _database.rawQuery("SELECT * "
+          "FROM ${WordTableFields.wordTable} "
+          "WHERE${WordTableFields.categoryField} = $category "
+          "ORDER BY RANDOM() "
+          "LIMIT 1");
+      return Word.fromJson(res[0]);
+    } catch (err) {
+      print(err.toString());
+      return Word.empty;
+    }
+  }
+
+  @override
   Future<List<Word>> getWordsBasedOnCategory(int category) async {
     try {
       List<Map<String, dynamic>>? res = [];

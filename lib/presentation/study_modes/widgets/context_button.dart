@@ -18,7 +18,7 @@ class ContextButton extends StatelessWidget {
               onPressed: () {
                 final bloc = context.read<SentenceGeneratorBloc>();
                 bloc.state.mapOrNull(initial: (_) {
-                  bloc.add(SentenceGeneratorEventLoad([word]));
+                  bloc.add(SentenceGeneratorEventLoad(words: [word]));
                 });
               },
               child: SizedBox(

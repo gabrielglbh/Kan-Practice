@@ -74,6 +74,7 @@ class _KPTranslationTestBottomSheetState
                       studyModeHeaderDisplayName: "test_mode_translation".tr(),
                       testHistoryDisplasyName:
                           "translation_bottom_sheet_label".tr(),
+                      isTranslationTest: true,
                     ),
                   );
                 },

@@ -13,12 +13,19 @@ class ContextButton extends StatelessWidget {
     return BlocBuilder<SentenceGeneratorBloc, SentenceGeneratorState>(
       builder: (context, state) {
         return state.maybeWhen(
-          initial: () => ElevatedButton(
+          loading: () => const SizedBox(),
+          succeeded: (_, __) => const SizedBox(),
+          orElse: () => ElevatedButton(
             onPressed: () {
               final bloc = context.read<SentenceGeneratorBloc>();
-              bloc.state.mapOrNull(initial: (_) {
-                bloc.add(SentenceGeneratorEventLoad(words: [word]));
-              });
+              bloc.state.mapOrNull(
+                initial: (_) {
+                  bloc.add(SentenceGeneratorEventLoad(words: [word]));
+                },
+                error: (_) {
+                  bloc.add(SentenceGeneratorEventLoad(words: [word]));
+                },
+              );
             },
             child: SizedBox(
               height: KPMargins.margin26,
@@ -42,7 +49,6 @@ class ContextButton extends StatelessWidget {
               ),
             ),
           ),
-          orElse: () => const SizedBox(),
         );
       },
     );

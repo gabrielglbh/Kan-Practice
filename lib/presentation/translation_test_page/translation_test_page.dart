@@ -128,26 +128,24 @@ class _TranslationTestPageState extends State<TranslationTestPage> {
           title: widget.args.studyModeHeaderDisplayName,
           studyMode: widget.args.mode.mode),
       centerTitle: true,
-      child: Column(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+      child: BlocConsumer<SentenceGeneratorBloc, SentenceGeneratorState>(
+        listener: (context, state) {
+          state.mapOrNull(
+            succeeded: (s) async {
+              await getIt<TextToSpeechService>().speakWord(s.sentence);
+            },
+          );
+        },
+        builder: (context, state) {
+          return Column(
             children: [
-              KPListPercentageIndicator(value: (_macro + 1) / _max),
-              KPLearningHeaderAnimation(
-                id: _macro,
-                child:
-                    BlocConsumer<SentenceGeneratorBloc, SentenceGeneratorState>(
-                  listener: (context, state) {
-                    state.mapOrNull(
-                      succeeded: (s) async {
-                        await getIt<TextToSpeechService>()
-                            .speakWord(s.sentence);
-                      },
-                    );
-                  },
-                  builder: (context, state) {
-                    return state.maybeWhen(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  KPListPercentageIndicator(value: (_macro + 1) / _max),
+                  KPLearningHeaderAnimation(
+                    id: _macro,
+                    child: state.maybeWhen(
                       succeeded: (sentence, usedWords) =>
                           _body(sentence, usedWords),
                       loading: () => const SizedBox(
@@ -175,19 +173,27 @@ class _TranslationTestPageState extends State<TranslationTestPage> {
                           ),
                         ),
                       ),
-                    );
-                  },
+                    ),
+                  ),
+                ],
+              ),
+              state.maybeWhen(
+                loading: () => KPValidationButtons(
+                  trigger: _showTranslation,
+                  submitLabel: "translation_test_loading".tr(),
+                  action: (_) {},
+                  onSubmit: () {},
+                ),
+                orElse: () => KPValidationButtons(
+                  trigger: _showTranslation,
+                  submitLabel: "done_button_label".tr(),
+                  action: (score) async => await _updateUIOnSubmit(score),
+                  onSubmit: () => setState(() => _showTranslation = true),
                 ),
               ),
             ],
-          ),
-          KPValidationButtons(
-            trigger: _showTranslation,
-            submitLabel: "done_button_label".tr(),
-            action: (score) async => await _updateUIOnSubmit(score),
-            onSubmit: () => setState(() => _showTranslation = true),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -220,7 +226,7 @@ class _TranslationTestPageState extends State<TranslationTestPage> {
             visible: _showTranslation,
             child: FutureBuilder(
               future: _getProperMeaning(sentence),
-              initialData: 'Loading translation...',
+              initialData: 'translation_loading'.tr(),
               builder: (_, AsyncSnapshot<String> snapshot) {
                 return KPLearningTextBox(
                   textStyle: Theme.of(context)

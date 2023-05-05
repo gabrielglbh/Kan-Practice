@@ -58,6 +58,14 @@ class _KPTranslationTestBottomSheetState
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyLarge),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: KPMargins.margin8,
+                    horizontal: KPMargins.margin32),
+                child: Text("translation_test_disclaimer".tr(),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium),
+              ),
               const SizedBox(height: KPMargins.margin32),
               Icon(Tests.translation.icon, size: KPMargins.margin64),
               const SizedBox(height: KPMargins.margin32),

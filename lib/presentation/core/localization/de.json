@@ -439,5 +439,7 @@
   "translation_bottom_sheet_label": "Übersetzung",
   "translation_bottom_sheet_begin_ext": "始める",
   "translation_bottom_sheet_begin": "Beginn",
-  "translation_loading": "Übersetzung laden..."
+  "translation_loading": "Übersetzung laden...",
+  "translation_test_loading": "Generierung eines zufälligen Satzes...",
+  "translation_test_disclaimer": "Um diesen Test durchzuführen, ist eine stabile Internetverbindung erforderlich"
 }

@@ -35,17 +35,19 @@ class ContextWidget extends StatelessWidget {
           textAlign: TextAlign.center, style: theme);
     } else {
       final parts = sentence.splitMapJoin(word);
-      child = RichText(
-        textAlign: TextAlign.center,
-        text: TextSpan(
-          children: List.generate(parts.length, (i) {
-            return TextSpan(
-              text: parts[i] == word ? '「 ${parts[i]} 」' : parts[i],
-              style: theme,
+      child = sentence == word
+          ? Text(sentence, style: theme)
+          : RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                children: List.generate(parts.length, (i) {
+                  return TextSpan(
+                    text: parts[i] == word ? '「 ${parts[i]} 」' : parts[i],
+                    style: theme,
+                  );
+                }),
+              ),
             );
-          }),
-        ),
-      );
     }
 
     return Padding(

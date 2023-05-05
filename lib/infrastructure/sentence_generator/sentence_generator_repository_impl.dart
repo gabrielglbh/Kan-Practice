@@ -15,8 +15,8 @@ class SentenceGeneratorRepository implements ISentenceGeneratorRepository {
       final response = await _httpService.postOpenAI({
         'model': 'text-davinci-003',
         'prompt':
-            'Write a japanese sentence that contains the ${words.length == 1 ? 'word' : 'words'} ${words.join(', ')}',
-        'max_tokens': words.length == 1 ? 32 : 48
+            'Write a ${words.length == 1 ? 'simple' : ''} japanese sentence that contains the ${words.length == 1 ? 'word' : 'words'} ${words.join(', ')}',
+        'max_tokens': 64
       });
       if (response.statusCode == 200) {
         return SentenceGeneratorDto.fromJson(

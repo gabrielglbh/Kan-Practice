@@ -20,8 +20,6 @@ class BackUpPage extends StatelessWidget {
           Utils.getSnackBar(context, error.message);
         }, loaded: (l) {
           Utils.getSnackBar(context, l.message);
-          Navigator.of(context).pop(); // Go to manage account, pop
-          Navigator.of(context).pop(); // Go to settings, pop
         });
       },
       builder: (bloc, state) {

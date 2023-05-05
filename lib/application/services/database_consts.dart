@@ -153,6 +153,13 @@ class TestSpecificDataTableFields {
       "totalWinRateGrammarPoint";
 }
 
+class AlterTestSpecificDataTableFields {
+  static const String testDataTable = "ALTER_TEST_SPECIFIC_ACC_TABLE";
+  static const String idField = "id";
+  static const String totalNumberTestCountField = "totalNumberTestCount";
+  static const String totalWinRateNumberTestField = "totalWinRateNumberTest";
+}
+
 class GrammarTableFields {
   static const String grammarTable = "GRAMMAR_TABLE";
   static const String nameField = "name";

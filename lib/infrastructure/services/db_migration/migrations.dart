@@ -2,6 +2,18 @@ import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Migrations {
+  Future<void> version12to13(Database db) async {
+    try {
+      await db.execute(
+          "CREATE TABLE ${AlterTestSpecificDataTableFields.testDataTable}("
+          "${AlterTestSpecificDataTableFields.idField} INTEGER NOT NULL PRIMARY KEY DEFAULT -1, "
+          "${AlterTestSpecificDataTableFields.totalNumberTestCountField} INTEGER NOT NULL DEFAULT 0, "
+          "${AlterTestSpecificDataTableFields.totalWinRateNumberTestField} INTEGER NOT NULL DEFAULT 0)");
+    } catch (err) {
+      print(err);
+    }
+  }
+
   Future<void> version11to12(Database db) async {
     await db.rawQuery("ALTER TABLE ${ListTableFields.listsTable} "
         "ADD COLUMN ${ListTableFields.totalWinRateGrammarPointField} INTEGER NOT NULL DEFAULT ${DatabaseConstants.emptyWinRate.toString()}");

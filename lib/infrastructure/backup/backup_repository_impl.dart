@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
+import 'package:kanpractice/domain/alter_specific_data/alter_specific_data.dart';
+import 'package:kanpractice/domain/alter_specific_data/i_alter_specific_data_repository.dart';
 import 'package:kanpractice/domain/backup/backup.dart';
 import 'package:kanpractice/domain/backup/i_backup_repository.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
@@ -34,6 +36,7 @@ class BackupRepositoryImpl implements IBackupRepository {
   final IRelationFolderListRepository _relationFolderListRepository;
   final IFolderRepository _folderRepository;
   final ISpecificDataRepository _specificDataRepository;
+  final IAlterSpecificDataRepository _alterSpecificDataRepository;
   final ITestDataRepository _testDataRepository;
 
   BackupRepositoryImpl(
@@ -47,6 +50,7 @@ class BackupRepositoryImpl implements IBackupRepository {
     this._folderRepository,
     this._specificDataRepository,
     this._testDataRepository,
+    this._alterSpecificDataRepository,
   );
 
   final String collection = "BackUps";
@@ -57,6 +61,7 @@ class BackupRepositoryImpl implements IBackupRepository {
   final String relFolderKanListLabel = "RelationsFK";
   final String testsLabel = "Tests";
   final String testSpecsLabel = "TestsSpecs";
+  final String alterTestSpecsLabel = "AlterTestsSpecs";
   int writes = 0;
 
   /// We make sure that when the limit of 500 WRITES per batch is met,
@@ -82,6 +87,7 @@ class BackupRepositoryImpl implements IBackupRepository {
     List<WordList> lists = await _listRepository.getAllLists();
     TestData testData = await _testDataRepository.getTestDataFromDb();
     List<SpecificData> testSpecData = [];
+    List<AlterSpecificData> alterTestSpecData = [];
 
     /// Remove from the back up the empty specs
     if (testData.selectionTestData.id != -1) {
@@ -94,7 +100,7 @@ class BackupRepositoryImpl implements IBackupRepository {
       testSpecData.add(testData.remembranceTestData);
     }
     if (testData.numberTestData.id != -1) {
-      testSpecData.add(testData.numberTestData);
+      alterTestSpecData.add(testData.numberTestData);
     }
     if (testData.lessPctTestData.id != -1) {
       testSpecData.add(testData.lessPctTestData);
@@ -188,6 +194,18 @@ class BackupRepositoryImpl implements IBackupRepository {
               .collection(testSpecsLabel)
               .doc(testSpecData[x].id.toString());
           batch.set(doc, testSpecData[x].toJson());
+          writes++;
+          batch = await _reinitializeBatch(batch);
+        }
+
+        /// Alter Tests Specs
+        for (int x = 0; x < alterTestSpecData.length; x++) {
+          final DocumentReference doc = _ref
+              .collection(collection)
+              .doc(user?.uid)
+              .collection(alterTestSpecsLabel)
+              .doc(alterTestSpecData[x].id.toString());
+          batch.set(doc, alterTestSpecData[x].toJson());
           writes++;
           batch = await _reinitializeBatch(batch);
         }
@@ -304,6 +322,11 @@ class BackupRepositoryImpl implements IBackupRepository {
           .doc(user?.uid)
           .collection(testSpecsLabel)
           .get();
+      final alterTestSpecDataSnapshot = await _ref
+          .collection(collection)
+          .doc(user?.uid)
+          .collection(alterTestSpecsLabel)
+          .get();
       final relFolderKanListSnapshot = await _ref
           .collection(collection)
           .doc(user?.uid)
@@ -398,6 +421,21 @@ class BackupRepositoryImpl implements IBackupRepository {
         }
       }
 
+      if (alterTestSpecDataSnapshot.size > 0) {
+        for (int x = 0; x < alterTestSpecDataSnapshot.size; x++) {
+          batch.delete(_ref
+              .collection(collection)
+              .doc(user?.uid)
+              .collection(alterTestSpecsLabel)
+              .doc(SpecificData.fromJson(
+                      alterTestSpecDataSnapshot.docs[x].data())
+                  .id
+                  .toString()));
+          writes++;
+          batch = await _reinitializeBatch(batch);
+        }
+      }
+
       batch.delete(_ref.collection(collection).doc(user?.uid));
       writes++;
       batch = await _reinitializeBatch(batch);
@@ -447,6 +485,11 @@ class BackupRepositoryImpl implements IBackupRepository {
           .doc(user?.uid)
           .collection(testSpecsLabel)
           .get();
+      final alterTestSpecDataSnapshot = await _ref
+          .collection(collection)
+          .doc(user?.uid)
+          .collection(alterTestSpecsLabel)
+          .get();
       final relFolderKanListSnapshot = await _ref
           .collection(collection)
           .doc(user?.uid)
@@ -460,6 +503,7 @@ class BackupRepositoryImpl implements IBackupRepository {
       List<RelationFolderList> backUpRelationFolderList = [];
       TestData backUpTestData = TestData.empty;
       List<SpecificData> backUpTestSpecData = [];
+      List<AlterSpecificData> backUpAlterTestSpecData = [];
 
       if (wordSnapshot.size > 0) {
         for (int x = 0; x < wordSnapshot.size; x++) {
@@ -564,6 +608,30 @@ class BackupRepositoryImpl implements IBackupRepository {
         }
       }
 
+      if (alterTestSpecDataSnapshot.size > 0) {
+        // TODO: Breaking change on 4.3.2
+        // with definition and grammar point fields being required not null
+        for (int x = 0; x < alterTestSpecDataSnapshot.size; x++) {
+          Map<String, dynamic> json = alterTestSpecDataSnapshot.docs[x].data();
+          if (!json.containsKey(
+              AlterTestSpecificDataTableFields.totalNumberTestCountField)) {
+            json.addEntries([
+              const MapEntry(
+                  AlterTestSpecificDataTableFields.totalNumberTestCountField, 0)
+            ]);
+          }
+          if (!json.containsKey(
+              AlterTestSpecificDataTableFields.totalWinRateNumberTestField)) {
+            json.addEntries([
+              const MapEntry(
+                  AlterTestSpecificDataTableFields.totalWinRateNumberTestField,
+                  0)
+            ]);
+          }
+          backUpAlterTestSpecData.add(AlterSpecificData.fromJson(json));
+        }
+      }
+
       /// Order matters as words and grammar points depends on lists.
       /// Conflict algorithm allows us to merge the data from back up with current one.
       Batch? batch = _database.batch();
@@ -588,6 +656,9 @@ class BackupRepositoryImpl implements IBackupRepository {
 
       batch = _specificDataRepository.mergeSpecificData(
           batch, backUpTestSpecData, ConflictAlgorithm.replace);
+
+      batch = _alterSpecificDataRepository.mergeAlterSpecificData(
+          batch, backUpAlterTestSpecData, ConflictAlgorithm.replace);
 
       final results = await batch?.commit();
       return results?.isEmpty == true

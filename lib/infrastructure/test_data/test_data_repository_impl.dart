@@ -1,5 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
+import 'package:kanpractice/domain/alter_specific_data/alter_specific_data.dart';
+import 'package:kanpractice/domain/alter_specific_data/i_alter_specific_data_repository.dart';
 import 'package:kanpractice/domain/specific_data/i_specific_data_repository.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
@@ -14,8 +16,10 @@ import 'package:sqflite/sqlite_api.dart';
 class TestDataRepositoryImpl implements ITestDataRepository {
   final Database _database;
   final ISpecificDataRepository _specificDataRepository;
+  final IAlterSpecificDataRepository _alterSpecificDataRepository;
 
-  TestDataRepositoryImpl(this._database, this._specificDataRepository);
+  TestDataRepositoryImpl(this._database, this._specificDataRepository,
+      this._alterSpecificDataRepository);
 
   @override
   Map<String, num> getAdditionalParams(TestData curr, Test test) {
@@ -110,11 +114,21 @@ class TestDataRepositoryImpl implements ITestDataRepository {
       );
       if (res.isNotEmpty) {
         /// Populate all TestSpecificData
+        // TODO: Adjust when other TEST like Numbers is added
         TestData rawTestData = TestData.fromJson(res[0]);
         for (var t in Tests.values) {
-          final rawSpec = await _specificDataRepository.getSpecificTestData(t);
-          if (rawSpec != SpecificData.empty) {
-            rawTestData = rawTestData.copyWith(rawSpec);
+          if (t == Tests.numbers) {
+            final rawAlterSpec =
+                await _alterSpecificDataRepository.getAlterSpecificTestData(t);
+            if (rawAlterSpec != AlterSpecificData.empty) {
+              rawTestData = rawTestData.copyWith(alterTestSpecs: rawAlterSpec);
+            }
+          } else {
+            final rawSpec =
+                await _specificDataRepository.getSpecificTestData(t);
+            if (rawSpec != SpecificData.empty) {
+              rawTestData = rawTestData.copyWith(testSpecs: rawSpec);
+            }
           }
         }
         return rawTestData;
@@ -187,10 +201,15 @@ class TestDataRepositoryImpl implements ITestDataRepository {
         TestDataTableFields.totalTestsField: totalTests,
       };
 
-      map.addEntries(getAdditionalParams(curr, test).entries);
       map.addEntries(getTestParams(curr, test).entries);
 
-      await _specificDataRepository.updateSpecificTestStats(test);
+      // TODO: Adjust when other TEST like Numbers is added
+      if (test.testMode == Tests.numbers.index) {
+        await _alterSpecificDataRepository.updateAlterSpecificTestStats(test);
+      } else {
+        map.addEntries(getAdditionalParams(curr, test).entries);
+        await _specificDataRepository.updateSpecificTestStats(test);
+      }
       await _database.update(
         TestDataTableFields.testDataTable,
         map,

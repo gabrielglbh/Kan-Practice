@@ -60,8 +60,8 @@ class _SettingsPageState extends State<SettingsPage> {
             trailing: const Icon(Icons.link),
             onTap: () async {
               try {
-                await Utils.launch(
-                    context, "https://github.com/gabrielglbh/Kan-Practice");
+                await Utils.launch(context,
+                    "https://github.com/gabrielglbh/Kan-Practice/tree/pro");
               } catch (err) {
                 Utils.getSnackBar(
                     context, "settings_information_rating_failed".tr());

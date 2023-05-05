@@ -15,15 +15,15 @@ Build your own word, sentences and grammar lists and study them whenever you wan
 ## Screenshots
 
 <p align="center">
+  <img src="documentation/translations.png" width="20%">
   <img src="documentation/chatgpt.png" width="20%">
   <img src="documentation/kanlist.png" width="20%">
   <img src="documentation/market.png" width="20%">
-  <img src="documentation/dictionary.png" width="20%">
 </p>
 
 <p align="center">
   <img src="documentation/jisho.png" width="20%">
-  <img src="documentation/lists.png" width="20%">
+  <img src="documentation/dictionary.png" width="20%">
   <img src="documentation/grammar.png" width="20%">
   <img src="documentation/stats.png" width="20%">
 </p>

@@ -185,7 +185,7 @@ class _KanPracticeState extends State<KanPractice> {
           });
         },
         child: MaterialApp(
-          title: 'KanPractice',
+          title: 'KanPractice Pro',
           locale: context.locale,
           supportedLocales: context.supportedLocales,
           localizationsDelegates: context.localizationDelegates,

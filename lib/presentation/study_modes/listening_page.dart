@@ -1,15 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/sentence_generator/sentence_generator_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
-import 'package:kanpractice/application/services/text_to_speech_service.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_learning_header_animation.dart';
-import 'package:kanpractice/presentation/core/widgets/kp_learning_header_container.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_learning_text_box.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_list_percentage_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_study_mode_app_bar.dart';
@@ -19,6 +19,9 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 import 'package:kanpractice/presentation/study_modes/utils/study_mode_update_handler.dart';
+import 'package:kanpractice/presentation/study_modes/widgets/context_button.dart';
+import 'package:kanpractice/presentation/study_modes/widgets/context_loader.dart';
+import 'package:kanpractice/presentation/study_modes/widgets/context_widget.dart';
 
 class ListeningStudy extends StatefulWidget {
   final ModeArguments args;
@@ -51,9 +54,6 @@ class _ListeningStudyState extends State<ListeningStudy> {
     _enableRepOnTest = getIt<PreferencesService>()
         .readData(SharedKeys.enableRepetitionOnTests);
     _studyList.addAll(widget.args.studyList);
-
-    /// Execute the TTS when passing to the next word
-    getIt<TextToSpeechService>().speakWord(_studyList[_macro].pronunciation);
     context.read<StudyModeBloc>().add(StudyModeEventResetTracking());
     super.initState();
   }
@@ -85,9 +85,10 @@ class _ListeningStudyState extends State<ListeningStudy> {
             _showWord = false;
           });
 
-          /// Execute the TTS when passing to the next word
-          await getIt<TextToSpeechService>()
-              .speakWord(_studyList[_macro].pronunciation);
+          if (!mounted) return;
+          context
+              .read<SentenceGeneratorBloc>()
+              .add(SentenceGeneratorEventReset());
         }
 
         /// If we ended the list, update the statistics to DB and exit
@@ -163,9 +164,16 @@ class _ListeningStudyState extends State<ListeningStudy> {
           studyMode: widget.args.mode.mode),
       centerTitle: true,
       appBarActions: [
-        Visibility(
-          visible: _showWord,
-          child: TTSIconButton(word: _studyList[_macro].pronunciation),
+        BlocBuilder<SentenceGeneratorBloc, SentenceGeneratorState>(
+          builder: (context, state) {
+            return state.maybeWhen(
+              initial: () => Visibility(
+                visible: _showWord,
+                child: TTSIconButton(word: _studyList[_macro].pronunciation),
+              ),
+              orElse: () => const SizedBox(),
+            );
+          },
         ),
         if (_hasRepetition && widget.args.testMode != Tests.daily)
           IconButton(
@@ -176,10 +184,21 @@ class _ListeningStudyState extends State<ListeningStudy> {
       child: Column(
         children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               KPListPercentageIndicator(
                   value: (_macro + 1) / _studyList.length),
-              KPLearningHeaderAnimation(id: _macro, children: _header()),
+              KPLearningHeaderAnimation(
+                id: _macro,
+                child: widget.args.isNumberTest
+                    ? _body(null)
+                    : ContextLoader(
+                        word: _studyList[_macro].word,
+                        child: _body,
+                      ),
+              ),
+              if (!widget.args.isNumberTest && !_showWord)
+                ContextButton(word: _studyList[_macro].word),
             ],
           ),
           KPValidationButtons(
@@ -193,42 +212,58 @@ class _ListeningStudyState extends State<ListeningStudy> {
     );
   }
 
-  List<Widget> _header() {
-    return [
-      Visibility(
-        visible: _showWord,
-        maintainSize: true,
-        maintainAnimation: true,
-        maintainState: true,
-        child: KPLearningHeaderContainer(
-          height: KPSizes.defaultSizeLearningExtContainer + KPMargins.margin8,
-          text: _studyList[_macro].pronunciation,
-        ),
+  Widget _body(String? sentence) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        children: [
+          Visibility(
+            visible: _showWord,
+            maintainSize: true,
+            maintainAnimation: true,
+            maintainState: true,
+            child: KPLearningTextBox(
+              text: _studyList[_macro].pronunciation,
+              textStyle: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ),
+          Visibility(
+              visible: !_showWord,
+              child: TTSIconButton(
+                  word: sentence ?? _studyList[_macro].pronunciation,
+                  iconSize: KPMargins.margin64 + KPMargins.margin4)),
+          Visibility(
+            visible: _showWord,
+            child: FittedBox(
+              child: KPLearningTextBox(
+                  text: _studyList[_macro].word,
+                  textStyle: Theme.of(context).textTheme.displaySmall),
+            ),
+          ),
+          if (sentence != null)
+            ContextWidget(
+              word: _studyList[_macro].word,
+              showWord: _showWord,
+              sentence: sentence,
+              mode: StudyModes.listening,
+              hasTTS: _showWord,
+            ),
+          Visibility(
+            visible: _showWord,
+            maintainSize: true,
+            maintainAnimation: true,
+            maintainState: true,
+            child: KPLearningTextBox(
+              text: _studyList[_macro].meaning,
+              top: KPMargins.margin8,
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .bodyLarge
+                  ?.copyWith(fontWeight: FontWeight.bold),
+            ),
+          )
+        ],
       ),
-      Visibility(
-          visible: !_showWord,
-          child: TTSIconButton(
-              word: _studyList[_macro].pronunciation,
-              iconSize: KPMargins.margin64 + KPMargins.margin4)),
-      Visibility(
-        visible: _showWord,
-        child: KPLearningHeaderContainer(
-          fontSize: KPFontSizes.fontSize64,
-          height: KPSizes.listStudyHeight,
-          text: _studyList[_macro].word,
-        ),
-      ),
-      Visibility(
-        visible: _showWord,
-        maintainSize: true,
-        maintainAnimation: true,
-        maintainState: true,
-        child: KPLearningHeaderContainer(
-          height: KPSizes.defaultSizeLearningExtContainer,
-          text: _studyList[_macro].meaning,
-          top: KPMargins.margin8,
-        ),
-      )
-    ];
+    );
   }
 }

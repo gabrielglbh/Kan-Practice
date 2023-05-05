@@ -150,8 +150,8 @@
   "settings_general_graphs": "Datenanzeigemodus ändern",
   "settings_tutorial_label": "Tutorial anzeigen",
   "settings_general_versionNotes": "Versionshinweise",
-  "settings_account_section": "Konto verwalten & Datensicherung",
-  "settings_account_label": "Konto",
+  "settings_account_section": "Konto",
+  "settings_account_label": "Kontoeinstellungen",
   "settings_information_section": "Information",
   "settings_information_contribute": "KanPractice Entwicklungsstatus auf GitHub",
   "settings_information_rating": "Die App bewerten!",
@@ -430,5 +430,16 @@
   "settings_general_badge_words_description": "Ob Wörter in Listen als Abzeichen oder als Listenelemente angezeigt werden sollen.",
   "archive_title": "Archiv",
   "daily_max_words_limit": "Maximale Wörter pro Tag",
-  "daily_max_grammar_limit": "Maximale Grammatikpunkte pro Tag"
+  "daily_max_grammar_limit": "Maximale Grammatikpunkte pro Tag",
+  "provide_context": "Context",
+  "test_mode_translation": "Übersetzungstest",
+  "abbr_test_mode_translation": "Übersetzung",
+  "translation_bottom_sheet_content": "Es werden zufällige japanische Sätze mit Ihrem Vokabular generiert, um Ihr Verständnis zu trainieren. Machen wir den Übersetzungstest!",
+  "translation_bottom_sheet_title": "Machen Sie einen Übersetzungstest",
+  "translation_bottom_sheet_label": "Übersetzung",
+  "translation_bottom_sheet_begin_ext": "始める",
+  "translation_bottom_sheet_begin": "Beginn",
+  "translation_loading": "Übersetzung laden...",
+  "translation_test_loading": "Generierung eines zufälligen Satzes...",
+  "translation_test_disclaimer": "Um diesen Test durchzuführen, ist eine stabile Internetverbindung erforderlich"
 }

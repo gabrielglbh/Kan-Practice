@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
-import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/sign_in_mode.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
@@ -281,18 +280,6 @@ class _LoginPageState extends State<LoginPage> {
           child: Text("${"login_current_account_logged".tr()} ${user.email}.",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge),
-        ),
-        SizedBox(
-          height: KPSizes.appBarHeight,
-          child: Padding(
-            padding: const EdgeInsets.all(KPMargins.margin16),
-            child: ElevatedButton(
-              onPressed: () => Navigator.of(context)
-                  .pushNamed(KanPracticePages.backUpPage, arguments: user.uid),
-              child: Text("login_manage_backup_title".tr(),
-                  style: Theme.of(context).textTheme.labelLarge),
-            ),
-          ),
         ),
         ListTile(
           title: Text("login_miscellaneous_title".tr(),

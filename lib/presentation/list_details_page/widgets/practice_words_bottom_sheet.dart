@@ -36,6 +36,14 @@ class PracticeWordsBottomSheet extends StatefulWidget {
 }
 
 class _PracticeWordsBottomSheetState extends State<PracticeWordsBottomSheet> {
+  List<Word> wordList = [];
+
+  @override
+  void initState() {
+    wordList.addAll(widget.list);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BottomSheet(
@@ -96,8 +104,8 @@ class _PracticeWordsBottomSheetState extends State<PracticeWordsBottomSheet> {
           // ignore: use_build_context_synchronously
           Utils.getSnackBar(context, "study_modes_empty".tr());
         } else {
-          widget.list.shuffle();
-          await _decideOnMode(widget.list, mode);
+          wordList.shuffle();
+          await _decideOnMode(wordList, mode);
         }
       },
     );

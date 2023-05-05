@@ -22,6 +22,7 @@ abstract class IWordRepository {
     ConflictAlgorithm conflictAlgorithm,
   );
   Future<Word> getWord(String word, {String? listName, String? meaning});
+  Future<Word> getRandomWord(int category);
 
   /// Gets a [Word] and removes it from the db.
   /// Returns an integer depending on the error given:

@@ -8,6 +8,7 @@ class TestResultArguments {
   final int? grammarMode;
   final int testMode;
   final String listsName;
+  final bool alterTest;
   final Map<String, List<Map<Word, double>>>? studyList;
   final Map<String, List<Map<GrammarPoint, double>>>? grammarList;
 
@@ -20,6 +21,7 @@ class TestResultArguments {
     required this.listsName,
     this.studyList,
     this.grammarList,
+    this.alterTest = false,
   }) : assert((studyMode != null &&
                 studyList != null &&
                 grammarMode == null &&
@@ -27,5 +29,6 @@ class TestResultArguments {
             (studyMode == null &&
                 studyList == null &&
                 grammarMode != null &&
-                grammarList != null));
+                grammarList != null) ||
+            alterTest);
 }

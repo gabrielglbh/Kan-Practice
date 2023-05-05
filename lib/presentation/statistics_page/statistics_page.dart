@@ -78,9 +78,13 @@ class _StatisticsPageState extends State<StatisticsPage>
         appBarTitle: "settings_general_statistics".tr(),
         appBarActions: [
           if (_controller.index == _tabs.length - 1)
-            IconButton(
-              icon: const Icon(Icons.clear_all_rounded),
-              onPressed: () => _showRemoveTestsDialog(context),
+            BlocBuilder<TestHistoryBloc, TestHistoryState>(
+              builder: (context, state) {
+                return IconButton(
+                  icon: const Icon(Icons.clear_all_rounded),
+                  onPressed: () => _showRemoveTestsDialog(context),
+                );
+              },
             ),
         ],
         child: BlocBuilder<StatsBloc, StatsState>(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:kanpractice/application/add_word/add_word_bloc.dart';
+import 'package:kanpractice/application/alter_specific_data/alter_specific_data_bloc.dart';
 import 'package:kanpractice/application/archive_grammar_points/archive_grammar_points_bloc.dart';
 import 'package:kanpractice/application/archive_words/archive_words_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
@@ -19,6 +20,7 @@ import 'package:kanpractice/application/list_details_grammar_points/list_details
 import 'package:kanpractice/application/list_details_words/list_details_words_bloc.dart';
 import 'package:kanpractice/application/lists/lists_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
+import 'package:kanpractice/application/sentence_generator/sentence_generator_bloc.dart';
 import 'package:kanpractice/application/services/messaging_service.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/application/specific_data/specific_data_bloc.dart';
@@ -165,6 +167,7 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<GenericTestBloc>()),
         BlocProvider(create: (_) => getIt<FolderDetailsBloc>()),
         BlocProvider(create: (_) => getIt<SpecificDataBloc>()),
+        BlocProvider(create: (_) => getIt<AlterSpecificDataBloc>()),
         BlocProvider(create: (_) => getIt<ListDetailsWordsBloc>()),
         BlocProvider(create: (_) => getIt<ListDetailsGrammarPointsBloc>()),
         BlocProvider(create: (_) => getIt<GrammarModeBloc>()),
@@ -173,6 +176,7 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<ArchiveWordsBloc>()),
         BlocProvider(create: (_) => getIt<AddWordBloc>()),
         BlocProvider(create: (_) => getIt<DailyOptionsBloc>()),
+        BlocProvider(create: (_) => getIt<SentenceGeneratorBloc>()),
       ],
       child: BlocListener<ExampleDataBloc, ExampleDataState>(
         listener: (context, state) {

@@ -92,6 +92,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyLarge),
               ),
+              const SizedBox(height: KPMargins.margin16),
               GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2, childAspectRatio: 4),
@@ -144,6 +145,7 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
                   );
                 },
               ),
+              const SizedBox(height: KPMargins.margin16),
               _numberButton(context, "number_bottom_sheet_label".tr()),
               const SizedBox(height: KPMargins.margin8),
             ],

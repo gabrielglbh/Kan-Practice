@@ -2,6 +2,7 @@ import 'package:app_settings/app_settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/auth/auth_bloc.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
 import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
 import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
@@ -145,11 +146,38 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
           const Divider(),
-          ListTile(
-              leading: const Icon(Icons.whatshot_rounded),
-              title: Text("settings_account_label".tr()),
-              onTap: () =>
-                  Navigator.of(context).pushNamed(KanPracticePages.loginPage)),
+          BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              return ListTile(
+                  leading: const Icon(Icons.whatshot_rounded),
+                  title: Text(
+                    state.mapOrNull(
+                          loaded: (_) => "settings_account_label".tr(),
+                          initial: (_) => "login_login_title".tr(),
+                        ) ??
+                        "settings_account_label".tr(),
+                  ),
+                  onTap: () => Navigator.of(context)
+                      .pushNamed(KanPracticePages.loginPage));
+            },
+          ),
+          BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                loaded: (user) => ListTile(
+                  leading: const Icon(Icons.cloud),
+                  title: Text("login_manage_backup_title".tr()),
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                      KanPracticePages.backUpPage,
+                      arguments: user.uid,
+                    );
+                  },
+                ),
+                orElse: () => const SizedBox(),
+              );
+            },
+          ),
           _header("settings_information_section".tr()),
           const Divider(),
           BlocConsumer<BackupBloc, BackupState>(

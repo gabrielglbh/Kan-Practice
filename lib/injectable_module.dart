@@ -184,7 +184,9 @@ abstract class InjectableModule {
             "CREATE TABLE ${AlterTestSpecificDataTableFields.testDataTable}("
             "${AlterTestSpecificDataTableFields.idField} INTEGER NOT NULL PRIMARY KEY DEFAULT -1, "
             "${AlterTestSpecificDataTableFields.totalNumberTestCountField} INTEGER NOT NULL DEFAULT 0, "
-            "${AlterTestSpecificDataTableFields.totalWinRateNumberTestField} INTEGER NOT NULL DEFAULT 0)");
+            "${AlterTestSpecificDataTableFields.totalTranslationTestCountField} INTEGER NOT NULL DEFAULT 0, "
+            "${AlterTestSpecificDataTableFields.totalWinRateNumberTestField} INTEGER NOT NULL DEFAULT 0, "
+            "${AlterTestSpecificDataTableFields.totalWinRateTranslationTestField} INTEGER NOT NULL DEFAULT 0)");
 
         await db.execute("CREATE TABLE ${GrammarTableFields.grammarTable}("
             "${GrammarTableFields.nameField} TEXT NOT NULL, "

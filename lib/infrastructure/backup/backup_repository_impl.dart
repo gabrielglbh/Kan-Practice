@@ -628,6 +628,24 @@ class BackupRepositoryImpl implements IBackupRepository {
                   0)
             ]);
           }
+          if (!json.containsKey(AlterTestSpecificDataTableFields
+              .totalTranslationTestCountField)) {
+            json.addEntries([
+              const MapEntry(
+                  AlterTestSpecificDataTableFields
+                      .totalTranslationTestCountField,
+                  0)
+            ]);
+          }
+          if (!json.containsKey(AlterTestSpecificDataTableFields
+              .totalWinRateTranslationTestField)) {
+            json.addEntries([
+              const MapEntry(
+                  AlterTestSpecificDataTableFields
+                      .totalWinRateTranslationTestField,
+                  0)
+            ]);
+          }
           backUpAlterTestSpecData.add(AlterSpecificData.fromJson(json));
         }
       }

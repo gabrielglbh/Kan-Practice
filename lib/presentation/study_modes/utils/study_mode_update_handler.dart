@@ -110,7 +110,8 @@ class StudyModeUpdateHandler {
                             testMode: args.testMode.index,
                             listsName: args.testHistoryDisplasyName,
                             studyList: studyList,
-                            alterTest: args.isNumberTest,
+                            alterTest:
+                                args.isNumberTest || args.isTranslationTest,
                           ));
                     }
 

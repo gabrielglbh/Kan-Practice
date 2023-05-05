@@ -107,7 +107,7 @@ class _TestStatsState extends State<TestStats>
       listener: (context, state) {
         state.mapOrNull(testRetrieved: (t) {
           SpecBottomSheet.show(
-              context, t.test.name, widget.showGrammar, null, t.data);
+              context, t.test.name, widget.showGrammar, null, t);
         });
       },
       child: BlocListener<SpecificDataBloc, SpecificDataState>(
@@ -126,7 +126,7 @@ class _TestStatsState extends State<TestStats>
           onBarTapped: (model) async {
             if (model.dataPoints?.isNotEmpty == true) {
               final test = Tests.values[model.pointIndex ?? -1];
-              if (test == Tests.numbers) {
+              if (test == Tests.numbers || test == Tests.translation) {
                 context
                     .read<AlterSpecificDataBloc>()
                     .add(AlterSpecificDataEventGatherTest(test: test));

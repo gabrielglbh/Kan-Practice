@@ -117,7 +117,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
         // TODO: Adjust when other TEST like Numbers is added
         TestData rawTestData = TestData.fromJson(res[0]);
         for (var t in Tests.values) {
-          if (t == Tests.numbers) {
+          if (t == Tests.numbers || t == Tests.translation) {
             final rawAlterSpec =
                 await _alterSpecificDataRepository.getAlterSpecificTestData(t);
             if (rawAlterSpec != AlterSpecificData.empty) {
@@ -208,7 +208,8 @@ class TestDataRepositoryImpl implements ITestDataRepository {
       map.addEntries(getTestParams(curr, test).entries);
 
       // TODO: Adjust when other TEST like Numbers is added
-      if (test.testMode == Tests.numbers.index) {
+      if (test.testMode == Tests.numbers.index ||
+          test.testMode == Tests.translation.index) {
         await _alterSpecificDataRepository.updateAlterSpecificTestStats(test);
       } else {
         map.addEntries(getAdditionalParams(curr, test).entries);

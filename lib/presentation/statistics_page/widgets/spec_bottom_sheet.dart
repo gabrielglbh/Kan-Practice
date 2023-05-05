@@ -298,9 +298,7 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                           title: "specific_accuracy_label".tr(),
                           align: MainAxisAlignment.center,
                           verticalVisualDensity: -4,
-                          value: Utils.getFixedPercentageAsString(
-                            aggregate / _length,
-                          ),
+                          value: Utils.getFixedPercentageAsString(aggregate),
                         ),
                       ),
                     ],

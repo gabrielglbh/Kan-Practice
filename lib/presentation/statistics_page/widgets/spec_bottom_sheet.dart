@@ -64,12 +64,9 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
 
   bool get _isCategory =>
       widget.data?.id == SpecificDataRepositoryImpl.categoryId;
-  // TODO: Change when a new TEST like Numbers is added
-  int get _length => widget.data != null
-      ? _isCategory
-          ? StudyModes.values.length
-          : StudyModes.values.length + GrammarModes.values.length
-      : 1;
+  int get _length => _isCategory
+      ? StudyModes.values.length
+      : StudyModes.values.length + GrammarModes.values.length;
 
   double _getActualWinRate(double v) =>
       v == DatabaseConstants.emptyWinRate ? 0 : v;
@@ -296,9 +293,7 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                           title: "specific_accuracy_label".tr(),
                           align: MainAxisAlignment.center,
                           verticalVisualDensity: -4,
-                          value: Utils.getFixedPercentageAsString(
-                            aggregate / _length,
-                          ),
+                          value: Utils.getFixedPercentageAsString(aggregate),
                         ),
                       ),
                     ],

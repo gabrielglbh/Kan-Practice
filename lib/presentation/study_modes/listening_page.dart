@@ -191,12 +191,15 @@ class _ListeningStudyState extends State<ListeningStudy> {
                     value: (_macro + 1) / _studyList.length),
                 KPLearningHeaderAnimation(
                   id: _macro,
-                  child: ContextLoader(
-                    word: _studyList[_macro].word,
-                    child: _body,
-                  ),
+                  child: widget.args.isNumberTest
+                      ? _body(null)
+                      : ContextLoader(
+                          word: _studyList[_macro].word,
+                          child: _body,
+                        ),
                 ),
-                if (!_showWord) ContextButton(word: _studyList[_macro].word),
+                if (!widget.args.isNumberTest && !_showWord)
+                  ContextButton(word: _studyList[_macro].word),
               ],
             ),
           ),

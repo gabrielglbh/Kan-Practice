@@ -17,6 +17,7 @@ enum Tests {
   categories,
   folder,
   daily,
+  translation,
 }
 
 extension TestsExt on Tests {
@@ -38,6 +39,8 @@ extension TestsExt on Tests {
         return "test_mode_folder".tr();
       case Tests.daily:
         return "test_mode_daily".tr();
+      case Tests.translation:
+        return "test_mode_translation".tr();
     }
   }
 
@@ -59,6 +62,8 @@ extension TestsExt on Tests {
         return "abbr_test_mode_folder".tr();
       case Tests.daily:
         return "abbr_test_mode_daily".tr();
+      case Tests.translation:
+        return "abbr_test_mode_translation".tr();
     }
   }
 
@@ -80,6 +85,8 @@ extension TestsExt on Tests {
         return Icons.folder_rounded;
       case Tests.daily:
         return Icons.calendar_today;
+      case Tests.translation:
+        return Icons.travel_explore_rounded;
     }
   }
 }

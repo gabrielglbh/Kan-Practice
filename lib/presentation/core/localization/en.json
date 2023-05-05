@@ -431,5 +431,12 @@
   "archive_title": "Archive",
   "daily_max_words_limit": "Maximum words per day",
   "daily_max_grammar_limit": "Maximum grammar points per day",
-  "provide_context": "Context"
+  "provide_context": "Context",
+  "test_mode_translation": "Translation Test",
+  "abbr_test_mode_translation": "Translation",
+  "translation_bottom_sheet_content": "random japanese sentences will be created using your vocabulary to train your comprehension. Let's take the translation test!",
+  "translation_bottom_sheet_title": "Make a translation test",
+  "translation_bottom_sheet_label": "Translations",
+  "translation_bottom_sheet_begin_ext": "始める",
+  "translation_bottom_sheet_begin": "Begin"
 }

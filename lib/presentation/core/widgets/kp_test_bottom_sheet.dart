@@ -6,6 +6,7 @@ import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/widgets/blitz/kp_blitz_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/widgets/blitz/kp_number_test_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/widgets/blitz/kp_translation_test_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_kanlist_category_selection_bottom_sheet.dart';
@@ -251,6 +252,10 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                 break;
               case Tests.daily:
                 await DailyBottomSheet.show(context)
+                    .then((_) => _checkReviewWords());
+                break;
+              case Tests.translation:
+                await KPTranslationTestBottomSheet.show(context)
                     .then((_) => _checkReviewWords());
                 break;
             }

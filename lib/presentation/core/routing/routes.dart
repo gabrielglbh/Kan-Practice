@@ -34,6 +34,7 @@ import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 import 'package:kanpractice/presentation/study_modes/writing_page.dart';
 import 'package:kanpractice/presentation/test_result_page/arguments.dart';
 import 'package:kanpractice/presentation/test_result_page/test_result_page.dart';
+import 'package:kanpractice/presentation/translation_test_page/translation_test_page.dart';
 import 'package:kanpractice/presentation/word_history_page/word_history_page.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -126,6 +127,10 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return CupertinoPageRoute(builder: (_) {
         return const MarketPage();
       });
+    case KanPracticePages.translationsTestPage:
+      ModeArguments args = settings.arguments as ModeArguments;
+      return CupertinoPageRoute(
+          builder: (_) => TranslationTestPage(args: args));
   }
   return null;
 }

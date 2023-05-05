@@ -47,6 +47,9 @@ class TestData {
   final int dailyTests;
   @JsonKey(includeFromJson: false, includeToJson: false)
   final SpecificData dailyTestData;
+  final int translationTests;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final SpecificData translationTestData;
 
   const TestData({
     this.statsId = TestDataTableFields.statsMainId,
@@ -73,6 +76,7 @@ class TestData {
     required this.categoryTests,
     required this.folderTests,
     required this.dailyTests,
+    required this.translationTests,
     this.selectionTestData = SpecificData.empty,
     this.blitzTestData = SpecificData.empty,
     this.remembranceTestData = SpecificData.empty,
@@ -81,6 +85,7 @@ class TestData {
     this.categoryTestData = SpecificData.empty,
     this.folderTestData = SpecificData.empty,
     this.dailyTestData = SpecificData.empty,
+    this.translationTestData = SpecificData.empty,
   });
 
   TestData copyWith(SpecificData testSpecs) {
@@ -117,6 +122,9 @@ class TestData {
       folderTestData: test == Tests.folder ? testSpecs : folderTestData,
       dailyTests: dailyTests,
       dailyTestData: test == Tests.daily ? testSpecs : dailyTestData,
+      translationTests: translationTests,
+      translationTestData:
+          test == Tests.translation ? testSpecs : translationTestData,
     );
   }
 
@@ -146,6 +154,7 @@ class TestData {
     categoryTests: 0,
     folderTests: 0,
     dailyTests: 0,
+    translationTests: 0,
   );
 
   factory TestData.fromJson(Map<String, dynamic> json) =>

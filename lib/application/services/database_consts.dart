@@ -131,6 +131,7 @@ class TestDataTableFields {
   static const String categoryTestsField = "categoryTests";
   static const String folderTestsField = "folderTests";
   static const String dailyTestsField = "dailyTests";
+  static const String translationTestsField = "translationTests";
 }
 
 class TestSpecificDataTableFields {

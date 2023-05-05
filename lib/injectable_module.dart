@@ -39,7 +39,7 @@ abstract class InjectableModule {
 
     return await openDatabase(
       path,
-      version: 12,
+      version: 13,
       singleInstance: true,
       onConfigure: (db) async {
         await db.execute('PRAGMA foreign_keys = ON');
@@ -49,6 +49,7 @@ abstract class InjectableModule {
         if (oldVersion <= 9) c.version9to10(db);
         if (oldVersion <= 10) c.version10to11(db);
         if (oldVersion <= 11) c.version11to12(db);
+        if (oldVersion <= 12) c.version12to13(db);
       },
       onCreate: (Database db, int version) async {
         await db.execute("CREATE TABLE ${WordTableFields.wordTable}("
@@ -156,7 +157,8 @@ abstract class InjectableModule {
             "${TestDataTableFields.lessPctTestsField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.categoryTestsField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.folderTestsField} INTEGER NOT NULL DEFAULT 0, "
-            "${TestDataTableFields.dailyTestsField} INTEGER NOT NULL DEFAULT 0)");
+            "${TestDataTableFields.dailyTestsField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestDataTableFields.translationTestsField} INTEGER NOT NULL DEFAULT 0)");
 
         /// id is the [Test].index for future refers
         await db.execute(

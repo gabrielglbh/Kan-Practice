@@ -476,10 +476,10 @@ class WordRepositoryImpl implements IWordRepository {
     try {
       final res = await _database.rawQuery("SELECT * "
           "FROM ${WordTableFields.wordTable} "
-          "WHERE${WordTableFields.categoryField} = $category "
+          "WHERE ${WordTableFields.categoryField} = $category "
           "ORDER BY RANDOM() "
           "LIMIT 1");
-      return Word.fromJson(res[0]);
+      return res.isEmpty ? Word.empty : Word.fromJson(res[0]);
     } catch (err) {
       print(err.toString());
       return Word.empty;

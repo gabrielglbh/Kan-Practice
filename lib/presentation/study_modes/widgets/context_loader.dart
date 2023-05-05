@@ -24,7 +24,7 @@ class ContextLoader extends StatelessWidget {
       },
       builder: (context, state) {
         return state.maybeWhen(
-          succeeded: (sentence) => child(sentence),
+          succeeded: (sentence, _) => child(sentence),
           loading: () => const SizedBox(
             height: KPMargins.margin64 * 2,
             child: KPProgressIndicator(),

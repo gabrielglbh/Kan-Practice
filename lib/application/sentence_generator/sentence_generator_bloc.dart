@@ -28,21 +28,23 @@ class SentenceGeneratorBloc
 
     on<SentenceGeneratorEventLoad>((event, emit) async {
       emit(const SentenceGeneratorState.loading());
-      final bag = <Word>[];
+      final List<Word> bag = [];
+      final List<String> usedWords = [];
       if (event.words == null) {
         for (var c in WordCategory.values) {
-          bag.add(await _wordRepository.getRandomWord(c.index));
+          final word = await _wordRepository.getRandomWord(c.index);
+          if (word != Word.empty) bag.add(word);
         }
         bag.shuffle();
       }
-
-      final sentence = await _sentenceGeneratorRepository.getRandomSentence(
-        event.words != null
-            ? event.words!
-            : bag.sublist(0, 3).map((value) => value.word).toList(),
-      );
+      usedWords.addAll(bag
+          .sublist(0, bag.length > 3 ? 3 : bag.length)
+          .map((value) => value.word)
+          .toList());
+      final sentence = await _sentenceGeneratorRepository
+          .getRandomSentence(event.words != null ? event.words! : usedWords);
       if (sentence.isNotEmpty) {
-        emit(SentenceGeneratorState.succeeded(sentence));
+        emit(SentenceGeneratorState.succeeded(sentence, usedWords));
       } else {
         emit(const SentenceGeneratorState.error());
       }

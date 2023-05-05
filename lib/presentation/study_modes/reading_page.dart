@@ -203,23 +203,21 @@ class _ReadingStudyState extends State<ReadingStudy> {
       ],
       child: Column(
         children: [
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                KPListPercentageIndicator(
-                    value: (_macro + 1) / _studyList.length),
-                KPLearningHeaderAnimation(
-                  id: _macro,
-                  child: ContextLoader(
-                    word: _studyList[_macro].word,
-                    child: _body,
-                  ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              KPListPercentageIndicator(
+                  value: (_macro + 1) / _studyList.length),
+              KPLearningHeaderAnimation(
+                id: _macro,
+                child: ContextLoader(
+                  word: _studyList[_macro].word,
+                  child: _body,
                 ),
-                if (!_showPronunciation)
-                  ContextButton(word: _studyList[_macro].word),
-              ],
-            ),
+              ),
+              if (!_showPronunciation)
+                ContextButton(word: _studyList[_macro].word),
+            ],
           ),
           KPValidationButtons(
             trigger: _showPronunciation,

@@ -27,7 +27,9 @@ class ContextWidget extends StatelessWidget {
     if (!showWord) {
       final splitted = sentence.replaceAll(
         word,
-        mode == StudyModes.reading ? '「 $word 」' : '「 ____ 」',
+        mode == StudyModes.reading || mode == StudyModes.recognition
+            ? '「 $word 」'
+            : '「 ____ 」',
       );
       child = Text('${'provide_context'.tr()}: $splitted',
           textAlign: TextAlign.center, style: theme);

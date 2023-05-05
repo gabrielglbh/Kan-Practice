@@ -438,5 +438,6 @@
   "translation_bottom_sheet_title": "Machen Sie einen Übersetzungstest",
   "translation_bottom_sheet_label": "Übersetzung",
   "translation_bottom_sheet_begin_ext": "始める",
-  "translation_bottom_sheet_begin": "Beginn"
+  "translation_bottom_sheet_begin": "Beginn",
+  "translation_loading": "Übersetzung laden..."
 }

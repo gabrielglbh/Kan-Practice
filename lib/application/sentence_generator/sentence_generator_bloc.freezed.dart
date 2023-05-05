@@ -20,7 +20,7 @@ mixin _$SentenceGeneratorState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String sentence) succeeded,
+    required TResult Function(String sentence, List<String> words) succeeded,
     required TResult Function() error,
   }) =>
       throw _privateConstructorUsedError;
@@ -28,7 +28,7 @@ mixin _$SentenceGeneratorState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String sentence)? succeeded,
+    TResult? Function(String sentence, List<String> words)? succeeded,
     TResult? Function()? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -36,7 +36,7 @@ mixin _$SentenceGeneratorState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String sentence)? succeeded,
+    TResult Function(String sentence, List<String> words)? succeeded,
     TResult Function()? error,
     required TResult orElse(),
   }) =>
@@ -129,7 +129,7 @@ class _$SentenceGeneratorInitial implements SentenceGeneratorInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String sentence) succeeded,
+    required TResult Function(String sentence, List<String> words) succeeded,
     required TResult Function() error,
   }) {
     return initial();
@@ -140,7 +140,7 @@ class _$SentenceGeneratorInitial implements SentenceGeneratorInitial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String sentence)? succeeded,
+    TResult? Function(String sentence, List<String> words)? succeeded,
     TResult? Function()? error,
   }) {
     return initial?.call();
@@ -151,7 +151,7 @@ class _$SentenceGeneratorInitial implements SentenceGeneratorInitial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String sentence)? succeeded,
+    TResult Function(String sentence, List<String> words)? succeeded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -245,7 +245,7 @@ class _$SentenceGeneratorLoading implements SentenceGeneratorLoading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String sentence) succeeded,
+    required TResult Function(String sentence, List<String> words) succeeded,
     required TResult Function() error,
   }) {
     return loading();
@@ -256,7 +256,7 @@ class _$SentenceGeneratorLoading implements SentenceGeneratorLoading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String sentence)? succeeded,
+    TResult? Function(String sentence, List<String> words)? succeeded,
     TResult? Function()? error,
   }) {
     return loading?.call();
@@ -267,7 +267,7 @@ class _$SentenceGeneratorLoading implements SentenceGeneratorLoading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String sentence)? succeeded,
+    TResult Function(String sentence, List<String> words)? succeeded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -326,7 +326,7 @@ abstract class _$$SentenceGeneratorSucceededCopyWith<$Res> {
           $Res Function(_$SentenceGeneratorSucceeded) then) =
       __$$SentenceGeneratorSucceededCopyWithImpl<$Res>;
   @useResult
-  $Res call({String sentence});
+  $Res call({String sentence, List<String> words});
 }
 
 /// @nodoc
@@ -343,12 +343,17 @@ class __$$SentenceGeneratorSucceededCopyWithImpl<$Res>
   @override
   $Res call({
     Object? sentence = null,
+    Object? words = null,
   }) {
     return _then(_$SentenceGeneratorSucceeded(
       null == sentence
           ? _value.sentence
           : sentence // ignore: cast_nullable_to_non_nullable
               as String,
+      null == words
+          ? _value._words
+          : words // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -356,14 +361,22 @@ class __$$SentenceGeneratorSucceededCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SentenceGeneratorSucceeded implements SentenceGeneratorSucceeded {
-  const _$SentenceGeneratorSucceeded(this.sentence);
+  const _$SentenceGeneratorSucceeded(this.sentence, final List<String> words)
+      : _words = words;
 
   @override
   final String sentence;
+  final List<String> _words;
+  @override
+  List<String> get words {
+    if (_words is EqualUnmodifiableListView) return _words;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_words);
+  }
 
   @override
   String toString() {
-    return 'SentenceGeneratorState.succeeded(sentence: $sentence)';
+    return 'SentenceGeneratorState.succeeded(sentence: $sentence, words: $words)';
   }
 
   @override
@@ -372,11 +385,13 @@ class _$SentenceGeneratorSucceeded implements SentenceGeneratorSucceeded {
         (other.runtimeType == runtimeType &&
             other is _$SentenceGeneratorSucceeded &&
             (identical(other.sentence, sentence) ||
-                other.sentence == sentence));
+                other.sentence == sentence) &&
+            const DeepCollectionEquality().equals(other._words, _words));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, sentence);
+  int get hashCode => Object.hash(
+      runtimeType, sentence, const DeepCollectionEquality().hash(_words));
 
   @JsonKey(ignore: true)
   @override
@@ -390,10 +405,10 @@ class _$SentenceGeneratorSucceeded implements SentenceGeneratorSucceeded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String sentence) succeeded,
+    required TResult Function(String sentence, List<String> words) succeeded,
     required TResult Function() error,
   }) {
-    return succeeded(sentence);
+    return succeeded(sentence, words);
   }
 
   @override
@@ -401,10 +416,10 @@ class _$SentenceGeneratorSucceeded implements SentenceGeneratorSucceeded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String sentence)? succeeded,
+    TResult? Function(String sentence, List<String> words)? succeeded,
     TResult? Function()? error,
   }) {
-    return succeeded?.call(sentence);
+    return succeeded?.call(sentence, words);
   }
 
   @override
@@ -412,12 +427,12 @@ class _$SentenceGeneratorSucceeded implements SentenceGeneratorSucceeded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String sentence)? succeeded,
+    TResult Function(String sentence, List<String> words)? succeeded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
     if (succeeded != null) {
-      return succeeded(sentence);
+      return succeeded(sentence, words);
     }
     return orElse();
   }
@@ -461,10 +476,12 @@ class _$SentenceGeneratorSucceeded implements SentenceGeneratorSucceeded {
 }
 
 abstract class SentenceGeneratorSucceeded implements SentenceGeneratorState {
-  const factory SentenceGeneratorSucceeded(final String sentence) =
+  const factory SentenceGeneratorSucceeded(
+          final String sentence, final List<String> words) =
       _$SentenceGeneratorSucceeded;
 
   String get sentence;
+  List<String> get words;
   @JsonKey(ignore: true)
   _$$SentenceGeneratorSucceededCopyWith<_$SentenceGeneratorSucceeded>
       get copyWith => throw _privateConstructorUsedError;
@@ -510,7 +527,7 @@ class _$SentenceGeneratorError implements SentenceGeneratorError {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String sentence) succeeded,
+    required TResult Function(String sentence, List<String> words) succeeded,
     required TResult Function() error,
   }) {
     return error();
@@ -521,7 +538,7 @@ class _$SentenceGeneratorError implements SentenceGeneratorError {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String sentence)? succeeded,
+    TResult? Function(String sentence, List<String> words)? succeeded,
     TResult? Function()? error,
   }) {
     return error?.call();
@@ -532,7 +549,7 @@ class _$SentenceGeneratorError implements SentenceGeneratorError {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String sentence)? succeeded,
+    TResult Function(String sentence, List<String> words)? succeeded,
     TResult Function()? error,
     required TResult orElse(),
   }) {

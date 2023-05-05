@@ -58,6 +58,9 @@ class _KPTranslationTestBottomSheetState
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyLarge),
               ),
+              const SizedBox(height: KPMargins.margin32),
+              Icon(Tests.translation.icon, size: KPMargins.margin64),
+              const SizedBox(height: KPMargins.margin32),
               KPButton(
                 title1: "translation_bottom_sheet_begin_ext".tr(),
                 title2: "translation_bottom_sheet_begin".tr(),

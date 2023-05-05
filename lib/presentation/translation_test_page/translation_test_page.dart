@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kana_kit/kana_kit.dart';
 import 'package:kanpractice/application/sentence_generator/sentence_generator_bloc.dart';
 import 'package:kanpractice/application/services/text_to_speech_service.dart';
 import 'package:kanpractice/application/services/translate_service.dart';
@@ -38,16 +37,12 @@ class _TranslationTestPageState extends State<TranslationTestPage> {
   /// Array that saves all scores without any previous context for the test result
   final List<double> _testScores = [];
 
-  /// For translating the hiragana
-  KanaKit? _kanaKit;
-
   @override
   void initState() {
-    _kanaKit = const KanaKit();
     context.read<StudyModeBloc>().add(StudyModeEventResetTracking());
     context
         .read<SentenceGeneratorBloc>()
-        .add(const SentenceGeneratorEventLoad());
+        .add(SentenceGeneratorEventLoad(hash: _macro));
     super.initState();
   }
 
@@ -60,7 +55,7 @@ class _TranslationTestPageState extends State<TranslationTestPage> {
       /// If everything went well, and we have words left in the list,
       /// update _macro to the next one.
       if (code == 0) {
-        if (_macro < _max) {
+        if (_macro < _max - 1) {
           setState(() {
             _macro++;
             _showTranslation = false;
@@ -69,7 +64,7 @@ class _TranslationTestPageState extends State<TranslationTestPage> {
           if (!mounted) return;
           context
               .read<SentenceGeneratorBloc>()
-              .add(const SentenceGeneratorEventLoad());
+              .add(SentenceGeneratorEventLoad(hash: _macro));
         }
 
         /// If we ended the list, update the statistics to DB and exit
@@ -97,11 +92,10 @@ class _TranslationTestPageState extends State<TranslationTestPage> {
     return 0;
   }
 
-  String _getProperAlphabet(String sentence) {
+  String _getUsedWords(List<String> words) {
     /// Based on the states, update the hiragana version
-    String r = "[${(_kanaKit?.isHiragana(sentence) ?? "")}]";
     if (_showTranslation) {
-      return r;
+      return '[ ${words.join(', ')} ]';
     } else {
       return "";
     }
@@ -136,45 +130,56 @@ class _TranslationTestPageState extends State<TranslationTestPage> {
       centerTitle: true,
       child: Column(
         children: [
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                KPListPercentageIndicator(value: (_macro + 1) / _max),
-                KPLearningHeaderAnimation(
-                  id: _macro,
-                  child: BlocConsumer<SentenceGeneratorBloc,
-                      SentenceGeneratorState>(
-                    listener: (context, state) {
-                      state.mapOrNull(
-                        succeeded: (s) async {
-                          await getIt<TextToSpeechService>()
-                              .speakWord(s.sentence);
-                        },
-                      );
-                    },
-                    builder: (context, state) {
-                      return state.maybeWhen(
-                        succeeded: (sentence) => _body(sentence),
-                        loading: () => const SizedBox(
-                          height: KPMargins.margin64 * 2,
-                          child: KPProgressIndicator(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              KPListPercentageIndicator(value: (_macro + 1) / _max),
+              KPLearningHeaderAnimation(
+                id: _macro,
+                child:
+                    BlocConsumer<SentenceGeneratorBloc, SentenceGeneratorState>(
+                  listener: (context, state) {
+                    state.mapOrNull(
+                      succeeded: (s) async {
+                        await getIt<TextToSpeechService>()
+                            .speakWord(s.sentence);
+                      },
+                    );
+                  },
+                  builder: (context, state) {
+                    return state.maybeWhen(
+                      succeeded: (sentence, usedWords) =>
+                          _body(sentence, usedWords),
+                      loading: () => const SizedBox(
+                        height: KPMargins.margin64 * 2,
+                        child: KPProgressIndicator(),
+                      ),
+                      orElse: () => SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: KPMargins.margin64 * 2,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: GestureDetector(
+                            onTap: () {
+                              context.read<SentenceGeneratorBloc>().add(
+                                  SentenceGeneratorEventLoad(hash: _macro));
+                            },
+                            child: Text(
+                                "load_failed_try_again_button_label".tr(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      decoration: TextDecoration.underline,
+                                    )),
+                          ),
                         ),
-                        orElse: () => GestureDetector(
-                          onTap: () {
-                            context
-                                .read<SentenceGeneratorBloc>()
-                                .add(const SentenceGeneratorEventLoad());
-                          },
-                          child:
-                              Text("load_failed_try_again_button_label".tr()),
-                        ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           KPValidationButtons(
             trigger: _showTranslation,
@@ -187,7 +192,7 @@ class _TranslationTestPageState extends State<TranslationTestPage> {
     );
   }
 
-  Widget _body(String sentence) {
+  Widget _body(String sentence, List<String> words) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -195,18 +200,16 @@ class _TranslationTestPageState extends State<TranslationTestPage> {
           Visibility(
             visible: _showTranslation,
             child: KPLearningTextBox(
-              textStyle: Theme.of(context)
-                  .textTheme
-                  .bodyLarge
-                  ?.copyWith(color: KPColors.secondaryColor),
+              textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: KPColors.getSubtle(context),
+                  ),
               bottom: KPMargins.margin4,
-              text: _getProperAlphabet(sentence),
+              text: _getUsedWords(words),
             ),
           ),
-          TTSIconButton(
-            word: sentence,
-            iconSize: KPMargins.margin64 + KPMargins.margin4,
-          ),
+          const SizedBox(height: KPMargins.margin24),
+          TTSIconButton(word: sentence, iconSize: KPMargins.margin32),
+          const SizedBox(height: KPMargins.margin12),
           ContextWidget(
             word: sentence,
             showWord: true,
@@ -217,9 +220,15 @@ class _TranslationTestPageState extends State<TranslationTestPage> {
             visible: _showTranslation,
             child: FutureBuilder(
               future: _getProperMeaning(sentence),
+              initialData: 'Loading translation...',
               builder: (_, AsyncSnapshot<String> snapshot) {
                 return KPLearningTextBox(
-                  textStyle: Theme.of(context).textTheme.bodyLarge,
+                  textStyle: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.copyWith(fontStyle: FontStyle.italic),
+                  left: KPMargins.margin16,
+                  right: KPMargins.margin16,
                   text: snapshot.data ?? '',
                   top: KPMargins.margin8,
                 );

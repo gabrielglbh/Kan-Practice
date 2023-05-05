@@ -183,25 +183,23 @@ class _ListeningStudyState extends State<ListeningStudy> {
       ],
       child: Column(
         children: [
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                KPListPercentageIndicator(
-                    value: (_macro + 1) / _studyList.length),
-                KPLearningHeaderAnimation(
-                  id: _macro,
-                  child: widget.args.isNumberTest
-                      ? _body(null)
-                      : ContextLoader(
-                          word: _studyList[_macro].word,
-                          child: _body,
-                        ),
-                ),
-                if (!widget.args.isNumberTest && !_showWord)
-                  ContextButton(word: _studyList[_macro].word),
-              ],
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              KPListPercentageIndicator(
+                  value: (_macro + 1) / _studyList.length),
+              KPLearningHeaderAnimation(
+                id: _macro,
+                child: widget.args.isNumberTest
+                    ? _body(null)
+                    : ContextLoader(
+                        word: _studyList[_macro].word,
+                        child: _body,
+                      ),
+              ),
+              if (!widget.args.isNumberTest && !_showWord)
+                ContextButton(word: _studyList[_macro].word),
+            ],
           ),
           KPValidationButtons(
             trigger: _showWord,
@@ -248,7 +246,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
               showWord: _showWord,
               sentence: sentence,
               mode: StudyModes.listening,
-              hasTTS: true,
+              hasTTS: _showWord,
             ),
           Visibility(
             visible: _showWord,

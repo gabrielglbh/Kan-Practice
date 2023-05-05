@@ -100,15 +100,18 @@ class StudyModeUpdateHandler {
                         studyList =
                             _getMapOfWordsInTest(args.studyList, testScores);
                       }
+                      // TODO: Added alterTest when adding TEST such as number
                       navigator.pushReplacementNamed(
                           KanPracticePages.testResultPage,
                           arguments: TestResultArguments(
-                              score: testScore,
-                              word: args.studyList.length,
-                              studyMode: args.mode.index,
-                              testMode: args.testMode.index,
-                              listsName: args.testHistoryDisplasyName,
-                              studyList: studyList));
+                            score: testScore,
+                            word: args.studyList.length,
+                            studyMode: args.mode.index,
+                            testMode: args.testMode.index,
+                            listsName: args.testHistoryDisplasyName,
+                            studyList: studyList,
+                            alterTest: args.isNumberTest,
+                          ));
                     }
 
                     /// If the user went back in mid list, update the list accordingly

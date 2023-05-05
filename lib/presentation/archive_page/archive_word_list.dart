@@ -54,7 +54,6 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
       widget.onScrolledToBottom();
-      _addLoadingEvent();
     }
   }
 

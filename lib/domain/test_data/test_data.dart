@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
+import 'package:kanpractice/domain/alter_specific_data/alter_specific_data.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/domain/specific_data/specific_data.dart';
 
@@ -34,7 +35,7 @@ class TestData {
   final SpecificData remembranceTestData;
   final int numberTests;
   @JsonKey(includeFromJson: false, includeToJson: false)
-  final SpecificData numberTestData;
+  final AlterSpecificData numberTestData;
   final int lessPctTests;
   @JsonKey(includeFromJson: false, includeToJson: false)
   final SpecificData lessPctTestData;
@@ -80,7 +81,7 @@ class TestData {
     this.selectionTestData = SpecificData.empty,
     this.blitzTestData = SpecificData.empty,
     this.remembranceTestData = SpecificData.empty,
-    this.numberTestData = SpecificData.empty,
+    this.numberTestData = AlterSpecificData.empty,
     this.lessPctTestData = SpecificData.empty,
     this.categoryTestData = SpecificData.empty,
     this.folderTestData = SpecificData.empty,
@@ -88,8 +89,51 @@ class TestData {
     this.translationTestData = SpecificData.empty,
   });
 
-  TestData copyWith(SpecificData testSpecs) {
-    final test = Tests.values[testSpecs.id];
+  TestData copyWith({
+    SpecificData testSpecs = SpecificData.empty,
+    AlterSpecificData alterTestSpecs = AlterSpecificData.empty,
+  }) {
+    if (testSpecs.id != -1) {
+      final test = Tests.values[testSpecs.id];
+      return TestData(
+        totalTests: totalTests,
+        testTotalCountWriting: testTotalCountWriting,
+        testTotalCountReading: testTotalCountReading,
+        testTotalCountRecognition: testTotalCountRecognition,
+        testTotalCountListening: testTotalCountListening,
+        testTotalCountSpeaking: testTotalCountSpeaking,
+        testTotalCountDefinition: testTotalCountDefinition,
+        testTotalCountGrammarPoint: testTotalCountGrammarPoint,
+        testTotalWinRateWriting: testTotalWinRateWriting,
+        testTotalWinRateReading: testTotalWinRateReading,
+        testTotalWinRateRecognition: testTotalWinRateRecognition,
+        testTotalWinRateListening: testTotalWinRateListening,
+        testTotalWinRateSpeaking: testTotalWinRateSpeaking,
+        testTotalWinRateDefinition: testTotalWinRateDefinition,
+        testTotalWinRateGrammarPoint: testTotalWinRateGrammarPoint,
+        selectionTests: selectionTests,
+        selectionTestData: test == Tests.lists ? testSpecs : selectionTestData,
+        blitzTests: blitzTests,
+        blitzTestData: test == Tests.blitz ? testSpecs : blitzTestData,
+        remembranceTests: remembranceTests,
+        remembranceTestData:
+            test == Tests.time ? testSpecs : remembranceTestData,
+        numberTests: numberTests,
+        numberTestData: numberTestData,
+        lessPctTests: lessPctTests,
+        lessPctTestData: test == Tests.less ? testSpecs : lessPctTestData,
+        categoryTests: categoryTests,
+        categoryTestData:
+            test == Tests.categories ? testSpecs : categoryTestData,
+        folderTests: folderTests,
+        folderTestData: test == Tests.folder ? testSpecs : folderTestData,
+        dailyTests: dailyTests,
+        dailyTestData: test == Tests.daily ? testSpecs : dailyTestData,
+        translationTests: translationTests,
+        translationTestData: translationTestData,
+      );
+    }
+    final test = Tests.values[alterTestSpecs.id];
     return TestData(
       totalTests: totalTests,
       testTotalCountWriting: testTotalCountWriting,
@@ -107,24 +151,24 @@ class TestData {
       testTotalWinRateDefinition: testTotalWinRateDefinition,
       testTotalWinRateGrammarPoint: testTotalWinRateGrammarPoint,
       selectionTests: selectionTests,
-      selectionTestData: test == Tests.lists ? testSpecs : selectionTestData,
+      selectionTestData: selectionTestData,
       blitzTests: blitzTests,
-      blitzTestData: test == Tests.blitz ? testSpecs : blitzTestData,
+      blitzTestData: blitzTestData,
       remembranceTests: remembranceTests,
-      remembranceTestData: test == Tests.time ? testSpecs : remembranceTestData,
+      remembranceTestData: remembranceTestData,
       numberTests: numberTests,
-      numberTestData: test == Tests.numbers ? testSpecs : numberTestData,
+      numberTestData: test == Tests.numbers ? alterTestSpecs : numberTestData,
       lessPctTests: lessPctTests,
-      lessPctTestData: test == Tests.less ? testSpecs : lessPctTestData,
+      lessPctTestData: lessPctTestData,
       categoryTests: categoryTests,
-      categoryTestData: test == Tests.categories ? testSpecs : categoryTestData,
+      categoryTestData: categoryTestData,
       folderTests: folderTests,
-      folderTestData: test == Tests.folder ? testSpecs : folderTestData,
+      folderTestData: folderTestData,
       dailyTests: dailyTests,
-      dailyTestData: test == Tests.daily ? testSpecs : dailyTestData,
       translationTests: translationTests,
       translationTestData:
           test == Tests.translation ? testSpecs : translationTestData,
+      dailyTestData: dailyTestData,
     );
   }
 

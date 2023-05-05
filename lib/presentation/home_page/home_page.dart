@@ -484,6 +484,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 if (_query.isNotEmpty) {
                   return _addWordsSearchingEvent(_query, reset: false);
                 }
+                return _addWordsLoadingEvent(reset: false);
               },
             ),
             ArchiveGrammarListWidget(

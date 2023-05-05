@@ -4,6 +4,14 @@ import 'package:sqflite/sqflite.dart';
 // TODO: Add new modes in the db migration
 class Migrations {
   Future<void> version12to13(Database db) async {
+    await db.execute(
+        "CREATE TABLE ${AlterTestSpecificDataTableFields.testDataTable}("
+        "${AlterTestSpecificDataTableFields.idField} INTEGER NOT NULL PRIMARY KEY DEFAULT -1, "
+        "${AlterTestSpecificDataTableFields.totalNumberTestCountField} INTEGER NOT NULL DEFAULT 0, "
+        "${AlterTestSpecificDataTableFields.totalTranslationTestCountField} INTEGER NOT NULL DEFAULT 0, "
+        "${AlterTestSpecificDataTableFields.totalWinRateNumberTestField} INTEGER NOT NULL DEFAULT 0, "
+        "${AlterTestSpecificDataTableFields.totalWinRateTranslationTestField} INTEGER NOT NULL DEFAULT 0)");
+
     await db.rawQuery("ALTER TABLE ${TestDataTableFields.testDataTable} "
         "ADD COLUMN ${TestDataTableFields.translationTestsField} INTEGER NOT NULL DEFAULT 0");
 

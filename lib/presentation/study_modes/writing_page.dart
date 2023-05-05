@@ -9,7 +9,7 @@ import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/widgets/canvas/kp_custom_canvas.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_learning_header_animation.dart';
-import 'package:kanpractice/presentation/core/widgets/kp_learning_header_container.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_learning_text_box.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_list_percentage_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_study_mode_app_bar.dart';
@@ -268,7 +268,44 @@ class _WritingStudyState extends State<WritingStudy> {
                 left: 0,
                 child: KPLearningHeaderAnimation(
                   id: _macro,
-                  children: _header(),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      children: [
+                        KPLearningTextBox(
+                            textStyle: Theme.of(context).textTheme.bodyLarge,
+                            text: _goNextWord
+                                ? _studyList[_macro].pronunciation
+                                : ""),
+                        SizedBox(
+                          height: 80,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: _studyList[_macro].word.length,
+                            physics: const NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              String? word = _studyList[_macro].word;
+                              return Text(
+                                  _currentWord[_macro][index] == _none
+                                      ? _none
+                                      : word[index],
+                                  style: TextStyle(
+                                      fontSize: KPFontSizes.fontSize64,
+                                      color: index == _inner
+                                          ? KPColors.secondaryColor
+                                          : null));
+                            },
+                          ),
+                        ),
+                        KPLearningTextBox(
+                          textStyle: Theme.of(context).textTheme.bodyLarge,
+                          text: _studyList[_macro].meaning,
+                          top: KPMargins.margin8,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -299,36 +336,6 @@ class _WritingStudyState extends State<WritingStudy> {
         ],
       ),
     );
-  }
-
-  List<Widget> _header() {
-    return [
-      KPLearningHeaderContainer(
-          height: KPSizes.defaultSizeLearningExtContainer + KPMargins.margin4,
-          text: _goNextWord ? _studyList[_macro].pronunciation : ""),
-      SizedBox(
-        height: 80,
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: _studyList[_macro].word.length,
-          physics: const NeverScrollableScrollPhysics(),
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            String? word = _studyList[_macro].word;
-            return Text(
-                _currentWord[_macro][index] == _none ? _none : word[index],
-                style: TextStyle(
-                    fontSize: KPFontSizes.fontSize64,
-                    color: index == _inner ? KPColors.secondaryColor : null));
-          },
-        ),
-      ),
-      KPLearningHeaderContainer(
-        height: KPSizes.defaultSizeLearningExtContainer,
-        text: _studyList[_macro].meaning,
-        top: KPMargins.margin8,
-      ),
-    ];
   }
 
   _clear() => setState(() => _line = []);

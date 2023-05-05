@@ -282,18 +282,6 @@ class _LoginPageState extends State<LoginPage> {
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge),
         ),
-        SizedBox(
-          height: KPSizes.appBarHeight,
-          child: Padding(
-            padding: const EdgeInsets.all(KPMargins.margin16),
-            child: ElevatedButton(
-              onPressed: () => Navigator.of(context)
-                  .pushNamed(KanPracticePages.backUpPage, arguments: user.uid),
-              child: Text("login_manage_backup_title".tr(),
-                  style: Theme.of(context).textTheme.labelLarge),
-            ),
-          ),
-        ),
         ListTile(
           title: Text("login_miscellaneous_title".tr(),
               style: Theme.of(context).textTheme.headlineSmall),

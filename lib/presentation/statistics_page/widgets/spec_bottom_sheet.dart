@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
+import 'package:kanpractice/domain/alter_specific_data/alter_specific_data.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/list_details_types.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
@@ -18,12 +19,14 @@ import 'package:kanpractice/presentation/statistics_page/widgets/stats_header.da
 class SpecBottomSheet extends StatefulWidget {
   final String title;
   final bool showGrammar;
-  final SpecificData data;
+  final SpecificData? data;
+  final AlterSpecificData? alterData;
   const SpecBottomSheet({
     Key? key,
     required this.title,
     required this.showGrammar,
-    required this.data,
+    this.data,
+    this.alterData,
   }) : super(key: key);
 
   /// Creates and calls the [BottomSheet] with the content for a regular test specs
@@ -31,7 +34,8 @@ class SpecBottomSheet extends StatefulWidget {
     BuildContext context,
     String title,
     bool showGrammar,
-    SpecificData data,
+    SpecificData? data,
+    AlterSpecificData? alterData,
   ) async {
     String? resultName;
     await showModalBottomSheet(
@@ -39,7 +43,11 @@ class SpecBottomSheet extends StatefulWidget {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (context) => SpecBottomSheet(
-            title: title, showGrammar: showGrammar, data: data)).then((value) {
+              title: title,
+              showGrammar: showGrammar,
+              data: data,
+              alterData: alterData,
+            )).then((value) {
       resultName = value;
     });
     return resultName;
@@ -51,8 +59,11 @@ class SpecBottomSheet extends StatefulWidget {
 
 class _SpecBottomSheetState extends State<SpecBottomSheet> {
   late bool _showGrammar;
+  late SpecificData? _data;
+  late AlterSpecificData? _alterData;
+
   bool get _isCategory =>
-      widget.data.id == SpecificDataRepositoryImpl.categoryId;
+      widget.data?.id == SpecificDataRepositoryImpl.categoryId;
   int get _length => _isCategory
       ? StudyModes.values.length
       : StudyModes.values.length + GrammarModes.values.length;
@@ -63,31 +74,187 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
   @override
   void initState() {
     _showGrammar = widget.showGrammar;
+    _data = widget.data;
+    _alterData = widget.alterData;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final total = widget.data.totalWritingCount +
-        widget.data.totalReadingCount +
-        widget.data.totalRecognitionCount +
-        widget.data.totalListeningCount +
-        widget.data.totalSpeakingCount +
-        widget.data.totalDefinitionCount +
-        widget.data.totalGrammarPointCount;
-    final aggregate = _getActualWinRate(widget.data.totalWinRateWriting) +
-        _getActualWinRate(widget.data.totalWinRateReading) +
-        _getActualWinRate(widget.data.totalWinRateRecognition) +
-        _getActualWinRate(widget.data.totalWinRateListening) +
-        _getActualWinRate(widget.data.totalWinRateSpeaking) +
-        _getActualWinRate(widget.data.totalWinRateDefinition) +
-        _getActualWinRate(widget.data.totalWinRateGrammarPoint);
-    final aggregateWithoutGrammar =
-        _getActualWinRate(widget.data.totalWinRateWriting) +
-            _getActualWinRate(widget.data.totalWinRateReading) +
-            _getActualWinRate(widget.data.totalWinRateRecognition) +
-            _getActualWinRate(widget.data.totalWinRateListening) +
-            _getActualWinRate(widget.data.totalWinRateSpeaking);
+    if (_data != null) {
+      final total = _data!.totalWritingCount +
+          _data!.totalReadingCount +
+          _data!.totalRecognitionCount +
+          _data!.totalListeningCount +
+          _data!.totalSpeakingCount +
+          _data!.totalDefinitionCount +
+          _data!.totalGrammarPointCount;
+      final aggregate = _getActualWinRate(_data!.totalWinRateWriting) +
+          _getActualWinRate(_data!.totalWinRateReading) +
+          _getActualWinRate(_data!.totalWinRateRecognition) +
+          _getActualWinRate(_data!.totalWinRateListening) +
+          _getActualWinRate(_data!.totalWinRateSpeaking) +
+          _getActualWinRate(_data!.totalWinRateDefinition) +
+          _getActualWinRate(_data!.totalWinRateGrammarPoint);
+      final aggregateWithoutGrammar =
+          _getActualWinRate(_data!.totalWinRateWriting) +
+              _getActualWinRate(_data!.totalWinRateReading) +
+              _getActualWinRate(_data!.totalWinRateRecognition) +
+              _getActualWinRate(_data!.totalWinRateListening) +
+              _getActualWinRate(_data!.totalWinRateSpeaking);
+
+      return BottomSheet(
+        enableDrag: false,
+        onClosing: () {},
+        builder: (context) {
+          return Wrap(children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const KPDragContainer(),
+                StatsHeader(
+                  title: _isCategory ? "# ${widget.title}" : widget.title,
+                  value: _isCategory ? null : total.toString(),
+                  verticalVisualDensity: -4,
+                  align: MainAxisAlignment.center,
+                ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (!_isCategory)
+                      KPBarChart(
+                        graphName: "tests".tr(),
+                        heightRatio: 1.3,
+                        animationDuration: 0,
+                        // TODO: update indexes DataFrame when adding mode
+                        dataSource: List.generate(_length, (index) {
+                          if (index == 0) {
+                            final v = _data!.totalWritingCount;
+                            return DataFrame(
+                              x: StudyModes.writing.mode,
+                              y: v.toDouble(),
+                              color: StudyModes.writing.color,
+                            );
+                          } else if (index == 1) {
+                            final v = _data!.totalReadingCount;
+                            return DataFrame(
+                              x: StudyModes.reading.mode,
+                              y: v.toDouble(),
+                              color: StudyModes.reading.color,
+                            );
+                          } else if (index == 2) {
+                            final v = _data!.totalRecognitionCount;
+                            return DataFrame(
+                              x: StudyModes.recognition.mode,
+                              y: v.toDouble(),
+                              color: StudyModes.recognition.color,
+                            );
+                          } else if (index == 3) {
+                            final v = _data!.totalListeningCount;
+                            return DataFrame(
+                              x: StudyModes.listening.mode,
+                              y: v.toDouble(),
+                              color: StudyModes.listening.color,
+                            );
+                          } else if (index == 4) {
+                            final v = _data!.totalSpeakingCount;
+                            return DataFrame(
+                              x: StudyModes.speaking.mode,
+                              y: v.toDouble(),
+                              color: StudyModes.speaking.color,
+                            );
+                          } else if (index == 5) {
+                            final v = _data!.totalDefinitionCount;
+                            return DataFrame(
+                              x: GrammarModes.definition.mode,
+                              y: v.toDouble(),
+                              color: GrammarModes.definition.color,
+                            );
+                          } else {
+                            final v = _data!.totalGrammarPointCount;
+                            return DataFrame(
+                              x: GrammarModes.grammarPoints.mode,
+                              y: v.toDouble(),
+                              color: GrammarModes.grammarPoints.color,
+                            );
+                          }
+                        }),
+                      )
+                    else
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: KPMargins.margin8),
+                        alignment: Alignment.center,
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: Text(
+                            total.toString(),
+                            style: Theme.of(context).textTheme.displaySmall,
+                          ),
+                        ),
+                      ),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: StatsHeader(
+                            title: "specific_accuracy_label".tr(),
+                            align: MainAxisAlignment.center,
+                            verticalVisualDensity: -4,
+                            value: Utils.getFixedPercentageAsString(
+                              (_isCategory
+                                      ? aggregateWithoutGrammar
+                                      : aggregate) /
+                                  _length,
+                            ),
+                          ),
+                        ),
+                        if (!_isCategory)
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                right: KPMargins.margin16),
+                            child: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _showGrammar = !_showGrammar;
+                                });
+                              },
+                              icon: Icon(_showGrammar
+                                  ? ListDetailsType.words.icon
+                                  : ListDetailsType.grammar.icon),
+                            ),
+                          ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: KPMargins.margin24),
+                      child: !_showGrammar
+                          ? KPStudyModeRadialGraph(
+                              animationDuration: 0,
+                              writing: _data!.totalWinRateWriting,
+                              reading: _data!.totalWinRateReading,
+                              recognition: _data!.totalWinRateRecognition,
+                              listening: _data!.totalWinRateListening,
+                              speaking: _data!.totalWinRateSpeaking,
+                            )
+                          : KPGrammarModeRadialGraph(
+                              animationDuration: 0,
+                              definition: _data!.totalWinRateDefinition,
+                              grammarPoints: _data!.totalWinRateGrammarPoint,
+                            ),
+                    ),
+                    const SizedBox(height: KPMargins.margin24)
+                  ],
+                ),
+              ],
+            ),
+          ]);
+        },
+      );
+    }
+
+    final total = _alterData!.totalNumberTestCount;
+    final aggregate = _getActualWinRate(_alterData!.totalWinRateNumberTest);
 
     return BottomSheet(
       enableDrag: false,
@@ -99,91 +266,26 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
             children: [
               const KPDragContainer(),
               StatsHeader(
-                title: _isCategory ? "# ${widget.title}" : widget.title,
-                value: _isCategory ? null : total.toString(),
+                title: "# ${widget.title}",
+                value: null,
                 verticalVisualDensity: -4,
                 align: MainAxisAlignment.center,
               ),
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (!_isCategory)
-                    KPBarChart(
-                      graphName: "tests".tr(),
-                      heightRatio: 1.3,
-                      animationDuration: 0,
-                      // TODO: update indexes DataFrame when adding mode
-                      dataSource: List.generate(_length, (index) {
-                        if (index == 0) {
-                          final v = widget.data.totalWritingCount;
-                          return DataFrame(
-                            x: StudyModes.writing.mode,
-                            y: v.toDouble(),
-                            color: StudyModes.writing.color,
-                          );
-                        } else if (index == 1) {
-                          final v = widget.data.totalReadingCount;
-                          return DataFrame(
-                            x: StudyModes.reading.mode,
-                            y: v.toDouble(),
-                            color: StudyModes.reading.color,
-                          );
-                        } else if (index == 2) {
-                          final v = widget.data.totalRecognitionCount;
-                          return DataFrame(
-                            x: StudyModes.recognition.mode,
-                            y: v.toDouble(),
-                            color: StudyModes.recognition.color,
-                          );
-                        } else if (index == 3) {
-                          final v = widget.data.totalListeningCount;
-                          return DataFrame(
-                            x: StudyModes.listening.mode,
-                            y: v.toDouble(),
-                            color: StudyModes.listening.color,
-                          );
-                        } else if (index == 4) {
-                          final v = widget.data.totalSpeakingCount;
-                          return DataFrame(
-                            x: StudyModes.speaking.mode,
-                            y: v.toDouble(),
-                            color: StudyModes.speaking.color,
-                          );
-                        } else if (index == 5) {
-                          final v = widget.data.totalDefinitionCount;
-                          return DataFrame(
-                            x: GrammarModes.definition.mode,
-                            y: v.toDouble(),
-                            color: GrammarModes.definition.color,
-                          );
-                        } else {
-                          final v = widget.data.totalGrammarPointCount;
-                          return DataFrame(
-                            x: GrammarModes.grammarPoints.mode,
-                            y: v.toDouble(),
-                            color: GrammarModes.grammarPoints.color,
-                          );
-                        }
-                      }),
-                    )
-                  else
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: KPMargins.margin8),
-                      alignment: Alignment.center,
-                      child: FittedBox(
-                        fit: BoxFit.contain,
-                        child: Text(
-                          total.toString(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .displaySmall
-                              ?.copyWith(
-                                  fontSize: KPFontSizes.fontSize32 +
-                                      KPFontSizes.fontSize16),
-                        ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: KPMargins.margin8),
+                    alignment: Alignment.center,
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: Text(
+                        total.toString(),
+                        style: Theme.of(context).textTheme.displaySmall,
                       ),
                     ),
+                  ),
                   Row(
                     children: [
                       Flexible(
@@ -191,48 +293,10 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                           title: "specific_accuracy_label".tr(),
                           align: MainAxisAlignment.center,
                           verticalVisualDensity: -4,
-                          value: Utils.getFixedPercentageAsString(
-                            (_isCategory
-                                    ? aggregateWithoutGrammar
-                                    : aggregate) /
-                                _length,
-                          ),
+                          value: Utils.getFixedPercentageAsString(aggregate),
                         ),
                       ),
-                      if (!_isCategory)
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(right: KPMargins.margin16),
-                          child: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _showGrammar = !_showGrammar;
-                              });
-                            },
-                            icon: Icon(_showGrammar
-                                ? ListDetailsType.words.icon
-                                : ListDetailsType.grammar.icon),
-                          ),
-                        ),
                     ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: KPMargins.margin24),
-                    child: !_showGrammar
-                        ? KPStudyModeRadialGraph(
-                            animationDuration: 0,
-                            writing: widget.data.totalWinRateWriting,
-                            reading: widget.data.totalWinRateReading,
-                            recognition: widget.data.totalWinRateRecognition,
-                            listening: widget.data.totalWinRateListening,
-                            speaking: widget.data.totalWinRateSpeaking,
-                          )
-                        : KPGrammarModeRadialGraph(
-                            animationDuration: 0,
-                            definition: widget.data.totalWinRateDefinition,
-                            grammarPoints: widget.data.totalWinRateGrammarPoint,
-                          ),
                   ),
                   const SizedBox(height: KPMargins.margin24)
                 ],

@@ -6,7 +6,9 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class WordsOnTestList extends StatelessWidget {
   final Map<String, List<Map<Word, double>>>? list;
-  const WordsOnTestList({super.key, required this.list});
+  final bool tappable;
+  const WordsOnTestList(
+      {super.key, required this.list, required this.tappable});
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +62,12 @@ class WordsOnTestList extends StatelessWidget {
                       child: InkWell(
                           borderRadius: const BorderRadius.all(
                               Radius.circular(KPRadius.radius8)),
-                          onTap: () async {
-                            await KPWordBottomSheet.show(
-                                context, (word?.listName ?? ""), word);
-                          },
+                          onTap: tappable
+                              ? () async {
+                                  await KPWordBottomSheet.show(
+                                      context, (word?.listName ?? ""), word);
+                                }
+                              : null,
                           child: Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: KPMargins.margin2),

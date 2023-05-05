@@ -215,7 +215,7 @@ class _AddWordPageState extends State<AddWordPage> {
             centerText: TextAlign.center,
             style: Theme.of(context)
                 .textTheme
-                .displaySmall
+                .displayLarge
                 ?.copyWith(fontWeight: FontWeight.bold),
             autofocus: widget.args.word == null,
             hint: "add_word_textForm_word_ext".tr(),

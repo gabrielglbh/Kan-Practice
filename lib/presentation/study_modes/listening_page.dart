@@ -9,7 +9,7 @@ import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_learning_header_animation.dart';
-import 'package:kanpractice/presentation/core/widgets/kp_learning_header_container.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_learning_text_box.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_list_percentage_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_study_mode_app_bar.dart';
@@ -179,7 +179,55 @@ class _ListeningStudyState extends State<ListeningStudy> {
             children: [
               KPListPercentageIndicator(
                   value: (_macro + 1) / _studyList.length),
-              KPLearningHeaderAnimation(id: _macro, children: _header()),
+              KPLearningHeaderAnimation(
+                id: _macro,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    children: [
+                      Visibility(
+                        visible: _showWord,
+                        maintainSize: true,
+                        maintainAnimation: true,
+                        maintainState: true,
+                        child: KPLearningTextBox(
+                          textStyle: Theme.of(context).textTheme.bodyLarge,
+                          text: _studyList[_macro].pronunciation,
+                        ),
+                      ),
+                      Visibility(
+                          visible: !_showWord,
+                          child: TTSIconButton(
+                              word: _studyList[_macro].pronunciation,
+                              iconSize:
+                                  KPMargins.margin64 + KPMargins.margin4)),
+                      Visibility(
+                        visible: _showWord,
+                        child: FittedBox(
+                          child: KPLearningTextBox(
+                            textStyle: Theme.of(context).textTheme.displaySmall,
+                            text: _studyList[_macro].word,
+                          ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: _showWord,
+                        maintainSize: true,
+                        maintainAnimation: true,
+                        maintainState: true,
+                        child: KPLearningTextBox(
+                          textStyle: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                          text: _studyList[_macro].meaning,
+                          top: KPMargins.margin8,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
           KPValidationButtons(
@@ -191,44 +239,5 @@ class _ListeningStudyState extends State<ListeningStudy> {
         ],
       ),
     );
-  }
-
-  List<Widget> _header() {
-    return [
-      Visibility(
-        visible: _showWord,
-        maintainSize: true,
-        maintainAnimation: true,
-        maintainState: true,
-        child: KPLearningHeaderContainer(
-          height: KPSizes.defaultSizeLearningExtContainer + KPMargins.margin8,
-          text: _studyList[_macro].pronunciation,
-        ),
-      ),
-      Visibility(
-          visible: !_showWord,
-          child: TTSIconButton(
-              word: _studyList[_macro].pronunciation,
-              iconSize: KPMargins.margin64 + KPMargins.margin4)),
-      Visibility(
-        visible: _showWord,
-        child: KPLearningHeaderContainer(
-          fontSize: KPFontSizes.fontSize64,
-          height: KPSizes.listStudyHeight,
-          text: _studyList[_macro].word,
-        ),
-      ),
-      Visibility(
-        visible: _showWord,
-        maintainSize: true,
-        maintainAnimation: true,
-        maintainState: true,
-        child: KPLearningHeaderContainer(
-          height: KPSizes.defaultSizeLearningExtContainer,
-          text: _studyList[_macro].meaning,
-          top: KPMargins.margin8,
-        ),
-      )
-    ];
   }
 }

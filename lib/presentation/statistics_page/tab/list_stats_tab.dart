@@ -63,7 +63,8 @@ class _ListStatsState extends State<ListStats>
         BlocListener<SpecificDataBloc, SpecificDataState>(
           listener: (context, state) {
             state.mapOrNull(categoryRetrieved: (c) {
-              SpecBottomSheet.show(context, c.category.category, false, c.data);
+              SpecBottomSheet.show(
+                  context, c.category.category, false, c.data, null);
             });
           },
           child: KPBarChart(
@@ -103,7 +104,7 @@ class _ListStatsState extends State<ListStats>
         fit: BoxFit.contain,
         child: Text(
           count,
-          style: Theme.of(context).textTheme.displaySmall,
+          style: Theme.of(context).textTheme.displayLarge,
         ),
       ),
     );

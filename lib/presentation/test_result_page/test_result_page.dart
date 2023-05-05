@@ -83,7 +83,10 @@ class _TestResultPageState extends State<TestResultPage> {
                   Visibility(
                     visible: widget.args.studyList != null,
                     child: Expanded(
-                      child: WordsOnTestList(list: widget.args.studyList),
+                      child: WordsOnTestList(
+                        list: widget.args.studyList,
+                        tappable: !widget.args.alterTest,
+                      ),
                     ),
                   ),
                   Visibility(

@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/sentence_generator/i_sentence_generator_repository.dart';
+import 'package:kanpractice/domain/services/i_translate_repository.dart';
 import 'package:kanpractice/domain/word/i_word_repository.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/types/word_categories.dart';
@@ -17,12 +18,15 @@ class SentenceGeneratorBloc
     extends Bloc<SentenceGeneratorEvent, SentenceGeneratorState> {
   final ISentenceGeneratorRepository _sentenceGeneratorRepository;
   final IWordRepository _wordRepository;
+  final ITranslateRepository _translateRepository;
 
   SentenceGeneratorBloc(
     this._sentenceGeneratorRepository,
     this._wordRepository,
+    this._translateRepository,
   ) : super(const SentenceGeneratorState.initial()) {
     on<SentenceGeneratorEventReset>(((event, emit) {
+      _translateRepository.close();
       emit(const SentenceGeneratorState.initial());
     }));
 
@@ -37,14 +41,28 @@ class SentenceGeneratorBloc
         }
         bag.shuffle();
       }
+
       usedWords.addAll(bag
           .sublist(0, bag.length > 3 ? 3 : bag.length)
           .map((value) => value.word)
           .toList());
+
       final sentence = await _sentenceGeneratorRepository
           .getRandomSentence(event.words != null ? event.words! : usedWords);
+
       if (sentence.isNotEmpty) {
-        emit(SentenceGeneratorState.succeeded(sentence, usedWords));
+        String translation = '';
+        if (event.locale != null) {
+          translation = await _translateRepository.translate(
+            sentence,
+            event.locale!,
+          );
+        }
+        emit(SentenceGeneratorState.succeeded(
+          sentence,
+          translation,
+          usedWords,
+        ));
       } else {
         emit(const SentenceGeneratorState.error());
       }

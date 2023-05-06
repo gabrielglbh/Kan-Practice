@@ -197,6 +197,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
                   id: _macro,
                   child: ContextLoader(
                     word: _studyList[_macro].word,
+                    mode: StudyModes.recognition,
                     child: _body,
                   ),
                 ),

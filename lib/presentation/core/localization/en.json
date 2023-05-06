@@ -441,5 +441,6 @@
   "translation_bottom_sheet_begin": "Begin",
   "translation_loading": "Loading translation...",
   "translation_test_loading": "Generating random sentence...",
-  "translation_test_disclaimer": "In order to perform this test, an stable internet connection is required"
+  "translation_test_disclaimer": "In order to perform this test, an stable internet connection is required",
+  "translation_words_used": "Words used"
 }

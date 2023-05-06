@@ -212,6 +212,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
                 id: _macro,
                 child: ContextLoader(
                   word: _studyList[_macro].word,
+                  mode: StudyModes.reading,
                   child: _body,
                 ),
               ),

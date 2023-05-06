@@ -6,15 +6,21 @@ import 'package:kanpractice/domain/services/i_translate_repository.dart';
 class TranslateRepositoryImpl implements ITranslateRepository {
   TranslateRepositoryImpl();
 
+  OnDeviceTranslator? _onDeviceTranslator;
+
   @override
   Future<String> translate(String text, String targetLanguage) async {
-    final onDeviceTranslator = OnDeviceTranslator(
+    _onDeviceTranslator ??= OnDeviceTranslator(
       sourceLanguage: TranslateLanguage.japanese,
       targetLanguage: TranslateLanguage.values
           .firstWhere((element) => element.bcpCode == targetLanguage),
     );
-    final translatedText = await onDeviceTranslator.translateText(text);
-    await onDeviceTranslator.close();
-    return translatedText;
+    final translatedText = await _onDeviceTranslator?.translateText(text);
+    return translatedText ?? '';
+  }
+
+  @override
+  Future<void> close() async {
+    await _onDeviceTranslator?.close();
   }
 }

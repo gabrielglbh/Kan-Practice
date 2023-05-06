@@ -14,7 +14,7 @@ class ContextButton extends StatelessWidget {
       builder: (context, state) {
         return state.maybeWhen(
           loading: () => const SizedBox(),
-          succeeded: (_, __) => const SizedBox(),
+          succeeded: (_, __, ___) => const SizedBox(),
           orElse: () => ElevatedButton(
             onPressed: () {
               final bloc = context.read<SentenceGeneratorBloc>();

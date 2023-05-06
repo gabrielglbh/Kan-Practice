@@ -10,4 +10,8 @@ class TranslateService {
   Future<String> translate(String text, String targetLanguage) async {
     return await _translateRepository.translate(text, targetLanguage);
   }
+
+  Future<void> close() async {
+    return await _translateRepository.close();
+  }
 }

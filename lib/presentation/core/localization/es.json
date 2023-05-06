@@ -441,5 +441,6 @@
   "translation_bottom_sheet_begin": "Empezar",
   "translation_loading": "Cargando traducción...",
   "translation_test_loading": "Generando frase aleatoria...",
-  "translation_test_disclaimer": "Para realizar este test se requiere una conexión estable a internet"
+  "translation_test_disclaimer": "Para realizar este test se requiere una conexión estable a internet",
+  "translation_words_used": "Palabras usadas"
 }

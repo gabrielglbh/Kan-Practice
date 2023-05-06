@@ -194,6 +194,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
                     ? _body(null)
                     : ContextLoader(
                         word: _studyList[_macro].word,
+                        mode: StudyModes.listening,
                         child: _body,
                       ),
               ),

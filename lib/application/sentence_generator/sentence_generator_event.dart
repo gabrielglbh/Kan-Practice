@@ -9,9 +9,10 @@ abstract class SentenceGeneratorEvent extends Equatable {
 
 class SentenceGeneratorEventLoad extends SentenceGeneratorEvent {
   final int hash;
+  final String? locale;
   final List<String>? words;
 
-  const SentenceGeneratorEventLoad({this.hash = 0, this.words});
+  const SentenceGeneratorEventLoad({this.hash = 0, this.locale, this.words});
 
   @override
   List<Object> get props => [hash];

@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -31,8 +30,7 @@ class ContextWidget extends StatelessWidget {
             ? '「 $word 」'
             : '「 ____ 」',
       );
-      child = Text('${'provide_context'.tr()}: $splitted',
-          textAlign: TextAlign.center, style: theme);
+      child = Text(splitted, textAlign: TextAlign.center, style: theme);
     } else {
       final parts = sentence.splitMapJoin(word);
       child = sentence == word
@@ -51,17 +49,17 @@ class ContextWidget extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(
+      padding: EdgeInsets.only(
         top: KPMargins.margin12,
-        left: KPMargins.margin16,
-        right: KPMargins.margin16,
+        left: hasTTS ? KPMargins.margin4 : KPMargins.margin16,
+        right: hasTTS ? KPMargins.margin4 : KPMargins.margin16,
       ),
       child: hasTTS
           ? Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Flexible(child: child),
-                const SizedBox(width: KPMargins.margin8),
+                const SizedBox(width: KPMargins.margin48),
+                Expanded(child: child),
                 TTSIconButton(word: sentence),
               ],
             )

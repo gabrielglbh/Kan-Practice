@@ -4,18 +4,18 @@ import 'package:kanpractice/application/sentence_generator/sentence_generator_bl
 import 'package:kanpractice/application/services/text_to_speech_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
-import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 
 class ContextLoader extends StatelessWidget {
   final String word;
   final StudyModes mode;
   final Widget Function(String?) child;
+  final Widget loading;
   const ContextLoader({
     super.key,
     required this.word,
     required this.child,
     required this.mode,
+    required this.loading,
   });
 
   @override
@@ -28,16 +28,15 @@ class ContextLoader extends StatelessWidget {
             await getIt<TextToSpeechService>().speakWord(s.sentence);
           }
         }, error: (_) async {
-          await getIt<TextToSpeechService>().speakWord(word);
+          if (mode == StudyModes.listening) {
+            await getIt<TextToSpeechService>().speakWord(word);
+          }
         });
       },
       builder: (context, state) {
         return state.maybeWhen(
           succeeded: (sentence, _, __) => child(sentence),
-          loading: () => const SizedBox(
-            height: KPMargins.margin64 * 2,
-            child: KPProgressIndicator(),
-          ),
+          loading: () => loading,
           orElse: () => child(null),
         );
       },

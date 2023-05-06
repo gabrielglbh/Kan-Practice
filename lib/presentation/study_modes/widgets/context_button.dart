@@ -33,9 +33,8 @@ class ContextButton extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(
-                    Icons.lightbulb_rounded,
+                    Icons.psychology_outlined,
                     color: Colors.white,
-                    size: KPMargins.margin18,
                   ),
                   const SizedBox(width: KPMargins.margin4),
                   Flexible(

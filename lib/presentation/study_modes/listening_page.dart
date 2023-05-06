@@ -21,6 +21,7 @@ import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 import 'package:kanpractice/presentation/study_modes/utils/study_mode_update_handler.dart';
 import 'package:kanpractice/presentation/study_modes/widgets/context_button.dart';
 import 'package:kanpractice/presentation/study_modes/widgets/context_loader.dart';
+import 'package:kanpractice/presentation/study_modes/widgets/context_loading.dart';
 import 'package:kanpractice/presentation/study_modes/widgets/context_widget.dart';
 
 class ListeningStudy extends StatefulWidget {
@@ -195,6 +196,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
                     : ContextLoader(
                         word: _studyList[_macro].word,
                         mode: StudyModes.listening,
+                        loading: _body(null, isLoading: true),
                         child: _body,
                       ),
               ),
@@ -213,7 +215,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
     );
   }
 
-  Widget _body(String? sentence) {
+  Widget _body(String? sentence, {bool isLoading = false}) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -241,6 +243,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
                   textStyle: Theme.of(context).textTheme.displaySmall),
             ),
           ),
+          if (isLoading) const ContextLoading(),
           if (sentence != null)
             ContextWidget(
               word: _studyList[_macro].word,

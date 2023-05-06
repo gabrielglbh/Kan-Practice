@@ -442,5 +442,7 @@
   "translation_loading": "Übersetzung laden...",
   "translation_test_loading": "Generierung eines zufälligen Satzes...",
   "translation_test_disclaimer": "Um diesen Test durchzuführen, ist eine stabile Internetverbindung erforderlich",
-  "translation_words_used": "Verwendete Wörter"
+  "translation_words_used": "Verwendete Wörter",
+  "translation_disclaimer_title": "Verwendung von ChatGPT und Google ML Kit",
+  "translation_disclaimer": "Bei der Verwendung von ChatGPT für die Satzgenerierung und Googles Machine Learning Kit für die Übersetzungen werden einige zufällige Sätze und ihre Übersetzungen fehleranfällig sein, da die Parameter zu unterschiedlich sein können, um sie so miteinander zu verknüpfen, dass der Satz einen Sinn ergibt."
 }

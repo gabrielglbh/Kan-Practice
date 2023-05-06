@@ -5,6 +5,7 @@ import 'package:kanpractice/application/sentence_generator/sentence_generator_bl
 import 'package:kanpractice/application/services/text_to_speech_service.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_learning_header_animation.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_learning_text_box.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_list_percentage_indicator.dart';
@@ -126,6 +127,25 @@ class _TranslationTestPageState extends State<TranslationTestPage> {
       appBarTitle: StudyModeAppBar(
           title: widget.args.studyModeHeaderDisplayName,
           studyMode: widget.args.mode.mode),
+      appBarActions: [
+        IconButton(
+          onPressed: () => showDialog(
+            context: context,
+            builder: (context) {
+              return KPDialog(
+                title: Text("translation_disclaimer_title".tr(),
+                    style: Theme.of(context).textTheme.titleLarge),
+                content: Text("translation_disclaimer".tr(),
+                    style: Theme.of(context).textTheme.bodyLarge),
+                positiveButtonText: "Ok",
+                negativeButton: false,
+                onPositive: () {},
+              );
+            },
+          ),
+          icon: const Icon(Icons.info_outline_rounded),
+        )
+      ],
       centerTitle: true,
       child: BlocConsumer<SentenceGeneratorBloc, SentenceGeneratorState>(
         listener: (context, state) {
@@ -136,62 +156,71 @@ class _TranslationTestPageState extends State<TranslationTestPage> {
           );
         },
         builder: (context, state) {
-          return Column(
+          return Stack(
+            alignment: Alignment.bottomCenter,
             children: [
               Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  KPListPercentageIndicator(value: (_macro + 1) / _max),
-                  KPLearningHeaderAnimation(
-                    id: _macro,
-                    child: state.maybeWhen(
-                      succeeded: (sentence, translation, usedWords) =>
-                          _body(sentence, translation, usedWords),
-                      loading: () => const SizedBox(
-                        height: KPMargins.margin64 * 2,
-                        child: KPProgressIndicator(),
-                      ),
-                      orElse: () => SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: KPMargins.margin64 * 2,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: GestureDetector(
-                            onTap: () {
-                              context
-                                  .read<SentenceGeneratorBloc>()
-                                  .add(SentenceGeneratorEventLoad(
-                                    hash: _macro,
-                                    locale: _currentLocale,
-                                  ));
-                            },
-                            child: Text(
-                                "load_failed_try_again_button_label".tr(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                      decoration: TextDecoration.underline,
-                                    )),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      KPListPercentageIndicator(value: (_macro + 1) / _max),
+                      KPLearningHeaderAnimation(
+                        id: _macro,
+                        child: state.maybeWhen(
+                          succeeded: (sentence, translation, usedWords) =>
+                              _body(sentence, translation, usedWords),
+                          loading: () => const SizedBox(
+                            height: KPMargins.margin64 * 2,
+                            child: KPProgressIndicator(),
+                          ),
+                          orElse: () => SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: KPMargins.margin64 * 2,
+                            child: const Align(
+                              alignment: Alignment.center,
+                              child: Icon(Icons.subtitles_off_outlined),
+                            ),
                           ),
                         ),
                       ),
+                    ],
+                  ),
+                  state.maybeWhen(
+                    loading: () => KPValidationButtons(
+                      trigger: _showTranslation,
+                      submitLabel: "translation_test_loading".tr(),
+                      action: (_) {},
+                      onSubmit: () {},
+                    ),
+                    error: () => KPValidationButtons(
+                      trigger: _showTranslation,
+                      submitLabel: "load_failed_try_again_button_label".tr(),
+                      action: (_) {},
+                      onSubmit: () {
+                        context
+                            .read<SentenceGeneratorBloc>()
+                            .add(SentenceGeneratorEventLoad(
+                              hash: _macro,
+                              locale: _currentLocale,
+                            ));
+                      },
+                    ),
+                    orElse: () => KPValidationButtons(
+                      trigger: _showTranslation,
+                      submitLabel: "done_button_label".tr(),
+                      action: (score) async => await _updateUIOnSubmit(score),
+                      onSubmit: () => setState(() => _showTranslation = true),
                     ),
                   ),
                 ],
               ),
-              state.maybeWhen(
-                loading: () => KPValidationButtons(
-                  trigger: _showTranslation,
-                  submitLabel: "translation_test_loading".tr(),
-                  action: (_) {},
-                  onSubmit: () {},
-                ),
-                orElse: () => KPValidationButtons(
-                  trigger: _showTranslation,
-                  submitLabel: "done_button_label".tr(),
-                  action: (score) async => await _updateUIOnSubmit(score),
-                  onSubmit: () => setState(() => _showTranslation = true),
+              Padding(
+                padding: const EdgeInsets.only(bottom: KPMargins.margin8),
+                child: Chip(
+                  backgroundColor: Colors.green[200],
+                  label: Text("translation_disclaimer_title".tr(),
+                      style: const TextStyle(color: KPColors.accentLight)),
                 ),
               ),
             ],

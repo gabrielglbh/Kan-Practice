@@ -444,5 +444,10 @@
   "translation_test_disclaimer": "Para realizar este test se requiere una conexión estable a internet",
   "translation_words_used": "Palabras usadas",
   "translation_disclaimer_title": "Uso de ChatGPT y Google ML Kit",
-  "translation_disclaimer": "Al utilizar ChatGPT para la generación de frases y el Kit de Aprendizaje Automático de Google para las traducciones, algunas frases aleatorias y sus traducciones serán propensas a errores, ya que los parámetros pueden ser demasiado diferenciales como para unirlos de forma que la frase tenga sentido."
+  "translation_disclaimer": "Al utilizar ChatGPT para la generación de frases y el Kit de Aprendizaje Automático de Google para las traducciones, algunas frases aleatorias y sus traducciones serán propensas a errores, ya que los parámetros pueden ser demasiado diferenciales como para unirlos de forma que la frase tenga sentido.",
+  "ocr_camera": "Cámara",
+  "ocr_gallery": "Galería",
+  "ocr_permissions_denied": "Debes conceder permisos en Ajustes",
+  "ocr_picker_title": "Haz o elige una imagen...",
+  "ocr_scanned": "Imagen escaneada"
 }

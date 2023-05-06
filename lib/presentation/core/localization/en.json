@@ -444,5 +444,10 @@
   "translation_test_disclaimer": "In order to perform this test, an stable internet connection is required",
   "translation_words_used": "Words used",
   "translation_disclaimer_title": "Using ChatGPT and Google ML Kit",
-  "translation_disclaimer": "While using ChatGPT for sentence generation and Google's Machine Learning Kit for translations, some random sentences and their translations will be prone to error as the parameters may be too differenciative to link them together in such a way that the sentence makes sense."
+  "translation_disclaimer": "While using ChatGPT for sentence generation and Google's Machine Learning Kit for translations, some random sentences and their translations will be prone to error as the parameters may be too differenciative to link them together in such a way that the sentence makes sense.",
+  "ocr_camera": "Camera",
+  "ocr_gallery": "Gallery",
+  "ocr_permissions_denied": "Should grant permissions on Settings",
+  "ocr_picker_title": "Take or pick an image...",
+  "ocr_scanned": "Scanned image"
 }

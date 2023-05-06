@@ -262,7 +262,7 @@ class BackupRepositoryImpl implements IBackupRepository {
   Future<String> getVersion() async {
     try {
       final DocumentSnapshot ref =
-          await _ref.collection("Versioning").doc("version").get();
+          await _ref.collection("Versioning").doc("pro_version").get();
       return await ref.get("version");
     } catch (err) {
       print(err.toString());
@@ -276,7 +276,7 @@ class BackupRepositoryImpl implements IBackupRepository {
     final locale = Localizations.localeOf(context).languageCode;
     try {
       final Future<DocumentSnapshot> ref =
-          _ref.collection("Versioning").doc("version_notes").get();
+          _ref.collection("Versioning").doc("pro_version_notes").get();
       await ref.then((snapshot) {
         notes = snapshot.get(locale).cast<String>();
       });
@@ -531,8 +531,7 @@ class BackupRepositoryImpl implements IBackupRepository {
       }
 
       if (testDataSnapshot.size > 0) {
-        // TODO: Breaking change on 4.1.0
-        // with definition and grammar point fields being required not null
+        // TODO: Modify when adding something to TestData
         Map<String, dynamic> json = testDataSnapshot.docs[0].data();
         if (!json
             .containsKey(TestDataTableFields.testTotalCountDefinitionField)) {
@@ -561,6 +560,10 @@ class BackupRepositoryImpl implements IBackupRepository {
                 TestDataTableFields.testTotalWinRateGrammarPointField, 0)
           ]);
         }
+        if (!json.containsKey(TestDataTableFields.translationTestsField)) {
+          json.addEntries(
+              [const MapEntry(TestDataTableFields.translationTestsField, 0)]);
+        }
         backUpTestData = TestData.fromJson(json);
       }
 
@@ -572,8 +575,7 @@ class BackupRepositoryImpl implements IBackupRepository {
       }
 
       if (testSpecDataSnapshot.size > 0) {
-        // TODO: Breaking change on 4.1.0
-        // with definition and grammar point fields being required not null
+        // TODO: Modify when adding something to SpecificData
         for (int x = 0; x < testSpecDataSnapshot.size; x++) {
           Map<String, dynamic> json = testSpecDataSnapshot.docs[x].data();
           if (!json.containsKey(
@@ -609,8 +611,7 @@ class BackupRepositoryImpl implements IBackupRepository {
       }
 
       if (alterTestSpecDataSnapshot.size > 0) {
-        // TODO: Breaking change on 4.3.2
-        // with definition and grammar point fields being required not null
+        // TODO: Modify when adding something to AlterSpecificData
         for (int x = 0; x < alterTestSpecDataSnapshot.size; x++) {
           Map<String, dynamic> json = alterTestSpecDataSnapshot.docs[x].data();
           if (!json.containsKey(

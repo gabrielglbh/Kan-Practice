@@ -263,10 +263,11 @@ class _OCRBottomSheetState extends State<OCRBottomSheet> {
                     padding: const EdgeInsets.all(KPMargins.margin8),
                     child: SelectableText(
                       text,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyLarge
-                          ?.copyWith(backgroundColor: Colors.white70),
+                      style:
+                          Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                backgroundColor: Colors.white70,
+                                fontWeight: FontWeight.normal,
+                              ),
                       contextMenuBuilder: ((context, editableTextState) {
                         final ts =
                             editableTextState.currentTextEditingValue.selection;

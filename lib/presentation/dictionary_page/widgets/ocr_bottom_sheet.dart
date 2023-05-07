@@ -12,6 +12,7 @@ import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_tappable_info.dart';
+import 'package:kanpractice/presentation/dictionary_page/widgets/ocr_context_menu.dart';
 import 'dart:async';
 import 'dart:ui' as ui;
 
@@ -228,15 +229,22 @@ class _OCRBottomSheetState extends State<OCRBottomSheet> {
                     padding: const EdgeInsets.all(KPMargins.margin8),
                     child: SelectableText(
                       text,
-                      // TODO: Maybe change size of text depending of number of \n?
                       style: Theme.of(context)
                           .textTheme
                           .bodyLarge
                           ?.copyWith(backgroundColor: Colors.white54),
-                      onSelectionChanged: (textSelection, _) {
-                        // TODO: Selected text make it searchable on Jisho
-                        // TODO: on the bottom of the BS. Also, translate it
-                      },
+                      contextMenuBuilder: ((context, editableTextState) {
+                        final ts =
+                            editableTextState.currentTextEditingValue.selection;
+                        final selectedText = editableTextState
+                            .currentTextEditingValue.text
+                            .substring(ts.baseOffset, ts.extentOffset);
+                        final anchor =
+                            editableTextState.contextMenuAnchors.primaryAnchor;
+
+                        return OCRContextMenu(
+                            anchor: anchor, selectedText: selectedText);
+                      }),
                     ),
                   ),
                 ),

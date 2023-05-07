@@ -452,5 +452,7 @@
   "ocr_scanned": "Imagen escaneada",
   "ocr_translate": "Traducir",
   "ocr_show_original": "Mostrar original",
-  "ocr_select_text_info": "Texto seleccionable para traducción o búsqueda en Jisho"
+  "ocr_select_text_info": "Texto seleccionable para traducción o búsqueda en Jisho",
+  "ocr_search_in_jisho_part1": "Buscar",
+  "ocr_search_in_jisho_part2": "en Jisho"
 }

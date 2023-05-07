@@ -50,6 +50,11 @@ final ThemeData dark = ThemeData(
           decoration: TextDecoration.underline,
           fontSize: KPFontSizes.fontSize14)),
   cardTheme: CardTheme(color: KPColors.cardColorDark, elevation: 8),
+  textSelectionTheme: const TextSelectionThemeData(
+    cursorColor: KPColors.secondaryDarkerColor,
+    selectionColor: KPColors.secondaryColor,
+    selectionHandleColor: KPColors.secondaryColor,
+  ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
       backgroundColor:
@@ -67,8 +72,6 @@ final ThemeData dark = ThemeData(
           borderRadius: BorderRadius.all(Radius.circular(KPRadius.radius16))),
       elevation: 12,
       contentTextStyle: TextStyle(color: KPColors.accentDark)),
-  textSelectionTheme:
-      const TextSelectionThemeData(cursorColor: KPColors.secondaryColor),
   inputDecorationTheme: InputDecorationTheme(
       hintStyle: TextStyle(color: Colors.grey[400]),
       enabledBorder: OutlineInputBorder(

@@ -8,14 +8,13 @@ import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/services/i_ocr_repository.dart';
 import 'package:kanpractice/domain/services/i_translate_repository.dart';
 
-part 'ocr_bottom_sheet_event.dart';
-part 'ocr_bottom_sheet_state.dart';
+part 'ocr_page_event.dart';
+part 'ocr_page_state.dart';
 
-part 'ocr_bottom_sheet_bloc.freezed.dart';
+part 'ocr_page_bloc.freezed.dart';
 
 @injectable
-class OCRBottomSheetBloc
-    extends Bloc<OCRBottomSheetEvent, OCRBottomSheetState> {
+class OCRPageBloc extends Bloc<OCRPageEvent, OCRPageState> {
   final ITranslateRepository _translateRepository;
   final IOCRRepository _iocrRepository;
 
@@ -23,41 +22,39 @@ class OCRBottomSheetBloc
   String _ocrText = '';
   String _ocrTranslatedText = '';
 
-  OCRBottomSheetBloc(this._translateRepository, this._iocrRepository)
-      : super(const OCRBottomSheetState.initial()) {
-    on<OCRBottomSheetEventReset>(((event, emit) {
-      _translateRepository.close();
-      _iocrRepository.close();
-      emit(const OCRBottomSheetState.initial());
+  OCRPageBloc(this._translateRepository, this._iocrRepository)
+      : super(const OCRPageState.initial()) {
+    on<OCRPageEventReset>(((event, emit) {
+      emit(const OCRPageState.initial());
     }));
 
-    on<OCRBottomSheetEventLoadImage>((event, emit) async {
-      emit(const OCRBottomSheetState.loading());
+    on<OCRPageEventLoadImage>((event, emit) async {
+      emit(const OCRPageState.loading());
       final pickedFile = await _imagePicker.pickImage(source: event.source);
       if (pickedFile != null) {
         final image = File(pickedFile.path);
         final inputImage = InputImage.fromFilePath(pickedFile.path);
         _ocrText = await _iocrRepository.recognize(inputImage);
-        emit(OCRBottomSheetState.imageLoaded(_ocrText, image: image));
+        emit(OCRPageState.imageLoaded(_ocrText, image: image));
       } else {
-        emit(const OCRBottomSheetState.initial());
+        emit(const OCRPageState.initial());
       }
     });
 
-    on<OCRBottomSheetEventTranslate>((event, emit) async {
-      emit(const OCRBottomSheetState.loading());
+    on<OCRPageEventTranslate>((event, emit) async {
+      emit(const OCRPageState.loading());
       _ocrTranslatedText =
           await _translateRepository.translate(_ocrText, event.locale);
-      emit(OCRBottomSheetState.translationLoaded(_ocrTranslatedText));
+      emit(OCRPageState.translationLoaded(_ocrTranslatedText));
     });
 
-    on<OCRBottomSheetEventShowOriginal>((event, emit) async {
-      emit(OCRBottomSheetState.imageLoaded(_ocrText));
+    on<OCRPageEventShowOriginal>((event, emit) async {
+      emit(OCRPageState.imageLoaded(_ocrText));
     });
 
-    on<OCRBottomSheetEventTraverseText>((event, emit) async {
+    on<OCRPageEventTraverseText>((event, emit) async {
       _ocrText = event.text.split('\n').reversed.toList().join('\n');
-      emit(OCRBottomSheetState.imageLoaded(_ocrText));
+      emit(OCRPageState.imageLoaded(_ocrText));
     });
   }
 }

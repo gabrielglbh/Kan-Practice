@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'ocr_bottom_sheet_bloc.dart';
+part of 'ocr_page_bloc.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$OCRBottomSheetState {
+mixin _$OCRPageState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
@@ -46,46 +46,45 @@ mixin _$OCRBottomSheetState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(OCRBottomSheetInitial value) initial,
-    required TResult Function(OCRBottomSheetLoading value) loading,
-    required TResult Function(OCRBottomSheetTranslationLoaded value)
-        translationLoaded,
-    required TResult Function(OCRBottomSheetImageLoaded value) imageLoaded,
-    required TResult Function(OCRBottomSheetError value) error,
+    required TResult Function(OCRPageInitial value) initial,
+    required TResult Function(OCRPageLoading value) loading,
+    required TResult Function(OCRPageTranslationLoaded value) translationLoaded,
+    required TResult Function(OCRPageImageLoaded value) imageLoaded,
+    required TResult Function(OCRPageError value) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(OCRBottomSheetInitial value)? initial,
-    TResult? Function(OCRBottomSheetLoading value)? loading,
-    TResult? Function(OCRBottomSheetTranslationLoaded value)? translationLoaded,
-    TResult? Function(OCRBottomSheetImageLoaded value)? imageLoaded,
-    TResult? Function(OCRBottomSheetError value)? error,
+    TResult? Function(OCRPageInitial value)? initial,
+    TResult? Function(OCRPageLoading value)? loading,
+    TResult? Function(OCRPageTranslationLoaded value)? translationLoaded,
+    TResult? Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult? Function(OCRPageError value)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(OCRBottomSheetInitial value)? initial,
-    TResult Function(OCRBottomSheetLoading value)? loading,
-    TResult Function(OCRBottomSheetTranslationLoaded value)? translationLoaded,
-    TResult Function(OCRBottomSheetImageLoaded value)? imageLoaded,
-    TResult Function(OCRBottomSheetError value)? error,
+    TResult Function(OCRPageInitial value)? initial,
+    TResult Function(OCRPageLoading value)? loading,
+    TResult Function(OCRPageTranslationLoaded value)? translationLoaded,
+    TResult Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult Function(OCRPageError value)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $OCRBottomSheetStateCopyWith<$Res> {
-  factory $OCRBottomSheetStateCopyWith(
-          OCRBottomSheetState value, $Res Function(OCRBottomSheetState) then) =
-      _$OCRBottomSheetStateCopyWithImpl<$Res, OCRBottomSheetState>;
+abstract class $OCRPageStateCopyWith<$Res> {
+  factory $OCRPageStateCopyWith(
+          OCRPageState value, $Res Function(OCRPageState) then) =
+      _$OCRPageStateCopyWithImpl<$Res, OCRPageState>;
 }
 
 /// @nodoc
-class _$OCRBottomSheetStateCopyWithImpl<$Res, $Val extends OCRBottomSheetState>
-    implements $OCRBottomSheetStateCopyWith<$Res> {
-  _$OCRBottomSheetStateCopyWithImpl(this._value, this._then);
+class _$OCRPageStateCopyWithImpl<$Res, $Val extends OCRPageState>
+    implements $OCRPageStateCopyWith<$Res> {
+  _$OCRPageStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -94,35 +93,35 @@ class _$OCRBottomSheetStateCopyWithImpl<$Res, $Val extends OCRBottomSheetState>
 }
 
 /// @nodoc
-abstract class _$$OCRBottomSheetInitialCopyWith<$Res> {
-  factory _$$OCRBottomSheetInitialCopyWith(_$OCRBottomSheetInitial value,
-          $Res Function(_$OCRBottomSheetInitial) then) =
-      __$$OCRBottomSheetInitialCopyWithImpl<$Res>;
+abstract class _$$OCRPageInitialCopyWith<$Res> {
+  factory _$$OCRPageInitialCopyWith(
+          _$OCRPageInitial value, $Res Function(_$OCRPageInitial) then) =
+      __$$OCRPageInitialCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$OCRBottomSheetInitialCopyWithImpl<$Res>
-    extends _$OCRBottomSheetStateCopyWithImpl<$Res, _$OCRBottomSheetInitial>
-    implements _$$OCRBottomSheetInitialCopyWith<$Res> {
-  __$$OCRBottomSheetInitialCopyWithImpl(_$OCRBottomSheetInitial _value,
-      $Res Function(_$OCRBottomSheetInitial) _then)
+class __$$OCRPageInitialCopyWithImpl<$Res>
+    extends _$OCRPageStateCopyWithImpl<$Res, _$OCRPageInitial>
+    implements _$$OCRPageInitialCopyWith<$Res> {
+  __$$OCRPageInitialCopyWithImpl(
+      _$OCRPageInitial _value, $Res Function(_$OCRPageInitial) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$OCRBottomSheetInitial implements OCRBottomSheetInitial {
-  const _$OCRBottomSheetInitial();
+class _$OCRPageInitial implements OCRPageInitial {
+  const _$OCRPageInitial();
 
   @override
   String toString() {
-    return 'OCRBottomSheetState.initial()';
+    return 'OCRPageState.initial()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$OCRBottomSheetInitial);
+        (other.runtimeType == runtimeType && other is _$OCRPageInitial);
   }
 
   @override
@@ -171,12 +170,11 @@ class _$OCRBottomSheetInitial implements OCRBottomSheetInitial {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(OCRBottomSheetInitial value) initial,
-    required TResult Function(OCRBottomSheetLoading value) loading,
-    required TResult Function(OCRBottomSheetTranslationLoaded value)
-        translationLoaded,
-    required TResult Function(OCRBottomSheetImageLoaded value) imageLoaded,
-    required TResult Function(OCRBottomSheetError value) error,
+    required TResult Function(OCRPageInitial value) initial,
+    required TResult Function(OCRPageLoading value) loading,
+    required TResult Function(OCRPageTranslationLoaded value) translationLoaded,
+    required TResult Function(OCRPageImageLoaded value) imageLoaded,
+    required TResult Function(OCRPageError value) error,
   }) {
     return initial(this);
   }
@@ -184,11 +182,11 @@ class _$OCRBottomSheetInitial implements OCRBottomSheetInitial {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(OCRBottomSheetInitial value)? initial,
-    TResult? Function(OCRBottomSheetLoading value)? loading,
-    TResult? Function(OCRBottomSheetTranslationLoaded value)? translationLoaded,
-    TResult? Function(OCRBottomSheetImageLoaded value)? imageLoaded,
-    TResult? Function(OCRBottomSheetError value)? error,
+    TResult? Function(OCRPageInitial value)? initial,
+    TResult? Function(OCRPageLoading value)? loading,
+    TResult? Function(OCRPageTranslationLoaded value)? translationLoaded,
+    TResult? Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult? Function(OCRPageError value)? error,
   }) {
     return initial?.call(this);
   }
@@ -196,11 +194,11 @@ class _$OCRBottomSheetInitial implements OCRBottomSheetInitial {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(OCRBottomSheetInitial value)? initial,
-    TResult Function(OCRBottomSheetLoading value)? loading,
-    TResult Function(OCRBottomSheetTranslationLoaded value)? translationLoaded,
-    TResult Function(OCRBottomSheetImageLoaded value)? imageLoaded,
-    TResult Function(OCRBottomSheetError value)? error,
+    TResult Function(OCRPageInitial value)? initial,
+    TResult Function(OCRPageLoading value)? loading,
+    TResult Function(OCRPageTranslationLoaded value)? translationLoaded,
+    TResult Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult Function(OCRPageError value)? error,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -210,40 +208,40 @@ class _$OCRBottomSheetInitial implements OCRBottomSheetInitial {
   }
 }
 
-abstract class OCRBottomSheetInitial implements OCRBottomSheetState {
-  const factory OCRBottomSheetInitial() = _$OCRBottomSheetInitial;
+abstract class OCRPageInitial implements OCRPageState {
+  const factory OCRPageInitial() = _$OCRPageInitial;
 }
 
 /// @nodoc
-abstract class _$$OCRBottomSheetLoadingCopyWith<$Res> {
-  factory _$$OCRBottomSheetLoadingCopyWith(_$OCRBottomSheetLoading value,
-          $Res Function(_$OCRBottomSheetLoading) then) =
-      __$$OCRBottomSheetLoadingCopyWithImpl<$Res>;
+abstract class _$$OCRPageLoadingCopyWith<$Res> {
+  factory _$$OCRPageLoadingCopyWith(
+          _$OCRPageLoading value, $Res Function(_$OCRPageLoading) then) =
+      __$$OCRPageLoadingCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$OCRBottomSheetLoadingCopyWithImpl<$Res>
-    extends _$OCRBottomSheetStateCopyWithImpl<$Res, _$OCRBottomSheetLoading>
-    implements _$$OCRBottomSheetLoadingCopyWith<$Res> {
-  __$$OCRBottomSheetLoadingCopyWithImpl(_$OCRBottomSheetLoading _value,
-      $Res Function(_$OCRBottomSheetLoading) _then)
+class __$$OCRPageLoadingCopyWithImpl<$Res>
+    extends _$OCRPageStateCopyWithImpl<$Res, _$OCRPageLoading>
+    implements _$$OCRPageLoadingCopyWith<$Res> {
+  __$$OCRPageLoadingCopyWithImpl(
+      _$OCRPageLoading _value, $Res Function(_$OCRPageLoading) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$OCRBottomSheetLoading implements OCRBottomSheetLoading {
-  const _$OCRBottomSheetLoading();
+class _$OCRPageLoading implements OCRPageLoading {
+  const _$OCRPageLoading();
 
   @override
   String toString() {
-    return 'OCRBottomSheetState.loading()';
+    return 'OCRPageState.loading()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$OCRBottomSheetLoading);
+        (other.runtimeType == runtimeType && other is _$OCRPageLoading);
   }
 
   @override
@@ -292,12 +290,11 @@ class _$OCRBottomSheetLoading implements OCRBottomSheetLoading {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(OCRBottomSheetInitial value) initial,
-    required TResult Function(OCRBottomSheetLoading value) loading,
-    required TResult Function(OCRBottomSheetTranslationLoaded value)
-        translationLoaded,
-    required TResult Function(OCRBottomSheetImageLoaded value) imageLoaded,
-    required TResult Function(OCRBottomSheetError value) error,
+    required TResult Function(OCRPageInitial value) initial,
+    required TResult Function(OCRPageLoading value) loading,
+    required TResult Function(OCRPageTranslationLoaded value) translationLoaded,
+    required TResult Function(OCRPageImageLoaded value) imageLoaded,
+    required TResult Function(OCRPageError value) error,
   }) {
     return loading(this);
   }
@@ -305,11 +302,11 @@ class _$OCRBottomSheetLoading implements OCRBottomSheetLoading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(OCRBottomSheetInitial value)? initial,
-    TResult? Function(OCRBottomSheetLoading value)? loading,
-    TResult? Function(OCRBottomSheetTranslationLoaded value)? translationLoaded,
-    TResult? Function(OCRBottomSheetImageLoaded value)? imageLoaded,
-    TResult? Function(OCRBottomSheetError value)? error,
+    TResult? Function(OCRPageInitial value)? initial,
+    TResult? Function(OCRPageLoading value)? loading,
+    TResult? Function(OCRPageTranslationLoaded value)? translationLoaded,
+    TResult? Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult? Function(OCRPageError value)? error,
   }) {
     return loading?.call(this);
   }
@@ -317,11 +314,11 @@ class _$OCRBottomSheetLoading implements OCRBottomSheetLoading {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(OCRBottomSheetInitial value)? initial,
-    TResult Function(OCRBottomSheetLoading value)? loading,
-    TResult Function(OCRBottomSheetTranslationLoaded value)? translationLoaded,
-    TResult Function(OCRBottomSheetImageLoaded value)? imageLoaded,
-    TResult Function(OCRBottomSheetError value)? error,
+    TResult Function(OCRPageInitial value)? initial,
+    TResult Function(OCRPageLoading value)? loading,
+    TResult Function(OCRPageTranslationLoaded value)? translationLoaded,
+    TResult Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult Function(OCRPageError value)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -331,28 +328,25 @@ class _$OCRBottomSheetLoading implements OCRBottomSheetLoading {
   }
 }
 
-abstract class OCRBottomSheetLoading implements OCRBottomSheetState {
-  const factory OCRBottomSheetLoading() = _$OCRBottomSheetLoading;
+abstract class OCRPageLoading implements OCRPageState {
+  const factory OCRPageLoading() = _$OCRPageLoading;
 }
 
 /// @nodoc
-abstract class _$$OCRBottomSheetTranslationLoadedCopyWith<$Res> {
-  factory _$$OCRBottomSheetTranslationLoadedCopyWith(
-          _$OCRBottomSheetTranslationLoaded value,
-          $Res Function(_$OCRBottomSheetTranslationLoaded) then) =
-      __$$OCRBottomSheetTranslationLoadedCopyWithImpl<$Res>;
+abstract class _$$OCRPageTranslationLoadedCopyWith<$Res> {
+  factory _$$OCRPageTranslationLoadedCopyWith(_$OCRPageTranslationLoaded value,
+          $Res Function(_$OCRPageTranslationLoaded) then) =
+      __$$OCRPageTranslationLoadedCopyWithImpl<$Res>;
   @useResult
   $Res call({String translation});
 }
 
 /// @nodoc
-class __$$OCRBottomSheetTranslationLoadedCopyWithImpl<$Res>
-    extends _$OCRBottomSheetStateCopyWithImpl<$Res,
-        _$OCRBottomSheetTranslationLoaded>
-    implements _$$OCRBottomSheetTranslationLoadedCopyWith<$Res> {
-  __$$OCRBottomSheetTranslationLoadedCopyWithImpl(
-      _$OCRBottomSheetTranslationLoaded _value,
-      $Res Function(_$OCRBottomSheetTranslationLoaded) _then)
+class __$$OCRPageTranslationLoadedCopyWithImpl<$Res>
+    extends _$OCRPageStateCopyWithImpl<$Res, _$OCRPageTranslationLoaded>
+    implements _$$OCRPageTranslationLoadedCopyWith<$Res> {
+  __$$OCRPageTranslationLoadedCopyWithImpl(_$OCRPageTranslationLoaded _value,
+      $Res Function(_$OCRPageTranslationLoaded) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -360,7 +354,7 @@ class __$$OCRBottomSheetTranslationLoadedCopyWithImpl<$Res>
   $Res call({
     Object? translation = null,
   }) {
-    return _then(_$OCRBottomSheetTranslationLoaded(
+    return _then(_$OCRPageTranslationLoaded(
       null == translation
           ? _value.translation
           : translation // ignore: cast_nullable_to_non_nullable
@@ -371,23 +365,22 @@ class __$$OCRBottomSheetTranslationLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$OCRBottomSheetTranslationLoaded
-    implements OCRBottomSheetTranslationLoaded {
-  const _$OCRBottomSheetTranslationLoaded(this.translation);
+class _$OCRPageTranslationLoaded implements OCRPageTranslationLoaded {
+  const _$OCRPageTranslationLoaded(this.translation);
 
   @override
   final String translation;
 
   @override
   String toString() {
-    return 'OCRBottomSheetState.translationLoaded(translation: $translation)';
+    return 'OCRPageState.translationLoaded(translation: $translation)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$OCRBottomSheetTranslationLoaded &&
+            other is _$OCRPageTranslationLoaded &&
             (identical(other.translation, translation) ||
                 other.translation == translation));
   }
@@ -398,9 +391,10 @@ class _$OCRBottomSheetTranslationLoaded
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$OCRBottomSheetTranslationLoadedCopyWith<_$OCRBottomSheetTranslationLoaded>
-      get copyWith => __$$OCRBottomSheetTranslationLoadedCopyWithImpl<
-          _$OCRBottomSheetTranslationLoaded>(this, _$identity);
+  _$$OCRPageTranslationLoadedCopyWith<_$OCRPageTranslationLoaded>
+      get copyWith =>
+          __$$OCRPageTranslationLoadedCopyWithImpl<_$OCRPageTranslationLoaded>(
+              this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -445,12 +439,11 @@ class _$OCRBottomSheetTranslationLoaded
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(OCRBottomSheetInitial value) initial,
-    required TResult Function(OCRBottomSheetLoading value) loading,
-    required TResult Function(OCRBottomSheetTranslationLoaded value)
-        translationLoaded,
-    required TResult Function(OCRBottomSheetImageLoaded value) imageLoaded,
-    required TResult Function(OCRBottomSheetError value) error,
+    required TResult Function(OCRPageInitial value) initial,
+    required TResult Function(OCRPageLoading value) loading,
+    required TResult Function(OCRPageTranslationLoaded value) translationLoaded,
+    required TResult Function(OCRPageImageLoaded value) imageLoaded,
+    required TResult Function(OCRPageError value) error,
   }) {
     return translationLoaded(this);
   }
@@ -458,11 +451,11 @@ class _$OCRBottomSheetTranslationLoaded
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(OCRBottomSheetInitial value)? initial,
-    TResult? Function(OCRBottomSheetLoading value)? loading,
-    TResult? Function(OCRBottomSheetTranslationLoaded value)? translationLoaded,
-    TResult? Function(OCRBottomSheetImageLoaded value)? imageLoaded,
-    TResult? Function(OCRBottomSheetError value)? error,
+    TResult? Function(OCRPageInitial value)? initial,
+    TResult? Function(OCRPageLoading value)? loading,
+    TResult? Function(OCRPageTranslationLoaded value)? translationLoaded,
+    TResult? Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult? Function(OCRPageError value)? error,
   }) {
     return translationLoaded?.call(this);
   }
@@ -470,11 +463,11 @@ class _$OCRBottomSheetTranslationLoaded
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(OCRBottomSheetInitial value)? initial,
-    TResult Function(OCRBottomSheetLoading value)? loading,
-    TResult Function(OCRBottomSheetTranslationLoaded value)? translationLoaded,
-    TResult Function(OCRBottomSheetImageLoaded value)? imageLoaded,
-    TResult Function(OCRBottomSheetError value)? error,
+    TResult Function(OCRPageInitial value)? initial,
+    TResult Function(OCRPageLoading value)? loading,
+    TResult Function(OCRPageTranslationLoaded value)? translationLoaded,
+    TResult Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult Function(OCRPageError value)? error,
     required TResult orElse(),
   }) {
     if (translationLoaded != null) {
@@ -484,32 +477,31 @@ class _$OCRBottomSheetTranslationLoaded
   }
 }
 
-abstract class OCRBottomSheetTranslationLoaded implements OCRBottomSheetState {
-  const factory OCRBottomSheetTranslationLoaded(final String translation) =
-      _$OCRBottomSheetTranslationLoaded;
+abstract class OCRPageTranslationLoaded implements OCRPageState {
+  const factory OCRPageTranslationLoaded(final String translation) =
+      _$OCRPageTranslationLoaded;
 
   String get translation;
   @JsonKey(ignore: true)
-  _$$OCRBottomSheetTranslationLoadedCopyWith<_$OCRBottomSheetTranslationLoaded>
+  _$$OCRPageTranslationLoadedCopyWith<_$OCRPageTranslationLoaded>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$OCRBottomSheetImageLoadedCopyWith<$Res> {
-  factory _$$OCRBottomSheetImageLoadedCopyWith(
-          _$OCRBottomSheetImageLoaded value,
-          $Res Function(_$OCRBottomSheetImageLoaded) then) =
-      __$$OCRBottomSheetImageLoadedCopyWithImpl<$Res>;
+abstract class _$$OCRPageImageLoadedCopyWith<$Res> {
+  factory _$$OCRPageImageLoadedCopyWith(_$OCRPageImageLoaded value,
+          $Res Function(_$OCRPageImageLoaded) then) =
+      __$$OCRPageImageLoadedCopyWithImpl<$Res>;
   @useResult
   $Res call({String text, File? image});
 }
 
 /// @nodoc
-class __$$OCRBottomSheetImageLoadedCopyWithImpl<$Res>
-    extends _$OCRBottomSheetStateCopyWithImpl<$Res, _$OCRBottomSheetImageLoaded>
-    implements _$$OCRBottomSheetImageLoadedCopyWith<$Res> {
-  __$$OCRBottomSheetImageLoadedCopyWithImpl(_$OCRBottomSheetImageLoaded _value,
-      $Res Function(_$OCRBottomSheetImageLoaded) _then)
+class __$$OCRPageImageLoadedCopyWithImpl<$Res>
+    extends _$OCRPageStateCopyWithImpl<$Res, _$OCRPageImageLoaded>
+    implements _$$OCRPageImageLoadedCopyWith<$Res> {
+  __$$OCRPageImageLoadedCopyWithImpl(
+      _$OCRPageImageLoaded _value, $Res Function(_$OCRPageImageLoaded) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -518,7 +510,7 @@ class __$$OCRBottomSheetImageLoadedCopyWithImpl<$Res>
     Object? text = null,
     Object? image = freezed,
   }) {
-    return _then(_$OCRBottomSheetImageLoaded(
+    return _then(_$OCRPageImageLoaded(
       null == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -533,8 +525,8 @@ class __$$OCRBottomSheetImageLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$OCRBottomSheetImageLoaded implements OCRBottomSheetImageLoaded {
-  const _$OCRBottomSheetImageLoaded(this.text, {this.image});
+class _$OCRPageImageLoaded implements OCRPageImageLoaded {
+  const _$OCRPageImageLoaded(this.text, {this.image});
 
   @override
   final String text;
@@ -543,14 +535,14 @@ class _$OCRBottomSheetImageLoaded implements OCRBottomSheetImageLoaded {
 
   @override
   String toString() {
-    return 'OCRBottomSheetState.imageLoaded(text: $text, image: $image)';
+    return 'OCRPageState.imageLoaded(text: $text, image: $image)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$OCRBottomSheetImageLoaded &&
+            other is _$OCRPageImageLoaded &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.image, image) || other.image == image));
   }
@@ -561,9 +553,9 @@ class _$OCRBottomSheetImageLoaded implements OCRBottomSheetImageLoaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$OCRBottomSheetImageLoadedCopyWith<_$OCRBottomSheetImageLoaded>
-      get copyWith => __$$OCRBottomSheetImageLoadedCopyWithImpl<
-          _$OCRBottomSheetImageLoaded>(this, _$identity);
+  _$$OCRPageImageLoadedCopyWith<_$OCRPageImageLoaded> get copyWith =>
+      __$$OCRPageImageLoadedCopyWithImpl<_$OCRPageImageLoaded>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -608,12 +600,11 @@ class _$OCRBottomSheetImageLoaded implements OCRBottomSheetImageLoaded {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(OCRBottomSheetInitial value) initial,
-    required TResult Function(OCRBottomSheetLoading value) loading,
-    required TResult Function(OCRBottomSheetTranslationLoaded value)
-        translationLoaded,
-    required TResult Function(OCRBottomSheetImageLoaded value) imageLoaded,
-    required TResult Function(OCRBottomSheetError value) error,
+    required TResult Function(OCRPageInitial value) initial,
+    required TResult Function(OCRPageLoading value) loading,
+    required TResult Function(OCRPageTranslationLoaded value) translationLoaded,
+    required TResult Function(OCRPageImageLoaded value) imageLoaded,
+    required TResult Function(OCRPageError value) error,
   }) {
     return imageLoaded(this);
   }
@@ -621,11 +612,11 @@ class _$OCRBottomSheetImageLoaded implements OCRBottomSheetImageLoaded {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(OCRBottomSheetInitial value)? initial,
-    TResult? Function(OCRBottomSheetLoading value)? loading,
-    TResult? Function(OCRBottomSheetTranslationLoaded value)? translationLoaded,
-    TResult? Function(OCRBottomSheetImageLoaded value)? imageLoaded,
-    TResult? Function(OCRBottomSheetError value)? error,
+    TResult? Function(OCRPageInitial value)? initial,
+    TResult? Function(OCRPageLoading value)? loading,
+    TResult? Function(OCRPageTranslationLoaded value)? translationLoaded,
+    TResult? Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult? Function(OCRPageError value)? error,
   }) {
     return imageLoaded?.call(this);
   }
@@ -633,11 +624,11 @@ class _$OCRBottomSheetImageLoaded implements OCRBottomSheetImageLoaded {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(OCRBottomSheetInitial value)? initial,
-    TResult Function(OCRBottomSheetLoading value)? loading,
-    TResult Function(OCRBottomSheetTranslationLoaded value)? translationLoaded,
-    TResult Function(OCRBottomSheetImageLoaded value)? imageLoaded,
-    TResult Function(OCRBottomSheetError value)? error,
+    TResult Function(OCRPageInitial value)? initial,
+    TResult Function(OCRPageLoading value)? loading,
+    TResult Function(OCRPageTranslationLoaded value)? translationLoaded,
+    TResult Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult Function(OCRPageError value)? error,
     required TResult orElse(),
   }) {
     if (imageLoaded != null) {
@@ -647,47 +638,47 @@ class _$OCRBottomSheetImageLoaded implements OCRBottomSheetImageLoaded {
   }
 }
 
-abstract class OCRBottomSheetImageLoaded implements OCRBottomSheetState {
-  const factory OCRBottomSheetImageLoaded(final String text,
-      {final File? image}) = _$OCRBottomSheetImageLoaded;
+abstract class OCRPageImageLoaded implements OCRPageState {
+  const factory OCRPageImageLoaded(final String text, {final File? image}) =
+      _$OCRPageImageLoaded;
 
   String get text;
   File? get image;
   @JsonKey(ignore: true)
-  _$$OCRBottomSheetImageLoadedCopyWith<_$OCRBottomSheetImageLoaded>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$OCRPageImageLoadedCopyWith<_$OCRPageImageLoaded> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$OCRBottomSheetErrorCopyWith<$Res> {
-  factory _$$OCRBottomSheetErrorCopyWith(_$OCRBottomSheetError value,
-          $Res Function(_$OCRBottomSheetError) then) =
-      __$$OCRBottomSheetErrorCopyWithImpl<$Res>;
+abstract class _$$OCRPageErrorCopyWith<$Res> {
+  factory _$$OCRPageErrorCopyWith(
+          _$OCRPageError value, $Res Function(_$OCRPageError) then) =
+      __$$OCRPageErrorCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$OCRBottomSheetErrorCopyWithImpl<$Res>
-    extends _$OCRBottomSheetStateCopyWithImpl<$Res, _$OCRBottomSheetError>
-    implements _$$OCRBottomSheetErrorCopyWith<$Res> {
-  __$$OCRBottomSheetErrorCopyWithImpl(
-      _$OCRBottomSheetError _value, $Res Function(_$OCRBottomSheetError) _then)
+class __$$OCRPageErrorCopyWithImpl<$Res>
+    extends _$OCRPageStateCopyWithImpl<$Res, _$OCRPageError>
+    implements _$$OCRPageErrorCopyWith<$Res> {
+  __$$OCRPageErrorCopyWithImpl(
+      _$OCRPageError _value, $Res Function(_$OCRPageError) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$OCRBottomSheetError implements OCRBottomSheetError {
-  const _$OCRBottomSheetError();
+class _$OCRPageError implements OCRPageError {
+  const _$OCRPageError();
 
   @override
   String toString() {
-    return 'OCRBottomSheetState.error()';
+    return 'OCRPageState.error()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$OCRBottomSheetError);
+        (other.runtimeType == runtimeType && other is _$OCRPageError);
   }
 
   @override
@@ -736,12 +727,11 @@ class _$OCRBottomSheetError implements OCRBottomSheetError {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(OCRBottomSheetInitial value) initial,
-    required TResult Function(OCRBottomSheetLoading value) loading,
-    required TResult Function(OCRBottomSheetTranslationLoaded value)
-        translationLoaded,
-    required TResult Function(OCRBottomSheetImageLoaded value) imageLoaded,
-    required TResult Function(OCRBottomSheetError value) error,
+    required TResult Function(OCRPageInitial value) initial,
+    required TResult Function(OCRPageLoading value) loading,
+    required TResult Function(OCRPageTranslationLoaded value) translationLoaded,
+    required TResult Function(OCRPageImageLoaded value) imageLoaded,
+    required TResult Function(OCRPageError value) error,
   }) {
     return error(this);
   }
@@ -749,11 +739,11 @@ class _$OCRBottomSheetError implements OCRBottomSheetError {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(OCRBottomSheetInitial value)? initial,
-    TResult? Function(OCRBottomSheetLoading value)? loading,
-    TResult? Function(OCRBottomSheetTranslationLoaded value)? translationLoaded,
-    TResult? Function(OCRBottomSheetImageLoaded value)? imageLoaded,
-    TResult? Function(OCRBottomSheetError value)? error,
+    TResult? Function(OCRPageInitial value)? initial,
+    TResult? Function(OCRPageLoading value)? loading,
+    TResult? Function(OCRPageTranslationLoaded value)? translationLoaded,
+    TResult? Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult? Function(OCRPageError value)? error,
   }) {
     return error?.call(this);
   }
@@ -761,11 +751,11 @@ class _$OCRBottomSheetError implements OCRBottomSheetError {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(OCRBottomSheetInitial value)? initial,
-    TResult Function(OCRBottomSheetLoading value)? loading,
-    TResult Function(OCRBottomSheetTranslationLoaded value)? translationLoaded,
-    TResult Function(OCRBottomSheetImageLoaded value)? imageLoaded,
-    TResult Function(OCRBottomSheetError value)? error,
+    TResult Function(OCRPageInitial value)? initial,
+    TResult Function(OCRPageLoading value)? loading,
+    TResult Function(OCRPageTranslationLoaded value)? translationLoaded,
+    TResult Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult Function(OCRPageError value)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -775,6 +765,6 @@ class _$OCRBottomSheetError implements OCRBottomSheetError {
   }
 }
 
-abstract class OCRBottomSheetError implements OCRBottomSheetState {
-  const factory OCRBottomSheetError() = _$OCRBottomSheetError;
+abstract class OCRPageError implements OCRPageState {
+  const factory OCRPageError() = _$OCRPageError;
 }

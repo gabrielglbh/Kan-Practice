@@ -11,7 +11,6 @@ import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
 import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
-import 'package:kanpractice/presentation/dictionary_page/widgets/ocr_bottom_sheet.dart';
 import 'package:kanpractice/presentation/dictionary_page/widgets/word_search_bar.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 
@@ -80,7 +79,7 @@ class _DictionaryPageState extends State<DictionaryPage>
               padding: const EdgeInsets.only(top: KPMargins.margin4),
               child: IconButton(
                 onPressed: () {
-                  OCRBottomSheet.show(context);
+                  Navigator.pushNamed(context, KanPracticePages.ocrPage);
                 },
                 splashRadius: KPMargins.margin26,
                 icon: ShaderMask(

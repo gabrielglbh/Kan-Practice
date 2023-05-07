@@ -68,7 +68,6 @@ class OCRContextMenu extends StatelessWidget {
                     },
                   ),
                   const Divider(
-                    height: 1,
                     indent: KPMargins.margin8,
                     endIndent: KPMargins.margin8,
                   ),

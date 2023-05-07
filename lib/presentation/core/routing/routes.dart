@@ -20,6 +20,7 @@ import 'package:kanpractice/presentation/grammar_modes/utils/grammar_mode_argume
 import 'package:kanpractice/presentation/home_page/home_page.dart';
 import 'package:kanpractice/presentation/list_details_page/list_details_page.dart';
 import 'package:kanpractice/presentation/market_page/market_page.dart';
+import 'package:kanpractice/presentation/ocr_page/ocr_page.dart';
 import 'package:kanpractice/presentation/settings_daily_options_page/settings_daily_options_page.dart';
 import 'package:kanpractice/presentation/settings_toggle_page/settings_toggle_page.dart';
 import 'package:kanpractice/presentation/statistics_page/statistics_page.dart';
@@ -131,6 +132,8 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       ModeArguments args = settings.arguments as ModeArguments;
       return CupertinoPageRoute(
           builder: (_) => TranslationTestPage(args: args));
+    case KanPracticePages.ocrPage:
+      return CupertinoPageRoute(builder: (_) => const OCRPage());
   }
   return null;
 }

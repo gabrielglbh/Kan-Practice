@@ -99,46 +99,80 @@ class _OCRBottomSheetState extends State<OCRBottomSheet> {
                               ),
                             ) ??
                             const SizedBox(),
+                        const SizedBox(height: KPMargins.margin8),
                         ocrState.mapOrNull(
-                              imageLoaded: (_) => KPTappableInfo(
-                                  text: 'ocr_select_text_info'.tr()),
-                              translationLoaded: (_) => KPTappableInfo(
-                                  text: 'ocr_select_text_info'.tr()),
+                              imageLoaded: (i) => Column(
+                                children: [
+                                  KPTappableInfo(
+                                      text: 'ocr_select_text_info'.tr()),
+                                  Stack(
+                                    alignment: Alignment.bottomRight,
+                                    children: [
+                                      _imageWidget(
+                                        image: i.image ?? _image,
+                                        text: i.text,
+                                      ),
+                                      Positioned(
+                                        bottom: KPMargins.margin16,
+                                        right: KPMargins.margin24,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            context.read<OCRBottomSheetBloc>().add(
+                                                OCRBottomSheetEventTraverseText(
+                                                    i.text));
+                                          },
+                                          child: Container(
+                                            width: KPMargins.margin48,
+                                            height: KPMargins.margin48,
+                                            margin: const EdgeInsets.only(
+                                                bottom: KPMargins.margin16),
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: KPColors.secondaryColor,
+                                            ),
+                                            child: const Icon(
+                                                Icons.text_format_rounded,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  KPButton(
+                                    title2: 'ocr_translate'.tr(),
+                                    icon: Icons.translate_rounded,
+                                    onTap: () {
+                                      context.read<OCRBottomSheetBloc>().add(
+                                          OCRBottomSheetEventTranslate(
+                                              EasyLocalization.of(context)
+                                                      ?.currentLocale
+                                                      ?.languageCode ??
+                                                  'en'));
+                                    },
+                                  ),
+                                ],
+                              ),
+                              translationLoaded: (i) => Column(
+                                children: [
+                                  KPTappableInfo(
+                                      text: 'ocr_select_text_info'.tr()),
+                                  _imageWidget(
+                                    image: _image,
+                                    text: i.translation,
+                                  ),
+                                  KPButton(
+                                    title2: 'ocr_show_original'.tr(),
+                                    icon: Icons.keyboard_backspace_rounded,
+                                    onTap: () {
+                                      context.read<OCRBottomSheetBloc>().add(
+                                          OCRBottomSheetEventShowOriginal());
+                                    },
+                                  )
+                                ],
+                              ),
+                              loading: (_) => _imageWidget(loading: true),
                             ) ??
-                            const SizedBox(),
-                        ocrState.maybeWhen(
-                          imageLoaded: (ocr, image) =>
-                              _imageWidget(image: image ?? _image, text: ocr),
-                          translationLoaded: (translation) =>
-                              _imageWidget(image: _image, text: translation),
-                          loading: () => _imageWidget(loading: true),
-                          orElse: () => _pickerSelection(),
-                        ),
-                        const SizedBox(height: KPMargins.margin16),
-                        ocrState.maybeWhen(
-                          imageLoaded: (_, __) => KPButton(
-                            title2: 'ocr_translate'.tr(),
-                            icon: Icons.translate_rounded,
-                            onTap: () {
-                              context.read<OCRBottomSheetBloc>().add(
-                                  OCRBottomSheetEventTranslate(
-                                      EasyLocalization.of(context)
-                                              ?.currentLocale
-                                              ?.languageCode ??
-                                          'en'));
-                            },
-                          ),
-                          translationLoaded: (_) => KPButton(
-                            title2: 'ocr_show_original'.tr(),
-                            icon: Icons.keyboard_backspace_rounded,
-                            onTap: () {
-                              context
-                                  .read<OCRBottomSheetBloc>()
-                                  .add(OCRBottomSheetEventShowOriginal());
-                            },
-                          ),
-                          orElse: () => const SizedBox(),
-                        ),
+                            _pickerSelection(),
                         const SizedBox(height: KPMargins.margin16),
                       ],
                     );
@@ -190,33 +224,33 @@ class _OCRBottomSheetState extends State<OCRBottomSheet> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin8),
       child: Stack(
+        alignment: Alignment.center,
         children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: _maxImageHeight,
-            child: loading
-                ? const Center(child: KPProgressIndicator())
-                : image != null
-                    ? FutureBuilder<ui.Image>(
-                        future: decodeImageFromList(image.readAsBytesSync()),
-                        builder: (context, snapshot) {
-                          if (snapshot.data == null) return const SizedBox();
-                          bool isHorizontalImage =
-                              snapshot.data!.width > snapshot.data!.height;
-                          return Transform.rotate(
-                            angle: isHorizontalImage ? pi / 2 : 0,
-                            child: ClipRRect(
-                              borderRadius:
-                                  BorderRadius.circular(KPRadius.radius24),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(KPRadius.radius24),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: _maxImageHeight,
+              child: loading
+                  ? const Center(child: KPProgressIndicator())
+                  : image != null
+                      ? FutureBuilder<ui.Image>(
+                          future: decodeImageFromList(image.readAsBytesSync()),
+                          builder: (context, snapshot) {
+                            if (snapshot.data == null) return const SizedBox();
+                            bool isHorizontalImage =
+                                snapshot.data!.width > snapshot.data!.height;
+                            return Transform.rotate(
+                              angle: isHorizontalImage ? pi / 2 : 0,
                               child: Image.file(
                                 File(image.path),
-                                fit: BoxFit.contain,
+                                fit: BoxFit.fill,
                               ),
-                            ),
-                          );
-                        },
-                      )
-                    : const SizedBox(),
+                            );
+                          },
+                        )
+                      : const SizedBox(),
+            ),
           ),
           if (text != null)
             Padding(
@@ -232,7 +266,7 @@ class _OCRBottomSheetState extends State<OCRBottomSheet> {
                       style: Theme.of(context)
                           .textTheme
                           .bodyLarge
-                          ?.copyWith(backgroundColor: Colors.white54),
+                          ?.copyWith(backgroundColor: Colors.white70),
                       contextMenuBuilder: ((context, editableTextState) {
                         final ts =
                             editableTextState.currentTextEditingValue.selection;

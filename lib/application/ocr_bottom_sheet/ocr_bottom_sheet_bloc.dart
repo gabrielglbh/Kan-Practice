@@ -46,14 +46,17 @@ class OCRBottomSheetBloc
 
     on<OCRBottomSheetEventTranslate>((event, emit) async {
       emit(const OCRBottomSheetState.loading());
-      if (_ocrTranslatedText.isEmpty) {
-        _ocrTranslatedText =
-            await _translateRepository.translate(_ocrText, event.locale);
-      }
+      _ocrTranslatedText =
+          await _translateRepository.translate(_ocrText, event.locale);
       emit(OCRBottomSheetState.translationLoaded(_ocrTranslatedText));
     });
 
     on<OCRBottomSheetEventShowOriginal>((event, emit) async {
+      emit(OCRBottomSheetState.imageLoaded(_ocrText));
+    });
+
+    on<OCRBottomSheetEventTraverseText>((event, emit) async {
+      _ocrText = event.text.split('\n').reversed.toList().join('\n');
       emit(OCRBottomSheetState.imageLoaded(_ocrText));
     });
   }

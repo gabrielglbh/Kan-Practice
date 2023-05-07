@@ -28,3 +28,12 @@ class OCRBottomSheetEventLoadImage extends OCRBottomSheetEvent {
 class OCRBottomSheetEventShowOriginal extends OCRBottomSheetEvent {}
 
 class OCRBottomSheetEventReset extends OCRBottomSheetEvent {}
+
+class OCRBottomSheetEventTraverseText extends OCRBottomSheetEvent {
+  final String text;
+
+  const OCRBottomSheetEventTraverseText(this.text);
+
+  @override
+  List<Object> get props => [text];
+}

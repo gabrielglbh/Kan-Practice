@@ -17,11 +17,10 @@ class OCRRepositoryImpl implements IOCRRepository {
     for (TextBlock block in recognisedText!.blocks) {
       for (TextLine line in block.lines) {
         for (TextElement element in line.elements) {
-          result += "\n\n${element.text} ";
+          result += "\n${element.text} ";
         }
       }
     }
-    result += "\n";
     return result.substring(1);
   }
 

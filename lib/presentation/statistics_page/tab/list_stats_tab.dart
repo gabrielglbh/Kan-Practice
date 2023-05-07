@@ -11,7 +11,7 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/domain/stats/stats.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/spec_bottom_sheet.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/stats_header.dart';
-import 'package:kanpractice/presentation/statistics_page/widgets/stats_tappable_info.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_tappable_info.dart';
 
 class ListStats extends StatefulWidget {
   final KanPracticeStats stats;
@@ -59,7 +59,7 @@ class _ListStatsState extends State<ListStats>
         ),
         const Divider(),
         StatsHeader(title: "words_by_category".tr()),
-        const TappableInfo(),
+        KPTappableInfo(text: "stats_tests_tap_to_specs".tr()),
         BlocListener<SpecificDataBloc, SpecificDataState>(
           listener: (context, state) {
             state.mapOrNull(categoryRetrieved: (c) {

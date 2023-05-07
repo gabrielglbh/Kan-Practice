@@ -449,5 +449,8 @@
   "ocr_gallery": "Galería",
   "ocr_permissions_denied": "Debes conceder permisos en Ajustes",
   "ocr_picker_title": "Haz o elige una imagen...",
-  "ocr_scanned": "Imagen escaneada"
+  "ocr_scanned": "Imagen escaneada",
+  "ocr_translate": "Traducir",
+  "ocr_show_original": "Mostrar original",
+  "ocr_select_text_info": "Texto seleccionable para traducción o búsqueda en Jisho"
 }

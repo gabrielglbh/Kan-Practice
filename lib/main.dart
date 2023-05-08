@@ -20,6 +20,7 @@ import 'package:kanpractice/application/list_details_grammar_points/list_details
 import 'package:kanpractice/application/list_details_words/list_details_words_bloc.dart';
 import 'package:kanpractice/application/lists/lists_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
+import 'package:kanpractice/application/permission_handler/permission_handler_bloc.dart';
 import 'package:kanpractice/application/sentence_generator/sentence_generator_bloc.dart';
 import 'package:kanpractice/application/services/messaging_service.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
@@ -177,6 +178,7 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<AddWordBloc>()),
         BlocProvider(create: (_) => getIt<DailyOptionsBloc>()),
         BlocProvider(create: (_) => getIt<SentenceGeneratorBloc>()),
+        BlocProvider(create: (_) => getIt<PermissionHandlerBloc>()),
       ],
       child: BlocListener<ExampleDataBloc, ExampleDataState>(
         listener: (context, state) {

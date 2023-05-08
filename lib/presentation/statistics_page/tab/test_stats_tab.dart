@@ -12,7 +12,7 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/domain/stats/stats.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/spec_bottom_sheet.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/stats_header.dart';
-import 'package:kanpractice/presentation/statistics_page/widgets/stats_tappable_info.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_tappable_info.dart';
 
 class TestStats extends StatefulWidget {
   final KanPracticeStats stats;
@@ -94,7 +94,7 @@ class _TestStatsState extends State<TestStats>
         ),
         const Divider(),
         StatsHeader(title: "stats_tests_by_type".tr()),
-        const TappableInfo(),
+        KPTappableInfo(text: "stats_tests_tap_to_specs".tr()),
         _expandedTestCount(context, widget.stats),
         const SizedBox(height: KPMargins.margin32)
       ],

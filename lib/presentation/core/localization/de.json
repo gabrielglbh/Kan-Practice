@@ -444,5 +444,16 @@
   "translation_test_disclaimer": "Um diesen Test durchzuführen, ist eine stabile Internetverbindung erforderlich",
   "translation_words_used": "Verwendete Wörter",
   "translation_disclaimer_title": "Verwendung von ChatGPT und Google ML Kit",
-  "translation_disclaimer": "Bei der Verwendung von ChatGPT für die Satzgenerierung und Googles Machine Learning Kit für die Übersetzungen werden einige zufällige Sätze und ihre Übersetzungen fehleranfällig sein, da die Parameter zu unterschiedlich sein können, um sie so miteinander zu verknüpfen, dass der Satz einen Sinn ergibt."
+  "translation_disclaimer": "Bei der Verwendung von ChatGPT für die Satzgenerierung und Googles Machine Learning Kit für die Übersetzungen werden einige zufällige Sätze und ihre Übersetzungen fehleranfällig sein, da die Parameter zu unterschiedlich sein können, um sie so miteinander zu verknüpfen, dass der Satz einen Sinn ergibt.",
+  "ocr_camera": "Kamera",
+  "ocr_gallery": "Galerie",
+  "ocr_permissions_denied": "Sollte Berechtigungen für Einstellungen gewähren",
+  "ocr_scanner": "Gescanntes",
+  "ocr_scanner_explain": "Nehmen Sie ein Bild auf oder wählen Sie es aus, um die japanischen Schriftzeichen darin zu erkennen. Die OCR wird mit Google Machine Learning Kit angewendet, ebenso wie die Übersetzungen des Textes, so dass einige Fehler auftreten können.",
+  "ocr_translate": "Übersetzen",
+  "ocr_show_original": "Original anzeigen",
+  "ocr_select_text_info": "Bearbeitbarer und auswählbarer Text für Korrekturen und Übersetzung oder Suche in Jisho",
+  "ocr_search_in_jisho_part1": "Suche",
+  "ocr_search_in_jisho_part2": "in Jisho",
+  "ocr_reload_image": "Bild neu laden"
 }

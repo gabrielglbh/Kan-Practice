@@ -25,9 +25,27 @@ class OCRPageEventLoadImage extends OCRPageEvent {
   List<Object> get props => [source];
 }
 
+class OCRPageEventReloadImage extends OCRPageEvent {
+  final File image;
+
+  const OCRPageEventReloadImage(this.image);
+
+  @override
+  List<Object> get props => [image];
+}
+
 class OCRPageEventShowOriginal extends OCRPageEvent {}
 
 class OCRPageEventReset extends OCRPageEvent {}
+
+class OCRPageEventShowUpdateText extends OCRPageEvent {
+  final String text;
+
+  const OCRPageEventShowUpdateText(this.text);
+
+  @override
+  List<Object> get props => [text];
+}
 
 class OCRPageEventTraverseText extends OCRPageEvent {
   final String text;

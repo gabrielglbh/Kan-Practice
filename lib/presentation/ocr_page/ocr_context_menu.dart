@@ -12,7 +12,7 @@ class OCRContextMenu extends StatelessWidget {
   const OCRContextMenu(
       {super.key, required this.anchor, required this.selectedText});
 
-  final _height = 200.0;
+  final _height = 132.0;
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +25,17 @@ class OCRContextMenu extends StatelessWidget {
             width: MediaQuery.of(context).size.width - KPMargins.margin64,
             height: _height,
             decoration: BoxDecoration(
-              color: KPColors.getAlterAccent(context),
+              color: KPColors.getPrimary(context),
               borderRadius: BorderRadius.circular(KPRadius.radius16),
               boxShadow: const [
                 BoxShadow(
-                  color: Colors.black,
+                  color: Colors.black26,
                   blurRadius: 4,
                   offset: Offset(0, 5),
                 ),
               ],
             ),
-            padding: const EdgeInsets.only(top: KPMargins.margin16),
+            padding: const EdgeInsets.only(top: KPMargins.margin8),
             child: Material(
               color: Colors.transparent,
               child: Column(
@@ -58,6 +58,7 @@ class OCRContextMenu extends StatelessWidget {
                         Text('ocr_search_in_jisho_part2'.tr()),
                       ],
                     ),
+                    visualDensity: const VisualDensity(vertical: -2),
                     trailing: const Icon(Icons.search_rounded),
                     onTap: () {
                       Navigator.of(context).pushNamed(
@@ -73,7 +74,8 @@ class OCRContextMenu extends StatelessWidget {
                   ),
                   Flexible(
                     child: Padding(
-                      padding: const EdgeInsets.all(KPMargins.margin16),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: KPMargins.margin16),
                       child: FutureBuilder(
                         future: getIt<TranslateService>().translate(
                             selectedText,

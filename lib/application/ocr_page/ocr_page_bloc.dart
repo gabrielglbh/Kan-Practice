@@ -41,6 +41,13 @@ class OCRPageBloc extends Bloc<OCRPageEvent, OCRPageState> {
       }
     });
 
+    on<OCRPageEventReloadImage>((event, emit) async {
+      emit(const OCRPageState.loading());
+      final inputImage = InputImage.fromFilePath(event.image.path);
+      _ocrText = await _iocrRepository.recognize(inputImage);
+      emit(OCRPageState.imageLoaded(_ocrText));
+    });
+
     on<OCRPageEventTranslate>((event, emit) async {
       emit(const OCRPageState.loading());
       _ocrTranslatedText =
@@ -54,6 +61,11 @@ class OCRPageBloc extends Bloc<OCRPageEvent, OCRPageState> {
 
     on<OCRPageEventTraverseText>((event, emit) async {
       _ocrText = event.text.split('\n').reversed.toList().join('\n');
+      emit(OCRPageState.imageLoaded(_ocrText));
+    });
+
+    on<OCRPageEventShowUpdateText>((event, emit) async {
+      _ocrText = event.text;
       emit(OCRPageState.imageLoaded(_ocrText));
     });
   }

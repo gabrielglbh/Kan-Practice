@@ -7,7 +7,7 @@ extension HomeTypeExt on HomeType {
   String get appBarTitle {
     switch (this) {
       case HomeType.kanlist:
-        return "KanPractice";
+        return "KanPractice Pro";
       case HomeType.archive:
         return "archive_title".tr();
       case HomeType.dictionary:

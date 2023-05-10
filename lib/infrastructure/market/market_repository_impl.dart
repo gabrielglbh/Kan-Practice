@@ -122,12 +122,30 @@ class MarketRepositoryImpl implements IMarketRepository {
         }
         if (wordSnapshot.size > 0) {
           for (var m in wordSnapshot.docs) {
-            backUpWords.add(Word.fromJson(m.data()));
+            final word = Word.fromJson(m.data());
+            backUpWords.add(word.copyWithTranslation(
+              meaning: targetLanguage != originLanguage
+                  ? await _translateRepository.translate(
+                      word.meaning,
+                      targetLanguage,
+                      sourceLanguge: originLanguage,
+                    )
+                  : null,
+            ));
           }
         }
         if (grammarSnapshot.size > 0) {
           for (var m in grammarSnapshot.docs) {
-            backUpGrammar.add(GrammarPoint.fromJson(m.data()));
+            final grammar = GrammarPoint.fromJson(m.data());
+            backUpGrammar.add(grammar.copyWithTranslation(
+              definition: targetLanguage != originLanguage
+                  ? await _translateRepository.translate(
+                      grammar.definition,
+                      targetLanguage,
+                      sourceLanguge: originLanguage,
+                    )
+                  : null,
+            ));
           }
         }
         if (listSnapshot.size > 0) {
@@ -150,27 +168,6 @@ class MarketRepositoryImpl implements IMarketRepository {
         final f = await _folderRepository.getFolder(backUpFolder.folder);
         if (f.folder == backUpFolder.folder) {
           return "market_download_already_installed".tr();
-        }
-
-        /// Translate automatically all words and grammar points if necessary
-        if (targetLanguage != originLanguage) {
-          for (var i = 0; i < backUpWords.length; i++) {
-            backUpWords[i] = backUpWords[i].copyWithTranslation(
-                meaning: await _translateRepository.translate(
-              backUpWords[i].meaning,
-              targetLanguage,
-              sourceLanguge: originLanguage,
-            ));
-          }
-
-          for (var i = 0; i < backUpGrammar.length; i++) {
-            backUpGrammar[i] = backUpGrammar[i].copyWithTranslation(
-                definition: await _translateRepository.translate(
-              backUpGrammar[i].definition,
-              targetLanguage,
-              sourceLanguge: originLanguage,
-            ));
-          }
         }
 
         batch = _folderRepository.mergeFolders(
@@ -244,14 +241,34 @@ class MarketRepositoryImpl implements IMarketRepository {
 
         if (wordSnapshot.size > 0) {
           for (int x = 0; x < wordSnapshot.size; x++) {
-            backUpWords.add(Word.fromJson(wordSnapshot.docs[x].data()));
+            final word = Word.fromJson(wordSnapshot.docs[x].data());
+            backUpWords.add(word.copyWithTranslation(
+              meaning: targetLanguage != originLanguage
+                  ? await _translateRepository.translate(
+                      word.meaning,
+                      targetLanguage,
+                      sourceLanguge: originLanguage,
+                    )
+                  : null,
+            ));
           }
         }
 
         if (grammarSnapshot.size > 0) {
           for (int x = 0; x < grammarSnapshot.size; x++) {
-            backUpGrammar
-                .add(GrammarPoint.fromJson(grammarSnapshot.docs[x].data()));
+            final grammar =
+                GrammarPoint.fromJson(grammarSnapshot.docs[x].data());
+            backUpGrammar.add(
+              grammar.copyWithTranslation(
+                definition: targetLanguage != originLanguage
+                    ? await _translateRepository.translate(
+                        grammar.definition,
+                        targetLanguage,
+                        sourceLanguge: originLanguage,
+                      )
+                    : null,
+              ),
+            );
           }
         }
 
@@ -272,27 +289,6 @@ class MarketRepositoryImpl implements IMarketRepository {
         /// Order matters as words depends on lists.
         /// Conflict algorithm allows us to ignore if the insertion if the list already exists.
         Batch? batch = _database.batch();
-
-        /// Translate automatically all words and grammar points if necessary
-        if (targetLanguage != originLanguage) {
-          for (var i = 0; i < backUpWords.length; i++) {
-            backUpWords[i] = backUpWords[i].copyWithTranslation(
-                meaning: await _translateRepository.translate(
-              backUpWords[i].meaning,
-              targetLanguage,
-              sourceLanguge: originLanguage,
-            ));
-          }
-
-          for (var i = 0; i < backUpGrammar.length; i++) {
-            backUpGrammar[i] = backUpGrammar[i].copyWithTranslation(
-                definition: await _translateRepository.translate(
-              backUpGrammar[i].definition,
-              targetLanguage,
-              sourceLanguge: originLanguage,
-            ));
-          }
-        }
 
         batch = _listRepository.mergeLists(
             batch, [backUpList], ConflictAlgorithm.ignore);

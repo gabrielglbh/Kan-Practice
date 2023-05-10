@@ -115,6 +115,13 @@ class MarketRepositoryImpl implements IMarketRepository {
 
         /// Apply the transform to the POJO
         backUpFolder = Folder.fromJson(folderSnapshot.docs.first.data());
+
+        /// Check if the folder is already installed
+        final f = await _folderRepository.getFolder(backUpFolder.folder);
+        if (f.folder == backUpFolder.folder) {
+          return "market_download_already_installed".tr();
+        }
+
         if (relationSnapshot.size > 0) {
           for (var m in relationSnapshot.docs) {
             backUpRelations.add(RelationFolderList.fromJson(m.data()));
@@ -163,12 +170,6 @@ class MarketRepositoryImpl implements IMarketRepository {
 
         /// Merge it on the DB
         Batch? batch = _database.batch();
-
-        /// Check if the folder is already installed
-        final f = await _folderRepository.getFolder(backUpFolder.folder);
-        if (f.folder == backUpFolder.folder) {
-          return "market_download_already_installed".tr();
-        }
 
         batch = _folderRepository.mergeFolders(
             batch, [backUpFolder], ConflictAlgorithm.ignore);
@@ -239,6 +240,12 @@ class MarketRepositoryImpl implements IMarketRepository {
           backUpList = backUpList.copyWithReset();
         }
 
+        /// Check if the list is already installed
+        final l = await _listRepository.getList(backUpList.name);
+        if (l.name == backUpList.name) {
+          return "market_download_already_installed".tr();
+        }
+
         if (wordSnapshot.size > 0) {
           for (int x = 0; x < wordSnapshot.size; x++) {
             final word = Word.fromJson(wordSnapshot.docs[x].data());
@@ -280,12 +287,6 @@ class MarketRepositoryImpl implements IMarketRepository {
         });
 
         /// Merge it on the DB
-        /// Check if the list is already installed
-        final l = await _listRepository.getList(backUpList.name);
-        if (l.name == backUpList.name) {
-          return "market_download_already_installed".tr();
-        }
-
         /// Order matters as words depends on lists.
         /// Conflict algorithm allows us to ignore if the insertion if the list already exists.
         Batch? batch = _database.batch();
@@ -633,7 +634,6 @@ class MarketRepositoryImpl implements IMarketRepository {
       String name,
       Folder folder,
       String language,
-      String countryCode,
       List<WordList> lists,
       List<Word> words,
       List<GrammarPoint> grammarPoints,
@@ -667,7 +667,6 @@ class MarketRepositoryImpl implements IMarketRepository {
           uploadedToMarket: Utils.getCurrentMilliseconds(),
           isFolder: true,
           language: language,
-          countryCode: countryCode,
         ).copyWithKeywords();
 
         final Folder resetFolder = folder.copyWithReset();
@@ -751,7 +750,6 @@ class MarketRepositoryImpl implements IMarketRepository {
       String name,
       WordList list,
       String language,
-      String countryCode,
       List<Word> words,
       List<GrammarPoint> grammarPoints,
       String description) async {
@@ -783,7 +781,6 @@ class MarketRepositoryImpl implements IMarketRepository {
           description: description,
           uploadedToMarket: Utils.getCurrentMilliseconds(),
           language: language,
-          countryCode: countryCode,
         ).copyWithKeywords();
 
         final WordList raw = list.copyWithReset();

@@ -1,6 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flag/flag_enum.dart';
-import 'package:flag/flag_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
@@ -8,6 +6,7 @@ import 'package:kanpractice/domain/market/market.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_language_flag.dart';
 import 'package:kanpractice/presentation/market_page/widgets/market_list_rating.dart';
 
 class MarketListTile extends StatelessWidget {
@@ -152,12 +151,7 @@ class MarketListTile extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.bodyMedium),
             const SizedBox(width: KPMargins.margin8),
-            Flag.fromCode(
-              FlagsCode.values.firstWhere((f) => f.name == list.countryCode),
-              borderRadius: KPMargins.margin4,
-              height: KPMargins.margin16,
-              width: KPMargins.margin24,
-            ),
+            KPLanguageFlag(language: list.language, height: KPMargins.margin16),
           ],
         ),
         Row(

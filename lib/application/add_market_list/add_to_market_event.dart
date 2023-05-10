@@ -13,7 +13,6 @@ class AddToMarketEventOnUpload extends AddToMarketEvent {
   final MarketListType type;
   final String name;
   final String language;
-  final String? countryCode;
   final String description;
   final String author;
   final String listNameForMarket;
@@ -25,7 +24,6 @@ class AddToMarketEventOnUpload extends AddToMarketEvent {
     this.author,
     this.listNameForMarket,
     this.language,
-    this.countryCode,
   );
 
   @override
@@ -36,6 +34,5 @@ class AddToMarketEventOnUpload extends AddToMarketEvent {
         author,
         listNameForMarket,
         language,
-        countryCode ?? 'null',
       ];
 }

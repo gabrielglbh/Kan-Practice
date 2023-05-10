@@ -1,14 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fl_country_code_picker/fl_country_code_picker.dart';
-import 'package:flag/flag_enum.dart';
-import 'package:flag/flag_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/add_market_list/add_to_market_bloc.dart';
 import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/presentation/add_market_list_page/widgets/language_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/types/market_list_type.dart';
 import 'package:kanpractice/presentation/add_market_list_page/widgets/add_to_market_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/widgets/folder_list_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_language_flag.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_text_form.dart';
@@ -29,7 +28,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
   late FocusNode _fnUser;
   late TextEditingController _tcList;
   late FocusNode _fnList;
-  late Locale _locale;
+  late String _language;
   MarketListType _selectedType = MarketListType.list;
   String _listSelection = "add_to_market_select_list".tr();
 
@@ -41,7 +40,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
     _fnUser = FocusNode();
     _tcList = TextEditingController();
     _fnList = FocusNode();
-    _locale = WidgetsBinding.instance.window.locale;
+    _language = WidgetsBinding.instance.window.locale.languageCode;
     super.initState();
   }
 
@@ -72,7 +71,6 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                 loading: () => const SizedBox(),
                 orElse: () => IconButton(
                   onPressed: () {
-                    final curr = EasyLocalization.of(context)?.currentLocale;
                     context.read<AddToMarketBloc>().add(
                           AddToMarketEventOnUpload(
                             _selectedType,
@@ -80,8 +78,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                             _tc.text,
                             _tcUser.text,
                             _tcList.text,
-                            _locale.languageCode,
-                            _locale.countryCode ?? curr?.countryCode,
+                            _language,
                           ),
                         );
                   },
@@ -195,25 +192,10 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                             const SizedBox(height: KPMargins.margin16),
                             GestureDetector(
                               onTap: () async {
-                                final code = await FlCountryCodePicker(
-                                  showDialCode: false,
-                                  showFavoritesIcon: false,
-                                  title: Padding(
-                                    padding: const EdgeInsets.all(
-                                        KPMargins.margin16),
-                                    child: Text(
-                                      'add_market_list_language_title'.tr(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall
-                                          ?.copyWith(
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ).showPicker(context: context);
+                                final code =
+                                    await LanguageBottomSheet.show(context);
                                 setState(() {
-                                  _locale = Locale.fromSubtags(
-                                      countryCode: code?.code);
+                                  _language = code ?? _language;
                                 });
                               },
                               child: Container(
@@ -225,13 +207,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                                   borderRadius:
                                       BorderRadius.circular(KPRadius.radius16),
                                 ),
-                                child: Flag.fromCode(
-                                  FlagsCode.values.firstWhere((f) =>
-                                      f.name == (_locale.countryCode ?? 'US')),
-                                  borderRadius: KPMargins.margin4,
-                                  height: KPMargins.margin24,
-                                  width: KPMargins.margin32,
-                                ),
+                                child: KPLanguageFlag(language: _language),
                               ),
                             ),
                           ],

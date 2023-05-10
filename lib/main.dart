@@ -31,7 +31,6 @@ import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/theme/theme_manager.dart';
 import 'presentation/core/routing/routes.dart';
-import 'package:fl_country_code_picker/fl_country_code_picker.dart' as flc;
 
 Future<void> _initSharedPreferences() async {
   final prefs = getIt<PreferencesService>();
@@ -190,14 +189,8 @@ class _KanPracticeState extends State<KanPractice> {
         child: MaterialApp(
           title: 'KanPractice Pro',
           locale: context.locale,
-          supportedLocales: [
-            ...context.supportedLocales,
-            ...flc.supportedLocales.map((e) => Locale(e)),
-          ],
-          localizationsDelegates: [
-            ...context.localizationDelegates,
-            flc.CountryLocalizations.delegate,
-          ],
+          supportedLocales: context.supportedLocales,
+          localizationsDelegates: context.localizationDelegates,
           debugShowCheckedModeBanner: false,
           theme: ThemeManager.instance.currentLightThemeData,
           darkTheme: ThemeManager.instance.currentDarkThemeData,

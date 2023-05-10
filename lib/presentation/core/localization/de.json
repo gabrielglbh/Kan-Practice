@@ -459,5 +459,9 @@
   "market_automatic_translation": "Automatische Übersetzung des Materials in Ihre Sprache",
   "market_list_language": "Materielle Sprache",
   "add_market_list_language": "Sprache",
-  "add_market_list_language_title": "Materialsprache auswählen"
+  "add_market_list_language_title": "Materialsprache auswählen",
+  "dictionary_convolution": "Zeichnen",
+  "dictionary_convolution_explain": "Zeichnen oder schreiben Sie Zeichen auf die Leinwand, die ein KI-Modell erkennen soll. Das Modell wird es nicht jedes Mal richtig machen, versuchen Sie, die Zeichen so gut wie möglich zu zeichnen",
+  "dictionary_history_explain": "Alle Wörter, die in Jisho durch Scannen oder Zeichnen gesucht wurden, werden in diesem Abschnitt aufgelistet",
+  "ocr_choose_opts": "Wählen Sie eine dieser Optionen, um ein Bild hochzuladen"
 }

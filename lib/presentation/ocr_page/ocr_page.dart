@@ -7,6 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/application/ocr_page/ocr_page_bloc.dart';
 import 'package:kanpractice/application/permission_handler/permission_handler_bloc.dart';
 import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
@@ -53,6 +54,13 @@ class _OCRPageState extends State<OCRPage> {
                 },
                 icon: const Icon(Icons.add_photo_alternate_rounded),
               ),
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed(KanPracticePages.historyWordPage);
+                },
+                icon: const Icon(Icons.history_rounded),
+              ),
             ],
             resizeToAvoidBottomInset: true,
             child: BlocConsumer<PermissionHandlerBloc, PermissionHandlerState>(
@@ -70,51 +78,40 @@ class _OCRPageState extends State<OCRPage> {
               },
               builder: (context, state) {
                 return SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height -
                         KPSizes.appBarHeight -
-                        KPMargins.margin48,
+                        KPMargins.margin64,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        state.maybeWhen(
-                          error: () => Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('ocr_permissions_denied'.tr()),
-                              IconButton(
-                                  onPressed: () => openAppSettings(),
-                                  icon: const Icon(Icons.link_rounded))
-                            ],
-                          ),
-                          orElse: () => const SizedBox(),
-                        ),
-                        ocrState.maybeWhen(
-                          initial: () => Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const SizedBox(height: KPMargins.margin16),
-                              const Icon(Icons.info_outline_rounded),
-                              const SizedBox(height: KPMargins.margin8),
-                              Text('ocr_scanner_explain'.tr()),
-                            ],
-                          ),
-                          orElse: () => const SizedBox(),
-                        ),
-                        const SizedBox(height: KPMargins.margin8),
                         Flexible(
                           child: ocrState.maybeWhen(
-                            initial: () => Padding(
-                                padding: EdgeInsets.only(
-                                  top: MediaQuery.of(context).size.height / 5,
-                                ),
-                                child: _pickerSelection()),
+                            initial: () => Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: _maxImageHeight,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          KPRadius.radius24),
+                                      border: Border.all(
+                                          color: KPColors.getSubtle(context)),
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: _pickerSelection(state),
+                                  ),
+                                ],
+                              ),
+                            ),
                             orElse: () => Column(
                               children: [
+                                const Expanded(child: SizedBox()),
                                 KPTappableInfo(
                                     text: 'ocr_select_text_info'.tr()),
-                                const Expanded(child: SizedBox()),
+                                const SizedBox(height: KPMargins.margin16),
                                 Padding(
                                   padding:
                                       const EdgeInsets.all(KPMargins.margin8),
@@ -235,38 +232,91 @@ class _OCRPageState extends State<OCRPage> {
     );
   }
 
-  GridView _pickerSelection() {
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 1, childAspectRatio: 3),
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      scrollDirection: Axis.vertical,
-      itemCount: ImageSource.values.length,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.only(right: KPMargins.margin8),
-          child: KPButton(
-            title2: ImageSource.values[index] == ImageSource.camera
-                ? 'ocr_camera'.tr()
-                : 'ocr_gallery'.tr(),
-            color: KPColors.secondaryColor,
-            icon: ImageSource.values[index] == ImageSource.camera
-                ? Icons.camera_alt_rounded
-                : Icons.photo_library_rounded,
-            onTap: () {
-              if (ImageSource.values[index] == ImageSource.camera) {
-                return context
-                    .read<PermissionHandlerBloc>()
-                    .add(PermissionHandlerEventRequestCamera());
-              }
-              return context
-                  .read<PermissionHandlerBloc>()
-                  .add(PermissionHandlerEventRequestGallery());
+  Widget _pickerSelection(PermissionHandlerState state) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("${"ocr_choose_opts".tr()}:"),
+        const SizedBox(height: KPMargins.margin24),
+        Flexible(
+          child: ListView.separated(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            itemCount: ImageSource.values.length,
+            separatorBuilder: (_, __) => Row(
+              children: [
+                const SizedBox(width: KPMargins.margin18),
+                const Expanded(child: Divider()),
+                Container(
+                  width: KPMargins.margin12,
+                  height: KPMargins.margin12,
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: KPMargins.margin12),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: KPColors.getAccent(context),
+                  ),
+                ),
+                const Expanded(child: Divider()),
+                const SizedBox(width: KPMargins.margin18),
+              ],
+            ),
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  if (index == 1) const SizedBox(height: KPMargins.margin18),
+                  IconButton(
+                    onPressed: () {
+                      if (ImageSource.values[index] == ImageSource.camera) {
+                        return context
+                            .read<PermissionHandlerBloc>()
+                            .add(PermissionHandlerEventRequestCamera());
+                      }
+                      return context
+                          .read<PermissionHandlerBloc>()
+                          .add(PermissionHandlerEventRequestGallery());
+                    },
+                    icon: Icon(ImageSource.values[index] == ImageSource.camera
+                        ? Icons.camera_alt_rounded
+                        : Icons.photo_library_rounded),
+                  ),
+                  const SizedBox(height: KPMargins.margin12),
+                  Text(
+                    ImageSource.values[index] == ImageSource.camera
+                        ? 'ocr_camera'.tr()
+                        : 'ocr_gallery'.tr(),
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  if (index == 0) const SizedBox(height: KPMargins.margin18),
+                ],
+              );
             },
           ),
-        );
-      },
+        ),
+        const SizedBox(height: KPMargins.margin24),
+        state.maybeWhen(
+          error: () => GestureDetector(
+            onTap: () => openAppSettings(),
+            child: SizedBox(
+              height: KPMargins.margin32,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.warning_amber_rounded,
+                      color: Colors.amber.shade900),
+                  const SizedBox(width: KPMargins.margin8),
+                  Text('ocr_permissions_denied'.tr()),
+                  const SizedBox(width: KPMargins.margin8),
+                  Icon(Icons.warning_amber_rounded,
+                      color: Colors.amber.shade900),
+                ],
+              ),
+            ),
+          ),
+          orElse: () => const SizedBox(),
+        ),
+      ],
     );
   }
 

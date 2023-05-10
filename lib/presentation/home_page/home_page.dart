@@ -14,6 +14,7 @@ import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/archive_page/archive_grammar_list.dart';
 import 'package:kanpractice/presentation/archive_page/archive_word_list.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
+import 'package:kanpractice/presentation/core/types/dictionary_types.dart';
 import 'package:kanpractice/presentation/core/types/list_details_types.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/word_categories_filters.dart';
@@ -30,7 +31,6 @@ import 'package:kanpractice/presentation/core/widgets/kp_test_bottom_sheet.dart'
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
-import 'package:kanpractice/presentation/dictionary_page/dictionary_page.dart';
 import 'package:kanpractice/presentation/folder_list_page/folder_list_page.dart';
 import 'package:kanpractice/presentation/home_page/widgets/home_bottom_navigation.dart';
 import 'package:kanpractice/presentation/settings_page/settings_page.dart';
@@ -228,12 +228,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       },
       icon: const Icon(Icons.update_rounded, color: KPColors.secondaryColor),
     );
-    final dictHistory = IconButton(
-      onPressed: () {
-        Navigator.of(context).pushNamed(KanPracticePages.historyWordPage);
-      },
-      icon: const Icon(Icons.history_rounded),
-    );
     final marketIcon = IconButton(
       key: market,
       onPressed: () {
@@ -243,16 +237,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
 
     final List<IconButton> updateWithAppBarIcons =
-        _currentPage == HomeType.dictionary
-            ? [updateIcon, dictHistory]
-            : _currentPage == HomeType.kanlist
-                ? [updateIcon, marketIcon]
-                : [updateIcon];
-    final List<IconButton> appBarIcons = _currentPage == HomeType.dictionary
-        ? [dictHistory]
-        : _currentPage == HomeType.kanlist
-            ? [marketIcon]
-            : [];
+        _currentPage == HomeType.kanlist
+            ? [updateIcon, marketIcon]
+            : [updateIcon];
+    final List<IconButton> appBarIcons =
+        _currentPage == HomeType.kanlist ? [marketIcon] : [];
 
     return BlocListener<BackupBloc, BackupState>(
       listener: (context, state) {
@@ -473,7 +462,46 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ),
           ],
         ),
-        const DictionaryPage(args: DictionaryArguments(searchInJisho: true)),
+        Padding(
+          padding: const EdgeInsets.only(top: KPMargins.margin12),
+          child: ListView.separated(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            itemCount: DictionaryType.values.length,
+            separatorBuilder: (_, __) => const Divider(),
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(DictionaryType.values[index].title),
+                subtitle: Padding(
+                  padding: const EdgeInsets.only(top: KPMargins.margin4),
+                  child: Text(DictionaryType.values[index].explanation),
+                ),
+                leading: Icon(DictionaryType.values[index].icon),
+                trailing: const Icon(Icons.arrow_forward),
+                contentPadding: const EdgeInsets.all(KPMargins.margin8),
+                onTap: () {
+                  switch (DictionaryType.values[index]) {
+                    case DictionaryType.ocr:
+                      Navigator.of(context).pushNamed(KanPracticePages.ocrPage);
+                      break;
+                    case DictionaryType.convolution:
+                      Navigator.of(context).pushNamed(
+                        KanPracticePages.dictionaryPage,
+                        arguments:
+                            const DictionaryArguments(searchInJisho: true),
+                      );
+                      break;
+                    case DictionaryType.history:
+                      Navigator.of(context)
+                          .pushNamed(KanPracticePages.historyWordPage);
+                      break;
+                  }
+                },
+              );
+            },
+          ),
+        ),
         TabBarView(
           controller: _archiveTabController,
           children: [

@@ -459,5 +459,9 @@
   "market_automatic_translation": "Automatic translation of the material to your language",
   "market_list_language": "Material language",
   "add_market_list_language": "Language",
-  "add_market_list_language_title": "Select material language"
+  "add_market_list_language_title": "Select material language",
+  "dictionary_convolution": "Drawing",
+  "dictionary_convolution_explain": "Draw or type characters on the canvas for an AI model to recognize. The model won't get it right every time, try to draw the characters as best as possible.",
+  "dictionary_history_explain": "All words searched in Jisho by scanning or drawing will be listed in this section.",
+  "ocr_choose_opts": "Choose one of these options to upload an image"
 }

@@ -459,5 +459,9 @@
   "market_automatic_translation": "Traducción automática del material a tu idioma",
   "market_list_language": "Idioma del material",
   "add_market_list_language": "Idioma",
-  "add_market_list_language_title": "Selecciona el idioma del material"
+  "add_market_list_language_title": "Selecciona el idioma del material",
+  "dictionary_convolution": "Dibujo",
+  "dictionary_convolution_explain": "Dibuja o escribe caracteres en el lienzo para que un modelo de IA los reconozca. El modelo no acertará todas las veces, trata de dibujar los caracteres lo mejor posible",
+  "dictionary_history_explain": "Todas las palabras buscadas en Jisho mediante el escáner o el dibujo aparecerán listadas en esta sección",
+  "ocr_choose_opts": "Elige una de estas opciones para cargar una imagen"
 }

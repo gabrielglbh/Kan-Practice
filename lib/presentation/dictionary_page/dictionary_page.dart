@@ -5,6 +5,7 @@ import 'package:kanpractice/application/dictionary/dictionary_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/presentation/core/types/dictionary_types.dart';
 import 'package:kanpractice/presentation/core/widgets/canvas/kp_custom_canvas.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
@@ -69,104 +70,88 @@ class _DictionaryPageState extends State<DictionaryPage>
         _searchBarTextController.text != "" ||
         _searchBarTextController.text.isNotEmpty;
 
-    return Column(
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(child: _searchBar()),
-            Padding(
-              padding: const EdgeInsets.only(top: KPMargins.margin4),
-              child: IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, KanPracticePages.ocrPage);
-                },
-                splashRadius: KPMargins.margin26,
-                icon: ShaderMask(
-                  shaderCallback: (bounds) {
-                    return const LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Colors.blue,
-                          Colors.green,
-                          Colors.yellow,
-                          Colors.red,
-                          Colors.purple
-                        ]).createShader(bounds);
-                  },
-                  child: const Icon(Icons.camera, color: Colors.white),
-                ),
-              ),
-            ),
-          ],
-        ),
-        BlocBuilder<DictionaryBloc, DictionaryState>(
-          builder: (context, state) {
-            return state.maybeWhen(
-              loading: () => const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(KPMargins.margin16),
-                  child: KPProgressIndicator(),
-                ),
-              ),
-              loaded: (predictions) => Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: KPMargins.margin8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "< ${"dict_predictions_most_likely".tr()}",
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            "${"dict_predictions_less_likely".tr()} >",
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.end,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  _predictions(predictions),
-                  Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      KPCustomCanvas(
-                        line: _line,
-                        allowPrediction: true,
-                        handleImage: (im.Image image) {
-                          context
-                              .read<DictionaryBloc>()
-                              .add(DictionaryEventLoading(image: image));
-                        },
-                      ),
-                      if (canSearchEitherWay) _searchWidget(),
-                    ],
-                  ),
-                ],
-              ),
-              error: () => Center(
-                  child: Padding(
-                padding: const EdgeInsets.all(KPMargins.margin16),
-                child: Text("dict_model_not_loaded".tr(),
-                    style: Theme.of(context).textTheme.bodyMedium),
-              )),
-              orElse: () => const SizedBox(),
-            );
+    return KPScaffold(
+      appBarTitle: DictionaryType.convolution.title,
+      setGestureDetector: false,
+      appBarActions: [
+        IconButton(
+          onPressed: () {
+            Navigator.of(context).pushNamed(KanPracticePages.historyWordPage);
           },
+          icon: const Icon(Icons.history_rounded),
         ),
       ],
+      child: Column(
+        children: [
+          const SizedBox(height: KPMargins.margin8),
+          _searchBar(),
+          BlocBuilder<DictionaryBloc, DictionaryState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                loading: () => const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(KPMargins.margin16),
+                    child: KPProgressIndicator(),
+                  ),
+                ),
+                loaded: (predictions) => Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: KPMargins.margin8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "< ${"dict_predictions_most_likely".tr()}",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              "${"dict_predictions_less_likely".tr()} >",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.end,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    _predictions(predictions),
+                    Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        KPCustomCanvas(
+                          line: _line,
+                          allowPrediction: true,
+                          handleImage: (im.Image image) {
+                            context
+                                .read<DictionaryBloc>()
+                                .add(DictionaryEventLoading(image: image));
+                          },
+                        ),
+                        if (canSearchEitherWay) _searchWidget(),
+                      ],
+                    ),
+                  ],
+                ),
+                error: () => Center(
+                    child: Padding(
+                  padding: const EdgeInsets.all(KPMargins.margin16),
+                  child: Text("dict_model_not_loaded".tr(),
+                      style: Theme.of(context).textTheme.bodyMedium),
+                )),
+                orElse: () => const SizedBox(),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -256,35 +241,39 @@ class _DictionaryPageState extends State<DictionaryPage>
     );
   }
 
-  SizedBox _predictions(List<Category> predictions) {
-    return SizedBox(
-      height: KPSizes.defaultSizeFiltersList,
-      child: ListView.builder(
-        itemCount: predictions.length,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          final String word = predictions[index].label.substring(0, 1);
-          final double score = predictions[index].score;
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin2),
-            child: ActionChip(
-                label: Text(
-                  word,
-                  style: TextStyle(
-                      fontSize: KPFontSizes.fontSize18,
-                      color: Utils.getTextColorBasedOnScore(score)),
-                ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: KPMargins.margin8),
-                backgroundColor: Utils.getColorBasedOnScore(score),
-                pressElevation: KPMargins.margin2,
-                onPressed: () {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                  _searchBarTextController.text += word;
-                  setState(() => _line = []);
-                }),
-          );
-        },
+  Widget _predictions(List<Category> predictions) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: KPMargins.margin12),
+      child: SizedBox(
+        height: KPSizes.defaultSizeFiltersList,
+        child: ListView.builder(
+          itemCount: predictions.length,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            final String word = predictions[index].label.substring(0, 1);
+            final double score = predictions[index].score;
+            return Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: KPMargins.margin2),
+              child: ActionChip(
+                  label: Text(
+                    word,
+                    style: TextStyle(
+                        fontSize: KPFontSizes.fontSize18,
+                        color: Utils.getTextColorBasedOnScore(score)),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: KPMargins.margin8),
+                  backgroundColor: Utils.getColorBasedOnScore(score),
+                  pressElevation: KPMargins.margin2,
+                  onPressed: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    _searchBarTextController.text += word;
+                    setState(() => _line = []);
+                  }),
+            );
+          },
+        ),
       ),
     );
   }

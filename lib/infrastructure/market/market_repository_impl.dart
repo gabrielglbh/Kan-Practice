@@ -10,6 +10,7 @@ import 'package:kanpractice/domain/list/i_list_repository.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/domain/folder/folder.dart';
 import 'package:kanpractice/domain/relation_folder_list/i_relation_folder_list_repository.dart';
+import 'package:kanpractice/domain/services/i_translate_repository.dart';
 import 'package:kanpractice/domain/word/i_word_repository.dart';
 import 'package:kanpractice/presentation/core/types/market_filters.dart';
 import 'package:kanpractice/domain/market/i_market_repository.dart';
@@ -38,6 +39,7 @@ class MarketRepositoryImpl implements IMarketRepository {
   final IWordRepository _wordRepository;
   final IGrammarPointRepository _grammarPointRepository;
   final IRelationFolderListRepository _relationFolderListRepository;
+  final ITranslateRepository _translateRepository;
 
   MarketRepositoryImpl(
     this._ref,
@@ -48,6 +50,7 @@ class MarketRepositoryImpl implements IMarketRepository {
     this._wordRepository,
     this._grammarPointRepository,
     this._relationFolderListRepository,
+    this._translateRepository,
   );
 
   /// We make sure that when the limit of 500 WRITES per batch is met,
@@ -63,7 +66,8 @@ class MarketRepositoryImpl implements IMarketRepository {
   }
 
   @override
-  Future<String> downloadFolderFromMarketPlace(String id) async {
+  Future<String> downloadFolderFromMarketPlace(
+      String id, String targetLanguage) async {
     User? user = _auth.currentUser;
     await user?.reload();
 
@@ -72,6 +76,8 @@ class MarketRepositoryImpl implements IMarketRepository {
       return "market_need_auth".tr();
     } else {
       try {
+        final marketSnapshot = await _ref.collection(collection).doc(id).get();
+
         /// Get sub collections for Folder, Relations, KanList and Word
         final folderSnapshot = await _ref
             .collection(collection)
@@ -105,8 +111,17 @@ class MarketRepositoryImpl implements IMarketRepository {
         List<Word> backUpWords = [];
         List<GrammarPoint> backUpGrammar = [];
 
+        final originLanguage = marketSnapshot.get('language') as String;
+
         /// Apply the transform to the POJO
         backUpFolder = Folder.fromJson(folderSnapshot.docs.first.data());
+
+        /// Check if the folder is already installed
+        final f = await _folderRepository.getFolder(backUpFolder.folder);
+        if (f.folder == backUpFolder.folder) {
+          return "market_download_already_installed".tr();
+        }
+
         if (relationSnapshot.size > 0) {
           for (var m in relationSnapshot.docs) {
             backUpRelations.add(RelationFolderList.fromJson(m.data()));
@@ -114,12 +129,30 @@ class MarketRepositoryImpl implements IMarketRepository {
         }
         if (wordSnapshot.size > 0) {
           for (var m in wordSnapshot.docs) {
-            backUpWords.add(Word.fromJson(m.data()));
+            final word = Word.fromJson(m.data());
+            backUpWords.add(word.copyWithTranslation(
+              meaning: targetLanguage != originLanguage
+                  ? await _translateRepository.translate(
+                      word.meaning,
+                      targetLanguage,
+                      sourceLanguge: originLanguage,
+                    )
+                  : null,
+            ));
           }
         }
         if (grammarSnapshot.size > 0) {
           for (var m in grammarSnapshot.docs) {
-            backUpGrammar.add(GrammarPoint.fromJson(m.data()));
+            final grammar = GrammarPoint.fromJson(m.data());
+            backUpGrammar.add(grammar.copyWithTranslation(
+              definition: targetLanguage != originLanguage
+                  ? await _translateRepository.translate(
+                      grammar.definition,
+                      targetLanguage,
+                      sourceLanguge: originLanguage,
+                    )
+                  : null,
+            ));
           }
         }
         if (listSnapshot.size > 0) {
@@ -137,12 +170,6 @@ class MarketRepositoryImpl implements IMarketRepository {
 
         /// Merge it on the DB
         Batch? batch = _database.batch();
-
-        /// Check if the folder is already installed
-        final f = await _folderRepository.getFolder(backUpFolder.folder);
-        if (f.folder == backUpFolder.folder) {
-          return "market_download_already_installed".tr();
-        }
 
         batch = _folderRepository.mergeFolders(
             batch, [backUpFolder], ConflictAlgorithm.ignore);
@@ -172,7 +199,8 @@ class MarketRepositoryImpl implements IMarketRepository {
   }
 
   @override
-  Future<String> downloadListFromMarketPlace(String id) async {
+  Future<String> downloadListFromMarketPlace(
+      String id, String targetLanguage) async {
     User? user = _auth.currentUser;
     await user?.reload();
 
@@ -181,6 +209,8 @@ class MarketRepositoryImpl implements IMarketRepository {
       return "market_need_auth".tr();
     } else {
       try {
+        final marketSnapshot = await _ref.collection(collection).doc(id).get();
+
         /// Get sub collections for KanList and Word
         final listSnapshot = await _ref
             .collection(collection)
@@ -202,22 +232,50 @@ class MarketRepositoryImpl implements IMarketRepository {
         List<Word> backUpWords = [];
         List<GrammarPoint> backUpGrammar = [];
 
+        final originLanguage = marketSnapshot.get('language') as String;
+
         /// Apply the transform to the POJO
         if (listSnapshot.size > 0) {
           backUpList = WordList.fromJson(listSnapshot.docs[0].data());
           backUpList = backUpList.copyWithReset();
         }
 
+        /// Check if the list is already installed
+        final l = await _listRepository.getList(backUpList.name);
+        if (l.name == backUpList.name) {
+          return "market_download_already_installed".tr();
+        }
+
         if (wordSnapshot.size > 0) {
           for (int x = 0; x < wordSnapshot.size; x++) {
-            backUpWords.add(Word.fromJson(wordSnapshot.docs[x].data()));
+            final word = Word.fromJson(wordSnapshot.docs[x].data());
+            backUpWords.add(word.copyWithTranslation(
+              meaning: targetLanguage != originLanguage
+                  ? await _translateRepository.translate(
+                      word.meaning,
+                      targetLanguage,
+                      sourceLanguge: originLanguage,
+                    )
+                  : null,
+            ));
           }
         }
 
         if (grammarSnapshot.size > 0) {
           for (int x = 0; x < grammarSnapshot.size; x++) {
-            backUpGrammar
-                .add(GrammarPoint.fromJson(grammarSnapshot.docs[x].data()));
+            final grammar =
+                GrammarPoint.fromJson(grammarSnapshot.docs[x].data());
+            backUpGrammar.add(
+              grammar.copyWithTranslation(
+                definition: targetLanguage != originLanguage
+                    ? await _translateRepository.translate(
+                        grammar.definition,
+                        targetLanguage,
+                        sourceLanguge: originLanguage,
+                      )
+                    : null,
+              ),
+            );
           }
         }
 
@@ -229,12 +287,6 @@ class MarketRepositoryImpl implements IMarketRepository {
         });
 
         /// Merge it on the DB
-        /// Check if the list is already installed
-        final l = await _listRepository.getList(backUpList.name);
-        if (l.name == backUpList.name) {
-          return "market_download_already_installed".tr();
-        }
-
         /// Order matters as words depends on lists.
         /// Conflict algorithm allows us to ignore if the insertion if the list already exists.
         Batch? batch = _database.batch();
@@ -581,6 +633,7 @@ class MarketRepositoryImpl implements IMarketRepository {
   Future<int> uploadFolderToMarketPlace(
       String name,
       Folder folder,
+      String language,
       List<WordList> lists,
       List<Word> words,
       List<GrammarPoint> grammarPoints,
@@ -613,6 +666,7 @@ class MarketRepositoryImpl implements IMarketRepository {
           description: description,
           uploadedToMarket: Utils.getCurrentMilliseconds(),
           isFolder: true,
+          language: language,
         ).copyWithKeywords();
 
         final Folder resetFolder = folder.copyWithReset();
@@ -695,6 +749,7 @@ class MarketRepositoryImpl implements IMarketRepository {
   Future<int> uploadListToMarketPlace(
       String name,
       WordList list,
+      String language,
       List<Word> words,
       List<GrammarPoint> grammarPoints,
       String description) async {
@@ -718,14 +773,15 @@ class MarketRepositoryImpl implements IMarketRepository {
 
         /// Initialize Market, KanList, Words and Grammar
         final Market resetList = Market(
-                name: name,
-                words: words.length,
-                grammar: grammarPoints.length,
-                uid: user.uid,
-                author: user.displayName ?? "",
-                description: description,
-                uploadedToMarket: Utils.getCurrentMilliseconds())
-            .copyWithKeywords();
+          name: name,
+          words: words.length,
+          grammar: grammarPoints.length,
+          uid: user.uid,
+          author: user.displayName ?? "",
+          description: description,
+          uploadedToMarket: Utils.getCurrentMilliseconds(),
+          language: language,
+        ).copyWithKeywords();
 
         final WordList raw = list.copyWithReset();
         final List<Word> resetWords = [];

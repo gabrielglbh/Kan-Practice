@@ -19,7 +19,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
     on<SettingsLoadingBackUpDate>((event, emit) async {
       emit(const SettingsState.loading());
-      final date = await _backupRepository.getLastUpdated(event.context);
+      final date = await _backupRepository.getLastUpdated();
       emit(SettingsState.loaded(date));
     });
   }

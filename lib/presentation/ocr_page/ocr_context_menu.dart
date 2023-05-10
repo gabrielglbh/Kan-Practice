@@ -79,10 +79,7 @@ class OCRContextMenu extends StatelessWidget {
                       child: FutureBuilder(
                         future: getIt<TranslateService>().translate(
                             selectedText,
-                            EasyLocalization.of(context)
-                                    ?.currentLocale
-                                    ?.languageCode ??
-                                'en'),
+                            WidgetsBinding.instance.window.locale.languageCode),
                         initialData: 'translation_loading'.tr(),
                         builder: (context, AsyncSnapshot<String> snapshot) {
                           return SingleChildScrollView(

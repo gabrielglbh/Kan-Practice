@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -51,9 +50,7 @@ class BackupBloc extends Bloc<BackupEvent, BackupState> {
       emit(const BackupState.loading());
       final version = await _backupRepository.getVersion();
       PackageInfo pi = await PackageInfo.fromPlatform();
-      List<String> notes =
-          // ignore: use_build_context_synchronously
-          await _backupRepository.getVersionNotes(event.context);
+      List<String> notes = await _backupRepository.getVersionNotes();
       if (version != pi.version && version != "") {
         emit(BackupState.versionRetrieved(version, notes));
       } else {

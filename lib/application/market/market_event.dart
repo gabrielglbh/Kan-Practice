@@ -49,8 +49,15 @@ class MarketEventDownload extends MarketEvent {
   final bool order;
   final String id;
   final bool isFolder;
+  final String language;
 
-  const MarketEventDownload(this.id, this.isFolder, this.filter, this.order);
+  const MarketEventDownload(
+    this.id,
+    this.isFolder,
+    this.filter,
+    this.order,
+    this.language,
+  );
 
   @override
   List<Object> get props => [id, isFolder, filter, order];

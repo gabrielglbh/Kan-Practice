@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
+import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/market_filters.dart';
 import 'package:kanpractice/domain/market/market.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
@@ -142,6 +143,14 @@ class _MarketPageState extends State<MarketPage>
           return true;
         }
       },
+      appBarActions: [
+        IconButton(
+          onPressed: () {
+            Navigator.of(context).pushNamed(KanPracticePages.marketAddListPage);
+          },
+          icon: const Icon(Icons.upload_rounded),
+        ),
+      ],
       child: Column(
         children: [
           KPSearchBar(
@@ -171,17 +180,22 @@ class _MarketPageState extends State<MarketPage>
             },
             builder: (context, state) {
               return state.maybeWhen(
-                loading: () => Column(
-                  children: [
-                    const KPProgressIndicator(),
-                    const SizedBox(height: KPMargins.margin16),
-                    Text('can_take_a_while_loading'.tr()),
-                  ],
+                loading: () => Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const KPProgressIndicator(),
+                      const SizedBox(height: KPMargins.margin16),
+                      Text('can_take_a_while_loading'.tr()),
+                    ],
+                  ),
                 ),
-                error: (_) => KPEmptyList(
-                    showTryButton: true,
-                    onRefresh: () => _addLoadingEvent(reset: true),
-                    message: "market_load_failed".tr()),
+                error: (_) => Expanded(
+                  child: KPEmptyList(
+                      showTryButton: true,
+                      onRefresh: () => _addLoadingEvent(reset: true),
+                      message: "market_load_failed".tr()),
+                ),
                 loaded: (lists) => lists.isEmpty
                     ? Expanded(
                         child: KPEmptyList(
@@ -216,6 +230,8 @@ class _MarketPageState extends State<MarketPage>
                                           isFolder,
                                           _currentAppliedFilter,
                                           _currentAppliedOrder,
+                                          WidgetsBinding.instance.window.locale
+                                              .languageCode,
                                         ));
                                   },
                                   onRemove: (listId, isFolder) {

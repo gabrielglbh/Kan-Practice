@@ -239,7 +239,7 @@ class BackupRepositoryImpl implements IBackupRepository {
   }
 
   @override
-  Future<String> getLastUpdated(BuildContext context) async {
+  Future<String> getLastUpdated() async {
     User? user = _auth.currentUser;
     await user?.reload();
 
@@ -248,8 +248,7 @@ class BackupRepositoryImpl implements IBackupRepository {
       if (snapshot.exists) {
         int date = snapshot.get("lastUpdated");
         return "${"backup_firebase_getLastUpdated_successful".tr()} "
-            // ignore: use_build_context_synchronously
-            "${Utils.parseDateMilliseconds(context, date)}";
+            "${Utils.parseDateMilliseconds(date)}";
       } else {
         return "backup_firebase_getLastUpdated_noBackUp".tr();
       }
@@ -271,9 +270,9 @@ class BackupRepositoryImpl implements IBackupRepository {
   }
 
   @override
-  Future<List<String>> getVersionNotes(BuildContext context) async {
+  Future<List<String>> getVersionNotes() async {
     List<String> notes = [];
-    final locale = Localizations.localeOf(context).languageCode;
+    final locale = WidgetsBinding.instance.window.locale.languageCode;
     try {
       final Future<DocumentSnapshot> ref =
           _ref.collection("Versioning").doc("pro_version_notes").get();

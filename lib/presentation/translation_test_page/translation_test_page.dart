@@ -37,7 +37,7 @@ class _TranslationTestPageState extends State<TranslationTestPage> {
   final List<double> _testScores = [];
 
   String get _currentLocale =>
-      EasyLocalization.of(context)?.locale.languageCode ?? "en";
+      WidgetsBinding.instance.window.locale.languageCode;
 
   @override
   void initState() {

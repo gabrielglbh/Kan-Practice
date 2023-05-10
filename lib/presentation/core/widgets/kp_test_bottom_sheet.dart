@@ -142,8 +142,7 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
   }) {
     bool hasNoDailyTests = !hasWords && mode == Tests.daily;
     if (hasNoDailyTests) {
-      final locale =
-          EasyLocalization.of(context)?.currentLocale?.languageCode ?? 'en';
+      final locale = WidgetsBinding.instance.window.locale.languageCode;
       final now = DateTime.now();
       final nextDay = DateFormat.MMMMd(locale)
           .format(DateTime(now.year, now.month, now.day + 1));

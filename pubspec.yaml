@@ -61,6 +61,7 @@ dependencies:
   google_mlkit_text_recognition: ^0.6.0
   image_picker: ^0.8.1+1
   permission_handler: ^10.2.0
+  dash_flags: ^0.1.1
 
 flutter_icons:
   android: "launcher_icon"

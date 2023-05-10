@@ -111,9 +111,11 @@ class MarketBloc extends Bloc<MarketEvent, MarketState> {
       emit(const MarketState.loading());
       String res = "";
       if (!event.isFolder) {
-        res = await _marketRepository.downloadListFromMarketPlace(event.id);
+        res = await _marketRepository.downloadListFromMarketPlace(
+            event.id, event.language);
       } else {
-        res = await _marketRepository.downloadFolderFromMarketPlace(event.id);
+        res = await _marketRepository.downloadFolderFromMarketPlace(
+            event.id, event.language);
       }
 
       if (res.isEmpty) {

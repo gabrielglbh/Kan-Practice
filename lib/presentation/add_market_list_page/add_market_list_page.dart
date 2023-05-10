@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/add_market_list/add_to_market_bloc.dart';
 import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/presentation/add_market_list_page/widgets/language_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/types/market_list_type.dart';
 import 'package:kanpractice/presentation/add_market_list_page/widgets/add_to_market_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/widgets/folder_list_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_language_flag.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_text_form.dart';
@@ -26,6 +28,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
   late FocusNode _fnUser;
   late TextEditingController _tcList;
   late FocusNode _fnList;
+  late String _language;
   MarketListType _selectedType = MarketListType.list;
   String _listSelection = "add_to_market_select_list".tr();
 
@@ -37,6 +40,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
     _fnUser = FocusNode();
     _tcList = TextEditingController();
     _fnList = FocusNode();
+    _language = WidgetsBinding.instance.window.locale.languageCode;
     super.initState();
   }
 
@@ -75,6 +79,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                           _tc.text,
                           _tcUser.text,
                           _tcList.text,
+                          _language,
                         ));
                   },
                   icon: const Icon(Icons.check),
@@ -163,14 +168,51 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                         ),
                       ),
                     ),
-                    KPTextForm(
-                        header: "add_to_market_list_name_label".tr(),
-                        hint: "add_to_market_list_name_hint".tr(),
-                        controller: _tcList,
-                        focusNode: _fnList,
-                        maxLines: 1,
-                        maxLength: 32,
-                        onEditingComplete: () => _fnUser.requestFocus()),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: KPTextForm(
+                              header: "add_to_market_list_name_label".tr(),
+                              hint: "add_to_market_list_name_hint".tr(),
+                              controller: _tcList,
+                              focusNode: _fnList,
+                              maxLines: 1,
+                              maxLength: 32,
+                              onEditingComplete: () => _fnUser.requestFocus()),
+                        ),
+                        const SizedBox(width: KPMargins.margin24),
+                        Column(
+                          children: [
+                            Text('add_market_list_language'.tr(),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                style: Theme.of(context).textTheme.titleLarge),
+                            const SizedBox(height: KPMargins.margin16),
+                            GestureDetector(
+                              onTap: () async {
+                                final code =
+                                    await LanguageBottomSheet.show(context);
+                                setState(() {
+                                  _language = code ?? _language;
+                                });
+                              },
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.all(KPMargins.margin16),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: KPColors.getSubtle(context)),
+                                  borderRadius:
+                                      BorderRadius.circular(KPRadius.radius16),
+                                ),
+                                child: KPLanguageFlag(language: _language),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                     KPTextForm(
                         header: "add_to_market_username_label".tr(),
                         hint: "add_to_market_username_hint".tr(),

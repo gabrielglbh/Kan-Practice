@@ -75,7 +75,30 @@ class _DictionaryPageState extends State<DictionaryPage>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(child: _searchBar()),
-            _searchWidget(canSearchEitherWay)
+            Padding(
+              padding: const EdgeInsets.only(top: KPMargins.margin4),
+              child: IconButton(
+                onPressed: () {
+                  Utils.showProVersion(context);
+                },
+                splashRadius: KPMargins.margin26,
+                icon: ShaderMask(
+                  shaderCallback: (bounds) {
+                    return const LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.blue,
+                          Colors.green,
+                          Colors.yellow,
+                          Colors.red,
+                          Colors.purple
+                        ]).createShader(bounds);
+                  },
+                  child: const Icon(Icons.camera, color: Colors.white),
+                ),
+              ),
+            ),
           ],
         ),
         BlocBuilder<DictionaryBloc, DictionaryState>(
@@ -116,14 +139,20 @@ class _DictionaryPageState extends State<DictionaryPage>
                     ),
                   ),
                   _predictions(predictions),
-                  KPCustomCanvas(
-                    line: _line,
-                    allowPrediction: true,
-                    handleImage: (im.Image image) {
-                      context
-                          .read<DictionaryBloc>()
-                          .add(DictionaryEventLoading(image: image));
-                    },
+                  Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      KPCustomCanvas(
+                        line: _line,
+                        allowPrediction: true,
+                        handleImage: (im.Image image) {
+                          context
+                              .read<DictionaryBloc>()
+                              .add(DictionaryEventLoading(image: image));
+                        },
+                      ),
+                      if (canSearchEitherWay) _searchWidget(),
+                    ],
                   ),
                 ],
               ),
@@ -178,22 +207,34 @@ class _DictionaryPageState extends State<DictionaryPage>
     );
   }
 
-  Widget _searchWidget(bool canSearchEitherWay) {
+  Widget _searchWidget() {
     return GestureDetector(
-      child: AnimatedContainer(
-        width: canSearchEitherWay ? KPSizes.defaultSizeSearchBarIcons : 0,
+      child: Container(
+        width: MediaQuery.of(context).size.width / 3,
         height: KPSizes.defaultSizeSearchBarIcons,
-        duration: const Duration(milliseconds: 400),
-        margin: EdgeInsets.symmetric(
-          horizontal: canSearchEitherWay ? KPMargins.margin8 : 0,
-          vertical: KPMargins.margin4,
+        margin: const EdgeInsets.all(KPMargins.margin8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(KPRadius.radius16),
+          color: KPColors.secondaryColor,
         ),
-        decoration: const BoxDecoration(
-            shape: BoxShape.circle, color: KPColors.secondaryColor),
-        child: Icon(
-          widget.args.searchInJisho ? Icons.search : Icons.done,
-          color: KPColors.primaryLight,
-          size: canSearchEitherWay ? 24 : 0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              widget.args.searchInJisho ? Icons.search : Icons.done,
+              color: KPColors.primaryLight,
+              size: 24,
+            ),
+            const SizedBox(width: KPMargins.margin8),
+            Flexible(
+              child: Text("dict_search_button_title".tr(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: Colors.white)),
+            ),
+          ],
         ),
       ),
       onTap: () {

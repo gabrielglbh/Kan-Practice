@@ -4,6 +4,7 @@ import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
 import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/core/widgets/blitz/kp_blitz_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/widgets/blitz/kp_number_test_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
@@ -118,16 +119,27 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                 _testBasedButtons(context, Tests.daily, hasWords: hasWords)
               ]
             : List.generate(
-                Tests.values.length,
+                Tests.values.length + 1,
                 (index) {
-                  if (Tests.values[index] == Tests.daily) {
-                    return _testBasedButtons(
-                      context,
-                      Tests.daily,
-                      hasWords: hasWords,
+                  try {
+                    if (Tests.values[index] == Tests.daily) {
+                      return _testBasedButtons(
+                        context,
+                        Tests.daily,
+                        hasWords: hasWords,
+                      );
+                    }
+                    return _testBasedButtons(context, Tests.values[index]);
+                  } catch (err) {
+                    return KPButton(
+                      icon: Icons.travel_explore_rounded,
+                      title2: 'pro_translations'.tr(),
+                      color: KPColors.midGrey,
+                      onTap: () {
+                        Utils.showProVersion(context);
+                      },
                     );
                   }
-                  return _testBasedButtons(context, Tests.values[index]);
                 },
               ),
       ),

@@ -430,5 +430,17 @@
   "settings_general_badge_words_description": "Ob Wörter in Listen als Abzeichen oder als Listenelemente angezeigt werden sollen.",
   "archive_title": "Archiv",
   "daily_max_words_limit": "Maximale Wörter pro Tag",
-  "daily_max_grammar_limit": "Maximale Grammatikpunkte pro Tag"
+  "daily_max_grammar_limit": "Maximale Grammatikpunkte pro Tag",
+  "pro_translations": "Übersetzung",
+  "market_automatic_translation": "Automatische Übersetzung in der Pro-Version verfügbar",
+  "market_list_language": "Materielle Sprache",
+  "add_market_list_language": "Sprache",
+  "add_market_list_language_title": "Materialsprache auswählen",
+  "pro_version": "KanPractice Pro",
+  "pro_translation": "Neuer Übersetzungstest, der mit ChatGPT 20 zufällige Sätze mit Ihrem eigenen Wortschatz generiert, um Ihr Verständnis zu trainieren.",
+  "pro_ocr": "Neue Erkennungsmethode hinzugefügt: OCR. Erkennen Sie jedes japanische Zeichen über ein Bild.",
+  "pro_context": "Neuer Hinweisprozess im Lernmodus. ChatGPT generiert einen zufälligen Satz, um ein Wort in den Kontext zu setzen, wenn Sie Probleme haben.",
+  "pro_translation_market": "Neue automatische Übersetzung beim Herunterladen einer Liste oder eines Ordners aus dem Market.",
+  "pro_and_more": "Und mehr...",
+  "pro_get_version": "Herunterladen"
 }

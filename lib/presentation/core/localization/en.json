@@ -430,5 +430,17 @@
   "settings_general_badge_words_description": "Whether to show words in lists as badges or as list items.",
   "archive_title": "Archive",
   "daily_max_words_limit": "Maximum words per day",
-  "daily_max_grammar_limit": "Maximum grammar points per day"
+  "daily_max_grammar_limit": "Maximum grammar points per day",
+  "pro_translations": "Translation",
+  "market_automatic_translation": "Automatic translation available in Pro version",
+  "market_list_language": "Material language",
+  "add_market_list_language": "Language",
+  "add_market_list_language_title": "Select material language",
+  "pro_version": "KanPractice Pro",
+  "pro_translation": "New Translation test that generates 20 random sentences with your own vocabulary using ChatGPT to focus on your comprehension.",
+  "pro_ocr": "New recognition method added: OCR. Recognize any japanese character via image.",
+  "pro_context": "New hint process on study modes. ChatGPT will generate a random sentence to put a word in context when you are struggling.",
+  "pro_translation_market": "New automatic translation when downloading any list or folder from the Market.",
+  "pro_and_more": "And more...",
+  "pro_get_version": "Download"
 }

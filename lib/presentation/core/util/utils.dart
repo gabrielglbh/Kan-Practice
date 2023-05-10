@@ -186,6 +186,93 @@ class Utils {
     );
   }
 
+  static void showProVersion(BuildContext context) {
+    const dash = Text('-');
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return KPDialog(
+          title: Text("pro_version".tr()),
+          content: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height / 2,
+            child: Scrollbar(
+              thumbVisibility: true,
+              child: ListView(
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      dash,
+                      const SizedBox(width: 4),
+                      const Icon(Icons.travel_explore_rounded),
+                      const SizedBox(width: 4),
+                      Flexible(child: Text("${"pro_translation".tr()}\n")),
+                    ],
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      dash,
+                      const SizedBox(width: 4),
+                      ShaderMask(
+                        shaderCallback: (bounds) {
+                          return const LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Colors.blue,
+                                Colors.green,
+                                Colors.yellow,
+                                Colors.red,
+                                Colors.purple
+                              ]).createShader(bounds);
+                        },
+                        child: const Icon(Icons.camera, color: Colors.white),
+                      ),
+                      const SizedBox(width: 4),
+                      Flexible(child: Text("${"pro_ocr".tr()}\n")),
+                    ],
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      dash,
+                      const SizedBox(width: 4),
+                      const Icon(Icons.psychology_outlined),
+                      const SizedBox(width: 4),
+                      Flexible(child: Text("${"pro_context".tr()}\n")),
+                    ],
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      dash,
+                      const SizedBox(width: 4),
+                      Icon(Icons.g_translate_rounded,
+                          color: Colors.amber.shade800),
+                      const SizedBox(width: 4),
+                      Flexible(
+                          child: Text("${"pro_translation_market".tr()}\n")),
+                    ],
+                  ),
+                  Text("- ${"pro_and_more".tr()}"),
+                ],
+              ),
+            ),
+          ),
+          negativeButton: false,
+          positiveButtonText: 'pro_get_version'.tr(),
+          onPositive: () async {
+            await launch(context,
+                "https://play.google.com/store/apps/details?id=com.gabr.garc.kanpracticepro");
+          },
+        );
+      },
+    );
+  }
+
   static Future<void> showSpatialRepetitionDisclaimer(
     BuildContext context,
   ) async {

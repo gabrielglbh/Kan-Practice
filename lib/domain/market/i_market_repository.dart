@@ -33,6 +33,7 @@ abstract class IMarketRepository {
   Future<int> uploadListToMarketPlace(
     String name,
     WordList list,
+    String language,
     List<Word> words,
     List<GrammarPoint> grammarPoints,
     String description,
@@ -47,6 +48,7 @@ abstract class IMarketRepository {
   Future<int> uploadFolderToMarketPlace(
     String name,
     Folder folder,
+    String language,
     List<WordList> lists,
     List<Word> words,
     List<GrammarPoint> grammarPoints,

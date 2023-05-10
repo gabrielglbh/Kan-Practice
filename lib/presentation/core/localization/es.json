@@ -430,5 +430,17 @@
   "settings_general_badge_words_description": "Si está activo, se mostrarán las palabras de las listas como medallas, si no, se mostrarán como elementos de una lista.",
   "archive_title": "Archivo",
   "daily_max_words_limit": "Máximo de palabras al día",
-  "daily_max_grammar_limit": "Máximo de puntos gramaticales al día"
+  "daily_max_grammar_limit": "Máximo de puntos gramaticales al día",
+  "pro_translations": "Traducción",
+  "market_automatic_translation": "Traducción automática disponible en la versión Pro",
+  "market_list_language": "Idioma del material",
+  "add_market_list_language": "Idioma",
+  "add_market_list_language_title": "Selecciona el idioma del material",
+  "pro_version": "KanPractice Pro",
+  "pro_translation": "Nuevo test de traducción que genera 20 frases aleatorias con tu propio vocabulario usando ChatGPT para centrarte en tu comprensión",
+  "pro_ocr": "Nuevo método de reconocimiento añadido: OCR. Reconoce cualquier carácter japonés a través de una imagen",
+  "pro_context": "Nuevo proceso de pistas en los modos de estudio. ChatGPT generará una frase aleatoria para poner una palabra en contexto cuando tengas dificultades",
+  "pro_translation_market": "Nueva traducción automática al descargar cualquier lista o carpeta del Mercado",
+  "pro_and_more": "Y más...",
+  "pro_get_version": "Descargar"
 }

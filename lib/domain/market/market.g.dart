@@ -25,6 +25,8 @@ Market _$MarketFromJson(Map<String, dynamic> json) => Market(
           const [],
       uploadedToMarket: json['uploadedToMarket'] as int? ?? 0,
       isFolder: json['isFolder'] as bool? ?? false,
+      language: json['language'] as String,
+      countryCode: json['countryCode'] as String,
     );
 
 Map<String, dynamic> _$MarketToJson(Market instance) => <String, dynamic>{
@@ -40,4 +42,6 @@ Map<String, dynamic> _$MarketToJson(Market instance) => <String, dynamic>{
       'author': instance.author,
       'uploadedToMarket': instance.uploadedToMarket,
       'isFolder': instance.isFolder,
+      'language': instance.language,
+      'countryCode': instance.countryCode,
     };

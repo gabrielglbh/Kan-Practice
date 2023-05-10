@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           reset: true,
         ));
 
-    context.read<BackupBloc>().add(BackupGetVersion(context));
+    context.read<BackupBloc>().add(const BackupGetVersion());
 
     _addReviewEvent();
 

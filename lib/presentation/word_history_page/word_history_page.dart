@@ -99,8 +99,8 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
                     itemCount: list.length,
                     itemBuilder: (context, k) {
                       WordHistory wordHistory = list[k];
-                      final date = Utils.parseDateMilliseconds(
-                          context, wordHistory.searchedOn);
+                      final date =
+                          Utils.parseDateMilliseconds(wordHistory.searchedOn);
                       return ListTile(
                         onTap: () {
                           Navigator.of(context).pushNamed(

@@ -12,14 +12,30 @@ class AddToMarketEventIdle extends AddToMarketEvent {}
 class AddToMarketEventOnUpload extends AddToMarketEvent {
   final MarketListType type;
   final String name;
+  final String language;
+  final String? countryCode;
   final String description;
   final String author;
   final String listNameForMarket;
 
-  const AddToMarketEventOnUpload(this.type, this.name, this.description,
-      this.author, this.listNameForMarket);
+  const AddToMarketEventOnUpload(
+    this.type,
+    this.name,
+    this.description,
+    this.author,
+    this.listNameForMarket,
+    this.language,
+    this.countryCode,
+  );
 
   @override
-  List<Object> get props =>
-      [type, name, description, author, listNameForMarket];
+  List<Object> get props => [
+        type,
+        name,
+        description,
+        author,
+        listNameForMarket,
+        language,
+        countryCode ?? 'null',
+      ];
 }

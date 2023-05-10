@@ -1,4 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flag/flag_enum.dart';
+import 'package:flag/flag_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
@@ -55,7 +57,7 @@ class MarketListTile extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: KPMargins.margin8),
               child: Text(
-                  "${"created_label".tr()} ${Utils.parseDateMilliseconds(context, list.uploadedToMarket)}",
+                  "${"created_label".tr()} ${Utils.parseDateMilliseconds(list.uploadedToMarket)}",
                   style: Theme.of(context).textTheme.titleSmall),
             ),
           ],
@@ -101,6 +103,28 @@ class MarketListTile extends StatelessWidget {
           padding: const EdgeInsets.only(top: KPMargins.margin8),
           child: Row(
             children: [
+              Icon(
+                Icons.g_translate_outlined,
+                color: Colors.amber.shade800,
+                size: 18,
+              ),
+              const SizedBox(width: KPMargins.margin8),
+              Expanded(
+                child: Text("market_automatic_translation".tr(),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 4,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(fontStyle: FontStyle.italic)),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: KPMargins.margin8),
+          child: Row(
+            children: [
               Text("${"market_filter_words".tr()}: ${list.words}",
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyMedium),
@@ -122,6 +146,20 @@ class MarketListTile extends StatelessWidget {
         Text("${"market_filter_downloads".tr()}: ${list.downloads}",
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.bodyMedium),
+        Row(
+          children: [
+            Text("${"market_list_language".tr()}:",
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyMedium),
+            const SizedBox(width: KPMargins.margin8),
+            Flag.fromCode(
+              FlagsCode.values.firstWhere((f) => f.name == list.countryCode),
+              borderRadius: KPMargins.margin4,
+              height: KPMargins.margin16,
+              width: KPMargins.margin24,
+            ),
+          ],
+        ),
         Row(
           children: [
             BlocBuilder<AuthBloc, AuthState>(

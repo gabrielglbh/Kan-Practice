@@ -1,4 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fl_country_code_picker/fl_country_code_picker.dart';
+import 'package:flag/flag_enum.dart';
+import 'package:flag/flag_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/add_market_list/add_to_market_bloc.dart';
@@ -26,6 +29,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
   late FocusNode _fnUser;
   late TextEditingController _tcList;
   late FocusNode _fnList;
+  String? _countryCode;
   MarketListType _selectedType = MarketListType.list;
   String _listSelection = "add_to_market_select_list".tr();
 
@@ -37,6 +41,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
     _fnUser = FocusNode();
     _tcList = TextEditingController();
     _fnList = FocusNode();
+    _countryCode = WidgetsBinding.instance.window.locale.countryCode;
     super.initState();
   }
 
@@ -67,15 +72,18 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                 loading: () => const SizedBox(),
                 orElse: () => IconButton(
                   onPressed: () {
-                    context
-                        .read<AddToMarketBloc>()
-                        .add(AddToMarketEventOnUpload(
-                          _selectedType,
-                          _listSelection,
-                          _tc.text,
-                          _tcUser.text,
-                          _tcList.text,
-                        ));
+                    final curr = EasyLocalization.of(context)?.currentLocale;
+                    context.read<AddToMarketBloc>().add(
+                          AddToMarketEventOnUpload(
+                            _selectedType,
+                            _listSelection,
+                            _tc.text,
+                            _tcUser.text,
+                            _tcList.text,
+                            WidgetsBinding.instance.window.locale.languageCode,
+                            _countryCode ?? curr?.countryCode,
+                          ),
+                        );
                   },
                   icon: const Icon(Icons.check),
                 ),
@@ -163,14 +171,71 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                         ),
                       ),
                     ),
-                    KPTextForm(
-                        header: "add_to_market_list_name_label".tr(),
-                        hint: "add_to_market_list_name_hint".tr(),
-                        controller: _tcList,
-                        focusNode: _fnList,
-                        maxLines: 1,
-                        maxLength: 32,
-                        onEditingComplete: () => _fnUser.requestFocus()),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: KPTextForm(
+                              header: "add_to_market_list_name_label".tr(),
+                              hint: "add_to_market_list_name_hint".tr(),
+                              controller: _tcList,
+                              focusNode: _fnList,
+                              maxLines: 1,
+                              maxLength: 32,
+                              onEditingComplete: () => _fnUser.requestFocus()),
+                        ),
+                        const SizedBox(width: KPMargins.margin24),
+                        Column(
+                          children: [
+                            Text('add_market_list_language'.tr(),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                style: Theme.of(context).textTheme.titleLarge),
+                            const SizedBox(height: KPMargins.margin16),
+                            GestureDetector(
+                              onTap: () async {
+                                final code = await FlCountryCodePicker(
+                                  showDialCode: false,
+                                  showFavoritesIcon: false,
+                                  title: Padding(
+                                    padding: const EdgeInsets.all(
+                                        KPMargins.margin16),
+                                    child: Text(
+                                      'add_market_list_language_title'.tr(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall
+                                          ?.copyWith(
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ).showPicker(context: context);
+                                setState(() {
+                                  _countryCode = code?.code;
+                                });
+                              },
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.all(KPMargins.margin16),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: KPColors.getSubtle(context)),
+                                  borderRadius:
+                                      BorderRadius.circular(KPRadius.radius16),
+                                ),
+                                child: Flag.fromCode(
+                                  FlagsCode.values.firstWhere(
+                                      (f) => f.name == (_countryCode ?? 'US')),
+                                  borderRadius: KPMargins.margin4,
+                                  height: KPMargins.margin24,
+                                  width: KPMargins.margin32,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                     KPTextForm(
                         header: "add_to_market_username_label".tr(),
                         hint: "add_to_market_username_hint".tr(),

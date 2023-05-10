@@ -9,11 +9,16 @@ class TranslateRepositoryImpl implements ITranslateRepository {
   OnDeviceTranslator? _onDeviceTranslator;
 
   @override
-  Future<String> translate(String text, String targetLanguage) async {
+  Future<String> translate(
+    String text,
+    String targetLanguage, {
+    String sourceLanguge = 'ja',
+  }) async {
     _onDeviceTranslator ??= OnDeviceTranslator(
-      sourceLanguage: TranslateLanguage.japanese,
+      sourceLanguage: TranslateLanguage.values
+          .firstWhere((l) => l.bcpCode == sourceLanguge),
       targetLanguage: TranslateLanguage.values
-          .firstWhere((element) => element.bcpCode == targetLanguage),
+          .firstWhere((l) => l.bcpCode == targetLanguage),
     );
     final translatedText = await _onDeviceTranslator?.translateText(text);
     return translatedText ?? '';

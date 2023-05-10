@@ -107,4 +107,25 @@ class GrammarPoint {
         previousIntervalGrammarPoint: 0,
         previousIntervalAsDateGrammarPoint: 0,
       );
+
+  GrammarPoint copyWithTranslation({String? definition}) => GrammarPoint(
+        name: name,
+        listName: listName,
+        definition: definition ?? this.definition,
+        example: example,
+        winRateDefinition: winRateDefinition,
+        winRateGrammarPoint: winRateGrammarPoint,
+        dateLastShownDefinition: dateLastShownDefinition,
+        dateLastShownGrammarPoint: dateLastShownGrammarPoint,
+        dateAdded: dateAdded,
+        dateLastShown: dateLastShown,
+        repetitionsDefinition: repetitionsDefinition,
+        previousEaseFactorDefinition: previousEaseFactorDefinition,
+        previousIntervalDefinition: previousIntervalDefinition,
+        previousIntervalAsDateDefinition: previousIntervalAsDateDefinition,
+        repetitionsGrammarPoint: repetitionsGrammarPoint,
+        previousEaseFactorGrammarPoint: previousEaseFactorGrammarPoint,
+        previousIntervalGrammarPoint: previousIntervalGrammarPoint,
+        previousIntervalAsDateGrammarPoint: previousIntervalAsDateGrammarPoint,
+      );
 }

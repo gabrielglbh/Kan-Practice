@@ -15,6 +15,8 @@ class Market {
   static const keywordsField = "keywords";
   static const uploadedToMarketField = "uploadedToMarket";
   static const isFolderField = "isFolder";
+  static const languageField = "language";
+  static const countryCodeField = "countryCode";
 
   final String name;
   final int words;
@@ -38,6 +40,8 @@ class Market {
   final String author;
   final int uploadedToMarket;
   final bool isFolder;
+  final String language;
+  final String countryCode;
 
   Market({
     required this.words,
@@ -52,11 +56,20 @@ class Market {
     this.keywords = const [],
     this.uploadedToMarket = 0,
     this.isFolder = false,
+    required this.language,
+    required this.countryCode,
   });
 
   /// Empty [Market]
-  static final Market empty =
-      Market(name: "", uid: "", words: 0, description: "", author: "");
+  static final Market empty = Market(
+    name: "",
+    uid: "",
+    words: 0,
+    description: "",
+    author: "",
+    language: 'en',
+    countryCode: 'US',
+  );
 
   factory Market.fromJson(Map<String, dynamic> json) => _$MarketFromJson(json);
   Map<String, dynamic> toJson() => _$MarketToJson(this);
@@ -87,6 +100,8 @@ class Market {
       author: author,
       uploadedToMarket: uploadedToMarket,
       isFolder: isFolder,
+      language: language,
+      countryCode: countryCode,
     );
   }
 }

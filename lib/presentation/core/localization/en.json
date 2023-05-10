@@ -455,5 +455,9 @@
   "ocr_select_text_info": "Editable and selectable text for corrections and translation or search in Jisho",
   "ocr_search_in_jisho_part1": "Search",
   "ocr_search_in_jisho_part2": "in Jisho",
-  "ocr_reload_image": "Reload image"
+  "ocr_reload_image": "Reload image",
+  "market_automatic_translation": "Automatic translation of the material to your language",
+  "market_list_language": "Material language",
+  "add_market_list_language": "Language",
+  "add_market_list_language_title": "Select material language"
 }

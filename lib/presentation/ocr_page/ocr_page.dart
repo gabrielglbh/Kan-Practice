@@ -200,11 +200,11 @@ class _OCRPageState extends State<OCRPage> {
                                     icon: Icons.translate_rounded,
                                     onTap: () {
                                       bloc.read<OCRPageBloc>().add(
-                                          OCRPageEventTranslate(
-                                              EasyLocalization.of(context)
-                                                      ?.currentLocale
-                                                      ?.languageCode ??
-                                                  'en'));
+                                          OCRPageEventTranslate(WidgetsBinding
+                                              .instance
+                                              .window
+                                              .locale
+                                              .languageCode));
                                     },
                                   ),
                                   translationLoaded: (_) => KPButton(

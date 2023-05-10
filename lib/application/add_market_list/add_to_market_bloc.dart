@@ -50,7 +50,7 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
           updated = await _authRepository.updateUserName(event.author);
         }
 
-        if (event.author.isEmpty || !updated) {
+        if (event.author.isEmpty || !updated || event.countryCode == null) {
           emit(AddToMarketState.error("add_to_market_validation_failed".tr()));
         } else {
           if (event.type == MarketListType.list) {
@@ -65,6 +65,8 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
               final res = await _marketRepository.uploadListToMarketPlace(
                   event.listNameForMarket,
                   list,
+                  event.language,
+                  event.countryCode!,
                   words,
                   grammar,
                   event.description);
@@ -96,6 +98,8 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
               final res = await _marketRepository.uploadFolderToMarketPlace(
                   event.listNameForMarket,
                   folder,
+                  event.language,
+                  event.countryCode!,
                   lists,
                   words,
                   grammar,

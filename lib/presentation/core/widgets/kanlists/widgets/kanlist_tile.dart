@@ -32,7 +32,7 @@ class KanlistTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final date = Utils.parseDateMilliseconds(context, item.lastUpdated);
+    final date = Utils.parseDateMilliseconds(item.lastUpdated);
     return ListTile(
       onTap: () {
         onTap();

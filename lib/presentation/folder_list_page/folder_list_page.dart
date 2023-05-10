@@ -184,8 +184,8 @@ class _FolderListPageState extends State<FolderListPage>
                             const Divider(height: KPMargins.margin4),
                         itemBuilder: (context, k) {
                           final folder = folders[k];
-                          final date = Utils.parseDateMilliseconds(
-                              context, folder.lastUpdated);
+                          final date =
+                              Utils.parseDateMilliseconds(folder.lastUpdated);
                           return _tile(bloc, folder, date);
                         }),
                   ),

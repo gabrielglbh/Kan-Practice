@@ -18,6 +18,7 @@ Build your own word, sentences and grammar lists and study them whenever you wan
   <img src="documentation/en-translate.png" width="20%">
   <img src="documentation/en-ocr.png" width="20%">
   <img src="documentation/en-context.png" width="20%">
+  <img src="documentation/en-market-db.png" width="20%">
 </p>
 
 <p align="center">

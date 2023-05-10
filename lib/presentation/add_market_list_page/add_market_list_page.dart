@@ -29,7 +29,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
   late FocusNode _fnUser;
   late TextEditingController _tcList;
   late FocusNode _fnList;
-  String? _countryCode;
+  late Locale _locale;
   MarketListType _selectedType = MarketListType.list;
   String _listSelection = "add_to_market_select_list".tr();
 
@@ -41,7 +41,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
     _fnUser = FocusNode();
     _tcList = TextEditingController();
     _fnList = FocusNode();
-    _countryCode = WidgetsBinding.instance.window.locale.countryCode;
+    _locale = WidgetsBinding.instance.window.locale;
     super.initState();
   }
 
@@ -80,8 +80,8 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                             _tc.text,
                             _tcUser.text,
                             _tcList.text,
-                            WidgetsBinding.instance.window.locale.languageCode,
-                            _countryCode ?? curr?.countryCode,
+                            _locale.languageCode,
+                            _locale.countryCode ?? curr?.countryCode,
                           ),
                         );
                   },
@@ -212,7 +212,8 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                                   ),
                                 ).showPicker(context: context);
                                 setState(() {
-                                  _countryCode = code?.code;
+                                  _locale = Locale.fromSubtags(
+                                      countryCode: code?.code);
                                 });
                               },
                               child: Container(
@@ -225,8 +226,8 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                                       BorderRadius.circular(KPRadius.radius16),
                                 ),
                                 child: Flag.fromCode(
-                                  FlagsCode.values.firstWhere(
-                                      (f) => f.name == (_countryCode ?? 'US')),
+                                  FlagsCode.values.firstWhere((f) =>
+                                      f.name == (_locale.countryCode ?? 'US')),
                                   borderRadius: KPMargins.margin4,
                                   height: KPMargins.margin24,
                                   width: KPMargins.margin32,

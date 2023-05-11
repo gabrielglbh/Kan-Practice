@@ -241,18 +241,24 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       },
       icon: const Icon(Icons.shopping_bag_rounded),
     );
+    final proIcon = IconButton(
+      onPressed: () {
+        Utils.showProVersion(context);
+      },
+      icon: const Icon(Icons.local_play_rounded),
+    );
 
     final List<IconButton> updateWithAppBarIcons =
         _currentPage == HomeType.dictionary
-            ? [updateIcon, dictHistory]
+            ? [updateIcon, proIcon, dictHistory]
             : _currentPage == HomeType.kanlist
-                ? [updateIcon, marketIcon]
-                : [updateIcon];
+                ? [updateIcon, proIcon, marketIcon]
+                : [updateIcon, proIcon];
     final List<IconButton> appBarIcons = _currentPage == HomeType.dictionary
-        ? [dictHistory]
+        ? [proIcon, dictHistory]
         : _currentPage == HomeType.kanlist
-            ? [marketIcon]
-            : [];
+            ? [proIcon, marketIcon]
+            : [proIcon];
 
     return BlocListener<BackupBloc, BackupState>(
       listener: (context, state) {

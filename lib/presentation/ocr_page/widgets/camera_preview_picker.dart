@@ -1,14 +1,11 @@
 import 'package:camera/camera.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/ocr_page/ocr_page_bloc.dart';
-import 'package:kanpractice/application/permission_handler/permission_handler_bloc.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/ocr_page/widgets/zoom_slider.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class CameraPreviewPicker extends StatefulWidget {
   final CameraController? camera;
@@ -32,33 +29,6 @@ class _CameraPreviewPickerState extends State<CameraPreviewPicker> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          BlocBuilder<PermissionHandlerBloc, PermissionHandlerState>(
-            builder: (context, state) {
-              return state.maybeWhen(
-                error: () => GestureDetector(
-                  onTap: () => openAppSettings(),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.warning_amber_rounded,
-                              color: Colors.amber.shade900),
-                          const SizedBox(width: KPMargins.margin8),
-                          Text('ocr_permissions_denied'.tr()),
-                          const SizedBox(width: KPMargins.margin8),
-                          Icon(Icons.warning_amber_rounded,
-                              color: Colors.amber.shade900),
-                        ],
-                      ),
-                      const SizedBox(height: KPMargins.margin12),
-                    ],
-                  ),
-                ),
-                orElse: () => const SizedBox(),
-              );
-            },
-          ),
           Flexible(
             child: FutureBuilder<void>(
               future: widget.initializeControllerFuture,

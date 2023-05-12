@@ -16,9 +16,7 @@ class OCRRepositoryImpl implements IOCRRepository {
 
     for (TextBlock block in recognisedText!.blocks) {
       for (TextLine line in block.lines) {
-        for (TextElement element in line.elements) {
-          result += "\n${element.text}";
-        }
+        result += "\n${line.text}";
       }
     }
     return result.length > 1 ? result.substring(1) : result;

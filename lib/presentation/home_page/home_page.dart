@@ -477,7 +477,24 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   padding: const EdgeInsets.only(top: KPMargins.margin4),
                   child: Text(DictionaryType.values[index].explanation),
                 ),
-                leading: Icon(DictionaryType.values[index].icon),
+                leading: DictionaryType.values[index] == DictionaryType.ocr
+                    ? ShaderMask(
+                        shaderCallback: (bounds) {
+                          return const LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Colors.blue,
+                                Colors.green,
+                                Colors.yellow,
+                                Colors.red,
+                                Colors.purple
+                              ]).createShader(bounds);
+                        },
+                        child: Icon(DictionaryType.values[index].icon,
+                            color: Colors.white),
+                      )
+                    : Icon(DictionaryType.values[index].icon),
                 trailing: const Icon(Icons.arrow_forward),
                 contentPadding: const EdgeInsets.all(KPMargins.margin8),
                 onTap: () {

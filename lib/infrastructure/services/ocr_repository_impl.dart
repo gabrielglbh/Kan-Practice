@@ -21,7 +21,7 @@ class OCRRepositoryImpl implements IOCRRepository {
         }
       }
     }
-    return result.substring(1);
+    return result.length > 1 ? result.substring(1) : result;
   }
 
   @override

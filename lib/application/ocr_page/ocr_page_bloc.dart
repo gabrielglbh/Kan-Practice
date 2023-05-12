@@ -30,7 +30,8 @@ class OCRPageBloc extends Bloc<OCRPageEvent, OCRPageState> {
 
     on<OCRPageEventLoadImage>((event, emit) async {
       emit(const OCRPageState.loading());
-      final pickedFile = await _imagePicker.pickImage(source: event.source);
+      final pickedFile = event.file ??
+          await _imagePicker.pickImage(source: ImageSource.gallery);
       if (pickedFile != null) {
         final image = File(pickedFile.path);
         final inputImage = InputImage.fromFilePath(pickedFile.path);
@@ -39,13 +40,6 @@ class OCRPageBloc extends Bloc<OCRPageEvent, OCRPageState> {
       } else {
         emit(const OCRPageState.initial());
       }
-    });
-
-    on<OCRPageEventReloadImage>((event, emit) async {
-      emit(const OCRPageState.loading());
-      final inputImage = InputImage.fromFilePath(event.image.path);
-      _ocrText = await _iocrRepository.recognize(inputImage);
-      emit(OCRPageState.imageLoaded(_ocrText));
     });
 
     on<OCRPageEventTranslate>((event, emit) async {

@@ -17,21 +17,9 @@ class OCRPageEventTranslate extends OCRPageEvent {
 }
 
 class OCRPageEventLoadImage extends OCRPageEvent {
-  final ImageSource source;
+  final XFile? file;
 
-  const OCRPageEventLoadImage(this.source);
-
-  @override
-  List<Object> get props => [source];
-}
-
-class OCRPageEventReloadImage extends OCRPageEvent {
-  final File image;
-
-  const OCRPageEventReloadImage(this.image);
-
-  @override
-  List<Object> get props => [image];
+  const OCRPageEventLoadImage({this.file});
 }
 
 class OCRPageEventShowOriginal extends OCRPageEvent {}

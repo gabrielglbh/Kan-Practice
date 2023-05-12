@@ -22,6 +22,9 @@ class CameraPreviewPicker extends StatefulWidget {
 
 class _CameraPreviewPickerState extends State<CameraPreviewPicker> {
   double _zoom = 1.0;
+  double _baseZoom = 1.0;
+  final _maxZoom = 5.0;
+  final _minZoom = 1.0;
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +41,24 @@ class _CameraPreviewPickerState extends State<CameraPreviewPicker> {
                       alignment: Alignment.bottomCenter,
                       children: [
                         if (widget.camera != null)
-                          ClipRRect(
-                            borderRadius:
-                                BorderRadius.circular(KPRadius.radius16),
-                            child: CameraPreview(widget.camera!),
+                          GestureDetector(
+                            onScaleStart: (scaleStartDetails) {
+                              _baseZoom = _zoom;
+                            },
+                            onScaleUpdate: (scaleUpdateDetails) {
+                              if (scaleUpdateDetails.scale == _minZoom) return;
+
+                              setState(() {
+                                _zoom = (_baseZoom * scaleUpdateDetails.scale)
+                                    .clamp(_minZoom, _maxZoom);
+                              });
+                              widget.camera?.setZoomLevel(_zoom);
+                            },
+                            child: ClipRRect(
+                              borderRadius:
+                                  BorderRadius.circular(KPRadius.radius16),
+                              child: CameraPreview(widget.camera!),
+                            ),
                           ),
                         Positioned(
                           top: KPMargins.margin12,
@@ -76,6 +93,8 @@ class _CameraPreviewPickerState extends State<CameraPreviewPicker> {
                           left: KPMargins.margin12,
                           child: ZoomSlider(
                             zoom: _zoom,
+                            max: _maxZoom,
+                            min: _minZoom,
                             onChanged: (value) {
                               setState(() => _zoom = value);
                               widget.camera?.setZoomLevel(_zoom);

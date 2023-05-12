@@ -127,6 +127,7 @@ class _OCRPageState extends State<OCRPage> {
                 icon: const Icon(Icons.history_rounded),
               ),
             ],
+            setGestureDetector: false,
             resizeToAvoidBottomInset: true,
             child: BlocConsumer<PermissionHandlerBloc, PermissionHandlerState>(
               listener: (context, state) {

@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
-class ZoomSlider extends StatefulWidget {
-  final double zoom;
+class ZoomSlider extends StatelessWidget {
+  final double zoom, max, min;
   final Function(double) onChanged;
-  const ZoomSlider({super.key, required this.zoom, required this.onChanged});
-
-  @override
-  State<ZoomSlider> createState() => _ZoomSliderState();
-}
-
-class _ZoomSliderState extends State<ZoomSlider> {
-  final _maxZoom = 5.0;
-  final _minZoom = 1.0;
+  const ZoomSlider({
+    super.key,
+    required this.zoom,
+    required this.onChanged,
+    required this.max,
+    required this.min,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +19,10 @@ class _ZoomSliderState extends State<ZoomSlider> {
         const BulletContainer(text: '-'),
         Expanded(
           child: Slider(
-            value: widget.zoom,
-            onChanged: widget.onChanged,
-            max: _maxZoom,
-            min: _minZoom,
+            value: zoom,
+            onChanged: onChanged,
+            max: max,
+            min: min,
           ),
         ),
         const BulletContainer(text: '+'),

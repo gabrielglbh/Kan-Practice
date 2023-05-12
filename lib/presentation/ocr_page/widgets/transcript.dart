@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/ocr_page/ocr_page_bloc.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/ocr_page/widgets/ocr_context_menu.dart';
+import 'package:kanpractice/presentation/ocr_page/widgets/transcript_context_menu.dart';
 
-class OCRTextCanvas extends StatefulWidget {
+class Transcript extends StatefulWidget {
   final String text;
-  const OCRTextCanvas({super.key, required this.text});
+  const Transcript({super.key, required this.text});
 
   @override
-  State<OCRTextCanvas> createState() => _OCRTextCanvasState();
+  State<Transcript> createState() => _TranscriptState();
 }
 
-class _OCRTextCanvasState extends State<OCRTextCanvas> {
+class _TranscriptState extends State<Transcript> {
   final _textEditingController = TextEditingController();
   final _focusNode = FocusNode();
 
@@ -61,7 +61,8 @@ class _OCRTextCanvasState extends State<OCRTextCanvas> {
                 .substring(ts.baseOffset, ts.extentOffset);
             final anchor = editableTextState.contextMenuAnchors.primaryAnchor;
 
-            return OCRContextMenu(anchor: anchor, selectedText: selectedText);
+            return TranscriptContextMenu(
+                anchor: anchor, selectedText: selectedText);
           }),
         ),
       ),

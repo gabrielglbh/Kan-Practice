@@ -6,10 +6,10 @@ import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
 
-class OCRContextMenu extends StatelessWidget {
+class TranscriptContextMenu extends StatelessWidget {
   final Offset anchor;
   final String selectedText;
-  const OCRContextMenu(
+  const TranscriptContextMenu(
       {super.key, required this.anchor, required this.selectedText});
 
   final _height = 132.0;

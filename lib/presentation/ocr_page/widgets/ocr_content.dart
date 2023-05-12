@@ -4,7 +4,7 @@ import 'package:kanpractice/application/ocr_page/ocr_page_bloc.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/ocr_page/widgets/image_canvas.dart';
-import 'package:kanpractice/presentation/ocr_page/widgets/ocr_text_canvas.dart';
+import 'package:kanpractice/presentation/ocr_page/widgets/transcript.dart';
 
 class OCRContent extends StatefulWidget {
   const OCRContent({super.key});
@@ -21,38 +21,30 @@ class _OCRContentState extends State<OCRContent> {
         return Stack(
           alignment: Alignment.bottomRight,
           children: [
-            ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width,
-                maxHeight: MediaQuery.of(context).size.height / 1.6,
-              ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  const ImageCanvas(),
-                  state.maybeWhen(
-                    imageLoaded: (text, _) => OCRTextCanvas(text: text),
-                    translationLoaded: (translation) => SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.all(KPMargins.margin8),
-                        child: Text(
-                          translation,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall
-                              ?.copyWith(
-                                color: Colors.black,
-                                backgroundColor: Colors.white70,
-                                fontWeight: FontWeight.normal,
-                              ),
-                        ),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                const ImageCanvas(),
+                state.maybeWhen(
+                  imageLoaded: (text, _) => Transcript(text: text),
+                  translationLoaded: (translation) => SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(KPMargins.margin8),
+                      child: Text(
+                        translation,
+                        style:
+                            Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                  color: Colors.black,
+                                  backgroundColor: Colors.white70,
+                                  fontWeight: FontWeight.normal,
+                                ),
                       ),
                     ),
-                    loading: () => const KPProgressIndicator(),
-                    orElse: () => const SizedBox(),
                   ),
-                ],
-              ),
+                  loading: () => const KPProgressIndicator(),
+                  orElse: () => const SizedBox(),
+                ),
+              ],
             ),
             state.maybeWhen(
               imageLoaded: (text, __) => Positioned(

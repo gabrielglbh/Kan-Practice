@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -13,14 +14,58 @@ import 'package:kanpractice/presentation/core/widgets/kp_tappable_info.dart';
 import 'package:kanpractice/presentation/ocr_page/widgets/camera_preview_picker.dart';
 import 'package:kanpractice/presentation/ocr_page/widgets/ocr_content.dart';
 
-class OCRPage extends StatelessWidget {
+class OCRPage extends StatefulWidget {
   const OCRPage({Key? key}) : super(key: key);
+
+  @override
+  State<OCRPage> createState() => _OCRPageState();
+}
+
+class _OCRPageState extends State<OCRPage> {
+  CameraController? _camera;
+  Future<void>? _initializeControllerFuture;
+
+  @override
+  void initState() {
+    final bloc = context.read<PermissionHandlerBloc>();
+    if (bloc.state is! PermissionHandlerSucceeded) {
+      bloc.add(PermissionHandlerEventRequestCamera());
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        final cameras = await availableCameras();
+        final firstCamera = cameras.first;
+        _camera = CameraController(firstCamera, ResolutionPreset.veryHigh);
+        _initializeControllerFuture = _camera?.initialize();
+      });
+    }
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _camera?.dispose();
+    super.dispose();
+  }
+
+  void _initCamera() async {
+    final cameras = await availableCameras();
+    final firstCamera = cameras.first;
+    setState(() {
+      _camera = CameraController(firstCamera, ResolutionPreset.veryHigh);
+      _initializeControllerFuture = _camera?.initialize();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<OCRPageBloc>(),
-      child: BlocBuilder<OCRPageBloc, OCRPageState>(
+      child: BlocConsumer<OCRPageBloc, OCRPageState>(
+        listener: (context, state) {
+          state.mapOrNull(initial: (_) {
+            _initCamera();
+          });
+        },
         builder: (bloc, ocrState) {
           return KPScaffold(
             appBarTitle: "ocr_scanner".tr(),
@@ -45,6 +90,7 @@ class OCRPage extends StatelessWidget {
                 state.mapOrNull(succeeded: (s) {
                   switch (s.source) {
                     case ImageSource.camera:
+                      _initCamera();
                       break;
                     case ImageSource.gallery:
                       bloc
@@ -58,56 +104,47 @@ class OCRPage extends StatelessWidget {
                 });
               },
               builder: (context, state) {
-                return SingleChildScrollView(
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height -
-                        KPSizes.appBarHeight -
-                        KPMargins.margin64,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Flexible(
-                          child: ocrState.maybeWhen(
-                            initial: () => const CameraPreviewPicker(),
-                            orElse: () => Column(
-                              children: [
-                                const Expanded(child: SizedBox()),
-                                KPTappableInfo(
-                                    text: 'ocr_select_text_info'.tr()),
-                                const SizedBox(height: KPMargins.margin16),
-                                const OCRContent(),
-                                const SizedBox(height: KPMargins.margin16),
-                                ocrState.maybeWhen(
-                                  imageLoaded: (_, __) => KPButton(
-                                    title2: 'ocr_translate'.tr(),
-                                    icon: Icons.translate_rounded,
-                                    onTap: () {
-                                      bloc.read<OCRPageBloc>().add(
-                                          OCRPageEventTranslate(WidgetsBinding
-                                              .instance
-                                              .window
-                                              .locale
-                                              .languageCode));
-                                    },
-                                  ),
-                                  translationLoaded: (_) => KPButton(
-                                    title2: 'ocr_show_original'.tr(),
-                                    icon: Icons.keyboard_backspace_rounded,
-                                    onTap: () {
-                                      bloc
-                                          .read<OCRPageBloc>()
-                                          .add(OCRPageEventShowOriginal());
-                                    },
-                                  ),
-                                  orElse: () => const SizedBox(),
-                                ),
-                              ],
-                            ),
-                          ),
+                return ocrState.maybeWhen(
+                  initial: () => CameraPreviewPicker(
+                    camera: _camera,
+                    initializeControllerFuture: _initializeControllerFuture,
+                  ),
+                  orElse: () => Column(
+                    children: [
+                      const SizedBox(height: KPMargins.margin16),
+                      KPTappableInfo(text: 'ocr_select_text_info'.tr()),
+                      const Expanded(child: SizedBox()),
+                      const Expanded(
+                        flex: 30,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: OCRContent(),
                         ),
-                        const SizedBox(height: KPMargins.margin16),
-                      ],
-                    ),
+                      ),
+                      const Expanded(child: SizedBox()),
+                      ocrState.maybeWhen(
+                        imageLoaded: (_, __) => KPButton(
+                          title2: 'ocr_translate'.tr(),
+                          icon: Icons.translate_rounded,
+                          onTap: () {
+                            bloc.read<OCRPageBloc>().add(OCRPageEventTranslate(
+                                WidgetsBinding
+                                    .instance.window.locale.languageCode));
+                          },
+                        ),
+                        translationLoaded: (_) => KPButton(
+                          title2: 'ocr_show_original'.tr(),
+                          icon: Icons.keyboard_backspace_rounded,
+                          onTap: () {
+                            bloc
+                                .read<OCRPageBloc>()
+                                .add(OCRPageEventShowOriginal());
+                          },
+                        ),
+                        orElse: () => const SizedBox(),
+                      ),
+                      const SizedBox(height: KPMargins.margin16),
+                    ],
                   ),
                 );
               },

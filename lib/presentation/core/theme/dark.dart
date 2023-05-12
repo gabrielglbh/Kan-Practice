@@ -55,6 +55,13 @@ final ThemeData dark = ThemeData(
     selectionColor: KPColors.secondaryColor,
     selectionHandleColor: KPColors.secondaryColor,
   ),
+  sliderTheme: SliderThemeData(
+    trackHeight: 8,
+    thumbColor: KPColors.secondaryDarkerColor,
+    activeTrackColor: KPColors.secondaryColor,
+    inactiveTrackColor: KPColors.cardColorLight,
+    overlayColor: KPColors.secondaryDarkerColor.withOpacity(.4),
+  ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
       backgroundColor:

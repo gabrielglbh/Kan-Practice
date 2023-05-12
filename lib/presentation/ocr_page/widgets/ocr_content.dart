@@ -19,55 +19,25 @@ class _OCRContentState extends State<OCRContent> {
     return BlocBuilder<OCRPageBloc, OCRPageState>(
       builder: (context, state) {
         return Stack(
-          alignment: Alignment.bottomRight,
+          alignment: Alignment.center,
           children: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                const ImageCanvas(),
-                state.maybeWhen(
-                  imageLoaded: (text, _) => Transcript(text: text),
-                  translationLoaded: (translation) => SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(KPMargins.margin8),
-                      child: Text(
-                        translation,
-                        style:
-                            Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                  color: Colors.black,
-                                  backgroundColor: Colors.white70,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                      ),
-                    ),
-                  ),
-                  loading: () => const KPProgressIndicator(),
-                  orElse: () => const SizedBox(),
-                ),
-              ],
-            ),
+            const ImageCanvas(),
             state.maybeWhen(
-              imageLoaded: (text, __) => Positioned(
-                right: KPMargins.margin24,
-                child: GestureDetector(
-                  onTap: () {
-                    context
-                        .read<OCRPageBloc>()
-                        .add(OCRPageEventTraverseText(text));
-                  },
-                  child: Container(
-                    width: KPMargins.margin48,
-                    height: KPMargins.margin48,
-                    margin: const EdgeInsets.only(bottom: KPMargins.margin16),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: KPColors.secondaryColor,
-                    ),
-                    child: const Icon(Icons.text_format_rounded,
-                        color: Colors.white),
+              imageLoaded: (text, __) => Transcript(text: text),
+              translationLoaded: (translation, __) => SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(KPMargins.margin8),
+                  child: Text(
+                    translation,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          color: Colors.black,
+                          backgroundColor: Colors.grey.shade100.withOpacity(.8),
+                          fontWeight: FontWeight.normal,
+                        ),
                   ),
                 ),
               ),
+              loading: () => const KPProgressIndicator(),
               orElse: () => const SizedBox(),
             ),
           ],

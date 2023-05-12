@@ -20,8 +20,10 @@ mixin _$OCRPageState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String translation) translationLoaded,
+    required TResult Function(String translation, File? image)
+        translationLoaded,
     required TResult Function(String text, File? image) imageLoaded,
+    required TResult Function(File? image) imageCropped,
     required TResult Function() error,
   }) =>
       throw _privateConstructorUsedError;
@@ -29,8 +31,9 @@ mixin _$OCRPageState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String translation)? translationLoaded,
+    TResult? Function(String translation, File? image)? translationLoaded,
     TResult? Function(String text, File? image)? imageLoaded,
+    TResult? Function(File? image)? imageCropped,
     TResult? Function()? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -38,8 +41,9 @@ mixin _$OCRPageState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String translation)? translationLoaded,
+    TResult Function(String translation, File? image)? translationLoaded,
     TResult Function(String text, File? image)? imageLoaded,
+    TResult Function(File? image)? imageCropped,
     TResult Function()? error,
     required TResult orElse(),
   }) =>
@@ -50,6 +54,7 @@ mixin _$OCRPageState {
     required TResult Function(OCRPageLoading value) loading,
     required TResult Function(OCRPageTranslationLoaded value) translationLoaded,
     required TResult Function(OCRPageImageLoaded value) imageLoaded,
+    required TResult Function(OCRPageImageCropped value) imageCropped,
     required TResult Function(OCRPageError value) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -59,6 +64,7 @@ mixin _$OCRPageState {
     TResult? Function(OCRPageLoading value)? loading,
     TResult? Function(OCRPageTranslationLoaded value)? translationLoaded,
     TResult? Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult? Function(OCRPageImageCropped value)? imageCropped,
     TResult? Function(OCRPageError value)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -68,6 +74,7 @@ mixin _$OCRPageState {
     TResult Function(OCRPageLoading value)? loading,
     TResult Function(OCRPageTranslationLoaded value)? translationLoaded,
     TResult Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult Function(OCRPageImageCropped value)? imageCropped,
     TResult Function(OCRPageError value)? error,
     required TResult orElse(),
   }) =>
@@ -132,8 +139,10 @@ class _$OCRPageInitial implements OCRPageInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String translation) translationLoaded,
+    required TResult Function(String translation, File? image)
+        translationLoaded,
     required TResult Function(String text, File? image) imageLoaded,
+    required TResult Function(File? image) imageCropped,
     required TResult Function() error,
   }) {
     return initial();
@@ -144,8 +153,9 @@ class _$OCRPageInitial implements OCRPageInitial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String translation)? translationLoaded,
+    TResult? Function(String translation, File? image)? translationLoaded,
     TResult? Function(String text, File? image)? imageLoaded,
+    TResult? Function(File? image)? imageCropped,
     TResult? Function()? error,
   }) {
     return initial?.call();
@@ -156,8 +166,9 @@ class _$OCRPageInitial implements OCRPageInitial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String translation)? translationLoaded,
+    TResult Function(String translation, File? image)? translationLoaded,
     TResult Function(String text, File? image)? imageLoaded,
+    TResult Function(File? image)? imageCropped,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -174,6 +185,7 @@ class _$OCRPageInitial implements OCRPageInitial {
     required TResult Function(OCRPageLoading value) loading,
     required TResult Function(OCRPageTranslationLoaded value) translationLoaded,
     required TResult Function(OCRPageImageLoaded value) imageLoaded,
+    required TResult Function(OCRPageImageCropped value) imageCropped,
     required TResult Function(OCRPageError value) error,
   }) {
     return initial(this);
@@ -186,6 +198,7 @@ class _$OCRPageInitial implements OCRPageInitial {
     TResult? Function(OCRPageLoading value)? loading,
     TResult? Function(OCRPageTranslationLoaded value)? translationLoaded,
     TResult? Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult? Function(OCRPageImageCropped value)? imageCropped,
     TResult? Function(OCRPageError value)? error,
   }) {
     return initial?.call(this);
@@ -198,6 +211,7 @@ class _$OCRPageInitial implements OCRPageInitial {
     TResult Function(OCRPageLoading value)? loading,
     TResult Function(OCRPageTranslationLoaded value)? translationLoaded,
     TResult Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult Function(OCRPageImageCropped value)? imageCropped,
     TResult Function(OCRPageError value)? error,
     required TResult orElse(),
   }) {
@@ -252,8 +266,10 @@ class _$OCRPageLoading implements OCRPageLoading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String translation) translationLoaded,
+    required TResult Function(String translation, File? image)
+        translationLoaded,
     required TResult Function(String text, File? image) imageLoaded,
+    required TResult Function(File? image) imageCropped,
     required TResult Function() error,
   }) {
     return loading();
@@ -264,8 +280,9 @@ class _$OCRPageLoading implements OCRPageLoading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String translation)? translationLoaded,
+    TResult? Function(String translation, File? image)? translationLoaded,
     TResult? Function(String text, File? image)? imageLoaded,
+    TResult? Function(File? image)? imageCropped,
     TResult? Function()? error,
   }) {
     return loading?.call();
@@ -276,8 +293,9 @@ class _$OCRPageLoading implements OCRPageLoading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String translation)? translationLoaded,
+    TResult Function(String translation, File? image)? translationLoaded,
     TResult Function(String text, File? image)? imageLoaded,
+    TResult Function(File? image)? imageCropped,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -294,6 +312,7 @@ class _$OCRPageLoading implements OCRPageLoading {
     required TResult Function(OCRPageLoading value) loading,
     required TResult Function(OCRPageTranslationLoaded value) translationLoaded,
     required TResult Function(OCRPageImageLoaded value) imageLoaded,
+    required TResult Function(OCRPageImageCropped value) imageCropped,
     required TResult Function(OCRPageError value) error,
   }) {
     return loading(this);
@@ -306,6 +325,7 @@ class _$OCRPageLoading implements OCRPageLoading {
     TResult? Function(OCRPageLoading value)? loading,
     TResult? Function(OCRPageTranslationLoaded value)? translationLoaded,
     TResult? Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult? Function(OCRPageImageCropped value)? imageCropped,
     TResult? Function(OCRPageError value)? error,
   }) {
     return loading?.call(this);
@@ -318,6 +338,7 @@ class _$OCRPageLoading implements OCRPageLoading {
     TResult Function(OCRPageLoading value)? loading,
     TResult Function(OCRPageTranslationLoaded value)? translationLoaded,
     TResult Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult Function(OCRPageImageCropped value)? imageCropped,
     TResult Function(OCRPageError value)? error,
     required TResult orElse(),
   }) {
@@ -338,7 +359,7 @@ abstract class _$$OCRPageTranslationLoadedCopyWith<$Res> {
           $Res Function(_$OCRPageTranslationLoaded) then) =
       __$$OCRPageTranslationLoadedCopyWithImpl<$Res>;
   @useResult
-  $Res call({String translation});
+  $Res call({String translation, File? image});
 }
 
 /// @nodoc
@@ -353,12 +374,17 @@ class __$$OCRPageTranslationLoadedCopyWithImpl<$Res>
   @override
   $Res call({
     Object? translation = null,
+    Object? image = freezed,
   }) {
     return _then(_$OCRPageTranslationLoaded(
       null == translation
           ? _value.translation
           : translation // ignore: cast_nullable_to_non_nullable
               as String,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as File?,
     ));
   }
 }
@@ -366,14 +392,16 @@ class __$$OCRPageTranslationLoadedCopyWithImpl<$Res>
 /// @nodoc
 
 class _$OCRPageTranslationLoaded implements OCRPageTranslationLoaded {
-  const _$OCRPageTranslationLoaded(this.translation);
+  const _$OCRPageTranslationLoaded(this.translation, {this.image});
 
   @override
   final String translation;
+  @override
+  final File? image;
 
   @override
   String toString() {
-    return 'OCRPageState.translationLoaded(translation: $translation)';
+    return 'OCRPageState.translationLoaded(translation: $translation, image: $image)';
   }
 
   @override
@@ -382,11 +410,12 @@ class _$OCRPageTranslationLoaded implements OCRPageTranslationLoaded {
         (other.runtimeType == runtimeType &&
             other is _$OCRPageTranslationLoaded &&
             (identical(other.translation, translation) ||
-                other.translation == translation));
+                other.translation == translation) &&
+            (identical(other.image, image) || other.image == image));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, translation);
+  int get hashCode => Object.hash(runtimeType, translation, image);
 
   @JsonKey(ignore: true)
   @override
@@ -401,11 +430,13 @@ class _$OCRPageTranslationLoaded implements OCRPageTranslationLoaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String translation) translationLoaded,
+    required TResult Function(String translation, File? image)
+        translationLoaded,
     required TResult Function(String text, File? image) imageLoaded,
+    required TResult Function(File? image) imageCropped,
     required TResult Function() error,
   }) {
-    return translationLoaded(translation);
+    return translationLoaded(translation, image);
   }
 
   @override
@@ -413,11 +444,12 @@ class _$OCRPageTranslationLoaded implements OCRPageTranslationLoaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String translation)? translationLoaded,
+    TResult? Function(String translation, File? image)? translationLoaded,
     TResult? Function(String text, File? image)? imageLoaded,
+    TResult? Function(File? image)? imageCropped,
     TResult? Function()? error,
   }) {
-    return translationLoaded?.call(translation);
+    return translationLoaded?.call(translation, image);
   }
 
   @override
@@ -425,13 +457,14 @@ class _$OCRPageTranslationLoaded implements OCRPageTranslationLoaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String translation)? translationLoaded,
+    TResult Function(String translation, File? image)? translationLoaded,
     TResult Function(String text, File? image)? imageLoaded,
+    TResult Function(File? image)? imageCropped,
     TResult Function()? error,
     required TResult orElse(),
   }) {
     if (translationLoaded != null) {
-      return translationLoaded(translation);
+      return translationLoaded(translation, image);
     }
     return orElse();
   }
@@ -443,6 +476,7 @@ class _$OCRPageTranslationLoaded implements OCRPageTranslationLoaded {
     required TResult Function(OCRPageLoading value) loading,
     required TResult Function(OCRPageTranslationLoaded value) translationLoaded,
     required TResult Function(OCRPageImageLoaded value) imageLoaded,
+    required TResult Function(OCRPageImageCropped value) imageCropped,
     required TResult Function(OCRPageError value) error,
   }) {
     return translationLoaded(this);
@@ -455,6 +489,7 @@ class _$OCRPageTranslationLoaded implements OCRPageTranslationLoaded {
     TResult? Function(OCRPageLoading value)? loading,
     TResult? Function(OCRPageTranslationLoaded value)? translationLoaded,
     TResult? Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult? Function(OCRPageImageCropped value)? imageCropped,
     TResult? Function(OCRPageError value)? error,
   }) {
     return translationLoaded?.call(this);
@@ -467,6 +502,7 @@ class _$OCRPageTranslationLoaded implements OCRPageTranslationLoaded {
     TResult Function(OCRPageLoading value)? loading,
     TResult Function(OCRPageTranslationLoaded value)? translationLoaded,
     TResult Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult Function(OCRPageImageCropped value)? imageCropped,
     TResult Function(OCRPageError value)? error,
     required TResult orElse(),
   }) {
@@ -478,10 +514,11 @@ class _$OCRPageTranslationLoaded implements OCRPageTranslationLoaded {
 }
 
 abstract class OCRPageTranslationLoaded implements OCRPageState {
-  const factory OCRPageTranslationLoaded(final String translation) =
-      _$OCRPageTranslationLoaded;
+  const factory OCRPageTranslationLoaded(final String translation,
+      {final File? image}) = _$OCRPageTranslationLoaded;
 
   String get translation;
+  File? get image;
   @JsonKey(ignore: true)
   _$$OCRPageTranslationLoadedCopyWith<_$OCRPageTranslationLoaded>
       get copyWith => throw _privateConstructorUsedError;
@@ -562,8 +599,10 @@ class _$OCRPageImageLoaded implements OCRPageImageLoaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String translation) translationLoaded,
+    required TResult Function(String translation, File? image)
+        translationLoaded,
     required TResult Function(String text, File? image) imageLoaded,
+    required TResult Function(File? image) imageCropped,
     required TResult Function() error,
   }) {
     return imageLoaded(text, image);
@@ -574,8 +613,9 @@ class _$OCRPageImageLoaded implements OCRPageImageLoaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String translation)? translationLoaded,
+    TResult? Function(String translation, File? image)? translationLoaded,
     TResult? Function(String text, File? image)? imageLoaded,
+    TResult? Function(File? image)? imageCropped,
     TResult? Function()? error,
   }) {
     return imageLoaded?.call(text, image);
@@ -586,8 +626,9 @@ class _$OCRPageImageLoaded implements OCRPageImageLoaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String translation)? translationLoaded,
+    TResult Function(String translation, File? image)? translationLoaded,
     TResult Function(String text, File? image)? imageLoaded,
+    TResult Function(File? image)? imageCropped,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -604,6 +645,7 @@ class _$OCRPageImageLoaded implements OCRPageImageLoaded {
     required TResult Function(OCRPageLoading value) loading,
     required TResult Function(OCRPageTranslationLoaded value) translationLoaded,
     required TResult Function(OCRPageImageLoaded value) imageLoaded,
+    required TResult Function(OCRPageImageCropped value) imageCropped,
     required TResult Function(OCRPageError value) error,
   }) {
     return imageLoaded(this);
@@ -616,6 +658,7 @@ class _$OCRPageImageLoaded implements OCRPageImageLoaded {
     TResult? Function(OCRPageLoading value)? loading,
     TResult? Function(OCRPageTranslationLoaded value)? translationLoaded,
     TResult? Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult? Function(OCRPageImageCropped value)? imageCropped,
     TResult? Function(OCRPageError value)? error,
   }) {
     return imageLoaded?.call(this);
@@ -628,6 +671,7 @@ class _$OCRPageImageLoaded implements OCRPageImageLoaded {
     TResult Function(OCRPageLoading value)? loading,
     TResult Function(OCRPageTranslationLoaded value)? translationLoaded,
     TResult Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult Function(OCRPageImageCropped value)? imageCropped,
     TResult Function(OCRPageError value)? error,
     required TResult orElse(),
   }) {
@@ -646,6 +690,165 @@ abstract class OCRPageImageLoaded implements OCRPageState {
   File? get image;
   @JsonKey(ignore: true)
   _$$OCRPageImageLoadedCopyWith<_$OCRPageImageLoaded> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$OCRPageImageCroppedCopyWith<$Res> {
+  factory _$$OCRPageImageCroppedCopyWith(_$OCRPageImageCropped value,
+          $Res Function(_$OCRPageImageCropped) then) =
+      __$$OCRPageImageCroppedCopyWithImpl<$Res>;
+  @useResult
+  $Res call({File? image});
+}
+
+/// @nodoc
+class __$$OCRPageImageCroppedCopyWithImpl<$Res>
+    extends _$OCRPageStateCopyWithImpl<$Res, _$OCRPageImageCropped>
+    implements _$$OCRPageImageCroppedCopyWith<$Res> {
+  __$$OCRPageImageCroppedCopyWithImpl(
+      _$OCRPageImageCropped _value, $Res Function(_$OCRPageImageCropped) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? image = freezed,
+  }) {
+    return _then(_$OCRPageImageCropped(
+      freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as File?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$OCRPageImageCropped implements OCRPageImageCropped {
+  const _$OCRPageImageCropped(this.image);
+
+  @override
+  final File? image;
+
+  @override
+  String toString() {
+    return 'OCRPageState.imageCropped(image: $image)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$OCRPageImageCropped &&
+            (identical(other.image, image) || other.image == image));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, image);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$OCRPageImageCroppedCopyWith<_$OCRPageImageCropped> get copyWith =>
+      __$$OCRPageImageCroppedCopyWithImpl<_$OCRPageImageCropped>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(String translation, File? image)
+        translationLoaded,
+    required TResult Function(String text, File? image) imageLoaded,
+    required TResult Function(File? image) imageCropped,
+    required TResult Function() error,
+  }) {
+    return imageCropped(image);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(String translation, File? image)? translationLoaded,
+    TResult? Function(String text, File? image)? imageLoaded,
+    TResult? Function(File? image)? imageCropped,
+    TResult? Function()? error,
+  }) {
+    return imageCropped?.call(image);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(String translation, File? image)? translationLoaded,
+    TResult Function(String text, File? image)? imageLoaded,
+    TResult Function(File? image)? imageCropped,
+    TResult Function()? error,
+    required TResult orElse(),
+  }) {
+    if (imageCropped != null) {
+      return imageCropped(image);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(OCRPageInitial value) initial,
+    required TResult Function(OCRPageLoading value) loading,
+    required TResult Function(OCRPageTranslationLoaded value) translationLoaded,
+    required TResult Function(OCRPageImageLoaded value) imageLoaded,
+    required TResult Function(OCRPageImageCropped value) imageCropped,
+    required TResult Function(OCRPageError value) error,
+  }) {
+    return imageCropped(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(OCRPageInitial value)? initial,
+    TResult? Function(OCRPageLoading value)? loading,
+    TResult? Function(OCRPageTranslationLoaded value)? translationLoaded,
+    TResult? Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult? Function(OCRPageImageCropped value)? imageCropped,
+    TResult? Function(OCRPageError value)? error,
+  }) {
+    return imageCropped?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(OCRPageInitial value)? initial,
+    TResult Function(OCRPageLoading value)? loading,
+    TResult Function(OCRPageTranslationLoaded value)? translationLoaded,
+    TResult Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult Function(OCRPageImageCropped value)? imageCropped,
+    TResult Function(OCRPageError value)? error,
+    required TResult orElse(),
+  }) {
+    if (imageCropped != null) {
+      return imageCropped(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class OCRPageImageCropped implements OCRPageState {
+  const factory OCRPageImageCropped(final File? image) = _$OCRPageImageCropped;
+
+  File? get image;
+  @JsonKey(ignore: true)
+  _$$OCRPageImageCroppedCopyWith<_$OCRPageImageCropped> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -689,8 +892,10 @@ class _$OCRPageError implements OCRPageError {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String translation) translationLoaded,
+    required TResult Function(String translation, File? image)
+        translationLoaded,
     required TResult Function(String text, File? image) imageLoaded,
+    required TResult Function(File? image) imageCropped,
     required TResult Function() error,
   }) {
     return error();
@@ -701,8 +906,9 @@ class _$OCRPageError implements OCRPageError {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String translation)? translationLoaded,
+    TResult? Function(String translation, File? image)? translationLoaded,
     TResult? Function(String text, File? image)? imageLoaded,
+    TResult? Function(File? image)? imageCropped,
     TResult? Function()? error,
   }) {
     return error?.call();
@@ -713,8 +919,9 @@ class _$OCRPageError implements OCRPageError {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String translation)? translationLoaded,
+    TResult Function(String translation, File? image)? translationLoaded,
     TResult Function(String text, File? image)? imageLoaded,
+    TResult Function(File? image)? imageCropped,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -731,6 +938,7 @@ class _$OCRPageError implements OCRPageError {
     required TResult Function(OCRPageLoading value) loading,
     required TResult Function(OCRPageTranslationLoaded value) translationLoaded,
     required TResult Function(OCRPageImageLoaded value) imageLoaded,
+    required TResult Function(OCRPageImageCropped value) imageCropped,
     required TResult Function(OCRPageError value) error,
   }) {
     return error(this);
@@ -743,6 +951,7 @@ class _$OCRPageError implements OCRPageError {
     TResult? Function(OCRPageLoading value)? loading,
     TResult? Function(OCRPageTranslationLoaded value)? translationLoaded,
     TResult? Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult? Function(OCRPageImageCropped value)? imageCropped,
     TResult? Function(OCRPageError value)? error,
   }) {
     return error?.call(this);
@@ -755,6 +964,7 @@ class _$OCRPageError implements OCRPageError {
     TResult Function(OCRPageLoading value)? loading,
     TResult Function(OCRPageTranslationLoaded value)? translationLoaded,
     TResult Function(OCRPageImageLoaded value)? imageLoaded,
+    TResult Function(OCRPageImageCropped value)? imageCropped,
     TResult Function(OCRPageError value)? error,
     required TResult orElse(),
   }) {

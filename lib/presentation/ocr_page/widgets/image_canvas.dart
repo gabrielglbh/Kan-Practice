@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,43 +13,30 @@ class ImageCanvas extends StatefulWidget {
 }
 
 class _ImageCanvasState extends State<ImageCanvas> {
-  File? _image;
-
   @override
   Widget build(BuildContext context) {
-    return BlocListener<OCRPageBloc, OCRPageState>(
-      listener: (context, state) {
-        setState(() {
-          state.mapOrNull(
-            imageLoaded: (i) {
-              if (i.image != null) _image = i.image;
-            },
-            initial: (i) {
-              _image = null;
-            },
-          );
-        });
+    return BlocBuilder<OCRPageBloc, OCRPageState>(
+      builder: (context, state) {
+        return state.maybeWhen(
+          imageLoaded: (_, image) => _image(image!),
+          translationLoaded: (_, image) => _image(image!),
+          orElse: () => const SizedBox(),
+        );
       },
-      child: _image != null
-          ? ClipRRect(
-              borderRadius: BorderRadius.circular(KPRadius.radius24),
-              child: FutureBuilder<ui.Image>(
-                future: decodeImageFromList(_image!.readAsBytesSync()),
-                builder: (context, snapshot) {
-                  if (snapshot.data == null) return const SizedBox();
-                  bool isHorizontalImage =
-                      snapshot.data!.width > snapshot.data!.height;
-                  return Transform.rotate(
-                    angle: isHorizontalImage ? pi / 2 : 0,
-                    child: Image.file(
-                      File(_image!.path),
-                      fit: BoxFit.contain,
-                    ),
-                  );
-                },
-              ),
-            )
-          : const SizedBox(),
     );
   }
+
+  ClipRRect _image(File image) => ClipRRect(
+        borderRadius: BorderRadius.circular(KPRadius.radius24),
+        child: FutureBuilder<ui.Image>(
+          future: decodeImageFromList(image.readAsBytesSync()),
+          builder: (context, snapshot) {
+            if (snapshot.data == null) return const SizedBox();
+            return Image.file(
+              image,
+              fit: BoxFit.contain,
+            );
+          },
+        ),
+      );
 }

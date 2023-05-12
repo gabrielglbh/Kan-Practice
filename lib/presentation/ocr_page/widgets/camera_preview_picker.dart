@@ -60,7 +60,7 @@ class _CameraPreviewPickerState extends State<CameraPreviewPicker> {
                                   await widget.initializeControllerFuture;
                                   final file =
                                       await widget.camera?.takePicture();
-                                  bloc.add(OCRPageEventLoadImage(file: file));
+                                  bloc.add(OCRPageEventCrop(file: file));
                                 } catch (_) {}
                               },
                               icon: const Icon(
@@ -92,7 +92,7 @@ class _CameraPreviewPickerState extends State<CameraPreviewPicker> {
                               onPressed: () {
                                 context
                                     .read<OCRPageBloc>()
-                                    .add(const OCRPageEventLoadImage());
+                                    .add(const OCRPageEventCrop());
                               },
                               icon: const Icon(
                                 Icons.photo_library_rounded,

@@ -17,9 +17,9 @@ class OCRPageEventTranslate extends OCRPageEvent {
 }
 
 class OCRPageEventLoadImage extends OCRPageEvent {
-  final XFile? file;
+  final File? file;
 
-  const OCRPageEventLoadImage({this.file});
+  const OCRPageEventLoadImage(this.file);
 }
 
 class OCRPageEventShowOriginal extends OCRPageEvent {}
@@ -42,4 +42,10 @@ class OCRPageEventTraverseText extends OCRPageEvent {
 
   @override
   List<Object> get props => [text];
+}
+
+class OCRPageEventCrop extends OCRPageEvent {
+  final XFile? file;
+
+  const OCRPageEventCrop({this.file});
 }

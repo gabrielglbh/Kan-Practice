@@ -19,6 +19,7 @@ class OCRPageBloc extends Bloc<OCRPageEvent, OCRPageState> {
   final IOCRRepository _iocrRepository;
 
   final ImagePicker _imagePicker = ImagePicker();
+  File? _image;
   String _ocrText = '';
   String _ocrTranslatedText = '';
 
@@ -30,13 +31,23 @@ class OCRPageBloc extends Bloc<OCRPageEvent, OCRPageState> {
 
     on<OCRPageEventLoadImage>((event, emit) async {
       emit(const OCRPageState.loading());
+      if (event.file != null) {
+        final inputImage = InputImage.fromFilePath(event.file!.path);
+        _ocrText = await _iocrRepository.recognize(inputImage);
+        _image = event.file;
+        emit(OCRPageState.imageLoaded(_ocrText, image: event.file));
+      } else {
+        emit(const OCRPageState.initial());
+      }
+    });
+
+    on<OCRPageEventCrop>((event, emit) async {
+      emit(const OCRPageState.loading());
       final pickedFile = event.file ??
           await _imagePicker.pickImage(source: ImageSource.gallery);
       if (pickedFile != null) {
         final image = File(pickedFile.path);
-        final inputImage = InputImage.fromFilePath(pickedFile.path);
-        _ocrText = await _iocrRepository.recognize(inputImage);
-        emit(OCRPageState.imageLoaded(_ocrText, image: image));
+        emit(OCRPageState.imageCropped(image));
       } else {
         emit(const OCRPageState.initial());
       }
@@ -46,21 +57,21 @@ class OCRPageBloc extends Bloc<OCRPageEvent, OCRPageState> {
       emit(const OCRPageState.loading());
       _ocrTranslatedText =
           await _translateRepository.translate(_ocrText, event.locale);
-      emit(OCRPageState.translationLoaded(_ocrTranslatedText));
+      emit(OCRPageState.translationLoaded(_ocrTranslatedText, image: _image));
     });
 
     on<OCRPageEventShowOriginal>((event, emit) async {
-      emit(OCRPageState.imageLoaded(_ocrText));
+      emit(OCRPageState.imageLoaded(_ocrText, image: _image));
     });
 
     on<OCRPageEventTraverseText>((event, emit) async {
       _ocrText = event.text.split('\n').reversed.toList().join('\n');
-      emit(OCRPageState.imageLoaded(_ocrText));
+      emit(OCRPageState.imageLoaded(_ocrText, image: _image));
     });
 
     on<OCRPageEventShowUpdateText>((event, emit) async {
       _ocrText = event.text;
-      emit(OCRPageState.imageLoaded(_ocrText));
+      emit(OCRPageState.imageLoaded(_ocrText, image: _image));
     });
   }
 }

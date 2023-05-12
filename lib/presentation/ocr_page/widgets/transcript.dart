@@ -40,7 +40,7 @@ class _TranscriptState extends State<Transcript> {
           maxLines: null,
           style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                 color: Colors.black,
-                backgroundColor: Colors.white70,
+                backgroundColor: Colors.grey.shade100.withOpacity(.8),
                 fontWeight: FontWeight.normal,
                 height: 1.2,
               ),

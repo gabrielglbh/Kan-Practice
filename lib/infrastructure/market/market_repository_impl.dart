@@ -67,7 +67,7 @@ class MarketRepositoryImpl implements IMarketRepository {
 
   @override
   Future<String> downloadFolderFromMarketPlace(
-      String id, String targetLanguage) async {
+      String id, String? targetLanguage) async {
     User? user = _auth.currentUser;
     await user?.reload();
 
@@ -130,29 +130,35 @@ class MarketRepositoryImpl implements IMarketRepository {
         if (wordSnapshot.size > 0) {
           for (var m in wordSnapshot.docs) {
             final word = Word.fromJson(m.data());
-            backUpWords.add(word.copyWithTranslation(
-              meaning: targetLanguage != originLanguage
-                  ? await _translateRepository.translate(
-                      word.meaning,
-                      targetLanguage,
-                      sourceLanguge: originLanguage,
-                    )
-                  : null,
-            ));
+            final updatedWord = targetLanguage == null
+                ? word
+                : word.copyWithTranslation(
+                    meaning: targetLanguage != originLanguage
+                        ? await _translateRepository.translate(
+                            word.meaning,
+                            targetLanguage,
+                            sourceLanguge: originLanguage,
+                          )
+                        : null,
+                  );
+            backUpWords.add(updatedWord);
           }
         }
         if (grammarSnapshot.size > 0) {
           for (var m in grammarSnapshot.docs) {
             final grammar = GrammarPoint.fromJson(m.data());
-            backUpGrammar.add(grammar.copyWithTranslation(
-              definition: targetLanguage != originLanguage
-                  ? await _translateRepository.translate(
-                      grammar.definition,
-                      targetLanguage,
-                      sourceLanguge: originLanguage,
-                    )
-                  : null,
-            ));
+            final updatedGrammar = targetLanguage == null
+                ? grammar
+                : grammar.copyWithTranslation(
+                    definition: targetLanguage != originLanguage
+                        ? await _translateRepository.translate(
+                            grammar.definition,
+                            targetLanguage,
+                            sourceLanguge: originLanguage,
+                          )
+                        : null,
+                  );
+            backUpGrammar.add(updatedGrammar);
           }
         }
         if (listSnapshot.size > 0) {
@@ -200,7 +206,7 @@ class MarketRepositoryImpl implements IMarketRepository {
 
   @override
   Future<String> downloadListFromMarketPlace(
-      String id, String targetLanguage) async {
+      String id, String? targetLanguage) async {
     User? user = _auth.currentUser;
     await user?.reload();
 
@@ -249,15 +255,18 @@ class MarketRepositoryImpl implements IMarketRepository {
         if (wordSnapshot.size > 0) {
           for (int x = 0; x < wordSnapshot.size; x++) {
             final word = Word.fromJson(wordSnapshot.docs[x].data());
-            backUpWords.add(word.copyWithTranslation(
-              meaning: targetLanguage != originLanguage
-                  ? await _translateRepository.translate(
-                      word.meaning,
-                      targetLanguage,
-                      sourceLanguge: originLanguage,
-                    )
-                  : null,
-            ));
+            final updatedWord = targetLanguage == null
+                ? word
+                : word.copyWithTranslation(
+                    meaning: targetLanguage != originLanguage
+                        ? await _translateRepository.translate(
+                            word.meaning,
+                            targetLanguage,
+                            sourceLanguge: originLanguage,
+                          )
+                        : null,
+                  );
+            backUpWords.add(updatedWord);
           }
         }
 
@@ -265,17 +274,18 @@ class MarketRepositoryImpl implements IMarketRepository {
           for (int x = 0; x < grammarSnapshot.size; x++) {
             final grammar =
                 GrammarPoint.fromJson(grammarSnapshot.docs[x].data());
-            backUpGrammar.add(
-              grammar.copyWithTranslation(
-                definition: targetLanguage != originLanguage
-                    ? await _translateRepository.translate(
-                        grammar.definition,
-                        targetLanguage,
-                        sourceLanguge: originLanguage,
-                      )
-                    : null,
-              ),
-            );
+            final updatedGrammar = targetLanguage == null
+                ? grammar
+                : grammar.copyWithTranslation(
+                    definition: targetLanguage != originLanguage
+                        ? await _translateRepository.translate(
+                            grammar.definition,
+                            targetLanguage,
+                            sourceLanguge: originLanguage,
+                          )
+                        : null,
+                  );
+            backUpGrammar.add(updatedGrammar);
           }
         }
 

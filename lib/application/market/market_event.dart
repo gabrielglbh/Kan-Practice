@@ -49,7 +49,7 @@ class MarketEventDownload extends MarketEvent {
   final bool order;
   final String id;
   final bool isFolder;
-  final String language;
+  final String? language;
 
   const MarketEventDownload(
     this.id,

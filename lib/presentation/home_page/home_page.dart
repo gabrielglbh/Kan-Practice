@@ -515,12 +515,26 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             color: Colors.white),
                       )
                     : Icon(DictionaryType.values[index].icon),
-                trailing: const Icon(Icons.arrow_forward),
+                trailing: BlocBuilder<PurchasesBloc, PurchasesState>(
+                  builder: (context, state) {
+                    return state.maybeWhen(
+                      updatedToPro: () => const Icon(Icons.arrow_forward),
+                      orElse: () => const Icon(Icons.local_play_rounded),
+                    );
+                  },
+                ),
                 contentPadding: const EdgeInsets.all(KPMargins.margin8),
                 onTap: () {
                   switch (DictionaryType.values[index]) {
                     case DictionaryType.ocr:
-                      Navigator.of(context).pushNamed(KanPracticePages.ocrPage);
+                      if (context.read<PurchasesBloc>().state
+                          is! PurchasesUpdatedToPro) {
+                        Navigator.of(context)
+                            .pushNamed(KanPracticePages.storePage);
+                      } else {
+                        Navigator.of(context)
+                            .pushNamed(KanPracticePages.ocrPage);
+                      }
                       break;
                     case DictionaryType.convolution:
                       Navigator.of(context).pushNamed(

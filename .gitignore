@@ -11,6 +11,8 @@
 .svn/
 symbols/
 
+assets/environment/
+
 # IntelliJ related
 *.iml
 *.ipr

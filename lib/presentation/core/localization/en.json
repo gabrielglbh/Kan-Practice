@@ -442,5 +442,7 @@
   "pro_context": "New hint process on study modes. ChatGPT will generate a random sentence to put a word in context when you are struggling.",
   "pro_translation_market": "New automatic translation when downloading any list or folder from the Market.",
   "pro_and_more": "And more...",
-  "pro_get_version": "Download"
+  "pro_get_version": "Download",
+  "already_pro": "You already have all the perks for being a PRO user 😊",
+  "upgrade_to_pro": "Upgrade to PRO for only"
 }

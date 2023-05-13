@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
 import 'package:kanpractice/domain/market/market.dart';
+import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
@@ -100,7 +101,7 @@ class MarketListTile extends StatelessWidget {
         Text(list.description, overflow: TextOverflow.ellipsis, maxLines: 5),
         GestureDetector(
           onTap: () {
-            Utils.showProVersion(context);
+            Navigator.of(context).pushNamed(KanPracticePages.storePage);
           },
           child: Padding(
             padding: const EdgeInsets.only(top: KPMargins.margin8),

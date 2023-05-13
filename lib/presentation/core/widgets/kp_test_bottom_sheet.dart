@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
 import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
+import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/core/widgets/blitz/kp_blitz_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/widgets/blitz/kp_number_test_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
@@ -136,7 +136,8 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                       title2: 'pro_translations'.tr(),
                       color: KPColors.midGrey,
                       onTap: () {
-                        Utils.showProVersion(context);
+                        Navigator.of(context)
+                            .pushNamed(KanPracticePages.storePage);
                       },
                     );
                   }

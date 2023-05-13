@@ -25,4 +25,5 @@ class KanPracticePages {
   static const String settingsDailyOptions = "/settingsDailyOptions";
   static const String addGrammarPage = "/addGrammarPage";
   static const String marketPage = "/marketPage";
+  static const String storePage = "/storePage";
 }

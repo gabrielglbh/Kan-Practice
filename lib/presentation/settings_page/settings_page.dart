@@ -6,6 +6,7 @@ import 'package:kanpractice/application/auth/auth_bloc.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
 import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
 import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
+import 'package:kanpractice/application/purchases/purchases_bloc.dart';
 import 'package:kanpractice/application/settings/settings_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
@@ -70,6 +71,22 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           _header("settings_general".tr()),
           const Divider(),
+          ListTile(
+            leading: Icon(Icons.local_play_rounded,
+                color: KPColors.getSecondaryColor(context)),
+            title: Text("pro_version".tr()),
+            trailing: BlocBuilder<PurchasesBloc, PurchasesState>(
+              builder: (context, state) {
+                return state.maybeWhen(
+                  updatedToPro: () => Icon(Icons.check,
+                      color: KPColors.getSecondaryColor(context)),
+                  orElse: () => const SizedBox(),
+                );
+              },
+            ),
+            onTap: () =>
+                Navigator.of(context).pushNamed(KanPracticePages.storePage),
+          ),
           ListTile(
             leading: const Icon(Icons.insert_chart_outlined_rounded,
                 color: Colors.teal),

@@ -8,6 +8,7 @@ import 'package:kanpractice/application/folder_list/folder_bloc.dart';
 import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
 import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
 import 'package:kanpractice/application/lists/lists_bloc.dart';
+import 'package:kanpractice/application/purchases/purchases_bloc.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
@@ -241,20 +242,28 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       },
       icon: const Icon(Icons.shopping_bag_rounded),
     );
-    final proIcon = IconButton(
-      onPressed: () {
-        Utils.showProVersion(context);
+    final proIcon = BlocBuilder<PurchasesBloc, PurchasesState>(
+      builder: (context, state) {
+        return state.maybeWhen(
+          updatedToPro: () => const SizedBox(),
+          loading: () => const SizedBox(),
+          orElse: () => IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(KanPracticePages.storePage);
+            },
+            icon: const Icon(Icons.local_play_rounded),
+          ),
+        );
       },
-      icon: const Icon(Icons.local_play_rounded),
     );
 
-    final List<IconButton> updateWithAppBarIcons =
+    final List<Widget> updateWithAppBarIcons =
         _currentPage == HomeType.dictionary
             ? [updateIcon, proIcon, dictHistory]
             : _currentPage == HomeType.kanlist
                 ? [updateIcon, proIcon, marketIcon]
                 : [updateIcon, proIcon];
-    final List<IconButton> appBarIcons = _currentPage == HomeType.dictionary
+    final List<Widget> appBarIcons = _currentPage == HomeType.dictionary
         ? [proIcon, dictHistory]
         : _currentPage == HomeType.kanlist
             ? [proIcon, marketIcon]

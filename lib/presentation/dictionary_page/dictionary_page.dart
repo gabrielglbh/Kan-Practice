@@ -79,7 +79,7 @@ class _DictionaryPageState extends State<DictionaryPage>
               padding: const EdgeInsets.only(top: KPMargins.margin4),
               child: IconButton(
                 onPressed: () {
-                  Utils.showProVersion(context);
+                  Navigator.of(context).pushNamed(KanPracticePages.storePage);
                 },
                 splashRadius: KPMargins.margin26,
                 icon: ShaderMask(

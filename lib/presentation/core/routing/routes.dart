@@ -26,6 +26,7 @@ import 'package:kanpractice/presentation/statistics_page/statistics_page.dart';
 import 'package:kanpractice/presentation/statistics_page/tab/test_history_tab/test_history_filters.dart';
 import 'package:kanpractice/presentation/statistics_page/tab/test_history_tab/test_history_landscape.dart';
 import 'package:kanpractice/presentation/statistics_page/tab/test_history_tab/test_history_tab.dart';
+import 'package:kanpractice/presentation/store_page/store_page.dart';
 import 'package:kanpractice/presentation/study_modes/listening_page.dart';
 import 'package:kanpractice/presentation/study_modes/reading_page.dart';
 import 'package:kanpractice/presentation/study_modes/recognition_page.dart';
@@ -125,6 +126,10 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case KanPracticePages.marketPage:
       return CupertinoPageRoute(builder: (_) {
         return const MarketPage();
+      });
+    case KanPracticePages.storePage:
+      return CupertinoPageRoute(builder: (_) {
+        return const StorePage();
       });
   }
   return null;

@@ -442,5 +442,7 @@
   "pro_context": "Nuevo proceso de pistas en los modos de estudio. ChatGPT generará una frase aleatoria para poner una palabra en contexto cuando tengas dificultades",
   "pro_translation_market": "Nueva traducción automática al descargar cualquier lista o carpeta del Mercado",
   "pro_and_more": "Y más...",
-  "pro_get_version": "Descargar"
+  "pro_get_version": "Descargar",
+  "already_pro": "Ya tienes todas las ventajas de un usuario PRO 😊",
+  "upgrade_to_pro": "Actualizar a PRO por solo"
 }

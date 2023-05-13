@@ -442,5 +442,7 @@
   "pro_context": "Neuer Hinweisprozess im Lernmodus. ChatGPT generiert einen zufälligen Satz, um ein Wort in den Kontext zu setzen, wenn Sie Probleme haben.",
   "pro_translation_market": "Neue automatische Übersetzung beim Herunterladen einer Liste oder eines Ordners aus dem Market.",
   "pro_and_more": "Und mehr...",
-  "pro_get_version": "Herunterladen"
+  "pro_get_version": "Herunterladen",
+  "already_pro": "Du hast bereits alle Vergünstigungen als PRO-Nutzer 😊",
+  "upgrade_to_pro": "Upgrade auf PRO für nur"
 }

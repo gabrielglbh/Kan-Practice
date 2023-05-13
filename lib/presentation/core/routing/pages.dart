@@ -26,4 +26,6 @@ class KanPracticePages {
   static const String addGrammarPage = "/addGrammarPage";
   static const String marketPage = "/marketPage";
   static const String storePage = "/storePage";
+  static const String translationsTestPage = "/translationsTestPage";
+  static const String ocrPage = "/ocrPage";
 }

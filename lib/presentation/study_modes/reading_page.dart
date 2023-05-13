@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kana_kit/kana_kit.dart';
+import 'package:kanpractice/application/sentence_generator/sentence_generator_bloc.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
@@ -19,6 +20,10 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 import 'package:kanpractice/presentation/study_modes/utils/study_mode_update_handler.dart';
+import 'package:kanpractice/presentation/study_modes/widgets/context_button.dart';
+import 'package:kanpractice/presentation/study_modes/widgets/context_loader.dart';
+import 'package:kanpractice/presentation/study_modes/widgets/context_loading.dart';
+import 'package:kanpractice/presentation/study_modes/widgets/context_widget.dart';
 
 class ReadingStudy extends StatefulWidget {
   final ModeArguments args;
@@ -87,6 +92,11 @@ class _ReadingStudyState extends State<ReadingStudy> {
             _macro++;
             _showPronunciation = false;
           });
+
+          if (!mounted) return;
+          context
+              .read<SentenceGeneratorBloc>()
+              .add(SentenceGeneratorEventReset());
         }
 
         /// If we ended the list, update the statistics to DB and exit
@@ -195,45 +205,21 @@ class _ReadingStudyState extends State<ReadingStudy> {
       child: Column(
         children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               KPListPercentageIndicator(
                   value: (_macro + 1) / _studyList.length),
               KPLearningHeaderAnimation(
                 id: _macro,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    children: [
-                      KPLearningTextBox(
-                        textStyle: Theme.of(context)
-                            .textTheme
-                            .bodyLarge
-                            ?.copyWith(color: KPColors.secondaryColor),
-                        bottom: KPMargins.margin4,
-                        text: _getProperAlphabet(),
-                      ),
-                      KPLearningTextBox(
-                        textStyle: Theme.of(context)
-                            .textTheme
-                            .bodyLarge
-                            ?.copyWith(fontWeight: FontWeight.bold),
-                        text: _getProperPronunciation(),
-                      ),
-                      FittedBox(
-                        child: KPLearningTextBox(
-                          textStyle: Theme.of(context).textTheme.displaySmall,
-                          text: _studyList[_macro].word,
-                        ),
-                      ),
-                      KPLearningTextBox(
-                        textStyle: Theme.of(context).textTheme.bodyLarge,
-                        text: _getProperMeaning(),
-                        top: KPMargins.margin8,
-                      )
-                    ],
-                  ),
+                child: ContextLoader(
+                  word: _studyList[_macro].word,
+                  mode: StudyModes.reading,
+                  loading: _body(null, isLoading: true),
+                  child: _body,
                 ),
               ),
+              if (!_showPronunciation)
+                ContextButton(word: _studyList[_macro].word),
             ],
           ),
           KPValidationButtons(
@@ -242,6 +228,50 @@ class _ReadingStudyState extends State<ReadingStudy> {
             action: (score) async => await _updateUIOnSubmit(score),
             onSubmit: () => setState(() => _showPronunciation = true),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _body(String? sentence, {bool isLoading = false}) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        children: [
+          KPLearningTextBox(
+            textStyle: Theme.of(context)
+                .textTheme
+                .bodyLarge
+                ?.copyWith(color: KPColors.secondaryColor),
+            bottom: KPMargins.margin4,
+            text: _getProperAlphabet(),
+          ),
+          KPLearningTextBox(
+            textStyle: Theme.of(context)
+                .textTheme
+                .bodyLarge
+                ?.copyWith(fontWeight: FontWeight.bold),
+            text: _getProperPronunciation(),
+          ),
+          FittedBox(
+            child: KPLearningTextBox(
+              textStyle: Theme.of(context).textTheme.displaySmall,
+              text: _studyList[_macro].word,
+            ),
+          ),
+          if (isLoading) const ContextLoading(),
+          if (sentence != null)
+            ContextWidget(
+              word: _studyList[_macro].word,
+              showWord: _showPronunciation,
+              sentence: sentence,
+              mode: StudyModes.reading,
+            ),
+          KPLearningTextBox(
+            textStyle: Theme.of(context).textTheme.bodyLarge,
+            text: _getProperMeaning(),
+            top: KPMargins.margin8,
+          )
         ],
       ),
     );

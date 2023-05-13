@@ -71,16 +71,16 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                 loading: () => const SizedBox(),
                 orElse: () => IconButton(
                   onPressed: () {
-                    context
-                        .read<AddToMarketBloc>()
-                        .add(AddToMarketEventOnUpload(
-                          _selectedType,
-                          _listSelection,
-                          _tc.text,
-                          _tcUser.text,
-                          _tcList.text,
-                          _language,
-                        ));
+                    context.read<AddToMarketBloc>().add(
+                          AddToMarketEventOnUpload(
+                            _selectedType,
+                            _listSelection,
+                            _tc.text,
+                            _tcUser.text,
+                            _tcList.text,
+                            _language,
+                          ),
+                        );
                   },
                   icon: const Icon(Icons.check),
                 ),
@@ -88,36 +88,37 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
             },
           )
         ],
-        child: SingleChildScrollView(
-          child: BlocConsumer<AddToMarketBloc, AddToMarketState>(
-            listener: (context, state) {
-              state.mapOrNull(
-                error: (error) {
-                  Utils.getSnackBar(context, error.message);
-                },
-                userRetrieved: (user) {
-                  _tcUser.text = user.name;
-                },
-              );
-            },
-            builder: (context, state) {
-              return state.maybeWhen(
-                loading: () => const KPProgressIndicator(),
-                loaded: () => Center(
-                    child: Column(
-                  children: [
-                    Icon(Icons.check_circle_rounded,
-                        color: KPColors.getSecondaryColor(context),
-                        size: KPSizes.maxHeightValidationCircle),
-                    Padding(
-                      padding: const EdgeInsets.all(KPMargins.margin16),
-                      child: Text("add_to_market_successfully_created".tr(),
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyLarge),
-                    )
-                  ],
-                )),
-                orElse: () => Column(
+        child: BlocConsumer<AddToMarketBloc, AddToMarketState>(
+          listener: (context, state) {
+            state.mapOrNull(
+              error: (error) {
+                Utils.getSnackBar(context, error.message);
+              },
+              userRetrieved: (user) {
+                _tcUser.text = user.name;
+              },
+            );
+          },
+          builder: (context, state) {
+            return state.maybeWhen(
+              loading: () => const Expanded(child: KPProgressIndicator()),
+              loaded: () => Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.check_circle_rounded,
+                      color: KPColors.getSecondaryColor(context),
+                      size: KPSizes.maxHeightValidationCircle),
+                  Padding(
+                    padding: const EdgeInsets.all(KPMargins.margin16),
+                    child: Text("add_to_market_successfully_created".tr(),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyLarge),
+                  )
+                ],
+              )),
+              orElse: () => SingleChildScrollView(
+                child: Column(
                   children: [
                     Padding(
                       padding:
@@ -232,9 +233,9 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                         onEditingComplete: () => _fn.unfocus())
                   ],
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

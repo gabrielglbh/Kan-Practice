@@ -12,7 +12,7 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/domain/stats/stats.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/spec_bottom_sheet.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/stats_header.dart';
-import 'package:kanpractice/presentation/statistics_page/widgets/stats_tappable_info.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_tappable_info.dart';
 
 class TestStats extends StatefulWidget {
   final KanPracticeStats stats;
@@ -94,7 +94,7 @@ class _TestStatsState extends State<TestStats>
         ),
         const Divider(),
         StatsHeader(title: "stats_tests_by_type".tr()),
-        const TappableInfo(),
+        KPTappableInfo(text: "stats_tests_tap_to_specs".tr()),
         _expandedTestCount(context, widget.stats),
         const SizedBox(height: KPMargins.margin32)
       ],
@@ -107,7 +107,7 @@ class _TestStatsState extends State<TestStats>
       listener: (context, state) {
         state.mapOrNull(testRetrieved: (t) {
           SpecBottomSheet.show(
-              context, t.test.name, widget.showGrammar, null, t.data);
+              context, t.test.name, widget.showGrammar, null, t);
         });
       },
       child: BlocListener<SpecificDataBloc, SpecificDataState>(
@@ -126,7 +126,7 @@ class _TestStatsState extends State<TestStats>
           onBarTapped: (model) async {
             if (model.dataPoints?.isNotEmpty == true) {
               final test = Tests.values[model.pointIndex ?? -1];
-              if (test == Tests.numbers) {
+              if (test == Tests.numbers || test == Tests.translation) {
                 context
                     .read<AlterSpecificDataBloc>()
                     .add(AlterSpecificDataEventGatherTest(test: test));
@@ -185,6 +185,12 @@ class _TestStatsState extends State<TestStats>
                 return DataFrame(
                   x: Tests.daily.nameAbbr,
                   y: s.test.dailyTests.toDouble(),
+                  color: KPColors.secondaryColor,
+                );
+              case Tests.translation:
+                return DataFrame(
+                  x: Tests.translation.nameAbbr,
+                  y: s.test.translationTests.toDouble(),
                   color: KPColors.secondaryColor,
                 );
             }

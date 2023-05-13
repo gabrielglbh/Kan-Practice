@@ -79,4 +79,5 @@ dependencies {
     implementation "io.grpc:grpc-okhttp:1.32.2"
     // https://stackoverflow.com/questions/68473542/mediasessioncompattargeting-s-version-31-and-above-requires-that-one-of-flag
     implementation 'androidx.work:work-runtime-ktx:2.7.0'
+    implementation 'com.google.mlkit:text-recognition-japanese:16.0.0-beta5'
 }

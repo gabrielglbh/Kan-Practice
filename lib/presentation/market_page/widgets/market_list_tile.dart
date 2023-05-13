@@ -57,7 +57,7 @@ class MarketListTile extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: KPMargins.margin8),
               child: Text(
-                  "${"created_label".tr()} ${Utils.parseDateMilliseconds(context, list.uploadedToMarket)}",
+                  "${"created_label".tr()} ${Utils.parseDateMilliseconds(list.uploadedToMarket)}",
                   style: Theme.of(context).textTheme.titleSmall),
             ),
           ],

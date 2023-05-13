@@ -185,9 +185,9 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
               tilePadding: const EdgeInsets.all(0),
               title: Text(
                   "${"created_label".tr()} "
-                  "${Utils.parseDateMilliseconds(context, grammarPoint.dateAdded)} • "
+                  "${Utils.parseDateMilliseconds(grammarPoint.dateAdded)} • "
                   "${"last_seen_label".tr()} "
-                  "${Utils.parseDateMilliseconds(context, grammarPoint.dateLastShown)}",
+                  "${Utils.parseDateMilliseconds(grammarPoint.dateLastShown)}",
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium),
               children: [
@@ -218,7 +218,7 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
     }
     if (date != 0) {
       parsedDate =
-          "${"last_seen_label".tr()} ${Utils.parseDateMilliseconds(context, date)}";
+          "${"last_seen_label".tr()} ${Utils.parseDateMilliseconds(date)}";
     }
 
     return Container(

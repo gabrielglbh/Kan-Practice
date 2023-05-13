@@ -38,6 +38,7 @@ TestData _$TestDataFromJson(Map<String, dynamic> json) => TestData(
       categoryTests: json['categoryTests'] as int,
       folderTests: json['folderTests'] as int,
       dailyTests: json['dailyTests'] as int,
+      translationTests: json['translationTests'] as int,
     );
 
 Map<String, dynamic> _$TestDataToJson(TestData instance) => <String, dynamic>{
@@ -65,4 +66,5 @@ Map<String, dynamic> _$TestDataToJson(TestData instance) => <String, dynamic>{
       'categoryTests': instance.categoryTests,
       'folderTests': instance.folderTests,
       'dailyTests': instance.dailyTests,
+      'translationTests': instance.translationTests,
     };

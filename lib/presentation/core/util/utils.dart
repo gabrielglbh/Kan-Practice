@@ -120,9 +120,8 @@ class Utils {
   /// Transforms the current time to milliseconds
   static int getCurrentMilliseconds() => DateTime.now().millisecondsSinceEpoch;
 
-  static Future<String> parseTodayDate(BuildContext context) async {
-    final locale =
-        EasyLocalization.of(context)?.currentLocale?.languageCode ?? "en";
+  static Future<String> parseTodayDate() async {
+    final locale = WidgetsBinding.instance.window.locale.languageCode;
     await initializeDateFormatting(locale, null);
     final today = DateTime.now();
     final formatter = DateFormat.yMd();
@@ -133,12 +132,11 @@ class Utils {
 
   /// Parses the [date] that should be in milliseconds to a [DateTime] object
   /// and applies a parser with the time_ago package
-  static String parseDateMilliseconds(BuildContext context, int date) {
+  static String parseDateMilliseconds(int date) {
     final d = DateTime.fromMillisecondsSinceEpoch(date);
     Duration e = DateTime.now().difference(d);
     return t.format(DateTime.now().subtract(e),
-        locale: (EasyLocalization.of(context)?.currentLocale?.languageCode ??
-            "en"));
+        locale: WidgetsBinding.instance.window.locale.languageCode);
   }
 
   static Future<void> showVersionNotes(

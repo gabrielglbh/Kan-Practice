@@ -54,8 +54,9 @@ abstract class IMarketRepository {
     List<GrammarPoint> grammarPoints,
     String description,
   );
-  Future<String> downloadListFromMarketPlace(String id);
-  Future<String> downloadFolderFromMarketPlace(String id);
+  Future<String> downloadListFromMarketPlace(String id, String targetLanguage);
+  Future<String> downloadFolderFromMarketPlace(
+      String id, String targetLanguage);
   Future<String> removeListFromMarketPlace(String id);
   Future<String> removeFolderFromMarketPlace(String id);
   Future<String> rateList(String id, double rate);

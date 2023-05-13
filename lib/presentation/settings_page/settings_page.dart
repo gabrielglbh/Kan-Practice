@@ -43,7 +43,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          getIt<SettingsBloc>()..add(SettingsLoadingBackUpDate(context)),
+          getIt<SettingsBloc>()..add(SettingsLoadingBackUpDate()),
       child: ListView(
         children: [
           ListTile(
@@ -211,7 +211,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: Text("settings_general_versionNotes".tr()),
                   onTap: () {
                     context.read<BackupBloc>().add(
-                          BackupGetVersion(context, showNotes: true),
+                          const BackupGetVersion(showNotes: true),
                         );
                   },
                 ),
@@ -278,7 +278,7 @@ class _SettingsPageState extends State<SettingsPage> {
               onPressed: () {
                 (bloc ?? context)
                     .read<SettingsBloc>()
-                    .add(SettingsLoadingBackUpDate(context));
+                    .add(SettingsLoadingBackUpDate());
               },
               icon: const Icon(Icons.sync))
           : null,

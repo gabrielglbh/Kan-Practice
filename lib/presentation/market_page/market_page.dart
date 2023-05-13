@@ -180,17 +180,22 @@ class _MarketPageState extends State<MarketPage>
             },
             builder: (context, state) {
               return state.maybeWhen(
-                loading: () => Column(
-                  children: [
-                    const KPProgressIndicator(),
-                    const SizedBox(height: KPMargins.margin16),
-                    Text('can_take_a_while_loading'.tr()),
-                  ],
+                loading: () => Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const KPProgressIndicator(),
+                      const SizedBox(height: KPMargins.margin16),
+                      Text('can_take_a_while_loading'.tr()),
+                    ],
+                  ),
                 ),
-                error: (_) => KPEmptyList(
-                    showTryButton: true,
-                    onRefresh: () => _addLoadingEvent(reset: true),
-                    message: "market_load_failed".tr()),
+                error: (_) => Expanded(
+                  child: KPEmptyList(
+                      showTryButton: true,
+                      onRefresh: () => _addLoadingEvent(reset: true),
+                      message: "market_load_failed".tr()),
+                ),
                 loaded: (lists) => lists.isEmpty
                     ? Expanded(
                         child: KPEmptyList(
@@ -225,6 +230,8 @@ class _MarketPageState extends State<MarketPage>
                                           isFolder,
                                           _currentAppliedFilter,
                                           _currentAppliedOrder,
+                                          WidgetsBinding.instance.window.locale
+                                              .languageCode,
                                         ));
                                   },
                                   onRemove: (listId, isFolder) {

@@ -1,9 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
-class TappableInfo extends StatelessWidget {
-  const TappableInfo({super.key});
+class KPTappableInfo extends StatelessWidget {
+  final String text;
+  const KPTappableInfo({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class TappableInfo extends StatelessWidget {
           ),
           Flexible(
             child: Text(
-              "stats_tests_tap_to_specs".tr(),
+              text,
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ),

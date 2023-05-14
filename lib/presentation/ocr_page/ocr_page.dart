@@ -7,6 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kanpractice/application/ocr_page/ocr_page_bloc.dart';
 import 'package:kanpractice/application/permission_handler/permission_handler_bloc.dart';
+import 'package:kanpractice/application/purchases/purchases_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
@@ -31,6 +32,10 @@ class _OCRPageState extends State<OCRPage> {
 
   @override
   void initState() {
+    if (context.read<PurchasesBloc>().state is! PurchasesUpdatedToPro) {
+      return Navigator.pop(context);
+    }
+
     final bloc = context.read<PermissionHandlerBloc>();
     if (bloc.state is! PermissionHandlerSucceeded) {
       bloc.add(PermissionHandlerEventRequestCamera());

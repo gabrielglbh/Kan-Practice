@@ -25,6 +25,15 @@ class TranslateRepositoryImpl implements ITranslateRepository {
   }
 
   @override
+  Future<void> loadModel() async {
+    final modelManager = OnDeviceTranslatorModelManager();
+    final isModelLoaded = await modelManager
+        .isModelDownloaded(TranslateLanguage.japanese.bcpCode);
+    if (isModelLoaded) return;
+    await modelManager.downloadModel(TranslateLanguage.japanese.bcpCode);
+  }
+
+  @override
   Future<void> close() async {
     await _onDeviceTranslator?.close();
   }

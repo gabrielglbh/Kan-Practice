@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kana_kit/kana_kit.dart';
+import 'package:kanpractice/application/purchases/purchases_bloc.dart';
 import 'package:kanpractice/application/sentence_generator/sentence_generator_bloc.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
@@ -56,6 +57,9 @@ class _ReadingStudyState extends State<ReadingStudy> {
   bool _enableSpacedRepetition(double score) =>
       (!widget.args.isTest && score < 0.5) || (_enableRepOnTest && score < 0.5);
 
+  bool get _isPro =>
+      context.read<PurchasesBloc>().state is PurchasesUpdatedToPro;
+
   @override
   void initState() {
     _enableRepOnTest = getIt<PreferencesService>()
@@ -94,6 +98,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
           });
 
           if (!mounted) return;
+          if (!_isPro) return;
           context
               .read<SentenceGeneratorBloc>()
               .add(SentenceGeneratorEventReset());
@@ -211,15 +216,17 @@ class _ReadingStudyState extends State<ReadingStudy> {
                   value: (_macro + 1) / _studyList.length),
               KPLearningHeaderAnimation(
                 id: _macro,
-                child: ContextLoader(
-                  word: _studyList[_macro].word,
-                  mode: StudyModes.reading,
-                  loading: _body(null, isLoading: true),
-                  child: _body,
-                ),
+                child: _isPro
+                    ? ContextLoader(
+                        word: _studyList[_macro].word,
+                        mode: StudyModes.reading,
+                        loading: _body(null, isLoading: true),
+                        child: _body,
+                      )
+                    : _body(null),
               ),
               if (!_showPronunciation)
-                ContextButton(word: _studyList[_macro].word),
+                ContextButton(word: _studyList[_macro].word, isPro: _isPro),
             ],
           ),
           KPValidationButtons(

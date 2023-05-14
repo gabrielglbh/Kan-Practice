@@ -5,4 +5,5 @@ abstract class ITranslateRepository {
     String sourceLanguge = 'ja',
   });
   Future<void> close();
+  Future<void> loadModel();
 }

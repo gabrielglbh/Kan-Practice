@@ -11,6 +11,10 @@ class TranslateService {
     return await _translateRepository.translate(text, targetLanguage);
   }
 
+  Future<void> loadModel() async {
+    return await _translateRepository.loadModel();
+  }
+
   Future<void> close() async {
     return await _translateRepository.close();
   }

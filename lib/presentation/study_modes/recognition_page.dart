@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/purchases/purchases_bloc.dart';
 import 'package:kanpractice/application/sentence_generator/sentence_generator_bloc.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
@@ -52,6 +53,9 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
   bool _enableSpacedRepetition(double score) =>
       (!widget.args.isTest && score < 0.5) || (_enableRepOnTest && score < 0.5);
 
+  bool get _isPro =>
+      context.read<PurchasesBloc>().state is PurchasesUpdatedToPro;
+
   @override
   void initState() {
     _enableRepOnTest = getIt<PreferencesService>()
@@ -88,7 +92,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
           });
 
           if (!mounted) return;
-
+          if (!_isPro) return;
           context
               .read<SentenceGeneratorBloc>()
               .add(SentenceGeneratorEventReset());
@@ -196,14 +200,17 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
                     value: (_macro + 1) / _studyList.length),
                 KPLearningHeaderAnimation(
                   id: _macro,
-                  child: ContextLoader(
-                    word: _studyList[_macro].word,
-                    mode: StudyModes.recognition,
-                    loading: _body(null, isLoading: true),
-                    child: _body,
-                  ),
+                  child: _isPro
+                      ? ContextLoader(
+                          word: _studyList[_macro].word,
+                          mode: StudyModes.recognition,
+                          loading: _body(null, isLoading: true),
+                          child: _body,
+                        )
+                      : _body(null),
                 ),
-                if (!_showMeaning) ContextButton(word: _studyList[_macro].word),
+                if (!_showMeaning)
+                  ContextButton(word: _studyList[_macro].word, isPro: _isPro),
               ],
             ),
             KPValidationButtons(

@@ -26,6 +26,7 @@ import 'package:kanpractice/application/permission_handler/permission_handler_bl
 import 'package:kanpractice/application/sentence_generator/sentence_generator_bloc.dart';
 import 'package:kanpractice/application/services/messaging_service.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
+import 'package:kanpractice/application/services/translate_service.dart';
 import 'package:kanpractice/application/specific_data/specific_data_bloc.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
 import 'package:kanpractice/injection.dart';
@@ -191,17 +192,24 @@ class _KanPracticeState extends State<KanPractice> {
             getIt<DailyOptionsBloc>().add(DailyOptionsEventLoadData());
           });
         },
-        child: MaterialApp(
-          title: 'KanPractice Pro',
-          locale: context.locale,
-          supportedLocales: context.supportedLocales,
-          localizationsDelegates: context.localizationDelegates,
-          debugShowCheckedModeBanner: false,
-          theme: ThemeManager.instance.currentLightThemeData,
-          darkTheme: ThemeManager.instance.currentDarkThemeData,
-          themeMode: ThemeManager.instance.themeMode,
-          initialRoute: KanPracticePages.homePage,
-          onGenerateRoute: onGenerateRoute,
+        child: BlocListener<PurchasesBloc, PurchasesState>(
+          listener: (context, state) async {
+            if (state is PurchasesUpdatedToPro) {
+              await getIt<TranslateService>().loadModel();
+            }
+          },
+          child: MaterialApp(
+            title: 'KanPractice Pro',
+            locale: context.locale,
+            supportedLocales: context.supportedLocales,
+            localizationsDelegates: context.localizationDelegates,
+            debugShowCheckedModeBanner: false,
+            theme: ThemeManager.instance.currentLightThemeData,
+            darkTheme: ThemeManager.instance.currentDarkThemeData,
+            themeMode: ThemeManager.instance.themeMode,
+            initialRoute: KanPracticePages.homePage,
+            onGenerateRoute: onGenerateRoute,
+          ),
         ),
       ),
     );

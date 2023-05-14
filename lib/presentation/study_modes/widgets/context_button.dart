@@ -2,11 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/sentence_generator/sentence_generator_bloc.dart';
+import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class ContextButton extends StatelessWidget {
   final String word;
-  const ContextButton({super.key, required this.word});
+  final bool isPro;
+  const ContextButton({super.key, required this.word, required this.isPro});
 
   @override
   Widget build(BuildContext context) {
@@ -17,16 +19,25 @@ class ContextButton extends StatelessWidget {
           succeeded: (_, __, ___) => const SizedBox(),
           orElse: () => ElevatedButton(
             onPressed: () {
-              final bloc = context.read<SentenceGeneratorBloc>();
-              bloc.state.mapOrNull(
-                initial: (_) {
-                  bloc.add(SentenceGeneratorEventLoad(words: [word]));
-                },
-                error: (_) {
-                  bloc.add(SentenceGeneratorEventLoad(words: [word]));
-                },
-              );
+              if (isPro) {
+                final bloc = context.read<SentenceGeneratorBloc>();
+                bloc.state.mapOrNull(
+                  initial: (_) {
+                    bloc.add(SentenceGeneratorEventLoad(words: [word]));
+                  },
+                  error: (_) {
+                    bloc.add(SentenceGeneratorEventLoad(words: [word]));
+                  },
+                );
+              } else {
+                Navigator.of(context).pushNamed(KanPracticePages.storePage);
+              }
             },
+            style: isPro
+                ? null
+                : ElevatedButton.styleFrom(
+                    backgroundColor: KPColors.midGrey,
+                  ),
             child: SizedBox(
               height: KPMargins.margin26,
               child: Row(

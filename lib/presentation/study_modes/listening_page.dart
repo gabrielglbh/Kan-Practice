@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/purchases/purchases_bloc.dart';
 import 'package:kanpractice/application/sentence_generator/sentence_generator_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
+import 'package:kanpractice/application/services/text_to_speech_service.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
@@ -50,11 +52,17 @@ class _ListeningStudyState extends State<ListeningStudy> {
   bool _enableSpacedRepetition(double score) =>
       (!widget.args.isTest && score < 0.5) || (_enableRepOnTest && score < 0.5);
 
+  bool get _isPro =>
+      context.read<PurchasesBloc>().state is PurchasesUpdatedToPro;
+
   @override
   void initState() {
     _enableRepOnTest = getIt<PreferencesService>()
         .readData(SharedKeys.enableRepetitionOnTests);
     _studyList.addAll(widget.args.studyList);
+    if (!_isPro) {
+      getIt<TextToSpeechService>().speakWord(_studyList[_macro].pronunciation);
+    }
     context.read<StudyModeBloc>().add(StudyModeEventResetTracking());
     super.initState();
   }
@@ -87,9 +95,14 @@ class _ListeningStudyState extends State<ListeningStudy> {
           });
 
           if (!mounted) return;
-          context
-              .read<SentenceGeneratorBloc>()
-              .add(SentenceGeneratorEventReset());
+          if (_isPro) {
+            context
+                .read<SentenceGeneratorBloc>()
+                .add(SentenceGeneratorEventReset());
+          } else {
+            await getIt<TextToSpeechService>()
+                .speakWord(_studyList[_macro].pronunciation);
+          }
         }
 
         /// If we ended the list, update the statistics to DB and exit
@@ -151,6 +164,21 @@ class _ListeningStudyState extends State<ListeningStudy> {
 
   @override
   Widget build(BuildContext context) {
+    final ttsButton = Visibility(
+      visible: _showWord,
+      child: TTSIconButton(word: _studyList[_macro].pronunciation),
+    );
+    final tts = _isPro
+        ? BlocBuilder<SentenceGeneratorBloc, SentenceGeneratorState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                initial: () => ttsButton,
+                orElse: () => const SizedBox(),
+              );
+            },
+          )
+        : ttsButton;
+
     return KPScaffold(
       onWillPop: () async {
         return StudyModeUpdateHandler.handle(
@@ -165,17 +193,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
           studyMode: widget.args.mode.mode),
       centerTitle: true,
       appBarActions: [
-        BlocBuilder<SentenceGeneratorBloc, SentenceGeneratorState>(
-          builder: (context, state) {
-            return state.maybeWhen(
-              initial: () => Visibility(
-                visible: _showWord,
-                child: TTSIconButton(word: _studyList[_macro].pronunciation),
-              ),
-              orElse: () => const SizedBox(),
-            );
-          },
-        ),
+        tts,
         if (_hasRepetition && widget.args.testMode != Tests.daily)
           IconButton(
             onPressed: () => Utils.showSpatialRepetitionDisclaimer(context),
@@ -191,17 +209,17 @@ class _ListeningStudyState extends State<ListeningStudy> {
                   value: (_macro + 1) / _studyList.length),
               KPLearningHeaderAnimation(
                 id: _macro,
-                child: widget.args.isNumberTest
-                    ? _body(null)
-                    : ContextLoader(
+                child: _isPro
+                    ? ContextLoader(
                         word: _studyList[_macro].word,
                         mode: StudyModes.listening,
                         loading: _body(null, isLoading: true),
                         child: _body,
-                      ),
+                      )
+                    : _body(null),
               ),
               if (!widget.args.isNumberTest && !_showWord)
-                ContextButton(word: _studyList[_macro].word),
+                ContextButton(word: _studyList[_macro].word, isPro: _isPro),
             ],
           ),
           KPValidationButtons(

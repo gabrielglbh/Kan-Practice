@@ -27,7 +27,7 @@
     </queries>
 
     <application
-        android:label="KanPractice Pro"
+        android:label="KanPractice"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

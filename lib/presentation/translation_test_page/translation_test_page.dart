@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/purchases/purchases_bloc.dart';
 import 'package:kanpractice/application/sentence_generator/sentence_generator_bloc.dart';
 import 'package:kanpractice/application/services/text_to_speech_service.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
@@ -41,6 +42,10 @@ class _TranslationTestPageState extends State<TranslationTestPage> {
 
   @override
   void initState() {
+    if (context.read<PurchasesBloc>().state is! PurchasesUpdatedToPro) {
+      return Navigator.pop(context);
+    }
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<SentenceGeneratorBloc>().add(SentenceGeneratorEventLoad(
             hash: _macro,

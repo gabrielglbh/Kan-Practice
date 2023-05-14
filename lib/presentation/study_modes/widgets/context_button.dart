@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/sentence_generator/sentence_generator_bloc.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_pro_icon.dart';
 
 class ContextButton extends StatelessWidget {
   final String word;
@@ -43,10 +44,12 @@ class ContextButton extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(
-                    Icons.psychology_outlined,
-                    color: Colors.white,
-                  ),
+                  isPro
+                      ? const Icon(
+                          Icons.psychology_outlined,
+                          color: Colors.white,
+                        )
+                      : const KPProIcon(color: Colors.white),
                   const SizedBox(width: KPMargins.margin4),
                   Flexible(
                     child: Text("provide_context".tr(),

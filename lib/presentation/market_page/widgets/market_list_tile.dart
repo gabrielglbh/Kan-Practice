@@ -9,6 +9,7 @@ import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_language_flag.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_pro_icon.dart';
 import 'package:kanpractice/presentation/market_page/widgets/market_list_rating.dart';
 
 class MarketListTile extends StatelessWidget {
@@ -133,11 +134,7 @@ class MarketListTile extends StatelessWidget {
                   padding: const EdgeInsets.only(top: KPMargins.margin8),
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.link,
-                        color: Colors.amber.shade800,
-                        size: 18,
-                      ),
+                      const KPProIcon(),
                       const SizedBox(width: KPMargins.margin8),
                       Expanded(
                         child: Text(

@@ -101,8 +101,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 .pushNamed(KanPracticePages.settingsTogglePage),
           ),
           ListTile(
-            leading: const Icon(Icons.calendar_today_rounded,
-                color: KPColors.secondaryColor),
+            leading: const Icon(Icons.calendar_today_rounded),
             title: Text("settings_daily_test_options".tr()),
             onTap: () async {
               await Navigator.of(context)
@@ -141,7 +140,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 AppSettings.openNotificationSettings();
               }),
           ListTile(
-            leading: const Icon(Icons.lightbulb, color: Colors.lime),
+            leading: const Icon(Icons.lightbulb),
             title: Text('settings_toggle_theme'.tr()),
             onTap: () {
               ChangeAppTheme.show(context);

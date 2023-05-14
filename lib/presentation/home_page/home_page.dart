@@ -26,6 +26,7 @@ import 'package:kanpractice/presentation/core/types/home_types.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:kanpractice/presentation/core/types/tab_types.dart';
 import 'package:kanpractice/presentation/core/widgets/kanlists/kp_kanlists.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_pro_icon.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_search_bar.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_test_bottom_sheet.dart';
@@ -205,6 +206,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     }
   }
 
+  bool get _isPro =>
+      context.read<PurchasesBloc>().state is PurchasesUpdatedToPro;
+
   bool _showPendingReview(List<int> toReview) {
     return toReview.isNotEmpty && toReview.any((i) => i > 0);
   }
@@ -227,7 +231,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         await Utils.showVersionNotes(context,
             version: _newVersion, notes: _notes);
       },
-      icon: const Icon(Icons.update_rounded, color: KPColors.secondaryColor),
+      icon: Icon(Icons.update_rounded,
+          color: _isPro ? KPColors.getSecondaryColor(context) : null),
     );
     final marketIcon = IconButton(
       key: market,
@@ -245,7 +250,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             onPressed: () {
               Navigator.of(context).pushNamed(KanPracticePages.storePage);
             },
-            icon: const Icon(Icons.local_play_rounded),
+            icon: const KPProIcon(),
           ),
         );
       },
@@ -515,14 +520,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             color: Colors.white),
                       )
                     : Icon(DictionaryType.values[index].icon),
-                trailing: BlocBuilder<PurchasesBloc, PurchasesState>(
-                  builder: (context, state) {
-                    return state.maybeWhen(
-                      updatedToPro: () => const Icon(Icons.arrow_forward),
-                      orElse: () => const Icon(Icons.local_play_rounded),
-                    );
-                  },
-                ),
+                trailing: DictionaryType.values[index] == DictionaryType.ocr
+                    ? BlocBuilder<PurchasesBloc, PurchasesState>(
+                        builder: (context, state) {
+                          return state.maybeWhen(
+                            updatedToPro: () => const Icon(Icons.arrow_forward),
+                            orElse: () => const KPProIcon(),
+                          );
+                        },
+                      )
+                    : const Icon(Icons.arrow_forward),
                 contentPadding: const EdgeInsets.all(KPMargins.margin8),
                 onTap: () {
                   switch (DictionaryType.values[index]) {

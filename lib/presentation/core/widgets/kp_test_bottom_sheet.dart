@@ -14,6 +14,7 @@ import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_kanlist_category_selection_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/widgets/blitz/daily_test_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_pro_icon.dart';
 import 'package:kanpractice/presentation/home_page/widgets/folder_selection_bottom_sheet.dart';
 import 'package:kanpractice/presentation/home_page/widgets/kanlist_selection_bottom_sheet.dart';
 
@@ -134,7 +135,10 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                       context.read<PurchasesBloc>().state
                           is! PurchasesUpdatedToPro) {
                     return KPButton(
-                      icon: Tests.values[index].icon,
+                      customIcon: const Padding(
+                        padding: EdgeInsets.only(bottom: KPMargins.margin4),
+                        child: KPProIcon(color: Colors.white),
+                      ),
                       title2: Tests.values[index].nameAbbr,
                       color: KPColors.midGrey,
                       onTap: () {

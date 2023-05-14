@@ -28,4 +28,5 @@ class KanPracticePages {
   static const String storePage = "/storePage";
   static const String translationsTestPage = "/translationsTestPage";
   static const String ocrPage = "/ocrPage";
+  static const String accountManagementPage = "/accountManagementPage";
 }

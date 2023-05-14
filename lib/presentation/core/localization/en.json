@@ -78,7 +78,7 @@
   "login_removeAccountDialog_hint": "Password",
   "login_removeAccountDialog_header": "Current Password",
   "login_removeAccountDialog_positive": "Remove",
-  "login_formDisclaimer": "By creating an account or logging in, you gain access to back ups. Back ups will allow you to maintain your current lists and scores across devices. \n\nRead the dialogs prompted when creating, merging or removing a back up for more information on these operations.",
+  "login_formDisclaimer": "By creating an account:\n\n- You can access backups.\n\n- Makes you ellegible for creating and download Market lists and folders.\n\n- Allows you to go PRO.",
   "login_email_hint": "someone@provider.com",
   "login_email_header": "Email",
   "login_password_hint": "••••••••••",
@@ -474,5 +474,6 @@
   "dictionary_convolution": "Drawing",
   "dictionary_convolution_explain": "Draw or type characters on the canvas for an AI model to recognize. The model won't get it right every time, try to draw the characters as best as possible.",
   "dictionary_history_explain": "All words searched in Jisho by scanning or drawing will be listed in this section.",
-  "ocr_choose_opts": "Choose one of these options to upload an image"
+  "ocr_choose_opts": "Choose one of these options to upload an image",
+  "pro_login_disclaimer": "You have to create an account to become PRO"
 }

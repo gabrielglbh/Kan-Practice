@@ -78,7 +78,7 @@
   "login_removeAccountDialog_hint": "Passwort",
   "login_removeAccountDialog_header": "Derzeitiges Passwort",
   "login_removeAccountDialog_positive": "Entfernen",
-  "login_formDisclaimer": "Indem Sie ein Konto erstellen oder sich anmelden, erhalten Sie Zugriff auf Datensicherungen. Mit Datensicherungen können Sie Ihre aktuellen Listen und Punktzahlen geräteübergreifend verwalten. \n\nLesen Sie die Dialogfelder, die beim Erstellen, Zusammenführen oder Entfernen einer Sicherung angezeigt werden, um weitere Informationen zu diesen Vorgängen zu erhalten. ",
+  "login_formDisclaimer": "Durch die Erstellung eines Kontos:\n\n- Sie können auf Backups zugreifen.\n\n- Sie sind berechtigt, Marktlisten und Ordner zu erstellen und herunterzuladen.\n\n- Sie können PRO werden.",
   "login_email_hint": "jemand@email.de",
   "login_email_header": "E-Mail",
   "login_password_hint": "••••••••••",
@@ -474,5 +474,6 @@
   "dictionary_convolution": "Zeichnen",
   "dictionary_convolution_explain": "Zeichnen oder schreiben Sie Zeichen auf die Leinwand, die ein KI-Modell erkennen soll. Das Modell wird es nicht jedes Mal richtig machen, versuchen Sie, die Zeichen so gut wie möglich zu zeichnen",
   "dictionary_history_explain": "Alle Wörter, die in Jisho durch Scannen oder Zeichnen gesucht wurden, werden in diesem Abschnitt aufgelistet",
-  "ocr_choose_opts": "Wählen Sie eine dieser Optionen, um ein Bild hochzuladen"
+  "ocr_choose_opts": "Wählen Sie eine dieser Optionen, um ein Bild hochzuladen",
+  "pro_login_disclaimer": "Sie müssen ein Konto erstellen, um PRO zu werden"
 }

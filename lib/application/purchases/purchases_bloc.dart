@@ -26,6 +26,7 @@ class PurchasesBloc extends Bloc<PurchasesEvent, PurchasesState> {
       }
     });
 
+    // TODO: Verify if user has already purchased PRO
     on<PurchasesEventBuy>((event, emit) async {
       emit(const PurchasesState.loading());
       final res = await _purchasesRepository.buy(event.productId);

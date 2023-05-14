@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:kanpractice/presentation/account_management_page/account_managament_page.dart';
 import 'package:kanpractice/presentation/add_grammar_point_page/add_grammar_point_page.dart';
 import 'package:kanpractice/presentation/add_grammar_point_page/arguments.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
@@ -78,7 +79,9 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       TestResultArguments args = settings.arguments as TestResultArguments;
       return CupertinoPageRoute(builder: (_) => TestResultPage(args: args));
     case KanPracticePages.loginPage:
-      return CupertinoPageRoute(builder: (_) => const LoginPage());
+      String? productId = settings.arguments as String?;
+      return CupertinoPageRoute(
+          builder: (_) => LoginPage(productId: productId));
     case KanPracticePages.backUpPage:
       String args = settings.arguments as String;
       return CupertinoPageRoute(builder: (_) => BackUpPage(uid: args));
@@ -139,6 +142,8 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
           builder: (_) => TranslationTestPage(args: args));
     case KanPracticePages.ocrPage:
       return CupertinoPageRoute(builder: (_) => const OCRPage());
+    case KanPracticePages.accountManagementPage:
+      return CupertinoPageRoute(builder: (_) => const AccountManagementPage());
   }
   return null;
 }

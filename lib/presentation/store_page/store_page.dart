@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/auth/auth_bloc.dart';
 import 'package:kanpractice/application/purchases/purchases_bloc.dart';
+import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
@@ -54,6 +56,14 @@ class _StorePageState extends State<StorePage> {
                 ),
                 child: Column(
                   children: [
+                    BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        return state.maybeWhen(
+                          loaded: (_) => const SizedBox(),
+                          orElse: () => Text('pro_login_disclaimer'.tr()),
+                        );
+                      },
+                    ),
                     Icon(
                       Icons.local_play_rounded,
                       color: KPColors.getSecondaryColor(context),
@@ -61,15 +71,29 @@ class _StorePageState extends State<StorePage> {
                     ),
                     const Divider(),
                     const Expanded(child: StoreCarousel()),
-                    KPButton(
-                      title2:
-                          '${'upgrade_to_pro'.tr()} ${product.priceString} ${product.currencyCode}',
-                      icon: Icons.shopping_cart_checkout_rounded,
-                      color: Colors.amber.shade700,
-                      onTap: () {
-                        context
-                            .read<PurchasesBloc>()
-                            .add(PurchasesEventBuy(product.identifier));
+                    BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        return KPButton(
+                          title2:
+                              '${'upgrade_to_pro'.tr()} ${product.priceString} ${product.currencyCode}',
+                          icon: Icons.shopping_cart_checkout_rounded,
+                          color: Colors.amber.shade700,
+                          onTap: () {
+                            state.maybeWhen(
+                              loaded: (_) {
+                                context
+                                    .read<PurchasesBloc>()
+                                    .add(PurchasesEventBuy(product.identifier));
+                              },
+                              orElse: () {
+                                Navigator.of(context).pushNamed(
+                                  KanPracticePages.loginPage,
+                                  arguments: product.identifier,
+                                );
+                              },
+                            );
+                          },
+                        );
                       },
                     ),
                   ],

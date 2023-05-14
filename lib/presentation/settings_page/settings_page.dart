@@ -69,6 +69,65 @@ class _SettingsPageState extends State<SettingsPage> {
               }
             },
           ),
+          const SizedBox(height: KPMargins.margin12),
+          BlocBuilder<SettingsBloc, SettingsState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                loaded: (date) => _header(
+                  "settings_account_section".tr(),
+                  bloc: context,
+                  subtitle: date,
+                  hasTrailing: true,
+                ),
+                loading: () => _header("settings_account_section".tr(),
+                    bloc: context, hasTrailing: true),
+                orElse: () => const SizedBox(),
+              );
+            },
+          ),
+          const Divider(),
+          BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              return ListTile(
+                leading: const Icon(Icons.whatshot_rounded),
+                title: Text(
+                  state.maybeWhen(
+                    loaded: (_) => "settings_account_label".tr(),
+                    orElse: () => "login_login_title".tr(),
+                  ),
+                ),
+                onTap: () {
+                  state.maybeWhen(
+                    loaded: (_) {
+                      Navigator.of(context)
+                          .pushNamed(KanPracticePages.accountManagementPage);
+                    },
+                    orElse: () {
+                      Navigator.of(context)
+                          .pushNamed(KanPracticePages.loginPage);
+                    },
+                  );
+                },
+              );
+            },
+          ),
+          BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                loaded: (user) => ListTile(
+                  leading: const Icon(Icons.cloud),
+                  title: Text("login_manage_backup_title".tr()),
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                      KanPracticePages.backUpPage,
+                      arguments: user.uid,
+                    );
+                  },
+                ),
+                orElse: () => const SizedBox(),
+              );
+            },
+          ),
           _header("settings_general".tr()),
           const Divider(),
           ListTile(
@@ -144,54 +203,6 @@ class _SettingsPageState extends State<SettingsPage> {
             title: Text('settings_toggle_theme'.tr()),
             onTap: () {
               ChangeAppTheme.show(context);
-            },
-          ),
-          BlocBuilder<SettingsBloc, SettingsState>(
-            builder: (context, state) {
-              return state.maybeWhen(
-                loaded: (date) => _header(
-                  "settings_account_section".tr(),
-                  bloc: context,
-                  subtitle: date,
-                  hasTrailing: true,
-                ),
-                loading: () => _header("settings_account_section".tr(),
-                    bloc: context, hasTrailing: true),
-                orElse: () => const SizedBox(),
-              );
-            },
-          ),
-          const Divider(),
-          BlocBuilder<AuthBloc, AuthState>(
-            builder: (context, state) {
-              return ListTile(
-                  leading: const Icon(Icons.whatshot_rounded),
-                  title: Text(
-                    state.mapOrNull(
-                          loaded: (_) => "settings_account_label".tr(),
-                          initial: (_) => "login_login_title".tr(),
-                        ) ??
-                        "settings_account_label".tr(),
-                  ),
-                  onTap: () => Navigator.of(context)
-                      .pushNamed(KanPracticePages.loginPage));
-            },
-          ),
-          BlocBuilder<AuthBloc, AuthState>(
-            builder: (context, state) {
-              return state.maybeWhen(
-                loaded: (user) => ListTile(
-                  leading: const Icon(Icons.cloud),
-                  title: Text("login_manage_backup_title".tr()),
-                  onTap: () {
-                    Navigator.of(context).pushNamed(
-                      KanPracticePages.backUpPage,
-                      arguments: user.uid,
-                    );
-                  },
-                ),
-                orElse: () => const SizedBox(),
-              );
             },
           ),
           _header("settings_information_section".tr()),

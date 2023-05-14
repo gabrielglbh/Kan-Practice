@@ -7,7 +7,7 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:kanpractice/presentation/store_page/store_carousel.dart';
 
 class StorePage extends StatefulWidget {
   const StorePage({super.key});
@@ -44,7 +44,38 @@ class _StorePageState extends State<StorePage> {
         },
         builder: (context, state) {
           return state.maybeWhen(
-            loaded: (products) => _listOfProducts(products.first),
+            loaded: (products) {
+              final product = products.first;
+              return Padding(
+                padding: const EdgeInsets.only(
+                  bottom: KPMargins.margin16,
+                  right: KPMargins.margin16,
+                  left: KPMargins.margin16,
+                ),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.local_play_rounded,
+                      color: KPColors.getSecondaryColor(context),
+                      size: 100,
+                    ),
+                    const Divider(),
+                    const Expanded(child: StoreCarousel()),
+                    KPButton(
+                      title2:
+                          '${'upgrade_to_pro'.tr()} ${product.priceString} ${product.currencyCode}',
+                      icon: Icons.shopping_cart_checkout_rounded,
+                      color: Colors.amber.shade700,
+                      onTap: () {
+                        context
+                            .read<PurchasesBloc>()
+                            .add(PurchasesEventBuy(product.identifier));
+                      },
+                    ),
+                  ],
+                ),
+              );
+            },
             updatedToPro: () => Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -98,107 +129,6 @@ class _StorePageState extends State<StorePage> {
             orElse: () => const SizedBox(),
           );
         },
-      ),
-    );
-  }
-
-  Widget _listOfProducts(StoreProduct product) {
-    final theme = Theme.of(context)
-        .textTheme
-        .titleLarge
-        ?.copyWith(fontWeight: FontWeight.normal);
-    return Padding(
-      padding: const EdgeInsets.all(KPMargins.margin16),
-      child: Column(
-        children: [
-          Icon(
-            Icons.local_play_rounded,
-            color: KPColors.getSecondaryColor(context),
-            size: KPSizes.maxHeightValidationCircle / 1.5,
-          ),
-          const SizedBox(height: KPMargins.margin24),
-          Expanded(
-            child: Scrollbar(
-              thumbVisibility: true,
-              child: ListView(
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Icon(Icons.travel_explore_rounded, size: 32),
-                      const SizedBox(width: KPMargins.margin12),
-                      Flexible(
-                          child: Text("pro_translation".tr(), style: theme)),
-                    ],
-                  ),
-                  const SizedBox(height: KPMargins.margin12),
-                  const Divider(),
-                  const SizedBox(height: KPMargins.margin12),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ShaderMask(
-                        shaderCallback: (bounds) {
-                          return const LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Colors.blue,
-                                Colors.green,
-                                Colors.yellow,
-                                Colors.red,
-                                Colors.purple
-                              ]).createShader(bounds);
-                        },
-                        child: const Icon(Icons.camera,
-                            color: Colors.white, size: 32),
-                      ),
-                      const SizedBox(width: KPMargins.margin12),
-                      Flexible(child: Text("pro_ocr".tr(), style: theme)),
-                    ],
-                  ),
-                  const SizedBox(height: KPMargins.margin12),
-                  const Divider(),
-                  const SizedBox(height: KPMargins.margin12),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Icon(Icons.psychology_outlined, size: 32),
-                      const SizedBox(width: KPMargins.margin12),
-                      Flexible(child: Text("pro_context".tr(), style: theme)),
-                    ],
-                  ),
-                  const SizedBox(height: KPMargins.margin12),
-                  const Divider(),
-                  const SizedBox(height: KPMargins.margin12),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(Icons.g_translate_rounded,
-                          color: Colors.amber.shade800, size: 32),
-                      const SizedBox(width: KPMargins.margin12),
-                      Flexible(
-                          child: Text("pro_translation_market".tr(),
-                              style: theme)),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: KPMargins.margin24),
-          KPButton(
-            title2:
-                '${'upgrade_to_pro'.tr()} ${product.priceString} ${product.currencyCode}',
-            icon: Icons.shopping_cart_checkout_rounded,
-            color: Colors.amber.shade700,
-            onTap: () {
-              context
-                  .read<PurchasesBloc>()
-                  .add(PurchasesEventBuy(product.identifier));
-            },
-          ),
-        ],
       ),
     );
   }

@@ -314,7 +314,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             }
             return true;
           },
-          appBarTitle: _currentPage.appBarTitle,
+          appBarTitle: _isPro
+              ? Row(
+                  children: [
+                    const KPProIcon(),
+                    const SizedBox(width: KPMargins.margin8),
+                    FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text(_currentPage.appBarTitle),
+                    )
+                  ],
+                )
+              : _currentPage.appBarTitle,
           appBarActions:
               _newVersion.isNotEmpty ? updateWithAppBarIcons : appBarIcons,
           bottomNavigationWidget: HomeBottomNavigation(

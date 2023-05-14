@@ -1,3 +1,3 @@
 abstract class ISentenceGeneratorRepository {
-  Future<String> getRandomSentence(List<String> words);
+  Future<String> getRandomSentence(String uid, List<String> words);
 }

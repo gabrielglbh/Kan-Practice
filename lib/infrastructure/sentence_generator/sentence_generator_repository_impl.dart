@@ -10,9 +10,9 @@ class SentenceGeneratorRepository implements ISentenceGeneratorRepository {
   SentenceGeneratorRepository(this._httpService);
 
   @override
-  Future<String> getRandomSentence(List<String> words) async {
+  Future<String> getRandomSentence(String uid, List<String> words) async {
     try {
-      final response = await _httpService.getOpenAIPrompt(words);
+      final response = await _httpService.getOpenAIPrompt(uid, words);
       if (response.statusCode == 200) {
         return SentenceGeneratorDto.fromJson(
                 json.decode(utf8.decode(response.bodyBytes)))

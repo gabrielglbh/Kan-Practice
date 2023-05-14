@@ -1,13 +1,19 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
+import 'package:kanpractice/domain/auth/i_auth_repository.dart';
 import 'package:kanpractice/domain/purchases/i_purchases_repository.dart';
+import 'package:kanpractice/domain/user/i_user_repository.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 @LazySingleton(as: IPurchasesRepository)
 class PurchasesRepositoryImpl implements IPurchasesRepository {
-  PurchasesRepositoryImpl();
+  final IUserRepository _userRepository;
+  final IAuthRepository _auth;
+
+  PurchasesRepositoryImpl(this._userRepository, this._auth);
 
   @override
   Future<void> setUp() async {
@@ -18,9 +24,13 @@ class PurchasesRepositoryImpl implements IPurchasesRepository {
   @override
   Future<bool> isUserPro() async {
     try {
+      final user = await _userRepository.getUser();
+      if (user == null) return false;
+
       final restoredInfo = await Purchases.restorePurchases();
       if (restoredInfo.entitlements.all['pro_update'] != null) {
-        return restoredInfo.entitlements.all['pro_update']?.isActive ?? false;
+        return user.isPro ||
+            (restoredInfo.entitlements.all['pro_update']?.isActive ?? false);
       } else {
         return false;
       }
@@ -42,16 +52,24 @@ class PurchasesRepositoryImpl implements IPurchasesRepository {
   @override
   Future<String> buy(String productId) async {
     try {
+      final uid = _auth.getUser()?.uid;
+      if (uid == null) return 'User not authorized';
+
       final customerInfo =
           await Purchases.purchaseProduct(productId, type: PurchaseType.inapp);
-      return (customerInfo.entitlements.all['pro_update']?.isActive ?? false)
-          ? ''
-          : 'Dont have access to this entitlement';
+      if (customerInfo.entitlements.all['pro_update']?.isActive ?? false) {
+        return (await _userRepository.updateUserToPro())
+            ? ''
+            : 'Something went wrong updating the plan';
+      }
+      return 'Dont have access to this entitlement';
     } on PlatformException catch (e) {
       final errorCode = PurchasesErrorHelper.getErrorCode(e);
       if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
         return '$errorCode ${e.message}';
       }
+    } on FirebaseException catch (e) {
+      return '${e.code} ${e.message}';
     }
     return '';
   }

@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/domain/backup/i_backup_repository.dart';
 import 'package:kanpractice/presentation/core/types/sign_in_mode.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kanpractice/domain/auth/i_auth_repository.dart';
@@ -8,9 +7,8 @@ import 'package:kanpractice/domain/auth/i_auth_repository.dart';
 @LazySingleton(as: IAuthRepository)
 class AuthRepositoryImpl implements IAuthRepository {
   final FirebaseAuth _auth;
-  final IBackupRepository _backupRepository;
 
-  AuthRepositoryImpl(this._auth, this._backupRepository);
+  AuthRepositoryImpl(this._auth);
 
   @override
   Future<String> changePassword(
@@ -67,7 +65,6 @@ class AuthRepositoryImpl implements IAuthRepository {
         if (reUser != null &&
             reUser.uid == user.uid &&
             reUser.email == user.email) {
-          await _backupRepository.removeBackUp();
           await user.delete();
           return "";
         } else {

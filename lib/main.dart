@@ -38,7 +38,7 @@ import 'presentation/core/routing/routes.dart';
 Future<void> _initSharedPreferences() async {
   final prefs = getIt<PreferencesService>();
   if (prefs.readData(SharedKeys.affectOnPractice) == null) {
-    prefs.saveData(SharedKeys.affectOnPractice, false);
+    prefs.saveData(SharedKeys.affectOnPractice, true);
   }
   if (prefs.readData(SharedKeys.kanListListVisualization) == null) {
     prefs.saveData(SharedKeys.kanListListVisualization, false);
@@ -81,7 +81,7 @@ Future<void> _initSharedPreferences() async {
     prefs.saveData(SharedKeys.grammarPointDailyNotification, true);
   }
   if (prefs.readData(SharedKeys.dailyTestOnControlledPace) == null) {
-    prefs.saveData(SharedKeys.dailyTestOnControlledPace, false);
+    prefs.saveData(SharedKeys.dailyTestOnControlledPace, true);
   }
 
   /// Make the value the same as hasDoneTutorial. If the user has already seen

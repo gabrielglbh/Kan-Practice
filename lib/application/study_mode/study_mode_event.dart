@@ -39,12 +39,13 @@ class StudyModeEventUpdateScoreForTestsAffectingPractice
     extends StudyModeEvent {
   final List<Word> words;
   final StudyModes mode;
+  final bool shouldAffectPractice;
 
   const StudyModeEventUpdateScoreForTestsAffectingPractice(
-      this.words, this.mode);
+      this.words, this.mode, this.shouldAffectPractice);
 
   @override
-  List<Object> get props => [words, mode];
+  List<Object> get props => [words, mode, shouldAffectPractice];
 }
 
 class StudyModeEventGetScore extends StudyModeEvent {

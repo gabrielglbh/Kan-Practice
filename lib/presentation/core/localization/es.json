@@ -440,7 +440,7 @@
   "pro_translation_market": "Ahora las listas o carpetas del Mercado que descargues se traducirán automáticamente a tu idioma local.\n\nAl subir una lista o carpeta al Mercado tendrás que definir el idioma del material para que otros puedan ver en qué idioma están los significados de las palabras y las definiciones gramaticales.",
   "pro_and_more": "Y más...",
   "pro_get_version": "Descargar",
-  "already_pro": "Ya tienes todas las ventajas de un usuario PRO 😊",
+  "already_pro": "Ya tienes todas las ventajas de un usuario PRO",
   "upgrade_to_pro": "Actualizar a PRO por solo",
   "provide_context": "Contexto",
   "test_mode_translation": "Test de Traducción",
@@ -480,5 +480,9 @@
   "buy_error_2": "Producto no disponible",
   "buy_error_3": "Algo ha ocurrido mientras se actualizaba el plan",
   "buy_error_4": "Algo ha ocurrido mientras se verificaba el plan",
-  "store_restore": "Si ya tienes PRO, entonces haz clic en el icono de arriba para restaurar tu estado"
+  "store_restore": "Si ya tienes PRO, entonces haz clic en el icono de arriba para restaurar tu estado",
+  "updated_pro_translation": "Tests de traducción desbloqueados impulsados por ChatGPT y el Kit ML de Google",
+  "updated_pro_ocr": "Reconocimiento de caracteres japoneses desbloqueado a través de la cámara o imágenes con la ayuda del Kit ML de Google",
+  "updated_pro_context": "Pistas desbloqueadas para proporcionar contexto en palabras a través de ChatGPT",
+  "updated_pro_translation_market": "Traducción automática desbloqueada a tu idioma de todas las listas o carpetas en el Mercado"
 }

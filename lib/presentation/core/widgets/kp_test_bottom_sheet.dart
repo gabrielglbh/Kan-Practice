@@ -104,6 +104,47 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
   }
 
   Widget _body({bool hasWords = false}) {
+    final folder = [
+      _testBasedButtons(context, Tests.blitz),
+      _testBasedButtons(context, Tests.time),
+      _testBasedButtons(context, Tests.less),
+      _testBasedButtons(context, Tests.categories),
+      _testBasedButtons(context, Tests.daily, hasWords: hasWords)
+    ];
+    final normal = List.generate(
+      Tests.values.length,
+      (index) {
+        if (Tests.values[index] == Tests.daily) {
+          return _testBasedButtons(
+            context,
+            Tests.daily,
+            hasWords: hasWords,
+          );
+        }
+        if (Tests.values[index] == Tests.translation) {
+          return BlocBuilder<PurchasesBloc, PurchasesState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                updatedToPro: () =>
+                    _testBasedButtons(context, Tests.values[index]),
+                orElse: () => KPButton(
+                  customIcon: const Padding(
+                    padding: EdgeInsets.only(bottom: KPMargins.margin4),
+                    child: KPProIcon(color: Colors.white),
+                  ),
+                  title2: Tests.values[index].nameAbbr,
+                  color: KPColors.midGrey,
+                  onTap: () {
+                    Navigator.of(context).pushNamed(KanPracticePages.storePage);
+                  },
+                ),
+              );
+            },
+          );
+        }
+        return _testBasedButtons(context, Tests.values[index]);
+      },
+    );
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
       child: GridView(
@@ -113,44 +154,7 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
           crossAxisCount: 3,
           childAspectRatio: 1.3,
         ),
-        children: widget.folder != null
-            ? [
-                _testBasedButtons(context, Tests.blitz),
-                _testBasedButtons(context, Tests.time),
-                _testBasedButtons(context, Tests.less),
-                _testBasedButtons(context, Tests.categories),
-                _testBasedButtons(context, Tests.daily, hasWords: hasWords)
-              ]
-            : List.generate(
-                Tests.values.length,
-                (index) {
-                  if (Tests.values[index] == Tests.daily) {
-                    return _testBasedButtons(
-                      context,
-                      Tests.daily,
-                      hasWords: hasWords,
-                    );
-                  }
-                  if (Tests.values[index] == Tests.translation &&
-                      context.read<PurchasesBloc>().state
-                          is! PurchasesUpdatedToPro) {
-                    return KPButton(
-                      customIcon: const Padding(
-                        padding: EdgeInsets.only(bottom: KPMargins.margin4),
-                        child: KPProIcon(color: Colors.white),
-                      ),
-                      title2: Tests.values[index].nameAbbr,
-                      color: KPColors.midGrey,
-                      onTap: () {
-                        Navigator.of(context)
-                            .pushNamed(KanPracticePages.storePage);
-                      },
-                    );
-                  } else {
-                    return _testBasedButtons(context, Tests.values[index]);
-                  }
-                },
-              ),
+        children: widget.folder != null ? folder : normal,
       ),
     );
   }

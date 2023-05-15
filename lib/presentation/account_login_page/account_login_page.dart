@@ -78,31 +78,34 @@ class _LoginPageState extends State<LoginPage> {
           );
         },
       ),
-      child: SingleChildScrollView(
-        child: BlocConsumer<AuthBloc, AuthState>(
-          listener: (context, state) {
-            state.mapOrNull(
-              initial: (i) {
-                if (i.shouldPop) Navigator.of(context).pop();
-              },
-              loaded: (l) {
-                if (widget.productId != null) {
-                  context
-                      .read<PurchasesBloc>()
-                      .add(PurchasesEventBuy(widget.productId!));
-                }
-                Navigator.of(context).pop();
-              },
-            );
-          },
-          builder: (context, state) {
-            return state.maybeWhen(
-              loading: () => const KPProgressIndicator(),
-              initial: (error, __) => _idleState(context, error),
-              orElse: () => const SizedBox(),
-            );
-          },
-        ),
+      child: BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state) {
+          state.mapOrNull(
+            initial: (i) {
+              if (i.shouldPop) Navigator.of(context).pop();
+            },
+            loaded: (l) {
+              if (widget.productId != null) {
+                context
+                    .read<PurchasesBloc>()
+                    .add(PurchasesEventBuy(widget.productId!));
+              } else {
+                context
+                    .read<PurchasesBloc>()
+                    .add(PurchasesEventRestorePurchases());
+              }
+              Navigator.of(context).pop();
+            },
+          );
+        },
+        builder: (context, state) {
+          return state.maybeWhen(
+            loading: () => const KPProgressIndicator(),
+            initial: (error, __) =>
+                SingleChildScrollView(child: _idleState(context, error)),
+            orElse: () => const SizedBox(),
+          );
+        },
       ),
     );
   }

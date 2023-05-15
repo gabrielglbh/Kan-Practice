@@ -72,17 +72,29 @@ class _SettingsPageState extends State<SettingsPage> {
           const SizedBox(height: KPMargins.margin12),
           BlocBuilder<SettingsBloc, SettingsState>(
             builder: (context, state) {
-              return state.maybeWhen(
-                loaded: (date) => _header(
-                  "settings_account_section".tr(),
-                  bloc: context,
-                  subtitle: date,
-                  hasTrailing: true,
-                ),
-                loading: () => _header("settings_account_section".tr(),
-                    bloc: context, hasTrailing: true),
-                orElse: () => const SizedBox(),
-              );
+              return BlocListener<AuthBloc, AuthState>(
+                  listener: (_, state) {
+                    state.mapOrNull(loaded: (l) {
+                      context
+                          .read<SettingsBloc>()
+                          .add(SettingsLoadingBackUpDate());
+                    }, initial: (l) {
+                      context
+                          .read<SettingsBloc>()
+                          .add(SettingsLoadingBackUpDate());
+                    });
+                  },
+                  child: state.maybeWhen(
+                    loaded: (date) => _header(
+                      "settings_account_section".tr(),
+                      bloc: context,
+                      subtitle: date,
+                      hasTrailing: true,
+                    ),
+                    loading: () => _header("settings_account_section".tr(),
+                        bloc: context, hasTrailing: true),
+                    orElse: () => const SizedBox(),
+                  ));
             },
           ),
           const Divider(),

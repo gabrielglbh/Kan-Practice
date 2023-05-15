@@ -9,6 +9,7 @@ import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_markdown.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/store_page/store_carousel.dart';
@@ -143,55 +144,113 @@ class _StorePageState extends State<StorePage> {
                 ),
               );
             },
-            updatedToPro: () => Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.local_play_rounded,
-                    color: KPColors.getSecondaryColor(context),
-                    size: KPSizes.maxHeightValidationCircle / 1.5,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(KPMargins.margin16),
-                    child: Text("already_pro".tr(),
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyLarge),
-                  ),
-                  const SizedBox(height: KPMargins.margin24),
-                  Flexible(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.travel_explore_rounded, size: 32),
-                        const SizedBox(width: KPMargins.margin12),
-                        ShaderMask(
-                          shaderCallback: (bounds) {
-                            return const LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Colors.blue,
-                                  Colors.green,
-                                  Colors.yellow,
-                                  Colors.red,
-                                  Colors.purple
-                                ]).createShader(bounds);
-                          },
-                          child: const Icon(Icons.camera,
-                              color: Colors.white, size: 32),
+            updatedToPro: () {
+              final dash = Padding(
+                padding: const EdgeInsets.only(
+                  top: KPMargins.margin8,
+                  bottom: KPMargins.margin8,
+                  left: KPMargins.margin8,
+                ),
+                child: Text(
+                  '✅',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              );
+              final theme = Theme.of(context).textTheme.bodyLarge;
+              return Padding(
+                padding: const EdgeInsets.only(
+                  bottom: KPMargins.margin16,
+                  right: KPMargins.margin12,
+                  left: KPMargins.margin12,
+                ),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.local_play_rounded,
+                        color: KPColors.getSecondaryColor(context),
+                        size: KPSizes.maxHeightValidationCircle,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(KPMargins.margin16),
+                        child: Text("already_pro".tr(),
+                            textAlign: TextAlign.center, style: theme),
+                      ),
+                      const SizedBox(height: KPMargins.margin24),
+                      Flexible(
+                        child: ListView(
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                dash,
+                                const SizedBox(width: KPMargins.margin8),
+                                Flexible(
+                                    child: KPMarkdown(
+                                  data: "updated_pro_translation"
+                                      .tr()
+                                      .replaceAll('ChatGPT', '**ChatGPT**')
+                                      .replaceAll('ML', '**ML**')
+                                      .replaceAll('Google', '**Google**')
+                                      .replaceAll('Kit', '**Kit**'),
+                                  shrinkWrap: true,
+                                )),
+                              ],
+                            ),
+                            const SizedBox(height: KPMargins.margin12),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                dash,
+                                const SizedBox(width: KPMargins.margin8),
+                                Flexible(
+                                    child: KPMarkdown(
+                                  data: "updated_pro_ocr"
+                                      .tr()
+                                      .replaceAll('ML', '**ML**')
+                                      .replaceAll('Google', '**Google**')
+                                      .replaceAll('Kit', '**Kit**'),
+                                  shrinkWrap: true,
+                                )),
+                              ],
+                            ),
+                            const SizedBox(height: KPMargins.margin12),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                dash,
+                                const SizedBox(width: KPMargins.margin8),
+                                Flexible(
+                                    child: KPMarkdown(
+                                  data: "updated_pro_context"
+                                      .tr()
+                                      .replaceAll('ChatGPT', '**ChatGPT**'),
+                                  shrinkWrap: true,
+                                )),
+                              ],
+                            ),
+                            const SizedBox(height: KPMargins.margin12),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                dash,
+                                const SizedBox(width: KPMargins.margin8),
+                                Flexible(
+                                    child: KPMarkdown(
+                                  data: "updated_pro_translation_market".tr(),
+                                  shrinkWrap: true,
+                                )),
+                              ],
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: KPMargins.margin12),
-                        const Icon(Icons.psychology_outlined, size: 32),
-                        const SizedBox(width: KPMargins.margin12),
-                        Icon(Icons.g_translate_rounded,
-                            color: Colors.amber.shade800, size: 32),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
             orElse: () => const Center(child: KPProgressIndicator()),
           );
         },

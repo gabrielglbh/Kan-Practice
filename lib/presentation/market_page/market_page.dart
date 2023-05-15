@@ -137,6 +137,7 @@ class _MarketPageState extends State<MarketPage>
     return KPScaffold(
       appBarTitle: 'market_place_title'.tr(),
       onWillPop: () async {
+        if (context.read<MarketBloc>().state is MarketLoading) return false;
         if (_searchHasFocus) {
           _searchBarFn.unfocus();
           return false;

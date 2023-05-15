@@ -440,7 +440,7 @@
   "pro_translation_market": "Jetzt werden die Market-Listen oder -Ordner, die du herunterlädst, automatisch in deine Landessprache übersetzt!\n\nWenn du eine Liste oder einen Ordner in den Market hochlädst, musst du die Sprache des Materials definieren, damit andere sehen können, in welcher Sprache die Bedeutungen der Wörter und die Definitionen der Grammatik sind.",
   "pro_and_more": "Und mehr...",
   "pro_get_version": "Herunterladen",
-  "already_pro": "Du hast bereits alle Vergünstigungen als PRO-Nutzer 😊",
+  "already_pro": "Du hast bereits alle Vergünstigungen als PRO-Nutzer",
   "upgrade_to_pro": "Upgrade auf PRO für nur",
   "provide_context": "Context",
   "test_mode_translation": "Übersetzungstest",
@@ -480,5 +480,9 @@
   "buy_error_2": "Produkt nicht verfügbar",
   "buy_error_3": "Beim Aktualisieren des Plans ist etwas schief gegangen",
   "buy_error_4": "Bei der Überprüfung des Plans ist etwas schief gelaufen",
-  "store_restore": "Wenn Sie bereits PRO haben, dann klicken Sie auf das Symbol oben, um Ihren Status wiederherzustellen."
+  "store_restore": "Wenn Sie bereits PRO haben, dann klicken Sie auf das Symbol oben, um Ihren Status wiederherzustellen.",
+  "updated_pro_translation": "Freigeschaltete Übersetzungstests mit ChatGPT und Googles ML-Kit",
+  "updated_pro_ocr": "Erkennung japanischer Zeichen durch Kamera oder Bilder mit Hilfe des ML-Kits von Google freigeschaltet",
+  "updated_pro_context": "Hinweise zur Bereitstellung von Kontext zu Wörtern über ChatGPT freigeschaltet",
+  "updated_pro_translation_market": "Automatische Übersetzung aller Listen oder Ordner im Market in Ihre Sprache freigeschaltet"
 }

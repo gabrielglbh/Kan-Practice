@@ -52,22 +52,19 @@ class _ListeningStudyState extends State<ListeningStudy> {
   bool _enableSpacedRepetition(double score) =>
       (!widget.args.isTest && score < 0.5) || (_enableRepOnTest && score < 0.5);
 
-  bool get _isPro =>
-      context.read<PurchasesBloc>().state is PurchasesUpdatedToPro;
-
   @override
   void initState() {
     _enableRepOnTest = getIt<PreferencesService>()
         .readData(SharedKeys.enableRepetitionOnTests);
     _studyList.addAll(widget.args.studyList);
-    if (!_isPro) {
+    if (context.read<PurchasesBloc>().state is! PurchasesUpdatedToPro) {
       getIt<TextToSpeechService>().speakWord(_studyList[_macro].pronunciation);
     }
     context.read<StudyModeBloc>().add(StudyModeEventResetTracking());
     super.initState();
   }
 
-  Future<void> _updateUIOnSubmit(double score) async {
+  Future<void> _updateUIOnSubmit(double score, bool isPro) async {
     /// If the score is less PARTIAL or WRONG and the Learning Mode is
     /// SPATIAL, the append the current word to the list, to review it again.
     /// Only do this when NOT on test
@@ -95,7 +92,7 @@ class _ListeningStudyState extends State<ListeningStudy> {
           });
 
           if (!mounted) return;
-          if (_isPro) {
+          if (isPro) {
             context
                 .read<SentenceGeneratorBloc>()
                 .add(SentenceGeneratorEventReset());
@@ -168,16 +165,22 @@ class _ListeningStudyState extends State<ListeningStudy> {
       visible: _showWord,
       child: TTSIconButton(word: _studyList[_macro].pronunciation),
     );
-    final tts = _isPro
-        ? BlocBuilder<SentenceGeneratorBloc, SentenceGeneratorState>(
+    final tts = BlocBuilder<PurchasesBloc, PurchasesState>(
+      builder: (context, state) {
+        return state.maybeWhen(
+          updatedToPro: () =>
+              BlocBuilder<SentenceGeneratorBloc, SentenceGeneratorState>(
             builder: (context, state) {
               return state.maybeWhen(
                 initial: () => ttsButton,
                 orElse: () => const SizedBox(),
               );
             },
-          )
-        : ttsButton;
+          ),
+          orElse: () => ttsButton,
+        );
+      },
+    );
 
     return KPScaffold(
       onWillPop: () async {
@@ -200,35 +203,43 @@ class _ListeningStudyState extends State<ListeningStudy> {
             icon: const Icon(Icons.info_outline_rounded),
           )
       ],
-      child: Column(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+      child: BlocBuilder<PurchasesBloc, PurchasesState>(
+        builder: (context, state) {
+          return Column(
             children: [
-              KPListPercentageIndicator(
-                  value: (_macro + 1) / _studyList.length),
-              KPLearningHeaderAnimation(
-                id: _macro,
-                child: _isPro
-                    ? ContextLoader(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  KPListPercentageIndicator(
+                      value: (_macro + 1) / _studyList.length),
+                  KPLearningHeaderAnimation(
+                    id: _macro,
+                    child: state.maybeWhen(
+                      updatedToPro: () => ContextLoader(
                         word: _studyList[_macro].word,
                         mode: StudyModes.listening,
                         loading: _body(null, isLoading: true),
                         child: _body,
-                      )
-                    : _body(null),
+                      ),
+                      orElse: () => _body(null),
+                    ),
+                  ),
+                  if (!widget.args.isNumberTest && !_showWord)
+                    ContextButton(word: _studyList[_macro].word),
+                ],
               ),
-              if (!widget.args.isNumberTest && !_showWord)
-                ContextButton(word: _studyList[_macro].word, isPro: _isPro),
+              KPValidationButtons(
+                trigger: _showWord,
+                submitLabel: "done_button_label".tr(),
+                action: (score) async => await _updateUIOnSubmit(
+                  score,
+                  state is PurchasesUpdatedToPro,
+                ),
+                onSubmit: () => setState(() => _showWord = true),
+              )
             ],
-          ),
-          KPValidationButtons(
-            trigger: _showWord,
-            submitLabel: "done_button_label".tr(),
-            action: (score) async => await _updateUIOnSubmit(score),
-            onSubmit: () => setState(() => _showWord = true),
-          )
-        ],
+          );
+        },
       ),
     );
   }

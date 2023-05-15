@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/add_market_list/add_to_market_bloc.dart';
+import 'package:kanpractice/application/auth/auth_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/add_market_list_page/widgets/language_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/types/market_list_type.dart';
@@ -120,21 +121,31 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
               orElse: () => SingleChildScrollView(
                 child: Column(
                   children: [
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(bottom: KPMargins.margin16),
-                      child: Row(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(right: KPMargins.margin8),
-                            child: Icon(Icons.info_outline_rounded),
+                    BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        return state.maybeWhen(
+                          loaded: (_) => const SizedBox(),
+                          orElse: () => Padding(
+                            padding: const EdgeInsets.only(
+                                bottom: KPMargins.margin16),
+                            child: Row(
+                              children: [
+                                const Padding(
+                                  padding:
+                                      EdgeInsets.only(right: KPMargins.margin8),
+                                  child: Icon(Icons.info_outline_rounded),
+                                ),
+                                Expanded(
+                                    child: Text(
+                                        "add_to_market_needs_registration".tr(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge))
+                              ],
+                            ),
                           ),
-                          Expanded(
-                              child: Text(
-                                  "add_to_market_needs_registration".tr(),
-                                  style: Theme.of(context).textTheme.bodyLarge))
-                        ],
-                      ),
+                        );
+                      },
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,

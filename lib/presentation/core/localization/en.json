@@ -440,7 +440,7 @@
   "pro_translation_market": "Now the Market lists or folders you download will be automatically translated  to your local language!\n\nWhen uploading a list or a folder to the Market you will have to define the material’s language so others can see in which language are the word’s meanings and grammar’s definitions.",
   "pro_and_more": "And more...",
   "pro_get_version": "Download",
-  "already_pro": "You already have all the perks for being a PRO user 😊",
+  "already_pro": "You already have all the perks for being a PRO user",
   "upgrade_to_pro": "Upgrade to PRO for only",
   "provide_context": "Context",
   "test_mode_translation": "Translation Test",
@@ -480,5 +480,9 @@
   "buy_error_2": "Product not available",
   "buy_error_3": "Something went wrong updating the plan",
   "buy_error_4": "Something went wrong verifying the plan",
-  "store_restore": "If you already have PRO, then click on icon above to restore your status."
+  "store_restore": "If you already have PRO, then click on icon above to restore your status.",
+  "updated_pro_translation": "Unlocked Translation tests powered by ChatGPT and Google's ML Kit",
+  "updated_pro_ocr": "Unlocked japanese characters recognition through camera or images with the help of Google's ML Kit",
+  "updated_pro_context": "Unlocked hints to provide context on words via by ChatGPT",
+  "updated_pro_translation_market": "Unlocked automatic translation to your langauge of all lists or folders in the Market"
 }

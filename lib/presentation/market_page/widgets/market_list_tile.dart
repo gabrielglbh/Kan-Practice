@@ -202,7 +202,7 @@ class MarketListTile extends StatelessWidget {
                           )),
                     );
                   },
-                  orElse: () => const SizedBox(),
+                  orElse: () => const Expanded(child: SizedBox()),
                 );
               },
             ),

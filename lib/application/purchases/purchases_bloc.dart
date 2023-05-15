@@ -19,7 +19,8 @@ class PurchasesBloc extends Bloc<PurchasesEvent, PurchasesState> {
     on<PurchasesEventSetUp>((event, emit) async {
       emit(const PurchasesState.loading());
       await _purchasesRepository.setUp();
-      if (await _purchasesRepository.isUserPro()) {
+      final status = await _purchasesRepository.restorePurchases();
+      if (status.isEmpty) {
         emit(const PurchasesState.updatedToPro());
       } else {
         emit(const PurchasesState.nonPro());
@@ -28,15 +29,20 @@ class PurchasesBloc extends Bloc<PurchasesEvent, PurchasesState> {
 
     on<PurchasesEventBuy>((event, emit) async {
       emit(const PurchasesState.loading());
-      final res = await _purchasesRepository.buy(event.productId);
-      if (res.isEmpty) {
-        if (await _purchasesRepository.isUserPro()) {
-          emit(const PurchasesState.updatedToPro());
-        } else {
-          emit(const PurchasesState.nonPro());
-        }
+      final status = await _purchasesRepository.restorePurchases();
+      if (status.isEmpty) {
+        emit(const PurchasesState.updatedToPro());
       } else {
-        emit(PurchasesState.error(res));
+        final res = await _purchasesRepository.buy(event.productId);
+        if (res.isEmpty) {
+          if (await _purchasesRepository.isUserPro()) {
+            emit(const PurchasesState.updatedToPro());
+          } else {
+            emit(const PurchasesState.nonPro());
+          }
+        } else {
+          emit(PurchasesState.error(res));
+        }
       }
     });
 

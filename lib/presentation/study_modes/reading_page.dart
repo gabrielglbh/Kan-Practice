@@ -57,9 +57,6 @@ class _ReadingStudyState extends State<ReadingStudy> {
   bool _enableSpacedRepetition(double score) =>
       (!widget.args.isTest && score < 0.5) || (_enableRepOnTest && score < 0.5);
 
-  bool get _isPro =>
-      context.read<PurchasesBloc>().state is PurchasesUpdatedToPro;
-
   @override
   void initState() {
     _enableRepOnTest = getIt<PreferencesService>()
@@ -70,7 +67,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
     super.initState();
   }
 
-  Future<void> _updateUIOnSubmit(double score) async {
+  Future<void> _updateUIOnSubmit(double score, bool isPro) async {
     /// If the score is less PARTIAL or WRONG and the Learning Mode is
     /// SPATIAL, the append the current word to the list, to review it again.
     /// Only do this when NOT on test
@@ -98,7 +95,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
           });
 
           if (!mounted) return;
-          if (!_isPro) return;
+          if (!isPro) return;
           context
               .read<SentenceGeneratorBloc>()
               .add(SentenceGeneratorEventReset());
@@ -207,35 +204,43 @@ class _ReadingStudyState extends State<ReadingStudy> {
             icon: const Icon(Icons.info_outline_rounded),
           )
       ],
-      child: Column(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+      child: BlocBuilder<PurchasesBloc, PurchasesState>(
+        builder: (context, state) {
+          return Column(
             children: [
-              KPListPercentageIndicator(
-                  value: (_macro + 1) / _studyList.length),
-              KPLearningHeaderAnimation(
-                id: _macro,
-                child: _isPro
-                    ? ContextLoader(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  KPListPercentageIndicator(
+                      value: (_macro + 1) / _studyList.length),
+                  KPLearningHeaderAnimation(
+                    id: _macro,
+                    child: state.maybeWhen(
+                      updatedToPro: () => ContextLoader(
                         word: _studyList[_macro].word,
                         mode: StudyModes.reading,
                         loading: _body(null, isLoading: true),
                         child: _body,
-                      )
-                    : _body(null),
+                      ),
+                      orElse: () => _body(null),
+                    ),
+                  ),
+                  if (!_showPronunciation)
+                    ContextButton(word: _studyList[_macro].word),
+                ],
               ),
-              if (!_showPronunciation)
-                ContextButton(word: _studyList[_macro].word, isPro: _isPro),
+              KPValidationButtons(
+                trigger: _showPronunciation,
+                submitLabel: "done_button_label".tr(),
+                action: (score) async => await _updateUIOnSubmit(
+                  score,
+                  state is PurchasesUpdatedToPro,
+                ),
+                onSubmit: () => setState(() => _showPronunciation = true),
+              ),
             ],
-          ),
-          KPValidationButtons(
-            trigger: _showPronunciation,
-            submitLabel: "done_button_label".tr(),
-            action: (score) async => await _updateUIOnSubmit(score),
-            onSubmit: () => setState(() => _showPronunciation = true),
-          ),
-        ],
+          );
+        },
       ),
     );
   }

@@ -206,9 +206,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     }
   }
 
-  bool get _isPro =>
-      context.read<PurchasesBloc>().state is PurchasesUpdatedToPro;
-
   bool _showPendingReview(List<int> toReview) {
     return toReview.isNotEmpty && toReview.any((i) => i > 0);
   }
@@ -231,8 +228,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         await Utils.showVersionNotes(context,
             version: _newVersion, notes: _notes);
       },
-      icon: Icon(Icons.update_rounded,
-          color: _isPro ? KPColors.getSecondaryColor(context) : null),
+      icon: BlocBuilder<PurchasesBloc, PurchasesState>(
+        builder: (context, state) {
+          return state.maybeWhen(
+            updatedToPro: () => Icon(Icons.update_rounded,
+                color: KPColors.getSecondaryColor(context)),
+            orElse: () => const Icon(Icons.update_rounded),
+          );
+        },
+      ),
     );
     final marketIcon = IconButton(
       key: market,
@@ -314,8 +318,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             }
             return true;
           },
-          appBarTitle: _isPro
-              ? Row(
+          appBarTitle: BlocBuilder<PurchasesBloc, PurchasesState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                updatedToPro: () => Row(
                   children: [
                     const KPProIcon(),
                     const SizedBox(width: KPMargins.margin8),
@@ -324,8 +330,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       child: Text(_currentPage.appBarTitle),
                     )
                   ],
-                )
-              : _currentPage.appBarTitle,
+                ),
+                orElse: () => FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(_currentPage.appBarTitle),
+                ),
+              );
+            },
+          ),
           appBarActions:
               _newVersion.isNotEmpty ? updateWithAppBarIcons : appBarIcons,
           bottomNavigationWidget: HomeBottomNavigation(

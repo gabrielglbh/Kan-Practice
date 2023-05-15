@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
+import 'package:kanpractice/application/purchases/purchases_bloc.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
@@ -117,6 +118,9 @@ class _AccountManagementPageState extends State<AccountManagementPage> {
         listener: (context, state) {
           state.mapOrNull(
             initial: (_) {
+              context
+                  .read<PurchasesBloc>()
+                  .add(PurchasesEventRestorePurchases());
               Navigator.of(context).pop();
             },
           );

@@ -11,6 +11,8 @@ class PurchasesEventSetUp extends PurchasesEvent {}
 
 class PurchasesEventLoadProducts extends PurchasesEvent {}
 
+class PurchasesEventRestorePurchases extends PurchasesEvent {}
+
 class PurchasesEventDidNotPurchase extends PurchasesEvent {}
 
 class PurchasesEventBuy extends PurchasesEvent {

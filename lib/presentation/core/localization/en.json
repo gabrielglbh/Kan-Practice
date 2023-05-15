@@ -475,5 +475,10 @@
   "dictionary_convolution_explain": "Draw or type characters on the canvas for an AI model to recognize. The model won't get it right every time, try to draw the characters as best as possible.",
   "dictionary_history_explain": "All words searched in Jisho by scanning or drawing will be listed in this section.",
   "ocr_choose_opts": "Choose one of these options to upload an image",
-  "pro_login_disclaimer": "You have to create an account to become PRO"
+  "pro_login_disclaimer": "You have to create an account to become PRO",
+  "buy_error_1": "User not authorized",
+  "buy_error_2": "Product not available",
+  "buy_error_3": "Something went wrong updating the plan",
+  "buy_error_4": "Something went wrong verifying the plan",
+  "store_restore": "If you already have PRO, then click on icon above to restore your status."
 }

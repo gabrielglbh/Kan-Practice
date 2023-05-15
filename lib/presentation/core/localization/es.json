@@ -475,5 +475,10 @@
   "dictionary_convolution_explain": "Dibuja o escribe caracteres en el lienzo para que un modelo de IA los reconozca. El modelo no acertará todas las veces, trata de dibujar los caracteres lo mejor posible",
   "dictionary_history_explain": "Todas las palabras buscadas en Jisho mediante el escáner o el dibujo aparecerán listadas en esta sección",
   "ocr_choose_opts": "Elige una de estas opciones para cargar una imagen",
-  "pro_login_disclaimer": "Tienes que crear una cuenta para ser PRO"
+  "pro_login_disclaimer": "Tienes que crear una cuenta para ser PRO",
+  "buy_error_1": "Usuario no autorizado",
+  "buy_error_2": "Producto no disponible",
+  "buy_error_3": "Algo ha ocurrido mientras se actualizaba el plan",
+  "buy_error_4": "Algo ha ocurrido mientras se verificaba el plan",
+  "store_restore": "Si ya tienes PRO, entonces haz clic en el icono de arriba para restaurar tu estado"
 }

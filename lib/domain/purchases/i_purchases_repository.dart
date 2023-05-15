@@ -7,4 +7,6 @@ abstract class IPurchasesRepository {
   Future<bool> isUserPro();
   Future<List<StoreProduct>> loadProducts();
   Future<String> buy(String productId);
+  Future<LogInResult> logIn(String uid);
+  Future<String> restorePurchases();
 }

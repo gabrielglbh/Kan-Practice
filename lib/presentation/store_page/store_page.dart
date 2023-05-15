@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,10 +39,37 @@ class _StorePageState extends State<StorePage> {
         }
         return Future.value(true);
       },
+      appBarActions: [
+        BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            return state.maybeWhen(
+              loaded: (_) => BlocBuilder<PurchasesBloc, PurchasesState>(
+                builder: (context, state) {
+                  return state.maybeWhen(
+                    updatedToPro: () => const SizedBox(),
+                    orElse: () => IconButton(
+                      onPressed: () {
+                        context
+                            .read<PurchasesBloc>()
+                            .add(PurchasesEventRestorePurchases());
+                      },
+                      icon: const Icon(Icons.restore),
+                    ),
+                  );
+                },
+              ),
+              orElse: () => const SizedBox(),
+            );
+          },
+        )
+      ],
       child: BlocConsumer<PurchasesBloc, PurchasesState>(
         listener: (context, state) {
           state.mapOrNull(error: (e) {
             Utils.getSnackBar(context, e.message);
+            context.read<PurchasesBloc>().add(PurchasesEventLoadProducts());
+          }, nonPro: (_) {
+            //Utils.getSnackBar(context, 'buy_error_3'.tr());
             context.read<PurchasesBloc>().add(PurchasesEventLoadProducts());
           });
         },
@@ -59,7 +88,21 @@ class _StorePageState extends State<StorePage> {
                     BlocBuilder<AuthBloc, AuthState>(
                       builder: (context, state) {
                         return state.maybeWhen(
-                          loaded: (_) => const SizedBox(),
+                          loaded: (_) => Row(
+                            children: [
+                              Expanded(
+                                child: Text('store_restore'.tr()),
+                              ),
+                              const SizedBox(width: KPMargins.margin12),
+                              Transform.rotate(
+                                angle: -90 * (pi / 180),
+                                child: Icon(
+                                  Icons.subdirectory_arrow_right_rounded,
+                                  color: KPColors.getSubtle(context),
+                                ),
+                              ),
+                            ],
+                          ),
                           orElse: () => Text('pro_login_disclaimer'.tr()),
                         );
                       },
@@ -149,8 +192,7 @@ class _StorePageState extends State<StorePage> {
                 ],
               ),
             ),
-            loading: () => const Center(child: KPProgressIndicator()),
-            orElse: () => const SizedBox(),
+            orElse: () => const Center(child: KPProgressIndicator()),
           );
         },
       ),

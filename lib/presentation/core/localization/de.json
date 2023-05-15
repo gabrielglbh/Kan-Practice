@@ -475,5 +475,10 @@
   "dictionary_convolution_explain": "Zeichnen oder schreiben Sie Zeichen auf die Leinwand, die ein KI-Modell erkennen soll. Das Modell wird es nicht jedes Mal richtig machen, versuchen Sie, die Zeichen so gut wie möglich zu zeichnen",
   "dictionary_history_explain": "Alle Wörter, die in Jisho durch Scannen oder Zeichnen gesucht wurden, werden in diesem Abschnitt aufgelistet",
   "ocr_choose_opts": "Wählen Sie eine dieser Optionen, um ein Bild hochzuladen",
-  "pro_login_disclaimer": "Sie müssen ein Konto erstellen, um PRO zu werden"
+  "pro_login_disclaimer": "Sie müssen ein Konto erstellen, um PRO zu werden",
+  "buy_error_1": "Benutzer nicht berechtigt",
+  "buy_error_2": "Produkt nicht verfügbar",
+  "buy_error_3": "Beim Aktualisieren des Plans ist etwas schief gegangen",
+  "buy_error_4": "Bei der Überprüfung des Plans ist etwas schief gelaufen",
+  "store_restore": "Wenn Sie bereits PRO haben, dann klicken Sie auf das Symbol oben, um Ihren Status wiederherzustellen."
 }

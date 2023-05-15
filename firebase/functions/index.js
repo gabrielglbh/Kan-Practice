@@ -43,10 +43,6 @@ exports.getOpenAIPrompt = functions
           .catch((err) => res.status(401).send(err));
     });
 
-exports.createUserInFirestore = functions.auth.user().onCreate(async (user) => {
-  await database.collection("Users").doc(user.uid).set({"isPro": false});
-});
-
 exports.removeBackup = functions.auth.user().onDelete(async (user) => {
   try {
     let writes = 0;

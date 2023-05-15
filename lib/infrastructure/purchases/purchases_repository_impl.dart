@@ -1,36 +1,37 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/auth/i_auth_repository.dart';
 import 'package:kanpractice/domain/purchases/i_purchases_repository.dart';
-import 'package:kanpractice/domain/user/i_user_repository.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 @LazySingleton(as: IPurchasesRepository)
 class PurchasesRepositoryImpl implements IPurchasesRepository {
-  final IUserRepository _userRepository;
   final IAuthRepository _auth;
 
-  PurchasesRepositoryImpl(this._userRepository, this._auth);
+  PurchasesRepositoryImpl(this._auth);
+
+  static const proId = 'pro_update';
 
   @override
   Future<void> setUp() async {
     final config = PurchasesConfiguration(dotenv.env['REVENUE_CAT_API_KEY']!);
+    final uid = _auth.getUser()?.uid;
+    if (uid != null) {
+      config.appUserID = uid;
+    }
     await Purchases.configure(config);
   }
 
   @override
   Future<bool> isUserPro() async {
     try {
-      final user = await _userRepository.getUser();
-      if (user == null) return false;
-
-      final restoredInfo = await Purchases.restorePurchases();
-      if (restoredInfo.entitlements.all['pro_update'] != null) {
-        return user.isPro ||
-            (restoredInfo.entitlements.all['pro_update']?.isActive ?? false);
+      final restoredInfo = await Purchases.getCustomerInfo();
+      if (restoredInfo.entitlements.all[proId] != null) {
+        return (restoredInfo.entitlements.all[proId]?.isActive ?? false);
       } else {
         return false;
       }
@@ -42,8 +43,7 @@ class PurchasesRepositoryImpl implements IPurchasesRepository {
   @override
   Future<List<StoreProduct>> loadProducts() async {
     try {
-      return await Purchases.getProducts(['pro_update'],
-          type: PurchaseType.inapp);
+      return await Purchases.getProducts([proId], type: PurchaseType.inapp);
     } on PlatformException catch (_) {
       return [];
     }
@@ -53,24 +53,47 @@ class PurchasesRepositoryImpl implements IPurchasesRepository {
   Future<String> buy(String productId) async {
     try {
       final uid = _auth.getUser()?.uid;
-      if (uid == null) return 'User not authorized';
+      if (uid == null) return 'buy_error_1'.tr();
+
+      await logIn(uid);
 
       final customerInfo =
           await Purchases.purchaseProduct(productId, type: PurchaseType.inapp);
-      if (customerInfo.entitlements.all['pro_update']?.isActive ?? false) {
-        return (await _userRepository.updateUserToPro())
-            ? ''
-            : 'Something went wrong updating the plan';
-      }
-      return 'Dont have access to this entitlement';
+      return (customerInfo.entitlements.all[proId]?.isActive ?? false)
+          ? ''
+          : 'buy_error_2'.tr();
     } on PlatformException catch (e) {
       final errorCode = PurchasesErrorHelper.getErrorCode(e);
-      if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
-        return '$errorCode ${e.message}';
-      }
+      if (errorCode == PurchasesErrorCode.purchaseCancelledError) return '';
+      return '$errorCode ${e.message}';
     } on FirebaseException catch (e) {
       return '${e.code} ${e.message}';
     }
-    return '';
+  }
+
+  @override
+  Future<LogInResult> logIn(String uid) async {
+    return await Purchases.logIn(uid);
+  }
+
+  @override
+  Future<String> restorePurchases() async {
+    try {
+      final uid = _auth.getUser()?.uid;
+      if (uid == null) return 'buy_error_1'.tr();
+
+      await logIn(uid);
+
+      final restoredInfo = await Purchases.restorePurchases();
+      if (restoredInfo.entitlements.all[proId] != null) {
+        return (restoredInfo.entitlements.all[proId]?.isActive ?? false)
+            ? ''
+            : 'buy_error_2'.tr();
+      } else {
+        return 'buy_error_4'.tr();
+      }
+    } on PlatformException catch (err) {
+      return '${err.code} ${err.message}';
+    }
   }
 }

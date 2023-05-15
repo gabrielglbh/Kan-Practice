@@ -35,7 +35,7 @@ class SentenceGeneratorBloc
 
     on<SentenceGeneratorEventLoad>((event, emit) async {
       emit(const SentenceGeneratorState.loading());
-      final uid = _authRepository.getUser()?.uid;
+      final uid = await _authRepository.getUser()?.getIdToken(true);
       if (uid == null) return emit(const SentenceGeneratorState.error());
 
       final List<Word> bag = [];

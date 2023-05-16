@@ -63,14 +63,14 @@ class DevInfo extends StatelessWidget {
           leading: const Icon(Icons.developer_mode_rounded),
           onTap: () async =>
               await Utils.launch(context, "https://github.com/gabrielglbh"),
-          trailing: const Icon(Icons.link),
+          trailing: const Icon(Icons.open_in_new),
         ),
         ListTile(
           title: Text("developer_info_github_issue".tr()),
           leading: const Icon(Icons.bug_report_outlined),
           onTap: () async => await Utils.launch(context,
               "https://github.com/gabrielglbh/Kan-Practice/issues/new"),
-          trailing: const Icon(Icons.link),
+          trailing: const Icon(Icons.open_in_new),
         ),
         ListTile(
           title: Text("${"developer_info_report".tr()} devgglop@gmail.com"),

@@ -46,11 +46,31 @@ class _SettingsPageState extends State<SettingsPage> {
           getIt<SettingsBloc>()..add(SettingsLoadingBackUpDate()),
       child: ListView(
         children: [
+          BlocConsumer<BackupBloc, BackupState>(
+            listener: (context, state) async {
+              state.mapOrNull(notesRetrieved: (n) async {
+                await Utils.showVersionNotes(context, notes: n.notes);
+              });
+            },
+            builder: (context, state) {
+              return state.maybeWhen(
+                versionRetrieved: (_, __) => const SizedBox(),
+                orElse: () => ListTile(
+                  leading: const Icon(Icons.star, color: Colors.green),
+                  title: Text("settings_general_versionNotes".tr()),
+                  onTap: () {
+                    context.read<BackupBloc>().add(
+                          const BackupGetVersion(showNotes: true),
+                        );
+                  },
+                ),
+              );
+            },
+          ),
           ListTile(
-            leading: const Icon(Icons.local_florist_rounded,
-                color: Colors.orangeAccent),
+            leading: const Icon(Icons.star, color: Colors.orangeAccent),
             title: Text("settings_information_rating".tr()),
-            trailing: const Icon(Icons.link),
+            trailing: const Icon(Icons.open_in_new),
             onTap: () async {
               await Utils.launch(context, "google_play_link".tr());
             },
@@ -58,7 +78,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ListTile(
             leading: const Icon(Icons.device_hub_rounded),
             title: Text("settings_information_contribute".tr()),
-            trailing: const Icon(Icons.link),
+            trailing: const Icon(Icons.open_in_new),
             onTap: () async {
               try {
                 await Utils.launch(
@@ -219,27 +239,6 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           _header("settings_information_section".tr()),
           const Divider(),
-          BlocConsumer<BackupBloc, BackupState>(
-            listener: (context, state) async {
-              state.mapOrNull(notesRetrieved: (n) async {
-                await Utils.showVersionNotes(context, notes: n.notes);
-              });
-            },
-            builder: (context, state) {
-              return state.maybeWhen(
-                versionRetrieved: (_, __) => const SizedBox(),
-                orElse: () => ListTile(
-                  leading: const Icon(Icons.star, color: Colors.green),
-                  title: Text("settings_general_versionNotes".tr()),
-                  onTap: () {
-                    context.read<BackupBloc>().add(
-                          const BackupGetVersion(showNotes: true),
-                        );
-                  },
-                ),
-              );
-            },
-          ),
           ListTile(
               leading: const Icon(Icons.handyman),
               title: Text("settings_information_developer_label".tr()),
@@ -274,7 +273,7 @@ class _SettingsPageState extends State<SettingsPage> {
             child: ListTile(
                 leading: const Icon(Icons.privacy_tip),
                 title: Text("settings_information_terms_label".tr()),
-                trailing: const Icon(Icons.link),
+                trailing: const Icon(Icons.open_in_new),
                 onTap: () async {
                   await Utils.launch(context, "https://kanpractice.web.app");
                 }),

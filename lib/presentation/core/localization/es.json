@@ -432,12 +432,10 @@
   "daily_max_words_limit": "Máximo de palabras al día",
   "daily_max_grammar_limit": "Máximo de puntos gramaticales al día",
   "pro_translations": "Traducción",
-  "pro_update_market_automatic_translation": "Traducción automática disponible en la versión Pro",
   "pro_version": "KanPractice Pro",
   "pro_translation": "Se generarán 20 frases aleatorias en japonés utilizando tu propio vocabulario y ChatGPT para entrenar tu comprensión.\n\nCuando creas que has conseguido la traducción correcta, se mostrará el vocabulario utilizado para generar la frase y una traducción utilizando el ML Kit de Google para validarla.",
   "pro_ocr": "Ahora puedes hacer fotos o seleccionar imágenes de tu galería para reconocer texto japonés en ellas con la ayuda del kit de reconocimiento óptico de caracteres de Google.\n\nPuedes recorrer, editar y seleccionar texto para traducirlo o buscarlo en Jisho para añadirlo a tus listas o traducir directamente todo el texto.",
   "pro_context": "Al realizar pruebas o prácticas de Lectura, Reconocimiento y Comprensión auditiva, se puede proporcionar una pista para ayudar a obtener el contexto sobre la palabra.\n\nLa pista es una frase generada aleatoriamente por ChatGPT que contiene la palabra mostrada.\n\nEsto te ayudará en tu estudio y en tu comprensión lectora.",
-  "pro_translation_market": "Ahora las listas o carpetas del Mercado que descargues se traducirán automáticamente a tu idioma local.\n\nAl subir una lista o carpeta al Mercado tendrás que definir el idioma del material para que otros puedan ver en qué idioma están los significados de las palabras y las definiciones gramaticales.",
   "pro_and_more": "Y más...",
   "pro_get_version": "Descargar",
   "already_pro": "Ya tienes todas las ventajas de un usuario PRO",
@@ -483,6 +481,5 @@
   "store_restore": "Si ya tienes PRO, entonces haz clic en el icono de arriba para restaurar tu estado",
   "updated_pro_translation": "Tests de traducción desbloqueados impulsados por ChatGPT y el Kit ML de Google",
   "updated_pro_ocr": "Reconocimiento de caracteres japoneses desbloqueado a través de la cámara o imágenes con la ayuda del Kit ML de Google",
-  "updated_pro_context": "Pistas desbloqueadas para proporcionar contexto en palabras a través de ChatGPT",
-  "updated_pro_translation_market": "Traducción automática desbloqueada a tu idioma de todas las listas o carpetas en el Mercado"
+  "updated_pro_context": "Pistas desbloqueadas para proporcionar contexto en palabras a través de ChatGPT"
 }

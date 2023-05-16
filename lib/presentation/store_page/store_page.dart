@@ -230,19 +230,6 @@ class _StorePageState extends State<StorePage> {
                                 )),
                               ],
                             ),
-                            const SizedBox(height: KPMargins.margin12),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                dash,
-                                const SizedBox(width: KPMargins.margin8),
-                                Flexible(
-                                    child: KPMarkdown(
-                                  data: "updated_pro_translation_market".tr(),
-                                  shrinkWrap: true,
-                                )),
-                              ],
-                            ),
                           ],
                         ),
                       ),

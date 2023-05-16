@@ -2,14 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
-import 'package:kanpractice/application/purchases/purchases_bloc.dart';
 import 'package:kanpractice/domain/market/market.dart';
-import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_language_flag.dart';
-import 'package:kanpractice/presentation/core/widgets/kp_pro_icon.dart';
 import 'package:kanpractice/presentation/market_page/widgets/market_list_rating.dart';
 
 class MarketListTile extends StatelessWidget {
@@ -101,57 +98,27 @@ class MarketListTile extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(list.description, overflow: TextOverflow.ellipsis, maxLines: 5),
-        BlocBuilder<PurchasesBloc, PurchasesState>(
-          builder: (context, state) {
-            return state.maybeWhen(
-              updatedToPro: () => Padding(
-                padding: const EdgeInsets.only(top: KPMargins.margin8),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.g_translate_rounded,
-                      color: Colors.amber.shade800,
-                      size: 18,
-                    ),
-                    const SizedBox(width: KPMargins.margin8),
-                    Expanded(
-                      child: Text("market_automatic_translation".tr(),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 4,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(fontStyle: FontStyle.italic)),
-                    ),
-                  ],
-                ),
+        Padding(
+          padding: const EdgeInsets.only(top: KPMargins.margin8),
+          child: Row(
+            children: [
+              Icon(
+                Icons.g_translate_rounded,
+                color: Colors.amber.shade800,
+                size: 18,
               ),
-              orElse: () => GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamed(KanPracticePages.storePage);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(top: KPMargins.margin8),
-                  child: Row(
-                    children: [
-                      const KPProIcon(),
-                      const SizedBox(width: KPMargins.margin8),
-                      Expanded(
-                        child: Text(
-                            "pro_update_market_automatic_translation".tr(),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 4,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(fontStyle: FontStyle.italic)),
-                      ),
-                    ],
-                  ),
-                ),
+              const SizedBox(width: KPMargins.margin8),
+              Expanded(
+                child: Text("market_automatic_translation".tr(),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 4,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(fontStyle: FontStyle.italic)),
               ),
-            );
-          },
+            ],
+          ),
         ),
         Padding(
           padding: const EdgeInsets.only(top: KPMargins.margin8),

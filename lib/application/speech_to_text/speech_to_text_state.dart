@@ -6,6 +6,6 @@ class SpeechToTextState with _$SpeechToTextState {
   const factory SpeechToTextState.initial() = SpeechToTextInitial;
   const factory SpeechToTextState.available() = SpeechToTextAvailable;
   const factory SpeechToTextState.error() = SpeechToTextError;
-  const factory SpeechToTextState.providedWords(String recognizedWords) =
+  const factory SpeechToTextState.providedWords(List<String> recognizedWords) =
       SpeechToTextProvidedWords;
 }

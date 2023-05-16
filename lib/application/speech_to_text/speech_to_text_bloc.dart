@@ -18,11 +18,11 @@ class SpeechToTextBloc extends Bloc<SpeechToTextEvent, SpeechToTextState> {
   SpeechToTextBloc(this._repository)
       : super(const SpeechToTextState.initial()) {
     on<SpeechToTextEventSetUp>((event, emit) async {
-      _available = await _repository.initialize();
       if (_available) {
         emit(const SpeechToTextState.available());
       } else {
-        emit(const SpeechToTextState.error());
+        _available = await _repository.setUp();
+        emit(const SpeechToTextState.available());
       }
     });
 
@@ -31,15 +31,8 @@ class SpeechToTextBloc extends Bloc<SpeechToTextEvent, SpeechToTextState> {
         emit(const SpeechToTextState.error());
       } else {
         emit(const SpeechToTextState.listening());
-        await _repository.recognize().listen(
-              onResult: (result) {
-                emit(SpeechToTextState.providedWords(result.recognizedWords));
-              },
-              listenFor: const Duration(seconds: 3),
-              localeId: 'ja',
-            );
-        await _repository.recognize().stop();
-        emit(const SpeechToTextState.initial());
+        final words = await _repository.recognize();
+        emit(SpeechToTextState.providedWords(words));
       }
     });
   }

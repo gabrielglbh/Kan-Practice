@@ -212,28 +212,42 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
               ),
             ],
           ),
-          BlocConsumer<SpeechToTextBloc, SpeechToTextState>(
-            listener: (context, state) {
-              state.mapOrNull(providedWords: (w) {
-                print(w.recognizedWords);
-              }, error: (_) {
-                Utils.getSnackBar(context, 'Could not get STT Service');
-              });
-            },
-            builder: (context, state) {
-              return state.maybeWhen(
-                available: () => KPButton(
-                  title2: 'Tap to STT',
-                  onTap: () {},
-                ),
-                listening: () => Container(
-                  width: 128,
-                  height: 90,
-                  color: Colors.amber,
-                ),
-                orElse: () => const SizedBox(),
-              );
-            },
+          // TODO: WIP
+          SizedBox(
+            height: 180,
+            child: BlocConsumer<SpeechToTextBloc, SpeechToTextState>(
+              listener: (context, state) {
+                state.mapOrNull(providedWords: (w) {
+                  print(w.recognizedWords);
+                  context
+                      .read<SpeechToTextBloc>()
+                      .add(SpeechToTextEventSetUp());
+                }, error: (_) {
+                  Utils.getSnackBar(context, 'Could not get STT Service');
+                  context
+                      .read<SpeechToTextBloc>()
+                      .add(SpeechToTextEventSetUp());
+                });
+              },
+              builder: (context, state) {
+                return state.maybeWhen(
+                  available: () => KPButton(
+                    title2: 'Tap to STT',
+                    onTap: () {
+                      context
+                          .read<SpeechToTextBloc>()
+                          .add(SpeechToTextEventListening());
+                    },
+                  ),
+                  listening: () => Container(
+                    width: 128,
+                    height: 90,
+                    color: Colors.amber,
+                  ),
+                  orElse: () => const SizedBox(),
+                );
+              },
+            ),
           ),
           KPValidationButtons(
             trigger: _showInfo,

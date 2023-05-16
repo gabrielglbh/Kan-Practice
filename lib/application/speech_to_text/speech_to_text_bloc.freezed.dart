@@ -22,7 +22,7 @@ mixin _$SpeechToTextState {
     required TResult Function() initial,
     required TResult Function() available,
     required TResult Function() error,
-    required TResult Function(String recognizedWords) providedWords,
+    required TResult Function(List<String> recognizedWords) providedWords,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -31,7 +31,7 @@ mixin _$SpeechToTextState {
     TResult? Function()? initial,
     TResult? Function()? available,
     TResult? Function()? error,
-    TResult? Function(String recognizedWords)? providedWords,
+    TResult? Function(List<String> recognizedWords)? providedWords,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -40,7 +40,7 @@ mixin _$SpeechToTextState {
     TResult Function()? initial,
     TResult Function()? available,
     TResult Function()? error,
-    TResult Function(String recognizedWords)? providedWords,
+    TResult Function(List<String> recognizedWords)? providedWords,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -134,7 +134,7 @@ class _$SpeechToTextListening implements SpeechToTextListening {
     required TResult Function() initial,
     required TResult Function() available,
     required TResult Function() error,
-    required TResult Function(String recognizedWords) providedWords,
+    required TResult Function(List<String> recognizedWords) providedWords,
   }) {
     return listening();
   }
@@ -146,7 +146,7 @@ class _$SpeechToTextListening implements SpeechToTextListening {
     TResult? Function()? initial,
     TResult? Function()? available,
     TResult? Function()? error,
-    TResult? Function(String recognizedWords)? providedWords,
+    TResult? Function(List<String> recognizedWords)? providedWords,
   }) {
     return listening?.call();
   }
@@ -158,7 +158,7 @@ class _$SpeechToTextListening implements SpeechToTextListening {
     TResult Function()? initial,
     TResult Function()? available,
     TResult Function()? error,
-    TResult Function(String recognizedWords)? providedWords,
+    TResult Function(List<String> recognizedWords)? providedWords,
     required TResult orElse(),
   }) {
     if (listening != null) {
@@ -254,7 +254,7 @@ class _$SpeechToTextInitial implements SpeechToTextInitial {
     required TResult Function() initial,
     required TResult Function() available,
     required TResult Function() error,
-    required TResult Function(String recognizedWords) providedWords,
+    required TResult Function(List<String> recognizedWords) providedWords,
   }) {
     return initial();
   }
@@ -266,7 +266,7 @@ class _$SpeechToTextInitial implements SpeechToTextInitial {
     TResult? Function()? initial,
     TResult? Function()? available,
     TResult? Function()? error,
-    TResult? Function(String recognizedWords)? providedWords,
+    TResult? Function(List<String> recognizedWords)? providedWords,
   }) {
     return initial?.call();
   }
@@ -278,7 +278,7 @@ class _$SpeechToTextInitial implements SpeechToTextInitial {
     TResult Function()? initial,
     TResult Function()? available,
     TResult Function()? error,
-    TResult Function(String recognizedWords)? providedWords,
+    TResult Function(List<String> recognizedWords)? providedWords,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -374,7 +374,7 @@ class _$SpeechToTextAvailable implements SpeechToTextAvailable {
     required TResult Function() initial,
     required TResult Function() available,
     required TResult Function() error,
-    required TResult Function(String recognizedWords) providedWords,
+    required TResult Function(List<String> recognizedWords) providedWords,
   }) {
     return available();
   }
@@ -386,7 +386,7 @@ class _$SpeechToTextAvailable implements SpeechToTextAvailable {
     TResult? Function()? initial,
     TResult? Function()? available,
     TResult? Function()? error,
-    TResult? Function(String recognizedWords)? providedWords,
+    TResult? Function(List<String> recognizedWords)? providedWords,
   }) {
     return available?.call();
   }
@@ -398,7 +398,7 @@ class _$SpeechToTextAvailable implements SpeechToTextAvailable {
     TResult Function()? initial,
     TResult Function()? available,
     TResult Function()? error,
-    TResult Function(String recognizedWords)? providedWords,
+    TResult Function(List<String> recognizedWords)? providedWords,
     required TResult orElse(),
   }) {
     if (available != null) {
@@ -494,7 +494,7 @@ class _$SpeechToTextError implements SpeechToTextError {
     required TResult Function() initial,
     required TResult Function() available,
     required TResult Function() error,
-    required TResult Function(String recognizedWords) providedWords,
+    required TResult Function(List<String> recognizedWords) providedWords,
   }) {
     return error();
   }
@@ -506,7 +506,7 @@ class _$SpeechToTextError implements SpeechToTextError {
     TResult? Function()? initial,
     TResult? Function()? available,
     TResult? Function()? error,
-    TResult? Function(String recognizedWords)? providedWords,
+    TResult? Function(List<String> recognizedWords)? providedWords,
   }) {
     return error?.call();
   }
@@ -518,7 +518,7 @@ class _$SpeechToTextError implements SpeechToTextError {
     TResult Function()? initial,
     TResult Function()? available,
     TResult Function()? error,
-    TResult Function(String recognizedWords)? providedWords,
+    TResult Function(List<String> recognizedWords)? providedWords,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -579,7 +579,7 @@ abstract class _$$SpeechToTextProvidedWordsCopyWith<$Res> {
           $Res Function(_$SpeechToTextProvidedWords) then) =
       __$$SpeechToTextProvidedWordsCopyWithImpl<$Res>;
   @useResult
-  $Res call({String recognizedWords});
+  $Res call({List<String> recognizedWords});
 }
 
 /// @nodoc
@@ -597,9 +597,9 @@ class __$$SpeechToTextProvidedWordsCopyWithImpl<$Res>
   }) {
     return _then(_$SpeechToTextProvidedWords(
       null == recognizedWords
-          ? _value.recognizedWords
+          ? _value._recognizedWords
           : recognizedWords // ignore: cast_nullable_to_non_nullable
-              as String,
+              as List<String>,
     ));
   }
 }
@@ -607,10 +607,16 @@ class __$$SpeechToTextProvidedWordsCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SpeechToTextProvidedWords implements SpeechToTextProvidedWords {
-  const _$SpeechToTextProvidedWords(this.recognizedWords);
+  const _$SpeechToTextProvidedWords(final List<String> recognizedWords)
+      : _recognizedWords = recognizedWords;
 
+  final List<String> _recognizedWords;
   @override
-  final String recognizedWords;
+  List<String> get recognizedWords {
+    if (_recognizedWords is EqualUnmodifiableListView) return _recognizedWords;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_recognizedWords);
+  }
 
   @override
   String toString() {
@@ -622,12 +628,13 @@ class _$SpeechToTextProvidedWords implements SpeechToTextProvidedWords {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SpeechToTextProvidedWords &&
-            (identical(other.recognizedWords, recognizedWords) ||
-                other.recognizedWords == recognizedWords));
+            const DeepCollectionEquality()
+                .equals(other._recognizedWords, _recognizedWords));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, recognizedWords);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_recognizedWords));
 
   @JsonKey(ignore: true)
   @override
@@ -643,7 +650,7 @@ class _$SpeechToTextProvidedWords implements SpeechToTextProvidedWords {
     required TResult Function() initial,
     required TResult Function() available,
     required TResult Function() error,
-    required TResult Function(String recognizedWords) providedWords,
+    required TResult Function(List<String> recognizedWords) providedWords,
   }) {
     return providedWords(recognizedWords);
   }
@@ -655,7 +662,7 @@ class _$SpeechToTextProvidedWords implements SpeechToTextProvidedWords {
     TResult? Function()? initial,
     TResult? Function()? available,
     TResult? Function()? error,
-    TResult? Function(String recognizedWords)? providedWords,
+    TResult? Function(List<String> recognizedWords)? providedWords,
   }) {
     return providedWords?.call(recognizedWords);
   }
@@ -667,7 +674,7 @@ class _$SpeechToTextProvidedWords implements SpeechToTextProvidedWords {
     TResult Function()? initial,
     TResult Function()? available,
     TResult Function()? error,
-    TResult Function(String recognizedWords)? providedWords,
+    TResult Function(List<String> recognizedWords)? providedWords,
     required TResult orElse(),
   }) {
     if (providedWords != null) {
@@ -718,10 +725,10 @@ class _$SpeechToTextProvidedWords implements SpeechToTextProvidedWords {
 }
 
 abstract class SpeechToTextProvidedWords implements SpeechToTextState {
-  const factory SpeechToTextProvidedWords(final String recognizedWords) =
+  const factory SpeechToTextProvidedWords(final List<String> recognizedWords) =
       _$SpeechToTextProvidedWords;
 
-  String get recognizedWords;
+  List<String> get recognizedWords;
   @JsonKey(ignore: true)
   _$$SpeechToTextProvidedWordsCopyWith<_$SpeechToTextProvidedWords>
       get copyWith => throw _privateConstructorUsedError;

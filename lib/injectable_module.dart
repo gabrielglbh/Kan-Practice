@@ -10,6 +10,7 @@ import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/infrastructure/services/db_migration/migrations.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 import 'package:sqflite/sqflite.dart';
 
 @module
@@ -25,6 +26,8 @@ abstract class InjectableModule {
       FlutterLocalNotificationsPlugin();
   @lazySingleton
   FlutterTts get tts => FlutterTts();
+  @lazySingleton
+  SpeechToText get stt => SpeechToText();
   @preResolve
   Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
   // TODO: Add new modes in the db

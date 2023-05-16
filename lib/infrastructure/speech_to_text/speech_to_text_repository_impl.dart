@@ -9,10 +9,21 @@ class SpeechToTextRepositoryImpl implements ISpeechToTextRepository {
   SpeechToTextRepositoryImpl(this._stt);
 
   @override
-  Future<bool> initialize() async {
+  Future<bool> setUp() async {
     return await _stt.initialize();
   }
 
   @override
-  SpeechToText recognize() => _stt;
+  Future<List<String>> recognize() async {
+    final words = <String>[];
+    await _stt.listen(
+      onResult: (result) {
+        words.add(result.recognizedWords);
+      },
+      listenFor: const Duration(seconds: 3),
+      localeId: 'ja',
+    );
+    await _stt.stop();
+    return words;
+  }
 }

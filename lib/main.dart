@@ -81,7 +81,7 @@ Future<void> _initSharedPreferences() async {
     prefs.saveData(SharedKeys.grammarPointDailyNotification, true);
   }
   if (prefs.readData(SharedKeys.dailyTestOnControlledPace) == null) {
-    prefs.saveData(SharedKeys.dailyTestOnControlledPace, true);
+    prefs.saveData(SharedKeys.dailyTestOnControlledPace, false);
   }
 
   /// Make the value the same as hasDoneTutorial. If the user has already seen
@@ -154,6 +154,7 @@ class _KanPracticeState extends State<KanPractice> {
           false) {
         getIt<ExampleDataBloc>().add(ExampleDataEventInstallData(context));
       }
+      getIt<TranslateService>().loadModel();
     });
     super.initState();
   }
@@ -192,24 +193,17 @@ class _KanPracticeState extends State<KanPractice> {
             getIt<DailyOptionsBloc>().add(DailyOptionsEventLoadData());
           });
         },
-        child: BlocListener<PurchasesBloc, PurchasesState>(
-          listener: (context, state) async {
-            if (state is PurchasesUpdatedToPro) {
-              await getIt<TranslateService>().loadModel();
-            }
-          },
-          child: MaterialApp(
-            title: 'KanPractice Pro',
-            locale: context.locale,
-            supportedLocales: context.supportedLocales,
-            localizationsDelegates: context.localizationDelegates,
-            debugShowCheckedModeBanner: false,
-            theme: ThemeManager.instance.currentLightThemeData,
-            darkTheme: ThemeManager.instance.currentDarkThemeData,
-            themeMode: ThemeManager.instance.themeMode,
-            initialRoute: KanPracticePages.homePage,
-            onGenerateRoute: onGenerateRoute,
-          ),
+        child: MaterialApp(
+          title: 'KanPractice',
+          locale: context.locale,
+          supportedLocales: context.supportedLocales,
+          localizationsDelegates: context.localizationDelegates,
+          debugShowCheckedModeBanner: false,
+          theme: ThemeManager.instance.currentLightThemeData,
+          darkTheme: ThemeManager.instance.currentDarkThemeData,
+          themeMode: ThemeManager.instance.themeMode,
+          initialRoute: KanPracticePages.homePage,
+          onGenerateRoute: onGenerateRoute,
         ),
       ),
     );

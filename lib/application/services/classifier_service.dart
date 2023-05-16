@@ -1,4 +1,5 @@
-import 'package:image/image.dart';
+import 'dart:typed_data';
+
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/services/i_classifier_repository.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
@@ -13,7 +14,7 @@ class ClassifierService {
     await _classifierRepository.loadModel();
   }
 
-  List<Category> predict(Image image) {
-    return _classifierRepository.predict(image);
+  List<Category> predict(ByteData data) {
+    return _classifierRepository.predict(data);
   }
 }

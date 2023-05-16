@@ -481,5 +481,7 @@
   "store_restore": "If you already have PRO, then click on icon above to restore your status.",
   "updated_pro_translation": "Unlocked Translation tests powered by ChatGPT and Google's ML Kit",
   "updated_pro_ocr": "Unlocked japanese characters recognition through camera or images with the help of Google's ML Kit",
-  "updated_pro_context": "Unlocked hints to provide context on words via by ChatGPT"
+  "updated_pro_context": "Unlocked hints to provide context on words via by ChatGPT",
+  "updated_to_pro": "Update to Pro",
+  "check_it_out": "Details"
 }

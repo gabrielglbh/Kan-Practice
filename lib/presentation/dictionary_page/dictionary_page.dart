@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image/image.dart' as im;
 import 'package:kanpractice/application/dictionary/dictionary_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
@@ -129,10 +128,10 @@ class _DictionaryPageState extends State<DictionaryPage>
                         KPCustomCanvas(
                           line: _line,
                           allowPrediction: true,
-                          handleImage: (im.Image image) {
+                          handleImage: (data) {
                             context
                                 .read<DictionaryBloc>()
-                                .add(DictionaryEventLoading(image: image));
+                                .add(DictionaryEventLoading(data: data));
                           },
                         ),
                         if (canSearchEitherWay) _searchWidget(),

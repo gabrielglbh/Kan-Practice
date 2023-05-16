@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -49,21 +50,30 @@ class ClassifierRepositoryImpl implements IClassifierRepository {
   }
 
   @override
-  List<Category> predict(i.Image image) {
-    /// Resizes the image to its actual size to fit model's input shape
-    final resizedImage = i.copyResize(image, width: width, height: height);
-
-    var inputImage = List<List<double>>.generate(
+  List<Category> predict(ByteData data) {
+    final inputImage = List<List<double>>.generate(
             height, (i) => List.generate(width, (j) => 0.0))
         .reshape<double>([1, height, width, 1]);
+
+    /// Transforms the ui.Image to a im.Image to feed to the tflite model
+    /// https://github.com/brendan-duncan/image/blob/main/doc/flutter.md
+    final image = i.Image.fromBytes(
+      width: width,
+      height: height,
+      bytes: data.buffer,
+      numChannels: 4,
+    );
+    final rotatedImage = i.copyRotate(image, angle: -90);
+    final flippedImage =
+        i.copyFlip(rotatedImage, direction: i.FlipDirection.vertical);
+    final resizedImage =
+        i.copyResize(flippedImage, width: width, height: height);
 
     /// Reshape the input image from [64, 64, 3] to [1, 64, 64, 1] with normalization.
     /// That is, get only 1 batch of a 64x64 image in gray scale to feed to the model
     for (int x = 0; x < height; x++) {
       for (int y = 0; y < width; y++) {
-        double val = resizedImage[(x * width) + y].toDouble();
-        val = val > 50 ? 1.0 : 0;
-        inputImage[0][x][y][0] = val;
+        inputImage[0][x][y][0] = resizedImage.getPixelSafe(x, y).aNormalized;
       }
     }
 

@@ -18,7 +18,7 @@ class KPCustomCanvas extends StatefulWidget {
   final bool allowPrediction;
 
   /// Function to perform when the [im.Image] has been extracted
-  final Function(im.Image)? handleImage;
+  final Function(ByteData)? handleImage;
   const KPCustomCanvas(
       {Key? key,
       required this.line,
@@ -49,26 +49,21 @@ class _KPCustomCanvasState extends State<KPCustomCanvas> {
       Offset? next = points[i + 1];
       if (prev != null && next != null) canvas.drawLine(prev, next, paint);
     }
+    final picture = recorder.endRecording();
 
     /// Transforms the ui.Image to a im.Image to feed to the tflite model
-    final ui.Picture picture = recorder.endRecording();
-    final ui.Image img =
-        await picture.toImage(canvasSize.toInt(), canvasSize.toInt());
-    final ByteData? byteData =
-        await img.toByteData(format: ui.ImageByteFormat.png);
-    if (byteData != null) {
-      im.Image? image = im.decodeImage(byteData.buffer.asUint8List());
-      if (image != null) {
-        if (widget.handleImage != null) {
-          widget.handleImage!(image);
-        } else {
-          print('Function handleImage is null');
-        }
-      } else {
-        print('Image is null');
-      }
+    /// https://github.com/brendan-duncan/image/blob/main/doc/flutter.md
+    final imgBytes =
+        await (await picture.toImage(canvasSize.toInt(), canvasSize.toInt()))
+            .toByteData();
+    if (imgBytes == null) {
+      print('Buffer empty');
     } else {
-      print('ByteData is null');
+      if (widget.handleImage != null) {
+        widget.handleImage!(imgBytes);
+      } else {
+        print('Function handleImage is null');
+      }
     }
   }
 

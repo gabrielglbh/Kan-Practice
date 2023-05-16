@@ -26,7 +26,9 @@ import 'package:kanpractice/presentation/core/types/home_types.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:kanpractice/presentation/core/types/tab_types.dart';
 import 'package:kanpractice/presentation/core/widgets/kanlists/kp_kanlists.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_pro_icon.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_pro_perks.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_search_bar.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_test_bottom_sheet.dart';
@@ -206,6 +208,30 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     }
   }
 
+  _onTutorialEnd() {
+    _onTutorial = false;
+    showDialog(
+      context: context,
+      builder: (context) => KPDialog(
+        title: Text('updated_to_pro'.tr()),
+        content: SizedBox(
+          height: MediaQuery.of(context).size.height / 2,
+          width: MediaQuery.of(context).size.width,
+          child: const KPProPerks(
+            showIsProSubtitle: false,
+            applyPaddings: false,
+            proIconSize: 128,
+          ),
+        ),
+        positiveButtonText: 'check_it_out'.tr(),
+        negativeButton: false,
+        onPositive: () {
+          Navigator.of(context).pushNamed(KanPracticePages.storePage);
+        },
+      ),
+    );
+  }
+
   bool _showPendingReview(List<int> toReview) {
     return toReview.isNotEmpty && toReview.any((i) => i > 0);
   }
@@ -298,7 +324,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 market,
                 settings,
               ], CoachTutorialParts.kanList)
-                  .showTutorial(context, onEnd: () => _onTutorial = false);
+                  .showTutorial(context, onEnd: _onTutorialEnd);
             }
           });
         },

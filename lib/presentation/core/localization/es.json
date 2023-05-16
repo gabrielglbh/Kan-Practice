@@ -481,5 +481,7 @@
   "store_restore": "Si ya tienes PRO, entonces haz clic en el icono de arriba para restaurar tu estado",
   "updated_pro_translation": "Tests de traducción desbloqueados impulsados por ChatGPT y el Kit ML de Google",
   "updated_pro_ocr": "Reconocimiento de caracteres japoneses desbloqueado a través de la cámara o imágenes con la ayuda del Kit ML de Google",
-  "updated_pro_context": "Pistas desbloqueadas para proporcionar contexto en palabras a través de ChatGPT"
+  "updated_pro_context": "Pistas desbloqueadas para proporcionar contexto en palabras a través de ChatGPT",
+  "updated_to_pro": "Actualiza a Pro",
+  "check_it_out": "Detalles"
 }

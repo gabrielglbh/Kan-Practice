@@ -481,5 +481,7 @@
   "store_restore": "Wenn Sie bereits PRO haben, dann klicken Sie auf das Symbol oben, um Ihren Status wiederherzustellen.",
   "updated_pro_translation": "Freigeschaltete Übersetzungstests mit ChatGPT und Googles ML-Kit",
   "updated_pro_ocr": "Erkennung japanischer Zeichen durch Kamera oder Bilder mit Hilfe des ML-Kits von Google freigeschaltet",
-  "updated_pro_context": "Hinweise zur Bereitstellung von Kontext zu Wörtern über ChatGPT freigeschaltet"
+  "updated_pro_context": "Hinweise zur Bereitstellung von Kontext zu Wörtern über ChatGPT freigeschaltet",
+  "updated_to_pro": "Upgrade auf Pro",
+  "check_it_out": "Details"
 }

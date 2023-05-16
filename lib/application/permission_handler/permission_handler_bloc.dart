@@ -39,7 +39,7 @@ class PermissionHandlerBloc
       late int granted = 0;
       if (Platform.isAndroid) {
         final androidInfo = await DeviceInfoPlugin().androidInfo;
-        if (androidInfo.version.sdkInt! <= 32) {
+        if (androidInfo.version.sdkInt <= 32) {
           granted = await _permissionHandlerRepository
               .requestPermission(Permission.storage);
         } else {

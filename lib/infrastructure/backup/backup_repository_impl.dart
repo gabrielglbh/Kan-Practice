@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/domain/alter_specific_data/alter_specific_data.dart';
@@ -272,12 +271,11 @@ class BackupRepositoryImpl implements IBackupRepository {
   @override
   Future<List<String>> getVersionNotes() async {
     List<String> notes = [];
-    final locale = WidgetsBinding.instance.window.locale.languageCode;
     try {
       final Future<DocumentSnapshot> ref =
           _ref.collection("Versioning").doc("version_notes").get();
       await ref.then((snapshot) {
-        notes = snapshot.get(locale).cast<String>();
+        notes = snapshot.get(Utils.currentLocale).cast<String>();
       });
     } catch (err) {
       notes = [];

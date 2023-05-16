@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_language_flag.dart';
@@ -24,9 +25,6 @@ class LanguageBottomSheet extends StatefulWidget {
 }
 
 class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
-  String get _currentLocale =>
-      WidgetsBinding.instance.window.locale.languageCode;
-
   @override
   Widget build(BuildContext context) {
     return BottomSheet(
@@ -53,11 +51,11 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
                 child: ListView.separated(
                   separatorBuilder: (context, index) =>
                       const Divider(height: KPMargins.margin4),
-                  itemCount:
-                      CountryLanguages.countryLanguage[_currentLocale]!.length,
+                  itemCount: CountryLanguages
+                      .countryLanguage[Utils.currentLocale]!.length,
                   itemBuilder: (context, index) {
                     LanguageObj language = CountryLanguages
-                        .countryLanguage[_currentLocale]!
+                        .countryLanguage[Utils.currentLocale]!
                         .elementAt(index);
                     return ListTile(
                       onTap: () => Navigator.of(context).pop(language.code),

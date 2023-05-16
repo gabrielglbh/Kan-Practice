@@ -10,6 +10,7 @@ import 'package:kanpractice/application/permission_handler/permission_handler_bl
 import 'package:kanpractice/application/purchases/purchases_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
@@ -203,8 +204,7 @@ class _OCRPageState extends State<OCRPage> {
                             icon: Icons.translate_rounded,
                             onTap: () {
                               bloc.read<OCRPageBloc>().add(
-                                  OCRPageEventTranslate(WidgetsBinding
-                                      .instance.window.locale.languageCode));
+                                  OCRPageEventTranslate(Utils.currentLocale));
                             },
                           ),
                           translationLoaded: (_, __) => KPButton(

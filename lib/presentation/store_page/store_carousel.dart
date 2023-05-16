@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/store_page/widgets/context_carousel.dart';
 import 'package:kanpractice/presentation/store_page/widgets/ocr_carousel.dart';
 import 'package:kanpractice/presentation/store_page/widgets/translation_carousel.dart';
@@ -18,7 +19,7 @@ class _StoreCarouselState extends State<StoreCarousel> {
   List<Widget> _updates = [];
 
   String get _locale {
-    final locale = WidgetsBinding.instance.window.locale.languageCode;
+    final locale = Utils.currentLocale;
     if (locale != 'es' && locale != 'en') return 'en';
     return locale;
   }

@@ -41,7 +41,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
     _fnUser = FocusNode();
     _tcList = TextEditingController();
     _fnList = FocusNode();
-    _language = WidgetsBinding.instance.window.locale.languageCode;
+    _language = Utils.currentLocale;
     super.initState();
   }
 

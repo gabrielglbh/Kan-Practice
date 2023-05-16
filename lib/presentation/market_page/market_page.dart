@@ -231,8 +231,7 @@ class _MarketPageState extends State<MarketPage>
                                           isFolder,
                                           _currentAppliedFilter,
                                           _currentAppliedOrder,
-                                          WidgetsBinding.instance.window.locale
-                                              .languageCode,
+                                          Utils.currentLocale,
                                         ));
                                   },
                                   onRemove: (listId, isFolder) {

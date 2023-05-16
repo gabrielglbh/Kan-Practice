@@ -6,6 +6,7 @@ import 'package:kanpractice/application/purchases/purchases_bloc.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/core/widgets/blitz/kp_blitz_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/widgets/blitz/kp_number_test_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/widgets/blitz/kp_translation_test_bottom_sheet.dart';
@@ -166,9 +167,8 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
   }) {
     bool hasNoDailyTests = !hasWords && mode == Tests.daily;
     if (hasNoDailyTests) {
-      final locale = WidgetsBinding.instance.window.locale.languageCode;
       final now = DateTime.now();
-      final nextDay = DateFormat.MMMMd(locale)
+      final nextDay = DateFormat.MMMMd(Utils.currentLocale)
           .format(DateTime(now.year, now.month, now.day + 1));
       return Stack(
         alignment: Alignment.topRight,
@@ -188,9 +188,9 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                   ),
                 ),
                 const SizedBox(height: 6),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Icon(Icons.lock_rounded, size: 15, color: Colors.white),
                     Icon(Icons.arrow_forward_rounded,
                         size: 15, color: Colors.white),

@@ -6,6 +6,7 @@ import 'package:kanpractice/application/sentence_generator/sentence_generator_bl
 import 'package:kanpractice/application/services/text_to_speech_service.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_learning_header_animation.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_learning_text_box.dart';
@@ -37,9 +38,6 @@ class _TranslationTestPageState extends State<TranslationTestPage> {
   /// Array that saves all scores without any previous context for the test result
   final List<double> _testScores = [];
 
-  String get _currentLocale =>
-      WidgetsBinding.instance.window.locale.languageCode;
-
   @override
   void initState() {
     if (context.read<PurchasesBloc>().state is! PurchasesUpdatedToPro) {
@@ -49,7 +47,7 @@ class _TranslationTestPageState extends State<TranslationTestPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<SentenceGeneratorBloc>().add(SentenceGeneratorEventLoad(
             hash: _macro,
-            locale: _currentLocale,
+            locale: Utils.currentLocale,
           ));
     });
     super.initState();
@@ -73,7 +71,7 @@ class _TranslationTestPageState extends State<TranslationTestPage> {
           if (!mounted) return;
           context.read<SentenceGeneratorBloc>().add(SentenceGeneratorEventLoad(
                 hash: _macro,
-                locale: _currentLocale,
+                locale: Utils.currentLocale,
               ));
         }
 
@@ -207,7 +205,7 @@ class _TranslationTestPageState extends State<TranslationTestPage> {
                             .read<SentenceGeneratorBloc>()
                             .add(SentenceGeneratorEventLoad(
                               hash: _macro,
-                              locale: _currentLocale,
+                              locale: Utils.currentLocale,
                             ));
                       },
                     ),

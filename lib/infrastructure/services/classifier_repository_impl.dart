@@ -29,9 +29,9 @@ class ClassifierRepositoryImpl implements IClassifierRepository {
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
 
     try {
-      if (androidInfo.isPhysicalDevice ?? true) {
+      if (androidInfo.isPhysicalDevice) {
         // use NNAPI on android if android API >= 27
-        if ((androidInfo.version.sdkInt ?? 27) >= 27) {
+        if ((androidInfo.version.sdkInt) >= 27) {
           interpreter = await _nnapiInterpreter();
         } else {
           interpreter = await _gpuInterpreterAndroid();

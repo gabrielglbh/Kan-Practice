@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -58,6 +59,9 @@ class Utils {
       return KPColors.primaryLight;
     }
   }
+
+  static String get currentLocale =>
+      PlatformDispatcher.instance.locale.languageCode;
 
   static String getFixedPercentageAsString(double rate) {
     return "${roundUpAsString(getFixedDouble(rate * 100))}%";
@@ -121,8 +125,7 @@ class Utils {
   static int getCurrentMilliseconds() => DateTime.now().millisecondsSinceEpoch;
 
   static Future<String> parseTodayDate() async {
-    final locale = WidgetsBinding.instance.window.locale.languageCode;
-    await initializeDateFormatting(locale, null);
+    await initializeDateFormatting(Utils.currentLocale, null);
     final today = DateTime.now();
     final formatter = DateFormat.yMd();
     return formatter.format(today);
@@ -135,8 +138,7 @@ class Utils {
   static String parseDateMilliseconds(int date) {
     final d = DateTime.fromMillisecondsSinceEpoch(date);
     Duration e = DateTime.now().difference(d);
-    return t.format(DateTime.now().subtract(e),
-        locale: WidgetsBinding.instance.window.locale.languageCode);
+    return t.format(DateTime.now().subtract(e), locale: Utils.currentLocale);
   }
 
   static Future<void> showVersionNotes(

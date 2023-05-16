@@ -4,6 +4,7 @@ import 'package:kanpractice/application/services/translate_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
 
 class TranscriptContextMenu extends StatelessWidget {
@@ -77,9 +78,8 @@ class TranscriptContextMenu extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: KPMargins.margin16),
                       child: FutureBuilder(
-                        future: getIt<TranslateService>().translate(
-                            selectedText,
-                            WidgetsBinding.instance.window.locale.languageCode),
+                        future: getIt<TranslateService>()
+                            .translate(selectedText, Utils.currentLocale),
                         initialData: 'translation_loading'.tr(),
                         builder: (context, AsyncSnapshot<String> snapshot) {
                           return SingleChildScrollView(

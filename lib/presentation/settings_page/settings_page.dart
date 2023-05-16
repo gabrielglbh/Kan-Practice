@@ -56,7 +56,7 @@ class _SettingsPageState extends State<SettingsPage> {
               return state.maybeWhen(
                 versionRetrieved: (_, __) => const SizedBox(),
                 orElse: () => ListTile(
-                  leading: const Icon(Icons.star, color: Colors.green),
+                  leading: const Icon(Icons.fiber_new, color: Colors.green),
                   title: Text("settings_general_versionNotes".tr()),
                   onTap: () {
                     context.read<BackupBloc>().add(

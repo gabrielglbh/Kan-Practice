@@ -39,7 +39,9 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app needs access to your Album only to apply OCR on images with text</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>This app does not record any audio</string>
+	<string>This app needs access to your microphone for Speech to Text recognition in some tests</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>This app needs access to your microphone for Speech to Text recognition in some tests</string>
 	<key>CFBundleLocalizations</key>
     <array>
     	<string>en</string>

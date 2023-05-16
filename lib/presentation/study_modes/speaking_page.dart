@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/speech_to_text/speech_to_text_bloc.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
@@ -7,6 +8,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_learning_header_animation.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_learning_text_box.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_list_percentage_indicator.dart';
@@ -209,6 +211,29 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
                 ),
               ),
             ],
+          ),
+          BlocConsumer<SpeechToTextBloc, SpeechToTextState>(
+            listener: (context, state) {
+              state.mapOrNull(providedWords: (w) {
+                print(w.recognizedWords);
+              }, error: (_) {
+                Utils.getSnackBar(context, 'Could not get STT Service');
+              });
+            },
+            builder: (context, state) {
+              return state.maybeWhen(
+                available: () => KPButton(
+                  title2: 'Tap to STT',
+                  onTap: () {},
+                ),
+                listening: () => Container(
+                  width: 128,
+                  height: 90,
+                  color: Colors.amber,
+                ),
+                orElse: () => const SizedBox(),
+              );
+            },
           ),
           KPValidationButtons(
             trigger: _showInfo,

@@ -483,5 +483,8 @@
   "updated_pro_ocr": "Erkennung japanischer Zeichen durch Kamera oder Bilder mit Hilfe des ML-Kits von Google freigeschaltet",
   "updated_pro_context": "Hinweise zur Bereitstellung von Kontext zu Wörtern über ChatGPT freigeschaltet",
   "updated_to_pro": "Upgrade auf Pro",
-  "check_it_out": "Details"
+  "check_it_out": "Details",
+  "settings_general_stt": "Spracherkennung für den Modus Sprechen verwenden",
+  "settings_general_stt_description": "Wenn aktiv, wird die Spracherkennung verwendet, um die Wörter der Sprachübung oder des Tests automatisch zu validieren. Wenn nicht, erfolgt die Validierung wie in den anderen Modi manuell",
+  "speaking_stt_change": "Validierungsmodus ändern" 
 }

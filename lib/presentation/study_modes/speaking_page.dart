@@ -1,14 +1,16 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/application/speech_to_text/speech_to_text_bloc.dart';
+import 'package:kana_kit/kana_kit.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
+import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
-import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_learning_header_animation.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_learning_text_box.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_list_percentage_indicator.dart';
@@ -20,6 +22,8 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 import 'package:kanpractice/presentation/study_modes/utils/study_mode_update_handler.dart';
+import 'package:kanpractice/presentation/study_modes/widgets/speech_to_text_widget.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 class SpeakingStudy extends StatefulWidget {
   final ModeArguments args;
@@ -34,11 +38,17 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
   int _macro = 0;
 
   bool _showInfo = false;
+  bool _isListening = false;
+  bool _hasSTTEnabled = false;
   bool _hasFinished = false;
   bool _enableRepOnTest = false;
 
   /// Array that saves all scores without any previous context for the test result
   final List<double> _testScores = [];
+
+  final _speechToText = SpeechToText();
+  late KanaKit _kanaKit;
+  String _predictedWords = '';
 
   /// Widget auxiliary variable
   final List<Word> _studyList = [];
@@ -51,11 +61,52 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
 
   @override
   void initState() {
+    _init();
+    _kanaKit = const KanaKit();
+    _hasSTTEnabled =
+        getIt<PreferencesService>().readData(SharedKeys.speakingWithSTT);
     _enableRepOnTest = getIt<PreferencesService>()
         .readData(SharedKeys.enableRepetitionOnTests);
     _studyList.addAll(widget.args.studyList);
     context.read<StudyModeBloc>().add(StudyModeEventResetTracking());
     super.initState();
+  }
+
+  void _init() async {
+    await _speechToText.initialize();
+  }
+
+  Future<void> _startListening() async {
+    await _speechToText.listen(
+      onResult: (word) {
+        setState(() => _predictedWords = word.recognizedWords);
+      },
+      localeId: 'ja',
+      listenFor: const Duration(seconds: 3),
+    );
+    setState(() => _isListening = true);
+    await Future.delayed(
+      const Duration(seconds: 3),
+      () {
+        setState(() {
+          _isListening = false;
+          _showInfo = _predictedWords.isNotEmpty;
+        });
+      },
+    );
+  }
+
+  Future<void> _onSubmitSTT() async {
+    final score1 =
+        _studyList[_macro].pronunciation.similarityTo(_predictedWords);
+    final score2 = _kanaKit
+        .toHiragana(_studyList[_macro].pronunciation)
+        .similarityTo(_predictedWords);
+    final score3 = _studyList[_macro].word.similarityTo(_predictedWords);
+    final score = max(max(score1, score2), score3);
+    // TODO: Refine score system
+    setState(() => _predictedWords = '');
+    await _updateUIOnSubmit(score);
   }
 
   Future<void> _updateUIOnSubmit(double score) async {
@@ -182,6 +233,7 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
       child: Column(
         children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               KPListPercentageIndicator(
                   value: (_macro + 1) / _studyList.length),
@@ -212,49 +264,55 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
               ),
             ],
           ),
-          // TODO: WIP
-          SizedBox(
-            height: 180,
-            child: BlocConsumer<SpeechToTextBloc, SpeechToTextState>(
-              listener: (context, state) {
-                state.mapOrNull(providedWords: (w) {
-                  print(w.recognizedWords);
-                  context
-                      .read<SpeechToTextBloc>()
-                      .add(SpeechToTextEventSetUp());
-                }, error: (_) {
-                  Utils.getSnackBar(context, 'Could not get STT Service');
-                  context
-                      .read<SpeechToTextBloc>()
-                      .add(SpeechToTextEventSetUp());
-                });
+          if (!_hasSTTEnabled)
+            KPValidationButtons(
+              trigger: _showInfo,
+              submitLabel: "done_button_label".tr(),
+              action: (score) async => await _updateUIOnSubmit(score),
+              onSubmit: () {
+                setState(() => _showInfo = true);
               },
-              builder: (context, state) {
-                return state.maybeWhen(
-                  available: () => KPButton(
-                    title2: 'Tap to STT',
-                    onTap: () {
-                      context
-                          .read<SpeechToTextBloc>()
-                          .add(SpeechToTextEventListening());
-                    },
-                  ),
-                  listening: () => Container(
-                    width: 128,
-                    height: 90,
-                    color: Colors.amber,
-                  ),
-                  orElse: () => const SizedBox(),
-                );
+            )
+          else
+            SpeechToTextWidget(
+              predictedWords: _predictedWords,
+              isListening: _isListening,
+              onTapWhenListen: () async {
+                await _startListening();
+              },
+              onSubmit: () async {
+                await _onSubmitSTT();
               },
             ),
-          ),
-          KPValidationButtons(
-            trigger: _showInfo,
-            submitLabel: "done_button_label".tr(),
-            action: (score) async => await _updateUIOnSubmit(score),
-            onSubmit: () => setState(() => _showInfo = true),
-          )
+          if (!_showInfo)
+            Padding(
+              padding: const EdgeInsets.only(bottom: KPMargins.margin18),
+              child: GestureDetector(
+                onTap: () async {
+                  await Navigator.of(context)
+                      .pushNamed(KanPracticePages.settingsTogglePage);
+                  setState(() {
+                    _hasSTTEnabled = getIt<PreferencesService>()
+                        .readData(SharedKeys.speakingWithSTT);
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.toggle_on),
+                    const SizedBox(width: KPMargins.margin12),
+                    Text(
+                      'speaking_stt_change'.tr(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(decoration: TextDecoration.underline),
+                    ),
+                    const SizedBox(width: KPMargins.margin12),
+                  ],
+                ),
+              ),
+            ),
         ],
       ),
     );

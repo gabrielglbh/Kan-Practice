@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:kanpractice/presentation/core/util/string_similarity.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -12,6 +13,9 @@ extension StringExtension on String {
   String get capitalized {
     return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
   }
+
+  double similarityTo(String? other) =>
+      StringSimilarity.compareTwoStrings(this, other);
 }
 
 /// Class that contains useful methods for all classes to use

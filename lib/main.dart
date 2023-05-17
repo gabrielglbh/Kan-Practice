@@ -28,7 +28,6 @@ import 'package:kanpractice/application/services/messaging_service.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/application/services/translate_service.dart';
 import 'package:kanpractice/application/specific_data/specific_data_bloc.dart';
-import 'package:kanpractice/application/speech_to_text/speech_to_text_bloc.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
@@ -98,6 +97,9 @@ Future<void> _initSharedPreferences() async {
   }
   if (prefs.readData(SharedKeys.showBadgeWords) == null) {
     prefs.saveData(SharedKeys.showBadgeWords, false);
+  }
+  if (prefs.readData(SharedKeys.speakingWithSTT) == null) {
+    prefs.saveData(SharedKeys.speakingWithSTT, true);
   }
 }
 
@@ -187,9 +189,6 @@ class _KanPracticeState extends State<KanPractice> {
             create: (_) => getIt<PurchasesBloc>()..add(PurchasesEventSetUp())),
         BlocProvider(create: (_) => getIt<SentenceGeneratorBloc>()),
         BlocProvider(create: (_) => getIt<PermissionHandlerBloc>()),
-        BlocProvider(
-            create: (_) =>
-                getIt<SpeechToTextBloc>()..add(SpeechToTextEventSetUp())),
       ],
       child: BlocListener<ExampleDataBloc, ExampleDataState>(
         listener: (context, state) {

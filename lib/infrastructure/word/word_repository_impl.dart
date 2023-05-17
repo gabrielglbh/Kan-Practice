@@ -560,6 +560,7 @@ class WordRepositoryImpl implements IWordRepository {
           "$whereClause "
           "(${WordTableFields.meaningField} LIKE '%$query%' "
           "OR ${WordTableFields.wordField} LIKE '%$query%' "
+          "OR ${WordTableFields.listNameField} LIKE '%$query%' "
           "OR ${WordTableFields.pronunciationField} LIKE '%$query%') "
           "ORDER BY ${WordTableFields.dateAddedField} DESC "
           "LIMIT $limit OFFSET ${offset * limit}");

@@ -68,6 +68,8 @@ dependencies:
   image_cropper: ^3.0.3
   path_provider: ^2.0.15
   carousel_slider: ^4.2.1
+  speech_to_text: ^6.1.1
+  font_awesome_flutter: ^10.4.0
 
 flutter_icons:
   android: "launcher_icon"

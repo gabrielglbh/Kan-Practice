@@ -483,5 +483,8 @@
   "updated_pro_ocr": "Reconocimiento de caracteres japoneses desbloqueado a través de la cámara o imágenes con la ayuda del Kit ML de Google",
   "updated_pro_context": "Pistas desbloqueadas para proporcionar contexto en palabras a través de ChatGPT",
   "updated_to_pro": "Actualiza a Pro",
-  "check_it_out": "Detalles"
+  "check_it_out": "Detalles",
+  "settings_general_stt": "Utilizar reconocimiento de voz para el modo de Habla",
+  "settings_general_stt_description": "Si está activo, se utilizará el reconocimiento de voz para validar automáticamente las palabras de la práctica o test de Habla. Si no, la validación será manual como en los otros modos.",
+  "speaking_stt_change": "Cambiar forma de validación"
 }

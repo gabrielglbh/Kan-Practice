@@ -42,6 +42,9 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
   bool _hasSTTEnabled = false;
   bool _hasFinished = false;
   bool _enableRepOnTest = false;
+  bool _sttValidation = false;
+
+  double _sttScore = 0.0;
 
   /// Array that saves all scores without any previous context for the test result
   final List<double> _testScores = [];
@@ -77,6 +80,7 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
   }
 
   Future<void> _startListening() async {
+    setState(() => _predictedWords = '');
     await _speechToText.listen(
       onResult: (word) {
         setState(() => _predictedWords = word.recognizedWords);
@@ -88,28 +92,35 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
     await Future.delayed(
       const Duration(seconds: 3),
       () {
-        setState(() {
-          _isListening = false;
-          _showInfo = _predictedWords.isNotEmpty;
-        });
+        setState(() => _isListening = false);
       },
     );
   }
 
   Future<void> _onSubmitSTT() async {
+    setState(() {
+      _showInfo = _predictedWords.isNotEmpty;
+      _sttValidation = true;
+    });
     final score1 =
         _studyList[_macro].pronunciation.similarityTo(_predictedWords);
     final score2 = _kanaKit
         .toHiragana(_studyList[_macro].pronunciation)
         .similarityTo(_predictedWords);
     final score3 = _studyList[_macro].word.similarityTo(_predictedWords);
-    final score = max(max(score1, score2), score3);
-    // TODO: Refine score system
-    setState(() => _predictedWords = '');
-    await _updateUIOnSubmit(score);
+    _sttScore = max(max(score1, score2), score3);
+    await Future.delayed(
+      const Duration(seconds: 2),
+      () async {
+        await _updateUIOnSubmit(_sttScore);
+        setState(() => _sttValidation = false);
+      },
+    );
   }
 
   Future<void> _updateUIOnSubmit(double score) async {
+    setState(() => _predictedWords = '');
+
     /// If the score is less PARTIAL or WRONG and the Learning Mode is
     /// SPATIAL, the append the current word to the list, to review it again.
     /// Only do this when NOT on test
@@ -277,6 +288,8 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
             SpeechToTextWidget(
               predictedWords: _predictedWords,
               isListening: _isListening,
+              isValidating: _sttValidation,
+              score: _sttScore,
               onTapWhenListen: () async {
                 await _startListening();
               },

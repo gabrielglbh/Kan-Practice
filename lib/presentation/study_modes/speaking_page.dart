@@ -315,7 +315,9 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
                     const Icon(Icons.toggle_on),
                     const SizedBox(width: KPMargins.margin12),
                     Text(
-                      'speaking_stt_change'.tr(),
+                      _hasSTTEnabled
+                          ? 'speaking_normal_change'.tr()
+                          : 'speaking_stt_change'.tr(),
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium

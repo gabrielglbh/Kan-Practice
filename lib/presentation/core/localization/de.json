@@ -486,5 +486,7 @@
   "check_it_out": "Details",
   "settings_general_stt": "Spracherkennung für den Modus Sprechen verwenden",
   "settings_general_stt_description": "Wenn aktiv, wird die Spracherkennung verwendet, um die Wörter der Sprachübung oder des Tests automatisch zu validieren. Wenn nicht, erfolgt die Validierung wie in den anderen Modi manuell",
-  "speaking_stt_change": "Validierungsmodus ändern" 
+  "speaking_stt_change": "Spracherkennung verwenden",
+  "speaking_normal_change": "Normale Validierung verwenden",
+  "google_signin": "Mit Google anmelden"
 }

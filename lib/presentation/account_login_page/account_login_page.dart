@@ -144,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 Image.asset('assets/images/google-signin.png', scale: 3.5),
                 const SizedBox(width: KPMargins.margin12),
-                Text("Sign in with Google".tr(),
+                Text("google_signin".tr(),
                     style: Theme.of(context)
                         .textTheme
                         .labelLarge

@@ -486,5 +486,7 @@
   "check_it_out": "Details",
   "settings_general_stt": "Use speech recognition for Speaking mode",
   "settings_general_stt_description": "If active, speech recognition shall be used to automatically validate the words of the Speaking practice or test. If not, the validation will be manual as in the other modes",
-  "speaking_stt_change": "Change validation mode"
+  "speaking_stt_change": "Use speech recognition", 
+  "speaking_normal_change": "Use normal validation",
+  "google_signin": "Sign in with Google"
 }

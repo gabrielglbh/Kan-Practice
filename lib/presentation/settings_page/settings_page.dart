@@ -2,6 +2,7 @@ import 'package:app_settings/app_settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
 import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
@@ -70,15 +71,15 @@ class _SettingsPageState extends State<SettingsPage> {
           ListTile(
             leading: const Icon(Icons.star, color: Colors.orangeAccent),
             title: Text("settings_information_rating".tr()),
-            trailing: const Icon(Icons.open_in_new),
+            trailing: const Icon(Icons.open_in_new, size: 18),
             onTap: () async {
               await Utils.launch(context, "google_play_link".tr());
             },
           ),
           ListTile(
-            leading: const Icon(Icons.device_hub_rounded),
+            leading: const Icon(FontAwesomeIcons.github),
             title: Text("settings_information_contribute".tr()),
-            trailing: const Icon(Icons.open_in_new),
+            trailing: const Icon(Icons.open_in_new, size: 18),
             onTap: () async {
               try {
                 await Utils.launch(
@@ -121,7 +122,7 @@ class _SettingsPageState extends State<SettingsPage> {
           BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
               return ListTile(
-                leading: const Icon(Icons.whatshot_rounded),
+                leading: const Icon(Icons.account_circle_rounded),
                 title: Text(
                   state.maybeWhen(
                     loaded: (_) => "settings_account_label".tr(),
@@ -208,7 +209,7 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.adjust_rounded),
+            leading: const Icon(Icons.flare_rounded),
             title: Text("settings_number_of_word_in_test".tr()),
             trailing: Text("$_wordsInTest",
                 style: Theme.of(context)
@@ -273,7 +274,7 @@ class _SettingsPageState extends State<SettingsPage> {
             child: ListTile(
                 leading: const Icon(Icons.privacy_tip),
                 title: Text("settings_information_terms_label".tr()),
-                trailing: const Icon(Icons.open_in_new),
+                trailing: const Icon(Icons.open_in_new, size: 18),
                 onTap: () async {
                   await Utils.launch(context, "https://kanpractice.web.app");
                 }),

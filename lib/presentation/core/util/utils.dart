@@ -183,7 +183,7 @@ class Utils {
     String versionNotes = "";
     if (notes.isNotEmpty) {
       for (var note in notes) {
-        versionNotes = "$versionNotes$note\n";
+        versionNotes = "$versionNotes$note\n\n";
       }
       child = Text(versionNotes);
     }
@@ -197,14 +197,20 @@ class Utils {
           title: Text(version != null
               ? "word_lists_versionDialog_title".tr()
               : "${"word_lists_versionDialog_notes".tr()} ${pi.version}"),
-          content: version != null
-              ? Wrap(
-                  children: [
+          content: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height / 2,
+            child: Scrollbar(
+              thumbVisibility: true,
+              child: ListView(
+                children: [
+                  if (version == null)
                     Text("${"word_lists_versionDialog_notes".tr()} $version\n"),
-                    child
-                  ],
-                )
-              : child,
+                  child
+                ],
+              ),
+            ),
+          ),
           positiveButtonText: version != null
               ? 'word_lists_versionDialog_button_label'.tr()
               : 'Ok',

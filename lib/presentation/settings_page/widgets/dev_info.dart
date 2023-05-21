@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -60,17 +61,17 @@ class DevInfo extends StatelessWidget {
         ),
         ListTile(
           title: Text("developer_info_follow".tr()),
-          leading: const Icon(Icons.developer_mode_rounded),
+          leading: const Icon(FontAwesomeIcons.github),
           onTap: () async =>
               await Utils.launch(context, "https://github.com/gabrielglbh"),
-          trailing: const Icon(Icons.open_in_new),
+          trailing: const Icon(Icons.open_in_new, size: 18),
         ),
         ListTile(
           title: Text("developer_info_github_issue".tr()),
           leading: const Icon(Icons.bug_report_outlined),
           onTap: () async => await Utils.launch(context,
               "https://github.com/gabrielglbh/Kan-Practice/issues/new"),
-          trailing: const Icon(Icons.open_in_new),
+          trailing: const Icon(Icons.open_in_new, size: 18),
         ),
         ListTile(
           title: Text("${"developer_info_report".tr()} devgglop@gmail.com"),
@@ -85,7 +86,7 @@ class DevInfo extends StatelessWidget {
             String url = emailLaunchUri.toString().replaceAll("+", "%20");
             await Utils.launch(context, url);
           },
-          trailing: const Icon(Icons.mail_outline_rounded),
+          trailing: const Icon(Icons.mail_outline_rounded, size: 18),
         ),
       ],
     );

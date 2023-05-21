@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
@@ -47,8 +49,14 @@ class _LoginPageState extends State<LoginPage> {
     String? email = _emailController?.text;
     String? password = _passwordController?.text;
     if (email != null && password != null) {
-      context.read<AuthBloc>().add(AuthSubmitting(_mode, email, password));
+      context
+          .read<AuthBloc>()
+          .add(AuthSubmitEmailProvider(_mode, email, password));
     }
+  }
+
+  _handleGoogleLogin() {
+    context.read<AuthBloc>().add(AuthSubmitGoogleProvider());
   }
 
   @override
@@ -113,14 +121,37 @@ class _LoginPageState extends State<LoginPage> {
   Column _idleState(BuildContext bloc, String error) {
     return Column(
       children: [
-        Icon(Icons.info_outline_rounded,
-            color: KPColors.getSecondaryColor(context)),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: KPMargins.margin16),
+          padding: const EdgeInsets.all(KPMargins.margin16),
           child: Text("login_formDisclaimer".tr(),
               style: Theme.of(context).textTheme.bodyLarge),
         ),
         const Divider(),
+        if (!Platform.isIOS)
+          ElevatedButton(
+            onPressed: () => _handleGoogleLogin(),
+            style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      KPColors.getPrimary(context)),
+                  shape: MaterialStateProperty.all<OutlinedBorder>(
+                    RoundedRectangleBorder(
+                        side: BorderSide(color: KPColors.getAccent(context)),
+                        borderRadius: BorderRadius.circular(KPRadius.radius8)),
+                  ),
+                ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset('assets/images/google-signin.png', scale: 3.5),
+                const SizedBox(width: KPMargins.margin12),
+                Text("Sign in with Google".tr(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(color: KPColors.getAccent(context)))
+              ],
+            ),
+          ),
         const SizedBox(height: KPMargins.margin16),
         KPTextForm(
             header: "login_email_header".tr(),
@@ -180,7 +211,7 @@ class _LoginPageState extends State<LoginPage> {
                   ?.copyWith(decoration: TextDecoration.underline),
             ),
           ),
-        )
+        ),
       ],
     );
   }

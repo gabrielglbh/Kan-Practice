@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/infrastructure/services/db_migration/migrations.dart';
@@ -25,6 +26,8 @@ abstract class InjectableModule {
       FlutterLocalNotificationsPlugin();
   @lazySingleton
   FlutterTts get tts => FlutterTts();
+  @lazySingleton
+  GoogleSignIn get googleSignIn => GoogleSignIn();
   @preResolve
   Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
   // TODO: Add new modes in the db

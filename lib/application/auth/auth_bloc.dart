@@ -17,19 +17,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final IAuthRepository _authRepository;
 
   AuthBloc(this._authRepository) : super(const AuthState.initial('', false)) {
-    on<AuthSubmitting>((event, emit) async {
+    on<AuthSubmitEmailProvider>((event, emit) async {
       emit(const AuthState.loading());
-      final error = await _authRepository.handleLogIn(
+      final user = await _authRepository.handleLogIn(
           event.mode, event.email, event.password);
-      if (error == "") {
-        final user = _authRepository.getUser();
-        if (user != null) {
-          emit(AuthState.loaded(user));
-        } else {
-          emit(AuthState.initial(error, false));
-        }
+      if (user != null) {
+        emit(AuthState.loaded(user));
       } else {
-        emit(AuthState.initial(error, false));
+        emit(const AuthState.initial("Error retrieving user", false));
+      }
+    });
+
+    on<AuthSubmitGoogleProvider>((event, emit) async {
+      emit(const AuthState.loading());
+      final user = await _authRepository.handleGoogleLogIn();
+      if (user != null) {
+        emit(AuthState.loaded(user));
+      } else {
+        emit(const AuthState.initial("Error retrieving user", false));
       }
     });
 
@@ -42,7 +47,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
-    on<CloseSession>((event, emit) async {
+    on<CloseEmailProviderSession>((event, emit) async {
+      emit(const AuthState.loading());
+      final error = await _authRepository.closeSession();
+      if (error == 0) {
+        emit(const AuthState.initial('', true));
+      } else {
+        final user = _authRepository.getUser();
+        if (user != null) {
+          emit(AuthState.loaded(user));
+        } else {
+          emit(
+              AuthState.initial("login_bloc_close_session_failed".tr(), false));
+        }
+      }
+    });
+
+    on<CloseGoogleProviderSession>((event, emit) async {
       emit(const AuthState.loading());
       final error = await _authRepository.closeSession();
       if (error == 0) {

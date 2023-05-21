@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
 import 'package:kanpractice/application/purchases/purchases_bloc.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_text_form.dart';
@@ -127,58 +128,104 @@ class _AccountManagementPageState extends State<AccountManagementPage> {
         },
         builder: (context, state) {
           return state.maybeWhen(
-            loaded: (user) => SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  children: [
-                    Icon(Icons.check_circle_rounded,
-                        color: KPColors.getSecondaryColor(context),
-                        size: KPSizes.maxHeightValidationCircle),
-                    Padding(
-                      padding: const EdgeInsets.all(KPMargins.margin16),
-                      child: Text(
-                          "${"login_current_account_logged".tr()} ${user.email}.",
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyLarge),
-                    ),
-                    ListTile(
-                      title: Text("login_miscellaneous_title".tr(),
-                          style: Theme.of(context).textTheme.headlineSmall),
-                    ),
-                    Column(
-                      children: [
-                        const Divider(),
-                        ListTile(
-                          leading: const Icon(Icons.lock),
-                          title: Text("login_changePasswordDialog_title".tr()),
-                          onTap: () => _changePasswordDialog(),
+            loaded: (user) {
+              final isEmailProvider =
+                  user.providerData[0].providerId == "password";
+              final isGoogleProvider =
+                  user.providerData[0].providerId == "google.com";
+              return SingleChildScrollView(
+                child: Center(
+                  child: Column(
+                    children: [
+                      Icon(Icons.check_circle_rounded,
+                          color: KPColors.getSecondaryColor(context),
+                          size: KPSizes.maxHeightValidationCircle),
+                      Padding(
+                        padding: const EdgeInsets.all(KPMargins.margin16),
+                        child: Text(
+                            "${"login_current_account_logged".tr()} ${user.email}.",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodyLarge),
+                      ),
+                      ListTile(
+                        title: Row(
+                          children: [
+                            Text("login_miscellaneous_title".tr(),
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall),
+                            const SizedBox(width: KPMargins.margin12),
+                            if (isGoogleProvider)
+                              Image.asset('assets/images/google-signin.png',
+                                  scale: 3.5),
+                          ],
                         ),
-                        const Divider(),
-                        ListTile(
-                          leading: const Icon(Icons.logout),
-                          title: Text("login_close_session_title".tr()),
-                          onTap: () =>
-                              context.read<AuthBloc>().add(CloseSession()),
-                        ),
-                        const Divider(),
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(bottom: KPMargins.margin32),
-                          child: ListTile(
-                            leading: const Icon(Icons.delete),
-                            title: Text("login_removeAccountDialog_title".tr(),
-                                style: TextStyle(
-                                    color:
-                                        KPColors.getSecondaryColor(context))),
-                            onTap: () => _removeAccountDialog(),
+                      ),
+                      Column(
+                        children: [
+                          if (isEmailProvider) const Divider(),
+                          if (isEmailProvider)
+                            ListTile(
+                              leading: const Icon(Icons.lock),
+                              title:
+                                  Text("login_changePasswordDialog_title".tr()),
+                              onTap: () => _changePasswordDialog(),
+                            ),
+                          const Divider(),
+                          ListTile(
+                            leading: const Icon(Icons.logout),
+                            title: Text("login_close_session_title".tr()),
+                            onTap: () {
+                              if (isEmailProvider) {
+                                context
+                                    .read<AuthBloc>()
+                                    .add(CloseEmailProviderSession());
+                              } else {
+                                context
+                                    .read<AuthBloc>()
+                                    .add(CloseGoogleProviderSession());
+                              }
+                            },
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          const Divider(),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                bottom: KPMargins.margin32),
+                            child: ListTile(
+                              leading: const Icon(Icons.delete),
+                              title: Text(
+                                  "login_removeAccountDialog_title".tr(),
+                                  style: TextStyle(
+                                      color:
+                                          KPColors.getSecondaryColor(context))),
+                              onTap: () async {
+                                if (isEmailProvider) {
+                                  _removeAccountDialog();
+                                } else {
+                                  context
+                                      .read<AuthBloc>()
+                                      .add(CloseGoogleProviderSession());
+                                  final Uri emailLaunchUri = Uri(
+                                      scheme: 'mailto',
+                                      path: 'devgglop@gmail.com',
+                                      queryParameters: {
+                                        'subject':
+                                            "I want to remove my Google Account from KanPractice",
+                                      });
+                                  String url = emailLaunchUri
+                                      .toString()
+                                      .replaceAll("+", "%20");
+                                  await Utils.launch(context, url);
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
             orElse: () => const SizedBox(),
           );
         },

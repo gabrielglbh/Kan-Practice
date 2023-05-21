@@ -70,6 +70,7 @@ dependencies:
   carousel_slider: ^4.2.1
   speech_to_text: ^6.1.1
   font_awesome_flutter: ^10.4.0
+  google_sign_in: ^6.1.0
 
 flutter_icons:
   android: "launcher_icon"

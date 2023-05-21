@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
 import 'package:kanpractice/application/purchases/purchases_bloc.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
@@ -120,7 +122,15 @@ class _StorePageState extends State<StorePage> {
                         return KPButton(
                           title2:
                               '${'upgrade_to_pro'.tr()} ${product.priceString} ${product.currencyCode}',
-                          icon: Icons.shopping_cart_checkout_rounded,
+                          customIcon: Padding(
+                            padding: const EdgeInsets.only(
+                                bottom: KPMargins.margin12),
+                            child: Icon(
+                                Platform.isAndroid
+                                    ? FontAwesomeIcons.googlePlay
+                                    : FontAwesomeIcons.appStore,
+                                color: Colors.white),
+                          ),
                           color: Colors.amber.shade700,
                           onTap: () {
                             state.maybeWhen(

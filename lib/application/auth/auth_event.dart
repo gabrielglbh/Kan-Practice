@@ -9,18 +9,22 @@ abstract class AuthEvent extends Equatable {
 
 class AuthIdle extends AuthEvent {}
 
-class AuthSubmitting extends AuthEvent {
+class AuthSubmitEmailProvider extends AuthEvent {
   final SignMode mode;
   final String email;
   final String password;
 
-  const AuthSubmitting(this.mode, this.email, this.password);
+  const AuthSubmitEmailProvider(this.mode, this.email, this.password);
 
   @override
   List<Object> get props => [mode, email, password];
 }
 
-class CloseSession extends AuthEvent {}
+class AuthSubmitGoogleProvider extends AuthEvent {}
+
+class CloseEmailProviderSession extends AuthEvent {}
+
+class CloseGoogleProviderSession extends AuthEvent {}
 
 class ChangePassword extends AuthEvent {
   final String oldPassword;

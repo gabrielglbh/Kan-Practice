@@ -261,6 +261,8 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
       /// Update in DB all words
       Map<String, dynamic> toUpdate = {};
 
+      final affects = event.shouldAffectPractice;
+
       for (int i = 0; i < testTracking.length; i++) {
         final s = testSM2Tracking.isEmpty ? null : testSM2Tracking[i];
         final w = testTracking[i];
@@ -281,7 +283,8 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
             toUpdate.addEntries([
               MapEntry(WordTableFields.dateLastShown, w.seen),
               MapEntry(WordTableFields.dateLastShownWriting, w.seen),
-              MapEntry(WordTableFields.winRateWritingField, w.score),
+              if (affects)
+                MapEntry(WordTableFields.winRateWritingField, w.score),
               if (s != null)
                 MapEntry(WordTableFields.previousIntervalWritingField,
                     s.previousInterval),
@@ -300,7 +303,8 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
             toUpdate.addEntries([
               MapEntry(WordTableFields.dateLastShown, w.seen),
               MapEntry(WordTableFields.dateLastShownReading, w.seen),
-              MapEntry(WordTableFields.winRateReadingField, w.score),
+              if (affects)
+                MapEntry(WordTableFields.winRateReadingField, w.score),
               if (s != null)
                 MapEntry(WordTableFields.previousIntervalReadingField,
                     s.previousInterval),
@@ -319,7 +323,8 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
             toUpdate.addEntries([
               MapEntry(WordTableFields.dateLastShown, w.seen),
               MapEntry(WordTableFields.dateLastShownRecognition, w.seen),
-              MapEntry(WordTableFields.winRateRecognitionField, w.score),
+              if (affects)
+                MapEntry(WordTableFields.winRateRecognitionField, w.score),
               if (s != null)
                 MapEntry(WordTableFields.previousIntervalRecognitionField,
                     s.previousInterval),
@@ -338,7 +343,8 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
             toUpdate.addEntries([
               MapEntry(WordTableFields.dateLastShown, w.seen),
               MapEntry(WordTableFields.dateLastShownListening, w.seen),
-              MapEntry(WordTableFields.winRateListeningField, w.score),
+              if (affects)
+                MapEntry(WordTableFields.winRateListeningField, w.score),
               if (s != null)
                 MapEntry(WordTableFields.previousIntervalListeningField,
                     s.previousInterval),
@@ -357,7 +363,8 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
             toUpdate.addEntries([
               MapEntry(WordTableFields.dateLastShown, w.seen),
               MapEntry(WordTableFields.dateLastShownSpeaking, w.seen),
-              MapEntry(WordTableFields.winRateSpeakingField, w.score),
+              if (affects)
+                MapEntry(WordTableFields.winRateSpeakingField, w.score),
               if (s != null)
                 MapEntry(WordTableFields.previousIntervalSpeakingField,
                     s.previousInterval),
@@ -377,78 +384,83 @@ class StudyModeBloc extends Bloc<StudyModeEvent, StudyModeState> {
         await _wordRepository.updateWord(w.listName, w.word, toUpdate);
       }
 
-      /// For every entry, populate the list with all of the word of each list
-      /// that appeared on the test
-      for (int x = 0; x < orderedMap.keys.toList().length; x++) {
-        String kanListName = orderedMap.keys.toList()[x];
-        orderedMap[kanListName] =
-            await _wordRepository.getAllWordsFromList(kanListName);
+      if (!affects) {
+        emit(const StudyModeState.testFinished());
+      } else {
+        /// For every entry, populate the list with all of the word of each list
+        /// that appeared on the test
+        for (int x = 0; x < orderedMap.keys.toList().length; x++) {
+          String kanListName = orderedMap.keys.toList()[x];
+          orderedMap[kanListName] =
+              await _wordRepository.getAllWordsFromList(kanListName);
 
-        /// Calculate the overall score for each list on the treated map
-        orderedMap[kanListName]?.forEach((k) {
+          /// Calculate the overall score for each list on the treated map
+          orderedMap[kanListName]?.forEach((k) {
+            switch (event.mode) {
+              case StudyModes.writing:
+                if (k.winRateWriting != DatabaseConstants.emptyWinRate) {
+                  overallScore[kanListName] =
+                      (overallScore[kanListName] ?? 0) + k.winRateWriting;
+                }
+                break;
+              case StudyModes.reading:
+                if (k.winRateReading != DatabaseConstants.emptyWinRate) {
+                  overallScore[kanListName] =
+                      (overallScore[kanListName] ?? 0) + k.winRateReading;
+                }
+                break;
+              case StudyModes.recognition:
+                if (k.winRateRecognition != DatabaseConstants.emptyWinRate) {
+                  overallScore[kanListName] =
+                      (overallScore[kanListName] ?? 0) + k.winRateRecognition;
+                }
+                break;
+              case StudyModes.listening:
+                if (k.winRateListening != DatabaseConstants.emptyWinRate) {
+                  overallScore[kanListName] =
+                      (overallScore[kanListName] ?? 0) + k.winRateListening;
+                }
+                break;
+              case StudyModes.speaking:
+                if (k.winRateSpeaking != DatabaseConstants.emptyWinRate) {
+                  overallScore[kanListName] =
+                      (overallScore[kanListName] ?? 0) + k.winRateSpeaking;
+                }
+                break;
+            }
+          });
+
+          /// For each list, update its overall rating after getting the overall score
+          final double overall =
+              overallScore[kanListName]! / orderedMap[kanListName]!.length;
+
+          Map<String, dynamic> toUpdate = {};
+
+          /// We just need to update the totalWinRate as a reflection of the already
+          /// meaned out words in the KanList
           switch (event.mode) {
             case StudyModes.writing:
-              if (k.winRateWriting != DatabaseConstants.emptyWinRate) {
-                overallScore[kanListName] =
-                    (overallScore[kanListName] ?? 0) + k.winRateWriting;
-              }
+              toUpdate = {ListTableFields.totalWinRateWritingField: overall};
               break;
             case StudyModes.reading:
-              if (k.winRateReading != DatabaseConstants.emptyWinRate) {
-                overallScore[kanListName] =
-                    (overallScore[kanListName] ?? 0) + k.winRateReading;
-              }
+              toUpdate = {ListTableFields.totalWinRateReadingField: overall};
               break;
             case StudyModes.recognition:
-              if (k.winRateRecognition != DatabaseConstants.emptyWinRate) {
-                overallScore[kanListName] =
-                    (overallScore[kanListName] ?? 0) + k.winRateRecognition;
-              }
+              toUpdate = {
+                ListTableFields.totalWinRateRecognitionField: overall
+              };
               break;
             case StudyModes.listening:
-              if (k.winRateListening != DatabaseConstants.emptyWinRate) {
-                overallScore[kanListName] =
-                    (overallScore[kanListName] ?? 0) + k.winRateListening;
-              }
+              toUpdate = {ListTableFields.totalWinRateListeningField: overall};
               break;
             case StudyModes.speaking:
-              if (k.winRateSpeaking != DatabaseConstants.emptyWinRate) {
-                overallScore[kanListName] =
-                    (overallScore[kanListName] ?? 0) + k.winRateSpeaking;
-              }
+              toUpdate = {ListTableFields.totalWinRateSpeakingField: overall};
               break;
           }
-        });
-
-        /// For each list, update its overall rating after getting the overall score
-        final double overall =
-            overallScore[kanListName]! / orderedMap[kanListName]!.length;
-
-        Map<String, dynamic> toUpdate = {};
-
-        /// We just need to update the totalWinRate as a reflection of the already
-        /// meaned out words in the KanList
-        switch (event.mode) {
-          case StudyModes.writing:
-            toUpdate = {ListTableFields.totalWinRateWritingField: overall};
-            break;
-          case StudyModes.reading:
-            toUpdate = {ListTableFields.totalWinRateReadingField: overall};
-            break;
-          case StudyModes.recognition:
-            toUpdate = {ListTableFields.totalWinRateRecognitionField: overall};
-            break;
-          case StudyModes.listening:
-            toUpdate = {ListTableFields.totalWinRateListeningField: overall};
-            break;
-          case StudyModes.speaking:
-            toUpdate = {ListTableFields.totalWinRateSpeakingField: overall};
-            break;
+          await _listRepository.updateList(kanListName, toUpdate);
         }
-        await _listRepository.updateList(kanListName, toUpdate);
+        emit(const StudyModeState.testFinished());
       }
-
-      emit(const StudyModeState.testFinished());
     });
 
     on<StudyModeEventGetScore>((event, emit) async {

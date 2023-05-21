@@ -8,12 +8,14 @@ import 'package:kanpractice/application/folder_list/folder_bloc.dart';
 import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
 import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
 import 'package:kanpractice/application/lists/lists_bloc.dart';
+import 'package:kanpractice/application/purchases/purchases_bloc.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/archive_page/archive_grammar_list.dart';
 import 'package:kanpractice/presentation/archive_page/archive_word_list.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
+import 'package:kanpractice/presentation/core/types/dictionary_types.dart';
 import 'package:kanpractice/presentation/core/types/list_details_types.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/word_categories_filters.dart';
@@ -24,13 +26,15 @@ import 'package:kanpractice/presentation/core/types/home_types.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:kanpractice/presentation/core/types/tab_types.dart';
 import 'package:kanpractice/presentation/core/widgets/kanlists/kp_kanlists.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_pro_icon.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_pro_perks.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_search_bar.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_test_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
-import 'package:kanpractice/presentation/dictionary_page/dictionary_page.dart';
 import 'package:kanpractice/presentation/folder_list_page/folder_list_page.dart';
 import 'package:kanpractice/presentation/home_page/widgets/home_bottom_navigation.dart';
 import 'package:kanpractice/presentation/settings_page/settings_page.dart';
@@ -111,7 +115,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           reset: true,
         ));
 
-    context.read<BackupBloc>().add(BackupGetVersion(context));
+    context.read<BackupBloc>().add(const BackupGetVersion());
 
     _addReviewEvent();
 
@@ -204,6 +208,30 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     }
   }
 
+  _onTutorialEnd() {
+    _onTutorial = false;
+    showDialog(
+      context: context,
+      builder: (context) => KPDialog(
+        title: Text('updated_to_pro'.tr()),
+        content: SizedBox(
+          height: MediaQuery.of(context).size.height / 2,
+          width: MediaQuery.of(context).size.width,
+          child: const KPProPerks(
+            showIsProSubtitle: false,
+            applyPaddings: false,
+            proIconSize: 128,
+          ),
+        ),
+        positiveButtonText: 'check_it_out'.tr(),
+        negativeButton: false,
+        onPositive: () {
+          Navigator.of(context).pushNamed(KanPracticePages.storePage);
+        },
+      ),
+    );
+  }
+
   bool _showPendingReview(List<int> toReview) {
     return toReview.isNotEmpty && toReview.any((i) => i > 0);
   }
@@ -226,13 +254,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         await Utils.showVersionNotes(context,
             version: _newVersion, notes: _notes);
       },
-      icon: const Icon(Icons.update_rounded, color: KPColors.secondaryColor),
-    );
-    final dictHistory = IconButton(
-      onPressed: () {
-        Navigator.of(context).pushNamed(KanPracticePages.historyWordPage);
-      },
-      icon: const Icon(Icons.history_rounded),
+      icon: BlocBuilder<PurchasesBloc, PurchasesState>(
+        builder: (context, state) {
+          return state.maybeWhen(
+            updatedToPro: () => Icon(Icons.update_rounded,
+                color: KPColors.getSecondaryColor(context)),
+            orElse: () => const Icon(Icons.update_rounded),
+          );
+        },
+      ),
     );
     final marketIcon = IconButton(
       key: market,
@@ -241,18 +271,32 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       },
       icon: const Icon(Icons.shopping_bag_rounded),
     );
+    final proIcon = BlocBuilder<PurchasesBloc, PurchasesState>(
+      builder: (context, state) {
+        return state.maybeWhen(
+          updatedToPro: () => const SizedBox(),
+          loading: () => const SizedBox(),
+          orElse: () => IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(KanPracticePages.storePage);
+            },
+            icon: const KPProIcon(),
+          ),
+        );
+      },
+    );
 
-    final List<IconButton> updateWithAppBarIcons =
+    final List<Widget> updateWithAppBarIcons =
         _currentPage == HomeType.dictionary
-            ? [updateIcon, dictHistory]
+            ? [updateIcon, proIcon]
             : _currentPage == HomeType.kanlist
-                ? [updateIcon, marketIcon]
-                : [updateIcon];
-    final List<IconButton> appBarIcons = _currentPage == HomeType.dictionary
-        ? [dictHistory]
+                ? [updateIcon, proIcon, marketIcon]
+                : [updateIcon, proIcon];
+    final List<Widget> appBarIcons = _currentPage == HomeType.dictionary
+        ? [proIcon]
         : _currentPage == HomeType.kanlist
-            ? [marketIcon]
-            : [];
+            ? [proIcon, marketIcon]
+            : [proIcon];
 
     return BlocListener<BackupBloc, BackupState>(
       listener: (context, state) {
@@ -280,7 +324,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 market,
                 settings,
               ], CoachTutorialParts.kanList)
-                  .showTutorial(context, onEnd: () => _onTutorial = false);
+                  .showTutorial(context, onEnd: _onTutorialEnd);
             }
           });
         },
@@ -300,7 +344,26 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             }
             return true;
           },
-          appBarTitle: _currentPage.appBarTitle,
+          appBarTitle: BlocBuilder<PurchasesBloc, PurchasesState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                updatedToPro: () => Row(
+                  children: [
+                    const KPProIcon(),
+                    const SizedBox(width: KPMargins.margin8),
+                    FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text(_currentPage.appBarTitle),
+                    )
+                  ],
+                ),
+                orElse: () => FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(_currentPage.appBarTitle),
+                ),
+              );
+            },
+          ),
           appBarActions:
               _newVersion.isNotEmpty ? updateWithAppBarIcons : appBarIcons,
           bottomNavigationWidget: HomeBottomNavigation(
@@ -473,7 +536,79 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ),
           ],
         ),
-        const DictionaryPage(args: DictionaryArguments(searchInJisho: true)),
+        Padding(
+          padding: const EdgeInsets.only(top: KPMargins.margin12),
+          child: ListView.separated(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            itemCount: DictionaryType.values.length,
+            separatorBuilder: (_, __) => const Divider(),
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(DictionaryType.values[index].title),
+                subtitle: Padding(
+                  padding: const EdgeInsets.only(top: KPMargins.margin4),
+                  child: Text(DictionaryType.values[index].explanation),
+                ),
+                leading: DictionaryType.values[index] == DictionaryType.ocr
+                    ? ShaderMask(
+                        shaderCallback: (bounds) {
+                          return const LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Colors.blue,
+                                Colors.green,
+                                Colors.yellow,
+                                Colors.red,
+                                Colors.purple
+                              ]).createShader(bounds);
+                        },
+                        child: Icon(DictionaryType.values[index].icon,
+                            color: Colors.white),
+                      )
+                    : Icon(DictionaryType.values[index].icon),
+                trailing: DictionaryType.values[index] == DictionaryType.ocr
+                    ? BlocBuilder<PurchasesBloc, PurchasesState>(
+                        builder: (context, state) {
+                          return state.maybeWhen(
+                            updatedToPro: () => const Icon(Icons.arrow_forward),
+                            orElse: () => const KPProIcon(),
+                          );
+                        },
+                      )
+                    : const Icon(Icons.arrow_forward),
+                contentPadding: const EdgeInsets.all(KPMargins.margin8),
+                onTap: () {
+                  switch (DictionaryType.values[index]) {
+                    case DictionaryType.ocr:
+                      if (context.read<PurchasesBloc>().state
+                          is! PurchasesUpdatedToPro) {
+                        Navigator.of(context)
+                            .pushNamed(KanPracticePages.storePage);
+                      } else {
+                        Navigator.of(context)
+                            .pushNamed(KanPracticePages.ocrPage);
+                      }
+                      break;
+                    case DictionaryType.convolution:
+                      Navigator.of(context).pushNamed(
+                        KanPracticePages.dictionaryPage,
+                        arguments:
+                            const DictionaryArguments(searchInJisho: true),
+                      );
+                      break;
+                    case DictionaryType.history:
+                      Navigator.of(context)
+                          .pushNamed(KanPracticePages.historyWordPage);
+                      break;
+                  }
+                },
+              );
+            },
+          ),
+        ),
         TabBarView(
           controller: _archiveTabController,
           children: [

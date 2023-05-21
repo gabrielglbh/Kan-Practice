@@ -2,10 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/add_market_list/add_to_market_bloc.dart';
+import 'package:kanpractice/application/auth/auth_bloc.dart';
 import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/presentation/add_market_list_page/widgets/language_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/types/market_list_type.dart';
 import 'package:kanpractice/presentation/add_market_list_page/widgets/add_to_market_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/widgets/folder_list_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_language_flag.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_text_form.dart';
@@ -26,6 +29,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
   late FocusNode _fnUser;
   late TextEditingController _tcList;
   late FocusNode _fnList;
+  late String _language;
   MarketListType _selectedType = MarketListType.list;
   String _listSelection = "add_to_market_select_list".tr();
 
@@ -37,6 +41,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
     _fnUser = FocusNode();
     _tcList = TextEditingController();
     _fnList = FocusNode();
+    _language = Utils.currentLocale;
     super.initState();
   }
 
@@ -67,15 +72,16 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                 loading: () => const SizedBox(),
                 orElse: () => IconButton(
                   onPressed: () {
-                    context
-                        .read<AddToMarketBloc>()
-                        .add(AddToMarketEventOnUpload(
-                          _selectedType,
-                          _listSelection,
-                          _tc.text,
-                          _tcUser.text,
-                          _tcList.text,
-                        ));
+                    context.read<AddToMarketBloc>().add(
+                          AddToMarketEventOnUpload(
+                            _selectedType,
+                            _listSelection,
+                            _tc.text,
+                            _tcUser.text,
+                            _tcList.text,
+                            _language,
+                          ),
+                        );
                   },
                   icon: const Icon(Icons.check),
                 ),
@@ -83,52 +89,63 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
             },
           )
         ],
-        child: SingleChildScrollView(
-          child: BlocConsumer<AddToMarketBloc, AddToMarketState>(
-            listener: (context, state) {
-              state.mapOrNull(
-                error: (error) {
-                  Utils.getSnackBar(context, error.message);
-                },
-                userRetrieved: (user) {
-                  _tcUser.text = user.name;
-                },
-              );
-            },
-            builder: (context, state) {
-              return state.maybeWhen(
-                loading: () => const KPProgressIndicator(),
-                loaded: () => Center(
-                    child: Column(
+        child: BlocConsumer<AddToMarketBloc, AddToMarketState>(
+          listener: (context, state) {
+            state.mapOrNull(
+              error: (error) {
+                Utils.getSnackBar(context, error.message);
+              },
+              userRetrieved: (user) {
+                _tcUser.text = user.name;
+              },
+            );
+          },
+          builder: (context, state) {
+            return state.maybeWhen(
+              loading: () => const Expanded(child: KPProgressIndicator()),
+              loaded: () => Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.check_circle_rounded,
+                      color: KPColors.getSecondaryColor(context),
+                      size: KPSizes.maxHeightValidationCircle),
+                  Padding(
+                    padding: const EdgeInsets.all(KPMargins.margin16),
+                    child: Text("add_to_market_successfully_created".tr(),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyLarge),
+                  )
+                ],
+              )),
+              orElse: () => SingleChildScrollView(
+                child: Column(
                   children: [
-                    Icon(Icons.check_circle_rounded,
-                        color: KPColors.getSecondaryColor(context),
-                        size: KPSizes.maxHeightValidationCircle),
-                    Padding(
-                      padding: const EdgeInsets.all(KPMargins.margin16),
-                      child: Text("add_to_market_successfully_created".tr(),
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyLarge),
-                    )
-                  ],
-                )),
-                orElse: () => Column(
-                  children: [
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(bottom: KPMargins.margin16),
-                      child: Row(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(right: KPMargins.margin8),
-                            child: Icon(Icons.info_outline_rounded),
+                    BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        return state.maybeWhen(
+                          loaded: (_) => const SizedBox(),
+                          orElse: () => Padding(
+                            padding: const EdgeInsets.only(
+                                bottom: KPMargins.margin16),
+                            child: Row(
+                              children: [
+                                const Padding(
+                                  padding:
+                                      EdgeInsets.only(right: KPMargins.margin8),
+                                  child: Icon(Icons.info_outline_rounded),
+                                ),
+                                Expanded(
+                                    child: Text(
+                                        "add_to_market_needs_registration".tr(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge))
+                              ],
+                            ),
                           ),
-                          Expanded(
-                              child: Text(
-                                  "add_to_market_needs_registration".tr(),
-                                  style: Theme.of(context).textTheme.bodyLarge))
-                        ],
-                      ),
+                        );
+                      },
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -163,14 +180,51 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                         ),
                       ),
                     ),
-                    KPTextForm(
-                        header: "add_to_market_list_name_label".tr(),
-                        hint: "add_to_market_list_name_hint".tr(),
-                        controller: _tcList,
-                        focusNode: _fnList,
-                        maxLines: 1,
-                        maxLength: 32,
-                        onEditingComplete: () => _fnUser.requestFocus()),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: KPTextForm(
+                              header: "add_to_market_list_name_label".tr(),
+                              hint: "add_to_market_list_name_hint".tr(),
+                              controller: _tcList,
+                              focusNode: _fnList,
+                              maxLines: 1,
+                              maxLength: 32,
+                              onEditingComplete: () => _fnUser.requestFocus()),
+                        ),
+                        const SizedBox(width: KPMargins.margin24),
+                        Column(
+                          children: [
+                            Text('add_market_list_language'.tr(),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                style: Theme.of(context).textTheme.titleLarge),
+                            const SizedBox(height: KPMargins.margin16),
+                            GestureDetector(
+                              onTap: () async {
+                                final code =
+                                    await LanguageBottomSheet.show(context);
+                                setState(() {
+                                  _language = code ?? _language;
+                                });
+                              },
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.all(KPMargins.margin16),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: KPColors.getSubtle(context)),
+                                  borderRadius:
+                                      BorderRadius.circular(KPRadius.radius16),
+                                ),
+                                child: KPLanguageFlag(language: _language),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                     KPTextForm(
                         header: "add_to_market_username_label".tr(),
                         hint: "add_to_market_username_hint".tr(),
@@ -190,9 +244,9 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                         onEditingComplete: () => _fn.unfocus())
                   ],
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

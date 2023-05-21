@@ -1,5 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:kanpractice/presentation/core/util/string_similarity.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -11,6 +14,9 @@ extension StringExtension on String {
   String get capitalized {
     return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
   }
+
+  double similarityTo(String? other) =>
+      StringSimilarity.compareTwoStrings(this, other);
 }
 
 /// Class that contains useful methods for all classes to use
@@ -42,6 +48,33 @@ class Utils {
     }
   }
 
+  // Returns a emoji based on the [winRate]
+  static IconData getEmojiBasedOnWinRate(double winRate) {
+    if (winRate >= 0 && winRate <= 0.1) {
+      return FontAwesomeIcons.faceDizzy;
+    } else if (winRate > 0.1 && winRate <= 0.2) {
+      return FontAwesomeIcons.faceFrown;
+    } else if (winRate > 0.2 && winRate <= 0.3) {
+      return FontAwesomeIcons.faceFrown;
+    } else if (winRate > 0.3 && winRate <= 0.4) {
+      return FontAwesomeIcons.faceFrown;
+    } else if (winRate > 0.4 && winRate <= 0.5) {
+      return FontAwesomeIcons.faceGrinBeamSweat;
+    } else if (winRate > 0.5 && winRate <= 0.6) {
+      return FontAwesomeIcons.faceGrinBeamSweat;
+    } else if (winRate > 0.6 && winRate <= 0.7) {
+      return FontAwesomeIcons.faceSmileBeam;
+    } else if (winRate > 0.7 && winRate <= 0.8) {
+      return FontAwesomeIcons.faceSmileBeam;
+    } else if (winRate > 0.8 && winRate <= 0.9) {
+      return FontAwesomeIcons.faceLaughBeam;
+    } else if (winRate > 0.9 && winRate <= 1) {
+      return FontAwesomeIcons.faceLaughBeam;
+    } else {
+      return FontAwesomeIcons.faceDizzy;
+    }
+  }
+
   /// Returns the color based on the given [score]
   static Color getColorBasedOnScore(double score) {
     if (score >= 0 && score <= 0.2) {
@@ -58,6 +91,9 @@ class Utils {
       return KPColors.primaryLight;
     }
   }
+
+  static String get currentLocale =>
+      PlatformDispatcher.instance.locale.languageCode;
 
   static String getFixedPercentageAsString(double rate) {
     return "${roundUpAsString(getFixedDouble(rate * 100))}%";
@@ -120,10 +156,8 @@ class Utils {
   /// Transforms the current time to milliseconds
   static int getCurrentMilliseconds() => DateTime.now().millisecondsSinceEpoch;
 
-  static Future<String> parseTodayDate(BuildContext context) async {
-    final locale =
-        EasyLocalization.of(context)?.currentLocale?.languageCode ?? "en";
-    await initializeDateFormatting(locale, null);
+  static Future<String> parseTodayDate() async {
+    await initializeDateFormatting(Utils.currentLocale, null);
     final today = DateTime.now();
     final formatter = DateFormat.yMd();
     return formatter.format(today);
@@ -133,12 +167,10 @@ class Utils {
 
   /// Parses the [date] that should be in milliseconds to a [DateTime] object
   /// and applies a parser with the time_ago package
-  static String parseDateMilliseconds(BuildContext context, int date) {
+  static String parseDateMilliseconds(int date) {
     final d = DateTime.fromMillisecondsSinceEpoch(date);
     Duration e = DateTime.now().difference(d);
-    return t.format(DateTime.now().subtract(e),
-        locale: (EasyLocalization.of(context)?.currentLocale?.languageCode ??
-            "en"));
+    return t.format(DateTime.now().subtract(e), locale: Utils.currentLocale);
   }
 
   static Future<void> showVersionNotes(
@@ -151,7 +183,7 @@ class Utils {
     String versionNotes = "";
     if (notes.isNotEmpty) {
       for (var note in notes) {
-        versionNotes = "$versionNotes$note\n";
+        versionNotes = "$versionNotes$note\n\n";
       }
       child = Text(versionNotes);
     }
@@ -165,14 +197,20 @@ class Utils {
           title: Text(version != null
               ? "word_lists_versionDialog_title".tr()
               : "${"word_lists_versionDialog_notes".tr()} ${pi.version}"),
-          content: version != null
-              ? Wrap(
-                  children: [
+          content: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height / 2,
+            child: Scrollbar(
+              thumbVisibility: true,
+              child: ListView(
+                children: [
+                  if (version == null)
                     Text("${"word_lists_versionDialog_notes".tr()} $version\n"),
-                    child
-                  ],
-                )
-              : child,
+                  child
+                ],
+              ),
+            ),
+          ),
           positiveButtonText: version != null
               ? 'word_lists_versionDialog_button_label'.tr()
               : 'Ok',

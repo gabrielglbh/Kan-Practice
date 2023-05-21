@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/services/i_text_to_speech_repository.dart';
@@ -11,6 +13,7 @@ class TextToSpeechRepositoryImpl implements ITextToSpeechRepository {
   @override
   Future<void> speakWord(String? word) async {
     if (word != null) {
+      if (Platform.isIOS) await _tts.setSharedInstance(true);
       await _tts.setLanguage("ja-JP");
       await _tts.setVolume(1.0);
       await _tts.speak(word);

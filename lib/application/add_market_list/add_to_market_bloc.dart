@@ -65,6 +65,7 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
               final res = await _marketRepository.uploadListToMarketPlace(
                   event.listNameForMarket,
                   list,
+                  event.language,
                   words,
                   grammar,
                   event.description);
@@ -96,6 +97,7 @@ class AddToMarketBloc extends Bloc<AddToMarketEvent, AddToMarketState> {
               final res = await _marketRepository.uploadFolderToMarketPlace(
                   event.listNameForMarket,
                   folder,
+                  event.language,
                   lists,
                   words,
                   grammar,

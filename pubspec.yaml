@@ -1,10 +1,10 @@
 name: kanpractice
 description: A Flutter project to learn and study the different kanjis.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
-version: 4.3.2+39
+version: 5.0.0+41
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=2.19.0 <3.0.0"
 
 # flutter pub upgrade --major-versions
 dependencies:
@@ -12,50 +12,65 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.2
   equatable: ^2.0.5
-  cupertino_icons: ^1.0.2
-  sqflite: ^2.2.6
-  firebase_core: ^2.9.0
-  firebase_auth: ^4.4.0
-  firebase_messaging: ^14.4.0
-  flutter_local_notifications: ^12.0.4
-  cloud_firestore: ^4.5.0
+  cupertino_icons: ^1.0.5
+  sqflite: ^2.2.8
+  firebase_core: ^2.13.0
+  firebase_auth: ^4.6.1
+  firebase_messaging: ^14.6.1
+  flutter_local_notifications: ^14.0.0
+  cloud_firestore: ^4.7.1
   easy_localization: ^3.0.1
   provider: ^6.0.5
-  shared_preferences: ^2.1.0
-  path: ^1.8.2
-  json_annotation: ^4.8.0
-  syncfusion_flutter_gauges: ^21.1.38
-  syncfusion_flutter_charts: ^21.1.38
+  shared_preferences: ^2.1.1
+  path: ^1.8.3
+  json_annotation: ^4.8.1
+  syncfusion_flutter_gauges: ^21.2.5
+  syncfusion_flutter_charts: ^21.2.5
   percent_indicator: ^4.2.3
   kana_kit: ^2.0.0
-  timeago: ^3.3.0
-  flutter_launcher_icons: ^0.11.0
-  package_info_plus: ^1.4.0
-  url_launcher: ^6.1.10
+  timeago: ^3.4.0
+  flutter_launcher_icons: ^0.13.1
+  package_info_plus: ^3.0.3
+  url_launcher: ^6.1.11
   flutter_tts: ^3.6.3
   unofficial_jisho_api: ^3.0.0
   page_transition: ^2.0.9
   cached_network_image: ^3.2.3
   # bash android_tflite.sh to get the jniLibs
-  tflite_flutter: ^0.9.0
+  tflite_flutter: ^0.9.5
   tflite_flutter_helper:
     git:
-      url: https://github.com/gabrielglbh/tflite_flutter_helper
-      ref: 5b557f2
-  device_info_plus: ^4.0.0
+      url: https://github.com/pnyompen/tflite_flutter_helper.git
+      ref: 39a5660e9d6da7b9565ef7ab7fb44e6535e6275a
+  device_info_plus: ^9.0.0
   tutorial_coach_mark: ^1.2.8
   flutter_rating_bar: ^4.0.1
-  collection: ^1.17.0
+  collection: ^1.17.1
   bloc: ^8.1.1
-  image: ^3.3.0
-  intl: ^0.17.0
+  image: ^4.0.17
+  intl: ^0.18.0
   app_settings: ^4.2.0
   injectable: ^2.1.1
-  get_it: ^7.2.0
-  flutter_markdown: ^0.6.13
-  markdown: ^7.0.1
-  freezed: ^2.3.2
+  get_it: ^7.6.0
+  flutter_markdown: ^0.6.14
+  markdown: ^7.1.0
+  freezed: ^2.3.4
   freezed_annotation: ^2.2.0
+  purchases_flutter: ^4.12.0
+  flutter_dotenv: ^5.0.2
+  http: ^0.13.6
+  google_mlkit_translation: ^0.6.0
+  google_mlkit_text_recognition: ^0.6.0
+  image_picker: ^0.8.7
+  permission_handler: ^10.2.0
+  dash_flags: ^0.1.1
+  camera: ^0.10.5
+  image_cropper: ^3.0.3
+  path_provider: ^2.0.15
+  carousel_slider: ^4.2.1
+  speech_to_text: ^6.1.1
+  font_awesome_flutter: ^10.4.0
+  google_sign_in: ^6.1.0
 
 flutter_icons:
   android: "launcher_icon"
@@ -77,3 +92,7 @@ flutter:
     - lib/presentation/core/localization/
     - assets/model/
     - assets/initialData/
+    - assets/environment/
+    - assets/images/
+    - assets/images/es/
+    - assets/images/en/

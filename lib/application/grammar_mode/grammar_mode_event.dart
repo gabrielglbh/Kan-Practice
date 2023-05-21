@@ -40,12 +40,13 @@ class GrammarModeEventUpdateScoreForTestsAffectingPractice
     extends GrammarModeEvent {
   final List<GrammarPoint> grammarPoints;
   final GrammarModes mode;
+  final bool shouldAffectPractice;
 
   const GrammarModeEventUpdateScoreForTestsAffectingPractice(
-      this.grammarPoints, this.mode);
+      this.grammarPoints, this.mode, this.shouldAffectPractice);
 
   @override
-  List<Object> get props => [grammarPoints, mode];
+  List<Object> get props => [grammarPoints, mode, shouldAffectPractice];
 }
 
 class GrammarModeEventGetScore extends GrammarModeEvent {

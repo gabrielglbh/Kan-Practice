@@ -14,12 +14,18 @@ class ModeArguments {
   /// Defaults to false.
   final bool isNumberTest;
 
-  ModeArguments(
-      {required this.studyList,
-      required this.isTest,
-      required this.mode,
-      required this.testMode,
-      required this.studyModeHeaderDisplayName,
-      this.testHistoryDisplasyName = "",
-      this.isNumberTest = false});
+  /// Only used when in listening mode and performing a Translation Test.
+  /// Defaults to false.
+  final bool isTranslationTest;
+
+  ModeArguments({
+    required this.studyList,
+    required this.isTest,
+    required this.mode,
+    required this.testMode,
+    required this.studyModeHeaderDisplayName,
+    this.testHistoryDisplasyName = "",
+    this.isNumberTest = false,
+    this.isTranslationTest = false,
+  });
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:kanpractice/presentation/account_management_page/account_managament_page.dart';
 import 'package:kanpractice/presentation/add_grammar_point_page/add_grammar_point_page.dart';
 import 'package:kanpractice/presentation/add_grammar_point_page/arguments.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
@@ -20,12 +21,14 @@ import 'package:kanpractice/presentation/grammar_modes/utils/grammar_mode_argume
 import 'package:kanpractice/presentation/home_page/home_page.dart';
 import 'package:kanpractice/presentation/list_details_page/list_details_page.dart';
 import 'package:kanpractice/presentation/market_page/market_page.dart';
+import 'package:kanpractice/presentation/ocr_page/ocr_page.dart';
 import 'package:kanpractice/presentation/settings_daily_options_page/settings_daily_options_page.dart';
 import 'package:kanpractice/presentation/settings_toggle_page/settings_toggle_page.dart';
 import 'package:kanpractice/presentation/statistics_page/statistics_page.dart';
 import 'package:kanpractice/presentation/statistics_page/tab/test_history_tab/test_history_filters.dart';
 import 'package:kanpractice/presentation/statistics_page/tab/test_history_tab/test_history_landscape.dart';
 import 'package:kanpractice/presentation/statistics_page/tab/test_history_tab/test_history_tab.dart';
+import 'package:kanpractice/presentation/store_page/store_page.dart';
 import 'package:kanpractice/presentation/study_modes/listening_page.dart';
 import 'package:kanpractice/presentation/study_modes/reading_page.dart';
 import 'package:kanpractice/presentation/study_modes/recognition_page.dart';
@@ -34,6 +37,7 @@ import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 import 'package:kanpractice/presentation/study_modes/writing_page.dart';
 import 'package:kanpractice/presentation/test_result_page/arguments.dart';
 import 'package:kanpractice/presentation/test_result_page/test_result_page.dart';
+import 'package:kanpractice/presentation/translation_test_page/translation_test_page.dart';
 import 'package:kanpractice/presentation/word_history_page/word_history_page.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -75,7 +79,9 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       TestResultArguments args = settings.arguments as TestResultArguments;
       return CupertinoPageRoute(builder: (_) => TestResultPage(args: args));
     case KanPracticePages.loginPage:
-      return CupertinoPageRoute(builder: (_) => const LoginPage());
+      String? productId = settings.arguments as String?;
+      return CupertinoPageRoute(
+          builder: (_) => LoginPage(productId: productId));
     case KanPracticePages.backUpPage:
       String args = settings.arguments as String;
       return CupertinoPageRoute(builder: (_) => BackUpPage(uid: args));
@@ -126,6 +132,18 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return CupertinoPageRoute(builder: (_) {
         return const MarketPage();
       });
+    case KanPracticePages.storePage:
+      return CupertinoPageRoute(builder: (_) {
+        return const StorePage();
+      });
+    case KanPracticePages.translationsTestPage:
+      ModeArguments args = settings.arguments as ModeArguments;
+      return CupertinoPageRoute(
+          builder: (_) => TranslationTestPage(args: args));
+    case KanPracticePages.ocrPage:
+      return CupertinoPageRoute(builder: (_) => const OCRPage());
+    case KanPracticePages.accountManagementPage:
+      return CupertinoPageRoute(builder: (_) => const AccountManagementPage());
   }
   return null;
 }

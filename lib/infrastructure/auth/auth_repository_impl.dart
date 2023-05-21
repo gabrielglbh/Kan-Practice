@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/domain/backup/i_backup_repository.dart';
 import 'package:kanpractice/presentation/core/types/sign_in_mode.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kanpractice/domain/auth/i_auth_repository.dart';
@@ -8,9 +8,9 @@ import 'package:kanpractice/domain/auth/i_auth_repository.dart';
 @LazySingleton(as: IAuthRepository)
 class AuthRepositoryImpl implements IAuthRepository {
   final FirebaseAuth _auth;
-  final IBackupRepository _backupRepository;
+  final GoogleSignIn _googleSignIn;
 
-  AuthRepositoryImpl(this._auth, this._backupRepository);
+  AuthRepositoryImpl(this._auth, this._googleSignIn);
 
   @override
   Future<String> changePassword(
@@ -53,6 +53,17 @@ class AuthRepositoryImpl implements IAuthRepository {
   }
 
   @override
+  Future<int> closeGoogleSession() async {
+    User? user = getUser();
+    if (user != null) {
+      await _googleSignIn.signOut();
+      return 0;
+    } else {
+      return -1;
+    }
+  }
+
+  @override
   Future<String> deleteAccount(String password) async {
     try {
       User? user = _auth.currentUser;
@@ -67,7 +78,6 @@ class AuthRepositoryImpl implements IAuthRepository {
         if (reUser != null &&
             reUser.uid == user.uid &&
             reUser.email == user.email) {
-          await _backupRepository.removeBackUp();
           await user.delete();
           return "";
         } else {
@@ -85,23 +95,45 @@ class AuthRepositoryImpl implements IAuthRepository {
   User? getUser() => _auth.currentUser;
 
   @override
-  Future<String> handleLogIn(
+  Future<User?> handleLogIn(
     SignMode mode,
     String email,
     String password,
   ) async {
     try {
+      late UserCredential credential;
       if (mode == SignMode.signup) {
-        await _auth.createUserWithEmailAndPassword(
+        credential = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
       } else if (mode == SignMode.login) {
-        await _auth.signInWithEmailAndPassword(
+        credential = await _auth.signInWithEmailAndPassword(
             email: email, password: password);
       }
+      return credential.user;
     } catch (err) {
-      return err.toString();
+      print(err.toString());
+      return null;
     }
-    return "";
+  }
+
+  @override
+  Future<User?> handleGoogleLogIn() async {
+    try {
+      if (await _googleSignIn.isSignedIn()) _googleSignIn.signOut();
+
+      final googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) return null;
+
+      final auth = await googleUser.authentication;
+      final credentials = GoogleAuthProvider.credential(
+        accessToken: auth.accessToken,
+        idToken: auth.idToken,
+      );
+      return (await _auth.signInWithCredential(credentials)).user;
+    } catch (err) {
+      print(err.toString());
+      return null;
+    }
   }
 
   @override

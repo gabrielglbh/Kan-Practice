@@ -1,5 +1,6 @@
+import 'dart:typed_data';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:image/image.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -35,7 +36,7 @@ class DictionaryBloc extends Bloc<DictionaryEvent, DictionaryState> {
     on<DictionaryEventLoading>((event, emit) async {
       try {
         emit(const DictionaryState.loading());
-        List<Category> categories = _classifierRepository.predict(event.image);
+        List<Category> categories = _classifierRepository.predict(event.data);
         categories =
             categories.getRange(0, KPSizes.numberOfPredictedWords).toList();
         emit(DictionaryState.loaded(categories));

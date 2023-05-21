@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
 import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
+import 'package:kanpractice/application/purchases/purchases_bloc.dart';
+import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/core/widgets/blitz/kp_blitz_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/widgets/blitz/kp_number_test_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/widgets/blitz/kp_translation_test_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_kanlist_category_selection_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/widgets/blitz/daily_test_bottom_sheet.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_pro_icon.dart';
 import 'package:kanpractice/presentation/home_page/widgets/folder_selection_bottom_sheet.dart';
 import 'package:kanpractice/presentation/home_page/widgets/kanlist_selection_bottom_sheet.dart';
 
@@ -100,6 +105,47 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
   }
 
   Widget _body({bool hasWords = false}) {
+    final folder = [
+      _testBasedButtons(context, Tests.blitz),
+      _testBasedButtons(context, Tests.time),
+      _testBasedButtons(context, Tests.less),
+      _testBasedButtons(context, Tests.categories),
+      _testBasedButtons(context, Tests.daily, hasWords: hasWords)
+    ];
+    final normal = List.generate(
+      Tests.values.length,
+      (index) {
+        if (Tests.values[index] == Tests.daily) {
+          return _testBasedButtons(
+            context,
+            Tests.daily,
+            hasWords: hasWords,
+          );
+        }
+        if (Tests.values[index] == Tests.translation) {
+          return BlocBuilder<PurchasesBloc, PurchasesState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                updatedToPro: () =>
+                    _testBasedButtons(context, Tests.values[index]),
+                orElse: () => KPButton(
+                  customIcon: const Padding(
+                    padding: EdgeInsets.only(bottom: KPMargins.margin4),
+                    child: KPProIcon(color: Colors.white),
+                  ),
+                  title2: Tests.values[index].nameAbbr,
+                  color: KPColors.midGrey,
+                  onTap: () {
+                    Navigator.of(context).pushNamed(KanPracticePages.storePage);
+                  },
+                ),
+              );
+            },
+          );
+        }
+        return _testBasedButtons(context, Tests.values[index]);
+      },
+    );
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
       child: GridView(
@@ -109,27 +155,7 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
           crossAxisCount: 3,
           childAspectRatio: 1.3,
         ),
-        children: widget.folder != null
-            ? [
-                _testBasedButtons(context, Tests.blitz),
-                _testBasedButtons(context, Tests.time),
-                _testBasedButtons(context, Tests.less),
-                _testBasedButtons(context, Tests.categories),
-                _testBasedButtons(context, Tests.daily, hasWords: hasWords)
-              ]
-            : List.generate(
-                Tests.values.length,
-                (index) {
-                  if (Tests.values[index] == Tests.daily) {
-                    return _testBasedButtons(
-                      context,
-                      Tests.daily,
-                      hasWords: hasWords,
-                    );
-                  }
-                  return _testBasedButtons(context, Tests.values[index]);
-                },
-              ),
+        children: widget.folder != null ? folder : normal,
       ),
     );
   }
@@ -141,10 +167,8 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
   }) {
     bool hasNoDailyTests = !hasWords && mode == Tests.daily;
     if (hasNoDailyTests) {
-      final locale =
-          EasyLocalization.of(context)?.currentLocale?.languageCode ?? 'en';
       final now = DateTime.now();
-      final nextDay = DateFormat.MMMMd(locale)
+      final nextDay = DateFormat.MMMMd(Utils.currentLocale)
           .format(DateTime(now.year, now.month, now.day + 1));
       return Stack(
         alignment: Alignment.topRight,
@@ -164,9 +188,9 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                   ),
                 ),
                 const SizedBox(height: 6),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Icon(Icons.lock_rounded, size: 15, color: Colors.white),
                     Icon(Icons.arrow_forward_rounded,
                         size: 15, color: Colors.white),
@@ -251,6 +275,10 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                 break;
               case Tests.daily:
                 await DailyBottomSheet.show(context)
+                    .then((_) => _checkReviewWords());
+                break;
+              case Tests.translation:
+                await KPTranslationTestBottomSheet.show(context)
                     .then((_) => _checkReviewWords());
                 break;
             }

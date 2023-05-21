@@ -82,14 +82,15 @@ class GrammarModeUpdateHandler {
                       /// If the test was a number test, just go to the result page with
                       /// a null study list to not show anything.
                       if (!args.isNumberTest) {
-                        if (getIt<PreferencesService>()
-                                .readData(SharedKeys.affectOnPractice) ??
-                            false) {
-                          bloc.read<GrammarModeBloc>().add(
-                                GrammarModeEventUpdateScoreForTestsAffectingPractice(
-                                    args.studyList, args.mode),
-                              );
-                        }
+                        bloc.read<GrammarModeBloc>().add(
+                              GrammarModeEventUpdateScoreForTestsAffectingPractice(
+                                args.studyList,
+                                args.mode,
+                                getIt<PreferencesService>().readData(
+                                        SharedKeys.affectOnPractice) ??
+                                    false,
+                              ),
+                            );
                         grammarList = _getMapOfGrammarPointInTest(
                             args.studyList, testScores);
                       }

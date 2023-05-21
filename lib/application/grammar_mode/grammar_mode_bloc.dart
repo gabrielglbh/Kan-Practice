@@ -188,6 +188,8 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
       /// Update in DB all words
       Map<String, dynamic> toUpdate = {};
 
+      final affects = event.shouldAffectPractice;
+
       for (int i = 0; i < testTracking.length; i++) {
         final s = testSM2Tracking.isEmpty ? null : testSM2Tracking[i];
         final g = testTracking[i];
@@ -208,7 +210,8 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
             toUpdate.addEntries([
               MapEntry(GrammarTableFields.dateLastShownField, g.seen),
               MapEntry(GrammarTableFields.dateLastShownDefinitionField, g.seen),
-              MapEntry(GrammarTableFields.winRateDefinitionField, g.score),
+              if (affects)
+                MapEntry(GrammarTableFields.winRateDefinitionField, g.score),
               if (s != null)
                 MapEntry(GrammarTableFields.previousIntervalDefinitionField,
                     s.previousInterval),
@@ -229,7 +232,8 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
               MapEntry(GrammarTableFields.dateLastShownField, g.seen),
               MapEntry(
                   GrammarTableFields.dateLastShownGrammarPointField, g.seen),
-              MapEntry(GrammarTableFields.winRateGrammarPointField, g.score),
+              if (affects)
+                MapEntry(GrammarTableFields.winRateGrammarPointField, g.score),
               if (s != null)
                 MapEntry(GrammarTableFields.previousIntervalGrammarPointField,
                     s.previousInterval),
@@ -251,52 +255,58 @@ class GrammarModeBloc extends Bloc<GrammarModeEvent, GrammarModeState> {
             g.listName, g.grammar, toUpdate);
       }
 
-      /// For every entry, populate the list with all of the grammar point of each list
-      /// that appeared on the test
-      for (int x = 0; x < orderedMap.keys.toList().length; x++) {
-        String kanListName = orderedMap.keys.toList()[x];
-        orderedMap[kanListName] = await _grammarPointRepository
-            .getAllGrammarPointsFromList(kanListName);
+      if (!affects) {
+        emit(const GrammarModeState.testFinished());
+      } else {
+        /// For every entry, populate the list with all of the grammar point of each list
+        /// that appeared on the test
+        for (int x = 0; x < orderedMap.keys.toList().length; x++) {
+          String kanListName = orderedMap.keys.toList()[x];
+          orderedMap[kanListName] = await _grammarPointRepository
+              .getAllGrammarPointsFromList(kanListName);
 
-        /// Calculate the overall score for each list on the treated map
-        orderedMap[kanListName]?.forEach((p) {
+          /// Calculate the overall score for each list on the treated map
+          orderedMap[kanListName]?.forEach((p) {
+            switch (event.mode) {
+              case GrammarModes.definition:
+                if (p.winRateDefinition != DatabaseConstants.emptyWinRate) {
+                  overallScore[kanListName] =
+                      (overallScore[kanListName] ?? 0) + p.winRateDefinition;
+                }
+                break;
+              case GrammarModes.grammarPoints:
+                if (p.winRateGrammarPoint != DatabaseConstants.emptyWinRate) {
+                  overallScore[kanListName] =
+                      (overallScore[kanListName] ?? 0) + p.winRateGrammarPoint;
+                }
+                break;
+            }
+          });
+
+          /// For each list, update its overall rating after getting the overall score
+          final double overall =
+              overallScore[kanListName]! / orderedMap[kanListName]!.length;
+
+          /// We just need to update the totalWinRate as a reflection of the already
+          /// meaned out words in the KanList
+          Map<String, dynamic> toUpdate = {};
+
           switch (event.mode) {
             case GrammarModes.definition:
-              if (p.winRateDefinition != DatabaseConstants.emptyWinRate) {
-                overallScore[kanListName] =
-                    (overallScore[kanListName] ?? 0) + p.winRateDefinition;
-              }
+              toUpdate = {ListTableFields.totalWinRateDefinitionField: overall};
               break;
             case GrammarModes.grammarPoints:
-              if (p.winRateGrammarPoint != DatabaseConstants.emptyWinRate) {
-                overallScore[kanListName] =
-                    (overallScore[kanListName] ?? 0) + p.winRateGrammarPoint;
-              }
+              toUpdate = {
+                ListTableFields.totalWinRateGrammarPointField: overall
+              };
               break;
           }
-        });
 
-        /// For each list, update its overall rating after getting the overall score
-        final double overall =
-            overallScore[kanListName]! / orderedMap[kanListName]!.length;
-
-        /// We just need to update the totalWinRate as a reflection of the already
-        /// meaned out words in the KanList
-        Map<String, dynamic> toUpdate = {};
-
-        switch (event.mode) {
-          case GrammarModes.definition:
-            toUpdate = {ListTableFields.totalWinRateDefinitionField: overall};
-            break;
-          case GrammarModes.grammarPoints:
-            toUpdate = {ListTableFields.totalWinRateGrammarPointField: overall};
-            break;
+          await _listRepository.updateList(kanListName, toUpdate);
         }
 
-        await _listRepository.updateList(kanListName, toUpdate);
+        emit(const GrammarModeState.testFinished());
       }
-
-      emit(const GrammarModeState.testFinished());
     });
 
     on<GrammarModeEventGetScore>((event, emit) async {

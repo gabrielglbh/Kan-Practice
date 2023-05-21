@@ -18,6 +18,7 @@ class _SettingsTogglePageState extends State<SettingsTogglePage> {
   bool _toggleAffect = false;
   bool _enableRep = false;
   bool _showBadgeWords = false;
+  bool _speakingWithSTT = false;
 
   @override
   void initState() {
@@ -26,6 +27,7 @@ class _SettingsTogglePageState extends State<SettingsTogglePage> {
     _aggStats = service.readData(SharedKeys.kanListListVisualization);
     _enableRep = service.readData(SharedKeys.enableRepetitionOnTests);
     _showBadgeWords = service.readData(SharedKeys.showBadgeWords);
+    _speakingWithSTT = service.readData(SharedKeys.speakingWithSTT);
     super.initState();
   }
 
@@ -135,6 +137,31 @@ class _SettingsTogglePageState extends State<SettingsTogglePage> {
               getIt<PreferencesService>()
                   .saveData(SharedKeys.showBadgeWords, !_showBadgeWords);
               setState(() => _showBadgeWords = !_showBadgeWords);
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.record_voice_over_rounded),
+            title: Text("settings_general_stt".tr()),
+            subtitle: Padding(
+                padding: const EdgeInsets.only(top: KPMargins.margin8),
+                child: Text("settings_general_stt_description".tr(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: KPColors.midGrey))),
+            trailing: KPSwitch(
+              onChanged: (bool value) {
+                getIt<PreferencesService>()
+                    .saveData(SharedKeys.speakingWithSTT, value);
+                setState(() => _speakingWithSTT = value);
+              },
+              value: _speakingWithSTT,
+            ),
+            onTap: () async {
+              getIt<PreferencesService>()
+                  .saveData(SharedKeys.speakingWithSTT, !_speakingWithSTT);
+              setState(() => _speakingWithSTT = !_speakingWithSTT);
             },
           ),
         ],

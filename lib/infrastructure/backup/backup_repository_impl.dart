@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/domain/alter_specific_data/alter_specific_data.dart';
@@ -239,7 +238,7 @@ class BackupRepositoryImpl implements IBackupRepository {
   }
 
   @override
-  Future<String> getLastUpdated(BuildContext context) async {
+  Future<String> getLastUpdated() async {
     User? user = _auth.currentUser;
     await user?.reload();
 
@@ -248,8 +247,7 @@ class BackupRepositoryImpl implements IBackupRepository {
       if (snapshot.exists) {
         int date = snapshot.get("lastUpdated");
         return "${"backup_firebase_getLastUpdated_successful".tr()} "
-            // ignore: use_build_context_synchronously
-            "${Utils.parseDateMilliseconds(context, date)}";
+            "${Utils.parseDateMilliseconds(date)}";
       } else {
         return "backup_firebase_getLastUpdated_noBackUp".tr();
       }
@@ -271,14 +269,13 @@ class BackupRepositoryImpl implements IBackupRepository {
   }
 
   @override
-  Future<List<String>> getVersionNotes(BuildContext context) async {
+  Future<List<String>> getVersionNotes() async {
     List<String> notes = [];
-    final locale = Localizations.localeOf(context).languageCode;
     try {
       final Future<DocumentSnapshot> ref =
           _ref.collection("Versioning").doc("version_notes").get();
       await ref.then((snapshot) {
-        notes = snapshot.get(locale).cast<String>();
+        notes = snapshot.get(Utils.currentLocale).cast<String>();
       });
     } catch (err) {
       notes = [];
@@ -531,8 +528,7 @@ class BackupRepositoryImpl implements IBackupRepository {
       }
 
       if (testDataSnapshot.size > 0) {
-        // TODO: Breaking change on 4.1.0
-        // with definition and grammar point fields being required not null
+        // TODO: Modify when adding something to TestData
         Map<String, dynamic> json = testDataSnapshot.docs[0].data();
         if (!json
             .containsKey(TestDataTableFields.testTotalCountDefinitionField)) {
@@ -561,6 +557,10 @@ class BackupRepositoryImpl implements IBackupRepository {
                 TestDataTableFields.testTotalWinRateGrammarPointField, 0)
           ]);
         }
+        if (!json.containsKey(TestDataTableFields.translationTestsField)) {
+          json.addEntries(
+              [const MapEntry(TestDataTableFields.translationTestsField, 0)]);
+        }
         backUpTestData = TestData.fromJson(json);
       }
 
@@ -572,8 +572,7 @@ class BackupRepositoryImpl implements IBackupRepository {
       }
 
       if (testSpecDataSnapshot.size > 0) {
-        // TODO: Breaking change on 4.1.0
-        // with definition and grammar point fields being required not null
+        // TODO: Modify when adding something to SpecificData
         for (int x = 0; x < testSpecDataSnapshot.size; x++) {
           Map<String, dynamic> json = testSpecDataSnapshot.docs[x].data();
           if (!json.containsKey(
@@ -609,8 +608,7 @@ class BackupRepositoryImpl implements IBackupRepository {
       }
 
       if (alterTestSpecDataSnapshot.size > 0) {
-        // TODO: Breaking change on 4.3.2
-        // with definition and grammar point fields being required not null
+        // TODO: Modify when adding something to AlterSpecificData
         for (int x = 0; x < alterTestSpecDataSnapshot.size; x++) {
           Map<String, dynamic> json = alterTestSpecDataSnapshot.docs[x].data();
           if (!json.containsKey(
@@ -625,6 +623,24 @@ class BackupRepositoryImpl implements IBackupRepository {
             json.addEntries([
               const MapEntry(
                   AlterTestSpecificDataTableFields.totalWinRateNumberTestField,
+                  0)
+            ]);
+          }
+          if (!json.containsKey(AlterTestSpecificDataTableFields
+              .totalTranslationTestCountField)) {
+            json.addEntries([
+              const MapEntry(
+                  AlterTestSpecificDataTableFields
+                      .totalTranslationTestCountField,
+                  0)
+            ]);
+          }
+          if (!json.containsKey(AlterTestSpecificDataTableFields
+              .totalWinRateTranslationTestField)) {
+            json.addEntries([
+              const MapEntry(
+                  AlterTestSpecificDataTableFields
+                      .totalWinRateTranslationTestField,
                   0)
             ]);
           }

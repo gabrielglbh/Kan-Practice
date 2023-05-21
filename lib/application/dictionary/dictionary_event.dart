@@ -8,12 +8,12 @@ abstract class DictionaryEvent extends Equatable {
 }
 
 class DictionaryEventLoading extends DictionaryEvent {
-  final Image image;
+  final ByteData data;
 
-  const DictionaryEventLoading({required this.image});
+  const DictionaryEventLoading({required this.data});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [data];
 }
 
 class DictionaryEventStart extends DictionaryEvent {}

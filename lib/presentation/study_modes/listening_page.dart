@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/purchases/purchases_bloc.dart';
+import 'package:kanpractice/application/sentence_generator/sentence_generator_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/application/services/text_to_speech_service.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
@@ -19,6 +21,10 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 import 'package:kanpractice/presentation/study_modes/utils/study_mode_update_handler.dart';
+import 'package:kanpractice/presentation/study_modes/widgets/context_button.dart';
+import 'package:kanpractice/presentation/study_modes/widgets/context_loader.dart';
+import 'package:kanpractice/presentation/study_modes/widgets/context_loading.dart';
+import 'package:kanpractice/presentation/study_modes/widgets/context_widget.dart';
 
 class ListeningStudy extends StatefulWidget {
   final ModeArguments args;
@@ -51,14 +57,14 @@ class _ListeningStudyState extends State<ListeningStudy> {
     _enableRepOnTest = getIt<PreferencesService>()
         .readData(SharedKeys.enableRepetitionOnTests);
     _studyList.addAll(widget.args.studyList);
-
-    /// Execute the TTS when passing to the next word
-    getIt<TextToSpeechService>().speakWord(_studyList[_macro].pronunciation);
+    if (context.read<PurchasesBloc>().state is! PurchasesUpdatedToPro) {
+      getIt<TextToSpeechService>().speakWord(_studyList[_macro].pronunciation);
+    }
     context.read<StudyModeBloc>().add(StudyModeEventResetTracking());
     super.initState();
   }
 
-  Future<void> _updateUIOnSubmit(double score) async {
+  Future<void> _updateUIOnSubmit(double score, bool isPro) async {
     /// If the score is less PARTIAL or WRONG and the Learning Mode is
     /// SPATIAL, the append the current word to the list, to review it again.
     /// Only do this when NOT on test
@@ -85,9 +91,15 @@ class _ListeningStudyState extends State<ListeningStudy> {
             _showWord = false;
           });
 
-          /// Execute the TTS when passing to the next word
-          await getIt<TextToSpeechService>()
-              .speakWord(_studyList[_macro].pronunciation);
+          if (!mounted) return;
+          if (isPro) {
+            context
+                .read<SentenceGeneratorBloc>()
+                .add(SentenceGeneratorEventReset());
+          } else {
+            await getIt<TextToSpeechService>()
+                .speakWord(_studyList[_macro].pronunciation);
+          }
         }
 
         /// If we ended the list, update the statistics to DB and exit
@@ -149,6 +161,27 @@ class _ListeningStudyState extends State<ListeningStudy> {
 
   @override
   Widget build(BuildContext context) {
+    final ttsButton = Visibility(
+      visible: _showWord,
+      child: TTSIconButton(word: _studyList[_macro].pronunciation),
+    );
+    final tts = BlocBuilder<PurchasesBloc, PurchasesState>(
+      builder: (context, state) {
+        return state.maybeWhen(
+          updatedToPro: () =>
+              BlocBuilder<SentenceGeneratorBloc, SentenceGeneratorState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                initial: () => ttsButton,
+                orElse: () => const SizedBox(),
+              );
+            },
+          ),
+          orElse: () => ttsButton,
+        );
+      },
+    );
+
     return KPScaffold(
       onWillPop: () async {
         return StudyModeUpdateHandler.handle(
@@ -163,78 +196,104 @@ class _ListeningStudyState extends State<ListeningStudy> {
           studyMode: widget.args.mode.mode),
       centerTitle: true,
       appBarActions: [
-        Visibility(
-          visible: _showWord,
-          child: TTSIconButton(word: _studyList[_macro].pronunciation),
-        ),
+        tts,
         if (_hasRepetition && widget.args.testMode != Tests.daily)
           IconButton(
             onPressed: () => Utils.showSpatialRepetitionDisclaimer(context),
             icon: const Icon(Icons.info_outline_rounded),
           )
       ],
+      child: BlocBuilder<PurchasesBloc, PurchasesState>(
+        builder: (context, state) {
+          return Column(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  KPListPercentageIndicator(
+                      value: (_macro + 1) / _studyList.length),
+                  KPLearningHeaderAnimation(
+                    id: _macro,
+                    child: state.maybeWhen(
+                      updatedToPro: () => ContextLoader(
+                        word: _studyList[_macro].word,
+                        mode: StudyModes.listening,
+                        loading: _body(null, isLoading: true),
+                        child: _body,
+                      ),
+                      orElse: () => _body(null),
+                    ),
+                  ),
+                  if (!widget.args.isNumberTest && !_showWord)
+                    ContextButton(word: _studyList[_macro].word),
+                ],
+              ),
+              KPValidationButtons(
+                trigger: _showWord,
+                submitLabel: "done_button_label".tr(),
+                action: (score) async => await _updateUIOnSubmit(
+                  score,
+                  state is PurchasesUpdatedToPro,
+                ),
+                onSubmit: () => setState(() => _showWord = true),
+              )
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _body(String? sentence, {bool isLoading = false}) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
-          Column(
-            children: [
-              KPListPercentageIndicator(
-                  value: (_macro + 1) / _studyList.length),
-              KPLearningHeaderAnimation(
-                id: _macro,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    children: [
-                      Visibility(
-                        visible: _showWord,
-                        maintainSize: true,
-                        maintainAnimation: true,
-                        maintainState: true,
-                        child: KPLearningTextBox(
-                          textStyle: Theme.of(context).textTheme.bodyLarge,
-                          text: _studyList[_macro].pronunciation,
-                        ),
-                      ),
-                      Visibility(
-                          visible: !_showWord,
-                          child: TTSIconButton(
-                              word: _studyList[_macro].pronunciation,
-                              iconSize:
-                                  KPMargins.margin64 + KPMargins.margin4)),
-                      Visibility(
-                        visible: _showWord,
-                        child: FittedBox(
-                          child: KPLearningTextBox(
-                            textStyle: Theme.of(context).textTheme.displaySmall,
-                            text: _studyList[_macro].word,
-                          ),
-                        ),
-                      ),
-                      Visibility(
-                        visible: _showWord,
-                        maintainSize: true,
-                        maintainAnimation: true,
-                        maintainState: true,
-                        child: KPLearningTextBox(
-                          textStyle: Theme.of(context)
-                              .textTheme
-                              .bodyLarge
-                              ?.copyWith(fontWeight: FontWeight.bold),
-                          text: _studyList[_macro].meaning,
-                          top: KPMargins.margin8,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
+          Visibility(
+            visible: _showWord,
+            maintainSize: true,
+            maintainAnimation: true,
+            maintainState: true,
+            child: KPLearningTextBox(
+              text: _studyList[_macro].pronunciation,
+              textStyle: Theme.of(context).textTheme.bodyLarge,
+            ),
           ),
-          KPValidationButtons(
-            trigger: _showWord,
-            submitLabel: "done_button_label".tr(),
-            action: (score) async => await _updateUIOnSubmit(score),
-            onSubmit: () => setState(() => _showWord = true),
+          Visibility(
+              visible: !_showWord,
+              child: TTSIconButton(
+                  word: sentence ?? _studyList[_macro].pronunciation,
+                  iconSize: KPMargins.margin64 + KPMargins.margin4)),
+          Visibility(
+            visible: _showWord,
+            child: FittedBox(
+              child: KPLearningTextBox(
+                  text: _studyList[_macro].word,
+                  textStyle: Theme.of(context).textTheme.displaySmall),
+            ),
+          ),
+          if (isLoading) const ContextLoading(),
+          if (sentence != null)
+            ContextWidget(
+              word: _studyList[_macro].word,
+              showWord: _showWord,
+              sentence: sentence,
+              mode: StudyModes.listening,
+              hasTTS: _showWord,
+            ),
+          Visibility(
+            visible: _showWord,
+            maintainSize: true,
+            maintainAnimation: true,
+            maintainState: true,
+            child: KPLearningTextBox(
+              text: _studyList[_macro].meaning,
+              top: KPMargins.margin8,
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .bodyLarge
+                  ?.copyWith(fontWeight: FontWeight.bold),
+            ),
           )
         ],
       ),

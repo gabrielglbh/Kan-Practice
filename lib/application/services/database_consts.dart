@@ -131,6 +131,7 @@ class TestDataTableFields {
   static const String categoryTestsField = "categoryTests";
   static const String folderTestsField = "folderTests";
   static const String dailyTestsField = "dailyTests";
+  static const String translationTestsField = "translationTests";
 }
 
 class TestSpecificDataTableFields {
@@ -157,7 +158,11 @@ class AlterTestSpecificDataTableFields {
   static const String testDataTable = "ALTER_TEST_SPECIFIC_ACC_TABLE";
   static const String idField = "id";
   static const String totalNumberTestCountField = "totalNumberTestCount";
+  static const String totalTranslationTestCountField =
+      "totalTranslationTestCount";
   static const String totalWinRateNumberTestField = "totalWinRateNumberTest";
+  static const String totalWinRateTranslationTestField =
+      "totalWinRateTranslationTest";
 }
 
 class GrammarTableFields {

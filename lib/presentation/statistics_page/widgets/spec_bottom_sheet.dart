@@ -1,12 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:kanpractice/application/alter_specific_data/alter_specific_data_bloc.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
-import 'package:kanpractice/domain/alter_specific_data/alter_specific_data.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/list_details_types.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/domain/specific_data/specific_data.dart';
 import 'package:kanpractice/infrastructure/specific_data/specific_data_repository_impl.dart';
+import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/widgets/graphs/kp_bar_chart.dart';
 import 'package:kanpractice/presentation/core/widgets/graphs/kp_data_frame.dart';
 import 'package:kanpractice/presentation/core/widgets/graphs/kp_grammar_mode_radial_graph.dart';
@@ -20,7 +21,7 @@ class SpecBottomSheet extends StatefulWidget {
   final String title;
   final bool showGrammar;
   final SpecificData? data;
-  final AlterSpecificData? alterData;
+  final AlterSpecificDataTestRetrieved? alterData;
   const SpecBottomSheet({
     Key? key,
     required this.title,
@@ -35,7 +36,7 @@ class SpecBottomSheet extends StatefulWidget {
     String title,
     bool showGrammar,
     SpecificData? data,
-    AlterSpecificData? alterData,
+    AlterSpecificDataTestRetrieved? alterData,
   ) async {
     String? resultName;
     await showModalBottomSheet(
@@ -60,7 +61,7 @@ class SpecBottomSheet extends StatefulWidget {
 class _SpecBottomSheetState extends State<SpecBottomSheet> {
   late bool _showGrammar;
   late SpecificData? _data;
-  late AlterSpecificData? _alterData;
+  late AlterSpecificDataTestRetrieved? _alterData;
 
   bool get _isCategory =>
       widget.data?.id == SpecificDataRepositoryImpl.categoryId;
@@ -253,8 +254,12 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
       );
     }
 
-    final total = _alterData!.totalNumberTestCount;
-    final aggregate = _getActualWinRate(_alterData!.totalWinRateNumberTest);
+    final total = _alterData!.test == Tests.numbers
+        ? _alterData!.data.totalNumberTestCount
+        : _alterData!.data.totalTranslationTestCount;
+    final aggregate = _getActualWinRate(_alterData!.test == Tests.numbers
+        ? _alterData!.data.totalWinRateNumberTest
+        : _alterData!.data.totalWinRateTranslationTest);
 
     return BottomSheet(
       enableDrag: false,

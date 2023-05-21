@@ -6,6 +6,7 @@ import 'package:kanpractice/domain/market/market.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_language_flag.dart';
 import 'package:kanpractice/presentation/market_page/widgets/market_list_rating.dart';
 
 class MarketListTile extends StatelessWidget {
@@ -55,7 +56,7 @@ class MarketListTile extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: KPMargins.margin8),
               child: Text(
-                  "${"created_label".tr()} ${Utils.parseDateMilliseconds(context, list.uploadedToMarket)}",
+                  "${"created_label".tr()} ${Utils.parseDateMilliseconds(list.uploadedToMarket)}",
                   style: Theme.of(context).textTheme.titleSmall),
             ),
           ],
@@ -101,6 +102,28 @@ class MarketListTile extends StatelessWidget {
           padding: const EdgeInsets.only(top: KPMargins.margin8),
           child: Row(
             children: [
+              Icon(
+                Icons.g_translate_rounded,
+                color: Colors.amber.shade800,
+                size: 18,
+              ),
+              const SizedBox(width: KPMargins.margin8),
+              Expanded(
+                child: Text("market_automatic_translation".tr(),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 4,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(fontStyle: FontStyle.italic)),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: KPMargins.margin8),
+          child: Row(
+            children: [
               Text("${"market_filter_words".tr()}: ${list.words}",
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyMedium),
@@ -124,6 +147,15 @@ class MarketListTile extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyMedium),
         Row(
           children: [
+            Text("${"market_list_language".tr()}:",
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyMedium),
+            const SizedBox(width: KPMargins.margin8),
+            KPLanguageFlag(language: list.language, height: KPMargins.margin16),
+          ],
+        ),
+        Row(
+          children: [
             BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
                 return state.maybeWhen(
@@ -137,7 +169,7 @@ class MarketListTile extends StatelessWidget {
                           )),
                     );
                   },
-                  orElse: () => const SizedBox(),
+                  orElse: () => const Expanded(child: SizedBox()),
                 );
               },
             ),

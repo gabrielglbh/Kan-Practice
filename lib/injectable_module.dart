@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/infrastructure/services/db_migration/migrations.dart';
@@ -25,8 +26,11 @@ abstract class InjectableModule {
       FlutterLocalNotificationsPlugin();
   @lazySingleton
   FlutterTts get tts => FlutterTts();
+  @lazySingleton
+  GoogleSignIn get googleSignIn => GoogleSignIn();
   @preResolve
   Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
+  // TODO: Add new modes in the db
   @preResolve
   Future<Database> get database async {
     String databasesPath = await getDatabasesPath();
@@ -38,7 +42,7 @@ abstract class InjectableModule {
 
     return await openDatabase(
       path,
-      version: 13,
+      version: 14,
       singleInstance: true,
       onConfigure: (db) async {
         await db.execute('PRAGMA foreign_keys = ON');
@@ -49,6 +53,7 @@ abstract class InjectableModule {
         if (oldVersion <= 10) c.version10to11(db);
         if (oldVersion <= 11) c.version11to12(db);
         if (oldVersion <= 12) c.version12to13(db);
+        if (oldVersion <= 13) c.version13to14(db);
       },
       onCreate: (Database db, int version) async {
         await db.execute("CREATE TABLE ${WordTableFields.wordTable}("
@@ -156,7 +161,8 @@ abstract class InjectableModule {
             "${TestDataTableFields.lessPctTestsField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.categoryTestsField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.folderTestsField} INTEGER NOT NULL DEFAULT 0, "
-            "${TestDataTableFields.dailyTestsField} INTEGER NOT NULL DEFAULT 0)");
+            "${TestDataTableFields.dailyTestsField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestDataTableFields.translationTestsField} INTEGER NOT NULL DEFAULT 0)");
 
         /// id is the [Test].index for future refers
         await db.execute(
@@ -182,7 +188,9 @@ abstract class InjectableModule {
             "CREATE TABLE ${AlterTestSpecificDataTableFields.testDataTable}("
             "${AlterTestSpecificDataTableFields.idField} INTEGER NOT NULL PRIMARY KEY DEFAULT -1, "
             "${AlterTestSpecificDataTableFields.totalNumberTestCountField} INTEGER NOT NULL DEFAULT 0, "
-            "${AlterTestSpecificDataTableFields.totalWinRateNumberTestField} INTEGER NOT NULL DEFAULT 0)");
+            "${AlterTestSpecificDataTableFields.totalTranslationTestCountField} INTEGER NOT NULL DEFAULT 0, "
+            "${AlterTestSpecificDataTableFields.totalWinRateNumberTestField} INTEGER NOT NULL DEFAULT 0, "
+            "${AlterTestSpecificDataTableFields.totalWinRateTranslationTestField} INTEGER NOT NULL DEFAULT 0)");
 
         await db.execute("CREATE TABLE ${GrammarTableFields.grammarTable}("
             "${GrammarTableFields.nameField} TEXT NOT NULL, "

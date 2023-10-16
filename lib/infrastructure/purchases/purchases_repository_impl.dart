@@ -43,22 +43,25 @@ class PurchasesRepositoryImpl implements IPurchasesRepository {
   @override
   Future<List<StoreProduct>> loadProducts() async {
     try {
-      return await Purchases.getProducts([proId], type: PurchaseType.inapp);
+      return await Purchases.getProducts(
+        [proId],
+        productCategory: ProductCategory.nonSubscription,
+        type: PurchaseType.inapp,
+      );
     } on PlatformException catch (_) {
       return [];
     }
   }
 
   @override
-  Future<String> buy(String productId) async {
+  Future<String> buy(StoreProduct product) async {
     try {
       final uid = _auth.getUser()?.uid;
       if (uid == null) return 'buy_error_1'.tr();
 
       await logIn(uid);
 
-      final customerInfo =
-          await Purchases.purchaseProduct(productId, type: PurchaseType.inapp);
+      final customerInfo = await Purchases.purchaseStoreProduct(product);
       return (customerInfo.entitlements.all[proId]?.isActive ?? false)
           ? ''
           : 'buy_error_2'.tr();

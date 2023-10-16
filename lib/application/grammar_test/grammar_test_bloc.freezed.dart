@@ -76,20 +76,20 @@ class _$GrammarTestStateCopyWithImpl<$Res, $Val extends GrammarTestState>
 }
 
 /// @nodoc
-abstract class _$$GrammarTestInitialCopyWith<$Res> {
-  factory _$$GrammarTestInitialCopyWith(_$GrammarTestInitial value,
-          $Res Function(_$GrammarTestInitial) then) =
-      __$$GrammarTestInitialCopyWithImpl<$Res>;
+abstract class _$$GrammarTestInitialImplCopyWith<$Res> {
+  factory _$$GrammarTestInitialImplCopyWith(_$GrammarTestInitialImpl value,
+          $Res Function(_$GrammarTestInitialImpl) then) =
+      __$$GrammarTestInitialImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<int> grammarToReview});
 }
 
 /// @nodoc
-class __$$GrammarTestInitialCopyWithImpl<$Res>
-    extends _$GrammarTestStateCopyWithImpl<$Res, _$GrammarTestInitial>
-    implements _$$GrammarTestInitialCopyWith<$Res> {
-  __$$GrammarTestInitialCopyWithImpl(
-      _$GrammarTestInitial _value, $Res Function(_$GrammarTestInitial) _then)
+class __$$GrammarTestInitialImplCopyWithImpl<$Res>
+    extends _$GrammarTestStateCopyWithImpl<$Res, _$GrammarTestInitialImpl>
+    implements _$$GrammarTestInitialImplCopyWith<$Res> {
+  __$$GrammarTestInitialImplCopyWithImpl(_$GrammarTestInitialImpl _value,
+      $Res Function(_$GrammarTestInitialImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -97,7 +97,7 @@ class __$$GrammarTestInitialCopyWithImpl<$Res>
   $Res call({
     Object? grammarToReview = null,
   }) {
-    return _then(_$GrammarTestInitial(
+    return _then(_$GrammarTestInitialImpl(
       null == grammarToReview
           ? _value._grammarToReview
           : grammarToReview // ignore: cast_nullable_to_non_nullable
@@ -108,8 +108,8 @@ class __$$GrammarTestInitialCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$GrammarTestInitial implements GrammarTestInitial {
-  const _$GrammarTestInitial(final List<int> grammarToReview)
+class _$GrammarTestInitialImpl implements GrammarTestInitial {
+  const _$GrammarTestInitialImpl(final List<int> grammarToReview)
       : _grammarToReview = grammarToReview;
 
   final List<int> _grammarToReview;
@@ -129,7 +129,7 @@ class _$GrammarTestInitial implements GrammarTestInitial {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GrammarTestInitial &&
+            other is _$GrammarTestInitialImpl &&
             const DeepCollectionEquality()
                 .equals(other._grammarToReview, _grammarToReview));
   }
@@ -141,8 +141,8 @@ class _$GrammarTestInitial implements GrammarTestInitial {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$GrammarTestInitialCopyWith<_$GrammarTestInitial> get copyWith =>
-      __$$GrammarTestInitialCopyWithImpl<_$GrammarTestInitial>(
+  _$$GrammarTestInitialImplCopyWith<_$GrammarTestInitialImpl> get copyWith =>
+      __$$GrammarTestInitialImplCopyWithImpl<_$GrammarTestInitialImpl>(
           this, _$identity);
 
   @override
@@ -211,29 +211,29 @@ class _$GrammarTestInitial implements GrammarTestInitial {
 
 abstract class GrammarTestInitial implements GrammarTestState {
   const factory GrammarTestInitial(final List<int> grammarToReview) =
-      _$GrammarTestInitial;
+      _$GrammarTestInitialImpl;
 
   List<int> get grammarToReview;
   @JsonKey(ignore: true)
-  _$$GrammarTestInitialCopyWith<_$GrammarTestInitial> get copyWith =>
+  _$$GrammarTestInitialImplCopyWith<_$GrammarTestInitialImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$GrammarTestLoadedCopyWith<$Res> {
-  factory _$$GrammarTestLoadedCopyWith(
-          _$GrammarTestLoaded value, $Res Function(_$GrammarTestLoaded) then) =
-      __$$GrammarTestLoadedCopyWithImpl<$Res>;
+abstract class _$$GrammarTestLoadedImplCopyWith<$Res> {
+  factory _$$GrammarTestLoadedImplCopyWith(_$GrammarTestLoadedImpl value,
+          $Res Function(_$GrammarTestLoadedImpl) then) =
+      __$$GrammarTestLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<GrammarPoint> grammar, GrammarModes mode});
 }
 
 /// @nodoc
-class __$$GrammarTestLoadedCopyWithImpl<$Res>
-    extends _$GrammarTestStateCopyWithImpl<$Res, _$GrammarTestLoaded>
-    implements _$$GrammarTestLoadedCopyWith<$Res> {
-  __$$GrammarTestLoadedCopyWithImpl(
-      _$GrammarTestLoaded _value, $Res Function(_$GrammarTestLoaded) _then)
+class __$$GrammarTestLoadedImplCopyWithImpl<$Res>
+    extends _$GrammarTestStateCopyWithImpl<$Res, _$GrammarTestLoadedImpl>
+    implements _$$GrammarTestLoadedImplCopyWith<$Res> {
+  __$$GrammarTestLoadedImplCopyWithImpl(_$GrammarTestLoadedImpl _value,
+      $Res Function(_$GrammarTestLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -242,7 +242,7 @@ class __$$GrammarTestLoadedCopyWithImpl<$Res>
     Object? grammar = null,
     Object? mode = null,
   }) {
-    return _then(_$GrammarTestLoaded(
+    return _then(_$GrammarTestLoadedImpl(
       null == grammar
           ? _value._grammar
           : grammar // ignore: cast_nullable_to_non_nullable
@@ -257,8 +257,8 @@ class __$$GrammarTestLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$GrammarTestLoaded implements GrammarTestLoaded {
-  const _$GrammarTestLoaded(final List<GrammarPoint> grammar, this.mode)
+class _$GrammarTestLoadedImpl implements GrammarTestLoaded {
+  const _$GrammarTestLoadedImpl(final List<GrammarPoint> grammar, this.mode)
       : _grammar = grammar;
 
   final List<GrammarPoint> _grammar;
@@ -281,7 +281,7 @@ class _$GrammarTestLoaded implements GrammarTestLoaded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GrammarTestLoaded &&
+            other is _$GrammarTestLoadedImpl &&
             const DeepCollectionEquality().equals(other._grammar, _grammar) &&
             (identical(other.mode, mode) || other.mode == mode));
   }
@@ -293,8 +293,9 @@ class _$GrammarTestLoaded implements GrammarTestLoaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$GrammarTestLoadedCopyWith<_$GrammarTestLoaded> get copyWith =>
-      __$$GrammarTestLoadedCopyWithImpl<_$GrammarTestLoaded>(this, _$identity);
+  _$$GrammarTestLoadedImplCopyWith<_$GrammarTestLoadedImpl> get copyWith =>
+      __$$GrammarTestLoadedImplCopyWithImpl<_$GrammarTestLoadedImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -363,11 +364,11 @@ class _$GrammarTestLoaded implements GrammarTestLoaded {
 abstract class GrammarTestLoaded implements GrammarTestState {
   const factory GrammarTestLoaded(
           final List<GrammarPoint> grammar, final GrammarModes mode) =
-      _$GrammarTestLoaded;
+      _$GrammarTestLoadedImpl;
 
   List<GrammarPoint> get grammar;
   GrammarModes get mode;
   @JsonKey(ignore: true)
-  _$$GrammarTestLoadedCopyWith<_$GrammarTestLoaded> get copyWith =>
+  _$$GrammarTestLoadedImplCopyWith<_$GrammarTestLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

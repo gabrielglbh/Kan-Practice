@@ -81,20 +81,20 @@ class _$ListsStateCopyWithImpl<$Res, $Val extends ListsState>
 }
 
 /// @nodoc
-abstract class _$$ListsLoadedCopyWith<$Res> {
-  factory _$$ListsLoadedCopyWith(
-          _$ListsLoaded value, $Res Function(_$ListsLoaded) then) =
-      __$$ListsLoadedCopyWithImpl<$Res>;
+abstract class _$$ListsLoadedImplCopyWith<$Res> {
+  factory _$$ListsLoadedImplCopyWith(
+          _$ListsLoadedImpl value, $Res Function(_$ListsLoadedImpl) then) =
+      __$$ListsLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<WordList> lists});
 }
 
 /// @nodoc
-class __$$ListsLoadedCopyWithImpl<$Res>
-    extends _$ListsStateCopyWithImpl<$Res, _$ListsLoaded>
-    implements _$$ListsLoadedCopyWith<$Res> {
-  __$$ListsLoadedCopyWithImpl(
-      _$ListsLoaded _value, $Res Function(_$ListsLoaded) _then)
+class __$$ListsLoadedImplCopyWithImpl<$Res>
+    extends _$ListsStateCopyWithImpl<$Res, _$ListsLoadedImpl>
+    implements _$$ListsLoadedImplCopyWith<$Res> {
+  __$$ListsLoadedImplCopyWithImpl(
+      _$ListsLoadedImpl _value, $Res Function(_$ListsLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -102,7 +102,7 @@ class __$$ListsLoadedCopyWithImpl<$Res>
   $Res call({
     Object? lists = null,
   }) {
-    return _then(_$ListsLoaded(
+    return _then(_$ListsLoadedImpl(
       null == lists
           ? _value._lists
           : lists // ignore: cast_nullable_to_non_nullable
@@ -113,8 +113,8 @@ class __$$ListsLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ListsLoaded implements ListsLoaded {
-  const _$ListsLoaded(final List<WordList> lists) : _lists = lists;
+class _$ListsLoadedImpl implements ListsLoaded {
+  const _$ListsLoadedImpl(final List<WordList> lists) : _lists = lists;
 
   final List<WordList> _lists;
   @override
@@ -133,7 +133,7 @@ class _$ListsLoaded implements ListsLoaded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ListsLoaded &&
+            other is _$ListsLoadedImpl &&
             const DeepCollectionEquality().equals(other._lists, _lists));
   }
 
@@ -144,8 +144,8 @@ class _$ListsLoaded implements ListsLoaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ListsLoadedCopyWith<_$ListsLoaded> get copyWith =>
-      __$$ListsLoadedCopyWithImpl<_$ListsLoaded>(this, _$identity);
+  _$$ListsLoadedImplCopyWith<_$ListsLoadedImpl> get copyWith =>
+      __$$ListsLoadedImplCopyWithImpl<_$ListsLoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -217,34 +217,34 @@ class _$ListsLoaded implements ListsLoaded {
 }
 
 abstract class ListsLoaded implements ListsState {
-  const factory ListsLoaded(final List<WordList> lists) = _$ListsLoaded;
+  const factory ListsLoaded(final List<WordList> lists) = _$ListsLoadedImpl;
 
   List<WordList> get lists;
   @JsonKey(ignore: true)
-  _$$ListsLoadedCopyWith<_$ListsLoaded> get copyWith =>
+  _$$ListsLoadedImplCopyWith<_$ListsLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ListsLoadingCopyWith<$Res> {
-  factory _$$ListsLoadingCopyWith(
-          _$ListsLoading value, $Res Function(_$ListsLoading) then) =
-      __$$ListsLoadingCopyWithImpl<$Res>;
+abstract class _$$ListsLoadingImplCopyWith<$Res> {
+  factory _$$ListsLoadingImplCopyWith(
+          _$ListsLoadingImpl value, $Res Function(_$ListsLoadingImpl) then) =
+      __$$ListsLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ListsLoadingCopyWithImpl<$Res>
-    extends _$ListsStateCopyWithImpl<$Res, _$ListsLoading>
-    implements _$$ListsLoadingCopyWith<$Res> {
-  __$$ListsLoadingCopyWithImpl(
-      _$ListsLoading _value, $Res Function(_$ListsLoading) _then)
+class __$$ListsLoadingImplCopyWithImpl<$Res>
+    extends _$ListsStateCopyWithImpl<$Res, _$ListsLoadingImpl>
+    implements _$$ListsLoadingImplCopyWith<$Res> {
+  __$$ListsLoadingImplCopyWithImpl(
+      _$ListsLoadingImpl _value, $Res Function(_$ListsLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ListsLoading implements ListsLoading {
-  const _$ListsLoading();
+class _$ListsLoadingImpl implements ListsLoading {
+  const _$ListsLoadingImpl();
 
   @override
   String toString() {
@@ -254,7 +254,7 @@ class _$ListsLoading implements ListsLoading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ListsLoading);
+        (other.runtimeType == runtimeType && other is _$ListsLoadingImpl);
   }
 
   @override
@@ -330,29 +330,29 @@ class _$ListsLoading implements ListsLoading {
 }
 
 abstract class ListsLoading implements ListsState {
-  const factory ListsLoading() = _$ListsLoading;
+  const factory ListsLoading() = _$ListsLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$ListsErrorCopyWith<$Res> {
-  factory _$$ListsErrorCopyWith(
-          _$ListsError value, $Res Function(_$ListsError) then) =
-      __$$ListsErrorCopyWithImpl<$Res>;
+abstract class _$$ListsErrorImplCopyWith<$Res> {
+  factory _$$ListsErrorImplCopyWith(
+          _$ListsErrorImpl value, $Res Function(_$ListsErrorImpl) then) =
+      __$$ListsErrorImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ListsErrorCopyWithImpl<$Res>
-    extends _$ListsStateCopyWithImpl<$Res, _$ListsError>
-    implements _$$ListsErrorCopyWith<$Res> {
-  __$$ListsErrorCopyWithImpl(
-      _$ListsError _value, $Res Function(_$ListsError) _then)
+class __$$ListsErrorImplCopyWithImpl<$Res>
+    extends _$ListsStateCopyWithImpl<$Res, _$ListsErrorImpl>
+    implements _$$ListsErrorImplCopyWith<$Res> {
+  __$$ListsErrorImplCopyWithImpl(
+      _$ListsErrorImpl _value, $Res Function(_$ListsErrorImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ListsError implements ListsError {
-  const _$ListsError();
+class _$ListsErrorImpl implements ListsError {
+  const _$ListsErrorImpl();
 
   @override
   String toString() {
@@ -362,7 +362,7 @@ class _$ListsError implements ListsError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ListsError);
+        (other.runtimeType == runtimeType && other is _$ListsErrorImpl);
   }
 
   @override
@@ -438,5 +438,5 @@ class _$ListsError implements ListsError {
 }
 
 abstract class ListsError implements ListsState {
-  const factory ListsError() = _$ListsError;
+  const factory ListsError() = _$ListsErrorImpl;
 }

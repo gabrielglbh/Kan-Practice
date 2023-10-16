@@ -12,7 +12,6 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
 import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
 import 'package:kanpractice/presentation/dictionary_page/widgets/word_search_bar.dart';
-import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 
 import '../core/util/utils.dart';
 

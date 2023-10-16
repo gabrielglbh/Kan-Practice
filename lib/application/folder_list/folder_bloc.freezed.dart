@@ -87,25 +87,25 @@ class _$FolderStateCopyWithImpl<$Res, $Val extends FolderState>
 }
 
 /// @nodoc
-abstract class _$$FolderLoadingCopyWith<$Res> {
-  factory _$$FolderLoadingCopyWith(
-          _$FolderLoading value, $Res Function(_$FolderLoading) then) =
-      __$$FolderLoadingCopyWithImpl<$Res>;
+abstract class _$$FolderLoadingImplCopyWith<$Res> {
+  factory _$$FolderLoadingImplCopyWith(
+          _$FolderLoadingImpl value, $Res Function(_$FolderLoadingImpl) then) =
+      __$$FolderLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$FolderLoadingCopyWithImpl<$Res>
-    extends _$FolderStateCopyWithImpl<$Res, _$FolderLoading>
-    implements _$$FolderLoadingCopyWith<$Res> {
-  __$$FolderLoadingCopyWithImpl(
-      _$FolderLoading _value, $Res Function(_$FolderLoading) _then)
+class __$$FolderLoadingImplCopyWithImpl<$Res>
+    extends _$FolderStateCopyWithImpl<$Res, _$FolderLoadingImpl>
+    implements _$$FolderLoadingImplCopyWith<$Res> {
+  __$$FolderLoadingImplCopyWithImpl(
+      _$FolderLoadingImpl _value, $Res Function(_$FolderLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$FolderLoading implements FolderLoading {
-  const _$FolderLoading();
+class _$FolderLoadingImpl implements FolderLoading {
+  const _$FolderLoadingImpl();
 
   @override
   String toString() {
@@ -115,7 +115,7 @@ class _$FolderLoading implements FolderLoading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$FolderLoading);
+        (other.runtimeType == runtimeType && other is _$FolderLoadingImpl);
   }
 
   @override
@@ -197,24 +197,24 @@ class _$FolderLoading implements FolderLoading {
 }
 
 abstract class FolderLoading implements FolderState {
-  const factory FolderLoading() = _$FolderLoading;
+  const factory FolderLoading() = _$FolderLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$FolderLoadedCopyWith<$Res> {
-  factory _$$FolderLoadedCopyWith(
-          _$FolderLoaded value, $Res Function(_$FolderLoaded) then) =
-      __$$FolderLoadedCopyWithImpl<$Res>;
+abstract class _$$FolderLoadedImplCopyWith<$Res> {
+  factory _$$FolderLoadedImplCopyWith(
+          _$FolderLoadedImpl value, $Res Function(_$FolderLoadedImpl) then) =
+      __$$FolderLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<Folder> lists});
 }
 
 /// @nodoc
-class __$$FolderLoadedCopyWithImpl<$Res>
-    extends _$FolderStateCopyWithImpl<$Res, _$FolderLoaded>
-    implements _$$FolderLoadedCopyWith<$Res> {
-  __$$FolderLoadedCopyWithImpl(
-      _$FolderLoaded _value, $Res Function(_$FolderLoaded) _then)
+class __$$FolderLoadedImplCopyWithImpl<$Res>
+    extends _$FolderStateCopyWithImpl<$Res, _$FolderLoadedImpl>
+    implements _$$FolderLoadedImplCopyWith<$Res> {
+  __$$FolderLoadedImplCopyWithImpl(
+      _$FolderLoadedImpl _value, $Res Function(_$FolderLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -222,7 +222,7 @@ class __$$FolderLoadedCopyWithImpl<$Res>
   $Res call({
     Object? lists = null,
   }) {
-    return _then(_$FolderLoaded(
+    return _then(_$FolderLoadedImpl(
       null == lists
           ? _value._lists
           : lists // ignore: cast_nullable_to_non_nullable
@@ -233,8 +233,8 @@ class __$$FolderLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$FolderLoaded implements FolderLoaded {
-  const _$FolderLoaded(final List<Folder> lists) : _lists = lists;
+class _$FolderLoadedImpl implements FolderLoaded {
+  const _$FolderLoadedImpl(final List<Folder> lists) : _lists = lists;
 
   final List<Folder> _lists;
   @override
@@ -253,7 +253,7 @@ class _$FolderLoaded implements FolderLoaded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FolderLoaded &&
+            other is _$FolderLoadedImpl &&
             const DeepCollectionEquality().equals(other._lists, _lists));
   }
 
@@ -264,8 +264,8 @@ class _$FolderLoaded implements FolderLoaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$FolderLoadedCopyWith<_$FolderLoaded> get copyWith =>
-      __$$FolderLoadedCopyWithImpl<_$FolderLoaded>(this, _$identity);
+  _$$FolderLoadedImplCopyWith<_$FolderLoadedImpl> get copyWith =>
+      __$$FolderLoadedImplCopyWithImpl<_$FolderLoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -343,34 +343,34 @@ class _$FolderLoaded implements FolderLoaded {
 }
 
 abstract class FolderLoaded implements FolderState {
-  const factory FolderLoaded(final List<Folder> lists) = _$FolderLoaded;
+  const factory FolderLoaded(final List<Folder> lists) = _$FolderLoadedImpl;
 
   List<Folder> get lists;
   @JsonKey(ignore: true)
-  _$$FolderLoadedCopyWith<_$FolderLoaded> get copyWith =>
+  _$$FolderLoadedImplCopyWith<_$FolderLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$FolderListAddedCopyWith<$Res> {
-  factory _$$FolderListAddedCopyWith(
-          _$FolderListAdded value, $Res Function(_$FolderListAdded) then) =
-      __$$FolderListAddedCopyWithImpl<$Res>;
+abstract class _$$FolderListAddedImplCopyWith<$Res> {
+  factory _$$FolderListAddedImplCopyWith(_$FolderListAddedImpl value,
+          $Res Function(_$FolderListAddedImpl) then) =
+      __$$FolderListAddedImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$FolderListAddedCopyWithImpl<$Res>
-    extends _$FolderStateCopyWithImpl<$Res, _$FolderListAdded>
-    implements _$$FolderListAddedCopyWith<$Res> {
-  __$$FolderListAddedCopyWithImpl(
-      _$FolderListAdded _value, $Res Function(_$FolderListAdded) _then)
+class __$$FolderListAddedImplCopyWithImpl<$Res>
+    extends _$FolderStateCopyWithImpl<$Res, _$FolderListAddedImpl>
+    implements _$$FolderListAddedImplCopyWith<$Res> {
+  __$$FolderListAddedImplCopyWithImpl(
+      _$FolderListAddedImpl _value, $Res Function(_$FolderListAddedImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$FolderListAdded implements FolderListAdded {
-  const _$FolderListAdded();
+class _$FolderListAddedImpl implements FolderListAdded {
+  const _$FolderListAddedImpl();
 
   @override
   String toString() {
@@ -380,7 +380,7 @@ class _$FolderListAdded implements FolderListAdded {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$FolderListAdded);
+        (other.runtimeType == runtimeType && other is _$FolderListAddedImpl);
   }
 
   @override
@@ -462,29 +462,29 @@ class _$FolderListAdded implements FolderListAdded {
 }
 
 abstract class FolderListAdded implements FolderState {
-  const factory FolderListAdded() = _$FolderListAdded;
+  const factory FolderListAdded() = _$FolderListAddedImpl;
 }
 
 /// @nodoc
-abstract class _$$FolderErrorCopyWith<$Res> {
-  factory _$$FolderErrorCopyWith(
-          _$FolderError value, $Res Function(_$FolderError) then) =
-      __$$FolderErrorCopyWithImpl<$Res>;
+abstract class _$$FolderErrorImplCopyWith<$Res> {
+  factory _$$FolderErrorImplCopyWith(
+          _$FolderErrorImpl value, $Res Function(_$FolderErrorImpl) then) =
+      __$$FolderErrorImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$FolderErrorCopyWithImpl<$Res>
-    extends _$FolderStateCopyWithImpl<$Res, _$FolderError>
-    implements _$$FolderErrorCopyWith<$Res> {
-  __$$FolderErrorCopyWithImpl(
-      _$FolderError _value, $Res Function(_$FolderError) _then)
+class __$$FolderErrorImplCopyWithImpl<$Res>
+    extends _$FolderStateCopyWithImpl<$Res, _$FolderErrorImpl>
+    implements _$$FolderErrorImplCopyWith<$Res> {
+  __$$FolderErrorImplCopyWithImpl(
+      _$FolderErrorImpl _value, $Res Function(_$FolderErrorImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$FolderError implements FolderError {
-  const _$FolderError();
+class _$FolderErrorImpl implements FolderError {
+  const _$FolderErrorImpl();
 
   @override
   String toString() {
@@ -494,7 +494,7 @@ class _$FolderError implements FolderError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$FolderError);
+        (other.runtimeType == runtimeType && other is _$FolderErrorImpl);
   }
 
   @override
@@ -576,5 +576,5 @@ class _$FolderError implements FolderError {
 }
 
 abstract class FolderError implements FolderState {
-  const factory FolderError() = _$FolderError;
+  const factory FolderError() = _$FolderErrorImpl;
 }

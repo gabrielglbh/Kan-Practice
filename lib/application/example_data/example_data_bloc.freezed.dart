@@ -81,25 +81,25 @@ class _$ExampleDataStateCopyWithImpl<$Res, $Val extends ExampleDataState>
 }
 
 /// @nodoc
-abstract class _$$ExampleDataLoadedCopyWith<$Res> {
-  factory _$$ExampleDataLoadedCopyWith(
-          _$ExampleDataLoaded value, $Res Function(_$ExampleDataLoaded) then) =
-      __$$ExampleDataLoadedCopyWithImpl<$Res>;
+abstract class _$$ExampleDataLoadedImplCopyWith<$Res> {
+  factory _$$ExampleDataLoadedImplCopyWith(_$ExampleDataLoadedImpl value,
+          $Res Function(_$ExampleDataLoadedImpl) then) =
+      __$$ExampleDataLoadedImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ExampleDataLoadedCopyWithImpl<$Res>
-    extends _$ExampleDataStateCopyWithImpl<$Res, _$ExampleDataLoaded>
-    implements _$$ExampleDataLoadedCopyWith<$Res> {
-  __$$ExampleDataLoadedCopyWithImpl(
-      _$ExampleDataLoaded _value, $Res Function(_$ExampleDataLoaded) _then)
+class __$$ExampleDataLoadedImplCopyWithImpl<$Res>
+    extends _$ExampleDataStateCopyWithImpl<$Res, _$ExampleDataLoadedImpl>
+    implements _$$ExampleDataLoadedImplCopyWith<$Res> {
+  __$$ExampleDataLoadedImplCopyWithImpl(_$ExampleDataLoadedImpl _value,
+      $Res Function(_$ExampleDataLoadedImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ExampleDataLoaded implements ExampleDataLoaded {
-  const _$ExampleDataLoaded();
+class _$ExampleDataLoadedImpl implements ExampleDataLoaded {
+  const _$ExampleDataLoadedImpl();
 
   @override
   String toString() {
@@ -109,7 +109,7 @@ class _$ExampleDataLoaded implements ExampleDataLoaded {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ExampleDataLoaded);
+        (other.runtimeType == runtimeType && other is _$ExampleDataLoadedImpl);
   }
 
   @override
@@ -185,29 +185,29 @@ class _$ExampleDataLoaded implements ExampleDataLoaded {
 }
 
 abstract class ExampleDataLoaded implements ExampleDataState {
-  const factory ExampleDataLoaded() = _$ExampleDataLoaded;
+  const factory ExampleDataLoaded() = _$ExampleDataLoadedImpl;
 }
 
 /// @nodoc
-abstract class _$$ExampleDataInitialCopyWith<$Res> {
-  factory _$$ExampleDataInitialCopyWith(_$ExampleDataInitial value,
-          $Res Function(_$ExampleDataInitial) then) =
-      __$$ExampleDataInitialCopyWithImpl<$Res>;
+abstract class _$$ExampleDataInitialImplCopyWith<$Res> {
+  factory _$$ExampleDataInitialImplCopyWith(_$ExampleDataInitialImpl value,
+          $Res Function(_$ExampleDataInitialImpl) then) =
+      __$$ExampleDataInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ExampleDataInitialCopyWithImpl<$Res>
-    extends _$ExampleDataStateCopyWithImpl<$Res, _$ExampleDataInitial>
-    implements _$$ExampleDataInitialCopyWith<$Res> {
-  __$$ExampleDataInitialCopyWithImpl(
-      _$ExampleDataInitial _value, $Res Function(_$ExampleDataInitial) _then)
+class __$$ExampleDataInitialImplCopyWithImpl<$Res>
+    extends _$ExampleDataStateCopyWithImpl<$Res, _$ExampleDataInitialImpl>
+    implements _$$ExampleDataInitialImplCopyWith<$Res> {
+  __$$ExampleDataInitialImplCopyWithImpl(_$ExampleDataInitialImpl _value,
+      $Res Function(_$ExampleDataInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ExampleDataInitial implements ExampleDataInitial {
-  const _$ExampleDataInitial();
+class _$ExampleDataInitialImpl implements ExampleDataInitial {
+  const _$ExampleDataInitialImpl();
 
   @override
   String toString() {
@@ -217,7 +217,7 @@ class _$ExampleDataInitial implements ExampleDataInitial {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ExampleDataInitial);
+        (other.runtimeType == runtimeType && other is _$ExampleDataInitialImpl);
   }
 
   @override
@@ -293,29 +293,29 @@ class _$ExampleDataInitial implements ExampleDataInitial {
 }
 
 abstract class ExampleDataInitial implements ExampleDataState {
-  const factory ExampleDataInitial() = _$ExampleDataInitial;
+  const factory ExampleDataInitial() = _$ExampleDataInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$ExampleDataErrorCopyWith<$Res> {
-  factory _$$ExampleDataErrorCopyWith(
-          _$ExampleDataError value, $Res Function(_$ExampleDataError) then) =
-      __$$ExampleDataErrorCopyWithImpl<$Res>;
+abstract class _$$ExampleDataErrorImplCopyWith<$Res> {
+  factory _$$ExampleDataErrorImplCopyWith(_$ExampleDataErrorImpl value,
+          $Res Function(_$ExampleDataErrorImpl) then) =
+      __$$ExampleDataErrorImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ExampleDataErrorCopyWithImpl<$Res>
-    extends _$ExampleDataStateCopyWithImpl<$Res, _$ExampleDataError>
-    implements _$$ExampleDataErrorCopyWith<$Res> {
-  __$$ExampleDataErrorCopyWithImpl(
-      _$ExampleDataError _value, $Res Function(_$ExampleDataError) _then)
+class __$$ExampleDataErrorImplCopyWithImpl<$Res>
+    extends _$ExampleDataStateCopyWithImpl<$Res, _$ExampleDataErrorImpl>
+    implements _$$ExampleDataErrorImplCopyWith<$Res> {
+  __$$ExampleDataErrorImplCopyWithImpl(_$ExampleDataErrorImpl _value,
+      $Res Function(_$ExampleDataErrorImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ExampleDataError implements ExampleDataError {
-  const _$ExampleDataError();
+class _$ExampleDataErrorImpl implements ExampleDataError {
+  const _$ExampleDataErrorImpl();
 
   @override
   String toString() {
@@ -325,7 +325,7 @@ class _$ExampleDataError implements ExampleDataError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ExampleDataError);
+        (other.runtimeType == runtimeType && other is _$ExampleDataErrorImpl);
   }
 
   @override
@@ -401,5 +401,5 @@ class _$ExampleDataError implements ExampleDataError {
 }
 
 abstract class ExampleDataError implements ExampleDataState {
-  const factory ExampleDataError() = _$ExampleDataError;
+  const factory ExampleDataError() = _$ExampleDataErrorImpl;
 }

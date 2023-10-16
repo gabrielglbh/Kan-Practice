@@ -17,31 +17,31 @@ dependencies:
   firebase_core: ^2.13.0
   firebase_auth: ^4.6.1
   firebase_messaging: ^14.6.1
-  flutter_local_notifications: ^14.0.0
+  flutter_local_notifications: ^16.1.0
   cloud_firestore: ^4.7.1
   easy_localization: ^3.0.1
   provider: ^6.0.5
   shared_preferences: ^2.1.1
   path: ^1.8.3
   json_annotation: ^4.8.1
-  syncfusion_flutter_gauges: ^21.2.5
-  syncfusion_flutter_charts: ^21.2.5
+  syncfusion_flutter_gauges: ^23.1.40
+  syncfusion_flutter_charts: ^23.1.40
   percent_indicator: ^4.2.3
   kana_kit: ^2.0.0
   timeago: ^3.4.0
   flutter_launcher_icons: ^0.13.1
-  package_info_plus: ^3.0.3
+  package_info_plus: ^4.2.0
   url_launcher: ^6.1.11
   flutter_tts: ^3.6.3
   unofficial_jisho_api: ^3.0.0
   page_transition: ^2.0.9
   cached_network_image: ^3.2.3
   # bash android_tflite.sh to get the jniLibs
-  tflite_flutter: ^0.9.5
-  tflite_flutter_helper:
-    git:
-      url: https://github.com/pnyompen/tflite_flutter_helper.git
-      ref: 39a5660e9d6da7b9565ef7ab7fb44e6535e6275a
+  tflite_flutter: ^0.10.3
+  #tflite_flutter_helper:
+  #  git:
+  #    url: https://github.com/pnyompen/tflite_flutter_helper.git
+  #    ref: 39a5660e9d6da7b9565ef7ab7fb44e6535e6275a
   device_info_plus: ^9.0.0
   tutorial_coach_mark: ^1.2.8
   flutter_rating_bar: ^4.0.1
@@ -49,23 +49,23 @@ dependencies:
   bloc: ^8.1.1
   image: ^4.0.17
   intl: ^0.18.0
-  app_settings: ^4.2.0
+  app_settings: ^5.1.1
   injectable: ^2.1.1
   get_it: ^7.6.0
   flutter_markdown: ^0.6.14
   markdown: ^7.1.0
   freezed: ^2.3.4
   freezed_annotation: ^2.2.0
-  purchases_flutter: ^4.12.0
+  purchases_flutter: ^6.0.0
   flutter_dotenv: ^5.0.2
   http: ^0.13.6
-  google_mlkit_translation: ^0.6.0
-  google_mlkit_text_recognition: ^0.6.0
-  image_picker: ^0.8.7
-  permission_handler: ^10.2.0
+  google_mlkit_translation: ^0.8.0
+  google_mlkit_text_recognition: ^0.10.0
+  image_picker: ^1.0.4
+  permission_handler: ^11.0.1
   dash_flags: ^0.1.1
   camera: ^0.10.5
-  image_cropper: ^3.0.3
+  image_cropper: ^4.0.1
   path_provider: ^2.0.15
   carousel_slider: ^4.2.1
   speech_to_text: ^6.1.1

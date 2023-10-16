@@ -100,25 +100,25 @@ class _$OCRPageStateCopyWithImpl<$Res, $Val extends OCRPageState>
 }
 
 /// @nodoc
-abstract class _$$OCRPageInitialCopyWith<$Res> {
-  factory _$$OCRPageInitialCopyWith(
-          _$OCRPageInitial value, $Res Function(_$OCRPageInitial) then) =
-      __$$OCRPageInitialCopyWithImpl<$Res>;
+abstract class _$$OCRPageInitialImplCopyWith<$Res> {
+  factory _$$OCRPageInitialImplCopyWith(_$OCRPageInitialImpl value,
+          $Res Function(_$OCRPageInitialImpl) then) =
+      __$$OCRPageInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$OCRPageInitialCopyWithImpl<$Res>
-    extends _$OCRPageStateCopyWithImpl<$Res, _$OCRPageInitial>
-    implements _$$OCRPageInitialCopyWith<$Res> {
-  __$$OCRPageInitialCopyWithImpl(
-      _$OCRPageInitial _value, $Res Function(_$OCRPageInitial) _then)
+class __$$OCRPageInitialImplCopyWithImpl<$Res>
+    extends _$OCRPageStateCopyWithImpl<$Res, _$OCRPageInitialImpl>
+    implements _$$OCRPageInitialImplCopyWith<$Res> {
+  __$$OCRPageInitialImplCopyWithImpl(
+      _$OCRPageInitialImpl _value, $Res Function(_$OCRPageInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$OCRPageInitial implements OCRPageInitial {
-  const _$OCRPageInitial();
+class _$OCRPageInitialImpl implements OCRPageInitial {
+  const _$OCRPageInitialImpl();
 
   @override
   String toString() {
@@ -128,7 +128,7 @@ class _$OCRPageInitial implements OCRPageInitial {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$OCRPageInitial);
+        (other.runtimeType == runtimeType && other is _$OCRPageInitialImpl);
   }
 
   @override
@@ -223,29 +223,29 @@ class _$OCRPageInitial implements OCRPageInitial {
 }
 
 abstract class OCRPageInitial implements OCRPageState {
-  const factory OCRPageInitial() = _$OCRPageInitial;
+  const factory OCRPageInitial() = _$OCRPageInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$OCRPageLoadingCopyWith<$Res> {
-  factory _$$OCRPageLoadingCopyWith(
-          _$OCRPageLoading value, $Res Function(_$OCRPageLoading) then) =
-      __$$OCRPageLoadingCopyWithImpl<$Res>;
+abstract class _$$OCRPageLoadingImplCopyWith<$Res> {
+  factory _$$OCRPageLoadingImplCopyWith(_$OCRPageLoadingImpl value,
+          $Res Function(_$OCRPageLoadingImpl) then) =
+      __$$OCRPageLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$OCRPageLoadingCopyWithImpl<$Res>
-    extends _$OCRPageStateCopyWithImpl<$Res, _$OCRPageLoading>
-    implements _$$OCRPageLoadingCopyWith<$Res> {
-  __$$OCRPageLoadingCopyWithImpl(
-      _$OCRPageLoading _value, $Res Function(_$OCRPageLoading) _then)
+class __$$OCRPageLoadingImplCopyWithImpl<$Res>
+    extends _$OCRPageStateCopyWithImpl<$Res, _$OCRPageLoadingImpl>
+    implements _$$OCRPageLoadingImplCopyWith<$Res> {
+  __$$OCRPageLoadingImplCopyWithImpl(
+      _$OCRPageLoadingImpl _value, $Res Function(_$OCRPageLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$OCRPageLoading implements OCRPageLoading {
-  const _$OCRPageLoading();
+class _$OCRPageLoadingImpl implements OCRPageLoading {
+  const _$OCRPageLoadingImpl();
 
   @override
   String toString() {
@@ -255,7 +255,7 @@ class _$OCRPageLoading implements OCRPageLoading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$OCRPageLoading);
+        (other.runtimeType == runtimeType && other is _$OCRPageLoadingImpl);
   }
 
   @override
@@ -350,24 +350,26 @@ class _$OCRPageLoading implements OCRPageLoading {
 }
 
 abstract class OCRPageLoading implements OCRPageState {
-  const factory OCRPageLoading() = _$OCRPageLoading;
+  const factory OCRPageLoading() = _$OCRPageLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$OCRPageTranslationLoadedCopyWith<$Res> {
-  factory _$$OCRPageTranslationLoadedCopyWith(_$OCRPageTranslationLoaded value,
-          $Res Function(_$OCRPageTranslationLoaded) then) =
-      __$$OCRPageTranslationLoadedCopyWithImpl<$Res>;
+abstract class _$$OCRPageTranslationLoadedImplCopyWith<$Res> {
+  factory _$$OCRPageTranslationLoadedImplCopyWith(
+          _$OCRPageTranslationLoadedImpl value,
+          $Res Function(_$OCRPageTranslationLoadedImpl) then) =
+      __$$OCRPageTranslationLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String translation, File? image});
 }
 
 /// @nodoc
-class __$$OCRPageTranslationLoadedCopyWithImpl<$Res>
-    extends _$OCRPageStateCopyWithImpl<$Res, _$OCRPageTranslationLoaded>
-    implements _$$OCRPageTranslationLoadedCopyWith<$Res> {
-  __$$OCRPageTranslationLoadedCopyWithImpl(_$OCRPageTranslationLoaded _value,
-      $Res Function(_$OCRPageTranslationLoaded) _then)
+class __$$OCRPageTranslationLoadedImplCopyWithImpl<$Res>
+    extends _$OCRPageStateCopyWithImpl<$Res, _$OCRPageTranslationLoadedImpl>
+    implements _$$OCRPageTranslationLoadedImplCopyWith<$Res> {
+  __$$OCRPageTranslationLoadedImplCopyWithImpl(
+      _$OCRPageTranslationLoadedImpl _value,
+      $Res Function(_$OCRPageTranslationLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -376,7 +378,7 @@ class __$$OCRPageTranslationLoadedCopyWithImpl<$Res>
     Object? translation = null,
     Object? image = freezed,
   }) {
-    return _then(_$OCRPageTranslationLoaded(
+    return _then(_$OCRPageTranslationLoadedImpl(
       null == translation
           ? _value.translation
           : translation // ignore: cast_nullable_to_non_nullable
@@ -391,8 +393,8 @@ class __$$OCRPageTranslationLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$OCRPageTranslationLoaded implements OCRPageTranslationLoaded {
-  const _$OCRPageTranslationLoaded(this.translation, {this.image});
+class _$OCRPageTranslationLoadedImpl implements OCRPageTranslationLoaded {
+  const _$OCRPageTranslationLoadedImpl(this.translation, {this.image});
 
   @override
   final String translation;
@@ -408,7 +410,7 @@ class _$OCRPageTranslationLoaded implements OCRPageTranslationLoaded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$OCRPageTranslationLoaded &&
+            other is _$OCRPageTranslationLoadedImpl &&
             (identical(other.translation, translation) ||
                 other.translation == translation) &&
             (identical(other.image, image) || other.image == image));
@@ -420,10 +422,9 @@ class _$OCRPageTranslationLoaded implements OCRPageTranslationLoaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$OCRPageTranslationLoadedCopyWith<_$OCRPageTranslationLoaded>
-      get copyWith =>
-          __$$OCRPageTranslationLoadedCopyWithImpl<_$OCRPageTranslationLoaded>(
-              this, _$identity);
+  _$$OCRPageTranslationLoadedImplCopyWith<_$OCRPageTranslationLoadedImpl>
+      get copyWith => __$$OCRPageTranslationLoadedImplCopyWithImpl<
+          _$OCRPageTranslationLoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -515,30 +516,30 @@ class _$OCRPageTranslationLoaded implements OCRPageTranslationLoaded {
 
 abstract class OCRPageTranslationLoaded implements OCRPageState {
   const factory OCRPageTranslationLoaded(final String translation,
-      {final File? image}) = _$OCRPageTranslationLoaded;
+      {final File? image}) = _$OCRPageTranslationLoadedImpl;
 
   String get translation;
   File? get image;
   @JsonKey(ignore: true)
-  _$$OCRPageTranslationLoadedCopyWith<_$OCRPageTranslationLoaded>
+  _$$OCRPageTranslationLoadedImplCopyWith<_$OCRPageTranslationLoadedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$OCRPageImageLoadedCopyWith<$Res> {
-  factory _$$OCRPageImageLoadedCopyWith(_$OCRPageImageLoaded value,
-          $Res Function(_$OCRPageImageLoaded) then) =
-      __$$OCRPageImageLoadedCopyWithImpl<$Res>;
+abstract class _$$OCRPageImageLoadedImplCopyWith<$Res> {
+  factory _$$OCRPageImageLoadedImplCopyWith(_$OCRPageImageLoadedImpl value,
+          $Res Function(_$OCRPageImageLoadedImpl) then) =
+      __$$OCRPageImageLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String text, File? image});
 }
 
 /// @nodoc
-class __$$OCRPageImageLoadedCopyWithImpl<$Res>
-    extends _$OCRPageStateCopyWithImpl<$Res, _$OCRPageImageLoaded>
-    implements _$$OCRPageImageLoadedCopyWith<$Res> {
-  __$$OCRPageImageLoadedCopyWithImpl(
-      _$OCRPageImageLoaded _value, $Res Function(_$OCRPageImageLoaded) _then)
+class __$$OCRPageImageLoadedImplCopyWithImpl<$Res>
+    extends _$OCRPageStateCopyWithImpl<$Res, _$OCRPageImageLoadedImpl>
+    implements _$$OCRPageImageLoadedImplCopyWith<$Res> {
+  __$$OCRPageImageLoadedImplCopyWithImpl(_$OCRPageImageLoadedImpl _value,
+      $Res Function(_$OCRPageImageLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -547,7 +548,7 @@ class __$$OCRPageImageLoadedCopyWithImpl<$Res>
     Object? text = null,
     Object? image = freezed,
   }) {
-    return _then(_$OCRPageImageLoaded(
+    return _then(_$OCRPageImageLoadedImpl(
       null == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -562,8 +563,8 @@ class __$$OCRPageImageLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$OCRPageImageLoaded implements OCRPageImageLoaded {
-  const _$OCRPageImageLoaded(this.text, {this.image});
+class _$OCRPageImageLoadedImpl implements OCRPageImageLoaded {
+  const _$OCRPageImageLoadedImpl(this.text, {this.image});
 
   @override
   final String text;
@@ -579,7 +580,7 @@ class _$OCRPageImageLoaded implements OCRPageImageLoaded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$OCRPageImageLoaded &&
+            other is _$OCRPageImageLoadedImpl &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.image, image) || other.image == image));
   }
@@ -590,8 +591,8 @@ class _$OCRPageImageLoaded implements OCRPageImageLoaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$OCRPageImageLoadedCopyWith<_$OCRPageImageLoaded> get copyWith =>
-      __$$OCRPageImageLoadedCopyWithImpl<_$OCRPageImageLoaded>(
+  _$$OCRPageImageLoadedImplCopyWith<_$OCRPageImageLoadedImpl> get copyWith =>
+      __$$OCRPageImageLoadedImplCopyWithImpl<_$OCRPageImageLoadedImpl>(
           this, _$identity);
 
   @override
@@ -684,30 +685,30 @@ class _$OCRPageImageLoaded implements OCRPageImageLoaded {
 
 abstract class OCRPageImageLoaded implements OCRPageState {
   const factory OCRPageImageLoaded(final String text, {final File? image}) =
-      _$OCRPageImageLoaded;
+      _$OCRPageImageLoadedImpl;
 
   String get text;
   File? get image;
   @JsonKey(ignore: true)
-  _$$OCRPageImageLoadedCopyWith<_$OCRPageImageLoaded> get copyWith =>
+  _$$OCRPageImageLoadedImplCopyWith<_$OCRPageImageLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$OCRPageImageCroppedCopyWith<$Res> {
-  factory _$$OCRPageImageCroppedCopyWith(_$OCRPageImageCropped value,
-          $Res Function(_$OCRPageImageCropped) then) =
-      __$$OCRPageImageCroppedCopyWithImpl<$Res>;
+abstract class _$$OCRPageImageCroppedImplCopyWith<$Res> {
+  factory _$$OCRPageImageCroppedImplCopyWith(_$OCRPageImageCroppedImpl value,
+          $Res Function(_$OCRPageImageCroppedImpl) then) =
+      __$$OCRPageImageCroppedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({File? image});
 }
 
 /// @nodoc
-class __$$OCRPageImageCroppedCopyWithImpl<$Res>
-    extends _$OCRPageStateCopyWithImpl<$Res, _$OCRPageImageCropped>
-    implements _$$OCRPageImageCroppedCopyWith<$Res> {
-  __$$OCRPageImageCroppedCopyWithImpl(
-      _$OCRPageImageCropped _value, $Res Function(_$OCRPageImageCropped) _then)
+class __$$OCRPageImageCroppedImplCopyWithImpl<$Res>
+    extends _$OCRPageStateCopyWithImpl<$Res, _$OCRPageImageCroppedImpl>
+    implements _$$OCRPageImageCroppedImplCopyWith<$Res> {
+  __$$OCRPageImageCroppedImplCopyWithImpl(_$OCRPageImageCroppedImpl _value,
+      $Res Function(_$OCRPageImageCroppedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -715,7 +716,7 @@ class __$$OCRPageImageCroppedCopyWithImpl<$Res>
   $Res call({
     Object? image = freezed,
   }) {
-    return _then(_$OCRPageImageCropped(
+    return _then(_$OCRPageImageCroppedImpl(
       freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -726,8 +727,8 @@ class __$$OCRPageImageCroppedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$OCRPageImageCropped implements OCRPageImageCropped {
-  const _$OCRPageImageCropped(this.image);
+class _$OCRPageImageCroppedImpl implements OCRPageImageCropped {
+  const _$OCRPageImageCroppedImpl(this.image);
 
   @override
   final File? image;
@@ -741,7 +742,7 @@ class _$OCRPageImageCropped implements OCRPageImageCropped {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$OCRPageImageCropped &&
+            other is _$OCRPageImageCroppedImpl &&
             (identical(other.image, image) || other.image == image));
   }
 
@@ -751,8 +752,8 @@ class _$OCRPageImageCropped implements OCRPageImageCropped {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$OCRPageImageCroppedCopyWith<_$OCRPageImageCropped> get copyWith =>
-      __$$OCRPageImageCroppedCopyWithImpl<_$OCRPageImageCropped>(
+  _$$OCRPageImageCroppedImplCopyWith<_$OCRPageImageCroppedImpl> get copyWith =>
+      __$$OCRPageImageCroppedImplCopyWithImpl<_$OCRPageImageCroppedImpl>(
           this, _$identity);
 
   @override
@@ -844,34 +845,35 @@ class _$OCRPageImageCropped implements OCRPageImageCropped {
 }
 
 abstract class OCRPageImageCropped implements OCRPageState {
-  const factory OCRPageImageCropped(final File? image) = _$OCRPageImageCropped;
+  const factory OCRPageImageCropped(final File? image) =
+      _$OCRPageImageCroppedImpl;
 
   File? get image;
   @JsonKey(ignore: true)
-  _$$OCRPageImageCroppedCopyWith<_$OCRPageImageCropped> get copyWith =>
+  _$$OCRPageImageCroppedImplCopyWith<_$OCRPageImageCroppedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$OCRPageErrorCopyWith<$Res> {
-  factory _$$OCRPageErrorCopyWith(
-          _$OCRPageError value, $Res Function(_$OCRPageError) then) =
-      __$$OCRPageErrorCopyWithImpl<$Res>;
+abstract class _$$OCRPageErrorImplCopyWith<$Res> {
+  factory _$$OCRPageErrorImplCopyWith(
+          _$OCRPageErrorImpl value, $Res Function(_$OCRPageErrorImpl) then) =
+      __$$OCRPageErrorImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$OCRPageErrorCopyWithImpl<$Res>
-    extends _$OCRPageStateCopyWithImpl<$Res, _$OCRPageError>
-    implements _$$OCRPageErrorCopyWith<$Res> {
-  __$$OCRPageErrorCopyWithImpl(
-      _$OCRPageError _value, $Res Function(_$OCRPageError) _then)
+class __$$OCRPageErrorImplCopyWithImpl<$Res>
+    extends _$OCRPageStateCopyWithImpl<$Res, _$OCRPageErrorImpl>
+    implements _$$OCRPageErrorImplCopyWith<$Res> {
+  __$$OCRPageErrorImplCopyWithImpl(
+      _$OCRPageErrorImpl _value, $Res Function(_$OCRPageErrorImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$OCRPageError implements OCRPageError {
-  const _$OCRPageError();
+class _$OCRPageErrorImpl implements OCRPageError {
+  const _$OCRPageErrorImpl();
 
   @override
   String toString() {
@@ -881,7 +883,7 @@ class _$OCRPageError implements OCRPageError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$OCRPageError);
+        (other.runtimeType == runtimeType && other is _$OCRPageErrorImpl);
   }
 
   @override
@@ -976,5 +978,5 @@ class _$OCRPageError implements OCRPageError {
 }
 
 abstract class OCRPageError implements OCRPageState {
-  const factory OCRPageError() = _$OCRPageError;
+  const factory OCRPageError() = _$OCRPageErrorImpl;
 }

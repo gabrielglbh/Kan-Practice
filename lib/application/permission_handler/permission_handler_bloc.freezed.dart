@@ -82,26 +82,28 @@ class _$PermissionHandlerStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$PermissionHandlerInitialCopyWith<$Res> {
-  factory _$$PermissionHandlerInitialCopyWith(_$PermissionHandlerInitial value,
-          $Res Function(_$PermissionHandlerInitial) then) =
-      __$$PermissionHandlerInitialCopyWithImpl<$Res>;
+abstract class _$$PermissionHandlerInitialImplCopyWith<$Res> {
+  factory _$$PermissionHandlerInitialImplCopyWith(
+          _$PermissionHandlerInitialImpl value,
+          $Res Function(_$PermissionHandlerInitialImpl) then) =
+      __$$PermissionHandlerInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$PermissionHandlerInitialCopyWithImpl<$Res>
+class __$$PermissionHandlerInitialImplCopyWithImpl<$Res>
     extends _$PermissionHandlerStateCopyWithImpl<$Res,
-        _$PermissionHandlerInitial>
-    implements _$$PermissionHandlerInitialCopyWith<$Res> {
-  __$$PermissionHandlerInitialCopyWithImpl(_$PermissionHandlerInitial _value,
-      $Res Function(_$PermissionHandlerInitial) _then)
+        _$PermissionHandlerInitialImpl>
+    implements _$$PermissionHandlerInitialImplCopyWith<$Res> {
+  __$$PermissionHandlerInitialImplCopyWithImpl(
+      _$PermissionHandlerInitialImpl _value,
+      $Res Function(_$PermissionHandlerInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$PermissionHandlerInitial implements PermissionHandlerInitial {
-  const _$PermissionHandlerInitial();
+class _$PermissionHandlerInitialImpl implements PermissionHandlerInitial {
+  const _$PermissionHandlerInitialImpl();
 
   @override
   String toString() {
@@ -112,7 +114,7 @@ class _$PermissionHandlerInitial implements PermissionHandlerInitial {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PermissionHandlerInitial);
+            other is _$PermissionHandlerInitialImpl);
   }
 
   @override
@@ -188,27 +190,27 @@ class _$PermissionHandlerInitial implements PermissionHandlerInitial {
 }
 
 abstract class PermissionHandlerInitial implements PermissionHandlerState {
-  const factory PermissionHandlerInitial() = _$PermissionHandlerInitial;
+  const factory PermissionHandlerInitial() = _$PermissionHandlerInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$PermissionHandlerSucceededCopyWith<$Res> {
-  factory _$$PermissionHandlerSucceededCopyWith(
-          _$PermissionHandlerSucceeded value,
-          $Res Function(_$PermissionHandlerSucceeded) then) =
-      __$$PermissionHandlerSucceededCopyWithImpl<$Res>;
+abstract class _$$PermissionHandlerSucceededImplCopyWith<$Res> {
+  factory _$$PermissionHandlerSucceededImplCopyWith(
+          _$PermissionHandlerSucceededImpl value,
+          $Res Function(_$PermissionHandlerSucceededImpl) then) =
+      __$$PermissionHandlerSucceededImplCopyWithImpl<$Res>;
   @useResult
   $Res call({ImageSource source});
 }
 
 /// @nodoc
-class __$$PermissionHandlerSucceededCopyWithImpl<$Res>
+class __$$PermissionHandlerSucceededImplCopyWithImpl<$Res>
     extends _$PermissionHandlerStateCopyWithImpl<$Res,
-        _$PermissionHandlerSucceeded>
-    implements _$$PermissionHandlerSucceededCopyWith<$Res> {
-  __$$PermissionHandlerSucceededCopyWithImpl(
-      _$PermissionHandlerSucceeded _value,
-      $Res Function(_$PermissionHandlerSucceeded) _then)
+        _$PermissionHandlerSucceededImpl>
+    implements _$$PermissionHandlerSucceededImplCopyWith<$Res> {
+  __$$PermissionHandlerSucceededImplCopyWithImpl(
+      _$PermissionHandlerSucceededImpl _value,
+      $Res Function(_$PermissionHandlerSucceededImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -216,7 +218,7 @@ class __$$PermissionHandlerSucceededCopyWithImpl<$Res>
   $Res call({
     Object? source = null,
   }) {
-    return _then(_$PermissionHandlerSucceeded(
+    return _then(_$PermissionHandlerSucceededImpl(
       null == source
           ? _value.source
           : source // ignore: cast_nullable_to_non_nullable
@@ -227,8 +229,8 @@ class __$$PermissionHandlerSucceededCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PermissionHandlerSucceeded implements PermissionHandlerSucceeded {
-  const _$PermissionHandlerSucceeded(this.source);
+class _$PermissionHandlerSucceededImpl implements PermissionHandlerSucceeded {
+  const _$PermissionHandlerSucceededImpl(this.source);
 
   @override
   final ImageSource source;
@@ -242,7 +244,7 @@ class _$PermissionHandlerSucceeded implements PermissionHandlerSucceeded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PermissionHandlerSucceeded &&
+            other is _$PermissionHandlerSucceededImpl &&
             (identical(other.source, source) || other.source == source));
   }
 
@@ -252,9 +254,9 @@ class _$PermissionHandlerSucceeded implements PermissionHandlerSucceeded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$PermissionHandlerSucceededCopyWith<_$PermissionHandlerSucceeded>
-      get copyWith => __$$PermissionHandlerSucceededCopyWithImpl<
-          _$PermissionHandlerSucceeded>(this, _$identity);
+  _$$PermissionHandlerSucceededImplCopyWith<_$PermissionHandlerSucceededImpl>
+      get copyWith => __$$PermissionHandlerSucceededImplCopyWithImpl<
+          _$PermissionHandlerSucceededImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -327,34 +329,37 @@ class _$PermissionHandlerSucceeded implements PermissionHandlerSucceeded {
 
 abstract class PermissionHandlerSucceeded implements PermissionHandlerState {
   const factory PermissionHandlerSucceeded(final ImageSource source) =
-      _$PermissionHandlerSucceeded;
+      _$PermissionHandlerSucceededImpl;
 
   ImageSource get source;
   @JsonKey(ignore: true)
-  _$$PermissionHandlerSucceededCopyWith<_$PermissionHandlerSucceeded>
+  _$$PermissionHandlerSucceededImplCopyWith<_$PermissionHandlerSucceededImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$PermissionHandlerErrorCopyWith<$Res> {
-  factory _$$PermissionHandlerErrorCopyWith(_$PermissionHandlerError value,
-          $Res Function(_$PermissionHandlerError) then) =
-      __$$PermissionHandlerErrorCopyWithImpl<$Res>;
+abstract class _$$PermissionHandlerErrorImplCopyWith<$Res> {
+  factory _$$PermissionHandlerErrorImplCopyWith(
+          _$PermissionHandlerErrorImpl value,
+          $Res Function(_$PermissionHandlerErrorImpl) then) =
+      __$$PermissionHandlerErrorImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$PermissionHandlerErrorCopyWithImpl<$Res>
-    extends _$PermissionHandlerStateCopyWithImpl<$Res, _$PermissionHandlerError>
-    implements _$$PermissionHandlerErrorCopyWith<$Res> {
-  __$$PermissionHandlerErrorCopyWithImpl(_$PermissionHandlerError _value,
-      $Res Function(_$PermissionHandlerError) _then)
+class __$$PermissionHandlerErrorImplCopyWithImpl<$Res>
+    extends _$PermissionHandlerStateCopyWithImpl<$Res,
+        _$PermissionHandlerErrorImpl>
+    implements _$$PermissionHandlerErrorImplCopyWith<$Res> {
+  __$$PermissionHandlerErrorImplCopyWithImpl(
+      _$PermissionHandlerErrorImpl _value,
+      $Res Function(_$PermissionHandlerErrorImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$PermissionHandlerError implements PermissionHandlerError {
-  const _$PermissionHandlerError();
+class _$PermissionHandlerErrorImpl implements PermissionHandlerError {
+  const _$PermissionHandlerErrorImpl();
 
   @override
   String toString() {
@@ -364,7 +369,8 @@ class _$PermissionHandlerError implements PermissionHandlerError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$PermissionHandlerError);
+        (other.runtimeType == runtimeType &&
+            other is _$PermissionHandlerErrorImpl);
   }
 
   @override
@@ -440,5 +446,5 @@ class _$PermissionHandlerError implements PermissionHandlerError {
 }
 
 abstract class PermissionHandlerError implements PermissionHandlerState {
-  const factory PermissionHandlerError() = _$PermissionHandlerError;
+  const factory PermissionHandlerError() = _$PermissionHandlerErrorImpl;
 }

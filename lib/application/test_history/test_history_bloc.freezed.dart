@@ -87,20 +87,20 @@ class _$TestHistoryStateCopyWithImpl<$Res, $Val extends TestHistoryState>
 }
 
 /// @nodoc
-abstract class _$$TestHistoryLoadedCopyWith<$Res> {
-  factory _$$TestHistoryLoadedCopyWith(
-          _$TestHistoryLoaded value, $Res Function(_$TestHistoryLoaded) then) =
-      __$$TestHistoryLoadedCopyWithImpl<$Res>;
+abstract class _$$TestHistoryLoadedImplCopyWith<$Res> {
+  factory _$$TestHistoryLoadedImplCopyWith(_$TestHistoryLoadedImpl value,
+          $Res Function(_$TestHistoryLoadedImpl) then) =
+      __$$TestHistoryLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<Test> list});
 }
 
 /// @nodoc
-class __$$TestHistoryLoadedCopyWithImpl<$Res>
-    extends _$TestHistoryStateCopyWithImpl<$Res, _$TestHistoryLoaded>
-    implements _$$TestHistoryLoadedCopyWith<$Res> {
-  __$$TestHistoryLoadedCopyWithImpl(
-      _$TestHistoryLoaded _value, $Res Function(_$TestHistoryLoaded) _then)
+class __$$TestHistoryLoadedImplCopyWithImpl<$Res>
+    extends _$TestHistoryStateCopyWithImpl<$Res, _$TestHistoryLoadedImpl>
+    implements _$$TestHistoryLoadedImplCopyWith<$Res> {
+  __$$TestHistoryLoadedImplCopyWithImpl(_$TestHistoryLoadedImpl _value,
+      $Res Function(_$TestHistoryLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -108,7 +108,7 @@ class __$$TestHistoryLoadedCopyWithImpl<$Res>
   $Res call({
     Object? list = null,
   }) {
-    return _then(_$TestHistoryLoaded(
+    return _then(_$TestHistoryLoadedImpl(
       null == list
           ? _value._list
           : list // ignore: cast_nullable_to_non_nullable
@@ -119,8 +119,8 @@ class __$$TestHistoryLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$TestHistoryLoaded implements TestHistoryLoaded {
-  const _$TestHistoryLoaded(final List<Test> list) : _list = list;
+class _$TestHistoryLoadedImpl implements TestHistoryLoaded {
+  const _$TestHistoryLoadedImpl(final List<Test> list) : _list = list;
 
   final List<Test> _list;
   @override
@@ -139,7 +139,7 @@ class _$TestHistoryLoaded implements TestHistoryLoaded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$TestHistoryLoaded &&
+            other is _$TestHistoryLoadedImpl &&
             const DeepCollectionEquality().equals(other._list, _list));
   }
 
@@ -150,8 +150,9 @@ class _$TestHistoryLoaded implements TestHistoryLoaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$TestHistoryLoadedCopyWith<_$TestHistoryLoaded> get copyWith =>
-      __$$TestHistoryLoadedCopyWithImpl<_$TestHistoryLoaded>(this, _$identity);
+  _$$TestHistoryLoadedImplCopyWith<_$TestHistoryLoadedImpl> get copyWith =>
+      __$$TestHistoryLoadedImplCopyWithImpl<_$TestHistoryLoadedImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -229,34 +230,35 @@ class _$TestHistoryLoaded implements TestHistoryLoaded {
 }
 
 abstract class TestHistoryLoaded implements TestHistoryState {
-  const factory TestHistoryLoaded(final List<Test> list) = _$TestHistoryLoaded;
+  const factory TestHistoryLoaded(final List<Test> list) =
+      _$TestHistoryLoadedImpl;
 
   List<Test> get list;
   @JsonKey(ignore: true)
-  _$$TestHistoryLoadedCopyWith<_$TestHistoryLoaded> get copyWith =>
+  _$$TestHistoryLoadedImplCopyWith<_$TestHistoryLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$TestHistoryLoadingCopyWith<$Res> {
-  factory _$$TestHistoryLoadingCopyWith(_$TestHistoryLoading value,
-          $Res Function(_$TestHistoryLoading) then) =
-      __$$TestHistoryLoadingCopyWithImpl<$Res>;
+abstract class _$$TestHistoryLoadingImplCopyWith<$Res> {
+  factory _$$TestHistoryLoadingImplCopyWith(_$TestHistoryLoadingImpl value,
+          $Res Function(_$TestHistoryLoadingImpl) then) =
+      __$$TestHistoryLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$TestHistoryLoadingCopyWithImpl<$Res>
-    extends _$TestHistoryStateCopyWithImpl<$Res, _$TestHistoryLoading>
-    implements _$$TestHistoryLoadingCopyWith<$Res> {
-  __$$TestHistoryLoadingCopyWithImpl(
-      _$TestHistoryLoading _value, $Res Function(_$TestHistoryLoading) _then)
+class __$$TestHistoryLoadingImplCopyWithImpl<$Res>
+    extends _$TestHistoryStateCopyWithImpl<$Res, _$TestHistoryLoadingImpl>
+    implements _$$TestHistoryLoadingImplCopyWith<$Res> {
+  __$$TestHistoryLoadingImplCopyWithImpl(_$TestHistoryLoadingImpl _value,
+      $Res Function(_$TestHistoryLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$TestHistoryLoading implements TestHistoryLoading {
-  const _$TestHistoryLoading();
+class _$TestHistoryLoadingImpl implements TestHistoryLoading {
+  const _$TestHistoryLoadingImpl();
 
   @override
   String toString() {
@@ -266,7 +268,7 @@ class _$TestHistoryLoading implements TestHistoryLoading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$TestHistoryLoading);
+        (other.runtimeType == runtimeType && other is _$TestHistoryLoadingImpl);
   }
 
   @override
@@ -348,29 +350,29 @@ class _$TestHistoryLoading implements TestHistoryLoading {
 }
 
 abstract class TestHistoryLoading implements TestHistoryState {
-  const factory TestHistoryLoading() = _$TestHistoryLoading;
+  const factory TestHistoryLoading() = _$TestHistoryLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$TestHistoryInitialCopyWith<$Res> {
-  factory _$$TestHistoryInitialCopyWith(_$TestHistoryInitial value,
-          $Res Function(_$TestHistoryInitial) then) =
-      __$$TestHistoryInitialCopyWithImpl<$Res>;
+abstract class _$$TestHistoryInitialImplCopyWith<$Res> {
+  factory _$$TestHistoryInitialImplCopyWith(_$TestHistoryInitialImpl value,
+          $Res Function(_$TestHistoryInitialImpl) then) =
+      __$$TestHistoryInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$TestHistoryInitialCopyWithImpl<$Res>
-    extends _$TestHistoryStateCopyWithImpl<$Res, _$TestHistoryInitial>
-    implements _$$TestHistoryInitialCopyWith<$Res> {
-  __$$TestHistoryInitialCopyWithImpl(
-      _$TestHistoryInitial _value, $Res Function(_$TestHistoryInitial) _then)
+class __$$TestHistoryInitialImplCopyWithImpl<$Res>
+    extends _$TestHistoryStateCopyWithImpl<$Res, _$TestHistoryInitialImpl>
+    implements _$$TestHistoryInitialImplCopyWith<$Res> {
+  __$$TestHistoryInitialImplCopyWithImpl(_$TestHistoryInitialImpl _value,
+      $Res Function(_$TestHistoryInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$TestHistoryInitial implements TestHistoryInitial {
-  const _$TestHistoryInitial();
+class _$TestHistoryInitialImpl implements TestHistoryInitial {
+  const _$TestHistoryInitialImpl();
 
   @override
   String toString() {
@@ -380,7 +382,7 @@ class _$TestHistoryInitial implements TestHistoryInitial {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$TestHistoryInitial);
+        (other.runtimeType == runtimeType && other is _$TestHistoryInitialImpl);
   }
 
   @override
@@ -462,29 +464,29 @@ class _$TestHistoryInitial implements TestHistoryInitial {
 }
 
 abstract class TestHistoryInitial implements TestHistoryState {
-  const factory TestHistoryInitial() = _$TestHistoryInitial;
+  const factory TestHistoryInitial() = _$TestHistoryInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$TestHistoryErrorCopyWith<$Res> {
-  factory _$$TestHistoryErrorCopyWith(
-          _$TestHistoryError value, $Res Function(_$TestHistoryError) then) =
-      __$$TestHistoryErrorCopyWithImpl<$Res>;
+abstract class _$$TestHistoryErrorImplCopyWith<$Res> {
+  factory _$$TestHistoryErrorImplCopyWith(_$TestHistoryErrorImpl value,
+          $Res Function(_$TestHistoryErrorImpl) then) =
+      __$$TestHistoryErrorImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$TestHistoryErrorCopyWithImpl<$Res>
-    extends _$TestHistoryStateCopyWithImpl<$Res, _$TestHistoryError>
-    implements _$$TestHistoryErrorCopyWith<$Res> {
-  __$$TestHistoryErrorCopyWithImpl(
-      _$TestHistoryError _value, $Res Function(_$TestHistoryError) _then)
+class __$$TestHistoryErrorImplCopyWithImpl<$Res>
+    extends _$TestHistoryStateCopyWithImpl<$Res, _$TestHistoryErrorImpl>
+    implements _$$TestHistoryErrorImplCopyWith<$Res> {
+  __$$TestHistoryErrorImplCopyWithImpl(_$TestHistoryErrorImpl _value,
+      $Res Function(_$TestHistoryErrorImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$TestHistoryError implements TestHistoryError {
-  const _$TestHistoryError();
+class _$TestHistoryErrorImpl implements TestHistoryError {
+  const _$TestHistoryErrorImpl();
 
   @override
   String toString() {
@@ -494,7 +496,7 @@ class _$TestHistoryError implements TestHistoryError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$TestHistoryError);
+        (other.runtimeType == runtimeType && other is _$TestHistoryErrorImpl);
   }
 
   @override
@@ -576,5 +578,5 @@ class _$TestHistoryError implements TestHistoryError {
 }
 
 abstract class TestHistoryError implements TestHistoryState {
-  const factory TestHistoryError() = _$TestHistoryError;
+  const factory TestHistoryError() = _$TestHistoryErrorImpl;
 }

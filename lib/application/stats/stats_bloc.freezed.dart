@@ -81,20 +81,20 @@ class _$StatsStateCopyWithImpl<$Res, $Val extends StatsState>
 }
 
 /// @nodoc
-abstract class _$$StatsLoadedCopyWith<$Res> {
-  factory _$$StatsLoadedCopyWith(
-          _$StatsLoaded value, $Res Function(_$StatsLoaded) then) =
-      __$$StatsLoadedCopyWithImpl<$Res>;
+abstract class _$$StatsLoadedImplCopyWith<$Res> {
+  factory _$$StatsLoadedImplCopyWith(
+          _$StatsLoadedImpl value, $Res Function(_$StatsLoadedImpl) then) =
+      __$$StatsLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({KanPracticeStats stats});
 }
 
 /// @nodoc
-class __$$StatsLoadedCopyWithImpl<$Res>
-    extends _$StatsStateCopyWithImpl<$Res, _$StatsLoaded>
-    implements _$$StatsLoadedCopyWith<$Res> {
-  __$$StatsLoadedCopyWithImpl(
-      _$StatsLoaded _value, $Res Function(_$StatsLoaded) _then)
+class __$$StatsLoadedImplCopyWithImpl<$Res>
+    extends _$StatsStateCopyWithImpl<$Res, _$StatsLoadedImpl>
+    implements _$$StatsLoadedImplCopyWith<$Res> {
+  __$$StatsLoadedImplCopyWithImpl(
+      _$StatsLoadedImpl _value, $Res Function(_$StatsLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -102,7 +102,7 @@ class __$$StatsLoadedCopyWithImpl<$Res>
   $Res call({
     Object? stats = null,
   }) {
-    return _then(_$StatsLoaded(
+    return _then(_$StatsLoadedImpl(
       null == stats
           ? _value.stats
           : stats // ignore: cast_nullable_to_non_nullable
@@ -113,8 +113,8 @@ class __$$StatsLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$StatsLoaded implements StatsLoaded {
-  const _$StatsLoaded(this.stats);
+class _$StatsLoadedImpl implements StatsLoaded {
+  const _$StatsLoadedImpl(this.stats);
 
   @override
   final KanPracticeStats stats;
@@ -128,7 +128,7 @@ class _$StatsLoaded implements StatsLoaded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$StatsLoaded &&
+            other is _$StatsLoadedImpl &&
             (identical(other.stats, stats) || other.stats == stats));
   }
 
@@ -138,8 +138,8 @@ class _$StatsLoaded implements StatsLoaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$StatsLoadedCopyWith<_$StatsLoaded> get copyWith =>
-      __$$StatsLoadedCopyWithImpl<_$StatsLoaded>(this, _$identity);
+  _$$StatsLoadedImplCopyWith<_$StatsLoadedImpl> get copyWith =>
+      __$$StatsLoadedImplCopyWithImpl<_$StatsLoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -211,34 +211,34 @@ class _$StatsLoaded implements StatsLoaded {
 }
 
 abstract class StatsLoaded implements StatsState {
-  const factory StatsLoaded(final KanPracticeStats stats) = _$StatsLoaded;
+  const factory StatsLoaded(final KanPracticeStats stats) = _$StatsLoadedImpl;
 
   KanPracticeStats get stats;
   @JsonKey(ignore: true)
-  _$$StatsLoadedCopyWith<_$StatsLoaded> get copyWith =>
+  _$$StatsLoadedImplCopyWith<_$StatsLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$StatsLoadingCopyWith<$Res> {
-  factory _$$StatsLoadingCopyWith(
-          _$StatsLoading value, $Res Function(_$StatsLoading) then) =
-      __$$StatsLoadingCopyWithImpl<$Res>;
+abstract class _$$StatsLoadingImplCopyWith<$Res> {
+  factory _$$StatsLoadingImplCopyWith(
+          _$StatsLoadingImpl value, $Res Function(_$StatsLoadingImpl) then) =
+      __$$StatsLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$StatsLoadingCopyWithImpl<$Res>
-    extends _$StatsStateCopyWithImpl<$Res, _$StatsLoading>
-    implements _$$StatsLoadingCopyWith<$Res> {
-  __$$StatsLoadingCopyWithImpl(
-      _$StatsLoading _value, $Res Function(_$StatsLoading) _then)
+class __$$StatsLoadingImplCopyWithImpl<$Res>
+    extends _$StatsStateCopyWithImpl<$Res, _$StatsLoadingImpl>
+    implements _$$StatsLoadingImplCopyWith<$Res> {
+  __$$StatsLoadingImplCopyWithImpl(
+      _$StatsLoadingImpl _value, $Res Function(_$StatsLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$StatsLoading implements StatsLoading {
-  const _$StatsLoading();
+class _$StatsLoadingImpl implements StatsLoading {
+  const _$StatsLoadingImpl();
 
   @override
   String toString() {
@@ -248,7 +248,7 @@ class _$StatsLoading implements StatsLoading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$StatsLoading);
+        (other.runtimeType == runtimeType && other is _$StatsLoadingImpl);
   }
 
   @override
@@ -324,29 +324,29 @@ class _$StatsLoading implements StatsLoading {
 }
 
 abstract class StatsLoading implements StatsState {
-  const factory StatsLoading() = _$StatsLoading;
+  const factory StatsLoading() = _$StatsLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$StatsInitialCopyWith<$Res> {
-  factory _$$StatsInitialCopyWith(
-          _$StatsInitial value, $Res Function(_$StatsInitial) then) =
-      __$$StatsInitialCopyWithImpl<$Res>;
+abstract class _$$StatsInitialImplCopyWith<$Res> {
+  factory _$$StatsInitialImplCopyWith(
+          _$StatsInitialImpl value, $Res Function(_$StatsInitialImpl) then) =
+      __$$StatsInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$StatsInitialCopyWithImpl<$Res>
-    extends _$StatsStateCopyWithImpl<$Res, _$StatsInitial>
-    implements _$$StatsInitialCopyWith<$Res> {
-  __$$StatsInitialCopyWithImpl(
-      _$StatsInitial _value, $Res Function(_$StatsInitial) _then)
+class __$$StatsInitialImplCopyWithImpl<$Res>
+    extends _$StatsStateCopyWithImpl<$Res, _$StatsInitialImpl>
+    implements _$$StatsInitialImplCopyWith<$Res> {
+  __$$StatsInitialImplCopyWithImpl(
+      _$StatsInitialImpl _value, $Res Function(_$StatsInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$StatsInitial implements StatsInitial {
-  const _$StatsInitial();
+class _$StatsInitialImpl implements StatsInitial {
+  const _$StatsInitialImpl();
 
   @override
   String toString() {
@@ -356,7 +356,7 @@ class _$StatsInitial implements StatsInitial {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$StatsInitial);
+        (other.runtimeType == runtimeType && other is _$StatsInitialImpl);
   }
 
   @override
@@ -432,5 +432,5 @@ class _$StatsInitial implements StatsInitial {
 }
 
 abstract class StatsInitial implements StatsState {
-  const factory StatsInitial() = _$StatsInitial;
+  const factory StatsInitial() = _$StatsInitialImpl;
 }

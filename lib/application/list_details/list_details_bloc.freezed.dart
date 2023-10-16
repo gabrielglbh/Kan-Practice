@@ -87,20 +87,20 @@ class _$ListDetailsStateCopyWithImpl<$Res, $Val extends ListDetailsState>
 }
 
 /// @nodoc
-abstract class _$$ListDetailsLoadedCopyWith<$Res> {
-  factory _$$ListDetailsLoadedCopyWith(
-          _$ListDetailsLoaded value, $Res Function(_$ListDetailsLoaded) then) =
-      __$$ListDetailsLoadedCopyWithImpl<$Res>;
+abstract class _$$ListDetailsLoadedImplCopyWith<$Res> {
+  factory _$$ListDetailsLoadedImplCopyWith(_$ListDetailsLoadedImpl value,
+          $Res Function(_$ListDetailsLoadedImpl) then) =
+      __$$ListDetailsLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String name});
 }
 
 /// @nodoc
-class __$$ListDetailsLoadedCopyWithImpl<$Res>
-    extends _$ListDetailsStateCopyWithImpl<$Res, _$ListDetailsLoaded>
-    implements _$$ListDetailsLoadedCopyWith<$Res> {
-  __$$ListDetailsLoadedCopyWithImpl(
-      _$ListDetailsLoaded _value, $Res Function(_$ListDetailsLoaded) _then)
+class __$$ListDetailsLoadedImplCopyWithImpl<$Res>
+    extends _$ListDetailsStateCopyWithImpl<$Res, _$ListDetailsLoadedImpl>
+    implements _$$ListDetailsLoadedImplCopyWith<$Res> {
+  __$$ListDetailsLoadedImplCopyWithImpl(_$ListDetailsLoadedImpl _value,
+      $Res Function(_$ListDetailsLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -108,7 +108,7 @@ class __$$ListDetailsLoadedCopyWithImpl<$Res>
   $Res call({
     Object? name = null,
   }) {
-    return _then(_$ListDetailsLoaded(
+    return _then(_$ListDetailsLoadedImpl(
       null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -119,8 +119,8 @@ class __$$ListDetailsLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ListDetailsLoaded implements ListDetailsLoaded {
-  const _$ListDetailsLoaded(this.name);
+class _$ListDetailsLoadedImpl implements ListDetailsLoaded {
+  const _$ListDetailsLoadedImpl(this.name);
 
   @override
   final String name;
@@ -134,7 +134,7 @@ class _$ListDetailsLoaded implements ListDetailsLoaded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ListDetailsLoaded &&
+            other is _$ListDetailsLoadedImpl &&
             (identical(other.name, name) || other.name == name));
   }
 
@@ -144,8 +144,9 @@ class _$ListDetailsLoaded implements ListDetailsLoaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ListDetailsLoadedCopyWith<_$ListDetailsLoaded> get copyWith =>
-      __$$ListDetailsLoadedCopyWithImpl<_$ListDetailsLoaded>(this, _$identity);
+  _$$ListDetailsLoadedImplCopyWith<_$ListDetailsLoadedImpl> get copyWith =>
+      __$$ListDetailsLoadedImplCopyWithImpl<_$ListDetailsLoadedImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -223,34 +224,34 @@ class _$ListDetailsLoaded implements ListDetailsLoaded {
 }
 
 abstract class ListDetailsLoaded implements ListDetailsState {
-  const factory ListDetailsLoaded(final String name) = _$ListDetailsLoaded;
+  const factory ListDetailsLoaded(final String name) = _$ListDetailsLoadedImpl;
 
   String get name;
   @JsonKey(ignore: true)
-  _$$ListDetailsLoadedCopyWith<_$ListDetailsLoaded> get copyWith =>
+  _$$ListDetailsLoadedImplCopyWith<_$ListDetailsLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ListDetailsInitialCopyWith<$Res> {
-  factory _$$ListDetailsInitialCopyWith(_$ListDetailsInitial value,
-          $Res Function(_$ListDetailsInitial) then) =
-      __$$ListDetailsInitialCopyWithImpl<$Res>;
+abstract class _$$ListDetailsInitialImplCopyWith<$Res> {
+  factory _$$ListDetailsInitialImplCopyWith(_$ListDetailsInitialImpl value,
+          $Res Function(_$ListDetailsInitialImpl) then) =
+      __$$ListDetailsInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ListDetailsInitialCopyWithImpl<$Res>
-    extends _$ListDetailsStateCopyWithImpl<$Res, _$ListDetailsInitial>
-    implements _$$ListDetailsInitialCopyWith<$Res> {
-  __$$ListDetailsInitialCopyWithImpl(
-      _$ListDetailsInitial _value, $Res Function(_$ListDetailsInitial) _then)
+class __$$ListDetailsInitialImplCopyWithImpl<$Res>
+    extends _$ListDetailsStateCopyWithImpl<$Res, _$ListDetailsInitialImpl>
+    implements _$$ListDetailsInitialImplCopyWith<$Res> {
+  __$$ListDetailsInitialImplCopyWithImpl(_$ListDetailsInitialImpl _value,
+      $Res Function(_$ListDetailsInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ListDetailsInitial implements ListDetailsInitial {
-  const _$ListDetailsInitial();
+class _$ListDetailsInitialImpl implements ListDetailsInitial {
+  const _$ListDetailsInitialImpl();
 
   @override
   String toString() {
@@ -260,7 +261,7 @@ class _$ListDetailsInitial implements ListDetailsInitial {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ListDetailsInitial);
+        (other.runtimeType == runtimeType && other is _$ListDetailsInitialImpl);
   }
 
   @override
@@ -342,29 +343,29 @@ class _$ListDetailsInitial implements ListDetailsInitial {
 }
 
 abstract class ListDetailsInitial implements ListDetailsState {
-  const factory ListDetailsInitial() = _$ListDetailsInitial;
+  const factory ListDetailsInitial() = _$ListDetailsInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$ListDetailsLoadingCopyWith<$Res> {
-  factory _$$ListDetailsLoadingCopyWith(_$ListDetailsLoading value,
-          $Res Function(_$ListDetailsLoading) then) =
-      __$$ListDetailsLoadingCopyWithImpl<$Res>;
+abstract class _$$ListDetailsLoadingImplCopyWith<$Res> {
+  factory _$$ListDetailsLoadingImplCopyWith(_$ListDetailsLoadingImpl value,
+          $Res Function(_$ListDetailsLoadingImpl) then) =
+      __$$ListDetailsLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ListDetailsLoadingCopyWithImpl<$Res>
-    extends _$ListDetailsStateCopyWithImpl<$Res, _$ListDetailsLoading>
-    implements _$$ListDetailsLoadingCopyWith<$Res> {
-  __$$ListDetailsLoadingCopyWithImpl(
-      _$ListDetailsLoading _value, $Res Function(_$ListDetailsLoading) _then)
+class __$$ListDetailsLoadingImplCopyWithImpl<$Res>
+    extends _$ListDetailsStateCopyWithImpl<$Res, _$ListDetailsLoadingImpl>
+    implements _$$ListDetailsLoadingImplCopyWith<$Res> {
+  __$$ListDetailsLoadingImplCopyWithImpl(_$ListDetailsLoadingImpl _value,
+      $Res Function(_$ListDetailsLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ListDetailsLoading implements ListDetailsLoading {
-  const _$ListDetailsLoading();
+class _$ListDetailsLoadingImpl implements ListDetailsLoading {
+  const _$ListDetailsLoadingImpl();
 
   @override
   String toString() {
@@ -374,7 +375,7 @@ class _$ListDetailsLoading implements ListDetailsLoading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ListDetailsLoading);
+        (other.runtimeType == runtimeType && other is _$ListDetailsLoadingImpl);
   }
 
   @override
@@ -456,29 +457,29 @@ class _$ListDetailsLoading implements ListDetailsLoading {
 }
 
 abstract class ListDetailsLoading implements ListDetailsState {
-  const factory ListDetailsLoading() = _$ListDetailsLoading;
+  const factory ListDetailsLoading() = _$ListDetailsLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$ListDetailsErrorCopyWith<$Res> {
-  factory _$$ListDetailsErrorCopyWith(
-          _$ListDetailsError value, $Res Function(_$ListDetailsError) then) =
-      __$$ListDetailsErrorCopyWithImpl<$Res>;
+abstract class _$$ListDetailsErrorImplCopyWith<$Res> {
+  factory _$$ListDetailsErrorImplCopyWith(_$ListDetailsErrorImpl value,
+          $Res Function(_$ListDetailsErrorImpl) then) =
+      __$$ListDetailsErrorImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ListDetailsErrorCopyWithImpl<$Res>
-    extends _$ListDetailsStateCopyWithImpl<$Res, _$ListDetailsError>
-    implements _$$ListDetailsErrorCopyWith<$Res> {
-  __$$ListDetailsErrorCopyWithImpl(
-      _$ListDetailsError _value, $Res Function(_$ListDetailsError) _then)
+class __$$ListDetailsErrorImplCopyWithImpl<$Res>
+    extends _$ListDetailsStateCopyWithImpl<$Res, _$ListDetailsErrorImpl>
+    implements _$$ListDetailsErrorImplCopyWith<$Res> {
+  __$$ListDetailsErrorImplCopyWithImpl(_$ListDetailsErrorImpl _value,
+      $Res Function(_$ListDetailsErrorImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ListDetailsError implements ListDetailsError {
-  const _$ListDetailsError();
+class _$ListDetailsErrorImpl implements ListDetailsError {
+  const _$ListDetailsErrorImpl();
 
   @override
   String toString() {
@@ -488,7 +489,7 @@ class _$ListDetailsError implements ListDetailsError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ListDetailsError);
+        (other.runtimeType == runtimeType && other is _$ListDetailsErrorImpl);
   }
 
   @override
@@ -570,5 +571,5 @@ class _$ListDetailsError implements ListDetailsError {
 }
 
 abstract class ListDetailsError implements ListDetailsState {
-  const factory ListDetailsError() = _$ListDetailsError;
+  const factory ListDetailsError() = _$ListDetailsErrorImpl;
 }

@@ -10,10 +10,11 @@ import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_text_form.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 class LoginPage extends StatefulWidget {
-  final String? productId;
-  const LoginPage({Key? key, required this.productId}) : super(key: key);
+  final StoreProduct? product;
+  const LoginPage({Key? key, required this.product}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -93,10 +94,10 @@ class _LoginPageState extends State<LoginPage> {
               if (i.shouldPop) Navigator.of(context).pop();
             },
             loaded: (l) {
-              if (widget.productId != null) {
+              if (widget.product != null) {
                 context
                     .read<PurchasesBloc>()
-                    .add(PurchasesEventBuy(widget.productId!));
+                    .add(PurchasesEventBuy(widget.product!));
               } else {
                 context
                     .read<PurchasesBloc>()

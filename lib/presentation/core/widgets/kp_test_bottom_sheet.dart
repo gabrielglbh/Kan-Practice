@@ -240,12 +240,14 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                     .then((_) => _checkReviewWords());
                 break;
               case Tests.blitz:
+                if (!mounted) return;
                 await KPBlitzBottomSheet.show(
                   context,
                   folder: widget.folder,
                 ).then((_) => _checkReviewWords());
                 break;
               case Tests.time:
+                if (!mounted) return;
                 await KPBlitzBottomSheet.show(
                   context,
                   folder: widget.folder,
@@ -253,10 +255,12 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                 ).then((_) => _checkReviewWords());
                 break;
               case Tests.numbers:
+                if (!mounted) return;
                 await KPNumberTestBottomSheet.show(context)
                     .then((_) => _checkReviewWords());
                 break;
               case Tests.less:
+                if (!mounted) return;
                 await KPBlitzBottomSheet.show(
                   context,
                   folder: widget.folder,
@@ -264,20 +268,24 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                 ).then((_) => _checkReviewWords());
                 break;
               case Tests.categories:
+                if (!mounted) return;
                 await KPKanListCategorySelectionBottomSheet.show(
                   context,
                   folder: widget.folder,
                 ).then((_) => _checkReviewWords());
                 break;
               case Tests.folder:
+                if (!mounted) return;
                 await FolderSelectionBottomSheet.show(context)
                     .then((_) => _checkReviewWords());
                 break;
               case Tests.daily:
+                if (!mounted) return;
                 await DailyBottomSheet.show(context)
                     .then((_) => _checkReviewWords());
                 break;
               case Tests.translation:
+                if (!mounted) return;
                 await KPTranslationTestBottomSheet.show(context)
                     .then((_) => _checkReviewWords());
                 break;

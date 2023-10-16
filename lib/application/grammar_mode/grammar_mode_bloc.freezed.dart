@@ -99,25 +99,25 @@ class _$GrammarModeStateCopyWithImpl<$Res, $Val extends GrammarModeState>
 }
 
 /// @nodoc
-abstract class _$$GrammarModeLoadingCopyWith<$Res> {
-  factory _$$GrammarModeLoadingCopyWith(_$GrammarModeLoading value,
-          $Res Function(_$GrammarModeLoading) then) =
-      __$$GrammarModeLoadingCopyWithImpl<$Res>;
+abstract class _$$GrammarModeLoadingImplCopyWith<$Res> {
+  factory _$$GrammarModeLoadingImplCopyWith(_$GrammarModeLoadingImpl value,
+          $Res Function(_$GrammarModeLoadingImpl) then) =
+      __$$GrammarModeLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$GrammarModeLoadingCopyWithImpl<$Res>
-    extends _$GrammarModeStateCopyWithImpl<$Res, _$GrammarModeLoading>
-    implements _$$GrammarModeLoadingCopyWith<$Res> {
-  __$$GrammarModeLoadingCopyWithImpl(
-      _$GrammarModeLoading _value, $Res Function(_$GrammarModeLoading) _then)
+class __$$GrammarModeLoadingImplCopyWithImpl<$Res>
+    extends _$GrammarModeStateCopyWithImpl<$Res, _$GrammarModeLoadingImpl>
+    implements _$$GrammarModeLoadingImplCopyWith<$Res> {
+  __$$GrammarModeLoadingImplCopyWithImpl(_$GrammarModeLoadingImpl _value,
+      $Res Function(_$GrammarModeLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$GrammarModeLoading implements GrammarModeLoading {
-  const _$GrammarModeLoading();
+class _$GrammarModeLoadingImpl implements GrammarModeLoading {
+  const _$GrammarModeLoadingImpl();
 
   @override
   String toString() {
@@ -127,7 +127,7 @@ class _$GrammarModeLoading implements GrammarModeLoading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$GrammarModeLoading);
+        (other.runtimeType == runtimeType && other is _$GrammarModeLoadingImpl);
   }
 
   @override
@@ -221,29 +221,29 @@ class _$GrammarModeLoading implements GrammarModeLoading {
 }
 
 abstract class GrammarModeLoading implements GrammarModeState {
-  const factory GrammarModeLoading() = _$GrammarModeLoading;
+  const factory GrammarModeLoading() = _$GrammarModeLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$GrammarModeLoadedCopyWith<$Res> {
-  factory _$$GrammarModeLoadedCopyWith(
-          _$GrammarModeLoaded value, $Res Function(_$GrammarModeLoaded) then) =
-      __$$GrammarModeLoadedCopyWithImpl<$Res>;
+abstract class _$$GrammarModeLoadedImplCopyWith<$Res> {
+  factory _$$GrammarModeLoadedImplCopyWith(_$GrammarModeLoadedImpl value,
+          $Res Function(_$GrammarModeLoadedImpl) then) =
+      __$$GrammarModeLoadedImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$GrammarModeLoadedCopyWithImpl<$Res>
-    extends _$GrammarModeStateCopyWithImpl<$Res, _$GrammarModeLoaded>
-    implements _$$GrammarModeLoadedCopyWith<$Res> {
-  __$$GrammarModeLoadedCopyWithImpl(
-      _$GrammarModeLoaded _value, $Res Function(_$GrammarModeLoaded) _then)
+class __$$GrammarModeLoadedImplCopyWithImpl<$Res>
+    extends _$GrammarModeStateCopyWithImpl<$Res, _$GrammarModeLoadedImpl>
+    implements _$$GrammarModeLoadedImplCopyWith<$Res> {
+  __$$GrammarModeLoadedImplCopyWithImpl(_$GrammarModeLoadedImpl _value,
+      $Res Function(_$GrammarModeLoadedImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$GrammarModeLoaded implements GrammarModeLoaded {
-  const _$GrammarModeLoaded();
+class _$GrammarModeLoadedImpl implements GrammarModeLoaded {
+  const _$GrammarModeLoadedImpl();
 
   @override
   String toString() {
@@ -253,7 +253,7 @@ class _$GrammarModeLoaded implements GrammarModeLoaded {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$GrammarModeLoaded);
+        (other.runtimeType == runtimeType && other is _$GrammarModeLoadedImpl);
   }
 
   @override
@@ -347,29 +347,31 @@ class _$GrammarModeLoaded implements GrammarModeLoaded {
 }
 
 abstract class GrammarModeLoaded implements GrammarModeState {
-  const factory GrammarModeLoaded() = _$GrammarModeLoaded;
+  const factory GrammarModeLoaded() = _$GrammarModeLoadedImpl;
 }
 
 /// @nodoc
-abstract class _$$GrammarModeSM2CalculatedCopyWith<$Res> {
-  factory _$$GrammarModeSM2CalculatedCopyWith(_$GrammarModeSM2Calculated value,
-          $Res Function(_$GrammarModeSM2Calculated) then) =
-      __$$GrammarModeSM2CalculatedCopyWithImpl<$Res>;
+abstract class _$$GrammarModeSM2CalculatedImplCopyWith<$Res> {
+  factory _$$GrammarModeSM2CalculatedImplCopyWith(
+          _$GrammarModeSM2CalculatedImpl value,
+          $Res Function(_$GrammarModeSM2CalculatedImpl) then) =
+      __$$GrammarModeSM2CalculatedImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$GrammarModeSM2CalculatedCopyWithImpl<$Res>
-    extends _$GrammarModeStateCopyWithImpl<$Res, _$GrammarModeSM2Calculated>
-    implements _$$GrammarModeSM2CalculatedCopyWith<$Res> {
-  __$$GrammarModeSM2CalculatedCopyWithImpl(_$GrammarModeSM2Calculated _value,
-      $Res Function(_$GrammarModeSM2Calculated) _then)
+class __$$GrammarModeSM2CalculatedImplCopyWithImpl<$Res>
+    extends _$GrammarModeStateCopyWithImpl<$Res, _$GrammarModeSM2CalculatedImpl>
+    implements _$$GrammarModeSM2CalculatedImplCopyWith<$Res> {
+  __$$GrammarModeSM2CalculatedImplCopyWithImpl(
+      _$GrammarModeSM2CalculatedImpl _value,
+      $Res Function(_$GrammarModeSM2CalculatedImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$GrammarModeSM2Calculated implements GrammarModeSM2Calculated {
-  const _$GrammarModeSM2Calculated();
+class _$GrammarModeSM2CalculatedImpl implements GrammarModeSM2Calculated {
+  const _$GrammarModeSM2CalculatedImpl();
 
   @override
   String toString() {
@@ -380,7 +382,7 @@ class _$GrammarModeSM2Calculated implements GrammarModeSM2Calculated {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GrammarModeSM2Calculated);
+            other is _$GrammarModeSM2CalculatedImpl);
   }
 
   @override
@@ -474,26 +476,27 @@ class _$GrammarModeSM2Calculated implements GrammarModeSM2Calculated {
 }
 
 abstract class GrammarModeSM2Calculated implements GrammarModeState {
-  const factory GrammarModeSM2Calculated() = _$GrammarModeSM2Calculated;
+  const factory GrammarModeSM2Calculated() = _$GrammarModeSM2CalculatedImpl;
 }
 
 /// @nodoc
-abstract class _$$GrammarModeScoreCalculatedCopyWith<$Res> {
-  factory _$$GrammarModeScoreCalculatedCopyWith(
-          _$GrammarModeScoreCalculated value,
-          $Res Function(_$GrammarModeScoreCalculated) then) =
-      __$$GrammarModeScoreCalculatedCopyWithImpl<$Res>;
+abstract class _$$GrammarModeScoreCalculatedImplCopyWith<$Res> {
+  factory _$$GrammarModeScoreCalculatedImplCopyWith(
+          _$GrammarModeScoreCalculatedImpl value,
+          $Res Function(_$GrammarModeScoreCalculatedImpl) then) =
+      __$$GrammarModeScoreCalculatedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int score});
 }
 
 /// @nodoc
-class __$$GrammarModeScoreCalculatedCopyWithImpl<$Res>
-    extends _$GrammarModeStateCopyWithImpl<$Res, _$GrammarModeScoreCalculated>
-    implements _$$GrammarModeScoreCalculatedCopyWith<$Res> {
-  __$$GrammarModeScoreCalculatedCopyWithImpl(
-      _$GrammarModeScoreCalculated _value,
-      $Res Function(_$GrammarModeScoreCalculated) _then)
+class __$$GrammarModeScoreCalculatedImplCopyWithImpl<$Res>
+    extends _$GrammarModeStateCopyWithImpl<$Res,
+        _$GrammarModeScoreCalculatedImpl>
+    implements _$$GrammarModeScoreCalculatedImplCopyWith<$Res> {
+  __$$GrammarModeScoreCalculatedImplCopyWithImpl(
+      _$GrammarModeScoreCalculatedImpl _value,
+      $Res Function(_$GrammarModeScoreCalculatedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -501,7 +504,7 @@ class __$$GrammarModeScoreCalculatedCopyWithImpl<$Res>
   $Res call({
     Object? score = null,
   }) {
-    return _then(_$GrammarModeScoreCalculated(
+    return _then(_$GrammarModeScoreCalculatedImpl(
       null == score
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
@@ -512,8 +515,8 @@ class __$$GrammarModeScoreCalculatedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$GrammarModeScoreCalculated implements GrammarModeScoreCalculated {
-  const _$GrammarModeScoreCalculated(this.score);
+class _$GrammarModeScoreCalculatedImpl implements GrammarModeScoreCalculated {
+  const _$GrammarModeScoreCalculatedImpl(this.score);
 
   @override
   final int score;
@@ -527,7 +530,7 @@ class _$GrammarModeScoreCalculated implements GrammarModeScoreCalculated {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GrammarModeScoreCalculated &&
+            other is _$GrammarModeScoreCalculatedImpl &&
             (identical(other.score, score) || other.score == score));
   }
 
@@ -537,9 +540,9 @@ class _$GrammarModeScoreCalculated implements GrammarModeScoreCalculated {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$GrammarModeScoreCalculatedCopyWith<_$GrammarModeScoreCalculated>
-      get copyWith => __$$GrammarModeScoreCalculatedCopyWithImpl<
-          _$GrammarModeScoreCalculated>(this, _$identity);
+  _$$GrammarModeScoreCalculatedImplCopyWith<_$GrammarModeScoreCalculatedImpl>
+      get copyWith => __$$GrammarModeScoreCalculatedImplCopyWithImpl<
+          _$GrammarModeScoreCalculatedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -630,29 +633,31 @@ class _$GrammarModeScoreCalculated implements GrammarModeScoreCalculated {
 
 abstract class GrammarModeScoreCalculated implements GrammarModeState {
   const factory GrammarModeScoreCalculated(final int score) =
-      _$GrammarModeScoreCalculated;
+      _$GrammarModeScoreCalculatedImpl;
 
   int get score;
   @JsonKey(ignore: true)
-  _$$GrammarModeScoreCalculatedCopyWith<_$GrammarModeScoreCalculated>
+  _$$GrammarModeScoreCalculatedImplCopyWith<_$GrammarModeScoreCalculatedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$GrammarModeScoreObtainedCopyWith<$Res> {
-  factory _$$GrammarModeScoreObtainedCopyWith(_$GrammarModeScoreObtained value,
-          $Res Function(_$GrammarModeScoreObtained) then) =
-      __$$GrammarModeScoreObtainedCopyWithImpl<$Res>;
+abstract class _$$GrammarModeScoreObtainedImplCopyWith<$Res> {
+  factory _$$GrammarModeScoreObtainedImplCopyWith(
+          _$GrammarModeScoreObtainedImpl value,
+          $Res Function(_$GrammarModeScoreObtainedImpl) then) =
+      __$$GrammarModeScoreObtainedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({double score});
 }
 
 /// @nodoc
-class __$$GrammarModeScoreObtainedCopyWithImpl<$Res>
-    extends _$GrammarModeStateCopyWithImpl<$Res, _$GrammarModeScoreObtained>
-    implements _$$GrammarModeScoreObtainedCopyWith<$Res> {
-  __$$GrammarModeScoreObtainedCopyWithImpl(_$GrammarModeScoreObtained _value,
-      $Res Function(_$GrammarModeScoreObtained) _then)
+class __$$GrammarModeScoreObtainedImplCopyWithImpl<$Res>
+    extends _$GrammarModeStateCopyWithImpl<$Res, _$GrammarModeScoreObtainedImpl>
+    implements _$$GrammarModeScoreObtainedImplCopyWith<$Res> {
+  __$$GrammarModeScoreObtainedImplCopyWithImpl(
+      _$GrammarModeScoreObtainedImpl _value,
+      $Res Function(_$GrammarModeScoreObtainedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -660,7 +665,7 @@ class __$$GrammarModeScoreObtainedCopyWithImpl<$Res>
   $Res call({
     Object? score = null,
   }) {
-    return _then(_$GrammarModeScoreObtained(
+    return _then(_$GrammarModeScoreObtainedImpl(
       null == score
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
@@ -671,8 +676,8 @@ class __$$GrammarModeScoreObtainedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$GrammarModeScoreObtained implements GrammarModeScoreObtained {
-  const _$GrammarModeScoreObtained(this.score);
+class _$GrammarModeScoreObtainedImpl implements GrammarModeScoreObtained {
+  const _$GrammarModeScoreObtainedImpl(this.score);
 
   @override
   final double score;
@@ -686,7 +691,7 @@ class _$GrammarModeScoreObtained implements GrammarModeScoreObtained {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GrammarModeScoreObtained &&
+            other is _$GrammarModeScoreObtainedImpl &&
             (identical(other.score, score) || other.score == score));
   }
 
@@ -696,10 +701,9 @@ class _$GrammarModeScoreObtained implements GrammarModeScoreObtained {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$GrammarModeScoreObtainedCopyWith<_$GrammarModeScoreObtained>
-      get copyWith =>
-          __$$GrammarModeScoreObtainedCopyWithImpl<_$GrammarModeScoreObtained>(
-              this, _$identity);
+  _$$GrammarModeScoreObtainedImplCopyWith<_$GrammarModeScoreObtainedImpl>
+      get copyWith => __$$GrammarModeScoreObtainedImplCopyWithImpl<
+          _$GrammarModeScoreObtainedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -790,34 +794,36 @@ class _$GrammarModeScoreObtained implements GrammarModeScoreObtained {
 
 abstract class GrammarModeScoreObtained implements GrammarModeState {
   const factory GrammarModeScoreObtained(final double score) =
-      _$GrammarModeScoreObtained;
+      _$GrammarModeScoreObtainedImpl;
 
   double get score;
   @JsonKey(ignore: true)
-  _$$GrammarModeScoreObtainedCopyWith<_$GrammarModeScoreObtained>
+  _$$GrammarModeScoreObtainedImplCopyWith<_$GrammarModeScoreObtainedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$GrammarModeTestFinishedCopyWith<$Res> {
-  factory _$$GrammarModeTestFinishedCopyWith(_$GrammarModeTestFinished value,
-          $Res Function(_$GrammarModeTestFinished) then) =
-      __$$GrammarModeTestFinishedCopyWithImpl<$Res>;
+abstract class _$$GrammarModeTestFinishedImplCopyWith<$Res> {
+  factory _$$GrammarModeTestFinishedImplCopyWith(
+          _$GrammarModeTestFinishedImpl value,
+          $Res Function(_$GrammarModeTestFinishedImpl) then) =
+      __$$GrammarModeTestFinishedImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$GrammarModeTestFinishedCopyWithImpl<$Res>
-    extends _$GrammarModeStateCopyWithImpl<$Res, _$GrammarModeTestFinished>
-    implements _$$GrammarModeTestFinishedCopyWith<$Res> {
-  __$$GrammarModeTestFinishedCopyWithImpl(_$GrammarModeTestFinished _value,
-      $Res Function(_$GrammarModeTestFinished) _then)
+class __$$GrammarModeTestFinishedImplCopyWithImpl<$Res>
+    extends _$GrammarModeStateCopyWithImpl<$Res, _$GrammarModeTestFinishedImpl>
+    implements _$$GrammarModeTestFinishedImplCopyWith<$Res> {
+  __$$GrammarModeTestFinishedImplCopyWithImpl(
+      _$GrammarModeTestFinishedImpl _value,
+      $Res Function(_$GrammarModeTestFinishedImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$GrammarModeTestFinished implements GrammarModeTestFinished {
-  const _$GrammarModeTestFinished();
+class _$GrammarModeTestFinishedImpl implements GrammarModeTestFinished {
+  const _$GrammarModeTestFinishedImpl();
 
   @override
   String toString() {
@@ -828,7 +834,7 @@ class _$GrammarModeTestFinished implements GrammarModeTestFinished {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GrammarModeTestFinished);
+            other is _$GrammarModeTestFinishedImpl);
   }
 
   @override
@@ -922,5 +928,5 @@ class _$GrammarModeTestFinished implements GrammarModeTestFinished {
 }
 
 abstract class GrammarModeTestFinished implements GrammarModeState {
-  const factory GrammarModeTestFinished() = _$GrammarModeTestFinished;
+  const factory GrammarModeTestFinished() = _$GrammarModeTestFinishedImpl;
 }

@@ -89,23 +89,23 @@ class _$AlterSpecificDataStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$AlterSpecificDataTestRetrievedCopyWith<$Res> {
-  factory _$$AlterSpecificDataTestRetrievedCopyWith(
-          _$AlterSpecificDataTestRetrieved value,
-          $Res Function(_$AlterSpecificDataTestRetrieved) then) =
-      __$$AlterSpecificDataTestRetrievedCopyWithImpl<$Res>;
+abstract class _$$AlterSpecificDataTestRetrievedImplCopyWith<$Res> {
+  factory _$$AlterSpecificDataTestRetrievedImplCopyWith(
+          _$AlterSpecificDataTestRetrievedImpl value,
+          $Res Function(_$AlterSpecificDataTestRetrievedImpl) then) =
+      __$$AlterSpecificDataTestRetrievedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({AlterSpecificData data, Tests test});
 }
 
 /// @nodoc
-class __$$AlterSpecificDataTestRetrievedCopyWithImpl<$Res>
+class __$$AlterSpecificDataTestRetrievedImplCopyWithImpl<$Res>
     extends _$AlterSpecificDataStateCopyWithImpl<$Res,
-        _$AlterSpecificDataTestRetrieved>
-    implements _$$AlterSpecificDataTestRetrievedCopyWith<$Res> {
-  __$$AlterSpecificDataTestRetrievedCopyWithImpl(
-      _$AlterSpecificDataTestRetrieved _value,
-      $Res Function(_$AlterSpecificDataTestRetrieved) _then)
+        _$AlterSpecificDataTestRetrievedImpl>
+    implements _$$AlterSpecificDataTestRetrievedImplCopyWith<$Res> {
+  __$$AlterSpecificDataTestRetrievedImplCopyWithImpl(
+      _$AlterSpecificDataTestRetrievedImpl _value,
+      $Res Function(_$AlterSpecificDataTestRetrievedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -114,7 +114,7 @@ class __$$AlterSpecificDataTestRetrievedCopyWithImpl<$Res>
     Object? data = null,
     Object? test = null,
   }) {
-    return _then(_$AlterSpecificDataTestRetrieved(
+    return _then(_$AlterSpecificDataTestRetrievedImpl(
       null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -129,9 +129,9 @@ class __$$AlterSpecificDataTestRetrievedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AlterSpecificDataTestRetrieved
+class _$AlterSpecificDataTestRetrievedImpl
     implements AlterSpecificDataTestRetrieved {
-  const _$AlterSpecificDataTestRetrieved(this.data, this.test);
+  const _$AlterSpecificDataTestRetrievedImpl(this.data, this.test);
 
   @override
   final AlterSpecificData data;
@@ -147,7 +147,7 @@ class _$AlterSpecificDataTestRetrieved
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AlterSpecificDataTestRetrieved &&
+            other is _$AlterSpecificDataTestRetrievedImpl &&
             (identical(other.data, data) || other.data == data) &&
             (identical(other.test, test) || other.test == test));
   }
@@ -158,9 +158,10 @@ class _$AlterSpecificDataTestRetrieved
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$AlterSpecificDataTestRetrievedCopyWith<_$AlterSpecificDataTestRetrieved>
-      get copyWith => __$$AlterSpecificDataTestRetrievedCopyWithImpl<
-          _$AlterSpecificDataTestRetrieved>(this, _$identity);
+  _$$AlterSpecificDataTestRetrievedImplCopyWith<
+          _$AlterSpecificDataTestRetrievedImpl>
+      get copyWith => __$$AlterSpecificDataTestRetrievedImplCopyWithImpl<
+          _$AlterSpecificDataTestRetrievedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -242,33 +243,34 @@ abstract class AlterSpecificDataTestRetrieved
     implements AlterSpecificDataState {
   const factory AlterSpecificDataTestRetrieved(
           final AlterSpecificData data, final Tests test) =
-      _$AlterSpecificDataTestRetrieved;
+      _$AlterSpecificDataTestRetrievedImpl;
 
   AlterSpecificData get data;
   Tests get test;
   @JsonKey(ignore: true)
-  _$$AlterSpecificDataTestRetrievedCopyWith<_$AlterSpecificDataTestRetrieved>
+  _$$AlterSpecificDataTestRetrievedImplCopyWith<
+          _$AlterSpecificDataTestRetrievedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$AlterSpecificDataCategoryRetrievedCopyWith<$Res> {
-  factory _$$AlterSpecificDataCategoryRetrievedCopyWith(
-          _$AlterSpecificDataCategoryRetrieved value,
-          $Res Function(_$AlterSpecificDataCategoryRetrieved) then) =
-      __$$AlterSpecificDataCategoryRetrievedCopyWithImpl<$Res>;
+abstract class _$$AlterSpecificDataCategoryRetrievedImplCopyWith<$Res> {
+  factory _$$AlterSpecificDataCategoryRetrievedImplCopyWith(
+          _$AlterSpecificDataCategoryRetrievedImpl value,
+          $Res Function(_$AlterSpecificDataCategoryRetrievedImpl) then) =
+      __$$AlterSpecificDataCategoryRetrievedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({AlterSpecificData data, WordCategory category});
 }
 
 /// @nodoc
-class __$$AlterSpecificDataCategoryRetrievedCopyWithImpl<$Res>
+class __$$AlterSpecificDataCategoryRetrievedImplCopyWithImpl<$Res>
     extends _$AlterSpecificDataStateCopyWithImpl<$Res,
-        _$AlterSpecificDataCategoryRetrieved>
-    implements _$$AlterSpecificDataCategoryRetrievedCopyWith<$Res> {
-  __$$AlterSpecificDataCategoryRetrievedCopyWithImpl(
-      _$AlterSpecificDataCategoryRetrieved _value,
-      $Res Function(_$AlterSpecificDataCategoryRetrieved) _then)
+        _$AlterSpecificDataCategoryRetrievedImpl>
+    implements _$$AlterSpecificDataCategoryRetrievedImplCopyWith<$Res> {
+  __$$AlterSpecificDataCategoryRetrievedImplCopyWithImpl(
+      _$AlterSpecificDataCategoryRetrievedImpl _value,
+      $Res Function(_$AlterSpecificDataCategoryRetrievedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -277,7 +279,7 @@ class __$$AlterSpecificDataCategoryRetrievedCopyWithImpl<$Res>
     Object? data = null,
     Object? category = null,
   }) {
-    return _then(_$AlterSpecificDataCategoryRetrieved(
+    return _then(_$AlterSpecificDataCategoryRetrievedImpl(
       null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -292,9 +294,9 @@ class __$$AlterSpecificDataCategoryRetrievedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AlterSpecificDataCategoryRetrieved
+class _$AlterSpecificDataCategoryRetrievedImpl
     implements AlterSpecificDataCategoryRetrieved {
-  const _$AlterSpecificDataCategoryRetrieved(this.data, this.category);
+  const _$AlterSpecificDataCategoryRetrievedImpl(this.data, this.category);
 
   @override
   final AlterSpecificData data;
@@ -310,7 +312,7 @@ class _$AlterSpecificDataCategoryRetrieved
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AlterSpecificDataCategoryRetrieved &&
+            other is _$AlterSpecificDataCategoryRetrievedImpl &&
             (identical(other.data, data) || other.data == data) &&
             (identical(other.category, category) ||
                 other.category == category));
@@ -322,10 +324,10 @@ class _$AlterSpecificDataCategoryRetrieved
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$AlterSpecificDataCategoryRetrievedCopyWith<
-          _$AlterSpecificDataCategoryRetrieved>
-      get copyWith => __$$AlterSpecificDataCategoryRetrievedCopyWithImpl<
-          _$AlterSpecificDataCategoryRetrieved>(this, _$identity);
+  _$$AlterSpecificDataCategoryRetrievedImplCopyWith<
+          _$AlterSpecificDataCategoryRetrievedImpl>
+      get copyWith => __$$AlterSpecificDataCategoryRetrievedImplCopyWithImpl<
+          _$AlterSpecificDataCategoryRetrievedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -407,37 +409,39 @@ abstract class AlterSpecificDataCategoryRetrieved
     implements AlterSpecificDataState {
   const factory AlterSpecificDataCategoryRetrieved(
           final AlterSpecificData data, final WordCategory category) =
-      _$AlterSpecificDataCategoryRetrieved;
+      _$AlterSpecificDataCategoryRetrievedImpl;
 
   AlterSpecificData get data;
   WordCategory get category;
   @JsonKey(ignore: true)
-  _$$AlterSpecificDataCategoryRetrievedCopyWith<
-          _$AlterSpecificDataCategoryRetrieved>
+  _$$AlterSpecificDataCategoryRetrievedImplCopyWith<
+          _$AlterSpecificDataCategoryRetrievedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$AlterSpecificDataInitialCopyWith<$Res> {
-  factory _$$AlterSpecificDataInitialCopyWith(_$AlterSpecificDataInitial value,
-          $Res Function(_$AlterSpecificDataInitial) then) =
-      __$$AlterSpecificDataInitialCopyWithImpl<$Res>;
+abstract class _$$AlterSpecificDataInitialImplCopyWith<$Res> {
+  factory _$$AlterSpecificDataInitialImplCopyWith(
+          _$AlterSpecificDataInitialImpl value,
+          $Res Function(_$AlterSpecificDataInitialImpl) then) =
+      __$$AlterSpecificDataInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AlterSpecificDataInitialCopyWithImpl<$Res>
+class __$$AlterSpecificDataInitialImplCopyWithImpl<$Res>
     extends _$AlterSpecificDataStateCopyWithImpl<$Res,
-        _$AlterSpecificDataInitial>
-    implements _$$AlterSpecificDataInitialCopyWith<$Res> {
-  __$$AlterSpecificDataInitialCopyWithImpl(_$AlterSpecificDataInitial _value,
-      $Res Function(_$AlterSpecificDataInitial) _then)
+        _$AlterSpecificDataInitialImpl>
+    implements _$$AlterSpecificDataInitialImplCopyWith<$Res> {
+  __$$AlterSpecificDataInitialImplCopyWithImpl(
+      _$AlterSpecificDataInitialImpl _value,
+      $Res Function(_$AlterSpecificDataInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AlterSpecificDataInitial implements AlterSpecificDataInitial {
-  const _$AlterSpecificDataInitial();
+class _$AlterSpecificDataInitialImpl implements AlterSpecificDataInitial {
+  const _$AlterSpecificDataInitialImpl();
 
   @override
   String toString() {
@@ -448,7 +452,7 @@ class _$AlterSpecificDataInitial implements AlterSpecificDataInitial {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AlterSpecificDataInitial);
+            other is _$AlterSpecificDataInitialImpl);
   }
 
   @override
@@ -531,5 +535,5 @@ class _$AlterSpecificDataInitial implements AlterSpecificDataInitial {
 }
 
 abstract class AlterSpecificDataInitial implements AlterSpecificDataState {
-  const factory AlterSpecificDataInitial() = _$AlterSpecificDataInitial;
+  const factory AlterSpecificDataInitial() = _$AlterSpecificDataInitialImpl;
 }

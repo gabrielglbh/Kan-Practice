@@ -85,6 +85,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 await Utils.launch(
                     context, "https://github.com/gabrielglbh/Kan-Practice");
               } catch (err) {
+                if (!mounted) return;
                 Utils.getSnackBar(
                     context, "settings_information_rating_failed".tr());
               }
@@ -229,7 +230,7 @@ class _SettingsPageState extends State<SettingsPage> {
               leading: const Icon(Icons.notifications_active_rounded),
               title: Text("settings_notifications_label".tr()),
               onTap: () {
-                AppSettings.openNotificationSettings();
+                AppSettings.openAppSettings();
               }),
           ListTile(
             leading: const Icon(Icons.lightbulb),

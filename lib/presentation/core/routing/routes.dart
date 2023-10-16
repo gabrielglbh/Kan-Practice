@@ -40,6 +40,7 @@ import 'package:kanpractice/presentation/test_result_page/test_result_page.dart'
 import 'package:kanpractice/presentation/translation_test_page/translation_test_page.dart';
 import 'package:kanpractice/presentation/word_history_page/word_history_page.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 /// Router generator in which all pages and their transitions are made.
 Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -79,9 +80,8 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       TestResultArguments args = settings.arguments as TestResultArguments;
       return CupertinoPageRoute(builder: (_) => TestResultPage(args: args));
     case KanPracticePages.loginPage:
-      String? productId = settings.arguments as String?;
-      return CupertinoPageRoute(
-          builder: (_) => LoginPage(productId: productId));
+      StoreProduct? product = settings.arguments as StoreProduct?;
+      return CupertinoPageRoute(builder: (_) => LoginPage(product: product));
     case KanPracticePages.backUpPage:
       String args = settings.arguments as String;
       return CupertinoPageRoute(builder: (_) => BackUpPage(uid: args));

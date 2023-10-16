@@ -99,25 +99,25 @@ class _$StudyModeStateCopyWithImpl<$Res, $Val extends StudyModeState>
 }
 
 /// @nodoc
-abstract class _$$StudyModeLoadingCopyWith<$Res> {
-  factory _$$StudyModeLoadingCopyWith(
-          _$StudyModeLoading value, $Res Function(_$StudyModeLoading) then) =
-      __$$StudyModeLoadingCopyWithImpl<$Res>;
+abstract class _$$StudyModeLoadingImplCopyWith<$Res> {
+  factory _$$StudyModeLoadingImplCopyWith(_$StudyModeLoadingImpl value,
+          $Res Function(_$StudyModeLoadingImpl) then) =
+      __$$StudyModeLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$StudyModeLoadingCopyWithImpl<$Res>
-    extends _$StudyModeStateCopyWithImpl<$Res, _$StudyModeLoading>
-    implements _$$StudyModeLoadingCopyWith<$Res> {
-  __$$StudyModeLoadingCopyWithImpl(
-      _$StudyModeLoading _value, $Res Function(_$StudyModeLoading) _then)
+class __$$StudyModeLoadingImplCopyWithImpl<$Res>
+    extends _$StudyModeStateCopyWithImpl<$Res, _$StudyModeLoadingImpl>
+    implements _$$StudyModeLoadingImplCopyWith<$Res> {
+  __$$StudyModeLoadingImplCopyWithImpl(_$StudyModeLoadingImpl _value,
+      $Res Function(_$StudyModeLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$StudyModeLoading implements StudyModeLoading {
-  const _$StudyModeLoading();
+class _$StudyModeLoadingImpl implements StudyModeLoading {
+  const _$StudyModeLoadingImpl();
 
   @override
   String toString() {
@@ -127,7 +127,7 @@ class _$StudyModeLoading implements StudyModeLoading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$StudyModeLoading);
+        (other.runtimeType == runtimeType && other is _$StudyModeLoadingImpl);
   }
 
   @override
@@ -221,29 +221,29 @@ class _$StudyModeLoading implements StudyModeLoading {
 }
 
 abstract class StudyModeLoading implements StudyModeState {
-  const factory StudyModeLoading() = _$StudyModeLoading;
+  const factory StudyModeLoading() = _$StudyModeLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$StudyModeLoadedCopyWith<$Res> {
-  factory _$$StudyModeLoadedCopyWith(
-          _$StudyModeLoaded value, $Res Function(_$StudyModeLoaded) then) =
-      __$$StudyModeLoadedCopyWithImpl<$Res>;
+abstract class _$$StudyModeLoadedImplCopyWith<$Res> {
+  factory _$$StudyModeLoadedImplCopyWith(_$StudyModeLoadedImpl value,
+          $Res Function(_$StudyModeLoadedImpl) then) =
+      __$$StudyModeLoadedImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$StudyModeLoadedCopyWithImpl<$Res>
-    extends _$StudyModeStateCopyWithImpl<$Res, _$StudyModeLoaded>
-    implements _$$StudyModeLoadedCopyWith<$Res> {
-  __$$StudyModeLoadedCopyWithImpl(
-      _$StudyModeLoaded _value, $Res Function(_$StudyModeLoaded) _then)
+class __$$StudyModeLoadedImplCopyWithImpl<$Res>
+    extends _$StudyModeStateCopyWithImpl<$Res, _$StudyModeLoadedImpl>
+    implements _$$StudyModeLoadedImplCopyWith<$Res> {
+  __$$StudyModeLoadedImplCopyWithImpl(
+      _$StudyModeLoadedImpl _value, $Res Function(_$StudyModeLoadedImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$StudyModeLoaded implements StudyModeLoaded {
-  const _$StudyModeLoaded();
+class _$StudyModeLoadedImpl implements StudyModeLoaded {
+  const _$StudyModeLoadedImpl();
 
   @override
   String toString() {
@@ -253,7 +253,7 @@ class _$StudyModeLoaded implements StudyModeLoaded {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$StudyModeLoaded);
+        (other.runtimeType == runtimeType && other is _$StudyModeLoadedImpl);
   }
 
   @override
@@ -347,29 +347,31 @@ class _$StudyModeLoaded implements StudyModeLoaded {
 }
 
 abstract class StudyModeLoaded implements StudyModeState {
-  const factory StudyModeLoaded() = _$StudyModeLoaded;
+  const factory StudyModeLoaded() = _$StudyModeLoadedImpl;
 }
 
 /// @nodoc
-abstract class _$$StudyModeSM2CalculatedCopyWith<$Res> {
-  factory _$$StudyModeSM2CalculatedCopyWith(_$StudyModeSM2Calculated value,
-          $Res Function(_$StudyModeSM2Calculated) then) =
-      __$$StudyModeSM2CalculatedCopyWithImpl<$Res>;
+abstract class _$$StudyModeSM2CalculatedImplCopyWith<$Res> {
+  factory _$$StudyModeSM2CalculatedImplCopyWith(
+          _$StudyModeSM2CalculatedImpl value,
+          $Res Function(_$StudyModeSM2CalculatedImpl) then) =
+      __$$StudyModeSM2CalculatedImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$StudyModeSM2CalculatedCopyWithImpl<$Res>
-    extends _$StudyModeStateCopyWithImpl<$Res, _$StudyModeSM2Calculated>
-    implements _$$StudyModeSM2CalculatedCopyWith<$Res> {
-  __$$StudyModeSM2CalculatedCopyWithImpl(_$StudyModeSM2Calculated _value,
-      $Res Function(_$StudyModeSM2Calculated) _then)
+class __$$StudyModeSM2CalculatedImplCopyWithImpl<$Res>
+    extends _$StudyModeStateCopyWithImpl<$Res, _$StudyModeSM2CalculatedImpl>
+    implements _$$StudyModeSM2CalculatedImplCopyWith<$Res> {
+  __$$StudyModeSM2CalculatedImplCopyWithImpl(
+      _$StudyModeSM2CalculatedImpl _value,
+      $Res Function(_$StudyModeSM2CalculatedImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$StudyModeSM2Calculated implements StudyModeSM2Calculated {
-  const _$StudyModeSM2Calculated();
+class _$StudyModeSM2CalculatedImpl implements StudyModeSM2Calculated {
+  const _$StudyModeSM2CalculatedImpl();
 
   @override
   String toString() {
@@ -379,7 +381,8 @@ class _$StudyModeSM2Calculated implements StudyModeSM2Calculated {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$StudyModeSM2Calculated);
+        (other.runtimeType == runtimeType &&
+            other is _$StudyModeSM2CalculatedImpl);
   }
 
   @override
@@ -473,24 +476,26 @@ class _$StudyModeSM2Calculated implements StudyModeSM2Calculated {
 }
 
 abstract class StudyModeSM2Calculated implements StudyModeState {
-  const factory StudyModeSM2Calculated() = _$StudyModeSM2Calculated;
+  const factory StudyModeSM2Calculated() = _$StudyModeSM2CalculatedImpl;
 }
 
 /// @nodoc
-abstract class _$$StudyModeScoreCalculatedCopyWith<$Res> {
-  factory _$$StudyModeScoreCalculatedCopyWith(_$StudyModeScoreCalculated value,
-          $Res Function(_$StudyModeScoreCalculated) then) =
-      __$$StudyModeScoreCalculatedCopyWithImpl<$Res>;
+abstract class _$$StudyModeScoreCalculatedImplCopyWith<$Res> {
+  factory _$$StudyModeScoreCalculatedImplCopyWith(
+          _$StudyModeScoreCalculatedImpl value,
+          $Res Function(_$StudyModeScoreCalculatedImpl) then) =
+      __$$StudyModeScoreCalculatedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int score});
 }
 
 /// @nodoc
-class __$$StudyModeScoreCalculatedCopyWithImpl<$Res>
-    extends _$StudyModeStateCopyWithImpl<$Res, _$StudyModeScoreCalculated>
-    implements _$$StudyModeScoreCalculatedCopyWith<$Res> {
-  __$$StudyModeScoreCalculatedCopyWithImpl(_$StudyModeScoreCalculated _value,
-      $Res Function(_$StudyModeScoreCalculated) _then)
+class __$$StudyModeScoreCalculatedImplCopyWithImpl<$Res>
+    extends _$StudyModeStateCopyWithImpl<$Res, _$StudyModeScoreCalculatedImpl>
+    implements _$$StudyModeScoreCalculatedImplCopyWith<$Res> {
+  __$$StudyModeScoreCalculatedImplCopyWithImpl(
+      _$StudyModeScoreCalculatedImpl _value,
+      $Res Function(_$StudyModeScoreCalculatedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -498,7 +503,7 @@ class __$$StudyModeScoreCalculatedCopyWithImpl<$Res>
   $Res call({
     Object? score = null,
   }) {
-    return _then(_$StudyModeScoreCalculated(
+    return _then(_$StudyModeScoreCalculatedImpl(
       null == score
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
@@ -509,8 +514,8 @@ class __$$StudyModeScoreCalculatedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$StudyModeScoreCalculated implements StudyModeScoreCalculated {
-  const _$StudyModeScoreCalculated(this.score);
+class _$StudyModeScoreCalculatedImpl implements StudyModeScoreCalculated {
+  const _$StudyModeScoreCalculatedImpl(this.score);
 
   @override
   final int score;
@@ -524,7 +529,7 @@ class _$StudyModeScoreCalculated implements StudyModeScoreCalculated {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$StudyModeScoreCalculated &&
+            other is _$StudyModeScoreCalculatedImpl &&
             (identical(other.score, score) || other.score == score));
   }
 
@@ -534,10 +539,9 @@ class _$StudyModeScoreCalculated implements StudyModeScoreCalculated {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$StudyModeScoreCalculatedCopyWith<_$StudyModeScoreCalculated>
-      get copyWith =>
-          __$$StudyModeScoreCalculatedCopyWithImpl<_$StudyModeScoreCalculated>(
-              this, _$identity);
+  _$$StudyModeScoreCalculatedImplCopyWith<_$StudyModeScoreCalculatedImpl>
+      get copyWith => __$$StudyModeScoreCalculatedImplCopyWithImpl<
+          _$StudyModeScoreCalculatedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -628,29 +632,31 @@ class _$StudyModeScoreCalculated implements StudyModeScoreCalculated {
 
 abstract class StudyModeScoreCalculated implements StudyModeState {
   const factory StudyModeScoreCalculated(final int score) =
-      _$StudyModeScoreCalculated;
+      _$StudyModeScoreCalculatedImpl;
 
   int get score;
   @JsonKey(ignore: true)
-  _$$StudyModeScoreCalculatedCopyWith<_$StudyModeScoreCalculated>
+  _$$StudyModeScoreCalculatedImplCopyWith<_$StudyModeScoreCalculatedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$StudyModeScoreObtainedCopyWith<$Res> {
-  factory _$$StudyModeScoreObtainedCopyWith(_$StudyModeScoreObtained value,
-          $Res Function(_$StudyModeScoreObtained) then) =
-      __$$StudyModeScoreObtainedCopyWithImpl<$Res>;
+abstract class _$$StudyModeScoreObtainedImplCopyWith<$Res> {
+  factory _$$StudyModeScoreObtainedImplCopyWith(
+          _$StudyModeScoreObtainedImpl value,
+          $Res Function(_$StudyModeScoreObtainedImpl) then) =
+      __$$StudyModeScoreObtainedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({double score});
 }
 
 /// @nodoc
-class __$$StudyModeScoreObtainedCopyWithImpl<$Res>
-    extends _$StudyModeStateCopyWithImpl<$Res, _$StudyModeScoreObtained>
-    implements _$$StudyModeScoreObtainedCopyWith<$Res> {
-  __$$StudyModeScoreObtainedCopyWithImpl(_$StudyModeScoreObtained _value,
-      $Res Function(_$StudyModeScoreObtained) _then)
+class __$$StudyModeScoreObtainedImplCopyWithImpl<$Res>
+    extends _$StudyModeStateCopyWithImpl<$Res, _$StudyModeScoreObtainedImpl>
+    implements _$$StudyModeScoreObtainedImplCopyWith<$Res> {
+  __$$StudyModeScoreObtainedImplCopyWithImpl(
+      _$StudyModeScoreObtainedImpl _value,
+      $Res Function(_$StudyModeScoreObtainedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -658,7 +664,7 @@ class __$$StudyModeScoreObtainedCopyWithImpl<$Res>
   $Res call({
     Object? score = null,
   }) {
-    return _then(_$StudyModeScoreObtained(
+    return _then(_$StudyModeScoreObtainedImpl(
       null == score
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
@@ -669,8 +675,8 @@ class __$$StudyModeScoreObtainedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$StudyModeScoreObtained implements StudyModeScoreObtained {
-  const _$StudyModeScoreObtained(this.score);
+class _$StudyModeScoreObtainedImpl implements StudyModeScoreObtained {
+  const _$StudyModeScoreObtainedImpl(this.score);
 
   @override
   final double score;
@@ -684,7 +690,7 @@ class _$StudyModeScoreObtained implements StudyModeScoreObtained {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$StudyModeScoreObtained &&
+            other is _$StudyModeScoreObtainedImpl &&
             (identical(other.score, score) || other.score == score));
   }
 
@@ -694,9 +700,9 @@ class _$StudyModeScoreObtained implements StudyModeScoreObtained {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$StudyModeScoreObtainedCopyWith<_$StudyModeScoreObtained> get copyWith =>
-      __$$StudyModeScoreObtainedCopyWithImpl<_$StudyModeScoreObtained>(
-          this, _$identity);
+  _$$StudyModeScoreObtainedImplCopyWith<_$StudyModeScoreObtainedImpl>
+      get copyWith => __$$StudyModeScoreObtainedImplCopyWithImpl<
+          _$StudyModeScoreObtainedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -787,34 +793,35 @@ class _$StudyModeScoreObtained implements StudyModeScoreObtained {
 
 abstract class StudyModeScoreObtained implements StudyModeState {
   const factory StudyModeScoreObtained(final double score) =
-      _$StudyModeScoreObtained;
+      _$StudyModeScoreObtainedImpl;
 
   double get score;
   @JsonKey(ignore: true)
-  _$$StudyModeScoreObtainedCopyWith<_$StudyModeScoreObtained> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$StudyModeScoreObtainedImplCopyWith<_$StudyModeScoreObtainedImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$StudyModeTestFinishedCopyWith<$Res> {
-  factory _$$StudyModeTestFinishedCopyWith(_$StudyModeTestFinished value,
-          $Res Function(_$StudyModeTestFinished) then) =
-      __$$StudyModeTestFinishedCopyWithImpl<$Res>;
+abstract class _$$StudyModeTestFinishedImplCopyWith<$Res> {
+  factory _$$StudyModeTestFinishedImplCopyWith(
+          _$StudyModeTestFinishedImpl value,
+          $Res Function(_$StudyModeTestFinishedImpl) then) =
+      __$$StudyModeTestFinishedImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$StudyModeTestFinishedCopyWithImpl<$Res>
-    extends _$StudyModeStateCopyWithImpl<$Res, _$StudyModeTestFinished>
-    implements _$$StudyModeTestFinishedCopyWith<$Res> {
-  __$$StudyModeTestFinishedCopyWithImpl(_$StudyModeTestFinished _value,
-      $Res Function(_$StudyModeTestFinished) _then)
+class __$$StudyModeTestFinishedImplCopyWithImpl<$Res>
+    extends _$StudyModeStateCopyWithImpl<$Res, _$StudyModeTestFinishedImpl>
+    implements _$$StudyModeTestFinishedImplCopyWith<$Res> {
+  __$$StudyModeTestFinishedImplCopyWithImpl(_$StudyModeTestFinishedImpl _value,
+      $Res Function(_$StudyModeTestFinishedImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$StudyModeTestFinished implements StudyModeTestFinished {
-  const _$StudyModeTestFinished();
+class _$StudyModeTestFinishedImpl implements StudyModeTestFinished {
+  const _$StudyModeTestFinishedImpl();
 
   @override
   String toString() {
@@ -824,7 +831,8 @@ class _$StudyModeTestFinished implements StudyModeTestFinished {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$StudyModeTestFinished);
+        (other.runtimeType == runtimeType &&
+            other is _$StudyModeTestFinishedImpl);
   }
 
   @override
@@ -918,5 +926,5 @@ class _$StudyModeTestFinished implements StudyModeTestFinished {
 }
 
 abstract class StudyModeTestFinished implements StudyModeState {
-  const factory StudyModeTestFinished() = _$StudyModeTestFinished;
+  const factory StudyModeTestFinished() = _$StudyModeTestFinishedImpl;
 }

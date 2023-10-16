@@ -75,20 +75,20 @@ class _$GenericTestStateCopyWithImpl<$Res, $Val extends GenericTestState>
 }
 
 /// @nodoc
-abstract class _$$GenericTestInitialCopyWith<$Res> {
-  factory _$$GenericTestInitialCopyWith(_$GenericTestInitial value,
-          $Res Function(_$GenericTestInitial) then) =
-      __$$GenericTestInitialCopyWithImpl<$Res>;
+abstract class _$$GenericTestInitialImplCopyWith<$Res> {
+  factory _$$GenericTestInitialImplCopyWith(_$GenericTestInitialImpl value,
+          $Res Function(_$GenericTestInitialImpl) then) =
+      __$$GenericTestInitialImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<int> wordsToReview});
 }
 
 /// @nodoc
-class __$$GenericTestInitialCopyWithImpl<$Res>
-    extends _$GenericTestStateCopyWithImpl<$Res, _$GenericTestInitial>
-    implements _$$GenericTestInitialCopyWith<$Res> {
-  __$$GenericTestInitialCopyWithImpl(
-      _$GenericTestInitial _value, $Res Function(_$GenericTestInitial) _then)
+class __$$GenericTestInitialImplCopyWithImpl<$Res>
+    extends _$GenericTestStateCopyWithImpl<$Res, _$GenericTestInitialImpl>
+    implements _$$GenericTestInitialImplCopyWith<$Res> {
+  __$$GenericTestInitialImplCopyWithImpl(_$GenericTestInitialImpl _value,
+      $Res Function(_$GenericTestInitialImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -96,7 +96,7 @@ class __$$GenericTestInitialCopyWithImpl<$Res>
   $Res call({
     Object? wordsToReview = null,
   }) {
-    return _then(_$GenericTestInitial(
+    return _then(_$GenericTestInitialImpl(
       null == wordsToReview
           ? _value._wordsToReview
           : wordsToReview // ignore: cast_nullable_to_non_nullable
@@ -107,8 +107,8 @@ class __$$GenericTestInitialCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$GenericTestInitial implements GenericTestInitial {
-  const _$GenericTestInitial(final List<int> wordsToReview)
+class _$GenericTestInitialImpl implements GenericTestInitial {
+  const _$GenericTestInitialImpl(final List<int> wordsToReview)
       : _wordsToReview = wordsToReview;
 
   final List<int> _wordsToReview;
@@ -128,7 +128,7 @@ class _$GenericTestInitial implements GenericTestInitial {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GenericTestInitial &&
+            other is _$GenericTestInitialImpl &&
             const DeepCollectionEquality()
                 .equals(other._wordsToReview, _wordsToReview));
   }
@@ -140,8 +140,8 @@ class _$GenericTestInitial implements GenericTestInitial {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$GenericTestInitialCopyWith<_$GenericTestInitial> get copyWith =>
-      __$$GenericTestInitialCopyWithImpl<_$GenericTestInitial>(
+  _$$GenericTestInitialImplCopyWith<_$GenericTestInitialImpl> get copyWith =>
+      __$$GenericTestInitialImplCopyWithImpl<_$GenericTestInitialImpl>(
           this, _$identity);
 
   @override
@@ -209,29 +209,29 @@ class _$GenericTestInitial implements GenericTestInitial {
 
 abstract class GenericTestInitial implements GenericTestState {
   const factory GenericTestInitial(final List<int> wordsToReview) =
-      _$GenericTestInitial;
+      _$GenericTestInitialImpl;
 
   List<int> get wordsToReview;
   @JsonKey(ignore: true)
-  _$$GenericTestInitialCopyWith<_$GenericTestInitial> get copyWith =>
+  _$$GenericTestInitialImplCopyWith<_$GenericTestInitialImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$GenericTestLoadedCopyWith<$Res> {
-  factory _$$GenericTestLoadedCopyWith(
-          _$GenericTestLoaded value, $Res Function(_$GenericTestLoaded) then) =
-      __$$GenericTestLoadedCopyWithImpl<$Res>;
+abstract class _$$GenericTestLoadedImplCopyWith<$Res> {
+  factory _$$GenericTestLoadedImplCopyWith(_$GenericTestLoadedImpl value,
+          $Res Function(_$GenericTestLoadedImpl) then) =
+      __$$GenericTestLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<Word> words, StudyModes mode});
 }
 
 /// @nodoc
-class __$$GenericTestLoadedCopyWithImpl<$Res>
-    extends _$GenericTestStateCopyWithImpl<$Res, _$GenericTestLoaded>
-    implements _$$GenericTestLoadedCopyWith<$Res> {
-  __$$GenericTestLoadedCopyWithImpl(
-      _$GenericTestLoaded _value, $Res Function(_$GenericTestLoaded) _then)
+class __$$GenericTestLoadedImplCopyWithImpl<$Res>
+    extends _$GenericTestStateCopyWithImpl<$Res, _$GenericTestLoadedImpl>
+    implements _$$GenericTestLoadedImplCopyWith<$Res> {
+  __$$GenericTestLoadedImplCopyWithImpl(_$GenericTestLoadedImpl _value,
+      $Res Function(_$GenericTestLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -240,7 +240,7 @@ class __$$GenericTestLoadedCopyWithImpl<$Res>
     Object? words = null,
     Object? mode = null,
   }) {
-    return _then(_$GenericTestLoaded(
+    return _then(_$GenericTestLoadedImpl(
       null == words
           ? _value._words
           : words // ignore: cast_nullable_to_non_nullable
@@ -255,8 +255,9 @@ class __$$GenericTestLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$GenericTestLoaded implements GenericTestLoaded {
-  const _$GenericTestLoaded(final List<Word> words, this.mode) : _words = words;
+class _$GenericTestLoadedImpl implements GenericTestLoaded {
+  const _$GenericTestLoadedImpl(final List<Word> words, this.mode)
+      : _words = words;
 
   final List<Word> _words;
   @override
@@ -278,7 +279,7 @@ class _$GenericTestLoaded implements GenericTestLoaded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GenericTestLoaded &&
+            other is _$GenericTestLoadedImpl &&
             const DeepCollectionEquality().equals(other._words, _words) &&
             (identical(other.mode, mode) || other.mode == mode));
   }
@@ -290,8 +291,9 @@ class _$GenericTestLoaded implements GenericTestLoaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$GenericTestLoadedCopyWith<_$GenericTestLoaded> get copyWith =>
-      __$$GenericTestLoadedCopyWithImpl<_$GenericTestLoaded>(this, _$identity);
+  _$$GenericTestLoadedImplCopyWith<_$GenericTestLoadedImpl> get copyWith =>
+      __$$GenericTestLoadedImplCopyWithImpl<_$GenericTestLoadedImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -358,11 +360,11 @@ class _$GenericTestLoaded implements GenericTestLoaded {
 
 abstract class GenericTestLoaded implements GenericTestState {
   const factory GenericTestLoaded(
-      final List<Word> words, final StudyModes mode) = _$GenericTestLoaded;
+      final List<Word> words, final StudyModes mode) = _$GenericTestLoadedImpl;
 
   List<Word> get words;
   StudyModes get mode;
   @JsonKey(ignore: true)
-  _$$GenericTestLoadedCopyWith<_$GenericTestLoaded> get copyWith =>
+  _$$GenericTestLoadedImplCopyWith<_$GenericTestLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

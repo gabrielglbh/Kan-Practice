@@ -33,7 +33,7 @@ class PurchasesBloc extends Bloc<PurchasesEvent, PurchasesState> {
       if (status.isEmpty) {
         emit(const PurchasesState.updatedToPro());
       } else {
-        final res = await _purchasesRepository.buy(event.productId);
+        final res = await _purchasesRepository.buy(event.product);
         if (res.isEmpty) {
           if (await _purchasesRepository.isUserPro()) {
             emit(const PurchasesState.updatedToPro());

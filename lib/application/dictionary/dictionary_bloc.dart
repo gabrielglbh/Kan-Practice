@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:bloc/bloc.dart';
@@ -40,8 +41,9 @@ class DictionaryBloc extends Bloc<DictionaryEvent, DictionaryState> {
 
     on<DictionaryEventLoading>((event, emit) async {
       try {
-        emit(const DictionaryState.loading());
-        final categories = await _classifierRepository.predict(event.data);
+        //emit(const DictionaryState.loading());
+        final categories =
+            await _classifierRepository.predict(event.data, event.size);
         emit(DictionaryState.loaded(categories));
       } on Exception {
         emit(const DictionaryState.error());

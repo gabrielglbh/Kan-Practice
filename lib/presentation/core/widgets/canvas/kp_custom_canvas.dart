@@ -18,7 +18,7 @@ class KPCustomCanvas extends StatefulWidget {
   final bool allowPrediction;
 
   /// Function to perform when the [im.Image] has been extracted
-  final Function(ByteData)? handleImage;
+  final Function(ByteData, Size)? handleImage;
   const KPCustomCanvas(
       {Key? key,
       required this.line,
@@ -60,7 +60,7 @@ class _KPCustomCanvasState extends State<KPCustomCanvas> {
       print('Buffer empty');
     } else {
       if (widget.handleImage != null) {
-        widget.handleImage!(imgBytes);
+        widget.handleImage!(imgBytes, Size(canvasSize, canvasSize));
       } else {
         print('Function handleImage is null');
       }

@@ -86,65 +86,78 @@ class _DictionaryPageState extends State<DictionaryPage>
           BlocBuilder<DictionaryBloc, DictionaryState>(
             builder: (context, state) {
               return state.maybeWhen(
-                loading: () => const Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(KPMargins.margin16),
-                    child: KPProgressIndicator(),
-                  ),
-                ),
-                loaded: (predictions) => Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: KPMargins.margin8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              "< ${"dict_predictions_most_likely".tr()}",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ),
-                          Expanded(
-                            child: Text(
-                              "${"dict_predictions_less_likely".tr()} >",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.end,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    _predictions(predictions),
-                    Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        KPCustomCanvas(
-                          line: _line,
-                          allowPrediction: true,
-                          handleImage: (data) {
-                            context
-                                .read<DictionaryBloc>()
-                                .add(DictionaryEventLoading(data: data));
-                          },
-                        ),
-                        if (canSearchEitherWay) _searchWidget(),
-                      ],
-                    ),
-                  ],
-                ),
                 error: () => Center(
                     child: Padding(
                   padding: const EdgeInsets.all(KPMargins.margin16),
                   child: Text("dict_model_not_loaded".tr(),
                       style: Theme.of(context).textTheme.bodyMedium),
                 )),
-                orElse: () => const SizedBox(),
+                orElse: () {
+                  return Stack(
+                    children: [
+                      Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: KPMargins.margin8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    "< ${"dict_predictions_most_likely".tr()}",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    "${"dict_predictions_less_likely".tr()} >",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.end,
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          state.maybeWhen(
+                            loaded: (predictions) => _predictions(predictions),
+                            orElse: () => const SizedBox(),
+                          ),
+                          Stack(
+                            alignment: Alignment.bottomCenter,
+                            children: [
+                              KPCustomCanvas(
+                                line: _line,
+                                allowPrediction: true,
+                                handleImage: (data, size) {
+                                  context.read<DictionaryBloc>().add(
+                                      DictionaryEventLoading(
+                                          data: data, size: size));
+                                },
+                              ),
+                              if (canSearchEitherWay) _searchWidget(),
+                            ],
+                          ),
+                        ],
+                      ),
+                      state.maybeWhen(
+                        loading: () => const Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(KPMargins.margin16),
+                            child: KPProgressIndicator(),
+                          ),
+                        ),
+                        orElse: () => const SizedBox(),
+                      ),
+                    ],
+                  );
+                },
               );
             },
           ),

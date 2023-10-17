@@ -30,29 +30,23 @@ class IsolateInference {
       image_lib.Image? img = isolateModel.image;
 
       // resize original image to match model shape.
-      image_lib.Image imageInput = image_lib.copyResize(
-        img!,
-        width: isolateModel.inputShape[1],
-        height: isolateModel.inputShape[2],
-      );
+      image_lib.Image imageInput = image_lib.copyResize(img!,
+          width: isolateModel.inputShape[1],
+          height: isolateModel.inputShape[2],
+          interpolation: image_lib.Interpolation.cubic);
 
-      // if (Platform.isAndroid) {
-      //   imageInput = image_lib.copyRotate(imageInput, angle: 90);
-      // }
-
-      // TODO: imageMatrix is all 0s
       final imageMatrix = List.generate(
         imageInput.height,
         (y) => List.generate(
           imageInput.width,
           (x) {
             final pixel = imageInput.getPixel(x, y);
-            return [pixel.r, pixel.g, pixel.b];
+            return [pixel.aNormalized];
           },
         ),
       );
 
-      // Set tensor input [1, 64, 64, 3]
+      // Set tensor input [1, 64, 64, 1]
       final input = [imageMatrix];
       // Set tensor output [1, 3036]
       final output = [List<double>.filled(isolateModel.outputShape[1], 0.0)];
@@ -76,7 +70,8 @@ class IsolateInference {
             ..sort((a, b) => a.value.compareTo(b.value)))
           .reversed
           .map((e) => Category(e.key, e.value))
-          .take(10));
+          .take(20)
+          .toList());
     }
   }
 }

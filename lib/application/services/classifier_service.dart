@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/dictionary/dictionary_bloc.dart';
@@ -14,7 +15,7 @@ class ClassifierService {
     await _classifierRepository.loadModel();
   }
 
-  Future<List<Category>> predict(ByteData data) {
-    return _classifierRepository.predict(data);
+  Future<List<Category>> predict(ByteData data, Size size) {
+    return _classifierRepository.predict(data, size);
   }
 }

@@ -65,14 +65,12 @@ class ClassifierRepositoryImpl implements IClassifierRepository {
   }
 
   @override
-  Future<List<Category>> predict(ByteData data) async {
+  Future<List<Category>> predict(ByteData data, Size size) async {
     /// Transforms the ui.Image to a im.Image to feed to the tflite model
     /// https://github.com/brendan-duncan/image/blob/main/doc/flutter.md
-
-    // TODO: Verify that image is correctly transformed
     final image = image_lib.Image.fromBytes(
-      width: 128,
-      height: 128,
+      width: size.width.toInt(),
+      height: size.height.toInt(),
       bytes: data.buffer,
       numChannels: 4,
     );

@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:isolate';
 import 'package:image/image.dart' as image_lib;
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/dictionary/dictionary_bloc.dart';
@@ -31,16 +30,10 @@ class ClassifierRepositoryImpl implements IClassifierRepository {
 
   Future<void> _loadInterpreter() async {
     final options = InterpreterOptions();
-    final deviceInfo = DeviceInfoPlugin();
-    final androidInfo = await deviceInfo.androidInfo;
 
     // Use XNNPACK Delegate
     if (Platform.isAndroid) {
-      if (androidInfo.isPhysicalDevice) {
-        options.addDelegate(GpuDelegateV2());
-      } else {
-        options.addDelegate(XNNPackDelegate());
-      }
+      options.addDelegate(XNNPackDelegate());
     }
 
     if (Platform.isIOS) {

@@ -41,7 +41,6 @@ class DictionaryBloc extends Bloc<DictionaryEvent, DictionaryState> {
 
     on<DictionaryEventLoading>((event, emit) async {
       try {
-        //emit(const DictionaryState.loading());
         final categories =
             await _classifierRepository.predict(event.data, event.size);
         emit(DictionaryState.loaded(categories));

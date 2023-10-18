@@ -125,14 +125,14 @@ class KPColors {
   static const Color secondaryColor = Color(0xFFE57373);
 
   static const Color primaryLight = Colors.white;
-  static final Color primaryDark = Colors.grey.shade700;
+  static final Color primaryDark = Colors.grey.shade900;
   static final Color cardColorLight = Colors.grey.shade200;
-  static final Color cardColorDark = Colors.grey.shade600;
+  static final Color cardColorDark = Colors.grey.shade800;
   static final Color midGrey = Colors.grey.shade500;
   static const Color accentLight = Colors.black;
   static const Color accentDark = Colors.white;
   static final Color subtleLight = Colors.grey.shade600;
-  static final Color subtleDark = Colors.grey.shade400;
+  static final Color subtleDark = Colors.grey.shade600;
 }
 
 class LanguageObj {

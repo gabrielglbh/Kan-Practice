@@ -86,25 +86,25 @@ class _$RateStateCopyWithImpl<$Res, $Val extends RateState>
 }
 
 /// @nodoc
-abstract class _$$RateInitialCopyWith<$Res> {
-  factory _$$RateInitialCopyWith(
-          _$RateInitial value, $Res Function(_$RateInitial) then) =
-      __$$RateInitialCopyWithImpl<$Res>;
+abstract class _$$RateInitialImplCopyWith<$Res> {
+  factory _$$RateInitialImplCopyWith(
+          _$RateInitialImpl value, $Res Function(_$RateInitialImpl) then) =
+      __$$RateInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$RateInitialCopyWithImpl<$Res>
-    extends _$RateStateCopyWithImpl<$Res, _$RateInitial>
-    implements _$$RateInitialCopyWith<$Res> {
-  __$$RateInitialCopyWithImpl(
-      _$RateInitial _value, $Res Function(_$RateInitial) _then)
+class __$$RateInitialImplCopyWithImpl<$Res>
+    extends _$RateStateCopyWithImpl<$Res, _$RateInitialImpl>
+    implements _$$RateInitialImplCopyWith<$Res> {
+  __$$RateInitialImplCopyWithImpl(
+      _$RateInitialImpl _value, $Res Function(_$RateInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$RateInitial implements RateInitial {
-  const _$RateInitial();
+class _$RateInitialImpl implements RateInitial {
+  const _$RateInitialImpl();
 
   @override
   String toString() {
@@ -114,7 +114,7 @@ class _$RateInitial implements RateInitial {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$RateInitial);
+        (other.runtimeType == runtimeType && other is _$RateInitialImpl);
   }
 
   @override
@@ -196,29 +196,29 @@ class _$RateInitial implements RateInitial {
 }
 
 abstract class RateInitial implements RateState {
-  const factory RateInitial() = _$RateInitial;
+  const factory RateInitial() = _$RateInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$RateLoadingCopyWith<$Res> {
-  factory _$$RateLoadingCopyWith(
-          _$RateLoading value, $Res Function(_$RateLoading) then) =
-      __$$RateLoadingCopyWithImpl<$Res>;
+abstract class _$$RateLoadingImplCopyWith<$Res> {
+  factory _$$RateLoadingImplCopyWith(
+          _$RateLoadingImpl value, $Res Function(_$RateLoadingImpl) then) =
+      __$$RateLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$RateLoadingCopyWithImpl<$Res>
-    extends _$RateStateCopyWithImpl<$Res, _$RateLoading>
-    implements _$$RateLoadingCopyWith<$Res> {
-  __$$RateLoadingCopyWithImpl(
-      _$RateLoading _value, $Res Function(_$RateLoading) _then)
+class __$$RateLoadingImplCopyWithImpl<$Res>
+    extends _$RateStateCopyWithImpl<$Res, _$RateLoadingImpl>
+    implements _$$RateLoadingImplCopyWith<$Res> {
+  __$$RateLoadingImplCopyWithImpl(
+      _$RateLoadingImpl _value, $Res Function(_$RateLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$RateLoading implements RateLoading {
-  const _$RateLoading();
+class _$RateLoadingImpl implements RateLoading {
+  const _$RateLoadingImpl();
 
   @override
   String toString() {
@@ -228,7 +228,7 @@ class _$RateLoading implements RateLoading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$RateLoading);
+        (other.runtimeType == runtimeType && other is _$RateLoadingImpl);
   }
 
   @override
@@ -310,24 +310,24 @@ class _$RateLoading implements RateLoading {
 }
 
 abstract class RateLoading implements RateState {
-  const factory RateLoading() = _$RateLoading;
+  const factory RateLoading() = _$RateLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$RateSucceededCopyWith<$Res> {
-  factory _$$RateSucceededCopyWith(
-          _$RateSucceeded value, $Res Function(_$RateSucceeded) then) =
-      __$$RateSucceededCopyWithImpl<$Res>;
+abstract class _$$RateSucceededImplCopyWith<$Res> {
+  factory _$$RateSucceededImplCopyWith(
+          _$RateSucceededImpl value, $Res Function(_$RateSucceededImpl) then) =
+      __$$RateSucceededImplCopyWithImpl<$Res>;
   @useResult
   $Res call({double rating});
 }
 
 /// @nodoc
-class __$$RateSucceededCopyWithImpl<$Res>
-    extends _$RateStateCopyWithImpl<$Res, _$RateSucceeded>
-    implements _$$RateSucceededCopyWith<$Res> {
-  __$$RateSucceededCopyWithImpl(
-      _$RateSucceeded _value, $Res Function(_$RateSucceeded) _then)
+class __$$RateSucceededImplCopyWithImpl<$Res>
+    extends _$RateStateCopyWithImpl<$Res, _$RateSucceededImpl>
+    implements _$$RateSucceededImplCopyWith<$Res> {
+  __$$RateSucceededImplCopyWithImpl(
+      _$RateSucceededImpl _value, $Res Function(_$RateSucceededImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -335,7 +335,7 @@ class __$$RateSucceededCopyWithImpl<$Res>
   $Res call({
     Object? rating = null,
   }) {
-    return _then(_$RateSucceeded(
+    return _then(_$RateSucceededImpl(
       null == rating
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
@@ -346,8 +346,8 @@ class __$$RateSucceededCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$RateSucceeded implements RateSucceeded {
-  const _$RateSucceeded(this.rating);
+class _$RateSucceededImpl implements RateSucceeded {
+  const _$RateSucceededImpl(this.rating);
 
   @override
   final double rating;
@@ -361,7 +361,7 @@ class _$RateSucceeded implements RateSucceeded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$RateSucceeded &&
+            other is _$RateSucceededImpl &&
             (identical(other.rating, rating) || other.rating == rating));
   }
 
@@ -371,8 +371,8 @@ class _$RateSucceeded implements RateSucceeded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$RateSucceededCopyWith<_$RateSucceeded> get copyWith =>
-      __$$RateSucceededCopyWithImpl<_$RateSucceeded>(this, _$identity);
+  _$$RateSucceededImplCopyWith<_$RateSucceededImpl> get copyWith =>
+      __$$RateSucceededImplCopyWithImpl<_$RateSucceededImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -450,29 +450,29 @@ class _$RateSucceeded implements RateSucceeded {
 }
 
 abstract class RateSucceeded implements RateState {
-  const factory RateSucceeded(final double rating) = _$RateSucceeded;
+  const factory RateSucceeded(final double rating) = _$RateSucceededImpl;
 
   double get rating;
   @JsonKey(ignore: true)
-  _$$RateSucceededCopyWith<_$RateSucceeded> get copyWith =>
+  _$$RateSucceededImplCopyWith<_$RateSucceededImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$RateErrorCopyWith<$Res> {
-  factory _$$RateErrorCopyWith(
-          _$RateError value, $Res Function(_$RateError) then) =
-      __$$RateErrorCopyWithImpl<$Res>;
+abstract class _$$RateErrorImplCopyWith<$Res> {
+  factory _$$RateErrorImplCopyWith(
+          _$RateErrorImpl value, $Res Function(_$RateErrorImpl) then) =
+      __$$RateErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$RateErrorCopyWithImpl<$Res>
-    extends _$RateStateCopyWithImpl<$Res, _$RateError>
-    implements _$$RateErrorCopyWith<$Res> {
-  __$$RateErrorCopyWithImpl(
-      _$RateError _value, $Res Function(_$RateError) _then)
+class __$$RateErrorImplCopyWithImpl<$Res>
+    extends _$RateStateCopyWithImpl<$Res, _$RateErrorImpl>
+    implements _$$RateErrorImplCopyWith<$Res> {
+  __$$RateErrorImplCopyWithImpl(
+      _$RateErrorImpl _value, $Res Function(_$RateErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -480,7 +480,7 @@ class __$$RateErrorCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$RateError(
+    return _then(_$RateErrorImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -491,8 +491,8 @@ class __$$RateErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$RateError implements RateError {
-  const _$RateError(this.message);
+class _$RateErrorImpl implements RateError {
+  const _$RateErrorImpl(this.message);
 
   @override
   final String message;
@@ -506,7 +506,7 @@ class _$RateError implements RateError {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$RateError &&
+            other is _$RateErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -516,8 +516,8 @@ class _$RateError implements RateError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$RateErrorCopyWith<_$RateError> get copyWith =>
-      __$$RateErrorCopyWithImpl<_$RateError>(this, _$identity);
+  _$$RateErrorImplCopyWith<_$RateErrorImpl> get copyWith =>
+      __$$RateErrorImplCopyWithImpl<_$RateErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -595,10 +595,10 @@ class _$RateError implements RateError {
 }
 
 abstract class RateError implements RateState {
-  const factory RateError(final String message) = _$RateError;
+  const factory RateError(final String message) = _$RateErrorImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$RateErrorCopyWith<_$RateError> get copyWith =>
+  _$$RateErrorImplCopyWith<_$RateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

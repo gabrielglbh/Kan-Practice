@@ -93,25 +93,25 @@ class _$MarketStateCopyWithImpl<$Res, $Val extends MarketState>
 }
 
 /// @nodoc
-abstract class _$$MarketInitialCopyWith<$Res> {
-  factory _$$MarketInitialCopyWith(
-          _$MarketInitial value, $Res Function(_$MarketInitial) then) =
-      __$$MarketInitialCopyWithImpl<$Res>;
+abstract class _$$MarketInitialImplCopyWith<$Res> {
+  factory _$$MarketInitialImplCopyWith(
+          _$MarketInitialImpl value, $Res Function(_$MarketInitialImpl) then) =
+      __$$MarketInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$MarketInitialCopyWithImpl<$Res>
-    extends _$MarketStateCopyWithImpl<$Res, _$MarketInitial>
-    implements _$$MarketInitialCopyWith<$Res> {
-  __$$MarketInitialCopyWithImpl(
-      _$MarketInitial _value, $Res Function(_$MarketInitial) _then)
+class __$$MarketInitialImplCopyWithImpl<$Res>
+    extends _$MarketStateCopyWithImpl<$Res, _$MarketInitialImpl>
+    implements _$$MarketInitialImplCopyWith<$Res> {
+  __$$MarketInitialImplCopyWithImpl(
+      _$MarketInitialImpl _value, $Res Function(_$MarketInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$MarketInitial implements MarketInitial {
-  const _$MarketInitial();
+class _$MarketInitialImpl implements MarketInitial {
+  const _$MarketInitialImpl();
 
   @override
   String toString() {
@@ -121,7 +121,7 @@ class _$MarketInitial implements MarketInitial {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$MarketInitial);
+        (other.runtimeType == runtimeType && other is _$MarketInitialImpl);
   }
 
   @override
@@ -209,29 +209,29 @@ class _$MarketInitial implements MarketInitial {
 }
 
 abstract class MarketInitial implements MarketState {
-  const factory MarketInitial() = _$MarketInitial;
+  const factory MarketInitial() = _$MarketInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$MarketLoadingCopyWith<$Res> {
-  factory _$$MarketLoadingCopyWith(
-          _$MarketLoading value, $Res Function(_$MarketLoading) then) =
-      __$$MarketLoadingCopyWithImpl<$Res>;
+abstract class _$$MarketLoadingImplCopyWith<$Res> {
+  factory _$$MarketLoadingImplCopyWith(
+          _$MarketLoadingImpl value, $Res Function(_$MarketLoadingImpl) then) =
+      __$$MarketLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$MarketLoadingCopyWithImpl<$Res>
-    extends _$MarketStateCopyWithImpl<$Res, _$MarketLoading>
-    implements _$$MarketLoadingCopyWith<$Res> {
-  __$$MarketLoadingCopyWithImpl(
-      _$MarketLoading _value, $Res Function(_$MarketLoading) _then)
+class __$$MarketLoadingImplCopyWithImpl<$Res>
+    extends _$MarketStateCopyWithImpl<$Res, _$MarketLoadingImpl>
+    implements _$$MarketLoadingImplCopyWith<$Res> {
+  __$$MarketLoadingImplCopyWithImpl(
+      _$MarketLoadingImpl _value, $Res Function(_$MarketLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$MarketLoading implements MarketLoading {
-  const _$MarketLoading();
+class _$MarketLoadingImpl implements MarketLoading {
+  const _$MarketLoadingImpl();
 
   @override
   String toString() {
@@ -241,7 +241,7 @@ class _$MarketLoading implements MarketLoading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$MarketLoading);
+        (other.runtimeType == runtimeType && other is _$MarketLoadingImpl);
   }
 
   @override
@@ -329,24 +329,24 @@ class _$MarketLoading implements MarketLoading {
 }
 
 abstract class MarketLoading implements MarketState {
-  const factory MarketLoading() = _$MarketLoading;
+  const factory MarketLoading() = _$MarketLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$MarketLoadedCopyWith<$Res> {
-  factory _$$MarketLoadedCopyWith(
-          _$MarketLoaded value, $Res Function(_$MarketLoaded) then) =
-      __$$MarketLoadedCopyWithImpl<$Res>;
+abstract class _$$MarketLoadedImplCopyWith<$Res> {
+  factory _$$MarketLoadedImplCopyWith(
+          _$MarketLoadedImpl value, $Res Function(_$MarketLoadedImpl) then) =
+      __$$MarketLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<Market> lists});
 }
 
 /// @nodoc
-class __$$MarketLoadedCopyWithImpl<$Res>
-    extends _$MarketStateCopyWithImpl<$Res, _$MarketLoaded>
-    implements _$$MarketLoadedCopyWith<$Res> {
-  __$$MarketLoadedCopyWithImpl(
-      _$MarketLoaded _value, $Res Function(_$MarketLoaded) _then)
+class __$$MarketLoadedImplCopyWithImpl<$Res>
+    extends _$MarketStateCopyWithImpl<$Res, _$MarketLoadedImpl>
+    implements _$$MarketLoadedImplCopyWith<$Res> {
+  __$$MarketLoadedImplCopyWithImpl(
+      _$MarketLoadedImpl _value, $Res Function(_$MarketLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -354,7 +354,7 @@ class __$$MarketLoadedCopyWithImpl<$Res>
   $Res call({
     Object? lists = null,
   }) {
-    return _then(_$MarketLoaded(
+    return _then(_$MarketLoadedImpl(
       null == lists
           ? _value._lists
           : lists // ignore: cast_nullable_to_non_nullable
@@ -365,8 +365,8 @@ class __$$MarketLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MarketLoaded implements MarketLoaded {
-  const _$MarketLoaded(final List<Market> lists) : _lists = lists;
+class _$MarketLoadedImpl implements MarketLoaded {
+  const _$MarketLoadedImpl(final List<Market> lists) : _lists = lists;
 
   final List<Market> _lists;
   @override
@@ -385,7 +385,7 @@ class _$MarketLoaded implements MarketLoaded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MarketLoaded &&
+            other is _$MarketLoadedImpl &&
             const DeepCollectionEquality().equals(other._lists, _lists));
   }
 
@@ -396,8 +396,8 @@ class _$MarketLoaded implements MarketLoaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$MarketLoadedCopyWith<_$MarketLoaded> get copyWith =>
-      __$$MarketLoadedCopyWithImpl<_$MarketLoaded>(this, _$identity);
+  _$$MarketLoadedImplCopyWith<_$MarketLoadedImpl> get copyWith =>
+      __$$MarketLoadedImplCopyWithImpl<_$MarketLoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -481,29 +481,29 @@ class _$MarketLoaded implements MarketLoaded {
 }
 
 abstract class MarketLoaded implements MarketState {
-  const factory MarketLoaded(final List<Market> lists) = _$MarketLoaded;
+  const factory MarketLoaded(final List<Market> lists) = _$MarketLoadedImpl;
 
   List<Market> get lists;
   @JsonKey(ignore: true)
-  _$$MarketLoadedCopyWith<_$MarketLoaded> get copyWith =>
+  _$$MarketLoadedImplCopyWith<_$MarketLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MarketSucceededCopyWith<$Res> {
-  factory _$$MarketSucceededCopyWith(
-          _$MarketSucceeded value, $Res Function(_$MarketSucceeded) then) =
-      __$$MarketSucceededCopyWithImpl<$Res>;
+abstract class _$$MarketSucceededImplCopyWith<$Res> {
+  factory _$$MarketSucceededImplCopyWith(_$MarketSucceededImpl value,
+          $Res Function(_$MarketSucceededImpl) then) =
+      __$$MarketSucceededImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$MarketSucceededCopyWithImpl<$Res>
-    extends _$MarketStateCopyWithImpl<$Res, _$MarketSucceeded>
-    implements _$$MarketSucceededCopyWith<$Res> {
-  __$$MarketSucceededCopyWithImpl(
-      _$MarketSucceeded _value, $Res Function(_$MarketSucceeded) _then)
+class __$$MarketSucceededImplCopyWithImpl<$Res>
+    extends _$MarketStateCopyWithImpl<$Res, _$MarketSucceededImpl>
+    implements _$$MarketSucceededImplCopyWith<$Res> {
+  __$$MarketSucceededImplCopyWithImpl(
+      _$MarketSucceededImpl _value, $Res Function(_$MarketSucceededImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -511,7 +511,7 @@ class __$$MarketSucceededCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$MarketSucceeded(
+    return _then(_$MarketSucceededImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -522,8 +522,8 @@ class __$$MarketSucceededCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MarketSucceeded implements MarketSucceeded {
-  const _$MarketSucceeded(this.message);
+class _$MarketSucceededImpl implements MarketSucceeded {
+  const _$MarketSucceededImpl(this.message);
 
   @override
   final String message;
@@ -537,7 +537,7 @@ class _$MarketSucceeded implements MarketSucceeded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MarketSucceeded &&
+            other is _$MarketSucceededImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -547,8 +547,9 @@ class _$MarketSucceeded implements MarketSucceeded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$MarketSucceededCopyWith<_$MarketSucceeded> get copyWith =>
-      __$$MarketSucceededCopyWithImpl<_$MarketSucceeded>(this, _$identity);
+  _$$MarketSucceededImplCopyWith<_$MarketSucceededImpl> get copyWith =>
+      __$$MarketSucceededImplCopyWithImpl<_$MarketSucceededImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -632,29 +633,29 @@ class _$MarketSucceeded implements MarketSucceeded {
 }
 
 abstract class MarketSucceeded implements MarketState {
-  const factory MarketSucceeded(final String message) = _$MarketSucceeded;
+  const factory MarketSucceeded(final String message) = _$MarketSucceededImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$MarketSucceededCopyWith<_$MarketSucceeded> get copyWith =>
+  _$$MarketSucceededImplCopyWith<_$MarketSucceededImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MarketErrorCopyWith<$Res> {
-  factory _$$MarketErrorCopyWith(
-          _$MarketError value, $Res Function(_$MarketError) then) =
-      __$$MarketErrorCopyWithImpl<$Res>;
+abstract class _$$MarketErrorImplCopyWith<$Res> {
+  factory _$$MarketErrorImplCopyWith(
+          _$MarketErrorImpl value, $Res Function(_$MarketErrorImpl) then) =
+      __$$MarketErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$MarketErrorCopyWithImpl<$Res>
-    extends _$MarketStateCopyWithImpl<$Res, _$MarketError>
-    implements _$$MarketErrorCopyWith<$Res> {
-  __$$MarketErrorCopyWithImpl(
-      _$MarketError _value, $Res Function(_$MarketError) _then)
+class __$$MarketErrorImplCopyWithImpl<$Res>
+    extends _$MarketStateCopyWithImpl<$Res, _$MarketErrorImpl>
+    implements _$$MarketErrorImplCopyWith<$Res> {
+  __$$MarketErrorImplCopyWithImpl(
+      _$MarketErrorImpl _value, $Res Function(_$MarketErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -662,7 +663,7 @@ class __$$MarketErrorCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$MarketError(
+    return _then(_$MarketErrorImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -673,8 +674,8 @@ class __$$MarketErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MarketError implements MarketError {
-  const _$MarketError(this.message);
+class _$MarketErrorImpl implements MarketError {
+  const _$MarketErrorImpl(this.message);
 
   @override
   final String message;
@@ -688,7 +689,7 @@ class _$MarketError implements MarketError {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MarketError &&
+            other is _$MarketErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -698,8 +699,8 @@ class _$MarketError implements MarketError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$MarketErrorCopyWith<_$MarketError> get copyWith =>
-      __$$MarketErrorCopyWithImpl<_$MarketError>(this, _$identity);
+  _$$MarketErrorImplCopyWith<_$MarketErrorImpl> get copyWith =>
+      __$$MarketErrorImplCopyWithImpl<_$MarketErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -783,10 +784,10 @@ class _$MarketError implements MarketError {
 }
 
 abstract class MarketError implements MarketState {
-  const factory MarketError(final String message) = _$MarketError;
+  const factory MarketError(final String message) = _$MarketErrorImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$MarketErrorCopyWith<_$MarketError> get copyWith =>
+  _$$MarketErrorImplCopyWith<_$MarketErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -137,12 +137,12 @@ class _StorePageState extends State<StorePage> {
                               loaded: (_) {
                                 context
                                     .read<PurchasesBloc>()
-                                    .add(PurchasesEventBuy(product.identifier));
+                                    .add(PurchasesEventBuy(product));
                               },
                               orElse: () {
                                 Navigator.of(context).pushNamed(
                                   KanPracticePages.loginPage,
-                                  arguments: product.identifier,
+                                  arguments: product,
                                 );
                               },
                             );

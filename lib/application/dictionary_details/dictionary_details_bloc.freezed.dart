@@ -88,26 +88,28 @@ class _$DictionaryDetailsStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$DictionaryDetailsLoadingCopyWith<$Res> {
-  factory _$$DictionaryDetailsLoadingCopyWith(_$DictionaryDetailsLoading value,
-          $Res Function(_$DictionaryDetailsLoading) then) =
-      __$$DictionaryDetailsLoadingCopyWithImpl<$Res>;
+abstract class _$$DictionaryDetailsLoadingImplCopyWith<$Res> {
+  factory _$$DictionaryDetailsLoadingImplCopyWith(
+          _$DictionaryDetailsLoadingImpl value,
+          $Res Function(_$DictionaryDetailsLoadingImpl) then) =
+      __$$DictionaryDetailsLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DictionaryDetailsLoadingCopyWithImpl<$Res>
+class __$$DictionaryDetailsLoadingImplCopyWithImpl<$Res>
     extends _$DictionaryDetailsStateCopyWithImpl<$Res,
-        _$DictionaryDetailsLoading>
-    implements _$$DictionaryDetailsLoadingCopyWith<$Res> {
-  __$$DictionaryDetailsLoadingCopyWithImpl(_$DictionaryDetailsLoading _value,
-      $Res Function(_$DictionaryDetailsLoading) _then)
+        _$DictionaryDetailsLoadingImpl>
+    implements _$$DictionaryDetailsLoadingImplCopyWith<$Res> {
+  __$$DictionaryDetailsLoadingImplCopyWithImpl(
+      _$DictionaryDetailsLoadingImpl _value,
+      $Res Function(_$DictionaryDetailsLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$DictionaryDetailsLoading implements DictionaryDetailsLoading {
-  const _$DictionaryDetailsLoading();
+class _$DictionaryDetailsLoadingImpl implements DictionaryDetailsLoading {
+  const _$DictionaryDetailsLoadingImpl();
 
   @override
   String toString() {
@@ -118,7 +120,7 @@ class _$DictionaryDetailsLoading implements DictionaryDetailsLoading {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DictionaryDetailsLoading);
+            other is _$DictionaryDetailsLoadingImpl);
   }
 
   @override
@@ -200,25 +202,27 @@ class _$DictionaryDetailsLoading implements DictionaryDetailsLoading {
 }
 
 abstract class DictionaryDetailsLoading implements DictionaryDetailsState {
-  const factory DictionaryDetailsLoading() = _$DictionaryDetailsLoading;
+  const factory DictionaryDetailsLoading() = _$DictionaryDetailsLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$DictionaryDetailsLoadedCopyWith<$Res> {
-  factory _$$DictionaryDetailsLoadedCopyWith(_$DictionaryDetailsLoaded value,
-          $Res Function(_$DictionaryDetailsLoaded) then) =
-      __$$DictionaryDetailsLoadedCopyWithImpl<$Res>;
+abstract class _$$DictionaryDetailsLoadedImplCopyWith<$Res> {
+  factory _$$DictionaryDetailsLoadedImplCopyWith(
+          _$DictionaryDetailsLoadedImpl value,
+          $Res Function(_$DictionaryDetailsLoadedImpl) then) =
+      __$$DictionaryDetailsLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({WordData data});
 }
 
 /// @nodoc
-class __$$DictionaryDetailsLoadedCopyWithImpl<$Res>
+class __$$DictionaryDetailsLoadedImplCopyWithImpl<$Res>
     extends _$DictionaryDetailsStateCopyWithImpl<$Res,
-        _$DictionaryDetailsLoaded>
-    implements _$$DictionaryDetailsLoadedCopyWith<$Res> {
-  __$$DictionaryDetailsLoadedCopyWithImpl(_$DictionaryDetailsLoaded _value,
-      $Res Function(_$DictionaryDetailsLoaded) _then)
+        _$DictionaryDetailsLoadedImpl>
+    implements _$$DictionaryDetailsLoadedImplCopyWith<$Res> {
+  __$$DictionaryDetailsLoadedImplCopyWithImpl(
+      _$DictionaryDetailsLoadedImpl _value,
+      $Res Function(_$DictionaryDetailsLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -226,7 +230,7 @@ class __$$DictionaryDetailsLoadedCopyWithImpl<$Res>
   $Res call({
     Object? data = null,
   }) {
-    return _then(_$DictionaryDetailsLoaded(
+    return _then(_$DictionaryDetailsLoadedImpl(
       null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -237,8 +241,8 @@ class __$$DictionaryDetailsLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DictionaryDetailsLoaded implements DictionaryDetailsLoaded {
-  const _$DictionaryDetailsLoaded(this.data);
+class _$DictionaryDetailsLoadedImpl implements DictionaryDetailsLoaded {
+  const _$DictionaryDetailsLoadedImpl(this.data);
 
   @override
   final WordData data;
@@ -252,7 +256,7 @@ class _$DictionaryDetailsLoaded implements DictionaryDetailsLoaded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DictionaryDetailsLoaded &&
+            other is _$DictionaryDetailsLoadedImpl &&
             (identical(other.data, data) || other.data == data));
   }
 
@@ -262,9 +266,9 @@ class _$DictionaryDetailsLoaded implements DictionaryDetailsLoaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$DictionaryDetailsLoadedCopyWith<_$DictionaryDetailsLoaded> get copyWith =>
-      __$$DictionaryDetailsLoadedCopyWithImpl<_$DictionaryDetailsLoaded>(
-          this, _$identity);
+  _$$DictionaryDetailsLoadedImplCopyWith<_$DictionaryDetailsLoadedImpl>
+      get copyWith => __$$DictionaryDetailsLoadedImplCopyWithImpl<
+          _$DictionaryDetailsLoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -343,35 +347,37 @@ class _$DictionaryDetailsLoaded implements DictionaryDetailsLoaded {
 
 abstract class DictionaryDetailsLoaded implements DictionaryDetailsState {
   const factory DictionaryDetailsLoaded(final WordData data) =
-      _$DictionaryDetailsLoaded;
+      _$DictionaryDetailsLoadedImpl;
 
   WordData get data;
   @JsonKey(ignore: true)
-  _$$DictionaryDetailsLoadedCopyWith<_$DictionaryDetailsLoaded> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$DictionaryDetailsLoadedImplCopyWith<_$DictionaryDetailsLoadedImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DictionaryDetailsInitialCopyWith<$Res> {
-  factory _$$DictionaryDetailsInitialCopyWith(_$DictionaryDetailsInitial value,
-          $Res Function(_$DictionaryDetailsInitial) then) =
-      __$$DictionaryDetailsInitialCopyWithImpl<$Res>;
+abstract class _$$DictionaryDetailsInitialImplCopyWith<$Res> {
+  factory _$$DictionaryDetailsInitialImplCopyWith(
+          _$DictionaryDetailsInitialImpl value,
+          $Res Function(_$DictionaryDetailsInitialImpl) then) =
+      __$$DictionaryDetailsInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DictionaryDetailsInitialCopyWithImpl<$Res>
+class __$$DictionaryDetailsInitialImplCopyWithImpl<$Res>
     extends _$DictionaryDetailsStateCopyWithImpl<$Res,
-        _$DictionaryDetailsInitial>
-    implements _$$DictionaryDetailsInitialCopyWith<$Res> {
-  __$$DictionaryDetailsInitialCopyWithImpl(_$DictionaryDetailsInitial _value,
-      $Res Function(_$DictionaryDetailsInitial) _then)
+        _$DictionaryDetailsInitialImpl>
+    implements _$$DictionaryDetailsInitialImplCopyWith<$Res> {
+  __$$DictionaryDetailsInitialImplCopyWithImpl(
+      _$DictionaryDetailsInitialImpl _value,
+      $Res Function(_$DictionaryDetailsInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$DictionaryDetailsInitial implements DictionaryDetailsInitial {
-  const _$DictionaryDetailsInitial();
+class _$DictionaryDetailsInitialImpl implements DictionaryDetailsInitial {
+  const _$DictionaryDetailsInitialImpl();
 
   @override
   String toString() {
@@ -382,7 +388,7 @@ class _$DictionaryDetailsInitial implements DictionaryDetailsInitial {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DictionaryDetailsInitial);
+            other is _$DictionaryDetailsInitialImpl);
   }
 
   @override
@@ -464,29 +470,32 @@ class _$DictionaryDetailsInitial implements DictionaryDetailsInitial {
 }
 
 abstract class DictionaryDetailsInitial implements DictionaryDetailsState {
-  const factory DictionaryDetailsInitial() = _$DictionaryDetailsInitial;
+  const factory DictionaryDetailsInitial() = _$DictionaryDetailsInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$DictionaryDetailsErrorCopyWith<$Res> {
-  factory _$$DictionaryDetailsErrorCopyWith(_$DictionaryDetailsError value,
-          $Res Function(_$DictionaryDetailsError) then) =
-      __$$DictionaryDetailsErrorCopyWithImpl<$Res>;
+abstract class _$$DictionaryDetailsErrorImplCopyWith<$Res> {
+  factory _$$DictionaryDetailsErrorImplCopyWith(
+          _$DictionaryDetailsErrorImpl value,
+          $Res Function(_$DictionaryDetailsErrorImpl) then) =
+      __$$DictionaryDetailsErrorImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DictionaryDetailsErrorCopyWithImpl<$Res>
-    extends _$DictionaryDetailsStateCopyWithImpl<$Res, _$DictionaryDetailsError>
-    implements _$$DictionaryDetailsErrorCopyWith<$Res> {
-  __$$DictionaryDetailsErrorCopyWithImpl(_$DictionaryDetailsError _value,
-      $Res Function(_$DictionaryDetailsError) _then)
+class __$$DictionaryDetailsErrorImplCopyWithImpl<$Res>
+    extends _$DictionaryDetailsStateCopyWithImpl<$Res,
+        _$DictionaryDetailsErrorImpl>
+    implements _$$DictionaryDetailsErrorImplCopyWith<$Res> {
+  __$$DictionaryDetailsErrorImplCopyWithImpl(
+      _$DictionaryDetailsErrorImpl _value,
+      $Res Function(_$DictionaryDetailsErrorImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$DictionaryDetailsError implements DictionaryDetailsError {
-  const _$DictionaryDetailsError();
+class _$DictionaryDetailsErrorImpl implements DictionaryDetailsError {
+  const _$DictionaryDetailsErrorImpl();
 
   @override
   String toString() {
@@ -496,7 +505,8 @@ class _$DictionaryDetailsError implements DictionaryDetailsError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$DictionaryDetailsError);
+        (other.runtimeType == runtimeType &&
+            other is _$DictionaryDetailsErrorImpl);
   }
 
   @override
@@ -578,5 +588,5 @@ class _$DictionaryDetailsError implements DictionaryDetailsError {
 }
 
 abstract class DictionaryDetailsError implements DictionaryDetailsState {
-  const factory DictionaryDetailsError() = _$DictionaryDetailsError;
+  const factory DictionaryDetailsError() = _$DictionaryDetailsErrorImpl;
 }

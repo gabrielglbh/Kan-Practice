@@ -75,25 +75,26 @@ class _$FolderPracticeStateCopyWithImpl<$Res, $Val extends FolderPracticeState>
 }
 
 /// @nodoc
-abstract class _$$FolderPracticeInitialCopyWith<$Res> {
-  factory _$$FolderPracticeInitialCopyWith(_$FolderPracticeInitial value,
-          $Res Function(_$FolderPracticeInitial) then) =
-      __$$FolderPracticeInitialCopyWithImpl<$Res>;
+abstract class _$$FolderPracticeInitialImplCopyWith<$Res> {
+  factory _$$FolderPracticeInitialImplCopyWith(
+          _$FolderPracticeInitialImpl value,
+          $Res Function(_$FolderPracticeInitialImpl) then) =
+      __$$FolderPracticeInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$FolderPracticeInitialCopyWithImpl<$Res>
-    extends _$FolderPracticeStateCopyWithImpl<$Res, _$FolderPracticeInitial>
-    implements _$$FolderPracticeInitialCopyWith<$Res> {
-  __$$FolderPracticeInitialCopyWithImpl(_$FolderPracticeInitial _value,
-      $Res Function(_$FolderPracticeInitial) _then)
+class __$$FolderPracticeInitialImplCopyWithImpl<$Res>
+    extends _$FolderPracticeStateCopyWithImpl<$Res, _$FolderPracticeInitialImpl>
+    implements _$$FolderPracticeInitialImplCopyWith<$Res> {
+  __$$FolderPracticeInitialImplCopyWithImpl(_$FolderPracticeInitialImpl _value,
+      $Res Function(_$FolderPracticeInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$FolderPracticeInitial implements FolderPracticeInitial {
-  const _$FolderPracticeInitial();
+class _$FolderPracticeInitialImpl implements FolderPracticeInitial {
+  const _$FolderPracticeInitialImpl();
 
   @override
   String toString() {
@@ -103,7 +104,8 @@ class _$FolderPracticeInitial implements FolderPracticeInitial {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$FolderPracticeInitial);
+        (other.runtimeType == runtimeType &&
+            other is _$FolderPracticeInitialImpl);
   }
 
   @override
@@ -173,24 +175,24 @@ class _$FolderPracticeInitial implements FolderPracticeInitial {
 }
 
 abstract class FolderPracticeInitial implements FolderPracticeState {
-  const factory FolderPracticeInitial() = _$FolderPracticeInitial;
+  const factory FolderPracticeInitial() = _$FolderPracticeInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$FolderPracticeLoadedCopyWith<$Res> {
-  factory _$$FolderPracticeLoadedCopyWith(_$FolderPracticeLoaded value,
-          $Res Function(_$FolderPracticeLoaded) then) =
-      __$$FolderPracticeLoadedCopyWithImpl<$Res>;
+abstract class _$$FolderPracticeLoadedImplCopyWith<$Res> {
+  factory _$$FolderPracticeLoadedImplCopyWith(_$FolderPracticeLoadedImpl value,
+          $Res Function(_$FolderPracticeLoadedImpl) then) =
+      __$$FolderPracticeLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<Word> list, StudyModes mode});
 }
 
 /// @nodoc
-class __$$FolderPracticeLoadedCopyWithImpl<$Res>
-    extends _$FolderPracticeStateCopyWithImpl<$Res, _$FolderPracticeLoaded>
-    implements _$$FolderPracticeLoadedCopyWith<$Res> {
-  __$$FolderPracticeLoadedCopyWithImpl(_$FolderPracticeLoaded _value,
-      $Res Function(_$FolderPracticeLoaded) _then)
+class __$$FolderPracticeLoadedImplCopyWithImpl<$Res>
+    extends _$FolderPracticeStateCopyWithImpl<$Res, _$FolderPracticeLoadedImpl>
+    implements _$$FolderPracticeLoadedImplCopyWith<$Res> {
+  __$$FolderPracticeLoadedImplCopyWithImpl(_$FolderPracticeLoadedImpl _value,
+      $Res Function(_$FolderPracticeLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -199,7 +201,7 @@ class __$$FolderPracticeLoadedCopyWithImpl<$Res>
     Object? list = null,
     Object? mode = null,
   }) {
-    return _then(_$FolderPracticeLoaded(
+    return _then(_$FolderPracticeLoadedImpl(
       null == list
           ? _value._list
           : list // ignore: cast_nullable_to_non_nullable
@@ -214,8 +216,9 @@ class __$$FolderPracticeLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$FolderPracticeLoaded implements FolderPracticeLoaded {
-  const _$FolderPracticeLoaded(final List<Word> list, this.mode) : _list = list;
+class _$FolderPracticeLoadedImpl implements FolderPracticeLoaded {
+  const _$FolderPracticeLoadedImpl(final List<Word> list, this.mode)
+      : _list = list;
 
   final List<Word> _list;
   @override
@@ -237,7 +240,7 @@ class _$FolderPracticeLoaded implements FolderPracticeLoaded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FolderPracticeLoaded &&
+            other is _$FolderPracticeLoadedImpl &&
             const DeepCollectionEquality().equals(other._list, _list) &&
             (identical(other.mode, mode) || other.mode == mode));
   }
@@ -249,9 +252,10 @@ class _$FolderPracticeLoaded implements FolderPracticeLoaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$FolderPracticeLoadedCopyWith<_$FolderPracticeLoaded> get copyWith =>
-      __$$FolderPracticeLoadedCopyWithImpl<_$FolderPracticeLoaded>(
-          this, _$identity);
+  _$$FolderPracticeLoadedImplCopyWith<_$FolderPracticeLoadedImpl>
+      get copyWith =>
+          __$$FolderPracticeLoadedImplCopyWithImpl<_$FolderPracticeLoadedImpl>(
+              this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -318,11 +322,12 @@ class _$FolderPracticeLoaded implements FolderPracticeLoaded {
 
 abstract class FolderPracticeLoaded implements FolderPracticeState {
   const factory FolderPracticeLoaded(
-      final List<Word> list, final StudyModes mode) = _$FolderPracticeLoaded;
+          final List<Word> list, final StudyModes mode) =
+      _$FolderPracticeLoadedImpl;
 
   List<Word> get list;
   StudyModes get mode;
   @JsonKey(ignore: true)
-  _$$FolderPracticeLoadedCopyWith<_$FolderPracticeLoaded> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$FolderPracticeLoadedImplCopyWith<_$FolderPracticeLoadedImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

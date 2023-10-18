@@ -100,25 +100,25 @@ class _$BackupStateCopyWithImpl<$Res, $Val extends BackupState>
 }
 
 /// @nodoc
-abstract class _$$BackupLoadingCopyWith<$Res> {
-  factory _$$BackupLoadingCopyWith(
-          _$BackupLoading value, $Res Function(_$BackupLoading) then) =
-      __$$BackupLoadingCopyWithImpl<$Res>;
+abstract class _$$BackupLoadingImplCopyWith<$Res> {
+  factory _$$BackupLoadingImplCopyWith(
+          _$BackupLoadingImpl value, $Res Function(_$BackupLoadingImpl) then) =
+      __$$BackupLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$BackupLoadingCopyWithImpl<$Res>
-    extends _$BackupStateCopyWithImpl<$Res, _$BackupLoading>
-    implements _$$BackupLoadingCopyWith<$Res> {
-  __$$BackupLoadingCopyWithImpl(
-      _$BackupLoading _value, $Res Function(_$BackupLoading) _then)
+class __$$BackupLoadingImplCopyWithImpl<$Res>
+    extends _$BackupStateCopyWithImpl<$Res, _$BackupLoadingImpl>
+    implements _$$BackupLoadingImplCopyWith<$Res> {
+  __$$BackupLoadingImplCopyWithImpl(
+      _$BackupLoadingImpl _value, $Res Function(_$BackupLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$BackupLoading implements BackupLoading {
-  const _$BackupLoading();
+class _$BackupLoadingImpl implements BackupLoading {
+  const _$BackupLoadingImpl();
 
   @override
   String toString() {
@@ -128,7 +128,7 @@ class _$BackupLoading implements BackupLoading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$BackupLoading);
+        (other.runtimeType == runtimeType && other is _$BackupLoadingImpl);
   }
 
   @override
@@ -223,24 +223,24 @@ class _$BackupLoading implements BackupLoading {
 }
 
 abstract class BackupLoading implements BackupState {
-  const factory BackupLoading() = _$BackupLoading;
+  const factory BackupLoading() = _$BackupLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$BackupLoadedCopyWith<$Res> {
-  factory _$$BackupLoadedCopyWith(
-          _$BackupLoaded value, $Res Function(_$BackupLoaded) then) =
-      __$$BackupLoadedCopyWithImpl<$Res>;
+abstract class _$$BackupLoadedImplCopyWith<$Res> {
+  factory _$$BackupLoadedImplCopyWith(
+          _$BackupLoadedImpl value, $Res Function(_$BackupLoadedImpl) then) =
+      __$$BackupLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$BackupLoadedCopyWithImpl<$Res>
-    extends _$BackupStateCopyWithImpl<$Res, _$BackupLoaded>
-    implements _$$BackupLoadedCopyWith<$Res> {
-  __$$BackupLoadedCopyWithImpl(
-      _$BackupLoaded _value, $Res Function(_$BackupLoaded) _then)
+class __$$BackupLoadedImplCopyWithImpl<$Res>
+    extends _$BackupStateCopyWithImpl<$Res, _$BackupLoadedImpl>
+    implements _$$BackupLoadedImplCopyWith<$Res> {
+  __$$BackupLoadedImplCopyWithImpl(
+      _$BackupLoadedImpl _value, $Res Function(_$BackupLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -248,7 +248,7 @@ class __$$BackupLoadedCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$BackupLoaded(
+    return _then(_$BackupLoadedImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -259,8 +259,8 @@ class __$$BackupLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$BackupLoaded implements BackupLoaded {
-  const _$BackupLoaded(this.message);
+class _$BackupLoadedImpl implements BackupLoaded {
+  const _$BackupLoadedImpl(this.message);
 
   @override
   final String message;
@@ -274,7 +274,7 @@ class _$BackupLoaded implements BackupLoaded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$BackupLoaded &&
+            other is _$BackupLoadedImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -284,8 +284,8 @@ class _$BackupLoaded implements BackupLoaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$BackupLoadedCopyWith<_$BackupLoaded> get copyWith =>
-      __$$BackupLoadedCopyWithImpl<_$BackupLoaded>(this, _$identity);
+  _$$BackupLoadedImplCopyWith<_$BackupLoadedImpl> get copyWith =>
+      __$$BackupLoadedImplCopyWithImpl<_$BackupLoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -376,34 +376,34 @@ class _$BackupLoaded implements BackupLoaded {
 }
 
 abstract class BackupLoaded implements BackupState {
-  const factory BackupLoaded(final String message) = _$BackupLoaded;
+  const factory BackupLoaded(final String message) = _$BackupLoadedImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$BackupLoadedCopyWith<_$BackupLoaded> get copyWith =>
+  _$$BackupLoadedImplCopyWith<_$BackupLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$BackupInitialCopyWith<$Res> {
-  factory _$$BackupInitialCopyWith(
-          _$BackupInitial value, $Res Function(_$BackupInitial) then) =
-      __$$BackupInitialCopyWithImpl<$Res>;
+abstract class _$$BackupInitialImplCopyWith<$Res> {
+  factory _$$BackupInitialImplCopyWith(
+          _$BackupInitialImpl value, $Res Function(_$BackupInitialImpl) then) =
+      __$$BackupInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$BackupInitialCopyWithImpl<$Res>
-    extends _$BackupStateCopyWithImpl<$Res, _$BackupInitial>
-    implements _$$BackupInitialCopyWith<$Res> {
-  __$$BackupInitialCopyWithImpl(
-      _$BackupInitial _value, $Res Function(_$BackupInitial) _then)
+class __$$BackupInitialImplCopyWithImpl<$Res>
+    extends _$BackupStateCopyWithImpl<$Res, _$BackupInitialImpl>
+    implements _$$BackupInitialImplCopyWith<$Res> {
+  __$$BackupInitialImplCopyWithImpl(
+      _$BackupInitialImpl _value, $Res Function(_$BackupInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$BackupInitial implements BackupInitial {
-  const _$BackupInitial();
+class _$BackupInitialImpl implements BackupInitial {
+  const _$BackupInitialImpl();
 
   @override
   String toString() {
@@ -413,7 +413,7 @@ class _$BackupInitial implements BackupInitial {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$BackupInitial);
+        (other.runtimeType == runtimeType && other is _$BackupInitialImpl);
   }
 
   @override
@@ -508,24 +508,24 @@ class _$BackupInitial implements BackupInitial {
 }
 
 abstract class BackupInitial implements BackupState {
-  const factory BackupInitial() = _$BackupInitial;
+  const factory BackupInitial() = _$BackupInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$BackupErrorCopyWith<$Res> {
-  factory _$$BackupErrorCopyWith(
-          _$BackupError value, $Res Function(_$BackupError) then) =
-      __$$BackupErrorCopyWithImpl<$Res>;
+abstract class _$$BackupErrorImplCopyWith<$Res> {
+  factory _$$BackupErrorImplCopyWith(
+          _$BackupErrorImpl value, $Res Function(_$BackupErrorImpl) then) =
+      __$$BackupErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$BackupErrorCopyWithImpl<$Res>
-    extends _$BackupStateCopyWithImpl<$Res, _$BackupError>
-    implements _$$BackupErrorCopyWith<$Res> {
-  __$$BackupErrorCopyWithImpl(
-      _$BackupError _value, $Res Function(_$BackupError) _then)
+class __$$BackupErrorImplCopyWithImpl<$Res>
+    extends _$BackupStateCopyWithImpl<$Res, _$BackupErrorImpl>
+    implements _$$BackupErrorImplCopyWith<$Res> {
+  __$$BackupErrorImplCopyWithImpl(
+      _$BackupErrorImpl _value, $Res Function(_$BackupErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -533,7 +533,7 @@ class __$$BackupErrorCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$BackupError(
+    return _then(_$BackupErrorImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -544,8 +544,8 @@ class __$$BackupErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$BackupError implements BackupError {
-  const _$BackupError(this.message);
+class _$BackupErrorImpl implements BackupError {
+  const _$BackupErrorImpl(this.message);
 
   @override
   final String message;
@@ -559,7 +559,7 @@ class _$BackupError implements BackupError {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$BackupError &&
+            other is _$BackupErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -569,8 +569,8 @@ class _$BackupError implements BackupError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$BackupErrorCopyWith<_$BackupError> get copyWith =>
-      __$$BackupErrorCopyWithImpl<_$BackupError>(this, _$identity);
+  _$$BackupErrorImplCopyWith<_$BackupErrorImpl> get copyWith =>
+      __$$BackupErrorImplCopyWithImpl<_$BackupErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -661,29 +661,31 @@ class _$BackupError implements BackupError {
 }
 
 abstract class BackupError implements BackupState {
-  const factory BackupError(final String message) = _$BackupError;
+  const factory BackupError(final String message) = _$BackupErrorImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$BackupErrorCopyWith<_$BackupError> get copyWith =>
+  _$$BackupErrorImplCopyWith<_$BackupErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$BackupVersionRetrievedCopyWith<$Res> {
-  factory _$$BackupVersionRetrievedCopyWith(_$BackupVersionRetrieved value,
-          $Res Function(_$BackupVersionRetrieved) then) =
-      __$$BackupVersionRetrievedCopyWithImpl<$Res>;
+abstract class _$$BackupVersionRetrievedImplCopyWith<$Res> {
+  factory _$$BackupVersionRetrievedImplCopyWith(
+          _$BackupVersionRetrievedImpl value,
+          $Res Function(_$BackupVersionRetrievedImpl) then) =
+      __$$BackupVersionRetrievedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String version, List<String> notes});
 }
 
 /// @nodoc
-class __$$BackupVersionRetrievedCopyWithImpl<$Res>
-    extends _$BackupStateCopyWithImpl<$Res, _$BackupVersionRetrieved>
-    implements _$$BackupVersionRetrievedCopyWith<$Res> {
-  __$$BackupVersionRetrievedCopyWithImpl(_$BackupVersionRetrieved _value,
-      $Res Function(_$BackupVersionRetrieved) _then)
+class __$$BackupVersionRetrievedImplCopyWithImpl<$Res>
+    extends _$BackupStateCopyWithImpl<$Res, _$BackupVersionRetrievedImpl>
+    implements _$$BackupVersionRetrievedImplCopyWith<$Res> {
+  __$$BackupVersionRetrievedImplCopyWithImpl(
+      _$BackupVersionRetrievedImpl _value,
+      $Res Function(_$BackupVersionRetrievedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -692,7 +694,7 @@ class __$$BackupVersionRetrievedCopyWithImpl<$Res>
     Object? version = null,
     Object? notes = null,
   }) {
-    return _then(_$BackupVersionRetrieved(
+    return _then(_$BackupVersionRetrievedImpl(
       null == version
           ? _value.version
           : version // ignore: cast_nullable_to_non_nullable
@@ -707,8 +709,8 @@ class __$$BackupVersionRetrievedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$BackupVersionRetrieved implements BackupVersionRetrieved {
-  const _$BackupVersionRetrieved(this.version, final List<String> notes)
+class _$BackupVersionRetrievedImpl implements BackupVersionRetrieved {
+  const _$BackupVersionRetrievedImpl(this.version, final List<String> notes)
       : _notes = notes;
 
   @override
@@ -730,7 +732,7 @@ class _$BackupVersionRetrieved implements BackupVersionRetrieved {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$BackupVersionRetrieved &&
+            other is _$BackupVersionRetrievedImpl &&
             (identical(other.version, version) || other.version == version) &&
             const DeepCollectionEquality().equals(other._notes, _notes));
   }
@@ -742,9 +744,9 @@ class _$BackupVersionRetrieved implements BackupVersionRetrieved {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$BackupVersionRetrievedCopyWith<_$BackupVersionRetrieved> get copyWith =>
-      __$$BackupVersionRetrievedCopyWithImpl<_$BackupVersionRetrieved>(
-          this, _$identity);
+  _$$BackupVersionRetrievedImplCopyWith<_$BackupVersionRetrievedImpl>
+      get copyWith => __$$BackupVersionRetrievedImplCopyWithImpl<
+          _$BackupVersionRetrievedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -837,30 +839,30 @@ class _$BackupVersionRetrieved implements BackupVersionRetrieved {
 abstract class BackupVersionRetrieved implements BackupState {
   const factory BackupVersionRetrieved(
           final String version, final List<String> notes) =
-      _$BackupVersionRetrieved;
+      _$BackupVersionRetrievedImpl;
 
   String get version;
   List<String> get notes;
   @JsonKey(ignore: true)
-  _$$BackupVersionRetrievedCopyWith<_$BackupVersionRetrieved> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$BackupVersionRetrievedImplCopyWith<_$BackupVersionRetrievedImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$BackupNotesRetrievedCopyWith<$Res> {
-  factory _$$BackupNotesRetrievedCopyWith(_$BackupNotesRetrieved value,
-          $Res Function(_$BackupNotesRetrieved) then) =
-      __$$BackupNotesRetrievedCopyWithImpl<$Res>;
+abstract class _$$BackupNotesRetrievedImplCopyWith<$Res> {
+  factory _$$BackupNotesRetrievedImplCopyWith(_$BackupNotesRetrievedImpl value,
+          $Res Function(_$BackupNotesRetrievedImpl) then) =
+      __$$BackupNotesRetrievedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<String> notes});
 }
 
 /// @nodoc
-class __$$BackupNotesRetrievedCopyWithImpl<$Res>
-    extends _$BackupStateCopyWithImpl<$Res, _$BackupNotesRetrieved>
-    implements _$$BackupNotesRetrievedCopyWith<$Res> {
-  __$$BackupNotesRetrievedCopyWithImpl(_$BackupNotesRetrieved _value,
-      $Res Function(_$BackupNotesRetrieved) _then)
+class __$$BackupNotesRetrievedImplCopyWithImpl<$Res>
+    extends _$BackupStateCopyWithImpl<$Res, _$BackupNotesRetrievedImpl>
+    implements _$$BackupNotesRetrievedImplCopyWith<$Res> {
+  __$$BackupNotesRetrievedImplCopyWithImpl(_$BackupNotesRetrievedImpl _value,
+      $Res Function(_$BackupNotesRetrievedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -868,7 +870,7 @@ class __$$BackupNotesRetrievedCopyWithImpl<$Res>
   $Res call({
     Object? notes = null,
   }) {
-    return _then(_$BackupNotesRetrieved(
+    return _then(_$BackupNotesRetrievedImpl(
       null == notes
           ? _value._notes
           : notes // ignore: cast_nullable_to_non_nullable
@@ -879,8 +881,8 @@ class __$$BackupNotesRetrievedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$BackupNotesRetrieved implements BackupNotesRetrieved {
-  const _$BackupNotesRetrieved(final List<String> notes) : _notes = notes;
+class _$BackupNotesRetrievedImpl implements BackupNotesRetrieved {
+  const _$BackupNotesRetrievedImpl(final List<String> notes) : _notes = notes;
 
   final List<String> _notes;
   @override
@@ -899,7 +901,7 @@ class _$BackupNotesRetrieved implements BackupNotesRetrieved {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$BackupNotesRetrieved &&
+            other is _$BackupNotesRetrievedImpl &&
             const DeepCollectionEquality().equals(other._notes, _notes));
   }
 
@@ -910,9 +912,10 @@ class _$BackupNotesRetrieved implements BackupNotesRetrieved {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$BackupNotesRetrievedCopyWith<_$BackupNotesRetrieved> get copyWith =>
-      __$$BackupNotesRetrievedCopyWithImpl<_$BackupNotesRetrieved>(
-          this, _$identity);
+  _$$BackupNotesRetrievedImplCopyWith<_$BackupNotesRetrievedImpl>
+      get copyWith =>
+          __$$BackupNotesRetrievedImplCopyWithImpl<_$BackupNotesRetrievedImpl>(
+              this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1004,10 +1007,10 @@ class _$BackupNotesRetrieved implements BackupNotesRetrieved {
 
 abstract class BackupNotesRetrieved implements BackupState {
   const factory BackupNotesRetrieved(final List<String> notes) =
-      _$BackupNotesRetrieved;
+      _$BackupNotesRetrievedImpl;
 
   List<String> get notes;
   @JsonKey(ignore: true)
-  _$$BackupNotesRetrievedCopyWith<_$BackupNotesRetrieved> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$BackupNotesRetrievedImplCopyWith<_$BackupNotesRetrievedImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

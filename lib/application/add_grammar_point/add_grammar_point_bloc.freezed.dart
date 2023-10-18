@@ -94,25 +94,28 @@ class _$AddGrammarPointStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$AddGrammarPointLoadingCopyWith<$Res> {
-  factory _$$AddGrammarPointLoadingCopyWith(_$AddGrammarPointLoading value,
-          $Res Function(_$AddGrammarPointLoading) then) =
-      __$$AddGrammarPointLoadingCopyWithImpl<$Res>;
+abstract class _$$AddGrammarPointLoadingImplCopyWith<$Res> {
+  factory _$$AddGrammarPointLoadingImplCopyWith(
+          _$AddGrammarPointLoadingImpl value,
+          $Res Function(_$AddGrammarPointLoadingImpl) then) =
+      __$$AddGrammarPointLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AddGrammarPointLoadingCopyWithImpl<$Res>
-    extends _$AddGrammarPointStateCopyWithImpl<$Res, _$AddGrammarPointLoading>
-    implements _$$AddGrammarPointLoadingCopyWith<$Res> {
-  __$$AddGrammarPointLoadingCopyWithImpl(_$AddGrammarPointLoading _value,
-      $Res Function(_$AddGrammarPointLoading) _then)
+class __$$AddGrammarPointLoadingImplCopyWithImpl<$Res>
+    extends _$AddGrammarPointStateCopyWithImpl<$Res,
+        _$AddGrammarPointLoadingImpl>
+    implements _$$AddGrammarPointLoadingImplCopyWith<$Res> {
+  __$$AddGrammarPointLoadingImplCopyWithImpl(
+      _$AddGrammarPointLoadingImpl _value,
+      $Res Function(_$AddGrammarPointLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AddGrammarPointLoading implements AddGrammarPointLoading {
-  const _$AddGrammarPointLoading();
+class _$AddGrammarPointLoadingImpl implements AddGrammarPointLoading {
+  const _$AddGrammarPointLoadingImpl();
 
   @override
   String toString() {
@@ -122,7 +125,8 @@ class _$AddGrammarPointLoading implements AddGrammarPointLoading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AddGrammarPointLoading);
+        (other.runtimeType == runtimeType &&
+            other is _$AddGrammarPointLoadingImpl);
   }
 
   @override
@@ -210,31 +214,32 @@ class _$AddGrammarPointLoading implements AddGrammarPointLoading {
 }
 
 abstract class AddGrammarPointLoading implements AddGrammarPointState {
-  const factory AddGrammarPointLoading() = _$AddGrammarPointLoading;
+  const factory AddGrammarPointLoading() = _$AddGrammarPointLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$AddGrammarPointUpdateDoneCopyWith<$Res> {
-  factory _$$AddGrammarPointUpdateDoneCopyWith(
-          _$AddGrammarPointUpdateDone value,
-          $Res Function(_$AddGrammarPointUpdateDone) then) =
-      __$$AddGrammarPointUpdateDoneCopyWithImpl<$Res>;
+abstract class _$$AddGrammarPointUpdateDoneImplCopyWith<$Res> {
+  factory _$$AddGrammarPointUpdateDoneImplCopyWith(
+          _$AddGrammarPointUpdateDoneImpl value,
+          $Res Function(_$AddGrammarPointUpdateDoneImpl) then) =
+      __$$AddGrammarPointUpdateDoneImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AddGrammarPointUpdateDoneCopyWithImpl<$Res>
+class __$$AddGrammarPointUpdateDoneImplCopyWithImpl<$Res>
     extends _$AddGrammarPointStateCopyWithImpl<$Res,
-        _$AddGrammarPointUpdateDone>
-    implements _$$AddGrammarPointUpdateDoneCopyWith<$Res> {
-  __$$AddGrammarPointUpdateDoneCopyWithImpl(_$AddGrammarPointUpdateDone _value,
-      $Res Function(_$AddGrammarPointUpdateDone) _then)
+        _$AddGrammarPointUpdateDoneImpl>
+    implements _$$AddGrammarPointUpdateDoneImplCopyWith<$Res> {
+  __$$AddGrammarPointUpdateDoneImplCopyWithImpl(
+      _$AddGrammarPointUpdateDoneImpl _value,
+      $Res Function(_$AddGrammarPointUpdateDoneImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AddGrammarPointUpdateDone implements AddGrammarPointUpdateDone {
-  const _$AddGrammarPointUpdateDone();
+class _$AddGrammarPointUpdateDoneImpl implements AddGrammarPointUpdateDone {
+  const _$AddGrammarPointUpdateDoneImpl();
 
   @override
   String toString() {
@@ -245,7 +250,7 @@ class _$AddGrammarPointUpdateDone implements AddGrammarPointUpdateDone {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AddGrammarPointUpdateDone);
+            other is _$AddGrammarPointUpdateDoneImpl);
   }
 
   @override
@@ -333,29 +338,32 @@ class _$AddGrammarPointUpdateDone implements AddGrammarPointUpdateDone {
 }
 
 abstract class AddGrammarPointUpdateDone implements AddGrammarPointState {
-  const factory AddGrammarPointUpdateDone() = _$AddGrammarPointUpdateDone;
+  const factory AddGrammarPointUpdateDone() = _$AddGrammarPointUpdateDoneImpl;
 }
 
 /// @nodoc
-abstract class _$$AddGrammarPointInitialCopyWith<$Res> {
-  factory _$$AddGrammarPointInitialCopyWith(_$AddGrammarPointInitial value,
-          $Res Function(_$AddGrammarPointInitial) then) =
-      __$$AddGrammarPointInitialCopyWithImpl<$Res>;
+abstract class _$$AddGrammarPointInitialImplCopyWith<$Res> {
+  factory _$$AddGrammarPointInitialImplCopyWith(
+          _$AddGrammarPointInitialImpl value,
+          $Res Function(_$AddGrammarPointInitialImpl) then) =
+      __$$AddGrammarPointInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AddGrammarPointInitialCopyWithImpl<$Res>
-    extends _$AddGrammarPointStateCopyWithImpl<$Res, _$AddGrammarPointInitial>
-    implements _$$AddGrammarPointInitialCopyWith<$Res> {
-  __$$AddGrammarPointInitialCopyWithImpl(_$AddGrammarPointInitial _value,
-      $Res Function(_$AddGrammarPointInitial) _then)
+class __$$AddGrammarPointInitialImplCopyWithImpl<$Res>
+    extends _$AddGrammarPointStateCopyWithImpl<$Res,
+        _$AddGrammarPointInitialImpl>
+    implements _$$AddGrammarPointInitialImplCopyWith<$Res> {
+  __$$AddGrammarPointInitialImplCopyWithImpl(
+      _$AddGrammarPointInitialImpl _value,
+      $Res Function(_$AddGrammarPointInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AddGrammarPointInitial implements AddGrammarPointInitial {
-  const _$AddGrammarPointInitial();
+class _$AddGrammarPointInitialImpl implements AddGrammarPointInitial {
+  const _$AddGrammarPointInitialImpl();
 
   @override
   String toString() {
@@ -365,7 +373,8 @@ class _$AddGrammarPointInitial implements AddGrammarPointInitial {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AddGrammarPointInitial);
+        (other.runtimeType == runtimeType &&
+            other is _$AddGrammarPointInitialImpl);
   }
 
   @override
@@ -453,27 +462,27 @@ class _$AddGrammarPointInitial implements AddGrammarPointInitial {
 }
 
 abstract class AddGrammarPointInitial implements AddGrammarPointState {
-  const factory AddGrammarPointInitial() = _$AddGrammarPointInitial;
+  const factory AddGrammarPointInitial() = _$AddGrammarPointInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$AddGrammarPointCreationDoneCopyWith<$Res> {
-  factory _$$AddGrammarPointCreationDoneCopyWith(
-          _$AddGrammarPointCreationDone value,
-          $Res Function(_$AddGrammarPointCreationDone) then) =
-      __$$AddGrammarPointCreationDoneCopyWithImpl<$Res>;
+abstract class _$$AddGrammarPointCreationDoneImplCopyWith<$Res> {
+  factory _$$AddGrammarPointCreationDoneImplCopyWith(
+          _$AddGrammarPointCreationDoneImpl value,
+          $Res Function(_$AddGrammarPointCreationDoneImpl) then) =
+      __$$AddGrammarPointCreationDoneImplCopyWithImpl<$Res>;
   @useResult
   $Res call({bool exitMode});
 }
 
 /// @nodoc
-class __$$AddGrammarPointCreationDoneCopyWithImpl<$Res>
+class __$$AddGrammarPointCreationDoneImplCopyWithImpl<$Res>
     extends _$AddGrammarPointStateCopyWithImpl<$Res,
-        _$AddGrammarPointCreationDone>
-    implements _$$AddGrammarPointCreationDoneCopyWith<$Res> {
-  __$$AddGrammarPointCreationDoneCopyWithImpl(
-      _$AddGrammarPointCreationDone _value,
-      $Res Function(_$AddGrammarPointCreationDone) _then)
+        _$AddGrammarPointCreationDoneImpl>
+    implements _$$AddGrammarPointCreationDoneImplCopyWith<$Res> {
+  __$$AddGrammarPointCreationDoneImplCopyWithImpl(
+      _$AddGrammarPointCreationDoneImpl _value,
+      $Res Function(_$AddGrammarPointCreationDoneImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -481,7 +490,7 @@ class __$$AddGrammarPointCreationDoneCopyWithImpl<$Res>
   $Res call({
     Object? exitMode = null,
   }) {
-    return _then(_$AddGrammarPointCreationDone(
+    return _then(_$AddGrammarPointCreationDoneImpl(
       null == exitMode
           ? _value.exitMode
           : exitMode // ignore: cast_nullable_to_non_nullable
@@ -492,8 +501,8 @@ class __$$AddGrammarPointCreationDoneCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AddGrammarPointCreationDone implements AddGrammarPointCreationDone {
-  const _$AddGrammarPointCreationDone(this.exitMode);
+class _$AddGrammarPointCreationDoneImpl implements AddGrammarPointCreationDone {
+  const _$AddGrammarPointCreationDoneImpl(this.exitMode);
 
   @override
   final bool exitMode;
@@ -507,7 +516,7 @@ class _$AddGrammarPointCreationDone implements AddGrammarPointCreationDone {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AddGrammarPointCreationDone &&
+            other is _$AddGrammarPointCreationDoneImpl &&
             (identical(other.exitMode, exitMode) ||
                 other.exitMode == exitMode));
   }
@@ -518,9 +527,9 @@ class _$AddGrammarPointCreationDone implements AddGrammarPointCreationDone {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$AddGrammarPointCreationDoneCopyWith<_$AddGrammarPointCreationDone>
-      get copyWith => __$$AddGrammarPointCreationDoneCopyWithImpl<
-          _$AddGrammarPointCreationDone>(this, _$identity);
+  _$$AddGrammarPointCreationDoneImplCopyWith<_$AddGrammarPointCreationDoneImpl>
+      get copyWith => __$$AddGrammarPointCreationDoneImplCopyWithImpl<
+          _$AddGrammarPointCreationDoneImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -605,29 +614,29 @@ class _$AddGrammarPointCreationDone implements AddGrammarPointCreationDone {
 
 abstract class AddGrammarPointCreationDone implements AddGrammarPointState {
   const factory AddGrammarPointCreationDone(final bool exitMode) =
-      _$AddGrammarPointCreationDone;
+      _$AddGrammarPointCreationDoneImpl;
 
   bool get exitMode;
   @JsonKey(ignore: true)
-  _$$AddGrammarPointCreationDoneCopyWith<_$AddGrammarPointCreationDone>
+  _$$AddGrammarPointCreationDoneImplCopyWith<_$AddGrammarPointCreationDoneImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$AddGrammarPointErrorCopyWith<$Res> {
-  factory _$$AddGrammarPointErrorCopyWith(_$AddGrammarPointError value,
-          $Res Function(_$AddGrammarPointError) then) =
-      __$$AddGrammarPointErrorCopyWithImpl<$Res>;
+abstract class _$$AddGrammarPointErrorImplCopyWith<$Res> {
+  factory _$$AddGrammarPointErrorImplCopyWith(_$AddGrammarPointErrorImpl value,
+          $Res Function(_$AddGrammarPointErrorImpl) then) =
+      __$$AddGrammarPointErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$AddGrammarPointErrorCopyWithImpl<$Res>
-    extends _$AddGrammarPointStateCopyWithImpl<$Res, _$AddGrammarPointError>
-    implements _$$AddGrammarPointErrorCopyWith<$Res> {
-  __$$AddGrammarPointErrorCopyWithImpl(_$AddGrammarPointError _value,
-      $Res Function(_$AddGrammarPointError) _then)
+class __$$AddGrammarPointErrorImplCopyWithImpl<$Res>
+    extends _$AddGrammarPointStateCopyWithImpl<$Res, _$AddGrammarPointErrorImpl>
+    implements _$$AddGrammarPointErrorImplCopyWith<$Res> {
+  __$$AddGrammarPointErrorImplCopyWithImpl(_$AddGrammarPointErrorImpl _value,
+      $Res Function(_$AddGrammarPointErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -635,7 +644,7 @@ class __$$AddGrammarPointErrorCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$AddGrammarPointError(
+    return _then(_$AddGrammarPointErrorImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -646,8 +655,8 @@ class __$$AddGrammarPointErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AddGrammarPointError implements AddGrammarPointError {
-  const _$AddGrammarPointError(this.message);
+class _$AddGrammarPointErrorImpl implements AddGrammarPointError {
+  const _$AddGrammarPointErrorImpl(this.message);
 
   @override
   final String message;
@@ -661,7 +670,7 @@ class _$AddGrammarPointError implements AddGrammarPointError {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AddGrammarPointError &&
+            other is _$AddGrammarPointErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -671,9 +680,10 @@ class _$AddGrammarPointError implements AddGrammarPointError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$AddGrammarPointErrorCopyWith<_$AddGrammarPointError> get copyWith =>
-      __$$AddGrammarPointErrorCopyWithImpl<_$AddGrammarPointError>(
-          this, _$identity);
+  _$$AddGrammarPointErrorImplCopyWith<_$AddGrammarPointErrorImpl>
+      get copyWith =>
+          __$$AddGrammarPointErrorImplCopyWithImpl<_$AddGrammarPointErrorImpl>(
+              this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -758,10 +768,10 @@ class _$AddGrammarPointError implements AddGrammarPointError {
 
 abstract class AddGrammarPointError implements AddGrammarPointState {
   const factory AddGrammarPointError(final String message) =
-      _$AddGrammarPointError;
+      _$AddGrammarPointErrorImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$AddGrammarPointErrorCopyWith<_$AddGrammarPointError> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$AddGrammarPointErrorImplCopyWith<_$AddGrammarPointErrorImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

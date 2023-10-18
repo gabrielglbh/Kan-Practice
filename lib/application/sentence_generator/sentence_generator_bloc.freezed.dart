@@ -92,26 +92,28 @@ class _$SentenceGeneratorStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$SentenceGeneratorInitialCopyWith<$Res> {
-  factory _$$SentenceGeneratorInitialCopyWith(_$SentenceGeneratorInitial value,
-          $Res Function(_$SentenceGeneratorInitial) then) =
-      __$$SentenceGeneratorInitialCopyWithImpl<$Res>;
+abstract class _$$SentenceGeneratorInitialImplCopyWith<$Res> {
+  factory _$$SentenceGeneratorInitialImplCopyWith(
+          _$SentenceGeneratorInitialImpl value,
+          $Res Function(_$SentenceGeneratorInitialImpl) then) =
+      __$$SentenceGeneratorInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$SentenceGeneratorInitialCopyWithImpl<$Res>
+class __$$SentenceGeneratorInitialImplCopyWithImpl<$Res>
     extends _$SentenceGeneratorStateCopyWithImpl<$Res,
-        _$SentenceGeneratorInitial>
-    implements _$$SentenceGeneratorInitialCopyWith<$Res> {
-  __$$SentenceGeneratorInitialCopyWithImpl(_$SentenceGeneratorInitial _value,
-      $Res Function(_$SentenceGeneratorInitial) _then)
+        _$SentenceGeneratorInitialImpl>
+    implements _$$SentenceGeneratorInitialImplCopyWith<$Res> {
+  __$$SentenceGeneratorInitialImplCopyWithImpl(
+      _$SentenceGeneratorInitialImpl _value,
+      $Res Function(_$SentenceGeneratorInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$SentenceGeneratorInitial implements SentenceGeneratorInitial {
-  const _$SentenceGeneratorInitial();
+class _$SentenceGeneratorInitialImpl implements SentenceGeneratorInitial {
+  const _$SentenceGeneratorInitialImpl();
 
   @override
   String toString() {
@@ -122,7 +124,7 @@ class _$SentenceGeneratorInitial implements SentenceGeneratorInitial {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SentenceGeneratorInitial);
+            other is _$SentenceGeneratorInitialImpl);
   }
 
   @override
@@ -208,30 +210,32 @@ class _$SentenceGeneratorInitial implements SentenceGeneratorInitial {
 }
 
 abstract class SentenceGeneratorInitial implements SentenceGeneratorState {
-  const factory SentenceGeneratorInitial() = _$SentenceGeneratorInitial;
+  const factory SentenceGeneratorInitial() = _$SentenceGeneratorInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$SentenceGeneratorLoadingCopyWith<$Res> {
-  factory _$$SentenceGeneratorLoadingCopyWith(_$SentenceGeneratorLoading value,
-          $Res Function(_$SentenceGeneratorLoading) then) =
-      __$$SentenceGeneratorLoadingCopyWithImpl<$Res>;
+abstract class _$$SentenceGeneratorLoadingImplCopyWith<$Res> {
+  factory _$$SentenceGeneratorLoadingImplCopyWith(
+          _$SentenceGeneratorLoadingImpl value,
+          $Res Function(_$SentenceGeneratorLoadingImpl) then) =
+      __$$SentenceGeneratorLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$SentenceGeneratorLoadingCopyWithImpl<$Res>
+class __$$SentenceGeneratorLoadingImplCopyWithImpl<$Res>
     extends _$SentenceGeneratorStateCopyWithImpl<$Res,
-        _$SentenceGeneratorLoading>
-    implements _$$SentenceGeneratorLoadingCopyWith<$Res> {
-  __$$SentenceGeneratorLoadingCopyWithImpl(_$SentenceGeneratorLoading _value,
-      $Res Function(_$SentenceGeneratorLoading) _then)
+        _$SentenceGeneratorLoadingImpl>
+    implements _$$SentenceGeneratorLoadingImplCopyWith<$Res> {
+  __$$SentenceGeneratorLoadingImplCopyWithImpl(
+      _$SentenceGeneratorLoadingImpl _value,
+      $Res Function(_$SentenceGeneratorLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$SentenceGeneratorLoading implements SentenceGeneratorLoading {
-  const _$SentenceGeneratorLoading();
+class _$SentenceGeneratorLoadingImpl implements SentenceGeneratorLoading {
+  const _$SentenceGeneratorLoadingImpl();
 
   @override
   String toString() {
@@ -242,7 +246,7 @@ class _$SentenceGeneratorLoading implements SentenceGeneratorLoading {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SentenceGeneratorLoading);
+            other is _$SentenceGeneratorLoadingImpl);
   }
 
   @override
@@ -328,27 +332,27 @@ class _$SentenceGeneratorLoading implements SentenceGeneratorLoading {
 }
 
 abstract class SentenceGeneratorLoading implements SentenceGeneratorState {
-  const factory SentenceGeneratorLoading() = _$SentenceGeneratorLoading;
+  const factory SentenceGeneratorLoading() = _$SentenceGeneratorLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$SentenceGeneratorSucceededCopyWith<$Res> {
-  factory _$$SentenceGeneratorSucceededCopyWith(
-          _$SentenceGeneratorSucceeded value,
-          $Res Function(_$SentenceGeneratorSucceeded) then) =
-      __$$SentenceGeneratorSucceededCopyWithImpl<$Res>;
+abstract class _$$SentenceGeneratorSucceededImplCopyWith<$Res> {
+  factory _$$SentenceGeneratorSucceededImplCopyWith(
+          _$SentenceGeneratorSucceededImpl value,
+          $Res Function(_$SentenceGeneratorSucceededImpl) then) =
+      __$$SentenceGeneratorSucceededImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String sentence, String translation, List<String> words});
 }
 
 /// @nodoc
-class __$$SentenceGeneratorSucceededCopyWithImpl<$Res>
+class __$$SentenceGeneratorSucceededImplCopyWithImpl<$Res>
     extends _$SentenceGeneratorStateCopyWithImpl<$Res,
-        _$SentenceGeneratorSucceeded>
-    implements _$$SentenceGeneratorSucceededCopyWith<$Res> {
-  __$$SentenceGeneratorSucceededCopyWithImpl(
-      _$SentenceGeneratorSucceeded _value,
-      $Res Function(_$SentenceGeneratorSucceeded) _then)
+        _$SentenceGeneratorSucceededImpl>
+    implements _$$SentenceGeneratorSucceededImplCopyWith<$Res> {
+  __$$SentenceGeneratorSucceededImplCopyWithImpl(
+      _$SentenceGeneratorSucceededImpl _value,
+      $Res Function(_$SentenceGeneratorSucceededImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -358,7 +362,7 @@ class __$$SentenceGeneratorSucceededCopyWithImpl<$Res>
     Object? translation = null,
     Object? words = null,
   }) {
-    return _then(_$SentenceGeneratorSucceeded(
+    return _then(_$SentenceGeneratorSucceededImpl(
       null == sentence
           ? _value.sentence
           : sentence // ignore: cast_nullable_to_non_nullable
@@ -377,8 +381,8 @@ class __$$SentenceGeneratorSucceededCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SentenceGeneratorSucceeded implements SentenceGeneratorSucceeded {
-  const _$SentenceGeneratorSucceeded(
+class _$SentenceGeneratorSucceededImpl implements SentenceGeneratorSucceeded {
+  const _$SentenceGeneratorSucceededImpl(
       this.sentence, this.translation, final List<String> words)
       : _words = words;
 
@@ -403,7 +407,7 @@ class _$SentenceGeneratorSucceeded implements SentenceGeneratorSucceeded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SentenceGeneratorSucceeded &&
+            other is _$SentenceGeneratorSucceededImpl &&
             (identical(other.sentence, sentence) ||
                 other.sentence == sentence) &&
             (identical(other.translation, translation) ||
@@ -418,9 +422,9 @@ class _$SentenceGeneratorSucceeded implements SentenceGeneratorSucceeded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SentenceGeneratorSucceededCopyWith<_$SentenceGeneratorSucceeded>
-      get copyWith => __$$SentenceGeneratorSucceededCopyWithImpl<
-          _$SentenceGeneratorSucceeded>(this, _$identity);
+  _$$SentenceGeneratorSucceededImplCopyWith<_$SentenceGeneratorSucceededImpl>
+      get copyWith => __$$SentenceGeneratorSucceededImplCopyWithImpl<
+          _$SentenceGeneratorSucceededImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -505,36 +509,39 @@ abstract class SentenceGeneratorSucceeded implements SentenceGeneratorState {
   const factory SentenceGeneratorSucceeded(
       final String sentence,
       final String translation,
-      final List<String> words) = _$SentenceGeneratorSucceeded;
+      final List<String> words) = _$SentenceGeneratorSucceededImpl;
 
   String get sentence;
   String get translation;
   List<String> get words;
   @JsonKey(ignore: true)
-  _$$SentenceGeneratorSucceededCopyWith<_$SentenceGeneratorSucceeded>
+  _$$SentenceGeneratorSucceededImplCopyWith<_$SentenceGeneratorSucceededImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SentenceGeneratorErrorCopyWith<$Res> {
-  factory _$$SentenceGeneratorErrorCopyWith(_$SentenceGeneratorError value,
-          $Res Function(_$SentenceGeneratorError) then) =
-      __$$SentenceGeneratorErrorCopyWithImpl<$Res>;
+abstract class _$$SentenceGeneratorErrorImplCopyWith<$Res> {
+  factory _$$SentenceGeneratorErrorImplCopyWith(
+          _$SentenceGeneratorErrorImpl value,
+          $Res Function(_$SentenceGeneratorErrorImpl) then) =
+      __$$SentenceGeneratorErrorImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$SentenceGeneratorErrorCopyWithImpl<$Res>
-    extends _$SentenceGeneratorStateCopyWithImpl<$Res, _$SentenceGeneratorError>
-    implements _$$SentenceGeneratorErrorCopyWith<$Res> {
-  __$$SentenceGeneratorErrorCopyWithImpl(_$SentenceGeneratorError _value,
-      $Res Function(_$SentenceGeneratorError) _then)
+class __$$SentenceGeneratorErrorImplCopyWithImpl<$Res>
+    extends _$SentenceGeneratorStateCopyWithImpl<$Res,
+        _$SentenceGeneratorErrorImpl>
+    implements _$$SentenceGeneratorErrorImplCopyWith<$Res> {
+  __$$SentenceGeneratorErrorImplCopyWithImpl(
+      _$SentenceGeneratorErrorImpl _value,
+      $Res Function(_$SentenceGeneratorErrorImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$SentenceGeneratorError implements SentenceGeneratorError {
-  const _$SentenceGeneratorError();
+class _$SentenceGeneratorErrorImpl implements SentenceGeneratorError {
+  const _$SentenceGeneratorErrorImpl();
 
   @override
   String toString() {
@@ -544,7 +551,8 @@ class _$SentenceGeneratorError implements SentenceGeneratorError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SentenceGeneratorError);
+        (other.runtimeType == runtimeType &&
+            other is _$SentenceGeneratorErrorImpl);
   }
 
   @override
@@ -630,5 +638,5 @@ class _$SentenceGeneratorError implements SentenceGeneratorError {
 }
 
 abstract class SentenceGeneratorError implements SentenceGeneratorState {
-  const factory SentenceGeneratorError() = _$SentenceGeneratorError;
+  const factory SentenceGeneratorError() = _$SentenceGeneratorErrorImpl;
 }

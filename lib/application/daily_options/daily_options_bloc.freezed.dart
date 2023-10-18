@@ -91,25 +91,25 @@ class _$DailyOptionsStateCopyWithImpl<$Res, $Val extends DailyOptionsState>
 }
 
 /// @nodoc
-abstract class _$$DailyOptionsLoadingCopyWith<$Res> {
-  factory _$$DailyOptionsLoadingCopyWith(_$DailyOptionsLoading value,
-          $Res Function(_$DailyOptionsLoading) then) =
-      __$$DailyOptionsLoadingCopyWithImpl<$Res>;
+abstract class _$$DailyOptionsLoadingImplCopyWith<$Res> {
+  factory _$$DailyOptionsLoadingImplCopyWith(_$DailyOptionsLoadingImpl value,
+          $Res Function(_$DailyOptionsLoadingImpl) then) =
+      __$$DailyOptionsLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DailyOptionsLoadingCopyWithImpl<$Res>
-    extends _$DailyOptionsStateCopyWithImpl<$Res, _$DailyOptionsLoading>
-    implements _$$DailyOptionsLoadingCopyWith<$Res> {
-  __$$DailyOptionsLoadingCopyWithImpl(
-      _$DailyOptionsLoading _value, $Res Function(_$DailyOptionsLoading) _then)
+class __$$DailyOptionsLoadingImplCopyWithImpl<$Res>
+    extends _$DailyOptionsStateCopyWithImpl<$Res, _$DailyOptionsLoadingImpl>
+    implements _$$DailyOptionsLoadingImplCopyWith<$Res> {
+  __$$DailyOptionsLoadingImplCopyWithImpl(_$DailyOptionsLoadingImpl _value,
+      $Res Function(_$DailyOptionsLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$DailyOptionsLoading implements DailyOptionsLoading {
-  const _$DailyOptionsLoading();
+class _$DailyOptionsLoadingImpl implements DailyOptionsLoading {
+  const _$DailyOptionsLoadingImpl();
 
   @override
   String toString() {
@@ -119,7 +119,8 @@ class _$DailyOptionsLoading implements DailyOptionsLoading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$DailyOptionsLoading);
+        (other.runtimeType == runtimeType &&
+            other is _$DailyOptionsLoadingImpl);
   }
 
   @override
@@ -205,24 +206,24 @@ class _$DailyOptionsLoading implements DailyOptionsLoading {
 }
 
 abstract class DailyOptionsLoading implements DailyOptionsState {
-  const factory DailyOptionsLoading() = _$DailyOptionsLoading;
+  const factory DailyOptionsLoading() = _$DailyOptionsLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$DailyOptionsLoadedCopyWith<$Res> {
-  factory _$$DailyOptionsLoadedCopyWith(_$DailyOptionsLoaded value,
-          $Res Function(_$DailyOptionsLoaded) then) =
-      __$$DailyOptionsLoadedCopyWithImpl<$Res>;
+abstract class _$$DailyOptionsLoadedImplCopyWith<$Res> {
+  factory _$$DailyOptionsLoadedImplCopyWith(_$DailyOptionsLoadedImpl value,
+          $Res Function(_$DailyOptionsLoadedImpl) then) =
+      __$$DailyOptionsLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int words, int grammar, int wordsMean, int grammarMean});
 }
 
 /// @nodoc
-class __$$DailyOptionsLoadedCopyWithImpl<$Res>
-    extends _$DailyOptionsStateCopyWithImpl<$Res, _$DailyOptionsLoaded>
-    implements _$$DailyOptionsLoadedCopyWith<$Res> {
-  __$$DailyOptionsLoadedCopyWithImpl(
-      _$DailyOptionsLoaded _value, $Res Function(_$DailyOptionsLoaded) _then)
+class __$$DailyOptionsLoadedImplCopyWithImpl<$Res>
+    extends _$DailyOptionsStateCopyWithImpl<$Res, _$DailyOptionsLoadedImpl>
+    implements _$$DailyOptionsLoadedImplCopyWith<$Res> {
+  __$$DailyOptionsLoadedImplCopyWithImpl(_$DailyOptionsLoadedImpl _value,
+      $Res Function(_$DailyOptionsLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -233,7 +234,7 @@ class __$$DailyOptionsLoadedCopyWithImpl<$Res>
     Object? wordsMean = null,
     Object? grammarMean = null,
   }) {
-    return _then(_$DailyOptionsLoaded(
+    return _then(_$DailyOptionsLoadedImpl(
       null == words
           ? _value.words
           : words // ignore: cast_nullable_to_non_nullable
@@ -256,8 +257,8 @@ class __$$DailyOptionsLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DailyOptionsLoaded implements DailyOptionsLoaded {
-  const _$DailyOptionsLoaded(
+class _$DailyOptionsLoadedImpl implements DailyOptionsLoaded {
+  const _$DailyOptionsLoadedImpl(
       this.words, this.grammar, this.wordsMean, this.grammarMean);
 
   @override
@@ -278,7 +279,7 @@ class _$DailyOptionsLoaded implements DailyOptionsLoaded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DailyOptionsLoaded &&
+            other is _$DailyOptionsLoadedImpl &&
             (identical(other.words, words) || other.words == words) &&
             (identical(other.grammar, grammar) || other.grammar == grammar) &&
             (identical(other.wordsMean, wordsMean) ||
@@ -294,8 +295,8 @@ class _$DailyOptionsLoaded implements DailyOptionsLoaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$DailyOptionsLoadedCopyWith<_$DailyOptionsLoaded> get copyWith =>
-      __$$DailyOptionsLoadedCopyWithImpl<_$DailyOptionsLoaded>(
+  _$$DailyOptionsLoadedImplCopyWith<_$DailyOptionsLoadedImpl> get copyWith =>
+      __$$DailyOptionsLoadedImplCopyWithImpl<_$DailyOptionsLoadedImpl>(
           this, _$identity);
 
   @override
@@ -379,37 +380,37 @@ class _$DailyOptionsLoaded implements DailyOptionsLoaded {
 
 abstract class DailyOptionsLoaded implements DailyOptionsState {
   const factory DailyOptionsLoaded(final int words, final int grammar,
-      final int wordsMean, final int grammarMean) = _$DailyOptionsLoaded;
+      final int wordsMean, final int grammarMean) = _$DailyOptionsLoadedImpl;
 
   int get words;
   int get grammar;
   int get wordsMean;
   int get grammarMean;
   @JsonKey(ignore: true)
-  _$$DailyOptionsLoadedCopyWith<_$DailyOptionsLoaded> get copyWith =>
+  _$$DailyOptionsLoadedImplCopyWith<_$DailyOptionsLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DailyOptionsInitialCopyWith<$Res> {
-  factory _$$DailyOptionsInitialCopyWith(_$DailyOptionsInitial value,
-          $Res Function(_$DailyOptionsInitial) then) =
-      __$$DailyOptionsInitialCopyWithImpl<$Res>;
+abstract class _$$DailyOptionsInitialImplCopyWith<$Res> {
+  factory _$$DailyOptionsInitialImplCopyWith(_$DailyOptionsInitialImpl value,
+          $Res Function(_$DailyOptionsInitialImpl) then) =
+      __$$DailyOptionsInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DailyOptionsInitialCopyWithImpl<$Res>
-    extends _$DailyOptionsStateCopyWithImpl<$Res, _$DailyOptionsInitial>
-    implements _$$DailyOptionsInitialCopyWith<$Res> {
-  __$$DailyOptionsInitialCopyWithImpl(
-      _$DailyOptionsInitial _value, $Res Function(_$DailyOptionsInitial) _then)
+class __$$DailyOptionsInitialImplCopyWithImpl<$Res>
+    extends _$DailyOptionsStateCopyWithImpl<$Res, _$DailyOptionsInitialImpl>
+    implements _$$DailyOptionsInitialImplCopyWith<$Res> {
+  __$$DailyOptionsInitialImplCopyWithImpl(_$DailyOptionsInitialImpl _value,
+      $Res Function(_$DailyOptionsInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$DailyOptionsInitial implements DailyOptionsInitial {
-  const _$DailyOptionsInitial();
+class _$DailyOptionsInitialImpl implements DailyOptionsInitial {
+  const _$DailyOptionsInitialImpl();
 
   @override
   String toString() {
@@ -419,7 +420,8 @@ class _$DailyOptionsInitial implements DailyOptionsInitial {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$DailyOptionsInitial);
+        (other.runtimeType == runtimeType &&
+            other is _$DailyOptionsInitialImpl);
   }
 
   @override
@@ -505,29 +507,29 @@ class _$DailyOptionsInitial implements DailyOptionsInitial {
 }
 
 abstract class DailyOptionsInitial implements DailyOptionsState {
-  const factory DailyOptionsInitial() = _$DailyOptionsInitial;
+  const factory DailyOptionsInitial() = _$DailyOptionsInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$DailyOptionsErrorCopyWith<$Res> {
-  factory _$$DailyOptionsErrorCopyWith(
-          _$DailyOptionsError value, $Res Function(_$DailyOptionsError) then) =
-      __$$DailyOptionsErrorCopyWithImpl<$Res>;
+abstract class _$$DailyOptionsErrorImplCopyWith<$Res> {
+  factory _$$DailyOptionsErrorImplCopyWith(_$DailyOptionsErrorImpl value,
+          $Res Function(_$DailyOptionsErrorImpl) then) =
+      __$$DailyOptionsErrorImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DailyOptionsErrorCopyWithImpl<$Res>
-    extends _$DailyOptionsStateCopyWithImpl<$Res, _$DailyOptionsError>
-    implements _$$DailyOptionsErrorCopyWith<$Res> {
-  __$$DailyOptionsErrorCopyWithImpl(
-      _$DailyOptionsError _value, $Res Function(_$DailyOptionsError) _then)
+class __$$DailyOptionsErrorImplCopyWithImpl<$Res>
+    extends _$DailyOptionsStateCopyWithImpl<$Res, _$DailyOptionsErrorImpl>
+    implements _$$DailyOptionsErrorImplCopyWith<$Res> {
+  __$$DailyOptionsErrorImplCopyWithImpl(_$DailyOptionsErrorImpl _value,
+      $Res Function(_$DailyOptionsErrorImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$DailyOptionsError implements DailyOptionsError {
-  const _$DailyOptionsError();
+class _$DailyOptionsErrorImpl implements DailyOptionsError {
+  const _$DailyOptionsErrorImpl();
 
   @override
   String toString() {
@@ -537,7 +539,7 @@ class _$DailyOptionsError implements DailyOptionsError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$DailyOptionsError);
+        (other.runtimeType == runtimeType && other is _$DailyOptionsErrorImpl);
   }
 
   @override
@@ -623,5 +625,5 @@ class _$DailyOptionsError implements DailyOptionsError {
 }
 
 abstract class DailyOptionsError implements DailyOptionsState {
-  const factory DailyOptionsError() = _$DailyOptionsError;
+  const factory DailyOptionsError() = _$DailyOptionsErrorImpl;
 }

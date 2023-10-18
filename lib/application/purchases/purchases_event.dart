@@ -16,10 +16,10 @@ class PurchasesEventRestorePurchases extends PurchasesEvent {}
 class PurchasesEventDidNotPurchase extends PurchasesEvent {}
 
 class PurchasesEventBuy extends PurchasesEvent {
-  final String productId;
+  final StoreProduct product;
 
-  const PurchasesEventBuy(this.productId);
+  const PurchasesEventBuy(this.product);
 
   @override
-  List<Object> get props => [productId];
+  List<Object> get props => [product];
 }

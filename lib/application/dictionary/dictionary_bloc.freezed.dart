@@ -87,25 +87,25 @@ class _$DictionaryStateCopyWithImpl<$Res, $Val extends DictionaryState>
 }
 
 /// @nodoc
-abstract class _$$DictionaryLoadingCopyWith<$Res> {
-  factory _$$DictionaryLoadingCopyWith(
-          _$DictionaryLoading value, $Res Function(_$DictionaryLoading) then) =
-      __$$DictionaryLoadingCopyWithImpl<$Res>;
+abstract class _$$DictionaryLoadingImplCopyWith<$Res> {
+  factory _$$DictionaryLoadingImplCopyWith(_$DictionaryLoadingImpl value,
+          $Res Function(_$DictionaryLoadingImpl) then) =
+      __$$DictionaryLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DictionaryLoadingCopyWithImpl<$Res>
-    extends _$DictionaryStateCopyWithImpl<$Res, _$DictionaryLoading>
-    implements _$$DictionaryLoadingCopyWith<$Res> {
-  __$$DictionaryLoadingCopyWithImpl(
-      _$DictionaryLoading _value, $Res Function(_$DictionaryLoading) _then)
+class __$$DictionaryLoadingImplCopyWithImpl<$Res>
+    extends _$DictionaryStateCopyWithImpl<$Res, _$DictionaryLoadingImpl>
+    implements _$$DictionaryLoadingImplCopyWith<$Res> {
+  __$$DictionaryLoadingImplCopyWithImpl(_$DictionaryLoadingImpl _value,
+      $Res Function(_$DictionaryLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$DictionaryLoading implements DictionaryLoading {
-  const _$DictionaryLoading();
+class _$DictionaryLoadingImpl implements DictionaryLoading {
+  const _$DictionaryLoadingImpl();
 
   @override
   String toString() {
@@ -115,7 +115,7 @@ class _$DictionaryLoading implements DictionaryLoading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$DictionaryLoading);
+        (other.runtimeType == runtimeType && other is _$DictionaryLoadingImpl);
   }
 
   @override
@@ -197,24 +197,24 @@ class _$DictionaryLoading implements DictionaryLoading {
 }
 
 abstract class DictionaryLoading implements DictionaryState {
-  const factory DictionaryLoading() = _$DictionaryLoading;
+  const factory DictionaryLoading() = _$DictionaryLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$DictionaryLoadedCopyWith<$Res> {
-  factory _$$DictionaryLoadedCopyWith(
-          _$DictionaryLoaded value, $Res Function(_$DictionaryLoaded) then) =
-      __$$DictionaryLoadedCopyWithImpl<$Res>;
+abstract class _$$DictionaryLoadedImplCopyWith<$Res> {
+  factory _$$DictionaryLoadedImplCopyWith(_$DictionaryLoadedImpl value,
+          $Res Function(_$DictionaryLoadedImpl) then) =
+      __$$DictionaryLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<Category> predictions});
 }
 
 /// @nodoc
-class __$$DictionaryLoadedCopyWithImpl<$Res>
-    extends _$DictionaryStateCopyWithImpl<$Res, _$DictionaryLoaded>
-    implements _$$DictionaryLoadedCopyWith<$Res> {
-  __$$DictionaryLoadedCopyWithImpl(
-      _$DictionaryLoaded _value, $Res Function(_$DictionaryLoaded) _then)
+class __$$DictionaryLoadedImplCopyWithImpl<$Res>
+    extends _$DictionaryStateCopyWithImpl<$Res, _$DictionaryLoadedImpl>
+    implements _$$DictionaryLoadedImplCopyWith<$Res> {
+  __$$DictionaryLoadedImplCopyWithImpl(_$DictionaryLoadedImpl _value,
+      $Res Function(_$DictionaryLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -222,7 +222,7 @@ class __$$DictionaryLoadedCopyWithImpl<$Res>
   $Res call({
     Object? predictions = null,
   }) {
-    return _then(_$DictionaryLoaded(
+    return _then(_$DictionaryLoadedImpl(
       null == predictions
           ? _value._predictions
           : predictions // ignore: cast_nullable_to_non_nullable
@@ -233,8 +233,8 @@ class __$$DictionaryLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DictionaryLoaded implements DictionaryLoaded {
-  const _$DictionaryLoaded(final List<Category> predictions)
+class _$DictionaryLoadedImpl implements DictionaryLoaded {
+  const _$DictionaryLoadedImpl(final List<Category> predictions)
       : _predictions = predictions;
 
   final List<Category> _predictions;
@@ -254,7 +254,7 @@ class _$DictionaryLoaded implements DictionaryLoaded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DictionaryLoaded &&
+            other is _$DictionaryLoadedImpl &&
             const DeepCollectionEquality()
                 .equals(other._predictions, _predictions));
   }
@@ -266,8 +266,9 @@ class _$DictionaryLoaded implements DictionaryLoaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$DictionaryLoadedCopyWith<_$DictionaryLoaded> get copyWith =>
-      __$$DictionaryLoadedCopyWithImpl<_$DictionaryLoaded>(this, _$identity);
+  _$$DictionaryLoadedImplCopyWith<_$DictionaryLoadedImpl> get copyWith =>
+      __$$DictionaryLoadedImplCopyWithImpl<_$DictionaryLoadedImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -346,34 +347,34 @@ class _$DictionaryLoaded implements DictionaryLoaded {
 
 abstract class DictionaryLoaded implements DictionaryState {
   const factory DictionaryLoaded(final List<Category> predictions) =
-      _$DictionaryLoaded;
+      _$DictionaryLoadedImpl;
 
   List<Category> get predictions;
   @JsonKey(ignore: true)
-  _$$DictionaryLoadedCopyWith<_$DictionaryLoaded> get copyWith =>
+  _$$DictionaryLoadedImplCopyWith<_$DictionaryLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DictionaryInitialCopyWith<$Res> {
-  factory _$$DictionaryInitialCopyWith(
-          _$DictionaryInitial value, $Res Function(_$DictionaryInitial) then) =
-      __$$DictionaryInitialCopyWithImpl<$Res>;
+abstract class _$$DictionaryInitialImplCopyWith<$Res> {
+  factory _$$DictionaryInitialImplCopyWith(_$DictionaryInitialImpl value,
+          $Res Function(_$DictionaryInitialImpl) then) =
+      __$$DictionaryInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DictionaryInitialCopyWithImpl<$Res>
-    extends _$DictionaryStateCopyWithImpl<$Res, _$DictionaryInitial>
-    implements _$$DictionaryInitialCopyWith<$Res> {
-  __$$DictionaryInitialCopyWithImpl(
-      _$DictionaryInitial _value, $Res Function(_$DictionaryInitial) _then)
+class __$$DictionaryInitialImplCopyWithImpl<$Res>
+    extends _$DictionaryStateCopyWithImpl<$Res, _$DictionaryInitialImpl>
+    implements _$$DictionaryInitialImplCopyWith<$Res> {
+  __$$DictionaryInitialImplCopyWithImpl(_$DictionaryInitialImpl _value,
+      $Res Function(_$DictionaryInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$DictionaryInitial implements DictionaryInitial {
-  const _$DictionaryInitial();
+class _$DictionaryInitialImpl implements DictionaryInitial {
+  const _$DictionaryInitialImpl();
 
   @override
   String toString() {
@@ -383,7 +384,7 @@ class _$DictionaryInitial implements DictionaryInitial {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$DictionaryInitial);
+        (other.runtimeType == runtimeType && other is _$DictionaryInitialImpl);
   }
 
   @override
@@ -465,29 +466,29 @@ class _$DictionaryInitial implements DictionaryInitial {
 }
 
 abstract class DictionaryInitial implements DictionaryState {
-  const factory DictionaryInitial() = _$DictionaryInitial;
+  const factory DictionaryInitial() = _$DictionaryInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$DictionaryErrorCopyWith<$Res> {
-  factory _$$DictionaryErrorCopyWith(
-          _$DictionaryError value, $Res Function(_$DictionaryError) then) =
-      __$$DictionaryErrorCopyWithImpl<$Res>;
+abstract class _$$DictionaryErrorImplCopyWith<$Res> {
+  factory _$$DictionaryErrorImplCopyWith(_$DictionaryErrorImpl value,
+          $Res Function(_$DictionaryErrorImpl) then) =
+      __$$DictionaryErrorImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DictionaryErrorCopyWithImpl<$Res>
-    extends _$DictionaryStateCopyWithImpl<$Res, _$DictionaryError>
-    implements _$$DictionaryErrorCopyWith<$Res> {
-  __$$DictionaryErrorCopyWithImpl(
-      _$DictionaryError _value, $Res Function(_$DictionaryError) _then)
+class __$$DictionaryErrorImplCopyWithImpl<$Res>
+    extends _$DictionaryStateCopyWithImpl<$Res, _$DictionaryErrorImpl>
+    implements _$$DictionaryErrorImplCopyWith<$Res> {
+  __$$DictionaryErrorImplCopyWithImpl(
+      _$DictionaryErrorImpl _value, $Res Function(_$DictionaryErrorImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$DictionaryError implements DictionaryError {
-  const _$DictionaryError();
+class _$DictionaryErrorImpl implements DictionaryError {
+  const _$DictionaryErrorImpl();
 
   @override
   String toString() {
@@ -497,7 +498,7 @@ class _$DictionaryError implements DictionaryError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$DictionaryError);
+        (other.runtimeType == runtimeType && other is _$DictionaryErrorImpl);
   }
 
   @override
@@ -579,5 +580,5 @@ class _$DictionaryError implements DictionaryError {
 }
 
 abstract class DictionaryError implements DictionaryState {
-  const factory DictionaryError() = _$DictionaryError;
+  const factory DictionaryError() = _$DictionaryErrorImpl;
 }

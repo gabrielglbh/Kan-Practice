@@ -95,25 +95,28 @@ class _$ListDetailsWordsStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$ListDetailsWordsInitialCopyWith<$Res> {
-  factory _$$ListDetailsWordsInitialCopyWith(_$ListDetailsWordsInitial value,
-          $Res Function(_$ListDetailsWordsInitial) then) =
-      __$$ListDetailsWordsInitialCopyWithImpl<$Res>;
+abstract class _$$ListDetailsWordsInitialImplCopyWith<$Res> {
+  factory _$$ListDetailsWordsInitialImplCopyWith(
+          _$ListDetailsWordsInitialImpl value,
+          $Res Function(_$ListDetailsWordsInitialImpl) then) =
+      __$$ListDetailsWordsInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ListDetailsWordsInitialCopyWithImpl<$Res>
-    extends _$ListDetailsWordsStateCopyWithImpl<$Res, _$ListDetailsWordsInitial>
-    implements _$$ListDetailsWordsInitialCopyWith<$Res> {
-  __$$ListDetailsWordsInitialCopyWithImpl(_$ListDetailsWordsInitial _value,
-      $Res Function(_$ListDetailsWordsInitial) _then)
+class __$$ListDetailsWordsInitialImplCopyWithImpl<$Res>
+    extends _$ListDetailsWordsStateCopyWithImpl<$Res,
+        _$ListDetailsWordsInitialImpl>
+    implements _$$ListDetailsWordsInitialImplCopyWith<$Res> {
+  __$$ListDetailsWordsInitialImplCopyWithImpl(
+      _$ListDetailsWordsInitialImpl _value,
+      $Res Function(_$ListDetailsWordsInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ListDetailsWordsInitial implements ListDetailsWordsInitial {
-  const _$ListDetailsWordsInitial();
+class _$ListDetailsWordsInitialImpl implements ListDetailsWordsInitial {
+  const _$ListDetailsWordsInitialImpl();
 
   @override
   String toString() {
@@ -124,7 +127,7 @@ class _$ListDetailsWordsInitial implements ListDetailsWordsInitial {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ListDetailsWordsInitial);
+            other is _$ListDetailsWordsInitialImpl);
   }
 
   @override
@@ -213,24 +216,27 @@ class _$ListDetailsWordsInitial implements ListDetailsWordsInitial {
 }
 
 abstract class ListDetailsWordsInitial implements ListDetailsWordsState {
-  const factory ListDetailsWordsInitial() = _$ListDetailsWordsInitial;
+  const factory ListDetailsWordsInitial() = _$ListDetailsWordsInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$ListDetailsWordsLoadedCopyWith<$Res> {
-  factory _$$ListDetailsWordsLoadedCopyWith(_$ListDetailsWordsLoaded value,
-          $Res Function(_$ListDetailsWordsLoaded) then) =
-      __$$ListDetailsWordsLoadedCopyWithImpl<$Res>;
+abstract class _$$ListDetailsWordsLoadedImplCopyWith<$Res> {
+  factory _$$ListDetailsWordsLoadedImplCopyWith(
+          _$ListDetailsWordsLoadedImpl value,
+          $Res Function(_$ListDetailsWordsLoadedImpl) then) =
+      __$$ListDetailsWordsLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<Word> list, String name});
 }
 
 /// @nodoc
-class __$$ListDetailsWordsLoadedCopyWithImpl<$Res>
-    extends _$ListDetailsWordsStateCopyWithImpl<$Res, _$ListDetailsWordsLoaded>
-    implements _$$ListDetailsWordsLoadedCopyWith<$Res> {
-  __$$ListDetailsWordsLoadedCopyWithImpl(_$ListDetailsWordsLoaded _value,
-      $Res Function(_$ListDetailsWordsLoaded) _then)
+class __$$ListDetailsWordsLoadedImplCopyWithImpl<$Res>
+    extends _$ListDetailsWordsStateCopyWithImpl<$Res,
+        _$ListDetailsWordsLoadedImpl>
+    implements _$$ListDetailsWordsLoadedImplCopyWith<$Res> {
+  __$$ListDetailsWordsLoadedImplCopyWithImpl(
+      _$ListDetailsWordsLoadedImpl _value,
+      $Res Function(_$ListDetailsWordsLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -239,7 +245,7 @@ class __$$ListDetailsWordsLoadedCopyWithImpl<$Res>
     Object? list = null,
     Object? name = null,
   }) {
-    return _then(_$ListDetailsWordsLoaded(
+    return _then(_$ListDetailsWordsLoadedImpl(
       null == list
           ? _value._list
           : list // ignore: cast_nullable_to_non_nullable
@@ -254,8 +260,8 @@ class __$$ListDetailsWordsLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ListDetailsWordsLoaded implements ListDetailsWordsLoaded {
-  const _$ListDetailsWordsLoaded(final List<Word> list, this.name)
+class _$ListDetailsWordsLoadedImpl implements ListDetailsWordsLoaded {
+  const _$ListDetailsWordsLoadedImpl(final List<Word> list, this.name)
       : _list = list;
 
   final List<Word> _list;
@@ -278,7 +284,7 @@ class _$ListDetailsWordsLoaded implements ListDetailsWordsLoaded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ListDetailsWordsLoaded &&
+            other is _$ListDetailsWordsLoadedImpl &&
             const DeepCollectionEquality().equals(other._list, _list) &&
             (identical(other.name, name) || other.name == name));
   }
@@ -290,9 +296,9 @@ class _$ListDetailsWordsLoaded implements ListDetailsWordsLoaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ListDetailsWordsLoadedCopyWith<_$ListDetailsWordsLoaded> get copyWith =>
-      __$$ListDetailsWordsLoadedCopyWithImpl<_$ListDetailsWordsLoaded>(
-          this, _$identity);
+  _$$ListDetailsWordsLoadedImplCopyWith<_$ListDetailsWordsLoadedImpl>
+      get copyWith => __$$ListDetailsWordsLoadedImplCopyWithImpl<
+          _$ListDetailsWordsLoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -378,33 +384,33 @@ class _$ListDetailsWordsLoaded implements ListDetailsWordsLoaded {
 
 abstract class ListDetailsWordsLoaded implements ListDetailsWordsState {
   const factory ListDetailsWordsLoaded(
-      final List<Word> list, final String name) = _$ListDetailsWordsLoaded;
+      final List<Word> list, final String name) = _$ListDetailsWordsLoadedImpl;
 
   List<Word> get list;
   String get name;
   @JsonKey(ignore: true)
-  _$$ListDetailsWordsLoadedCopyWith<_$ListDetailsWordsLoaded> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$ListDetailsWordsLoadedImplCopyWith<_$ListDetailsWordsLoadedImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ListDetailsWordsPracticeLoadedCopyWith<$Res> {
-  factory _$$ListDetailsWordsPracticeLoadedCopyWith(
-          _$ListDetailsWordsPracticeLoaded value,
-          $Res Function(_$ListDetailsWordsPracticeLoaded) then) =
-      __$$ListDetailsWordsPracticeLoadedCopyWithImpl<$Res>;
+abstract class _$$ListDetailsWordsPracticeLoadedImplCopyWith<$Res> {
+  factory _$$ListDetailsWordsPracticeLoadedImplCopyWith(
+          _$ListDetailsWordsPracticeLoadedImpl value,
+          $Res Function(_$ListDetailsWordsPracticeLoadedImpl) then) =
+      __$$ListDetailsWordsPracticeLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({StudyModes mode, List<Word> list});
 }
 
 /// @nodoc
-class __$$ListDetailsWordsPracticeLoadedCopyWithImpl<$Res>
+class __$$ListDetailsWordsPracticeLoadedImplCopyWithImpl<$Res>
     extends _$ListDetailsWordsStateCopyWithImpl<$Res,
-        _$ListDetailsWordsPracticeLoaded>
-    implements _$$ListDetailsWordsPracticeLoadedCopyWith<$Res> {
-  __$$ListDetailsWordsPracticeLoadedCopyWithImpl(
-      _$ListDetailsWordsPracticeLoaded _value,
-      $Res Function(_$ListDetailsWordsPracticeLoaded) _then)
+        _$ListDetailsWordsPracticeLoadedImpl>
+    implements _$$ListDetailsWordsPracticeLoadedImplCopyWith<$Res> {
+  __$$ListDetailsWordsPracticeLoadedImplCopyWithImpl(
+      _$ListDetailsWordsPracticeLoadedImpl _value,
+      $Res Function(_$ListDetailsWordsPracticeLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -413,7 +419,7 @@ class __$$ListDetailsWordsPracticeLoadedCopyWithImpl<$Res>
     Object? mode = null,
     Object? list = null,
   }) {
-    return _then(_$ListDetailsWordsPracticeLoaded(
+    return _then(_$ListDetailsWordsPracticeLoadedImpl(
       null == mode
           ? _value.mode
           : mode // ignore: cast_nullable_to_non_nullable
@@ -428,9 +434,9 @@ class __$$ListDetailsWordsPracticeLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ListDetailsWordsPracticeLoaded
+class _$ListDetailsWordsPracticeLoadedImpl
     implements ListDetailsWordsPracticeLoaded {
-  const _$ListDetailsWordsPracticeLoaded(this.mode, final List<Word> list)
+  const _$ListDetailsWordsPracticeLoadedImpl(this.mode, final List<Word> list)
       : _list = list;
 
   @override
@@ -452,7 +458,7 @@ class _$ListDetailsWordsPracticeLoaded
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ListDetailsWordsPracticeLoaded &&
+            other is _$ListDetailsWordsPracticeLoadedImpl &&
             (identical(other.mode, mode) || other.mode == mode) &&
             const DeepCollectionEquality().equals(other._list, _list));
   }
@@ -464,9 +470,10 @@ class _$ListDetailsWordsPracticeLoaded
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ListDetailsWordsPracticeLoadedCopyWith<_$ListDetailsWordsPracticeLoaded>
-      get copyWith => __$$ListDetailsWordsPracticeLoadedCopyWithImpl<
-          _$ListDetailsWordsPracticeLoaded>(this, _$identity);
+  _$$ListDetailsWordsPracticeLoadedImplCopyWith<
+          _$ListDetailsWordsPracticeLoadedImpl>
+      get copyWith => __$$ListDetailsWordsPracticeLoadedImplCopyWithImpl<
+          _$ListDetailsWordsPracticeLoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -553,35 +560,39 @@ class _$ListDetailsWordsPracticeLoaded
 abstract class ListDetailsWordsPracticeLoaded implements ListDetailsWordsState {
   const factory ListDetailsWordsPracticeLoaded(
           final StudyModes mode, final List<Word> list) =
-      _$ListDetailsWordsPracticeLoaded;
+      _$ListDetailsWordsPracticeLoadedImpl;
 
   StudyModes get mode;
   List<Word> get list;
   @JsonKey(ignore: true)
-  _$$ListDetailsWordsPracticeLoadedCopyWith<_$ListDetailsWordsPracticeLoaded>
+  _$$ListDetailsWordsPracticeLoadedImplCopyWith<
+          _$ListDetailsWordsPracticeLoadedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ListDetailsWordsLoadingCopyWith<$Res> {
-  factory _$$ListDetailsWordsLoadingCopyWith(_$ListDetailsWordsLoading value,
-          $Res Function(_$ListDetailsWordsLoading) then) =
-      __$$ListDetailsWordsLoadingCopyWithImpl<$Res>;
+abstract class _$$ListDetailsWordsLoadingImplCopyWith<$Res> {
+  factory _$$ListDetailsWordsLoadingImplCopyWith(
+          _$ListDetailsWordsLoadingImpl value,
+          $Res Function(_$ListDetailsWordsLoadingImpl) then) =
+      __$$ListDetailsWordsLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ListDetailsWordsLoadingCopyWithImpl<$Res>
-    extends _$ListDetailsWordsStateCopyWithImpl<$Res, _$ListDetailsWordsLoading>
-    implements _$$ListDetailsWordsLoadingCopyWith<$Res> {
-  __$$ListDetailsWordsLoadingCopyWithImpl(_$ListDetailsWordsLoading _value,
-      $Res Function(_$ListDetailsWordsLoading) _then)
+class __$$ListDetailsWordsLoadingImplCopyWithImpl<$Res>
+    extends _$ListDetailsWordsStateCopyWithImpl<$Res,
+        _$ListDetailsWordsLoadingImpl>
+    implements _$$ListDetailsWordsLoadingImplCopyWith<$Res> {
+  __$$ListDetailsWordsLoadingImplCopyWithImpl(
+      _$ListDetailsWordsLoadingImpl _value,
+      $Res Function(_$ListDetailsWordsLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ListDetailsWordsLoading implements ListDetailsWordsLoading {
-  const _$ListDetailsWordsLoading();
+class _$ListDetailsWordsLoadingImpl implements ListDetailsWordsLoading {
+  const _$ListDetailsWordsLoadingImpl();
 
   @override
   String toString() {
@@ -592,7 +603,7 @@ class _$ListDetailsWordsLoading implements ListDetailsWordsLoading {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ListDetailsWordsLoading);
+            other is _$ListDetailsWordsLoadingImpl);
   }
 
   @override
@@ -681,24 +692,26 @@ class _$ListDetailsWordsLoading implements ListDetailsWordsLoading {
 }
 
 abstract class ListDetailsWordsLoading implements ListDetailsWordsState {
-  const factory ListDetailsWordsLoading() = _$ListDetailsWordsLoading;
+  const factory ListDetailsWordsLoading() = _$ListDetailsWordsLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$ListDetailsWordsErrorCopyWith<$Res> {
-  factory _$$ListDetailsWordsErrorCopyWith(_$ListDetailsWordsError value,
-          $Res Function(_$ListDetailsWordsError) then) =
-      __$$ListDetailsWordsErrorCopyWithImpl<$Res>;
+abstract class _$$ListDetailsWordsErrorImplCopyWith<$Res> {
+  factory _$$ListDetailsWordsErrorImplCopyWith(
+          _$ListDetailsWordsErrorImpl value,
+          $Res Function(_$ListDetailsWordsErrorImpl) then) =
+      __$$ListDetailsWordsErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$ListDetailsWordsErrorCopyWithImpl<$Res>
-    extends _$ListDetailsWordsStateCopyWithImpl<$Res, _$ListDetailsWordsError>
-    implements _$$ListDetailsWordsErrorCopyWith<$Res> {
-  __$$ListDetailsWordsErrorCopyWithImpl(_$ListDetailsWordsError _value,
-      $Res Function(_$ListDetailsWordsError) _then)
+class __$$ListDetailsWordsErrorImplCopyWithImpl<$Res>
+    extends _$ListDetailsWordsStateCopyWithImpl<$Res,
+        _$ListDetailsWordsErrorImpl>
+    implements _$$ListDetailsWordsErrorImplCopyWith<$Res> {
+  __$$ListDetailsWordsErrorImplCopyWithImpl(_$ListDetailsWordsErrorImpl _value,
+      $Res Function(_$ListDetailsWordsErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -706,7 +719,7 @@ class __$$ListDetailsWordsErrorCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$ListDetailsWordsError(
+    return _then(_$ListDetailsWordsErrorImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -717,8 +730,8 @@ class __$$ListDetailsWordsErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ListDetailsWordsError implements ListDetailsWordsError {
-  const _$ListDetailsWordsError(this.message);
+class _$ListDetailsWordsErrorImpl implements ListDetailsWordsError {
+  const _$ListDetailsWordsErrorImpl(this.message);
 
   @override
   final String message;
@@ -732,7 +745,7 @@ class _$ListDetailsWordsError implements ListDetailsWordsError {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ListDetailsWordsError &&
+            other is _$ListDetailsWordsErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -742,9 +755,9 @@ class _$ListDetailsWordsError implements ListDetailsWordsError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ListDetailsWordsErrorCopyWith<_$ListDetailsWordsError> get copyWith =>
-      __$$ListDetailsWordsErrorCopyWithImpl<_$ListDetailsWordsError>(
-          this, _$identity);
+  _$$ListDetailsWordsErrorImplCopyWith<_$ListDetailsWordsErrorImpl>
+      get copyWith => __$$ListDetailsWordsErrorImplCopyWithImpl<
+          _$ListDetailsWordsErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -830,10 +843,10 @@ class _$ListDetailsWordsError implements ListDetailsWordsError {
 
 abstract class ListDetailsWordsError implements ListDetailsWordsState {
   const factory ListDetailsWordsError(final String message) =
-      _$ListDetailsWordsError;
+      _$ListDetailsWordsErrorImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$ListDetailsWordsErrorCopyWith<_$ListDetailsWordsError> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$ListDetailsWordsErrorImplCopyWith<_$ListDetailsWordsErrorImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

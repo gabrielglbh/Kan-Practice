@@ -9,11 +9,12 @@ abstract class DictionaryEvent extends Equatable {
 
 class DictionaryEventLoading extends DictionaryEvent {
   final ByteData data;
+  final Size size;
 
-  const DictionaryEventLoading({required this.data});
+  const DictionaryEventLoading({required this.data, required this.size});
 
   @override
-  List<Object> get props => [data];
+  List<Object> get props => [data, size];
 }
 
 class DictionaryEventStart extends DictionaryEvent {}

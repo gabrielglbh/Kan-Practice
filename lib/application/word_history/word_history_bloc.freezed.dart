@@ -87,25 +87,25 @@ class _$WordHistoryStateCopyWithImpl<$Res, $Val extends WordHistoryState>
 }
 
 /// @nodoc
-abstract class _$$WordHistoryInitialCopyWith<$Res> {
-  factory _$$WordHistoryInitialCopyWith(_$WordHistoryInitial value,
-          $Res Function(_$WordHistoryInitial) then) =
-      __$$WordHistoryInitialCopyWithImpl<$Res>;
+abstract class _$$WordHistoryInitialImplCopyWith<$Res> {
+  factory _$$WordHistoryInitialImplCopyWith(_$WordHistoryInitialImpl value,
+          $Res Function(_$WordHistoryInitialImpl) then) =
+      __$$WordHistoryInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$WordHistoryInitialCopyWithImpl<$Res>
-    extends _$WordHistoryStateCopyWithImpl<$Res, _$WordHistoryInitial>
-    implements _$$WordHistoryInitialCopyWith<$Res> {
-  __$$WordHistoryInitialCopyWithImpl(
-      _$WordHistoryInitial _value, $Res Function(_$WordHistoryInitial) _then)
+class __$$WordHistoryInitialImplCopyWithImpl<$Res>
+    extends _$WordHistoryStateCopyWithImpl<$Res, _$WordHistoryInitialImpl>
+    implements _$$WordHistoryInitialImplCopyWith<$Res> {
+  __$$WordHistoryInitialImplCopyWithImpl(_$WordHistoryInitialImpl _value,
+      $Res Function(_$WordHistoryInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$WordHistoryInitial implements WordHistoryInitial {
-  const _$WordHistoryInitial();
+class _$WordHistoryInitialImpl implements WordHistoryInitial {
+  const _$WordHistoryInitialImpl();
 
   @override
   String toString() {
@@ -115,7 +115,7 @@ class _$WordHistoryInitial implements WordHistoryInitial {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$WordHistoryInitial);
+        (other.runtimeType == runtimeType && other is _$WordHistoryInitialImpl);
   }
 
   @override
@@ -197,29 +197,29 @@ class _$WordHistoryInitial implements WordHistoryInitial {
 }
 
 abstract class WordHistoryInitial implements WordHistoryState {
-  const factory WordHistoryInitial() = _$WordHistoryInitial;
+  const factory WordHistoryInitial() = _$WordHistoryInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$WordHistoryLoadingCopyWith<$Res> {
-  factory _$$WordHistoryLoadingCopyWith(_$WordHistoryLoading value,
-          $Res Function(_$WordHistoryLoading) then) =
-      __$$WordHistoryLoadingCopyWithImpl<$Res>;
+abstract class _$$WordHistoryLoadingImplCopyWith<$Res> {
+  factory _$$WordHistoryLoadingImplCopyWith(_$WordHistoryLoadingImpl value,
+          $Res Function(_$WordHistoryLoadingImpl) then) =
+      __$$WordHistoryLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$WordHistoryLoadingCopyWithImpl<$Res>
-    extends _$WordHistoryStateCopyWithImpl<$Res, _$WordHistoryLoading>
-    implements _$$WordHistoryLoadingCopyWith<$Res> {
-  __$$WordHistoryLoadingCopyWithImpl(
-      _$WordHistoryLoading _value, $Res Function(_$WordHistoryLoading) _then)
+class __$$WordHistoryLoadingImplCopyWithImpl<$Res>
+    extends _$WordHistoryStateCopyWithImpl<$Res, _$WordHistoryLoadingImpl>
+    implements _$$WordHistoryLoadingImplCopyWith<$Res> {
+  __$$WordHistoryLoadingImplCopyWithImpl(_$WordHistoryLoadingImpl _value,
+      $Res Function(_$WordHistoryLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$WordHistoryLoading implements WordHistoryLoading {
-  const _$WordHistoryLoading();
+class _$WordHistoryLoadingImpl implements WordHistoryLoading {
+  const _$WordHistoryLoadingImpl();
 
   @override
   String toString() {
@@ -229,7 +229,7 @@ class _$WordHistoryLoading implements WordHistoryLoading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$WordHistoryLoading);
+        (other.runtimeType == runtimeType && other is _$WordHistoryLoadingImpl);
   }
 
   @override
@@ -311,29 +311,29 @@ class _$WordHistoryLoading implements WordHistoryLoading {
 }
 
 abstract class WordHistoryLoading implements WordHistoryState {
-  const factory WordHistoryLoading() = _$WordHistoryLoading;
+  const factory WordHistoryLoading() = _$WordHistoryLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$WordHistoryErrorCopyWith<$Res> {
-  factory _$$WordHistoryErrorCopyWith(
-          _$WordHistoryError value, $Res Function(_$WordHistoryError) then) =
-      __$$WordHistoryErrorCopyWithImpl<$Res>;
+abstract class _$$WordHistoryErrorImplCopyWith<$Res> {
+  factory _$$WordHistoryErrorImplCopyWith(_$WordHistoryErrorImpl value,
+          $Res Function(_$WordHistoryErrorImpl) then) =
+      __$$WordHistoryErrorImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$WordHistoryErrorCopyWithImpl<$Res>
-    extends _$WordHistoryStateCopyWithImpl<$Res, _$WordHistoryError>
-    implements _$$WordHistoryErrorCopyWith<$Res> {
-  __$$WordHistoryErrorCopyWithImpl(
-      _$WordHistoryError _value, $Res Function(_$WordHistoryError) _then)
+class __$$WordHistoryErrorImplCopyWithImpl<$Res>
+    extends _$WordHistoryStateCopyWithImpl<$Res, _$WordHistoryErrorImpl>
+    implements _$$WordHistoryErrorImplCopyWith<$Res> {
+  __$$WordHistoryErrorImplCopyWithImpl(_$WordHistoryErrorImpl _value,
+      $Res Function(_$WordHistoryErrorImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$WordHistoryError implements WordHistoryError {
-  const _$WordHistoryError();
+class _$WordHistoryErrorImpl implements WordHistoryError {
+  const _$WordHistoryErrorImpl();
 
   @override
   String toString() {
@@ -343,7 +343,7 @@ class _$WordHistoryError implements WordHistoryError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$WordHistoryError);
+        (other.runtimeType == runtimeType && other is _$WordHistoryErrorImpl);
   }
 
   @override
@@ -425,24 +425,24 @@ class _$WordHistoryError implements WordHistoryError {
 }
 
 abstract class WordHistoryError implements WordHistoryState {
-  const factory WordHistoryError() = _$WordHistoryError;
+  const factory WordHistoryError() = _$WordHistoryErrorImpl;
 }
 
 /// @nodoc
-abstract class _$$WordHistoryLoadedCopyWith<$Res> {
-  factory _$$WordHistoryLoadedCopyWith(
-          _$WordHistoryLoaded value, $Res Function(_$WordHistoryLoaded) then) =
-      __$$WordHistoryLoadedCopyWithImpl<$Res>;
+abstract class _$$WordHistoryLoadedImplCopyWith<$Res> {
+  factory _$$WordHistoryLoadedImplCopyWith(_$WordHistoryLoadedImpl value,
+          $Res Function(_$WordHistoryLoadedImpl) then) =
+      __$$WordHistoryLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<WordHistory> list});
 }
 
 /// @nodoc
-class __$$WordHistoryLoadedCopyWithImpl<$Res>
-    extends _$WordHistoryStateCopyWithImpl<$Res, _$WordHistoryLoaded>
-    implements _$$WordHistoryLoadedCopyWith<$Res> {
-  __$$WordHistoryLoadedCopyWithImpl(
-      _$WordHistoryLoaded _value, $Res Function(_$WordHistoryLoaded) _then)
+class __$$WordHistoryLoadedImplCopyWithImpl<$Res>
+    extends _$WordHistoryStateCopyWithImpl<$Res, _$WordHistoryLoadedImpl>
+    implements _$$WordHistoryLoadedImplCopyWith<$Res> {
+  __$$WordHistoryLoadedImplCopyWithImpl(_$WordHistoryLoadedImpl _value,
+      $Res Function(_$WordHistoryLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -450,7 +450,7 @@ class __$$WordHistoryLoadedCopyWithImpl<$Res>
   $Res call({
     Object? list = null,
   }) {
-    return _then(_$WordHistoryLoaded(
+    return _then(_$WordHistoryLoadedImpl(
       null == list
           ? _value._list
           : list // ignore: cast_nullable_to_non_nullable
@@ -461,8 +461,8 @@ class __$$WordHistoryLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$WordHistoryLoaded implements WordHistoryLoaded {
-  const _$WordHistoryLoaded(final List<WordHistory> list) : _list = list;
+class _$WordHistoryLoadedImpl implements WordHistoryLoaded {
+  const _$WordHistoryLoadedImpl(final List<WordHistory> list) : _list = list;
 
   final List<WordHistory> _list;
   @override
@@ -481,7 +481,7 @@ class _$WordHistoryLoaded implements WordHistoryLoaded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$WordHistoryLoaded &&
+            other is _$WordHistoryLoadedImpl &&
             const DeepCollectionEquality().equals(other._list, _list));
   }
 
@@ -492,8 +492,9 @@ class _$WordHistoryLoaded implements WordHistoryLoaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$WordHistoryLoadedCopyWith<_$WordHistoryLoaded> get copyWith =>
-      __$$WordHistoryLoadedCopyWithImpl<_$WordHistoryLoaded>(this, _$identity);
+  _$$WordHistoryLoadedImplCopyWith<_$WordHistoryLoadedImpl> get copyWith =>
+      __$$WordHistoryLoadedImplCopyWithImpl<_$WordHistoryLoadedImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -572,10 +573,10 @@ class _$WordHistoryLoaded implements WordHistoryLoaded {
 
 abstract class WordHistoryLoaded implements WordHistoryState {
   const factory WordHistoryLoaded(final List<WordHistory> list) =
-      _$WordHistoryLoaded;
+      _$WordHistoryLoadedImpl;
 
   List<WordHistory> get list;
   @JsonKey(ignore: true)
-  _$$WordHistoryLoadedCopyWith<_$WordHistoryLoaded> get copyWith =>
+  _$$WordHistoryLoadedImplCopyWith<_$WordHistoryLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

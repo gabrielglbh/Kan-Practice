@@ -87,25 +87,25 @@ class _$ArchiveWordsStateCopyWithImpl<$Res, $Val extends ArchiveWordsState>
 }
 
 /// @nodoc
-abstract class _$$ArchiveWordsLoadingCopyWith<$Res> {
-  factory _$$ArchiveWordsLoadingCopyWith(_$ArchiveWordsLoading value,
-          $Res Function(_$ArchiveWordsLoading) then) =
-      __$$ArchiveWordsLoadingCopyWithImpl<$Res>;
+abstract class _$$ArchiveWordsLoadingImplCopyWith<$Res> {
+  factory _$$ArchiveWordsLoadingImplCopyWith(_$ArchiveWordsLoadingImpl value,
+          $Res Function(_$ArchiveWordsLoadingImpl) then) =
+      __$$ArchiveWordsLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ArchiveWordsLoadingCopyWithImpl<$Res>
-    extends _$ArchiveWordsStateCopyWithImpl<$Res, _$ArchiveWordsLoading>
-    implements _$$ArchiveWordsLoadingCopyWith<$Res> {
-  __$$ArchiveWordsLoadingCopyWithImpl(
-      _$ArchiveWordsLoading _value, $Res Function(_$ArchiveWordsLoading) _then)
+class __$$ArchiveWordsLoadingImplCopyWithImpl<$Res>
+    extends _$ArchiveWordsStateCopyWithImpl<$Res, _$ArchiveWordsLoadingImpl>
+    implements _$$ArchiveWordsLoadingImplCopyWith<$Res> {
+  __$$ArchiveWordsLoadingImplCopyWithImpl(_$ArchiveWordsLoadingImpl _value,
+      $Res Function(_$ArchiveWordsLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ArchiveWordsLoading implements ArchiveWordsLoading {
-  const _$ArchiveWordsLoading();
+class _$ArchiveWordsLoadingImpl implements ArchiveWordsLoading {
+  const _$ArchiveWordsLoadingImpl();
 
   @override
   String toString() {
@@ -115,7 +115,8 @@ class _$ArchiveWordsLoading implements ArchiveWordsLoading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ArchiveWordsLoading);
+        (other.runtimeType == runtimeType &&
+            other is _$ArchiveWordsLoadingImpl);
   }
 
   @override
@@ -197,24 +198,24 @@ class _$ArchiveWordsLoading implements ArchiveWordsLoading {
 }
 
 abstract class ArchiveWordsLoading implements ArchiveWordsState {
-  const factory ArchiveWordsLoading() = _$ArchiveWordsLoading;
+  const factory ArchiveWordsLoading() = _$ArchiveWordsLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$ArchiveWordsLoadedCopyWith<$Res> {
-  factory _$$ArchiveWordsLoadedCopyWith(_$ArchiveWordsLoaded value,
-          $Res Function(_$ArchiveWordsLoaded) then) =
-      __$$ArchiveWordsLoadedCopyWithImpl<$Res>;
+abstract class _$$ArchiveWordsLoadedImplCopyWith<$Res> {
+  factory _$$ArchiveWordsLoadedImplCopyWith(_$ArchiveWordsLoadedImpl value,
+          $Res Function(_$ArchiveWordsLoadedImpl) then) =
+      __$$ArchiveWordsLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<Word> list});
 }
 
 /// @nodoc
-class __$$ArchiveWordsLoadedCopyWithImpl<$Res>
-    extends _$ArchiveWordsStateCopyWithImpl<$Res, _$ArchiveWordsLoaded>
-    implements _$$ArchiveWordsLoadedCopyWith<$Res> {
-  __$$ArchiveWordsLoadedCopyWithImpl(
-      _$ArchiveWordsLoaded _value, $Res Function(_$ArchiveWordsLoaded) _then)
+class __$$ArchiveWordsLoadedImplCopyWithImpl<$Res>
+    extends _$ArchiveWordsStateCopyWithImpl<$Res, _$ArchiveWordsLoadedImpl>
+    implements _$$ArchiveWordsLoadedImplCopyWith<$Res> {
+  __$$ArchiveWordsLoadedImplCopyWithImpl(_$ArchiveWordsLoadedImpl _value,
+      $Res Function(_$ArchiveWordsLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -222,7 +223,7 @@ class __$$ArchiveWordsLoadedCopyWithImpl<$Res>
   $Res call({
     Object? list = null,
   }) {
-    return _then(_$ArchiveWordsLoaded(
+    return _then(_$ArchiveWordsLoadedImpl(
       null == list
           ? _value._list
           : list // ignore: cast_nullable_to_non_nullable
@@ -233,8 +234,8 @@ class __$$ArchiveWordsLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ArchiveWordsLoaded implements ArchiveWordsLoaded {
-  const _$ArchiveWordsLoaded(final List<Word> list) : _list = list;
+class _$ArchiveWordsLoadedImpl implements ArchiveWordsLoaded {
+  const _$ArchiveWordsLoadedImpl(final List<Word> list) : _list = list;
 
   final List<Word> _list;
   @override
@@ -253,7 +254,7 @@ class _$ArchiveWordsLoaded implements ArchiveWordsLoaded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ArchiveWordsLoaded &&
+            other is _$ArchiveWordsLoadedImpl &&
             const DeepCollectionEquality().equals(other._list, _list));
   }
 
@@ -264,8 +265,8 @@ class _$ArchiveWordsLoaded implements ArchiveWordsLoaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ArchiveWordsLoadedCopyWith<_$ArchiveWordsLoaded> get copyWith =>
-      __$$ArchiveWordsLoadedCopyWithImpl<_$ArchiveWordsLoaded>(
+  _$$ArchiveWordsLoadedImplCopyWith<_$ArchiveWordsLoadedImpl> get copyWith =>
+      __$$ArchiveWordsLoadedImplCopyWithImpl<_$ArchiveWordsLoadedImpl>(
           this, _$identity);
 
   @override
@@ -345,34 +346,34 @@ class _$ArchiveWordsLoaded implements ArchiveWordsLoaded {
 
 abstract class ArchiveWordsLoaded implements ArchiveWordsState {
   const factory ArchiveWordsLoaded(final List<Word> list) =
-      _$ArchiveWordsLoaded;
+      _$ArchiveWordsLoadedImpl;
 
   List<Word> get list;
   @JsonKey(ignore: true)
-  _$$ArchiveWordsLoadedCopyWith<_$ArchiveWordsLoaded> get copyWith =>
+  _$$ArchiveWordsLoadedImplCopyWith<_$ArchiveWordsLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ArchiveWordsInitialCopyWith<$Res> {
-  factory _$$ArchiveWordsInitialCopyWith(_$ArchiveWordsInitial value,
-          $Res Function(_$ArchiveWordsInitial) then) =
-      __$$ArchiveWordsInitialCopyWithImpl<$Res>;
+abstract class _$$ArchiveWordsInitialImplCopyWith<$Res> {
+  factory _$$ArchiveWordsInitialImplCopyWith(_$ArchiveWordsInitialImpl value,
+          $Res Function(_$ArchiveWordsInitialImpl) then) =
+      __$$ArchiveWordsInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ArchiveWordsInitialCopyWithImpl<$Res>
-    extends _$ArchiveWordsStateCopyWithImpl<$Res, _$ArchiveWordsInitial>
-    implements _$$ArchiveWordsInitialCopyWith<$Res> {
-  __$$ArchiveWordsInitialCopyWithImpl(
-      _$ArchiveWordsInitial _value, $Res Function(_$ArchiveWordsInitial) _then)
+class __$$ArchiveWordsInitialImplCopyWithImpl<$Res>
+    extends _$ArchiveWordsStateCopyWithImpl<$Res, _$ArchiveWordsInitialImpl>
+    implements _$$ArchiveWordsInitialImplCopyWith<$Res> {
+  __$$ArchiveWordsInitialImplCopyWithImpl(_$ArchiveWordsInitialImpl _value,
+      $Res Function(_$ArchiveWordsInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ArchiveWordsInitial implements ArchiveWordsInitial {
-  const _$ArchiveWordsInitial();
+class _$ArchiveWordsInitialImpl implements ArchiveWordsInitial {
+  const _$ArchiveWordsInitialImpl();
 
   @override
   String toString() {
@@ -382,7 +383,8 @@ class _$ArchiveWordsInitial implements ArchiveWordsInitial {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ArchiveWordsInitial);
+        (other.runtimeType == runtimeType &&
+            other is _$ArchiveWordsInitialImpl);
   }
 
   @override
@@ -464,29 +466,29 @@ class _$ArchiveWordsInitial implements ArchiveWordsInitial {
 }
 
 abstract class ArchiveWordsInitial implements ArchiveWordsState {
-  const factory ArchiveWordsInitial() = _$ArchiveWordsInitial;
+  const factory ArchiveWordsInitial() = _$ArchiveWordsInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$ArchiveWordsErrorCopyWith<$Res> {
-  factory _$$ArchiveWordsErrorCopyWith(
-          _$ArchiveWordsError value, $Res Function(_$ArchiveWordsError) then) =
-      __$$ArchiveWordsErrorCopyWithImpl<$Res>;
+abstract class _$$ArchiveWordsErrorImplCopyWith<$Res> {
+  factory _$$ArchiveWordsErrorImplCopyWith(_$ArchiveWordsErrorImpl value,
+          $Res Function(_$ArchiveWordsErrorImpl) then) =
+      __$$ArchiveWordsErrorImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ArchiveWordsErrorCopyWithImpl<$Res>
-    extends _$ArchiveWordsStateCopyWithImpl<$Res, _$ArchiveWordsError>
-    implements _$$ArchiveWordsErrorCopyWith<$Res> {
-  __$$ArchiveWordsErrorCopyWithImpl(
-      _$ArchiveWordsError _value, $Res Function(_$ArchiveWordsError) _then)
+class __$$ArchiveWordsErrorImplCopyWithImpl<$Res>
+    extends _$ArchiveWordsStateCopyWithImpl<$Res, _$ArchiveWordsErrorImpl>
+    implements _$$ArchiveWordsErrorImplCopyWith<$Res> {
+  __$$ArchiveWordsErrorImplCopyWithImpl(_$ArchiveWordsErrorImpl _value,
+      $Res Function(_$ArchiveWordsErrorImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ArchiveWordsError implements ArchiveWordsError {
-  const _$ArchiveWordsError();
+class _$ArchiveWordsErrorImpl implements ArchiveWordsError {
+  const _$ArchiveWordsErrorImpl();
 
   @override
   String toString() {
@@ -496,7 +498,7 @@ class _$ArchiveWordsError implements ArchiveWordsError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ArchiveWordsError);
+        (other.runtimeType == runtimeType && other is _$ArchiveWordsErrorImpl);
   }
 
   @override
@@ -578,5 +580,5 @@ class _$ArchiveWordsError implements ArchiveWordsError {
 }
 
 abstract class ArchiveWordsError implements ArchiveWordsState {
-  const factory ArchiveWordsError() = _$ArchiveWordsError;
+  const factory ArchiveWordsError() = _$ArchiveWordsErrorImpl;
 }

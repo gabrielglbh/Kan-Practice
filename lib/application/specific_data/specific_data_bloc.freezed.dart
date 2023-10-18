@@ -85,21 +85,23 @@ class _$SpecificDataStateCopyWithImpl<$Res, $Val extends SpecificDataState>
 }
 
 /// @nodoc
-abstract class _$$SpecificDataTestRetrievedCopyWith<$Res> {
-  factory _$$SpecificDataTestRetrievedCopyWith(
-          _$SpecificDataTestRetrieved value,
-          $Res Function(_$SpecificDataTestRetrieved) then) =
-      __$$SpecificDataTestRetrievedCopyWithImpl<$Res>;
+abstract class _$$SpecificDataTestRetrievedImplCopyWith<$Res> {
+  factory _$$SpecificDataTestRetrievedImplCopyWith(
+          _$SpecificDataTestRetrievedImpl value,
+          $Res Function(_$SpecificDataTestRetrievedImpl) then) =
+      __$$SpecificDataTestRetrievedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({SpecificData data, Tests test});
 }
 
 /// @nodoc
-class __$$SpecificDataTestRetrievedCopyWithImpl<$Res>
-    extends _$SpecificDataStateCopyWithImpl<$Res, _$SpecificDataTestRetrieved>
-    implements _$$SpecificDataTestRetrievedCopyWith<$Res> {
-  __$$SpecificDataTestRetrievedCopyWithImpl(_$SpecificDataTestRetrieved _value,
-      $Res Function(_$SpecificDataTestRetrieved) _then)
+class __$$SpecificDataTestRetrievedImplCopyWithImpl<$Res>
+    extends _$SpecificDataStateCopyWithImpl<$Res,
+        _$SpecificDataTestRetrievedImpl>
+    implements _$$SpecificDataTestRetrievedImplCopyWith<$Res> {
+  __$$SpecificDataTestRetrievedImplCopyWithImpl(
+      _$SpecificDataTestRetrievedImpl _value,
+      $Res Function(_$SpecificDataTestRetrievedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -108,7 +110,7 @@ class __$$SpecificDataTestRetrievedCopyWithImpl<$Res>
     Object? data = null,
     Object? test = null,
   }) {
-    return _then(_$SpecificDataTestRetrieved(
+    return _then(_$SpecificDataTestRetrievedImpl(
       null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -123,8 +125,8 @@ class __$$SpecificDataTestRetrievedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SpecificDataTestRetrieved implements SpecificDataTestRetrieved {
-  const _$SpecificDataTestRetrieved(this.data, this.test);
+class _$SpecificDataTestRetrievedImpl implements SpecificDataTestRetrieved {
+  const _$SpecificDataTestRetrievedImpl(this.data, this.test);
 
   @override
   final SpecificData data;
@@ -140,7 +142,7 @@ class _$SpecificDataTestRetrieved implements SpecificDataTestRetrieved {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SpecificDataTestRetrieved &&
+            other is _$SpecificDataTestRetrievedImpl &&
             (identical(other.data, data) || other.data == data) &&
             (identical(other.test, test) || other.test == test));
   }
@@ -151,9 +153,9 @@ class _$SpecificDataTestRetrieved implements SpecificDataTestRetrieved {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SpecificDataTestRetrievedCopyWith<_$SpecificDataTestRetrieved>
-      get copyWith => __$$SpecificDataTestRetrievedCopyWithImpl<
-          _$SpecificDataTestRetrieved>(this, _$identity);
+  _$$SpecificDataTestRetrievedImplCopyWith<_$SpecificDataTestRetrievedImpl>
+      get copyWith => __$$SpecificDataTestRetrievedImplCopyWithImpl<
+          _$SpecificDataTestRetrievedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -230,33 +232,34 @@ class _$SpecificDataTestRetrieved implements SpecificDataTestRetrieved {
 
 abstract class SpecificDataTestRetrieved implements SpecificDataState {
   const factory SpecificDataTestRetrieved(
-      final SpecificData data, final Tests test) = _$SpecificDataTestRetrieved;
+          final SpecificData data, final Tests test) =
+      _$SpecificDataTestRetrievedImpl;
 
   SpecificData get data;
   Tests get test;
   @JsonKey(ignore: true)
-  _$$SpecificDataTestRetrievedCopyWith<_$SpecificDataTestRetrieved>
+  _$$SpecificDataTestRetrievedImplCopyWith<_$SpecificDataTestRetrievedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SpecificDataCategoryRetrievedCopyWith<$Res> {
-  factory _$$SpecificDataCategoryRetrievedCopyWith(
-          _$SpecificDataCategoryRetrieved value,
-          $Res Function(_$SpecificDataCategoryRetrieved) then) =
-      __$$SpecificDataCategoryRetrievedCopyWithImpl<$Res>;
+abstract class _$$SpecificDataCategoryRetrievedImplCopyWith<$Res> {
+  factory _$$SpecificDataCategoryRetrievedImplCopyWith(
+          _$SpecificDataCategoryRetrievedImpl value,
+          $Res Function(_$SpecificDataCategoryRetrievedImpl) then) =
+      __$$SpecificDataCategoryRetrievedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({SpecificData data, WordCategory category});
 }
 
 /// @nodoc
-class __$$SpecificDataCategoryRetrievedCopyWithImpl<$Res>
+class __$$SpecificDataCategoryRetrievedImplCopyWithImpl<$Res>
     extends _$SpecificDataStateCopyWithImpl<$Res,
-        _$SpecificDataCategoryRetrieved>
-    implements _$$SpecificDataCategoryRetrievedCopyWith<$Res> {
-  __$$SpecificDataCategoryRetrievedCopyWithImpl(
-      _$SpecificDataCategoryRetrieved _value,
-      $Res Function(_$SpecificDataCategoryRetrieved) _then)
+        _$SpecificDataCategoryRetrievedImpl>
+    implements _$$SpecificDataCategoryRetrievedImplCopyWith<$Res> {
+  __$$SpecificDataCategoryRetrievedImplCopyWithImpl(
+      _$SpecificDataCategoryRetrievedImpl _value,
+      $Res Function(_$SpecificDataCategoryRetrievedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -265,7 +268,7 @@ class __$$SpecificDataCategoryRetrievedCopyWithImpl<$Res>
     Object? data = null,
     Object? category = null,
   }) {
-    return _then(_$SpecificDataCategoryRetrieved(
+    return _then(_$SpecificDataCategoryRetrievedImpl(
       null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -280,8 +283,9 @@ class __$$SpecificDataCategoryRetrievedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SpecificDataCategoryRetrieved implements SpecificDataCategoryRetrieved {
-  const _$SpecificDataCategoryRetrieved(this.data, this.category);
+class _$SpecificDataCategoryRetrievedImpl
+    implements SpecificDataCategoryRetrieved {
+  const _$SpecificDataCategoryRetrievedImpl(this.data, this.category);
 
   @override
   final SpecificData data;
@@ -297,7 +301,7 @@ class _$SpecificDataCategoryRetrieved implements SpecificDataCategoryRetrieved {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SpecificDataCategoryRetrieved &&
+            other is _$SpecificDataCategoryRetrievedImpl &&
             (identical(other.data, data) || other.data == data) &&
             (identical(other.category, category) ||
                 other.category == category));
@@ -309,9 +313,10 @@ class _$SpecificDataCategoryRetrieved implements SpecificDataCategoryRetrieved {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SpecificDataCategoryRetrievedCopyWith<_$SpecificDataCategoryRetrieved>
-      get copyWith => __$$SpecificDataCategoryRetrievedCopyWithImpl<
-          _$SpecificDataCategoryRetrieved>(this, _$identity);
+  _$$SpecificDataCategoryRetrievedImplCopyWith<
+          _$SpecificDataCategoryRetrievedImpl>
+      get copyWith => __$$SpecificDataCategoryRetrievedImplCopyWithImpl<
+          _$SpecificDataCategoryRetrievedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -389,35 +394,36 @@ class _$SpecificDataCategoryRetrieved implements SpecificDataCategoryRetrieved {
 abstract class SpecificDataCategoryRetrieved implements SpecificDataState {
   const factory SpecificDataCategoryRetrieved(
           final SpecificData data, final WordCategory category) =
-      _$SpecificDataCategoryRetrieved;
+      _$SpecificDataCategoryRetrievedImpl;
 
   SpecificData get data;
   WordCategory get category;
   @JsonKey(ignore: true)
-  _$$SpecificDataCategoryRetrievedCopyWith<_$SpecificDataCategoryRetrieved>
+  _$$SpecificDataCategoryRetrievedImplCopyWith<
+          _$SpecificDataCategoryRetrievedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SpecificDataInitialCopyWith<$Res> {
-  factory _$$SpecificDataInitialCopyWith(_$SpecificDataInitial value,
-          $Res Function(_$SpecificDataInitial) then) =
-      __$$SpecificDataInitialCopyWithImpl<$Res>;
+abstract class _$$SpecificDataInitialImplCopyWith<$Res> {
+  factory _$$SpecificDataInitialImplCopyWith(_$SpecificDataInitialImpl value,
+          $Res Function(_$SpecificDataInitialImpl) then) =
+      __$$SpecificDataInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$SpecificDataInitialCopyWithImpl<$Res>
-    extends _$SpecificDataStateCopyWithImpl<$Res, _$SpecificDataInitial>
-    implements _$$SpecificDataInitialCopyWith<$Res> {
-  __$$SpecificDataInitialCopyWithImpl(
-      _$SpecificDataInitial _value, $Res Function(_$SpecificDataInitial) _then)
+class __$$SpecificDataInitialImplCopyWithImpl<$Res>
+    extends _$SpecificDataStateCopyWithImpl<$Res, _$SpecificDataInitialImpl>
+    implements _$$SpecificDataInitialImplCopyWith<$Res> {
+  __$$SpecificDataInitialImplCopyWithImpl(_$SpecificDataInitialImpl _value,
+      $Res Function(_$SpecificDataInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$SpecificDataInitial implements SpecificDataInitial {
-  const _$SpecificDataInitial();
+class _$SpecificDataInitialImpl implements SpecificDataInitial {
+  const _$SpecificDataInitialImpl();
 
   @override
   String toString() {
@@ -427,7 +433,8 @@ class _$SpecificDataInitial implements SpecificDataInitial {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SpecificDataInitial);
+        (other.runtimeType == runtimeType &&
+            other is _$SpecificDataInitialImpl);
   }
 
   @override
@@ -507,5 +514,5 @@ class _$SpecificDataInitial implements SpecificDataInitial {
 }
 
 abstract class SpecificDataInitial implements SpecificDataState {
-  const factory SpecificDataInitial() = _$SpecificDataInitial;
+  const factory SpecificDataInitial() = _$SpecificDataInitialImpl;
 }

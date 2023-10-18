@@ -99,25 +99,25 @@ class _$AddWordStateCopyWithImpl<$Res, $Val extends AddWordState>
 }
 
 /// @nodoc
-abstract class _$$AddWordLoadingCopyWith<$Res> {
-  factory _$$AddWordLoadingCopyWith(
-          _$AddWordLoading value, $Res Function(_$AddWordLoading) then) =
-      __$$AddWordLoadingCopyWithImpl<$Res>;
+abstract class _$$AddWordLoadingImplCopyWith<$Res> {
+  factory _$$AddWordLoadingImplCopyWith(_$AddWordLoadingImpl value,
+          $Res Function(_$AddWordLoadingImpl) then) =
+      __$$AddWordLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AddWordLoadingCopyWithImpl<$Res>
-    extends _$AddWordStateCopyWithImpl<$Res, _$AddWordLoading>
-    implements _$$AddWordLoadingCopyWith<$Res> {
-  __$$AddWordLoadingCopyWithImpl(
-      _$AddWordLoading _value, $Res Function(_$AddWordLoading) _then)
+class __$$AddWordLoadingImplCopyWithImpl<$Res>
+    extends _$AddWordStateCopyWithImpl<$Res, _$AddWordLoadingImpl>
+    implements _$$AddWordLoadingImplCopyWith<$Res> {
+  __$$AddWordLoadingImplCopyWithImpl(
+      _$AddWordLoadingImpl _value, $Res Function(_$AddWordLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AddWordLoading implements AddWordLoading {
-  const _$AddWordLoading();
+class _$AddWordLoadingImpl implements AddWordLoading {
+  const _$AddWordLoadingImpl();
 
   @override
   String toString() {
@@ -127,7 +127,7 @@ class _$AddWordLoading implements AddWordLoading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AddWordLoading);
+        (other.runtimeType == runtimeType && other is _$AddWordLoadingImpl);
   }
 
   @override
@@ -221,29 +221,29 @@ class _$AddWordLoading implements AddWordLoading {
 }
 
 abstract class AddWordLoading implements AddWordState {
-  const factory AddWordLoading() = _$AddWordLoading;
+  const factory AddWordLoading() = _$AddWordLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$AddWordLoadedCopyWith<$Res> {
-  factory _$$AddWordLoadedCopyWith(
-          _$AddWordLoaded value, $Res Function(_$AddWordLoaded) then) =
-      __$$AddWordLoadedCopyWithImpl<$Res>;
+abstract class _$$AddWordLoadedImplCopyWith<$Res> {
+  factory _$$AddWordLoadedImplCopyWith(
+          _$AddWordLoadedImpl value, $Res Function(_$AddWordLoadedImpl) then) =
+      __$$AddWordLoadedImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AddWordLoadedCopyWithImpl<$Res>
-    extends _$AddWordStateCopyWithImpl<$Res, _$AddWordLoaded>
-    implements _$$AddWordLoadedCopyWith<$Res> {
-  __$$AddWordLoadedCopyWithImpl(
-      _$AddWordLoaded _value, $Res Function(_$AddWordLoaded) _then)
+class __$$AddWordLoadedImplCopyWithImpl<$Res>
+    extends _$AddWordStateCopyWithImpl<$Res, _$AddWordLoadedImpl>
+    implements _$$AddWordLoadedImplCopyWith<$Res> {
+  __$$AddWordLoadedImplCopyWithImpl(
+      _$AddWordLoadedImpl _value, $Res Function(_$AddWordLoadedImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AddWordLoaded implements AddWordLoaded {
-  const _$AddWordLoaded();
+class _$AddWordLoadedImpl implements AddWordLoaded {
+  const _$AddWordLoadedImpl();
 
   @override
   String toString() {
@@ -253,7 +253,7 @@ class _$AddWordLoaded implements AddWordLoaded {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AddWordLoaded);
+        (other.runtimeType == runtimeType && other is _$AddWordLoadedImpl);
   }
 
   @override
@@ -347,29 +347,29 @@ class _$AddWordLoaded implements AddWordLoaded {
 }
 
 abstract class AddWordLoaded implements AddWordState {
-  const factory AddWordLoaded() = _$AddWordLoaded;
+  const factory AddWordLoaded() = _$AddWordLoadedImpl;
 }
 
 /// @nodoc
-abstract class _$$AddWordInitialCopyWith<$Res> {
-  factory _$$AddWordInitialCopyWith(
-          _$AddWordInitial value, $Res Function(_$AddWordInitial) then) =
-      __$$AddWordInitialCopyWithImpl<$Res>;
+abstract class _$$AddWordInitialImplCopyWith<$Res> {
+  factory _$$AddWordInitialImplCopyWith(_$AddWordInitialImpl value,
+          $Res Function(_$AddWordInitialImpl) then) =
+      __$$AddWordInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AddWordInitialCopyWithImpl<$Res>
-    extends _$AddWordStateCopyWithImpl<$Res, _$AddWordInitial>
-    implements _$$AddWordInitialCopyWith<$Res> {
-  __$$AddWordInitialCopyWithImpl(
-      _$AddWordInitial _value, $Res Function(_$AddWordInitial) _then)
+class __$$AddWordInitialImplCopyWithImpl<$Res>
+    extends _$AddWordStateCopyWithImpl<$Res, _$AddWordInitialImpl>
+    implements _$$AddWordInitialImplCopyWith<$Res> {
+  __$$AddWordInitialImplCopyWithImpl(
+      _$AddWordInitialImpl _value, $Res Function(_$AddWordInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AddWordInitial implements AddWordInitial {
-  const _$AddWordInitial();
+class _$AddWordInitialImpl implements AddWordInitial {
+  const _$AddWordInitialImpl();
 
   @override
   String toString() {
@@ -379,7 +379,7 @@ class _$AddWordInitial implements AddWordInitial {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AddWordInitial);
+        (other.runtimeType == runtimeType && other is _$AddWordInitialImpl);
   }
 
   @override
@@ -473,29 +473,29 @@ class _$AddWordInitial implements AddWordInitial {
 }
 
 abstract class AddWordInitial implements AddWordState {
-  const factory AddWordInitial() = _$AddWordInitial;
+  const factory AddWordInitial() = _$AddWordInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$AddWordUpdateDoneCopyWith<$Res> {
-  factory _$$AddWordUpdateDoneCopyWith(
-          _$AddWordUpdateDone value, $Res Function(_$AddWordUpdateDone) then) =
-      __$$AddWordUpdateDoneCopyWithImpl<$Res>;
+abstract class _$$AddWordUpdateDoneImplCopyWith<$Res> {
+  factory _$$AddWordUpdateDoneImplCopyWith(_$AddWordUpdateDoneImpl value,
+          $Res Function(_$AddWordUpdateDoneImpl) then) =
+      __$$AddWordUpdateDoneImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AddWordUpdateDoneCopyWithImpl<$Res>
-    extends _$AddWordStateCopyWithImpl<$Res, _$AddWordUpdateDone>
-    implements _$$AddWordUpdateDoneCopyWith<$Res> {
-  __$$AddWordUpdateDoneCopyWithImpl(
-      _$AddWordUpdateDone _value, $Res Function(_$AddWordUpdateDone) _then)
+class __$$AddWordUpdateDoneImplCopyWithImpl<$Res>
+    extends _$AddWordStateCopyWithImpl<$Res, _$AddWordUpdateDoneImpl>
+    implements _$$AddWordUpdateDoneImplCopyWith<$Res> {
+  __$$AddWordUpdateDoneImplCopyWithImpl(_$AddWordUpdateDoneImpl _value,
+      $Res Function(_$AddWordUpdateDoneImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AddWordUpdateDone implements AddWordUpdateDone {
-  const _$AddWordUpdateDone();
+class _$AddWordUpdateDoneImpl implements AddWordUpdateDone {
+  const _$AddWordUpdateDoneImpl();
 
   @override
   String toString() {
@@ -505,7 +505,7 @@ class _$AddWordUpdateDone implements AddWordUpdateDone {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AddWordUpdateDone);
+        (other.runtimeType == runtimeType && other is _$AddWordUpdateDoneImpl);
   }
 
   @override
@@ -599,24 +599,24 @@ class _$AddWordUpdateDone implements AddWordUpdateDone {
 }
 
 abstract class AddWordUpdateDone implements AddWordState {
-  const factory AddWordUpdateDone() = _$AddWordUpdateDone;
+  const factory AddWordUpdateDone() = _$AddWordUpdateDoneImpl;
 }
 
 /// @nodoc
-abstract class _$$AddWordCreationDoneCopyWith<$Res> {
-  factory _$$AddWordCreationDoneCopyWith(_$AddWordCreationDone value,
-          $Res Function(_$AddWordCreationDone) then) =
-      __$$AddWordCreationDoneCopyWithImpl<$Res>;
+abstract class _$$AddWordCreationDoneImplCopyWith<$Res> {
+  factory _$$AddWordCreationDoneImplCopyWith(_$AddWordCreationDoneImpl value,
+          $Res Function(_$AddWordCreationDoneImpl) then) =
+      __$$AddWordCreationDoneImplCopyWithImpl<$Res>;
   @useResult
   $Res call({bool exitMode});
 }
 
 /// @nodoc
-class __$$AddWordCreationDoneCopyWithImpl<$Res>
-    extends _$AddWordStateCopyWithImpl<$Res, _$AddWordCreationDone>
-    implements _$$AddWordCreationDoneCopyWith<$Res> {
-  __$$AddWordCreationDoneCopyWithImpl(
-      _$AddWordCreationDone _value, $Res Function(_$AddWordCreationDone) _then)
+class __$$AddWordCreationDoneImplCopyWithImpl<$Res>
+    extends _$AddWordStateCopyWithImpl<$Res, _$AddWordCreationDoneImpl>
+    implements _$$AddWordCreationDoneImplCopyWith<$Res> {
+  __$$AddWordCreationDoneImplCopyWithImpl(_$AddWordCreationDoneImpl _value,
+      $Res Function(_$AddWordCreationDoneImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -624,7 +624,7 @@ class __$$AddWordCreationDoneCopyWithImpl<$Res>
   $Res call({
     Object? exitMode = null,
   }) {
-    return _then(_$AddWordCreationDone(
+    return _then(_$AddWordCreationDoneImpl(
       null == exitMode
           ? _value.exitMode
           : exitMode // ignore: cast_nullable_to_non_nullable
@@ -635,8 +635,8 @@ class __$$AddWordCreationDoneCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AddWordCreationDone implements AddWordCreationDone {
-  const _$AddWordCreationDone(this.exitMode);
+class _$AddWordCreationDoneImpl implements AddWordCreationDone {
+  const _$AddWordCreationDoneImpl(this.exitMode);
 
   @override
   final bool exitMode;
@@ -650,7 +650,7 @@ class _$AddWordCreationDone implements AddWordCreationDone {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AddWordCreationDone &&
+            other is _$AddWordCreationDoneImpl &&
             (identical(other.exitMode, exitMode) ||
                 other.exitMode == exitMode));
   }
@@ -661,8 +661,8 @@ class _$AddWordCreationDone implements AddWordCreationDone {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$AddWordCreationDoneCopyWith<_$AddWordCreationDone> get copyWith =>
-      __$$AddWordCreationDoneCopyWithImpl<_$AddWordCreationDone>(
+  _$$AddWordCreationDoneImplCopyWith<_$AddWordCreationDoneImpl> get copyWith =>
+      __$$AddWordCreationDoneImplCopyWithImpl<_$AddWordCreationDoneImpl>(
           this, _$identity);
 
   @override
@@ -754,29 +754,29 @@ class _$AddWordCreationDone implements AddWordCreationDone {
 
 abstract class AddWordCreationDone implements AddWordState {
   const factory AddWordCreationDone(final bool exitMode) =
-      _$AddWordCreationDone;
+      _$AddWordCreationDoneImpl;
 
   bool get exitMode;
   @JsonKey(ignore: true)
-  _$$AddWordCreationDoneCopyWith<_$AddWordCreationDone> get copyWith =>
+  _$$AddWordCreationDoneImplCopyWith<_$AddWordCreationDoneImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$AddWordErrorCopyWith<$Res> {
-  factory _$$AddWordErrorCopyWith(
-          _$AddWordError value, $Res Function(_$AddWordError) then) =
-      __$$AddWordErrorCopyWithImpl<$Res>;
+abstract class _$$AddWordErrorImplCopyWith<$Res> {
+  factory _$$AddWordErrorImplCopyWith(
+          _$AddWordErrorImpl value, $Res Function(_$AddWordErrorImpl) then) =
+      __$$AddWordErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$AddWordErrorCopyWithImpl<$Res>
-    extends _$AddWordStateCopyWithImpl<$Res, _$AddWordError>
-    implements _$$AddWordErrorCopyWith<$Res> {
-  __$$AddWordErrorCopyWithImpl(
-      _$AddWordError _value, $Res Function(_$AddWordError) _then)
+class __$$AddWordErrorImplCopyWithImpl<$Res>
+    extends _$AddWordStateCopyWithImpl<$Res, _$AddWordErrorImpl>
+    implements _$$AddWordErrorImplCopyWith<$Res> {
+  __$$AddWordErrorImplCopyWithImpl(
+      _$AddWordErrorImpl _value, $Res Function(_$AddWordErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -784,7 +784,7 @@ class __$$AddWordErrorCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$AddWordError(
+    return _then(_$AddWordErrorImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -795,8 +795,8 @@ class __$$AddWordErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AddWordError implements AddWordError {
-  const _$AddWordError(this.message);
+class _$AddWordErrorImpl implements AddWordError {
+  const _$AddWordErrorImpl(this.message);
 
   @override
   final String message;
@@ -810,7 +810,7 @@ class _$AddWordError implements AddWordError {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AddWordError &&
+            other is _$AddWordErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -820,8 +820,8 @@ class _$AddWordError implements AddWordError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$AddWordErrorCopyWith<_$AddWordError> get copyWith =>
-      __$$AddWordErrorCopyWithImpl<_$AddWordError>(this, _$identity);
+  _$$AddWordErrorImplCopyWith<_$AddWordErrorImpl> get copyWith =>
+      __$$AddWordErrorImplCopyWithImpl<_$AddWordErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -911,10 +911,10 @@ class _$AddWordError implements AddWordError {
 }
 
 abstract class AddWordError implements AddWordState {
-  const factory AddWordError(final String message) = _$AddWordError;
+  const factory AddWordError(final String message) = _$AddWordErrorImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$AddWordErrorCopyWith<_$AddWordError> get copyWith =>
+  _$$AddWordErrorImplCopyWith<_$AddWordErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

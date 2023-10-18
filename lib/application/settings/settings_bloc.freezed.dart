@@ -81,25 +81,25 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
 }
 
 /// @nodoc
-abstract class _$$SettingsLoadingCopyWith<$Res> {
-  factory _$$SettingsLoadingCopyWith(
-          _$SettingsLoading value, $Res Function(_$SettingsLoading) then) =
-      __$$SettingsLoadingCopyWithImpl<$Res>;
+abstract class _$$SettingsLoadingImplCopyWith<$Res> {
+  factory _$$SettingsLoadingImplCopyWith(_$SettingsLoadingImpl value,
+          $Res Function(_$SettingsLoadingImpl) then) =
+      __$$SettingsLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$SettingsLoadingCopyWithImpl<$Res>
-    extends _$SettingsStateCopyWithImpl<$Res, _$SettingsLoading>
-    implements _$$SettingsLoadingCopyWith<$Res> {
-  __$$SettingsLoadingCopyWithImpl(
-      _$SettingsLoading _value, $Res Function(_$SettingsLoading) _then)
+class __$$SettingsLoadingImplCopyWithImpl<$Res>
+    extends _$SettingsStateCopyWithImpl<$Res, _$SettingsLoadingImpl>
+    implements _$$SettingsLoadingImplCopyWith<$Res> {
+  __$$SettingsLoadingImplCopyWithImpl(
+      _$SettingsLoadingImpl _value, $Res Function(_$SettingsLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$SettingsLoading implements SettingsLoading {
-  const _$SettingsLoading();
+class _$SettingsLoadingImpl implements SettingsLoading {
+  const _$SettingsLoadingImpl();
 
   @override
   String toString() {
@@ -109,7 +109,7 @@ class _$SettingsLoading implements SettingsLoading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SettingsLoading);
+        (other.runtimeType == runtimeType && other is _$SettingsLoadingImpl);
   }
 
   @override
@@ -185,24 +185,24 @@ class _$SettingsLoading implements SettingsLoading {
 }
 
 abstract class SettingsLoading implements SettingsState {
-  const factory SettingsLoading() = _$SettingsLoading;
+  const factory SettingsLoading() = _$SettingsLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$SettingsLoadedCopyWith<$Res> {
-  factory _$$SettingsLoadedCopyWith(
-          _$SettingsLoaded value, $Res Function(_$SettingsLoaded) then) =
-      __$$SettingsLoadedCopyWithImpl<$Res>;
+abstract class _$$SettingsLoadedImplCopyWith<$Res> {
+  factory _$$SettingsLoadedImplCopyWith(_$SettingsLoadedImpl value,
+          $Res Function(_$SettingsLoadedImpl) then) =
+      __$$SettingsLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String date});
 }
 
 /// @nodoc
-class __$$SettingsLoadedCopyWithImpl<$Res>
-    extends _$SettingsStateCopyWithImpl<$Res, _$SettingsLoaded>
-    implements _$$SettingsLoadedCopyWith<$Res> {
-  __$$SettingsLoadedCopyWithImpl(
-      _$SettingsLoaded _value, $Res Function(_$SettingsLoaded) _then)
+class __$$SettingsLoadedImplCopyWithImpl<$Res>
+    extends _$SettingsStateCopyWithImpl<$Res, _$SettingsLoadedImpl>
+    implements _$$SettingsLoadedImplCopyWith<$Res> {
+  __$$SettingsLoadedImplCopyWithImpl(
+      _$SettingsLoadedImpl _value, $Res Function(_$SettingsLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -210,7 +210,7 @@ class __$$SettingsLoadedCopyWithImpl<$Res>
   $Res call({
     Object? date = null,
   }) {
-    return _then(_$SettingsLoaded(
+    return _then(_$SettingsLoadedImpl(
       null == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -221,8 +221,8 @@ class __$$SettingsLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SettingsLoaded implements SettingsLoaded {
-  const _$SettingsLoaded(this.date);
+class _$SettingsLoadedImpl implements SettingsLoaded {
+  const _$SettingsLoadedImpl(this.date);
 
   @override
   final String date;
@@ -236,7 +236,7 @@ class _$SettingsLoaded implements SettingsLoaded {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SettingsLoaded &&
+            other is _$SettingsLoadedImpl &&
             (identical(other.date, date) || other.date == date));
   }
 
@@ -246,8 +246,9 @@ class _$SettingsLoaded implements SettingsLoaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SettingsLoadedCopyWith<_$SettingsLoaded> get copyWith =>
-      __$$SettingsLoadedCopyWithImpl<_$SettingsLoaded>(this, _$identity);
+  _$$SettingsLoadedImplCopyWith<_$SettingsLoadedImpl> get copyWith =>
+      __$$SettingsLoadedImplCopyWithImpl<_$SettingsLoadedImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -319,34 +320,34 @@ class _$SettingsLoaded implements SettingsLoaded {
 }
 
 abstract class SettingsLoaded implements SettingsState {
-  const factory SettingsLoaded(final String date) = _$SettingsLoaded;
+  const factory SettingsLoaded(final String date) = _$SettingsLoadedImpl;
 
   String get date;
   @JsonKey(ignore: true)
-  _$$SettingsLoadedCopyWith<_$SettingsLoaded> get copyWith =>
+  _$$SettingsLoadedImplCopyWith<_$SettingsLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SettingsInitialCopyWith<$Res> {
-  factory _$$SettingsInitialCopyWith(
-          _$SettingsInitial value, $Res Function(_$SettingsInitial) then) =
-      __$$SettingsInitialCopyWithImpl<$Res>;
+abstract class _$$SettingsInitialImplCopyWith<$Res> {
+  factory _$$SettingsInitialImplCopyWith(_$SettingsInitialImpl value,
+          $Res Function(_$SettingsInitialImpl) then) =
+      __$$SettingsInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$SettingsInitialCopyWithImpl<$Res>
-    extends _$SettingsStateCopyWithImpl<$Res, _$SettingsInitial>
-    implements _$$SettingsInitialCopyWith<$Res> {
-  __$$SettingsInitialCopyWithImpl(
-      _$SettingsInitial _value, $Res Function(_$SettingsInitial) _then)
+class __$$SettingsInitialImplCopyWithImpl<$Res>
+    extends _$SettingsStateCopyWithImpl<$Res, _$SettingsInitialImpl>
+    implements _$$SettingsInitialImplCopyWith<$Res> {
+  __$$SettingsInitialImplCopyWithImpl(
+      _$SettingsInitialImpl _value, $Res Function(_$SettingsInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$SettingsInitial implements SettingsInitial {
-  const _$SettingsInitial();
+class _$SettingsInitialImpl implements SettingsInitial {
+  const _$SettingsInitialImpl();
 
   @override
   String toString() {
@@ -356,7 +357,7 @@ class _$SettingsInitial implements SettingsInitial {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SettingsInitial);
+        (other.runtimeType == runtimeType && other is _$SettingsInitialImpl);
   }
 
   @override
@@ -432,5 +433,5 @@ class _$SettingsInitial implements SettingsInitial {
 }
 
 abstract class SettingsInitial implements SettingsState {
-  const factory SettingsInitial() = _$SettingsInitial;
+  const factory SettingsInitial() = _$SettingsInitialImpl;
 }

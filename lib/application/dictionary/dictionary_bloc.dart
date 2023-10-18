@@ -1,17 +1,23 @@
 import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/domain/services/i_classifier_repository.dart';
-import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 
 part 'dictionary_event.dart';
 part 'dictionary_state.dart';
 
 part 'dictionary_bloc.freezed.dart';
+
+class Category {
+  final String label;
+  final double score;
+
+  const Category(this.label, this.score);
+}
 
 @injectable
 class DictionaryBloc extends Bloc<DictionaryEvent, DictionaryState> {
@@ -35,10 +41,8 @@ class DictionaryBloc extends Bloc<DictionaryEvent, DictionaryState> {
 
     on<DictionaryEventLoading>((event, emit) async {
       try {
-        emit(const DictionaryState.loading());
-        List<Category> categories = _classifierRepository.predict(event.data);
-        categories =
-            categories.getRange(0, KPSizes.numberOfPredictedWords).toList();
+        final categories =
+            await _classifierRepository.predict(event.data, event.size);
         emit(DictionaryState.loaded(categories));
       } on Exception {
         emit(const DictionaryState.error());

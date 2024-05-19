@@ -8,12 +8,11 @@ class KPKanListGrid<T> extends StatelessWidget {
   final List<T> items;
   final bool Function(String name) isSelected;
   const KPKanListGrid({
-    Key? key,
+    super.key,
     required this.onTap,
     required this.items,
     required this.isSelected,
-  })  : assert(items is List<Folder> || items is List<WordList>),
-        super(key: key);
+  }) : assert(items is List<Folder> || items is List<WordList>);
 
   @override
   Widget build(BuildContext context) {

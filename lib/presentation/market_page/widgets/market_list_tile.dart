@@ -15,12 +15,11 @@ class MarketListTile extends StatelessWidget {
   final Function(String, bool) onRemove;
   final bool isManaging;
   const MarketListTile(
-      {Key? key,
+      {super.key,
       required this.list,
       required this.onDownload,
       required this.onRemove,
-      this.isManaging = false})
-      : super(key: key);
+      this.isManaging = false});
 
   @override
   Widget build(BuildContext context) {

@@ -16,7 +16,7 @@ import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
 
 class AddWordPage extends StatefulWidget {
   final AddWordArgs args;
-  const AddWordPage({Key? key, required this.args}) : super(key: key);
+  const AddWordPage({super.key, required this.args});
 
   @override
   State<AddWordPage> createState() => _AddWordPageState();

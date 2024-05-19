@@ -22,12 +22,12 @@ class SpecBottomSheet extends StatefulWidget {
   final SpecificData? data;
   final AlterSpecificDataTestRetrieved? alterData;
   const SpecBottomSheet({
-    Key? key,
+    super.key,
     required this.title,
     required this.showGrammar,
     this.data,
     this.alterData,
-  }) : super(key: key);
+  });
 
   /// Creates and calls the [BottomSheet] with the content for a regular test specs
   static Future<String?> show(

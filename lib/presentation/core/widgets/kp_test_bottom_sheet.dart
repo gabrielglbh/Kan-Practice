@@ -17,7 +17,7 @@ import 'package:kanpractice/presentation/home_page/widgets/kanlist_selection_bot
 
 class KPTestBottomSheet extends StatefulWidget {
   final String? folder;
-  const KPTestBottomSheet({Key? key, this.folder}) : super(key: key);
+  const KPTestBottomSheet({super.key, this.folder});
 
   @override
   State<KPTestBottomSheet> createState() => _KPTestBottomSheetState();

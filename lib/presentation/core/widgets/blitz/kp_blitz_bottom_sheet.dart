@@ -20,12 +20,12 @@ class KPBlitzBottomSheet extends StatelessWidget {
   /// Creates a blitz test study mode selection bottom sheet for BLITZ and
   /// REMEMBRANCE tests.
   const KPBlitzBottomSheet({
-    Key? key,
+    super.key,
     this.practiceList,
     this.folder,
     this.remembranceTest = false,
     this.lessPctTest = false,
-  }) : super(key: key);
+  });
 
   /// Creates and calls the [BottomSheet] with the content for a blitz test
   static Future<String?> show(

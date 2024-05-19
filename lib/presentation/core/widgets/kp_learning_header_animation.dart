@@ -10,10 +10,10 @@ class KPLearningHeaderAnimation extends StatelessWidget {
   /// from each other
   final int id;
   const KPLearningHeaderAnimation({
-    Key? key,
+    super.key,
     required this.child,
     required this.id,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

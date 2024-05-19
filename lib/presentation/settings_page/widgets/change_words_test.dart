@@ -6,7 +6,7 @@ import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class ChangeWordsInTest extends StatefulWidget {
-  const ChangeWordsInTest({Key? key}) : super(key: key);
+  const ChangeWordsInTest({super.key});
 
   static Future<int?> show(BuildContext context) async {
     int? value;

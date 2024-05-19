@@ -55,7 +55,7 @@ class KPTextForm extends StatelessWidget {
 
   final TextStyle? headerTextStyle;
   const KPTextForm({
-    Key? key,
+    super.key,
     required this.header,
     required this.hint,
     required this.controller,
@@ -74,7 +74,7 @@ class KPTextForm extends StatelessWidget {
     this.enabled = true,
     this.isHorizontalForm = false,
     this.headerTextStyle,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

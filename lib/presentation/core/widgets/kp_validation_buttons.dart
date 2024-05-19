@@ -14,12 +14,12 @@ class KPValidationButtons extends StatelessWidget {
   /// Action to be performed when submitting the current card
   final Function() onSubmit;
   const KPValidationButtons({
-    Key? key,
+    super.key,
     required this.trigger,
     required this.action,
     required this.onSubmit,
     required this.submitLabel,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

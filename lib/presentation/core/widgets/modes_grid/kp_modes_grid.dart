@@ -47,14 +47,14 @@ class KPModesGrid extends StatefulWidget {
   final Tests type;
 
   const KPModesGrid({
-    Key? key,
+    super.key,
     this.selectionQuery,
     this.grammarList,
     this.practiceList,
     this.folder,
     required this.type,
     required this.testName,
-  }) : super(key: key);
+  });
 
   @override
   State<KPModesGrid> createState() => _KPModesGridState();

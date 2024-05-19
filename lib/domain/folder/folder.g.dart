@@ -8,7 +8,7 @@ part of 'folder.dart';
 
 Folder _$FolderFromJson(Map<String, dynamic> json) => Folder(
       folder: json['folder'] as String,
-      lastUpdated: json['lastUpdated'] as int,
+      lastUpdated: (json['lastUpdated'] as num).toInt(),
     );
 
 Map<String, dynamic> _$FolderToJson(Folder instance) => <String, dynamic>{

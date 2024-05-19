@@ -12,7 +12,7 @@ part of 'grammar_mode_bloc.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$GrammarModeState {
@@ -125,7 +125,7 @@ class _$GrammarModeLoadingImpl implements GrammarModeLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$GrammarModeLoadingImpl);
   }
@@ -251,7 +251,7 @@ class _$GrammarModeLoadedImpl implements GrammarModeLoaded {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$GrammarModeLoadedImpl);
   }
@@ -379,7 +379,7 @@ class _$GrammarModeSM2CalculatedImpl implements GrammarModeSM2Calculated {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GrammarModeSM2CalculatedImpl);
@@ -527,7 +527,7 @@ class _$GrammarModeScoreCalculatedImpl implements GrammarModeScoreCalculated {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GrammarModeScoreCalculatedImpl &&
@@ -688,7 +688,7 @@ class _$GrammarModeScoreObtainedImpl implements GrammarModeScoreObtained {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GrammarModeScoreObtainedImpl &&
@@ -831,7 +831,7 @@ class _$GrammarModeTestFinishedImpl implements GrammarModeTestFinished {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GrammarModeTestFinishedImpl);

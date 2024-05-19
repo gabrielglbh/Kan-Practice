@@ -11,11 +11,10 @@ class KPEmptyList extends StatelessWidget {
   final Function() onRefresh;
   final bool showTryButton;
   const KPEmptyList(
-      {Key? key,
+      {super.key,
       required this.message,
       required this.onRefresh,
-      this.showTryButton = false})
-      : super(key: key);
+      this.showTryButton = false});
 
   @override
   Widget build(BuildContext context) {

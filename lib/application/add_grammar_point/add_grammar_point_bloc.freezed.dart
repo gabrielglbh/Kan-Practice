@@ -12,7 +12,7 @@ part of 'add_grammar_point_bloc.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$AddGrammarPointState {
@@ -123,7 +123,7 @@ class _$AddGrammarPointLoadingImpl implements AddGrammarPointLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AddGrammarPointLoadingImpl);
@@ -247,7 +247,7 @@ class _$AddGrammarPointUpdateDoneImpl implements AddGrammarPointUpdateDone {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AddGrammarPointUpdateDoneImpl);
@@ -371,7 +371,7 @@ class _$AddGrammarPointInitialImpl implements AddGrammarPointInitial {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AddGrammarPointInitialImpl);
@@ -513,7 +513,7 @@ class _$AddGrammarPointCreationDoneImpl implements AddGrammarPointCreationDone {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AddGrammarPointCreationDoneImpl &&
@@ -667,7 +667,7 @@ class _$AddGrammarPointErrorImpl implements AddGrammarPointError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AddGrammarPointErrorImpl &&

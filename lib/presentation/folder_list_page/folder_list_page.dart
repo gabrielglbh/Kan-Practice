@@ -19,8 +19,7 @@ class FolderListPage extends StatefulWidget {
   final Function() removeFocus;
   final Function() onScrolledToBottom;
   const FolderListPage(
-      {Key? key, required this.removeFocus, required this.onScrolledToBottom})
-      : super(key: key);
+      {super.key, required this.removeFocus, required this.onScrolledToBottom});
 
   @override
   State<FolderListPage> createState() => _FolderListPageState();
@@ -140,6 +139,7 @@ class _FolderListPageState extends State<FolderListPage>
                 padding:
                     const EdgeInsets.symmetric(horizontal: KPMargins.margin2),
                 child: ChoiceChip(
+                  showCheckmark: false,
                   label: Text(FolderFilters.values[index].label),
                   avatar: _currentAppliedFilter.index != index ? null : icon,
                   pressElevation: KPMargins.margin4,

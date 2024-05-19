@@ -22,14 +22,13 @@ class WritingButtonsAnimations extends StatelessWidget {
   /// Action to be performed when submitting the current card
   final Function() onSubmit;
   const WritingButtonsAnimations(
-      {Key? key,
+      {super.key,
       required this.trigger,
       required this.triggerSlide,
       required this.id,
       required this.action,
       required this.onSubmit,
-      required this.submitLabel})
-      : super(key: key);
+      required this.submitLabel});
 
   @override
   Widget build(BuildContext context) {

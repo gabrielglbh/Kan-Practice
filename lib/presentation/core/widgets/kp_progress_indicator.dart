@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KPProgressIndicator extends StatelessWidget {
-  const KPProgressIndicator({Key? key}) : super(key: key);
+  const KPProgressIndicator({super.key});
 
   @override
   Widget build(BuildContext context) {

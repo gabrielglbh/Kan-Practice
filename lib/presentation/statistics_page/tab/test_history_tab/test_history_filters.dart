@@ -102,6 +102,7 @@ class _TestHistoryFiltersState extends State<TestHistoryFilters> {
                         ),
                         DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
+                            dropdownColor: KPColors.getPrimary(context),
                             icon: icon,
                             value: _testsFilter.nameAbbr,
                             items: TestFilters.values
@@ -149,6 +150,7 @@ class _TestHistoryFiltersState extends State<TestHistoryFilters> {
                         ),
                         DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
+                            dropdownColor: KPColors.getPrimary(context),
                             icon: icon,
                             value: _modesFilter.mode,
                             items: TestModeFilters.values

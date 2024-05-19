@@ -20,12 +20,12 @@ class KPKanlists extends StatefulWidget {
   final String? folder;
   final bool withinFolder;
   const KPKanlists({
-    Key? key,
+    super.key,
     required this.removeFocus,
     required this.onScrolledToBottom,
     this.withinFolder = false,
     this.folder,
-  }) : super(key: key);
+  });
 
   @override
   State<KPKanlists> createState() => _KPKanlistsState();
@@ -176,6 +176,7 @@ class _KPKanlistsState extends State<KPKanlists>
                 padding:
                     const EdgeInsets.symmetric(horizontal: KPMargins.margin2),
                 child: ChoiceChip(
+                  showCheckmark: false,
                   label: Text(WordListFilters.values[index].label),
                   avatar: _currentAppliedFilter.index != index ? null : icon,
                   pressElevation: KPMargins.margin4,

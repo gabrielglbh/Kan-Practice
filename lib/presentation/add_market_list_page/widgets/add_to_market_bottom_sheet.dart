@@ -8,7 +8,7 @@ import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class AddToMarketBottomSheet extends StatefulWidget {
-  const AddToMarketBottomSheet({Key? key}) : super(key: key);
+  const AddToMarketBottomSheet({super.key});
 
   static Future<String?> callAddToMarketBottomSheet(
       BuildContext context) async {

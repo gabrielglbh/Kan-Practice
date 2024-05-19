@@ -37,7 +37,7 @@ import 'package:kanpractice/presentation/settings_page/settings_page.dart';
 
 class HomePage extends StatefulWidget {
   final bool? showTestBottomSheet;
-  const HomePage({Key? key, this.showTestBottomSheet}) : super(key: key);
+  const HomePage({super.key, this.showTestBottomSheet});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -206,6 +206,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   bool _showPendingReview(List<int> toReview) {
     return toReview.isNotEmpty && toReview.any((i) => i > 0);
+  }
+
+  bool _canPop() {
+    if (_onTutorial || _searchHasFocus || _currentPage.index != 0) return false;
+    return true;
   }
 
   @override

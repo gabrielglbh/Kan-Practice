@@ -19,11 +19,11 @@ class ArchiveWordListWidget extends StatefulWidget {
   final Function() onScrolledToBottom;
   final Function() removeFocus;
   const ArchiveWordListWidget({
-    Key? key,
+    super.key,
     required this.query,
     required this.onScrolledToBottom,
     required this.removeFocus,
-  }) : super(key: key);
+  });
 
   @override
   State<ArchiveWordListWidget> createState() => _ArchiveWordListWidgetState();
@@ -132,6 +132,7 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
                 padding:
                     const EdgeInsets.symmetric(horizontal: KPMargins.margin2),
                 child: ChoiceChip(
+                  showCheckmark: false,
                   label: Text(WordCategoryFilter.values[index].category),
                   avatar: _currentAppliedFilter.index != index ? null : icon,
                   pressElevation: KPMargins.margin4,

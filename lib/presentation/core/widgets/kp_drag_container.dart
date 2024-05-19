@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KPDragContainer extends StatelessWidget {
-  const KPDragContainer({Key? key}) : super(key: key);
+  const KPDragContainer({super.key});
 
   @override
   Widget build(BuildContext context) {

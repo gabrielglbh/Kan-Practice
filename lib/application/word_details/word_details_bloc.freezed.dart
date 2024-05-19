@@ -12,7 +12,7 @@ part of 'word_details_bloc.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$WordDetailsState {
@@ -137,7 +137,7 @@ class _$WordDetailsErrorImpl implements WordDetailsError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$WordDetailsErrorImpl &&
@@ -271,7 +271,7 @@ class _$WordDetailsInitialImpl implements WordDetailsInitial {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$WordDetailsInitialImpl);
   }
@@ -391,7 +391,7 @@ class _$WordDetailsLoadingImpl implements WordDetailsLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$WordDetailsLoadingImpl);
   }
@@ -511,7 +511,7 @@ class _$WordDetailsRemovedImpl implements WordDetailsRemoved {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$WordDetailsRemovedImpl);
   }
@@ -649,7 +649,7 @@ class _$WordDetailsLoadedImpl implements WordDetailsLoaded {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$WordDetailsLoadedImpl &&

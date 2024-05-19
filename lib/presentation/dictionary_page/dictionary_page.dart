@@ -17,7 +17,7 @@ import '../core/util/utils.dart';
 
 class DictionaryPage extends StatefulWidget {
   final DictionaryArguments args;
-  const DictionaryPage({Key? key, required this.args}) : super(key: key);
+  const DictionaryPage({super.key, required this.args});
 
   @override
   State<DictionaryPage> createState() => _DictionaryPageState();

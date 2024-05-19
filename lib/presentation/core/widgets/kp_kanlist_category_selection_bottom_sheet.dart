@@ -10,8 +10,7 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KPKanListCategorySelectionBottomSheet extends StatefulWidget {
   final String? folder;
-  const KPKanListCategorySelectionBottomSheet({Key? key, this.folder})
-      : super(key: key);
+  const KPKanListCategorySelectionBottomSheet({super.key, this.folder});
 
   @override
   State<KPKanListCategorySelectionBottomSheet> createState() =>

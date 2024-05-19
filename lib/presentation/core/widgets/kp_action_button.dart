@@ -18,14 +18,13 @@ class KPActionButton extends StatelessWidget {
   final double vertical;
   final Function() onTap;
   const KPActionButton(
-      {Key? key,
+      {super.key,
       required this.label,
       this.color = Colors.green,
       this.textColor = KPColors.primaryLight,
       this.horizontal = KPMargins.margin32,
       this.vertical = KPMargins.margin8,
-      required this.onTap})
-      : super(key: key);
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {

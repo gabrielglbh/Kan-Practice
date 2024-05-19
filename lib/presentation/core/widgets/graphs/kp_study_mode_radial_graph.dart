@@ -10,14 +10,14 @@ class KPStudyModeRadialGraph extends StatelessWidget {
   final double writing, reading, recognition, listening, speaking;
   final double animationDuration;
   const KPStudyModeRadialGraph({
-    Key? key,
+    super.key,
     required this.writing,
     required this.reading,
     required this.recognition,
     required this.listening,
     required this.speaking,
     this.animationDuration = 1000,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

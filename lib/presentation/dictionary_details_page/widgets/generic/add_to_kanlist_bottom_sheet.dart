@@ -20,8 +20,7 @@ class AddToKanListBottomSheet extends StatefulWidget {
   final String? word;
   final WordData data;
   const AddToKanListBottomSheet(
-      {Key? key, required this.word, required this.data})
-      : super(key: key);
+      {super.key, required this.word, required this.data});
 
   /// Creates and calls the [BottomSheet] with the content for a regular test
   static Future<String?> show(

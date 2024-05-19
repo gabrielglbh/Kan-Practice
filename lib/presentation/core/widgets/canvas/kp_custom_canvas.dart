@@ -20,12 +20,11 @@ class KPCustomCanvas extends StatefulWidget {
   /// Function to perform when the [im.Image] has been extracted
   final Function(ByteData, Size)? handleImage;
   const KPCustomCanvas(
-      {Key? key,
+      {super.key,
       required this.line,
       this.allowEdit = true,
       this.allowPrediction = false,
-      this.handleImage})
-      : super(key: key);
+      this.handleImage});
 
   @override
   State<KPCustomCanvas> createState() => _KPCustomCanvasState();

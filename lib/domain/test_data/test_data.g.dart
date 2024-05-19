@@ -8,14 +8,17 @@ part of 'test_data.dart';
 
 TestData _$TestDataFromJson(Map<String, dynamic> json) => TestData(
       statsId: json['statsId'] as String? ?? TestDataTableFields.statsMainId,
-      totalTests: json['totalTests'] as int,
-      testTotalCountWriting: json['testTotalCountWriting'] as int,
-      testTotalCountReading: json['testTotalCountReading'] as int,
-      testTotalCountRecognition: json['testTotalCountRecognition'] as int,
-      testTotalCountListening: json['testTotalCountListening'] as int,
-      testTotalCountSpeaking: json['testTotalCountSpeaking'] as int,
-      testTotalCountDefinition: json['testTotalCountDefinition'] as int,
-      testTotalCountGrammarPoint: json['testTotalCountGrammarPoint'] as int,
+      totalTests: (json['totalTests'] as num).toInt(),
+      testTotalCountWriting: (json['testTotalCountWriting'] as num).toInt(),
+      testTotalCountReading: (json['testTotalCountReading'] as num).toInt(),
+      testTotalCountRecognition:
+          (json['testTotalCountRecognition'] as num).toInt(),
+      testTotalCountListening: (json['testTotalCountListening'] as num).toInt(),
+      testTotalCountSpeaking: (json['testTotalCountSpeaking'] as num).toInt(),
+      testTotalCountDefinition:
+          (json['testTotalCountDefinition'] as num).toInt(),
+      testTotalCountGrammarPoint:
+          (json['testTotalCountGrammarPoint'] as num).toInt(),
       testTotalWinRateWriting:
           (json['testTotalWinRateWriting'] as num).toDouble(),
       testTotalWinRateReading:
@@ -30,14 +33,14 @@ TestData _$TestDataFromJson(Map<String, dynamic> json) => TestData(
           (json['testTotalWinRateDefinition'] as num).toDouble(),
       testTotalWinRateGrammarPoint:
           (json['testTotalWinRateGrammarPoint'] as num).toDouble(),
-      selectionTests: json['selectionTests'] as int,
-      blitzTests: json['blitzTests'] as int,
-      remembranceTests: json['remembranceTests'] as int,
-      numberTests: json['numberTests'] as int,
-      lessPctTests: json['lessPctTests'] as int,
-      categoryTests: json['categoryTests'] as int,
-      folderTests: json['folderTests'] as int,
-      dailyTests: json['dailyTests'] as int,
+      selectionTests: (json['selectionTests'] as num).toInt(),
+      blitzTests: (json['blitzTests'] as num).toInt(),
+      remembranceTests: (json['remembranceTests'] as num).toInt(),
+      numberTests: (json['numberTests'] as num).toInt(),
+      lessPctTests: (json['lessPctTests'] as num).toInt(),
+      categoryTests: (json['categoryTests'] as num).toInt(),
+      folderTests: (json['folderTests'] as num).toInt(),
+      dailyTests: (json['dailyTests'] as num).toInt(),
     );
 
 Map<String, dynamic> _$TestDataToJson(TestData instance) => <String, dynamic>{

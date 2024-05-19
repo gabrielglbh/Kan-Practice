@@ -15,24 +15,28 @@ GrammarPoint _$GrammarPointFromJson(Map<String, dynamic> json) => GrammarPoint(
           DatabaseConstants.emptyWinRate,
       winRateGrammarPoint: (json['winRateGrammarPoint'] as num?)?.toDouble() ??
           DatabaseConstants.emptyWinRate,
-      dateAdded: json['dateAdded'] as int? ?? 0,
-      dateLastShown: json['dateLastShown'] as int? ?? 0,
-      dateLastShownDefinition: json['dateLastShownDefinition'] as int? ?? 0,
-      repetitionsDefinition: json['repetitionsDefinition'] as int? ?? 0,
+      dateAdded: (json['dateAdded'] as num?)?.toInt() ?? 0,
+      dateLastShown: (json['dateLastShown'] as num?)?.toInt() ?? 0,
+      dateLastShownDefinition:
+          (json['dateLastShownDefinition'] as num?)?.toInt() ?? 0,
+      repetitionsDefinition:
+          (json['repetitionsDefinition'] as num?)?.toInt() ?? 0,
       previousEaseFactorDefinition:
           (json['previousEaseFactorDefinition'] as num?)?.toDouble() ?? 2.5,
       previousIntervalDefinition:
-          json['previousIntervalDefinition'] as int? ?? 0,
+          (json['previousIntervalDefinition'] as num?)?.toInt() ?? 0,
       previousIntervalAsDateDefinition:
-          json['previousIntervalAsDateDefinition'] as int? ?? 0,
-      dateLastShownGrammarPoint: json['dateLastShownGrammarPoint'] as int? ?? 0,
-      repetitionsGrammarPoint: json['repetitionsGrammarPoint'] as int? ?? 0,
+          (json['previousIntervalAsDateDefinition'] as num?)?.toInt() ?? 0,
+      dateLastShownGrammarPoint:
+          (json['dateLastShownGrammarPoint'] as num?)?.toInt() ?? 0,
+      repetitionsGrammarPoint:
+          (json['repetitionsGrammarPoint'] as num?)?.toInt() ?? 0,
       previousEaseFactorGrammarPoint:
           (json['previousEaseFactorGrammarPoint'] as num?)?.toDouble() ?? 2.5,
       previousIntervalGrammarPoint:
-          json['previousIntervalGrammarPoint'] as int? ?? 0,
+          (json['previousIntervalGrammarPoint'] as num?)?.toInt() ?? 0,
       previousIntervalAsDateGrammarPoint:
-          json['previousIntervalAsDateGrammarPoint'] as int? ?? 0,
+          (json['previousIntervalAsDateGrammarPoint'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$GrammarPointToJson(GrammarPoint instance) =>

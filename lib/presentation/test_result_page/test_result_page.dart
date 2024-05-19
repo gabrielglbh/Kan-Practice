@@ -20,7 +20,7 @@ import 'package:kanpractice/presentation/test_result_page/widgets/words_on_test_
 
 class TestResultPage extends StatefulWidget {
   final TestResultArguments args;
-  const TestResultPage({Key? key, required this.args}) : super(key: key);
+  const TestResultPage({super.key, required this.args});
 
   @override
   State<TestResultPage> createState() => _TestResultPageState();

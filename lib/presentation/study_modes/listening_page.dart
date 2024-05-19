@@ -22,7 +22,7 @@ import 'package:kanpractice/presentation/study_modes/utils/study_mode_update_han
 
 class ListeningStudy extends StatefulWidget {
   final ModeArguments args;
-  const ListeningStudy({Key? key, required this.args}) : super(key: key);
+  const ListeningStudy({super.key, required this.args});
 
   @override
   State<ListeningStudy> createState() => _ListeningStudyState();
@@ -106,10 +106,10 @@ class _ListeningStudyState extends State<ListeningStudy> {
         testScore += s;
       }
       final score = testScore / _studyList.length;
-      await StudyModeUpdateHandler.handle(context, widget.args,
+      StudyModeUpdateHandler.handle(context, widget.args,
           testScore: score, testScores: _testScores);
     } else {
-      await StudyModeUpdateHandler.handle(context, widget.args);
+      StudyModeUpdateHandler.handle(context, widget.args);
     }
   }
 

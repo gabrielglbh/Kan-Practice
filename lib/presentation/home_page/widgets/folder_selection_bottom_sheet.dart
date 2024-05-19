@@ -13,7 +13,7 @@ import 'package:kanpractice/presentation/core/widgets/modes_grid/kp_modes_grid.d
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class FolderSelectionBottomSheet extends StatefulWidget {
-  const FolderSelectionBottomSheet({Key? key}) : super(key: key);
+  const FolderSelectionBottomSheet({super.key});
 
   @override
   State<FolderSelectionBottomSheet> createState() =>

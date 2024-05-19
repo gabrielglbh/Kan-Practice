@@ -7,8 +7,8 @@ part of 'market.dart';
 // **************************************************************************
 
 Market _$MarketFromJson(Map<String, dynamic> json) => Market(
-      words: json['words'] as int,
-      grammar: json['grammar'] as int? ?? 0,
+      words: (json['words'] as num).toInt(),
+      grammar: (json['grammar'] as num?)?.toInt() ?? 0,
       uid: json['uid'] as String,
       name: json['name'] as String,
       ratingMap: (json['ratingMap'] as Map<String, dynamic>?)?.map(
@@ -16,14 +16,14 @@ Market _$MarketFromJson(Map<String, dynamic> json) => Market(
           ) ??
           const {},
       rating: (json['rating'] as num?)?.toDouble() ?? 0,
-      downloads: json['downloads'] as int? ?? 0,
+      downloads: (json['downloads'] as num?)?.toInt() ?? 0,
       description: json['description'] as String,
       author: json['author'] as String,
       keywords: (json['keywords'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      uploadedToMarket: json['uploadedToMarket'] as int? ?? 0,
+      uploadedToMarket: (json['uploadedToMarket'] as num?)?.toInt() ?? 0,
       isFolder: json['isFolder'] as bool? ?? false,
       language: json['language'] as String,
     );

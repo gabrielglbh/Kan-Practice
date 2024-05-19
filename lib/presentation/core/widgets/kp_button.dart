@@ -21,7 +21,7 @@ class KPButton extends StatelessWidget {
   final Function()? onTap;
   final Widget? customIcon;
   const KPButton({
-    Key? key,
+    super.key,
     this.width = false,
     this.color = KPColors.secondaryColor,
     this.title1,
@@ -29,7 +29,7 @@ class KPButton extends StatelessWidget {
     required this.onTap,
     this.icon,
     this.customIcon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

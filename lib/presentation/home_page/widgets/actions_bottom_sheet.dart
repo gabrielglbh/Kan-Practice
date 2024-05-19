@@ -8,7 +8,7 @@ import 'package:kanpractice/presentation/core/widgets/kp_test_bottom_sheet.dart'
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class ActionsBottomSheet extends StatelessWidget {
-  const ActionsBottomSheet({Key? key}) : super(key: key);
+  const ActionsBottomSheet({super.key});
 
   /// Returns the name of the KanList being created to use the parents
   /// bloc to create it properly

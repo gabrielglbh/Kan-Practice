@@ -25,12 +25,11 @@ class GrammarListWidget extends StatefulWidget {
   final String query;
   final FocusNode? searchBarFn;
   const GrammarListWidget(
-      {Key? key,
+      {super.key,
       required this.list,
       required this.query,
       this.searchBarFn,
-      required this.listName})
-      : super(key: key);
+      required this.listName});
 
   @override
   State<GrammarListWidget> createState() => _GrammarListWidgetState();

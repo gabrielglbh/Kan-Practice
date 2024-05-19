@@ -6,8 +6,7 @@ class KPListPercentageIndicator extends StatelessWidget {
   /// Value to show on the center of a [LinearPercentIndicator] as a percentage
   /// over 100.
   final double value;
-  const KPListPercentageIndicator({Key? key, required this.value})
-      : super(key: key);
+  const KPListPercentageIndicator({super.key, required this.value});
 
   @override
   Widget build(BuildContext context) {

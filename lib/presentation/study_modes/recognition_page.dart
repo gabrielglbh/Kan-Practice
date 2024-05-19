@@ -21,7 +21,7 @@ import 'package:kanpractice/presentation/study_modes/utils/study_mode_update_han
 
 class RecognitionStudy extends StatefulWidget {
   final ModeArguments args;
-  const RecognitionStudy({Key? key, required this.args}) : super(key: key);
+  const RecognitionStudy({super.key, required this.args});
 
   @override
   State<RecognitionStudy> createState() => _RecognitionStudyState();
@@ -103,10 +103,10 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
         testScore += s;
       }
       final score = testScore / _studyList.length;
-      await StudyModeUpdateHandler.handle(context, widget.args,
+      StudyModeUpdateHandler.handle(context, widget.args,
           testScore: score, testScores: _testScores);
     } else {
-      await StudyModeUpdateHandler.handle(context, widget.args);
+      StudyModeUpdateHandler.handle(context, widget.args);
     }
   }
 

@@ -14,7 +14,7 @@ import 'package:kanpractice/presentation/statistics_page/tab/test_history_tab/te
 import 'package:kanpractice/presentation/statistics_page/tab/test_stats_tab.dart';
 
 class StatisticsPage extends StatefulWidget {
-  const StatisticsPage({Key? key}) : super(key: key);
+  const StatisticsPage({super.key});
 
   @override
   State<StatisticsPage> createState() => _StatisticsPageState();

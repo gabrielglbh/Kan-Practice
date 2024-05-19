@@ -16,11 +16,11 @@ class ArchiveGrammarListWidget extends StatefulWidget {
   final Function() onScrolledToBottom;
   final Function() removeFocus;
   const ArchiveGrammarListWidget({
-    Key? key,
+    super.key,
     required this.query,
     required this.onScrolledToBottom,
     required this.removeFocus,
-  }) : super(key: key);
+  });
 
   @override
   State<ArchiveGrammarListWidget> createState() =>

@@ -17,7 +17,7 @@ class KPWordItem extends StatelessWidget {
   final Function() onShowModal;
   final bool isBadge;
   const KPWordItem({
-    Key? key,
+    super.key,
     this.aggregateStats = false,
     this.listName,
     required this.word,
@@ -27,7 +27,7 @@ class KPWordItem extends StatelessWidget {
     required this.index,
     required this.onShowModal,
     this.isBadge = true,
-  }) : super(key: key);
+  });
 
   double _getProperWordWinRate(Word word) {
     if (aggregateStats) {

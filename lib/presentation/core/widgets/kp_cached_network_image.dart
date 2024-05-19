@@ -6,9 +6,11 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 class KPCachedNetworkImage extends StatelessWidget {
   final String url;
   final String errorMessage;
-  const KPCachedNetworkImage(
-      {Key? key, required this.url, required this.errorMessage})
-      : super(key: key);
+  const KPCachedNetworkImage({
+    super.key,
+    required this.url,
+    required this.errorMessage,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -10,11 +10,11 @@ class KPGrammarModeRadialGraph extends StatelessWidget {
   final double definition, grammarPoints;
   final double animationDuration;
   const KPGrammarModeRadialGraph({
-    Key? key,
+    super.key,
     required this.definition,
     required this.grammarPoints,
     this.animationDuration = 1000,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -8,13 +8,12 @@ class MusicVisualizer extends StatelessWidget {
   final Curve? curve;
 
   const MusicVisualizer({
-    Key? key,
+    super.key,
     required this.colors,
     required this.duration,
     required this.barCount,
     this.curve = Curves.easeInQuad,
-  })  : assert(colors.length >= 2 && duration.length >= 5),
-        super(key: key);
+  }) : assert(colors.length >= 2 && duration.length >= 5);
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +37,11 @@ class VisualComponent extends StatefulWidget {
   final Curve curve;
 
   const VisualComponent({
-    Key? key,
+    super.key,
     required this.duration,
     required this.color,
     required this.curve,
-  }) : super(key: key);
+  });
 
   @override
   State<VisualComponent> createState() => _VisualComponentState();

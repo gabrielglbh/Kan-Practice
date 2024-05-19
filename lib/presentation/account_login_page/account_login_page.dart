@@ -11,7 +11,7 @@ import 'package:kanpractice/presentation/core/widgets/kp_text_form.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -120,9 +120,9 @@ class _LoginPageState extends State<LoginPage> {
           ElevatedButton(
             onPressed: () => _handleGoogleLogin(),
             style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
-                  backgroundColor: MaterialStateProperty.all<Color>(
+                  backgroundColor: WidgetStateProperty.all<Color>(
                       KPColors.getPrimary(context)),
-                  shape: MaterialStateProperty.all<OutlinedBorder>(
+                  shape: WidgetStateProperty.all<OutlinedBorder>(
                     RoundedRectangleBorder(
                         side: BorderSide(color: KPColors.getAccent(context)),
                         borderRadius: BorderRadius.circular(KPRadius.radius8)),

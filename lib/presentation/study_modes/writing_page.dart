@@ -22,7 +22,7 @@ import 'package:kanpractice/presentation/study_modes/widgets/writing_buttons_ani
 
 class WritingStudy extends StatefulWidget {
   final ModeArguments args;
-  const WritingStudy({Key? key, required this.args}) : super(key: key);
+  const WritingStudy({super.key, required this.args});
 
   @override
   State<WritingStudy> createState() => _WritingStudyState();
@@ -183,10 +183,10 @@ class _WritingStudyState extends State<WritingStudy> {
         testScore += s;
       }
       final score = testScore / _studyList.length;
-      await StudyModeUpdateHandler.handle(context, widget.args,
+      StudyModeUpdateHandler.handle(context, widget.args,
           testScore: score, testScores: _testScores);
     } else {
-      await StudyModeUpdateHandler.handle(context, widget.args);
+      StudyModeUpdateHandler.handle(context, widget.args);
     }
   }
 

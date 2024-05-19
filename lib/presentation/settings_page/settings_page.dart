@@ -22,7 +22,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({super.key});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -86,7 +86,9 @@ class _SettingsPageState extends State<SettingsPage> {
               } catch (err) {
                 if (!mounted) return;
                 Utils.getSnackBar(
-                    context, "settings_information_rating_failed".tr());
+                    // ignore: use_build_context_synchronously
+                    context,
+                    "settings_information_rating_failed".tr());
               }
             },
           ),

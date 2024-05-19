@@ -20,7 +20,7 @@ import 'package:kanpractice/presentation/ocr_page/widgets/permission_denied.dart
 import 'package:image_cropper/image_cropper.dart';
 
 class OCRPage extends StatefulWidget {
-  const OCRPage({Key? key}) : super(key: key);
+  const OCRPage({super.key});
 
   @override
   State<OCRPage> createState() => _OCRPageState();
@@ -102,9 +102,11 @@ class _OCRPageState extends State<OCRPage> {
 
               if (!mounted) return;
               if (croppedFile == null) {
+                // ignore: use_build_context_synchronously
                 context.read<OCRPageBloc>().add(OCRPageEventLoadImage(i.image));
               } else {
                 final image = File(croppedFile.path);
+                // ignore: use_build_context_synchronously
                 context.read<OCRPageBloc>().add(OCRPageEventLoadImage(image));
               }
             },

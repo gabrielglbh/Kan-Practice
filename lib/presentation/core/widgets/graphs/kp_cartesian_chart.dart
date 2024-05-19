@@ -35,14 +35,14 @@ class KPCartesianChart<T> extends StatelessWidget {
   final int markerThreshold;
   final double? height;
   const KPCartesianChart({
-    Key? key,
+    super.key,
     required this.dataSource,
     required this.graphName,
     this.intervalType = DateTimeIntervalType.auto,
     this.zoomPanBehavior,
     this.markerThreshold = 200,
     this.height,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -74,8 +74,8 @@ class KPCartesianChart<T> extends StatelessWidget {
           intervalType: intervalType,
           enableAutoIntervalOnZooming: true,
         ),
-        primaryYAxis: NumericAxis(maximum: 120, minimum: 0, interval: 20),
-        series: <ChartSeries<TestDataFrame, DateTime>>[
+        primaryYAxis: const NumericAxis(maximum: 120, minimum: 0, interval: 20),
+        series: <CartesianSeries<TestDataFrame, DateTime>>[
           LineSeries<TestDataFrame, DateTime>(
             animationDuration: 0,
             name: graphName,
@@ -102,10 +102,7 @@ class KPCartesianChart<T> extends StatelessWidget {
 
 class _KPCartesianChartTooltip extends StatelessWidget {
   final TestDataFrame source;
-  const _KPCartesianChartTooltip({
-    Key? key,
-    required this.source,
-  }) : super(key: key);
+  const _KPCartesianChartTooltip({required this.source});
 
   @override
   Widget build(BuildContext context) {

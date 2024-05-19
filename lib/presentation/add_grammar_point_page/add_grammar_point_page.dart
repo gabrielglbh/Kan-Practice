@@ -13,7 +13,7 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class AddGrammarPage extends StatefulWidget {
   final AddGrammarPointArgs args;
-  const AddGrammarPage({Key? key, required this.args}) : super(key: key);
+  const AddGrammarPage({super.key, required this.args});
 
   @override
   State<AddGrammarPage> createState() => _AddGrammarPageState();

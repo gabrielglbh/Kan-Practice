@@ -7,7 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 class ExamplePhrases extends StatelessWidget {
   final List<WordExample> data;
-  const ExamplePhrases({Key? key, required this.data}) : super(key: key);
+  const ExamplePhrases({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {

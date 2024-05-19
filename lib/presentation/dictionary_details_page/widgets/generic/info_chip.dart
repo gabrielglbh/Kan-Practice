@@ -5,8 +5,7 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 class InfoChip extends StatelessWidget {
   final String? label;
   final ChipType type;
-  const InfoChip({Key? key, required this.label, required this.type})
-      : super(key: key);
+  const InfoChip({super.key, required this.label, required this.type});
 
   @override
   Widget build(BuildContext context) {

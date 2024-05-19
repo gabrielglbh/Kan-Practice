@@ -27,7 +27,7 @@ WordList _$WordListFromJson(Map<String, dynamic> json) => WordList(
       totalWinRateGrammarPoint:
           (json['totalWinRateGrammarPoint'] as num?)?.toDouble() ??
               DatabaseConstants.emptyWinRate,
-      lastUpdated: json['lastUpdated'] as int,
+      lastUpdated: (json['lastUpdated'] as num).toInt(),
     );
 
 Map<String, dynamic> _$WordListToJson(WordList instance) => <String, dynamic>{

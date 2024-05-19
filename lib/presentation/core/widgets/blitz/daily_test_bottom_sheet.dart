@@ -7,7 +7,7 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class DailyBottomSheet extends StatelessWidget {
-  const DailyBottomSheet({Key? key}) : super(key: key);
+  const DailyBottomSheet({super.key});
 
   /// Creates and calls the [BottomSheet] with the content for a regular test
   static Future<String?> show(BuildContext context) async {

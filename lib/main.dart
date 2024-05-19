@@ -115,7 +115,7 @@ void main() async {
 }
 
 class SetUpApp extends StatelessWidget {
-  const SetUpApp({Key? key}) : super(key: key);
+  const SetUpApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +133,7 @@ class SetUpApp extends StatelessWidget {
 }
 
 class KanPractice extends StatefulWidget {
-  const KanPractice({Key? key}) : super(key: key);
+  const KanPractice({super.key});
 
   @override
   State<KanPractice> createState() => _KanPracticeState();

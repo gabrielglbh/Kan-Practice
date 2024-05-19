@@ -35,7 +35,7 @@ class KPWinRateChart extends StatelessWidget {
   /// Offset from the actual graph to the line
   final double pointerOffset;
   const KPWinRateChart(
-      {Key? key,
+      {super.key,
       this.title,
       required this.winRate,
       this.size = KPSizes.defaultSizeWinRateChart,
@@ -45,8 +45,7 @@ class KPWinRateChart extends StatelessWidget {
       this.showGaugeAnnotation = true,
       this.padding = const EdgeInsets.all(KPMargins.margin8),
       this.widthLine = 0.1,
-      this.pointerOffset = 0.1})
-      : super(key: key);
+      this.pointerOffset = 0.1});
 
   @override
   Widget build(BuildContext context) {

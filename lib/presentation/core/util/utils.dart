@@ -188,8 +188,8 @@ class Utils {
       child = Text(versionNotes);
     }
 
-    // ignore: use_build_context_synchronously
     await showDialog(
+      // ignore: use_build_context_synchronously
       context: context,
       barrierDismissible: true,
       builder: (context) {

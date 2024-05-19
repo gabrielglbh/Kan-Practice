@@ -8,7 +8,7 @@ class KPLearningTextBox extends StatelessWidget {
   final double? right, left;
   final TextAlign textAlign;
   const KPLearningTextBox({
-    Key? key,
+    super.key,
     required this.text,
     required this.textStyle,
     this.top = 0,
@@ -16,7 +16,7 @@ class KPLearningTextBox extends StatelessWidget {
     this.right,
     this.left,
     this.textAlign = TextAlign.center,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

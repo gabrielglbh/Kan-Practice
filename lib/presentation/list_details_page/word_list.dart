@@ -26,13 +26,12 @@ class WordListWidget extends StatefulWidget {
   final Function() onStartTutorial;
   final FocusNode? searchBarFn;
   const WordListWidget(
-      {Key? key,
+      {super.key,
       required this.list,
       required this.query,
       required this.onStartTutorial,
       this.searchBarFn,
-      required this.listName})
-      : super(key: key);
+      required this.listName});
 
   @override
   State<WordListWidget> createState() => _WordListWidgetState();

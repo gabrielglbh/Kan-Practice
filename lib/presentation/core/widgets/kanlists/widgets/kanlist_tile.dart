@@ -22,13 +22,13 @@ class KanlistTile extends StatelessWidget {
   final bool withinFolder;
   final bool showGrammarGraphs;
   const KanlistTile({
-    Key? key,
+    super.key,
     required this.item,
     required this.onTap,
     required this.onRemoval,
     this.withinFolder = false,
     this.showGrammarGraphs = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

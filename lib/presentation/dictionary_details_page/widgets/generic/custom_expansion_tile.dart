@@ -6,11 +6,10 @@ class CustomExpansionTile extends StatelessWidget {
   final List<Widget> children;
   final EdgeInsets paddingHorizontal;
   const CustomExpansionTile(
-      {Key? key,
+      {super.key,
       required this.label,
       required this.children,
-      this.paddingHorizontal = EdgeInsets.zero})
-      : super(key: key);
+      this.paddingHorizontal = EdgeInsets.zero});
 
   @override
   Widget build(BuildContext context) {

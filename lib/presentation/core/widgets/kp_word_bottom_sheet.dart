@@ -24,12 +24,11 @@ class KPWordBottomSheet extends StatelessWidget {
   final Function()? onRemove;
   final Function()? onTap;
   const KPWordBottomSheet(
-      {Key? key,
+      {super.key,
       required this.listName,
       required this.word,
       this.onTap,
-      this.onRemove})
-      : super(key: key);
+      this.onRemove});
 
   /// Creates and calls the [BottomSheet] with the content for displaying the data
   /// of the current selected word

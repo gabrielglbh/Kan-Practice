@@ -22,7 +22,7 @@ import 'package:kanpractice/presentation/study_modes/utils/study_mode_update_han
 
 class ReadingStudy extends StatefulWidget {
   final ModeArguments args;
-  const ReadingStudy({Key? key, required this.args}) : super(key: key);
+  const ReadingStudy({super.key, required this.args});
 
   @override
   State<ReadingStudy> createState() => _ReadingStudyState();
@@ -109,10 +109,10 @@ class _ReadingStudyState extends State<ReadingStudy> {
         testScore += s;
       }
       final score = testScore / _studyList.length;
-      await StudyModeUpdateHandler.handle(context, widget.args,
+      StudyModeUpdateHandler.handle(context, widget.args,
           testScore: score, testScores: _testScores);
     } else {
-      await StudyModeUpdateHandler.handle(context, widget.args);
+      StudyModeUpdateHandler.handle(context, widget.args);
     }
   }
 

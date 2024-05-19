@@ -21,45 +21,56 @@ Word _$WordFromJson(Map<String, dynamic> json) => Word(
           DatabaseConstants.emptyWinRate,
       winRateSpeaking: (json['winRateSpeaking'] as num?)?.toDouble() ??
           DatabaseConstants.emptyWinRate,
-      dateAdded: json['dateAdded'] as int? ?? 0,
-      dateLastShown: json['dateLastShown'] as int? ?? 0,
-      dateLastShownWriting: json['dateLastShownWriting'] as int? ?? 0,
-      dateLastShownReading: json['dateLastShownReading'] as int? ?? 0,
-      dateLastShownRecognition: json['dateLastShownRecognition'] as int? ?? 0,
-      dateLastShownListening: json['dateLastShownListening'] as int? ?? 0,
-      dateLastShownSpeaking: json['dateLastShownSpeaking'] as int? ?? 0,
-      category: json['category'] as int? ?? 0,
-      repetitionsWriting: json['repetitionsWriting'] as int? ?? 0,
+      dateAdded: (json['dateAdded'] as num?)?.toInt() ?? 0,
+      dateLastShown: (json['dateLastShown'] as num?)?.toInt() ?? 0,
+      dateLastShownWriting:
+          (json['dateLastShownWriting'] as num?)?.toInt() ?? 0,
+      dateLastShownReading:
+          (json['dateLastShownReading'] as num?)?.toInt() ?? 0,
+      dateLastShownRecognition:
+          (json['dateLastShownRecognition'] as num?)?.toInt() ?? 0,
+      dateLastShownListening:
+          (json['dateLastShownListening'] as num?)?.toInt() ?? 0,
+      dateLastShownSpeaking:
+          (json['dateLastShownSpeaking'] as num?)?.toInt() ?? 0,
+      category: (json['category'] as num?)?.toInt() ?? 0,
+      repetitionsWriting: (json['repetitionsWriting'] as num?)?.toInt() ?? 0,
       previousEaseFactorWriting:
           (json['previousEaseFactorWriting'] as num?)?.toDouble() ?? 2.5,
-      previousIntervalWriting: json['previousIntervalWriting'] as int? ?? 0,
+      previousIntervalWriting:
+          (json['previousIntervalWriting'] as num?)?.toInt() ?? 0,
       previousIntervalAsDateWriting:
-          json['previousIntervalAsDateWriting'] as int? ?? 0,
-      repetitionsReading: json['repetitionsReading'] as int? ?? 0,
+          (json['previousIntervalAsDateWriting'] as num?)?.toInt() ?? 0,
+      repetitionsReading: (json['repetitionsReading'] as num?)?.toInt() ?? 0,
       previousEaseFactorReading:
           (json['previousEaseFactorReading'] as num?)?.toDouble() ?? 2.5,
-      previousIntervalReading: json['previousIntervalReading'] as int? ?? 0,
+      previousIntervalReading:
+          (json['previousIntervalReading'] as num?)?.toInt() ?? 0,
       previousIntervalAsDateReading:
-          json['previousIntervalAsDateReading'] as int? ?? 0,
-      repetitionsRecognition: json['repetitionsRecognition'] as int? ?? 0,
+          (json['previousIntervalAsDateReading'] as num?)?.toInt() ?? 0,
+      repetitionsRecognition:
+          (json['repetitionsRecognition'] as num?)?.toInt() ?? 0,
       previousEaseFactorRecognition:
           (json['previousEaseFactorRecognition'] as num?)?.toDouble() ?? 2.5,
       previousIntervalRecognition:
-          json['previousIntervalRecognition'] as int? ?? 0,
+          (json['previousIntervalRecognition'] as num?)?.toInt() ?? 0,
       previousIntervalAsDateRecognition:
-          json['previousIntervalAsDateRecognition'] as int? ?? 0,
-      repetitionsListening: json['repetitionsListening'] as int? ?? 0,
+          (json['previousIntervalAsDateRecognition'] as num?)?.toInt() ?? 0,
+      repetitionsListening:
+          (json['repetitionsListening'] as num?)?.toInt() ?? 0,
       previousEaseFactorListening:
           (json['previousEaseFactorListening'] as num?)?.toDouble() ?? 2.5,
-      previousIntervalListening: json['previousIntervalListening'] as int? ?? 0,
+      previousIntervalListening:
+          (json['previousIntervalListening'] as num?)?.toInt() ?? 0,
       previousIntervalAsDateListening:
-          json['previousIntervalAsDateListening'] as int? ?? 0,
-      repetitionsSpeaking: json['repetitionsSpeaking'] as int? ?? 0,
+          (json['previousIntervalAsDateListening'] as num?)?.toInt() ?? 0,
+      repetitionsSpeaking: (json['repetitionsSpeaking'] as num?)?.toInt() ?? 0,
       previousEaseFactorSpeaking:
           (json['previousEaseFactorSpeaking'] as num?)?.toDouble() ?? 2.5,
-      previousIntervalSpeaking: json['previousIntervalSpeaking'] as int? ?? 0,
+      previousIntervalSpeaking:
+          (json['previousIntervalSpeaking'] as num?)?.toInt() ?? 0,
       previousIntervalAsDateSpeaking:
-          json['previousIntervalAsDateSpeaking'] as int? ?? 0,
+          (json['previousIntervalAsDateSpeaking'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$WordToJson(Word instance) => <String, dynamic>{

@@ -6,7 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class DevInfo extends StatelessWidget {
-  const DevInfo({Key? key}) : super(key: key);
+  const DevInfo({super.key});
 
   static Future<void> callModalSheet(BuildContext context) async {
     await showModalBottomSheet(

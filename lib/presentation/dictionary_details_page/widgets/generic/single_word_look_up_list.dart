@@ -7,8 +7,7 @@ class SingleWordLookUpList extends StatelessWidget {
   final List<String>? wordList;
   final bool fromDictionary;
   const SingleWordLookUpList(
-      {Key? key, required this.wordList, required this.fromDictionary})
-      : super(key: key);
+      {super.key, required this.wordList, required this.fromDictionary});
 
   @override
   Widget build(BuildContext context) {

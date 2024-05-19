@@ -12,7 +12,7 @@ part of 'backup_bloc.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$BackupState {
@@ -126,7 +126,7 @@ class _$BackupLoadingImpl implements BackupLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$BackupLoadingImpl);
   }
@@ -271,7 +271,7 @@ class _$BackupLoadedImpl implements BackupLoaded {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$BackupLoadedImpl &&
@@ -411,7 +411,7 @@ class _$BackupInitialImpl implements BackupInitial {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$BackupInitialImpl);
   }
@@ -556,7 +556,7 @@ class _$BackupErrorImpl implements BackupError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$BackupErrorImpl &&
@@ -729,7 +729,7 @@ class _$BackupVersionRetrievedImpl implements BackupVersionRetrieved {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$BackupVersionRetrievedImpl &&
@@ -898,7 +898,7 @@ class _$BackupNotesRetrievedImpl implements BackupNotesRetrieved {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$BackupNotesRetrievedImpl &&

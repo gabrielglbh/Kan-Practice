@@ -5,8 +5,7 @@ import 'package:kanpractice/injection.dart';
 class TTSIconButton extends StatelessWidget {
   final String? word;
   final double iconSize;
-  const TTSIconButton({Key? key, required this.word, this.iconSize = 24})
-      : super(key: key);
+  const TTSIconButton({super.key, required this.word, this.iconSize = 24});
 
   @override
   Widget build(BuildContext context) {

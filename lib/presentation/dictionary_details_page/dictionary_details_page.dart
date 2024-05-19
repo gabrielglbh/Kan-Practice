@@ -18,7 +18,7 @@ import 'package:kanpractice/presentation/dictionary_details_page/widgets/word_re
 class DictionaryDetailsPage extends StatelessWidget {
   final DictionaryDetailsArguments args;
 
-  const DictionaryDetailsPage({Key? key, required this.args}) : super(key: key);
+  const DictionaryDetailsPage({super.key, required this.args});
 
   @override
   Widget build(BuildContext context) {

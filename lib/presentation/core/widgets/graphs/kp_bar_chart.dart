@@ -13,22 +13,20 @@ class KPBarChart extends StatelessWidget {
   final bool enableTooltip;
   final double heightRatio;
   final bool isHorizontalChart;
-  final ChartAxis? axysType;
   final String tooltip;
   final String graphName;
   final double animationDuration;
   const KPBarChart({
-    Key? key,
+    super.key,
     required this.dataSource,
     required this.graphName,
     this.enableTooltip = true,
     this.onBarTapped,
     this.heightRatio = 1.7,
     this.isHorizontalChart = false,
-    this.axysType,
     this.tooltip = "",
     this.animationDuration = 1000,
-  }) : super(key: key);
+  });
 
   bool get _isWinRateChart => tooltip == "%";
 
@@ -46,11 +44,10 @@ class KPBarChart extends StatelessWidget {
             isVisible: isHorizontalChart ? true : false,
             isInversed: isHorizontalChart ? true : false,
           ),
-          primaryYAxis: axysType,
           onTooltipRender: (tip) {
             tip.text = "${tip.text}$tooltip";
           },
-          series: <ChartSeries<DataFrame, String>>[
+          series: <CartesianSeries<DataFrame, String>>[
             !isHorizontalChart
                 ? ColumnSeries<DataFrame, String>(
                     animationDuration: animationDuration,

@@ -15,7 +15,7 @@ class WordSearchBar extends StatelessWidget {
   final Function() onRemoveLast;
   final void Function(String) onChange;
   const WordSearchBar({
-    Key? key,
+    super.key,
     required this.hint,
     required this.controller,
     required this.onClear,
@@ -26,7 +26,7 @@ class WordSearchBar extends StatelessWidget {
     this.bottom = 0,
     this.left = KPMargins.margin8,
     this.right = KPMargins.margin8,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

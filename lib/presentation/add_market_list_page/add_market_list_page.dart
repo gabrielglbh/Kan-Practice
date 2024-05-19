@@ -16,7 +16,7 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class AddMarketListPage extends StatefulWidget {
-  const AddMarketListPage({Key? key}) : super(key: key);
+  const AddMarketListPage({super.key});
 
   @override
   State<AddMarketListPage> createState() => _AddMarketListPageState();

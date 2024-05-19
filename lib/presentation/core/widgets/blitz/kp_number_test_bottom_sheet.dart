@@ -15,7 +15,7 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
 class KPNumberTestBottomSheet extends StatefulWidget {
-  const KPNumberTestBottomSheet({Key? key}) : super(key: key);
+  const KPNumberTestBottomSheet({super.key});
 
   /// Creates and calls the [BottomSheet] with the content for a blitz test
   static Future<String?> show(BuildContext context) async {

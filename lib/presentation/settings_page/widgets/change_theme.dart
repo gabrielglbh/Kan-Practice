@@ -5,7 +5,7 @@ import 'package:kanpractice/presentation/core/theme/theme_manager.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class ChangeAppTheme extends StatefulWidget {
-  const ChangeAppTheme({Key? key}) : super(key: key);
+  const ChangeAppTheme({super.key});
 
   static Future<void> show(BuildContext context) async {
     await showModalBottomSheet(

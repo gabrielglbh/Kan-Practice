@@ -10,11 +10,10 @@ class KPWordCategoryList extends StatelessWidget {
   final Function(int) selected;
   final bool hasScrollablePhysics;
   const KPWordCategoryList(
-      {Key? key,
+      {super.key,
       required this.onSelected,
       required this.selected,
-      this.hasScrollablePhysics = false})
-      : super(key: key);
+      this.hasScrollablePhysics = false});
 
   @override
   Widget build(BuildContext context) {

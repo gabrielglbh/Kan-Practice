@@ -23,7 +23,7 @@ BackUp _$BackUpFromJson(Map<String, dynamic> json) => BackUp(
       relationFolderList: (json['relationFolderList'] as List<dynamic>)
           .map((e) => RelationFolderList.fromJson(e as Map<String, dynamic>))
           .toList(),
-      lastUpdated: json['lastUpdated'] as int,
+      lastUpdated: (json['lastUpdated'] as num).toInt(),
     );
 
 Map<String, dynamic> _$BackUpToJson(BackUp instance) => <String, dynamic>{

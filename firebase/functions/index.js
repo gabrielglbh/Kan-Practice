@@ -1,47 +1,8 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-const fetch = (...args) =>
-  import("node-fetch").then(({default: fetch}) => fetch(...args));
 
 admin.initializeApp();
 const database = admin.firestore();
-const _baseUrl = "https://api.openai.com/v1/completions";
-
-// Usage of Secret Manager API in Google Cloud.
-// See: https://firebase.google.com/docs/functions/config-env?hl=es-419#secret-manager
-exports.getOpenAIPrompt = functions
-    .runWith({secrets: ["OPENAI_TOKEN"]})
-    .https.onRequest((req, res) => {
-      const tokenId = req.headers.authorization;
-      if (tokenId === undefined) {
-        return res.status(401).send("User not authenticated");
-      }
-      return admin.auth().verifyIdToken(tokenId)
-          .then(async (_) => {
-            const words = req.query.words;
-            if (words === undefined) return;
-            const simplePrompt = words.length == 1 ? "simple" : "";
-            const countPrompt = words.length == 1 ? "word" : "words";
-            const concatWords = Array(words).join(", ");
-
-            const response = await fetch(_baseUrl, {
-              method: "post",
-              body: JSON.stringify({
-                model: "text-davinci-003",
-                prompt: "Write a " + simplePrompt +
-                    " japanese sentence that contains the " + countPrompt +
-                    " " + concatWords,
-                max_tokens: 64,
-              }),
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + process.env.OPENAI_TOKEN,
-              },
-            });
-            res.json(await response.json());
-          })
-          .catch((err) => res.status(401).send(err));
-    });
 
 exports.removeBackup = functions.auth.user().onDelete(async (user) => {
   try {

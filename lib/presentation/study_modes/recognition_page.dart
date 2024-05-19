@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/application/purchases/purchases_bloc.dart';
-import 'package:kanpractice/application/sentence_generator/sentence_generator_bloc.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
@@ -20,10 +18,6 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 import 'package:kanpractice/presentation/study_modes/utils/study_mode_update_handler.dart';
-import 'package:kanpractice/presentation/study_modes/widgets/context_button.dart';
-import 'package:kanpractice/presentation/study_modes/widgets/context_loader.dart';
-import 'package:kanpractice/presentation/study_modes/widgets/context_loading.dart';
-import 'package:kanpractice/presentation/study_modes/widgets/context_widget.dart';
 
 class RecognitionStudy extends StatefulWidget {
   final ModeArguments args;
@@ -62,7 +56,7 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
     super.initState();
   }
 
-  Future<void> _updateUIOnSubmit(double score, bool isPro) async {
+  Future<void> _updateUIOnSubmit(double score) async {
     /// If the score is less PARTIAL or WRONG and the Learning Mode is
     /// SPATIAL, the append the current word to the list, to review it again.
     if (_enableSpacedRepetition(score) && widget.args.testMode != Tests.daily) {
@@ -89,10 +83,6 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
           });
 
           if (!mounted) return;
-          if (!isPro) return;
-          context
-              .read<SentenceGeneratorBloc>()
-              .add(SentenceGeneratorEventReset());
         }
 
         /// If we ended the list, update the statistics to DB and exit
@@ -188,47 +178,30 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
               icon: const Icon(Icons.info_outline_rounded),
             )
         ],
-        child: BlocBuilder<PurchasesBloc, PurchasesState>(
-          builder: (context, state) {
-            return Column(
+        child: Column(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    KPListPercentageIndicator(
-                        value: (_macro + 1) / _studyList.length),
-                    KPLearningHeaderAnimation(
-                      id: _macro,
-                      child: state.maybeWhen(
-                        updatedToPro: () => ContextLoader(
-                          word: _studyList[_macro].word,
-                          mode: StudyModes.recognition,
-                          loading: _body(null, isLoading: true),
-                          child: _body,
-                        ),
-                        orElse: () => _body(null),
-                      ),
-                    ),
-                    if (!_showMeaning)
-                      ContextButton(word: _studyList[_macro].word),
-                  ],
+                KPListPercentageIndicator(
+                    value: (_macro + 1) / _studyList.length),
+                KPLearningHeaderAnimation(
+                  id: _macro,
+                  child: _body(),
                 ),
-                KPValidationButtons(
-                  trigger: _showMeaning,
-                  submitLabel: "done_button_label".tr(),
-                  action: (score) async => await _updateUIOnSubmit(
-                    score,
-                    state is PurchasesUpdatedToPro,
-                  ),
-                  onSubmit: () => setState(() => _showMeaning = true),
-                )
               ],
-            );
-          },
+            ),
+            KPValidationButtons(
+              trigger: _showMeaning,
+              submitLabel: "done_button_label".tr(),
+              action: (score) async => await _updateUIOnSubmit(score),
+              onSubmit: () => setState(() => _showMeaning = true),
+            )
+          ],
         ));
   }
 
-  Widget _body(String? sentence, {bool isLoading = false}) {
+  Widget _body() {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -241,14 +214,6 @@ class _RecognitionStudyState extends State<RecognitionStudy> {
                 textStyle: Theme.of(context).textTheme.displaySmall,
                 text: _studyList[_macro].word),
           ),
-          if (isLoading) const ContextLoading(),
-          if (sentence != null)
-            ContextWidget(
-              word: _studyList[_macro].word,
-              showWord: _showMeaning,
-              sentence: sentence,
-              mode: StudyModes.recognition,
-            ),
           KPLearningTextBox(
             text: _getProperMeaning(),
             top: KPMargins.margin8,

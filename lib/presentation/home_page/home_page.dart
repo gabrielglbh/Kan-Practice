@@ -8,7 +8,6 @@ import 'package:kanpractice/application/folder_list/folder_bloc.dart';
 import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
 import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
 import 'package:kanpractice/application/lists/lists_bloc.dart';
-import 'package:kanpractice/application/purchases/purchases_bloc.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
@@ -26,9 +25,6 @@ import 'package:kanpractice/presentation/core/types/home_types.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:kanpractice/presentation/core/types/tab_types.dart';
 import 'package:kanpractice/presentation/core/widgets/kanlists/kp_kanlists.dart';
-import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
-import 'package:kanpractice/presentation/core/widgets/kp_pro_icon.dart';
-import 'package:kanpractice/presentation/core/widgets/kp_pro_perks.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_search_bar.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_test_bottom_sheet.dart';
@@ -208,30 +204,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     }
   }
 
-  _onTutorialEnd() {
-    _onTutorial = false;
-    showDialog(
-      context: context,
-      builder: (context) => KPDialog(
-        title: Text('updated_to_pro'.tr()),
-        content: SizedBox(
-          height: MediaQuery.of(context).size.height / 2,
-          width: MediaQuery.of(context).size.width,
-          child: const KPProPerks(
-            showIsProSubtitle: false,
-            applyPaddings: false,
-            proIconSize: 128,
-          ),
-        ),
-        positiveButtonText: 'check_it_out'.tr(),
-        negativeButton: false,
-        onPositive: () {
-          Navigator.of(context).pushNamed(KanPracticePages.storePage);
-        },
-      ),
-    );
-  }
-
   bool _showPendingReview(List<int> toReview) {
     return toReview.isNotEmpty && toReview.any((i) => i > 0);
   }
@@ -254,15 +226,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         await Utils.showVersionNotes(context,
             version: _newVersion, notes: _notes);
       },
-      icon: BlocBuilder<PurchasesBloc, PurchasesState>(
-        builder: (context, state) {
-          return state.maybeWhen(
-            updatedToPro: () => Icon(Icons.update_rounded,
-                color: KPColors.getSecondaryColor(context)),
-            orElse: () => const Icon(Icons.update_rounded),
-          );
-        },
-      ),
+      icon: const Icon(Icons.update_rounded),
     );
     final marketIcon = IconButton(
       key: market,
@@ -271,32 +235,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       },
       icon: const Icon(Icons.shopping_bag_rounded),
     );
-    final proIcon = BlocBuilder<PurchasesBloc, PurchasesState>(
-      builder: (context, state) {
-        return state.maybeWhen(
-          updatedToPro: () => const SizedBox(),
-          loading: () => const SizedBox(),
-          orElse: () => IconButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(KanPracticePages.storePage);
-            },
-            icon: const KPProIcon(),
-          ),
-        );
-      },
-    );
-
     final List<Widget> updateWithAppBarIcons =
         _currentPage == HomeType.dictionary
-            ? [updateIcon, proIcon]
+            ? [updateIcon]
             : _currentPage == HomeType.kanlist
-                ? [updateIcon, proIcon, marketIcon]
-                : [updateIcon, proIcon];
+                ? [updateIcon, marketIcon]
+                : [updateIcon];
     final List<Widget> appBarIcons = _currentPage == HomeType.dictionary
-        ? [proIcon]
+        ? []
         : _currentPage == HomeType.kanlist
-            ? [proIcon, marketIcon]
-            : [proIcon];
+            ? [marketIcon]
+            : [];
 
     return BlocListener<BackupBloc, BackupState>(
       listener: (context, state) {
@@ -324,7 +273,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 market,
                 settings,
               ], CoachTutorialParts.kanList)
-                  .showTutorial(context, onEnd: _onTutorialEnd);
+                  .showTutorial(context, onEnd: () {});
             }
           });
         },
@@ -344,25 +293,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             }
             return true;
           },
-          appBarTitle: BlocBuilder<PurchasesBloc, PurchasesState>(
-            builder: (context, state) {
-              return state.maybeWhen(
-                updatedToPro: () => Row(
-                  children: [
-                    const KPProIcon(),
-                    const SizedBox(width: KPMargins.margin8),
-                    FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text(_currentPage.appBarTitle),
-                    )
-                  ],
-                ),
-                orElse: () => FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Text(_currentPage.appBarTitle),
-                ),
-              );
-            },
+          appBarTitle: FittedBox(
+            fit: BoxFit.fitWidth,
+            child: Text(_currentPage.appBarTitle),
           ),
           appBarActions:
               _newVersion.isNotEmpty ? updateWithAppBarIcons : appBarIcons,
@@ -569,28 +502,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             color: Colors.white),
                       )
                     : Icon(DictionaryType.values[index].icon),
-                trailing: DictionaryType.values[index] == DictionaryType.ocr
-                    ? BlocBuilder<PurchasesBloc, PurchasesState>(
-                        builder: (context, state) {
-                          return state.maybeWhen(
-                            updatedToPro: () => const Icon(Icons.arrow_forward),
-                            orElse: () => const KPProIcon(),
-                          );
-                        },
-                      )
-                    : const Icon(Icons.arrow_forward),
+                trailing: const Icon(Icons.arrow_forward),
                 contentPadding: const EdgeInsets.all(KPMargins.margin8),
                 onTap: () {
                   switch (DictionaryType.values[index]) {
                     case DictionaryType.ocr:
-                      if (context.read<PurchasesBloc>().state
-                          is! PurchasesUpdatedToPro) {
-                        Navigator.of(context)
-                            .pushNamed(KanPracticePages.storePage);
-                      } else {
-                        Navigator.of(context)
-                            .pushNamed(KanPracticePages.ocrPage);
-                      }
+                      Navigator.of(context).pushNamed(KanPracticePages.ocrPage);
                       break;
                     case DictionaryType.convolution:
                       Navigator.of(context).pushNamed(

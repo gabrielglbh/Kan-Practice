@@ -60,17 +60,6 @@ class AlterAlterSpecificDataRepositoryImpl
                       test.testScore) /
                   count
         };
-      } else if (test.testMode == Tests.translation.index) {
-        final count = raw.totalTranslationTestCount + 1;
-        map = {
-          AlterTestSpecificDataTableFields.totalTranslationTestCountField:
-              count,
-          AlterTestSpecificDataTableFields.totalWinRateTranslationTestField:
-              ((raw.totalWinRateTranslationTest *
-                          raw.totalTranslationTestCount) +
-                      test.testScore) /
-                  count
-        };
       }
 
       await _database.update(
@@ -85,12 +74,8 @@ class AlterAlterSpecificDataRepositoryImpl
         AlterSpecificData(
           id: test.testMode!,
           totalNumberTestCount: test.testMode == Tests.numbers.index ? 1 : 0,
-          totalTranslationTestCount:
-              test.testMode == Tests.translation.index ? 1 : 0,
           totalWinRateNumberTest:
               test.testMode == Tests.numbers.index ? test.testScore : 0,
-          totalWinRateTranslationTest:
-              test.testMode == Tests.translation.index ? test.testScore : 0,
         ).toJson(),
       );
     }

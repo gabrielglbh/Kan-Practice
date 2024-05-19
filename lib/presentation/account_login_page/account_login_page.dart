@@ -3,18 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
-import 'package:kanpractice/application/purchases/purchases_bloc.dart';
 import 'package:kanpractice/presentation/core/types/sign_in_mode.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_text_form.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 
 class LoginPage extends StatefulWidget {
-  final StoreProduct? product;
-  const LoginPage({Key? key, required this.product}) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -94,15 +91,6 @@ class _LoginPageState extends State<LoginPage> {
               if (i.shouldPop) Navigator.of(context).pop();
             },
             loaded: (l) {
-              if (widget.product != null) {
-                context
-                    .read<PurchasesBloc>()
-                    .add(PurchasesEventBuy(widget.product!));
-              } else {
-                context
-                    .read<PurchasesBloc>()
-                    .add(PurchasesEventRestorePurchases());
-              }
               Navigator.of(context).pop();
             },
           );

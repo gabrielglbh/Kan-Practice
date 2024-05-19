@@ -7,7 +7,6 @@ import 'package:kanpractice/presentation/core/types/list_details_types.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/domain/specific_data/specific_data.dart';
 import 'package:kanpractice/infrastructure/specific_data/specific_data_repository_impl.dart';
-import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/widgets/graphs/kp_bar_chart.dart';
 import 'package:kanpractice/presentation/core/widgets/graphs/kp_data_frame.dart';
 import 'package:kanpractice/presentation/core/widgets/graphs/kp_grammar_mode_radial_graph.dart';
@@ -254,12 +253,9 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
       );
     }
 
-    final total = _alterData!.test == Tests.numbers
-        ? _alterData!.data.totalNumberTestCount
-        : _alterData!.data.totalTranslationTestCount;
-    final aggregate = _getActualWinRate(_alterData!.test == Tests.numbers
-        ? _alterData!.data.totalWinRateNumberTest
-        : _alterData!.data.totalWinRateTranslationTest);
+    final total = _alterData!.data.totalNumberTestCount;
+    final aggregate =
+        _getActualWinRate(_alterData!.data.totalWinRateNumberTest);
 
     return BottomSheet(
       enableDrag: false,

@@ -8,17 +8,7 @@ import 'package:flutter/material.dart';
 /// the switch checks in the base code (see Usages on [Tests]).
 /// Also, add them to [TestFilters]
 /// Be aware of the stats page and bloc as the rates will change.
-enum Tests {
-  lists,
-  blitz,
-  time,
-  numbers,
-  less,
-  categories,
-  folder,
-  daily,
-  translation,
-}
+enum Tests { lists, blitz, time, numbers, less, categories, folder, daily }
 
 extension TestsExt on Tests {
   String get name {
@@ -39,8 +29,6 @@ extension TestsExt on Tests {
         return "test_mode_folder".tr();
       case Tests.daily:
         return "test_mode_daily".tr();
-      case Tests.translation:
-        return "test_mode_translation".tr();
     }
   }
 
@@ -62,8 +50,6 @@ extension TestsExt on Tests {
         return "abbr_test_mode_folder".tr();
       case Tests.daily:
         return "abbr_test_mode_daily".tr();
-      case Tests.translation:
-        return "abbr_test_mode_translation".tr();
     }
   }
 
@@ -85,8 +71,6 @@ extension TestsExt on Tests {
         return Icons.folder_rounded;
       case Tests.daily:
         return Icons.calendar_today;
-      case Tests.translation:
-        return Icons.travel_explore_rounded;
     }
   }
 }

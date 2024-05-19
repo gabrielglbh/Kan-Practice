@@ -28,7 +28,6 @@ import 'package:kanpractice/presentation/statistics_page/statistics_page.dart';
 import 'package:kanpractice/presentation/statistics_page/tab/test_history_tab/test_history_filters.dart';
 import 'package:kanpractice/presentation/statistics_page/tab/test_history_tab/test_history_landscape.dart';
 import 'package:kanpractice/presentation/statistics_page/tab/test_history_tab/test_history_tab.dart';
-import 'package:kanpractice/presentation/store_page/store_page.dart';
 import 'package:kanpractice/presentation/study_modes/listening_page.dart';
 import 'package:kanpractice/presentation/study_modes/reading_page.dart';
 import 'package:kanpractice/presentation/study_modes/recognition_page.dart';
@@ -37,10 +36,8 @@ import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 import 'package:kanpractice/presentation/study_modes/writing_page.dart';
 import 'package:kanpractice/presentation/test_result_page/arguments.dart';
 import 'package:kanpractice/presentation/test_result_page/test_result_page.dart';
-import 'package:kanpractice/presentation/translation_test_page/translation_test_page.dart';
 import 'package:kanpractice/presentation/word_history_page/word_history_page.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 
 /// Router generator in which all pages and their transitions are made.
 Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -80,8 +77,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       TestResultArguments args = settings.arguments as TestResultArguments;
       return CupertinoPageRoute(builder: (_) => TestResultPage(args: args));
     case KanPracticePages.loginPage:
-      StoreProduct? product = settings.arguments as StoreProduct?;
-      return CupertinoPageRoute(builder: (_) => LoginPage(product: product));
+      return CupertinoPageRoute(builder: (_) => const LoginPage());
     case KanPracticePages.backUpPage:
       String args = settings.arguments as String;
       return CupertinoPageRoute(builder: (_) => BackUpPage(uid: args));
@@ -132,14 +128,6 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return CupertinoPageRoute(builder: (_) {
         return const MarketPage();
       });
-    case KanPracticePages.storePage:
-      return CupertinoPageRoute(builder: (_) {
-        return const StorePage();
-      });
-    case KanPracticePages.translationsTestPage:
-      ModeArguments args = settings.arguments as ModeArguments;
-      return CupertinoPageRoute(
-          builder: (_) => TranslationTestPage(args: args));
     case KanPracticePages.ocrPage:
       return CupertinoPageRoute(builder: (_) => const OCRPage());
     case KanPracticePages.accountManagementPage:

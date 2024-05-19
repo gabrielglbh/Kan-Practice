@@ -117,7 +117,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
         // TODO: Adjust when other TEST like Numbers is added
         TestData rawTestData = TestData.fromJson(res[0]);
         for (var t in Tests.values) {
-          if (t == Tests.numbers || t == Tests.translation) {
+          if (t == Tests.numbers) {
             final rawAlterSpec =
                 await _alterSpecificDataRepository.getAlterSpecificTestData(t);
             if (rawAlterSpec != AlterSpecificData.empty) {
@@ -164,10 +164,6 @@ class TestDataRepositoryImpl implements ITestDataRepository {
         return {TestDataTableFields.folderTestsField: curr.folderTests + 1};
       case Tests.daily:
         return {TestDataTableFields.dailyTestsField: curr.dailyTests + 1};
-      case Tests.translation:
-        return {
-          TestDataTableFields.translationTestsField: curr.translationTests + 1
-        };
     }
   }
 
@@ -208,8 +204,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
       map.addEntries(getTestParams(curr, test).entries);
 
       // TODO: Adjust when other TEST like Numbers is added
-      if (test.testMode == Tests.numbers.index ||
-          test.testMode == Tests.translation.index) {
+      if (test.testMode == Tests.numbers.index) {
         await _alterSpecificDataRepository.updateAlterSpecificTestStats(test);
       } else {
         map.addEntries(getAdditionalParams(curr, test).entries);

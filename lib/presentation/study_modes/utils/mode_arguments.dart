@@ -14,10 +14,6 @@ class ModeArguments {
   /// Defaults to false.
   final bool isNumberTest;
 
-  /// Only used when in listening mode and performing a Translation Test.
-  /// Defaults to false.
-  final bool isTranslationTest;
-
   ModeArguments({
     required this.studyList,
     required this.isTest,
@@ -26,6 +22,5 @@ class ModeArguments {
     required this.studyModeHeaderDisplayName,
     this.testHistoryDisplasyName = "",
     this.isNumberTest = false,
-    this.isTranslationTest = false,
   });
 }

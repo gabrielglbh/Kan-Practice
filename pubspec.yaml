@@ -52,8 +52,6 @@ dependencies:
   markdown: ^7.1.0
   freezed: ^2.3.4
   freezed_annotation: ^2.2.0
-  purchases_flutter: ^6.0.0
-  flutter_dotenv: ^5.0.2
   http: ^0.13.6
   google_mlkit_translation: ^0.8.0
   google_mlkit_text_recognition: ^0.10.0
@@ -63,7 +61,6 @@ dependencies:
   camera: ^0.10.5
   image_cropper: ^4.0.1
   path_provider: ^2.0.15
-  carousel_slider: ^4.2.1
   speech_to_text: ^6.1.1
   font_awesome_flutter: ^10.4.0
   google_sign_in: ^6.1.0
@@ -88,7 +85,4 @@ flutter:
     - lib/presentation/core/localization/
     - assets/model/
     - assets/initialData/
-    - assets/environment/
     - assets/images/
-    - assets/images/es/
-    - assets/images/en/

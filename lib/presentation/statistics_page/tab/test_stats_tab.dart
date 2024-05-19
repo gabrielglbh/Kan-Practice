@@ -126,7 +126,7 @@ class _TestStatsState extends State<TestStats>
           onBarTapped: (model) async {
             if (model.dataPoints?.isNotEmpty == true) {
               final test = Tests.values[model.pointIndex ?? -1];
-              if (test == Tests.numbers || test == Tests.translation) {
+              if (test == Tests.numbers) {
                 context
                     .read<AlterSpecificDataBloc>()
                     .add(AlterSpecificDataEventGatherTest(test: test));
@@ -185,12 +185,6 @@ class _TestStatsState extends State<TestStats>
                 return DataFrame(
                   x: Tests.daily.nameAbbr,
                   y: s.test.dailyTests.toDouble(),
-                  color: KPColors.secondaryColor,
-                );
-              case Tests.translation:
-                return DataFrame(
-                  x: Tests.translation.nameAbbr,
-                  y: s.test.translationTests.toDouble(),
                   color: KPColors.secondaryColor,
                 );
             }

@@ -21,7 +21,7 @@ class KPListPercentageIndicator extends StatelessWidget {
       animateFromLastPercent: true,
       center: Text(
         value == 1 ? "100%" : "${(value * 100).toStringAsPrecision(2)}%",
-        style: const TextStyle(color: KPColors.primaryLight),
+        style: const TextStyle(color: Colors.white),
       ),
     );
   }

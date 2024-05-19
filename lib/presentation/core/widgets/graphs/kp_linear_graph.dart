@@ -23,7 +23,7 @@ class KPLinearGraph extends StatelessWidget {
           style: Theme.of(context)
               .textTheme
               .bodySmall
-              ?.copyWith(color: KPColors.getAccent(context)),
+              ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
         ),
         const SizedBox(height: KPMargins.margin4),
         SfLinearGauge(
@@ -36,7 +36,7 @@ class KPLinearGraph extends StatelessWidget {
               value: 1,
               enableAnimation: false,
               edgeStyle: LinearEdgeStyle.bothCurve,
-              color: KPColors.getSubtle(context),
+              color: Theme.of(context).colorScheme.tertiary,
             ),
             LinearBarPointer(
               value: value == DatabaseConstants.emptyWinRate ? 0 : value,

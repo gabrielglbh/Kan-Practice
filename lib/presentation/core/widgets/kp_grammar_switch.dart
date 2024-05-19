@@ -66,7 +66,7 @@ class _KPGrammarSwitchState extends State<KPGrammarSwitch> {
         style: Theme.of(context)
             .textTheme
             .bodyMedium
-            ?.copyWith(color: KPColors.getAccent(context)),
+            ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
       ),
       trailing: KPSwitch(
         onChanged: (value) {

@@ -155,7 +155,7 @@ class _TestHistoryExpandedState extends State<TestHistoryExpanded> {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyLarge
-                                  ?.copyWith(color: KPColors.primaryLight),
+                                  ?.copyWith(color: Colors.white),
                             ),
                           ),
                         ),

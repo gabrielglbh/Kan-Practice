@@ -214,7 +214,9 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                                     const EdgeInsets.all(KPMargins.margin16),
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                      color: KPColors.getSubtle(context)),
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
+                                  ),
                                   borderRadius:
                                       BorderRadius.circular(KPRadius.radius16),
                                 ),

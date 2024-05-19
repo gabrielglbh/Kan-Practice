@@ -119,25 +119,14 @@ class _LoginPageState extends State<LoginPage> {
         if (!Platform.isIOS)
           ElevatedButton(
             onPressed: () => _handleGoogleLogin(),
-            style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
-                  backgroundColor: WidgetStateProperty.all<Color>(
-                      KPColors.getPrimary(context)),
-                  shape: WidgetStateProperty.all<OutlinedBorder>(
-                    RoundedRectangleBorder(
-                        side: BorderSide(color: KPColors.getAccent(context)),
-                        borderRadius: BorderRadius.circular(KPRadius.radius8)),
-                  ),
-                ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset('assets/images/google-signin.png', scale: 3.5),
                 const SizedBox(width: KPMargins.margin12),
                 Text("google_signin".tr(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge
-                        ?.copyWith(color: KPColors.getAccent(context)))
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary))
               ],
             ),
           ),

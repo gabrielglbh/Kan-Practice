@@ -129,7 +129,7 @@ class _KPModesGridState extends State<KPModesGrid> {
               Padding(
                 padding: const EdgeInsets.only(right: KPMargins.margin16),
                 child: Icon(Icons.sports_gymnastics_rounded,
-                    color: KPColors.getSubtle(context)),
+                    color: Theme.of(context).colorScheme.tertiary),
               ),
               Expanded(
                   child: Text(
@@ -140,7 +140,7 @@ class _KPModesGridState extends State<KPModesGrid> {
               Padding(
                 padding: const EdgeInsets.only(left: KPMargins.margin16),
                 child: Icon(Icons.sports_gymnastics_rounded,
-                    color: KPColors.getSubtle(context)),
+                    color: Theme.of(context).colorScheme.tertiary),
               ),
             ],
           )),

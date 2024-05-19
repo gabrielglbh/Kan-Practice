@@ -120,14 +120,14 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
                             vertical: KPMargins.margin2),
                         decoration: BoxDecoration(
                           color: _selectedLists.contains(range)
-                              ? KPColors.secondaryDarkerColor
+                              ? Theme.of(context).colorScheme.primary
                               : Colors.transparent,
                           borderRadius:
                               BorderRadius.circular(KPRadius.radius16),
                           border: Border.all(
                             color: _selectedLists.contains(range)
                                 ? Colors.transparent
-                                : KPColors.getSubtle(context),
+                                : Theme.of(context).colorScheme.tertiary,
                           ),
                         ),
                         child: Text(
@@ -137,8 +137,10 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
                               .bodyMedium
                               ?.copyWith(
                                   color: _selectedLists.contains(range)
-                                      ? KPColors.primaryLight
-                                      : KPColors.getAccent(context)),
+                                      ? Theme.of(context).colorScheme.onPrimary
+                                      : Theme.of(context)
+                                          .colorScheme
+                                          .onSurface),
                         ),
                       ),
                     ),

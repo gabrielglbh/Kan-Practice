@@ -51,7 +51,7 @@ class KPDialog extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium
-                      ?.copyWith(color: KPColors.primaryLight))),
+                      ?.copyWith(color: Colors.white))),
         ),
         ElevatedButton(
             style: ButtonStyle(
@@ -68,7 +68,7 @@ class KPDialog extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium
-                    ?.copyWith(color: KPColors.primaryLight))),
+                    ?.copyWith(color: Colors.white))),
       ],
     );
   }

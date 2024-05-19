@@ -86,11 +86,11 @@ class _OCRPageState extends State<OCRPage> {
                 uiSettings: [
                   AndroidUiSettings(
                     toolbarTitle: 'ocr_scanner'.tr(),
-                    toolbarColor: KPColors.getPrimary(context),
-                    statusBarColor: KPColors.getPrimary(context),
-                    backgroundColor: KPColors.getPrimary(context),
+                    toolbarColor: Theme.of(context).colorScheme.surface,
+                    statusBarColor: Theme.of(context).colorScheme.surface,
+                    backgroundColor: Theme.of(context).colorScheme.surface,
                     activeControlsWidgetColor: KPColors.secondaryDarkerColor,
-                    toolbarWidgetColor: KPColors.getAccent(context),
+                    toolbarWidgetColor: Theme.of(context).colorScheme.onSurface,
                     initAspectRatio: CropAspectRatioPreset.original,
                     lockAspectRatio: false,
                   ),

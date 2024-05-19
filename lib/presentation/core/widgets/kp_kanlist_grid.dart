@@ -39,9 +39,9 @@ class KPKanListGrid<T> extends StatelessWidget {
                 border: Border.all(
                     color: isSelected(name)
                         ? Colors.transparent
-                        : KPColors.getSubtle(context)),
+                        : Theme.of(context).colorScheme.primaryFixed),
                 color: isSelected(name)
-                    ? KPColors.secondaryDarkerColor
+                    ? Theme.of(context).colorScheme.primary
                     : Colors.transparent,
               ),
               child: FittedBox(
@@ -50,8 +50,8 @@ class KPKanListGrid<T> extends StatelessWidget {
                   name,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: isSelected(name)
-                            ? KPColors.primaryLight
-                            : KPColors.getAccent(context),
+                            ? Theme.of(context).colorScheme.onPrimary
+                            : Theme.of(context).colorScheme.onSurface,
                       ),
                 ),
               ),

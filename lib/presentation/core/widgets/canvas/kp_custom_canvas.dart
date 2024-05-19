@@ -89,7 +89,7 @@ class _KPCustomCanvasState extends State<KPCustomCanvas> {
                   height: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(KPRadius.radius16),
-                    color: KPColors.getCardColor(context),
+                    color: Theme.of(context).cardColor,
                   ),
                   child: CustomPaint(
                     painter: WordPainter(points: widget.line, size: size),
@@ -132,14 +132,14 @@ class _KPCustomCanvasState extends State<KPCustomCanvas> {
             height: KPSizes.defaultSizeSearchBarIcons,
             width: KPSizes.defaultSizeSearchBarIcons,
             decoration: BoxDecoration(
-                color: KPColors.getAlterAccent(context),
+                color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(KPRadius.radius16)),
             child: Column(
               children: [
                 Icon(
                   icon,
                   size: KPFontSizes.fontSize32,
-                  color: KPColors.getAccent(context),
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
                 FittedBox(
                     child: Padding(

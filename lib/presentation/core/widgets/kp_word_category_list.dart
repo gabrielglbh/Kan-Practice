@@ -32,9 +32,9 @@ class KPWordCategoryList extends StatelessWidget {
               border: Border.all(
                   color: selected(index)
                       ? Colors.transparent
-                      : KPColors.getSubtle(context)),
+                      : Theme.of(context).colorScheme.primaryFixed),
               color: selected(index)
-                  ? KPColors.secondaryDarkerColor
+                  ? Theme.of(context).colorScheme.primary
                   : Colors.transparent,
             ),
             margin: const EdgeInsets.symmetric(
@@ -44,8 +44,8 @@ class KPWordCategoryList extends StatelessWidget {
               WordCategory.values[index].category,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: selected(index)
-                        ? KPColors.primaryLight
-                        : KPColors.getAccent(context),
+                        ? Theme.of(context).colorScheme.onPrimary
+                        : Theme.of(context).colorScheme.onSurface,
                   ),
             ),
           ),

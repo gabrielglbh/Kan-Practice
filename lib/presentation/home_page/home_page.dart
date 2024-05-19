@@ -208,11 +208,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return toReview.isNotEmpty && toReview.any((i) => i > 0);
   }
 
-  bool _canPop() {
-    if (_onTutorial || _searchHasFocus || _currentPage.index != 0) return false;
-    return true;
-  }
-
   @override
   void dispose() {
     _controller.dispose();
@@ -437,7 +432,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         size: 16,
         color: Colors.white,
       ),
-      label: Text("pending_review".tr()),
+      label: Text(
+        "pending_review".tr(),
+        style: const TextStyle(color: Colors.white),
+      ),
       backgroundColor: KPColors.getSecondaryColor(context),
       onPressed: () async {
         await KPTestBottomSheet.show(context).then((_) => _addReviewEvent());

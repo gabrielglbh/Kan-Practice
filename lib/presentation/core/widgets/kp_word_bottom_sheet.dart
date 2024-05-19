@@ -153,7 +153,7 @@ class KPWordBottomSheet extends StatelessWidget {
                   Icon(
                     HomeType.kanlist.icon,
                     size: 16,
-                    color: KPColors.getSubtle(context),
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: KPMargins.margin8),

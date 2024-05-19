@@ -96,41 +96,12 @@ class KPColors {
           ? secondaryDarkerColor
           : secondaryColor;
 
-  static Color getPrimary(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.light
-          ? primaryLight
-          : primaryDark;
-
-  static Color getCardColor(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.light
-          ? cardColorLight
-          : cardColorDark;
-
-  static Color getAccent(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.light
-          ? accentLight
-          : accentDark;
-
-  static Color getAlterAccent(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.light
-          ? accentDark
-          : accentLight;
-
-  static Color getSubtle(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.light
-          ? subtleLight
-          : subtleDark;
-
   static const Color secondaryDarkerColor = Color(0xFFD32F2F);
   static const Color secondaryColor = Color(0xFFE57373);
 
-  static const Color primaryLight = Colors.white;
   static final Color primaryDark = Colors.grey.shade900;
-  static final Color cardColorLight = Colors.grey.shade200;
-  static final Color cardColorDark = Colors.grey.shade800;
   static final Color midGrey = Colors.grey.shade500;
   static const Color accentLight = Colors.black;
-  static const Color accentDark = Colors.white;
   static final Color subtleLight = Colors.grey.shade600;
   static final Color subtleDark = Colors.grey.shade600;
 }

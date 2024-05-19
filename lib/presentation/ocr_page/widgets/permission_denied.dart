@@ -43,7 +43,7 @@ class PermissionDenied extends StatelessWidget {
                       horizontal: KPMargins.margin12),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: KPColors.getAccent(context),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 const Expanded(child: Divider()),

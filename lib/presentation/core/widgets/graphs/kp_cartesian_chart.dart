@@ -68,7 +68,7 @@ class KPCartesianChart<T> extends StatelessWidget {
             args.color = null;
           }
           args.borderWidth = 1;
-          args.borderColor = KPColors.primaryLight;
+          args.borderColor = Colors.white;
         },
         primaryXAxis: DateTimeAxis(
           intervalType: intervalType,
@@ -83,7 +83,7 @@ class KPCartesianChart<T> extends StatelessWidget {
             enableTooltip: true,
             markerSettings: MarkerSettings(
               isVisible: true,
-              color: KPColors.primaryLight,
+              color: Colors.white,
               width: dataSource.length > markerThreshold ? 9 : 14,
               height: dataSource.length > markerThreshold ? 9 : 14,
             ),
@@ -106,8 +106,8 @@ class _KPCartesianChartTooltip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tooltipColor = KPColors.getAccent(context);
-    final tooltipTextColor = KPColors.getAlterAccent(context);
+    final tooltipColor = Theme.of(context).colorScheme.onSurface;
+    final tooltipTextColor = Theme.of(context).colorScheme.surface;
     final format = DateFormat('MMM dd, HH:mm');
     final mode = source.mode.nameAbbr;
     final date = format.format(source.x);
@@ -134,7 +134,7 @@ class _KPCartesianChartTooltip extends StatelessWidget {
                       width: 14,
                       height: 14,
                       decoration: const BoxDecoration(
-                        color: KPColors.primaryLight,
+                        color: Colors.white,
                         shape: BoxShape.circle,
                       ),
                     ),

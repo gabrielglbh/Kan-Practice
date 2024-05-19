@@ -81,8 +81,7 @@ class KPWinRateChart extends StatelessWidget {
                                       ? 0
                                       : winRate),
                               style: TextStyle(
-                                  color: KPColors.primaryLight,
-                                  fontSize: rateSize)))
+                                  color: Colors.white, fontSize: rateSize)))
                     ]
                   : null,
               pointers: <GaugePointer>[

@@ -44,7 +44,7 @@ class Utils {
     } else if (winRate > 0.9 && winRate <= 1) {
       return Colors.green;
     } else {
-      return KPColors.primaryLight;
+      return Colors.white;
     }
   }
 
@@ -88,7 +88,7 @@ class Utils {
     } else if (score > 0.8 && score <= 1) {
       return Colors.green;
     } else {
-      return KPColors.primaryLight;
+      return Colors.white;
     }
   }
 
@@ -121,7 +121,7 @@ class Utils {
     } else if (score > 0.2 && score <= 0.4) {
       return KPColors.accentLight;
     } else {
-      return KPColors.primaryLight;
+      return Colors.white;
     }
   }
 
@@ -142,9 +142,10 @@ class Utils {
       ..showSnackBar(
         SnackBar(
           content: Row(children: [
-            const Padding(
-              padding: EdgeInsets.only(right: KPMargins.margin8),
-              child: Icon(Icons.info_rounded, color: KPColors.primaryLight),
+            Padding(
+              padding: const EdgeInsets.only(right: KPMargins.margin8),
+              child: Icon(Icons.info_rounded,
+                  color: Theme.of(context).colorScheme.onSurface),
             ),
             Expanded(child: Text(message)),
           ]),
@@ -248,7 +249,6 @@ class Utils {
     DateTime firstDate,
     DateTime lastDate,
   ) async {
-    final dialogColor = KPColors.getAccent(context);
     late DateTimeRange? range;
     await showDateRangePicker(
       context: context,
@@ -262,20 +262,7 @@ class Utils {
       fieldEndHintText: 'date_picker_end_hint'.tr(),
       saveText: 'date_picker_save'.tr(),
       builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            primaryColor: KPColors.secondaryColor,
-            splashColor: KPColors.secondaryColor,
-            colorScheme: ColorScheme.fromSwatch().copyWith(
-              primary: KPColors.secondaryColor,
-              onPrimary: dialogColor,
-              surface: KPColors.secondaryColor,
-              onSurface: dialogColor,
-              secondary: KPColors.secondaryColor,
-            ),
-          ),
-          child: child!,
-        );
+        return child!;
       },
     ).then((value) => range = value);
     return range;

@@ -127,7 +127,7 @@ class _FolderListPageState extends State<FolderListPage>
         _currentAppliedOrder
             ? Icons.arrow_downward_rounded
             : Icons.arrow_upward_rounded,
-        color: KPColors.getAlterAccent(context));
+        color: Theme.of(context).colorScheme.primary);
 
     return SizedBox(
         height: KPSizes.defaultSizeFiltersList,

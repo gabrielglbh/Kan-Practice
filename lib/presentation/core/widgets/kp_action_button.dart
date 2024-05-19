@@ -21,7 +21,7 @@ class KPActionButton extends StatelessWidget {
       {super.key,
       required this.label,
       this.color = Colors.green,
-      this.textColor = KPColors.primaryLight,
+      this.textColor = Colors.white,
       this.horizontal = KPMargins.margin32,
       this.vertical = KPMargins.margin8,
       required this.onTap});

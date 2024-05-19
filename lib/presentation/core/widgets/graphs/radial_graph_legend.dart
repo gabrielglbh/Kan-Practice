@@ -70,7 +70,7 @@ class RadialGraphLegend extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).brightness == Brightness.light
                           ? Colors.black87
-                          : KPColors.primaryLight),
+                          : Colors.white),
                 ),
               )
             ],

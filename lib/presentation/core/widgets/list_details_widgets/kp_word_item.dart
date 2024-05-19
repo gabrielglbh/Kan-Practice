@@ -123,7 +123,7 @@ class KPWordItem extends StatelessWidget {
                   height: KPMargins.margin16,
                   margin: const EdgeInsets.only(top: KPMargins.margin4),
                   decoration: BoxDecoration(
-                    color: KPColors.getSubtle(context),
+                    color: Theme.of(context).colorScheme.tertiary,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -132,7 +132,7 @@ class KPWordItem extends StatelessWidget {
                   height: KPMargins.margin16 - 3,
                   margin: const EdgeInsets.only(top: KPMargins.margin4),
                   decoration: BoxDecoration(
-                    color: KPColors.getPrimary(context),
+                    color: Theme.of(context).colorScheme.surface,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -141,7 +141,7 @@ class KPWordItem extends StatelessWidget {
                   height: KPMargins.margin4,
                   margin: const EdgeInsets.only(top: KPMargins.margin4),
                   decoration: BoxDecoration(
-                    color: KPColors.getSubtle(context),
+                    color: Theme.of(context).colorScheme.tertiary,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -154,7 +154,8 @@ class KPWordItem extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Utils.getColorBasedOnWinRate(score),
                 shape: BoxShape.circle,
-                border: Border.all(color: KPColors.getSubtle(context)),
+                border:
+                    Border.all(color: Theme.of(context).colorScheme.tertiary),
               ),
             ),
       title: Row(

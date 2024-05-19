@@ -6,7 +6,7 @@ class KPButton extends StatelessWidget {
   final bool width;
 
   /// Color of the button
-  final Color color;
+  final Color? color;
 
   /// First title of the button, usually the JP part
   final String? title1;
@@ -23,7 +23,7 @@ class KPButton extends StatelessWidget {
   const KPButton({
     super.key,
     this.width = false,
-    this.color = KPColors.secondaryColor,
+    this.color,
     this.title1,
     required this.title2,
     required this.onTap,
@@ -39,7 +39,7 @@ class KPButton extends StatelessWidget {
       margin: const EdgeInsets.all(KPMargins.margin8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(KPRadius.radius16),
-        color: color,
+        color: color ?? Theme.of(context).colorScheme.primary,
       ),
       child: Material(
         color: Colors.transparent,
@@ -63,12 +63,7 @@ class KPButton extends StatelessWidget {
                       fit: BoxFit.fitWidth,
                       child: Text(title1 ?? "",
                           textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleLarge
-                              ?.copyWith(
-                                  fontWeight: FontWeight.w400,
-                                  color: KPColors.primaryLight)),
+                          style: Theme.of(context).textTheme.titleLarge),
                     ),
                   ),
                 ),
@@ -76,7 +71,8 @@ class KPButton extends StatelessWidget {
                   visible: title1 == null && icon != null,
                   child: Padding(
                       padding: const EdgeInsets.only(bottom: KPMargins.margin8),
-                      child: Icon(icon, color: KPColors.primaryLight)),
+                      child: Icon(icon,
+                          color: Theme.of(context).colorScheme.onPrimary)),
                 ),
                 Visibility(
                   visible: title1 == null && icon == null && customIcon != null,

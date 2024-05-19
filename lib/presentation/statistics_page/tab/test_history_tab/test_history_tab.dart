@@ -139,7 +139,7 @@ class _TestHistoryState extends State<TestHistory>
                     style: Theme.of(context)
                         .textTheme
                         .bodyLarge
-                        ?.copyWith(color: KPColors.primaryLight),
+                        ?.copyWith(color: Colors.white),
                   ),
                 ),
               ),

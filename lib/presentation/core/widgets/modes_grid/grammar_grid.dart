@@ -138,7 +138,8 @@ class GrammarGrid extends StatelessWidget {
         KPButton(
           title1: mode.japMode,
           title2: mode.mode,
-          color: isAvailable ? mode.color : KPColors.getSubtle(context),
+          color:
+              isAvailable ? mode.color : Theme.of(context).colorScheme.tertiary,
           onTap: isAvailable
               ? () async {
                   if (selectionQuery != null &&

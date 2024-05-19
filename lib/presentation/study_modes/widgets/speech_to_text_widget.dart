@@ -30,7 +30,7 @@ class SpeechToTextWidget extends StatelessWidget {
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: KPMargins.margin64 * 2,
-            color: KPColors.getPrimary(context),
+            color: Theme.of(context).colorScheme.surface,
             margin: const EdgeInsets.symmetric(horizontal: KPMargins.margin24),
             child: MusicVisualizer(
               colors: const [

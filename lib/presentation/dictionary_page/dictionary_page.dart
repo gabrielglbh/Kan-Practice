@@ -205,7 +205,7 @@ class _DictionaryPageState extends State<DictionaryPage>
           children: [
             Icon(
               widget.args.searchInJisho ? Icons.search : Icons.done,
-              color: KPColors.primaryLight,
+              color: Colors.white,
               size: 24,
             ),
             const SizedBox(width: KPMargins.margin8),

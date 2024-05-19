@@ -16,7 +16,7 @@ class KPWordGrammarBottomNavigation extends StatelessWidget {
     return Container(
       height: 64,
       decoration: BoxDecoration(
-        color: KPColors.getPrimary(context),
+        color: Theme.of(context).colorScheme.surface,
         boxShadow: <BoxShadow>[
           BoxShadow(
             color: Theme.of(context).brightness == Brightness.light
@@ -41,7 +41,7 @@ class KPWordGrammarBottomNavigation extends StatelessWidget {
 
   Widget _bottomBarItem(BuildContext context, ListDetailsType type) {
     final selectedColor = currentPage == type;
-    final color = KPColors.getSubtle(context);
+    final color = Theme.of(context).colorScheme.tertiary;
     return GestureDetector(
       onTap: () {
         onPageChanged(type);

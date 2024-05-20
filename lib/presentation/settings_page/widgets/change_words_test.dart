@@ -6,7 +6,7 @@ import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class ChangeWordsInTest extends StatefulWidget {
-  const ChangeWordsInTest({Key? key}) : super(key: key);
+  const ChangeWordsInTest({super.key});
 
   static Future<int?> show(BuildContext context) async {
     int? value;
@@ -81,25 +81,25 @@ class _ChangeWordsInTestState extends State<ChangeWordsInTest> {
             title: const Text("30"),
             value: 30,
             groupValue: _wordsInTest,
-            activeColor: KPColors.secondaryColor,
+            activeColor: Theme.of(context).colorScheme.primary,
             onChanged: _onTileSelected),
         RadioListTile<int>(
             title: const Text("40"),
             value: 40,
             groupValue: _wordsInTest,
-            activeColor: KPColors.secondaryColor,
+            activeColor: Theme.of(context).colorScheme.primary,
             onChanged: _onTileSelected),
         RadioListTile<int>(
             title: const Text("50"),
             value: 50,
             groupValue: _wordsInTest,
-            activeColor: KPColors.secondaryColor,
+            activeColor: Theme.of(context).colorScheme.primary,
             onChanged: _onTileSelected),
         RadioListTile<int>(
             title: const Text("60"),
             value: 60,
             groupValue: _wordsInTest,
-            activeColor: KPColors.secondaryColor,
+            activeColor: Theme.of(context).colorScheme.primary,
             onChanged: _onTileSelected),
       ],
     );

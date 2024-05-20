@@ -6,7 +6,7 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class CopyrightInfo extends StatelessWidget {
-  const CopyrightInfo({Key? key}) : super(key: key);
+  const CopyrightInfo({super.key});
 
   static Future<void> callModalSheet(BuildContext context) async {
     await showModalBottomSheet(

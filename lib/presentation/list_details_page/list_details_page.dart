@@ -26,7 +26,7 @@ import 'package:kanpractice/presentation/list_details_page/word_list.dart';
 
 class ListDetailsPage extends StatefulWidget {
   final WordList list;
-  const ListDetailsPage({Key? key, required this.list}) : super(key: key);
+  const ListDetailsPage({super.key, required this.list});
 
   @override
   State<ListDetailsPage> createState() => _ListDetailsPageState();

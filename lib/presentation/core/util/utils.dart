@@ -22,29 +22,29 @@ extension StringExtension on String {
 /// Class that contains useful methods for all classes to use
 class Utils {
   /// Returns the color based on the given [winRate]
-  static Color getColorBasedOnWinRate(double winRate) {
+  static Color getColorBasedOnWinRate(BuildContext context, double winRate) {
     if (winRate >= 0 && winRate <= 0.1) {
-      return Colors.redAccent.shade700;
+      return KPColors.darkRed;
     } else if (winRate > 0.1 && winRate <= 0.2) {
-      return Colors.redAccent.shade200;
+      return KPColors.darkMidRed;
     } else if (winRate > 0.2 && winRate <= 0.3) {
-      return Colors.redAccent.shade100;
+      return KPColors.midRed;
     } else if (winRate > 0.3 && winRate <= 0.4) {
-      return Colors.yellow;
+      return KPColors.lightMidRed;
     } else if (winRate > 0.4 && winRate <= 0.5) {
-      return Colors.yellow.shade400;
+      return KPColors.darkMidOrange;
     } else if (winRate > 0.5 && winRate <= 0.6) {
-      return Colors.yellow.shade300;
+      return KPColors.darkOrange;
     } else if (winRate > 0.6 && winRate <= 0.7) {
-      return Colors.yellow.shade200;
+      return KPColors.darkMidAmber;
     } else if (winRate > 0.7 && winRate <= 0.8) {
-      return Colors.green.shade100;
+      return KPColors.darkAmber;
     } else if (winRate > 0.8 && winRate <= 0.9) {
-      return Colors.green.shade300;
+      return KPColors.darkOlive;
     } else if (winRate > 0.9 && winRate <= 1) {
-      return Colors.green;
+      return KPColors.darkGreen;
     } else {
-      return KPColors.primaryLight;
+      return Theme.of(context).colorScheme.surface;
     }
   }
 
@@ -76,7 +76,7 @@ class Utils {
   }
 
   /// Returns the color based on the given [score]
-  static Color getColorBasedOnScore(double score) {
+  static Color getColorBasedOnScore(BuildContext context, double score) {
     if (score >= 0 && score <= 0.2) {
       return Colors.green.shade50;
     } else if (score > 0.2 && score <= 0.4) {
@@ -86,9 +86,9 @@ class Utils {
     } else if (score > 0.6 && score <= 0.8) {
       return Colors.green.shade400;
     } else if (score > 0.8 && score <= 1) {
-      return Colors.green;
+      return KPColors.darkGreen;
     } else {
-      return KPColors.primaryLight;
+      return Theme.of(context).colorScheme.surface;
     }
   }
 
@@ -121,7 +121,7 @@ class Utils {
     } else if (score > 0.2 && score <= 0.4) {
       return KPColors.accentLight;
     } else {
-      return KPColors.primaryLight;
+      return Colors.white;
     }
   }
 
@@ -142,9 +142,10 @@ class Utils {
       ..showSnackBar(
         SnackBar(
           content: Row(children: [
-            const Padding(
-              padding: EdgeInsets.only(right: KPMargins.margin8),
-              child: Icon(Icons.info_rounded, color: KPColors.primaryLight),
+            Padding(
+              padding: const EdgeInsets.only(right: KPMargins.margin8),
+              child: Icon(Icons.info_rounded,
+                  color: Theme.of(context).colorScheme.onSurface),
             ),
             Expanded(child: Text(message)),
           ]),
@@ -188,8 +189,8 @@ class Utils {
       child = Text(versionNotes);
     }
 
-    // ignore: use_build_context_synchronously
     await showDialog(
+      // ignore: use_build_context_synchronously
       context: context,
       barrierDismissible: true,
       builder: (context) {
@@ -248,7 +249,6 @@ class Utils {
     DateTime firstDate,
     DateTime lastDate,
   ) async {
-    final dialogColor = KPColors.getAccent(context);
     late DateTimeRange? range;
     await showDateRangePicker(
       context: context,
@@ -262,20 +262,7 @@ class Utils {
       fieldEndHintText: 'date_picker_end_hint'.tr(),
       saveText: 'date_picker_save'.tr(),
       builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            primaryColor: KPColors.secondaryColor,
-            splashColor: KPColors.secondaryColor,
-            colorScheme: ColorScheme.fromSwatch().copyWith(
-              primary: KPColors.secondaryColor,
-              onPrimary: dialogColor,
-              surface: KPColors.secondaryColor,
-              onSurface: dialogColor,
-              secondary: KPColors.secondaryColor,
-            ),
-          ),
-          child: child!,
-        );
+        return child!;
       },
     ).then((value) => range = value);
     return range;

@@ -8,20 +8,15 @@ part of 'alter_specific_data.dart';
 
 AlterSpecificData _$AlterSpecificDataFromJson(Map<String, dynamic> json) =>
     AlterSpecificData(
-      id: json['id'] as int,
-      totalNumberTestCount: json['totalNumberTestCount'] as int,
-      totalTranslationTestCount: json['totalTranslationTestCount'] as int,
+      id: (json['id'] as num).toInt(),
+      totalNumberTestCount: (json['totalNumberTestCount'] as num).toInt(),
       totalWinRateNumberTest:
           (json['totalWinRateNumberTest'] as num).toDouble(),
-      totalWinRateTranslationTest:
-          (json['totalWinRateTranslationTest'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$AlterSpecificDataToJson(AlterSpecificData instance) =>
     <String, dynamic>{
       'id': instance.id,
       'totalNumberTestCount': instance.totalNumberTestCount,
-      'totalTranslationTestCount': instance.totalTranslationTestCount,
       'totalWinRateNumberTest': instance.totalWinRateNumberTest,
-      'totalWinRateTranslationTest': instance.totalWinRateTranslationTest,
     };

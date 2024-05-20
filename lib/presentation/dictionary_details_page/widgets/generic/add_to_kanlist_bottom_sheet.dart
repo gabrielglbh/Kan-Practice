@@ -20,8 +20,7 @@ class AddToKanListBottomSheet extends StatefulWidget {
   final String? word;
   final WordData data;
   const AddToKanListBottomSheet(
-      {Key? key, required this.word, required this.data})
-      : super(key: key);
+      {super.key, required this.word, required this.data});
 
   /// Creates and calls the [BottomSheet] with the content for a regular test
   static Future<String?> show(
@@ -132,10 +131,8 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
                         horizontal: KPMargins.margin32),
                     child: Text(_error,
                         textAlign: TextAlign.center,
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelLarge
-                            ?.copyWith(color: KPColors.secondaryColor)),
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            color: Theme.of(context).colorScheme.error)),
                   ),
                 ),
                 BlocBuilder<ListsBloc, ListsState>(

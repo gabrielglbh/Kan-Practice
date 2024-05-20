@@ -13,7 +13,7 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class AddGrammarPage extends StatefulWidget {
   final AddGrammarPointArgs args;
-  const AddGrammarPage({Key? key, required this.args}) : super(key: key);
+  const AddGrammarPage({super.key, required this.args});
 
   @override
   State<AddGrammarPage> createState() => _AddGrammarPageState();
@@ -220,7 +220,7 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(KPRadius.radius4),
                     border: Border.all(
-                      color: KPColors.getAccent(context),
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   child: Row(
@@ -233,8 +233,11 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
                             .bodySmall
                             ?.copyWith(fontWeight: FontWeight.bold),
                       ),
-                      Icon(Icons.arrow_downward_rounded,
-                          size: 16, color: KPColors.getSubtle(context)),
+                      Icon(
+                        Icons.arrow_downward_rounded,
+                        size: 16,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ],
                   ),
                 ),

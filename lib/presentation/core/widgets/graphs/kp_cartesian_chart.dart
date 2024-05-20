@@ -35,14 +35,14 @@ class KPCartesianChart<T> extends StatelessWidget {
   final int markerThreshold;
   final double? height;
   const KPCartesianChart({
-    Key? key,
+    super.key,
     required this.dataSource,
     required this.graphName,
     this.intervalType = DateTimeIntervalType.auto,
     this.zoomPanBehavior,
     this.markerThreshold = 200,
     this.height,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -68,14 +68,14 @@ class KPCartesianChart<T> extends StatelessWidget {
             args.color = null;
           }
           args.borderWidth = 1;
-          args.borderColor = KPColors.primaryLight;
+          args.borderColor = Colors.white;
         },
         primaryXAxis: DateTimeAxis(
           intervalType: intervalType,
           enableAutoIntervalOnZooming: true,
         ),
-        primaryYAxis: NumericAxis(maximum: 120, minimum: 0, interval: 20),
-        series: <ChartSeries<TestDataFrame, DateTime>>[
+        primaryYAxis: const NumericAxis(maximum: 120, minimum: 0, interval: 20),
+        series: <CartesianSeries<TestDataFrame, DateTime>>[
           LineSeries<TestDataFrame, DateTime>(
             animationDuration: 0,
             name: graphName,
@@ -83,7 +83,7 @@ class KPCartesianChart<T> extends StatelessWidget {
             enableTooltip: true,
             markerSettings: MarkerSettings(
               isVisible: true,
-              color: KPColors.primaryLight,
+              color: Colors.white,
               width: dataSource.length > markerThreshold ? 9 : 14,
               height: dataSource.length > markerThreshold ? 9 : 14,
             ),
@@ -92,7 +92,7 @@ class KPCartesianChart<T> extends StatelessWidget {
                 data.y == DatabaseConstants.emptyWinRate
                     ? 0
                     : Utils.getFixedPercentage(data.y),
-            color: KPColors.secondaryColor,
+            color: Theme.of(context).colorScheme.primary,
           )
         ],
       ),
@@ -102,15 +102,12 @@ class KPCartesianChart<T> extends StatelessWidget {
 
 class _KPCartesianChartTooltip extends StatelessWidget {
   final TestDataFrame source;
-  const _KPCartesianChartTooltip({
-    Key? key,
-    required this.source,
-  }) : super(key: key);
+  const _KPCartesianChartTooltip({required this.source});
 
   @override
   Widget build(BuildContext context) {
-    final tooltipColor = KPColors.getAccent(context);
-    final tooltipTextColor = KPColors.getAlterAccent(context);
+    final tooltipColor = Theme.of(context).colorScheme.onSurface;
+    final tooltipTextColor = Theme.of(context).colorScheme.surface;
     final format = DateFormat('MMM dd, HH:mm');
     final mode = source.mode.nameAbbr;
     final date = format.format(source.x);
@@ -137,7 +134,7 @@ class _KPCartesianChartTooltip extends StatelessWidget {
                       width: 14,
                       height: 14,
                       decoration: const BoxDecoration(
-                        color: KPColors.primaryLight,
+                        color: Colors.white,
                         shape: BoxShape.circle,
                       ),
                     ),

@@ -8,7 +8,7 @@ import 'package:kanpractice/presentation/core/widgets/kp_test_bottom_sheet.dart'
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class ActionsBottomSheet extends StatelessWidget {
-  const ActionsBottomSheet({Key? key}) : super(key: key);
+  const ActionsBottomSheet({super.key});
 
   /// Returns the name of the KanList being created to use the parents
   /// bloc to create it properly
@@ -52,8 +52,8 @@ class ActionsBottomSheet extends StatelessWidget {
                     children: [
                       ListTile(
                         title: Text("bottom_actions_create_test".tr()),
-                        leading: const Icon(Icons.track_changes_rounded,
-                            color: KPColors.secondaryColor),
+                        leading: Icon(Icons.track_changes_rounded,
+                            color: Theme.of(context).colorScheme.primary),
                         onTap: () async {
                           Navigator.of(context).pop();
                           await KPTestBottomSheet.show(context);

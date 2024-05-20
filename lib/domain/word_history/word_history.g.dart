@@ -8,7 +8,7 @@ part of 'word_history.dart';
 
 WordHistory _$WordHistoryFromJson(Map<String, dynamic> json) => WordHistory(
       word: json['word'] as String,
-      searchedOn: json['searchedOn'] as int,
+      searchedOn: (json['searchedOn'] as num).toInt(),
     );
 
 Map<String, dynamic> _$WordHistoryToJson(WordHistory instance) =>

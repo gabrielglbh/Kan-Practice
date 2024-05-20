@@ -13,7 +13,7 @@ import 'package:kanpractice/presentation/core/widgets/modes_grid/kp_modes_grid.d
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class KanListSelectionBottomSheet extends StatefulWidget {
-  const KanListSelectionBottomSheet({Key? key}) : super(key: key);
+  const KanListSelectionBottomSheet({super.key});
 
   @override
   State<KanListSelectionBottomSheet> createState() =>

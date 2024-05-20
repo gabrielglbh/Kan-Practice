@@ -6,7 +6,7 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_language_flag.dart';
 
 class LanguageBottomSheet extends StatefulWidget {
-  const LanguageBottomSheet({Key? key}) : super(key: key);
+  const LanguageBottomSheet({super.key});
 
   static Future<String?> show(BuildContext context) async {
     String? language;

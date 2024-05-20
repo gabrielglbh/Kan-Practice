@@ -126,7 +126,7 @@ class _TestStatsState extends State<TestStats>
           onBarTapped: (model) async {
             if (model.dataPoints?.isNotEmpty == true) {
               final test = Tests.values[model.pointIndex ?? -1];
-              if (test == Tests.numbers || test == Tests.translation) {
+              if (test == Tests.numbers) {
                 context
                     .read<AlterSpecificDataBloc>()
                     .add(AlterSpecificDataEventGatherTest(test: test));
@@ -143,55 +143,49 @@ class _TestStatsState extends State<TestStats>
                 return DataFrame(
                   x: Tests.lists.nameAbbr,
                   y: s.test.selectionTests.toDouble(),
-                  color: KPColors.secondaryColor,
+                  color: Theme.of(context).colorScheme.primary,
                 );
               case Tests.blitz:
                 return DataFrame(
                   x: Tests.blitz.nameAbbr,
                   y: s.test.blitzTests.toDouble(),
-                  color: KPColors.secondaryColor,
+                  color: Theme.of(context).colorScheme.primary,
                 );
               case Tests.time:
                 return DataFrame(
                   x: Tests.time.nameAbbr,
                   y: s.test.remembranceTests.toDouble(),
-                  color: KPColors.secondaryColor,
+                  color: Theme.of(context).colorScheme.primary,
                 );
               case Tests.numbers:
                 return DataFrame(
                   x: Tests.numbers.nameAbbr,
                   y: s.test.numberTests.toDouble(),
-                  color: KPColors.secondaryColor,
+                  color: Theme.of(context).colorScheme.primary,
                 );
               case Tests.less:
                 return DataFrame(
                   x: Tests.less.nameAbbr,
                   y: s.test.lessPctTests.toDouble(),
-                  color: KPColors.secondaryColor,
+                  color: Theme.of(context).colorScheme.primary,
                 );
               case Tests.categories:
                 return DataFrame(
                   x: Tests.categories.nameAbbr,
                   y: s.test.categoryTests.toDouble(),
-                  color: KPColors.secondaryColor,
+                  color: Theme.of(context).colorScheme.primary,
                 );
               case Tests.folder:
                 return DataFrame(
                   x: Tests.folder.nameAbbr,
                   y: s.test.folderTests.toDouble(),
-                  color: KPColors.secondaryColor,
+                  color: Theme.of(context).colorScheme.primary,
                 );
               case Tests.daily:
                 return DataFrame(
                   x: Tests.daily.nameAbbr,
                   y: s.test.dailyTests.toDouble(),
-                  color: KPColors.secondaryColor,
-                );
-              case Tests.translation:
-                return DataFrame(
-                  x: Tests.translation.nameAbbr,
-                  y: s.test.translationTests.toDouble(),
-                  color: KPColors.secondaryColor,
+                  color: Theme.of(context).colorScheme.primary,
                 );
             }
           }),

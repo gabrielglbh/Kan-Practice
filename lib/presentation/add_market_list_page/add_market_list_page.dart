@@ -16,7 +16,7 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class AddMarketListPage extends StatefulWidget {
-  const AddMarketListPage({Key? key}) : super(key: key);
+  const AddMarketListPage({super.key});
 
   @override
   State<AddMarketListPage> createState() => _AddMarketListPageState();
@@ -108,7 +108,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.check_circle_rounded,
-                      color: KPColors.getSecondaryColor(context),
+                      color: Theme.of(context).colorScheme.primary,
                       size: KPSizes.maxHeightValidationCircle),
                   Padding(
                     padding: const EdgeInsets.all(KPMargins.margin16),
@@ -214,7 +214,9 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                                     const EdgeInsets.all(KPMargins.margin16),
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                      color: KPColors.getSubtle(context)),
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
+                                  ),
                                   borderRadius:
                                       BorderRadius.circular(KPRadius.radius16),
                                 ),

@@ -12,7 +12,7 @@ part of 'add_to_market_bloc.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$AddToMarketState {
@@ -119,7 +119,7 @@ class _$AddToMarketLoadingImpl implements AddToMarketLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$AddToMarketLoadingImpl);
   }
@@ -239,7 +239,7 @@ class _$AddToMarketLoadedImpl implements AddToMarketLoaded {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$AddToMarketLoadedImpl);
   }
@@ -359,7 +359,7 @@ class _$AddToMarketInitialImpl implements AddToMarketInitial {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$AddToMarketInitialImpl);
   }
@@ -499,7 +499,7 @@ class _$AddToMarketUserRetrievedImpl implements AddToMarketUserRetrieved {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AddToMarketUserRetrievedImpl &&
@@ -652,7 +652,7 @@ class _$AddToMarketErrorImpl implements AddToMarketError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AddToMarketErrorImpl &&

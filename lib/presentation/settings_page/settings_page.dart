@@ -7,7 +7,6 @@ import 'package:kanpractice/application/auth/auth_bloc.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
 import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
 import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
-import 'package:kanpractice/application/purchases/purchases_bloc.dart';
 import 'package:kanpractice/application/settings/settings_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
@@ -23,7 +22,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({super.key});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -87,7 +86,9 @@ class _SettingsPageState extends State<SettingsPage> {
               } catch (err) {
                 if (!mounted) return;
                 Utils.getSnackBar(
-                    context, "settings_information_rating_failed".tr());
+                    // ignore: use_build_context_synchronously
+                    context,
+                    "settings_information_rating_failed".tr());
               }
             },
           ),
@@ -164,22 +165,6 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           _header("settings_general".tr()),
           const Divider(),
-          ListTile(
-            leading: Icon(Icons.local_play_rounded,
-                color: KPColors.getSecondaryColor(context)),
-            title: Text("pro_version".tr()),
-            trailing: BlocBuilder<PurchasesBloc, PurchasesState>(
-              builder: (context, state) {
-                return state.maybeWhen(
-                  updatedToPro: () => Icon(Icons.check,
-                      color: KPColors.getSecondaryColor(context)),
-                  orElse: () => const SizedBox(),
-                );
-              },
-            ),
-            onTap: () =>
-                Navigator.of(context).pushNamed(KanPracticePages.storePage),
-          ),
           ListTile(
             leading: const Icon(Icons.insert_chart_outlined_rounded,
                 color: Colors.teal),

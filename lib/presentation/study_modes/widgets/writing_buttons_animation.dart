@@ -22,14 +22,13 @@ class WritingButtonsAnimations extends StatelessWidget {
   /// Action to be performed when submitting the current card
   final Function() onSubmit;
   const WritingButtonsAnimations(
-      {Key? key,
+      {super.key,
       required this.trigger,
       required this.triggerSlide,
       required this.id,
       required this.action,
       required this.onSubmit,
-      required this.submitLabel})
-      : super(key: key);
+      required this.submitLabel});
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +92,7 @@ class WritingButtonsAnimations extends StatelessWidget {
               horizontal: KPMargins.margin4,
               vertical: KPMargins.margin4,
               onTap: () async => await action(0),
-              color: Colors.redAccent.shade700,
+              color: KPColors.darkRed,
             )),
         _animation(
             duration: 2,
@@ -102,7 +101,7 @@ class WritingButtonsAnimations extends StatelessWidget {
               horizontal: KPMargins.margin4,
               vertical: KPMargins.margin4,
               onTap: () async => await action(0.20),
-              color: Colors.red.shade500,
+              color: KPColors.midRed,
             )),
         _animation(
             duration: 3,
@@ -111,7 +110,7 @@ class WritingButtonsAnimations extends StatelessWidget {
               horizontal: KPMargins.margin4,
               vertical: KPMargins.margin4,
               onTap: () async => await action(0.40),
-              color: Colors.orange.shade700,
+              color: KPColors.darkOrange,
             )),
         _animation(
             duration: 4,
@@ -120,7 +119,7 @@ class WritingButtonsAnimations extends StatelessWidget {
               horizontal: KPMargins.margin4,
               vertical: KPMargins.margin4,
               onTap: () async => await action(0.60),
-              color: Colors.amber.shade500,
+              color: KPColors.darkMidAmber,
             )),
         _animation(
             duration: 5,
@@ -129,7 +128,7 @@ class WritingButtonsAnimations extends StatelessWidget {
               horizontal: KPMargins.margin4,
               vertical: KPMargins.margin4,
               onTap: () async => await action(0.80),
-              color: Colors.lime.shade700,
+              color: KPColors.darkOlive,
             )),
         _animation(
             duration: 6,
@@ -138,7 +137,7 @@ class WritingButtonsAnimations extends StatelessWidget {
               horizontal: KPMargins.margin4,
               vertical: KPMargins.margin4,
               onTap: () async => await action(1),
-              color: Colors.green.shade700,
+              color: KPColors.darkGreen,
             ))
       ],
     );

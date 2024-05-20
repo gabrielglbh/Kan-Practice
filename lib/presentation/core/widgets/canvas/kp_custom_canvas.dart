@@ -20,12 +20,11 @@ class KPCustomCanvas extends StatefulWidget {
   /// Function to perform when the [im.Image] has been extracted
   final Function(ByteData, Size)? handleImage;
   const KPCustomCanvas(
-      {Key? key,
+      {super.key,
       required this.line,
       this.allowEdit = true,
       this.allowPrediction = false,
-      this.handleImage})
-      : super(key: key);
+      this.handleImage});
 
   @override
   State<KPCustomCanvas> createState() => _KPCustomCanvasState();
@@ -90,7 +89,9 @@ class _KPCustomCanvasState extends State<KPCustomCanvas> {
                   height: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(KPRadius.radius16),
-                    color: KPColors.getCardColor(context),
+                    border: Border.all(
+                        color: Theme.of(context).colorScheme.outline),
+                    color: Theme.of(context).colorScheme.surface,
                   ),
                   child: CustomPaint(
                     painter: WordPainter(points: widget.line, size: size),
@@ -133,14 +134,16 @@ class _KPCustomCanvasState extends State<KPCustomCanvas> {
             height: KPSizes.defaultSizeSearchBarIcons,
             width: KPSizes.defaultSizeSearchBarIcons,
             decoration: BoxDecoration(
-                color: KPColors.getAlterAccent(context),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.outline,
+                ),
                 borderRadius: BorderRadius.circular(KPRadius.radius16)),
             child: Column(
               children: [
                 Icon(
                   icon,
-                  size: KPFontSizes.fontSize32,
-                  color: KPColors.getAccent(context),
+                  size: KPFontSizes.fontSize26,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
                 FittedBox(
                     child: Padding(

@@ -33,37 +33,43 @@ class _TranscriptState extends State<Transcript> {
         );
       },
       child: SingleChildScrollView(
-        child: TextField(
-          controller: _textEditingController,
-          focusNode: _focusNode,
-          cursorColor: KPColors.secondaryDarkerColor,
-          maxLines: null,
-          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                color: Colors.black,
-                backgroundColor: Colors.grey.shade100.withOpacity(.8),
-                fontWeight: FontWeight.normal,
-                height: 1.2,
-              ),
-          decoration: const InputDecoration(
-            border: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            contentPadding: EdgeInsets.all(KPMargins.margin8),
-          ),
-          onTapOutside: (event) {
-            context
-                .read<OCRPageBloc>()
-                .add(OCRPageEventShowUpdateText(_textEditingController.text));
-          },
-          contextMenuBuilder: ((context, editableTextState) {
-            final ts = editableTextState.currentTextEditingValue.selection;
-            final selectedText = editableTextState.currentTextEditingValue.text
-                .substring(ts.baseOffset, ts.extentOffset);
-            final anchor = editableTextState.contextMenuAnchors.primaryAnchor;
+        child: Theme(
+          data: Theme.of(context).copyWith(
+              textSelectionTheme: TextSelectionThemeData(
+                  selectionColor: Theme.of(context).colorScheme.primary)),
+          child: TextField(
+            controller: _textEditingController,
+            focusNode: _focusNode,
+            cursorColor: Theme.of(context).colorScheme.primary,
+            maxLines: null,
+            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                  color: Colors.black,
+                  backgroundColor: Colors.grey.shade100.withOpacity(.8),
+                  fontWeight: FontWeight.normal,
+                  height: 1.2,
+                ),
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              contentPadding: EdgeInsets.all(KPMargins.margin8),
+            ),
+            onTapOutside: (event) {
+              context
+                  .read<OCRPageBloc>()
+                  .add(OCRPageEventShowUpdateText(_textEditingController.text));
+            },
+            contextMenuBuilder: ((context, editableTextState) {
+              final ts = editableTextState.currentTextEditingValue.selection;
+              final selectedText = editableTextState
+                  .currentTextEditingValue.text
+                  .substring(ts.baseOffset, ts.extentOffset);
+              final anchor = editableTextState.contextMenuAnchors.primaryAnchor;
 
-            return TranscriptContextMenu(
-                anchor: anchor, selectedText: selectedText);
-          }),
+              return TranscriptContextMenu(
+                  anchor: anchor, selectedText: selectedText);
+            }),
+          ),
         ),
       ),
     );

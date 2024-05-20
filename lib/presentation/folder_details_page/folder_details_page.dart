@@ -15,7 +15,7 @@ import 'package:kanpractice/presentation/folder_details_page/widgets/practice_on
 
 class FolderDetailsPage extends StatefulWidget {
   final String folder;
-  const FolderDetailsPage({Key? key, required this.folder}) : super(key: key);
+  const FolderDetailsPage({super.key, required this.folder});
 
   @override
   State<FolderDetailsPage> createState() => _FolderDetailsPageState();
@@ -73,8 +73,8 @@ class _FolderDetailsPageState extends State<FolderDetailsPage> {
           onPressed: () async {
             await KPTestBottomSheet.show(context, folder: widget.folder);
           },
-          icon: const Icon(Icons.track_changes_rounded,
-              color: KPColors.secondaryColor),
+          icon: Icon(Icons.track_changes_rounded,
+              color: Theme.of(context).colorScheme.primary),
         ),
         IconButton(
           icon: const Icon(Icons.auto_awesome_motion_rounded),
@@ -83,6 +83,7 @@ class _FolderDetailsPageState extends State<FolderDetailsPage> {
                 KanPracticePages.folderAddPage,
                 arguments: widget.folder);
             if (!mounted) return;
+            // ignore: use_build_context_synchronously
             context.read<FolderDetailsBloc>().add(_addListLoadingEvent());
           },
         ),

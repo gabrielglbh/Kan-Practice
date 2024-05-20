@@ -19,11 +19,11 @@ class ArchiveWordListWidget extends StatefulWidget {
   final Function() onScrolledToBottom;
   final Function() removeFocus;
   const ArchiveWordListWidget({
-    Key? key,
+    super.key,
     required this.query,
     required this.onScrolledToBottom,
     required this.removeFocus,
-  }) : super(key: key);
+  });
 
   @override
   State<ArchiveWordListWidget> createState() => _ArchiveWordListWidgetState();
@@ -120,7 +120,7 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
         _currentAppliedOrder
             ? Icons.arrow_downward_rounded
             : Icons.arrow_upward_rounded,
-        color: KPColors.getAlterAccent(context));
+        color: Theme.of(context).colorScheme.primary);
 
     return SizedBox(
         height: KPSizes.defaultSizeFiltersList,
@@ -132,6 +132,7 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
                 padding:
                     const EdgeInsets.symmetric(horizontal: KPMargins.margin2),
                 child: ChoiceChip(
+                  showCheckmark: false,
                   label: Text(WordCategoryFilter.values[index].category),
                   avatar: _currentAppliedFilter.index != index ? null : icon,
                   pressElevation: KPMargins.margin4,
@@ -175,7 +176,7 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
 
     return RefreshIndicator(
       onRefresh: () async => _addLoadingEvent(reset: true),
-      color: KPColors.secondaryColor,
+      color: Theme.of(context).colorScheme.primary,
       child: getIt<PreferencesService>().readData(SharedKeys.showBadgeWords)
           ? GridView.builder(
               key: const PageStorageKey<String>('wordListController'),

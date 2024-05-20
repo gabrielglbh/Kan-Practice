@@ -8,12 +8,11 @@ class KPKanListGrid<T> extends StatelessWidget {
   final List<T> items;
   final bool Function(String name) isSelected;
   const KPKanListGrid({
-    Key? key,
+    super.key,
     required this.onTap,
     required this.items,
     required this.isSelected,
-  })  : assert(items is List<Folder> || items is List<WordList>),
-        super(key: key);
+  }) : assert(items is List<Folder> || items is List<WordList>);
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +39,9 @@ class KPKanListGrid<T> extends StatelessWidget {
                 border: Border.all(
                     color: isSelected(name)
                         ? Colors.transparent
-                        : KPColors.getSubtle(context)),
+                        : Theme.of(context).colorScheme.primaryFixed),
                 color: isSelected(name)
-                    ? KPColors.secondaryDarkerColor
+                    ? Theme.of(context).colorScheme.primary
                     : Colors.transparent,
               ),
               child: FittedBox(
@@ -51,8 +50,8 @@ class KPKanListGrid<T> extends StatelessWidget {
                   name,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: isSelected(name)
-                            ? KPColors.primaryLight
-                            : KPColors.getAccent(context),
+                            ? Theme.of(context).colorScheme.onPrimary
+                            : Theme.of(context).colorScheme.onSurface,
                       ),
                 ),
               ),

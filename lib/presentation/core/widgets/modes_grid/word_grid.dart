@@ -149,7 +149,8 @@ class WordGrid extends StatelessWidget {
         KPButton(
           title1: mode.japMode,
           title2: mode.mode,
-          color: isAvailable ? mode.color : KPColors.getSubtle(context),
+          color:
+              isAvailable ? mode.color : Theme.of(context).colorScheme.tertiary,
           onTap: isAvailable
               ? () async {
                   if (selectionQuery != null &&
@@ -180,9 +181,10 @@ class WordGrid extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .bodySmall
-                    ?.copyWith(color: Colors.white),
+                    ?.copyWith(color: Theme.of(context).colorScheme.onPrimary),
               ),
-              backgroundColor: KPColors.secondaryDarkerColor,
+              side: BorderSide.none,
+              backgroundColor: Theme.of(context).colorScheme.primary,
               labelPadding: EdgeInsets.zero,
             ),
           ),

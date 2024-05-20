@@ -19,8 +19,7 @@ class FolderListPage extends StatefulWidget {
   final Function() removeFocus;
   final Function() onScrolledToBottom;
   const FolderListPage(
-      {Key? key, required this.removeFocus, required this.onScrolledToBottom})
-      : super(key: key);
+      {super.key, required this.removeFocus, required this.onScrolledToBottom});
 
   @override
   State<FolderListPage> createState() => _FolderListPageState();
@@ -128,7 +127,7 @@ class _FolderListPageState extends State<FolderListPage>
         _currentAppliedOrder
             ? Icons.arrow_downward_rounded
             : Icons.arrow_upward_rounded,
-        color: KPColors.getAlterAccent(context));
+        color: Theme.of(context).colorScheme.primary);
 
     return SizedBox(
         height: KPSizes.defaultSizeFiltersList,
@@ -140,6 +139,7 @@ class _FolderListPageState extends State<FolderListPage>
                 padding:
                     const EdgeInsets.symmetric(horizontal: KPMargins.margin2),
                 child: ChoiceChip(
+                  showCheckmark: false,
                   label: Text(FolderFilters.values[index].label),
                   avatar: _currentAppliedFilter.index != index ? null : icon,
                   pressElevation: KPMargins.margin4,
@@ -170,7 +170,7 @@ class _FolderListPageState extends State<FolderListPage>
               : Expanded(
                   child: RefreshIndicator(
                     onRefresh: () async => _addLoadingEvent(reset: true),
-                    color: KPColors.secondaryColor,
+                    color: Theme.of(context).colorScheme.primary,
                     child: ListView.separated(
                         key: const PageStorageKey<String>(
                             'folderListsController'),
@@ -238,8 +238,8 @@ class _FolderListPageState extends State<FolderListPage>
         onPressed: () async {
           await KPTestBottomSheet.show(context, folder: folder.folder);
         },
-        icon: const Icon(Icons.track_changes_rounded,
-            color: KPColors.secondaryColor),
+        icon: Icon(Icons.track_changes_rounded,
+            color: Theme.of(context).colorScheme.primary),
       ),
     );
   }

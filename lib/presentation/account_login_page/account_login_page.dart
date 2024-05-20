@@ -3,18 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
-import 'package:kanpractice/application/purchases/purchases_bloc.dart';
 import 'package:kanpractice/presentation/core/types/sign_in_mode.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_text_form.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 
 class LoginPage extends StatefulWidget {
-  final StoreProduct? product;
-  const LoginPage({Key? key, required this.product}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -94,15 +91,6 @@ class _LoginPageState extends State<LoginPage> {
               if (i.shouldPop) Navigator.of(context).pop();
             },
             loaded: (l) {
-              if (widget.product != null) {
-                context
-                    .read<PurchasesBloc>()
-                    .add(PurchasesEventBuy(widget.product!));
-              } else {
-                context
-                    .read<PurchasesBloc>()
-                    .add(PurchasesEventRestorePurchases());
-              }
               Navigator.of(context).pop();
             },
           );
@@ -131,25 +119,14 @@ class _LoginPageState extends State<LoginPage> {
         if (!Platform.isIOS)
           ElevatedButton(
             onPressed: () => _handleGoogleLogin(),
-            style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      KPColors.getPrimary(context)),
-                  shape: MaterialStateProperty.all<OutlinedBorder>(
-                    RoundedRectangleBorder(
-                        side: BorderSide(color: KPColors.getAccent(context)),
-                        borderRadius: BorderRadius.circular(KPRadius.radius8)),
-                  ),
-                ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset('assets/images/google-signin.png', scale: 3.5),
                 const SizedBox(width: KPMargins.margin12),
                 Text("google_signin".tr(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge
-                        ?.copyWith(color: KPColors.getAccent(context)))
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary))
               ],
             ),
           ),
@@ -181,7 +158,7 @@ class _LoginPageState extends State<LoginPage> {
                 style: Theme.of(context)
                     .textTheme
                     .bodyLarge
-                    ?.copyWith(color: KPColors.getSecondaryColor(context))),
+                    ?.copyWith(color: Theme.of(context).colorScheme.error)),
           ),
         ),
         Padding(
@@ -189,7 +166,10 @@ class _LoginPageState extends State<LoginPage> {
           child: ElevatedButton(
             onPressed: () => _handleLogin(),
             child: Text("login_form_positive".tr(),
-                style: Theme.of(context).textTheme.labelLarge),
+                style: Theme.of(context)
+                    .textTheme
+                    .labelLarge
+                    ?.copyWith(color: Theme.of(context).colorScheme.onPrimary)),
           ),
         ),
         GestureDetector(

@@ -91,48 +91,25 @@ class KPAnimations {
 }
 
 class KPColors {
-  static Color getSecondaryColor(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.light
-          ? secondaryDarkerColor
-          : secondaryColor;
-
-  static Color getPrimary(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.light
-          ? primaryLight
-          : primaryDark;
-
-  static Color getCardColor(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.light
-          ? cardColorLight
-          : cardColorDark;
-
-  static Color getAccent(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.light
-          ? accentLight
-          : accentDark;
-
-  static Color getAlterAccent(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.light
-          ? accentDark
-          : accentLight;
-
-  static Color getSubtle(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.light
-          ? subtleLight
-          : subtleDark;
-
   static const Color secondaryDarkerColor = Color(0xFFD32F2F);
   static const Color secondaryColor = Color(0xFFE57373);
 
-  static const Color primaryLight = Colors.white;
   static final Color primaryDark = Colors.grey.shade900;
-  static final Color cardColorLight = Colors.grey.shade200;
-  static final Color cardColorDark = Colors.grey.shade800;
   static final Color midGrey = Colors.grey.shade500;
   static const Color accentLight = Colors.black;
-  static const Color accentDark = Colors.white;
   static final Color subtleLight = Colors.grey.shade600;
   static final Color subtleDark = Colors.grey.shade600;
+
+  static const Color darkRed = Color(0xFFD32F2F);
+  static const Color darkMidRed = Color(0xFFC62828);
+  static const Color midRed = Color(0xFFB71C1C);
+  static const Color lightMidRed = Color(0xFFFF7043);
+  static const Color darkOrange = Color(0xFFF57C00);
+  static const Color darkMidOrange = Color(0xFFEF6C00);
+  static const Color darkAmber = Color(0xFFFFB300);
+  static const Color darkMidAmber = Color(0xFFFFA000);
+  static const Color darkOlive = Color(0xFF827717);
+  static const Color darkGreen = Color(0xFF388E3C);
 }
 
 class LanguageObj {

@@ -106,7 +106,8 @@ class _CameraPreviewPickerState extends State<CameraPreviewPicker> {
                           right: KPMargins.margin12,
                           child: CircleAvatar(
                             radius: KPRadius.radius32,
-                            backgroundColor: KPColors.secondaryColor,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
                             child: IconButton(
                               onPressed: () {
                                 context

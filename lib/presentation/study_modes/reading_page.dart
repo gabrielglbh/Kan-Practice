@@ -2,8 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kana_kit/kana_kit.dart';
-import 'package:kanpractice/application/purchases/purchases_bloc.dart';
-import 'package:kanpractice/application/sentence_generator/sentence_generator_bloc.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
@@ -21,14 +19,10 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 import 'package:kanpractice/presentation/study_modes/utils/study_mode_update_handler.dart';
-import 'package:kanpractice/presentation/study_modes/widgets/context_button.dart';
-import 'package:kanpractice/presentation/study_modes/widgets/context_loader.dart';
-import 'package:kanpractice/presentation/study_modes/widgets/context_loading.dart';
-import 'package:kanpractice/presentation/study_modes/widgets/context_widget.dart';
 
 class ReadingStudy extends StatefulWidget {
   final ModeArguments args;
-  const ReadingStudy({Key? key, required this.args}) : super(key: key);
+  const ReadingStudy({super.key, required this.args});
 
   @override
   State<ReadingStudy> createState() => _ReadingStudyState();
@@ -67,7 +61,7 @@ class _ReadingStudyState extends State<ReadingStudy> {
     super.initState();
   }
 
-  Future<void> _updateUIOnSubmit(double score, bool isPro) async {
+  Future<void> _updateUIOnSubmit(double score) async {
     /// If the score is less PARTIAL or WRONG and the Learning Mode is
     /// SPATIAL, the append the current word to the list, to review it again.
     /// Only do this when NOT on test
@@ -95,10 +89,6 @@ class _ReadingStudyState extends State<ReadingStudy> {
           });
 
           if (!mounted) return;
-          if (!isPro) return;
-          context
-              .read<SentenceGeneratorBloc>()
-              .add(SentenceGeneratorEventReset());
         }
 
         /// If we ended the list, update the statistics to DB and exit
@@ -119,10 +109,10 @@ class _ReadingStudyState extends State<ReadingStudy> {
         testScore += s;
       }
       final score = testScore / _studyList.length;
-      await StudyModeUpdateHandler.handle(context, widget.args,
+      StudyModeUpdateHandler.handle(context, widget.args,
           testScore: score, testScores: _testScores);
     } else {
-      await StudyModeUpdateHandler.handle(context, widget.args);
+      StudyModeUpdateHandler.handle(context, widget.args);
     }
   }
 
@@ -204,57 +194,38 @@ class _ReadingStudyState extends State<ReadingStudy> {
             icon: const Icon(Icons.info_outline_rounded),
           )
       ],
-      child: BlocBuilder<PurchasesBloc, PurchasesState>(
-        builder: (context, state) {
-          return Column(
+      child: Column(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  KPListPercentageIndicator(
-                      value: (_macro + 1) / _studyList.length),
-                  KPLearningHeaderAnimation(
-                    id: _macro,
-                    child: state.maybeWhen(
-                      updatedToPro: () => ContextLoader(
-                        word: _studyList[_macro].word,
-                        mode: StudyModes.reading,
-                        loading: _body(null, isLoading: true),
-                        child: _body,
-                      ),
-                      orElse: () => _body(null),
-                    ),
-                  ),
-                  if (!_showPronunciation)
-                    ContextButton(word: _studyList[_macro].word),
-                ],
-              ),
-              KPValidationButtons(
-                trigger: _showPronunciation,
-                submitLabel: "done_button_label".tr(),
-                action: (score) async => await _updateUIOnSubmit(
-                  score,
-                  state is PurchasesUpdatedToPro,
-                ),
-                onSubmit: () => setState(() => _showPronunciation = true),
+              KPListPercentageIndicator(
+                  value: (_macro + 1) / _studyList.length),
+              KPLearningHeaderAnimation(
+                id: _macro,
+                child: _body(),
               ),
             ],
-          );
-        },
+          ),
+          KPValidationButtons(
+            trigger: _showPronunciation,
+            submitLabel: "done_button_label".tr(),
+            action: (score) async => await _updateUIOnSubmit(score),
+            onSubmit: () => setState(() => _showPronunciation = true),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _body(String? sentence, {bool isLoading = false}) {
+  Widget _body() {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
           KPLearningTextBox(
-            textStyle: Theme.of(context)
-                .textTheme
-                .bodyLarge
-                ?.copyWith(color: KPColors.secondaryColor),
+            textStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: Theme.of(context).colorScheme.onPrimaryContainer),
             bottom: KPMargins.margin4,
             text: _getProperAlphabet(),
           ),
@@ -271,14 +242,6 @@ class _ReadingStudyState extends State<ReadingStudy> {
               text: _studyList[_macro].word,
             ),
           ),
-          if (isLoading) const ContextLoading(),
-          if (sentence != null)
-            ContextWidget(
-              word: _studyList[_macro].word,
-              showWord: _showPronunciation,
-              sentence: sentence,
-              mode: StudyModes.reading,
-            ),
           KPLearningTextBox(
             textStyle: Theme.of(context).textTheme.bodyLarge,
             text: _getProperMeaning(),

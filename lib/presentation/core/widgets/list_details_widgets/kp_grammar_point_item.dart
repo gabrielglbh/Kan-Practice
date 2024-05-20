@@ -17,7 +17,7 @@ class KPGrammarPointItem extends StatelessWidget {
   final int index;
   final Function() onShowModal;
   const KPGrammarPointItem({
-    Key? key,
+    super.key,
     this.listName,
     this.aggregateStats = false,
     required this.grammarPoint,
@@ -26,7 +26,7 @@ class KPGrammarPointItem extends StatelessWidget {
     required this.selectedMode,
     required this.index,
     required this.onShowModal,
-  }) : super(key: key);
+  });
 
   double _getProperGpWinRate(GrammarPoint gp) {
     if (aggregateStats) {
@@ -76,7 +76,7 @@ class KPGrammarPointItem extends StatelessWidget {
               child: KPLinearGraph(
                 value: _getProperGpWinRate(grammarPoint),
                 color: aggregateStats
-                    ? KPColors.secondaryDarkerColor
+                    ? Theme.of(context).colorScheme.primary
                     : selectedMode.color,
               ),
             )

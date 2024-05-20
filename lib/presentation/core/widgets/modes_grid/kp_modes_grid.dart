@@ -47,14 +47,14 @@ class KPModesGrid extends StatefulWidget {
   final Tests type;
 
   const KPModesGrid({
-    Key? key,
+    super.key,
     this.selectionQuery,
     this.grammarList,
     this.practiceList,
     this.folder,
     required this.type,
     required this.testName,
-  }) : super(key: key);
+  });
 
   @override
   State<KPModesGrid> createState() => _KPModesGridState();
@@ -129,7 +129,7 @@ class _KPModesGridState extends State<KPModesGrid> {
               Padding(
                 padding: const EdgeInsets.only(right: KPMargins.margin16),
                 child: Icon(Icons.sports_gymnastics_rounded,
-                    color: KPColors.getSubtle(context)),
+                    color: Theme.of(context).colorScheme.tertiary),
               ),
               Expanded(
                   child: Text(
@@ -140,7 +140,7 @@ class _KPModesGridState extends State<KPModesGrid> {
               Padding(
                 padding: const EdgeInsets.only(left: KPMargins.margin16),
                 child: Icon(Icons.sports_gymnastics_rounded,
-                    color: KPColors.getSubtle(context)),
+                    color: Theme.of(context).colorScheme.tertiary),
               ),
             ],
           )),

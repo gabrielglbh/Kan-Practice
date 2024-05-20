@@ -4,8 +4,7 @@ class StudyModeAppBar extends StatelessWidget {
   final String title;
   final String studyMode;
   const StudyModeAppBar(
-      {Key? key, required this.title, required this.studyMode})
-      : super(key: key);
+      {super.key, required this.title, required this.studyMode});
 
   @override
   Widget build(BuildContext context) {

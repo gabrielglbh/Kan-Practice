@@ -132,15 +132,14 @@ class _TestHistoryState extends State<TestHistory>
                     _applyFilters(filters);
                   },
                   style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(KPColors.midGrey),
+                    backgroundColor: WidgetStateProperty.all(KPColors.midGrey),
                   ),
                   child: Text(
                     "history_tests_filter".tr(),
                     style: Theme.of(context)
                         .textTheme
                         .bodyLarge
-                        ?.copyWith(color: KPColors.primaryLight),
+                        ?.copyWith(color: Colors.white),
                   ),
                 ),
               ),

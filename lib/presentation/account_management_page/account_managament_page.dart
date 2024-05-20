@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
-import 'package:kanpractice/application/purchases/purchases_bloc.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
@@ -119,9 +118,6 @@ class _AccountManagementPageState extends State<AccountManagementPage> {
         listener: (context, state) {
           state.mapOrNull(
             initial: (_) {
-              context
-                  .read<PurchasesBloc>()
-                  .add(PurchasesEventRestorePurchases());
               Navigator.of(context).pop();
             },
           );
@@ -138,7 +134,7 @@ class _AccountManagementPageState extends State<AccountManagementPage> {
                   child: Column(
                     children: [
                       Icon(Icons.check_circle_rounded,
-                          color: KPColors.getSecondaryColor(context),
+                          color: Theme.of(context).colorScheme.primary,
                           size: KPSizes.maxHeightValidationCircle),
                       Padding(
                         padding: const EdgeInsets.all(KPMargins.margin16),
@@ -196,7 +192,7 @@ class _AccountManagementPageState extends State<AccountManagementPage> {
                                   "login_removeAccountDialog_title".tr(),
                                   style: TextStyle(
                                       color:
-                                          KPColors.getSecondaryColor(context))),
+                                          Theme.of(context).colorScheme.error)),
                               onTap: () async {
                                 if (isEmailProvider) {
                                   _removeAccountDialog();

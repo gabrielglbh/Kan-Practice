@@ -20,7 +20,7 @@ import 'package:kanpractice/presentation/test_result_page/widgets/words_on_test_
 
 class TestResultPage extends StatefulWidget {
   final TestResultArguments args;
-  const TestResultPage({Key? key, required this.args}) : super(key: key);
+  const TestResultPage({super.key, required this.args});
 
   @override
   State<TestResultPage> createState() => _TestResultPageState();
@@ -101,7 +101,7 @@ class _TestResultPageState extends State<TestResultPage> {
                   const SizedBox(height: KPMargins.margin8),
                   ListTile(
                       leading: Icon(Icons.track_changes_rounded,
-                          color: KPColors.getSecondaryColor(context)),
+                          color: Theme.of(context).colorScheme.primary),
                       title: Text("test_result_do_test_button_label".tr()),
                       visualDensity: const VisualDensity(vertical: -2),
                       onTap: () => setState(

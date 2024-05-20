@@ -12,7 +12,7 @@ part of 'list_details_words_bloc.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ListDetailsWordsState {
@@ -124,7 +124,7 @@ class _$ListDetailsWordsInitialImpl implements ListDetailsWordsInitial {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ListDetailsWordsInitialImpl);
@@ -281,7 +281,7 @@ class _$ListDetailsWordsLoadedImpl implements ListDetailsWordsLoaded {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ListDetailsWordsLoadedImpl &&
@@ -455,7 +455,7 @@ class _$ListDetailsWordsPracticeLoadedImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ListDetailsWordsPracticeLoadedImpl &&
@@ -600,7 +600,7 @@ class _$ListDetailsWordsLoadingImpl implements ListDetailsWordsLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ListDetailsWordsLoadingImpl);
@@ -742,7 +742,7 @@ class _$ListDetailsWordsErrorImpl implements ListDetailsWordsError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ListDetailsWordsErrorImpl &&

@@ -557,10 +557,6 @@ class BackupRepositoryImpl implements IBackupRepository {
                 TestDataTableFields.testTotalWinRateGrammarPointField, 0)
           ]);
         }
-        if (!json.containsKey(TestDataTableFields.translationTestsField)) {
-          json.addEntries(
-              [const MapEntry(TestDataTableFields.translationTestsField, 0)]);
-        }
         backUpTestData = TestData.fromJson(json);
       }
 
@@ -623,24 +619,6 @@ class BackupRepositoryImpl implements IBackupRepository {
             json.addEntries([
               const MapEntry(
                   AlterTestSpecificDataTableFields.totalWinRateNumberTestField,
-                  0)
-            ]);
-          }
-          if (!json.containsKey(AlterTestSpecificDataTableFields
-              .totalTranslationTestCountField)) {
-            json.addEntries([
-              const MapEntry(
-                  AlterTestSpecificDataTableFields
-                      .totalTranslationTestCountField,
-                  0)
-            ]);
-          }
-          if (!json.containsKey(AlterTestSpecificDataTableFields
-              .totalWinRateTranslationTestField)) {
-            json.addEntries([
-              const MapEntry(
-                  AlterTestSpecificDataTableFields
-                      .totalWinRateTranslationTestField,
                   0)
             ]);
           }

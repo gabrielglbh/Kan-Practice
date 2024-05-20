@@ -15,7 +15,7 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
 class KPNumberTestBottomSheet extends StatefulWidget {
-  const KPNumberTestBottomSheet({Key? key}) : super(key: key);
+  const KPNumberTestBottomSheet({super.key});
 
   /// Creates and calls the [BottomSheet] with the content for a blitz test
   static Future<String?> show(BuildContext context) async {
@@ -120,14 +120,14 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
                             vertical: KPMargins.margin2),
                         decoration: BoxDecoration(
                           color: _selectedLists.contains(range)
-                              ? KPColors.secondaryDarkerColor
+                              ? Theme.of(context).colorScheme.primary
                               : Colors.transparent,
                           borderRadius:
                               BorderRadius.circular(KPRadius.radius16),
                           border: Border.all(
                             color: _selectedLists.contains(range)
                                 ? Colors.transparent
-                                : KPColors.getSubtle(context),
+                                : Theme.of(context).colorScheme.tertiary,
                           ),
                         ),
                         child: Text(
@@ -137,8 +137,10 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
                               .bodyMedium
                               ?.copyWith(
                                   color: _selectedLists.contains(range)
-                                      ? KPColors.primaryLight
-                                      : KPColors.getAccent(context)),
+                                      ? Theme.of(context).colorScheme.onPrimary
+                                      : Theme.of(context)
+                                          .colorScheme
+                                          .onSurface),
                         ),
                       ),
                     ),

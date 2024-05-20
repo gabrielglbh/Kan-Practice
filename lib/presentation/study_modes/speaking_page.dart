@@ -27,7 +27,7 @@ import 'package:speech_to_text/speech_to_text.dart';
 
 class SpeakingStudy extends StatefulWidget {
   final ModeArguments args;
-  const SpeakingStudy({Key? key, required this.args}) : super(key: key);
+  const SpeakingStudy({super.key, required this.args});
 
   @override
   State<SpeakingStudy> createState() => _SpeakingStudyState();
@@ -166,10 +166,10 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
         testScore += s;
       }
       final score = testScore / _studyList.length;
-      await StudyModeUpdateHandler.handle(context, widget.args,
+      StudyModeUpdateHandler.handle(context, widget.args,
           testScore: score, testScores: _testScores);
     } else {
-      await StudyModeUpdateHandler.handle(context, widget.args);
+      StudyModeUpdateHandler.handle(context, widget.args);
     }
   }
 

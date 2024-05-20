@@ -5,7 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 class KPCreateKanListDialog extends StatelessWidget {
   final Function(String)? onSubmit;
-  KPCreateKanListDialog({Key? key, this.onSubmit}) : super(key: key);
+  KPCreateKanListDialog({super.key, this.onSubmit});
 
   final TextEditingController controller = TextEditingController();
   final FocusNode focusNode = FocusNode();

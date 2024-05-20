@@ -15,8 +15,7 @@ import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 class PracticeFolderBottomSheet extends StatefulWidget {
   final String folder;
 
-  const PracticeFolderBottomSheet({Key? key, required this.folder})
-      : super(key: key);
+  const PracticeFolderBottomSheet({super.key, required this.folder});
 
   /// Creates and calls the [BottomSheet] with the content for a regular folder practice
   static Future<void> show(BuildContext context, String folder) async {

@@ -10,7 +10,7 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class FolderListBottomSheet extends StatefulWidget {
   final String? name;
-  const FolderListBottomSheet({Key? key, required this.name}) : super(key: key);
+  const FolderListBottomSheet({super.key, required this.name});
 
   /// Creates and calls the [BottomSheet] with the content for a regular test
   static Future<String?> show(BuildContext context, String? name) async {

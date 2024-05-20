@@ -7,14 +7,14 @@ part of 'specific_data.dart';
 // **************************************************************************
 
 SpecificData _$SpecificDataFromJson(Map<String, dynamic> json) => SpecificData(
-      id: json['id'] as int,
-      totalWritingCount: json['totalWritingCount'] as int,
-      totalReadingCount: json['totalReadingCount'] as int,
-      totalRecognitionCount: json['totalRecognitionCount'] as int,
-      totalListeningCount: json['totalListeningCount'] as int,
-      totalSpeakingCount: json['totalSpeakingCount'] as int,
-      totalDefinitionCount: json['totalDefinitionCount'] as int,
-      totalGrammarPointCount: json['totalGrammarPointCount'] as int,
+      id: (json['id'] as num).toInt(),
+      totalWritingCount: (json['totalWritingCount'] as num).toInt(),
+      totalReadingCount: (json['totalReadingCount'] as num).toInt(),
+      totalRecognitionCount: (json['totalRecognitionCount'] as num).toInt(),
+      totalListeningCount: (json['totalListeningCount'] as num).toInt(),
+      totalSpeakingCount: (json['totalSpeakingCount'] as num).toInt(),
+      totalDefinitionCount: (json['totalDefinitionCount'] as num).toInt(),
+      totalGrammarPointCount: (json['totalGrammarPointCount'] as num).toInt(),
       totalWinRateWriting: (json['totalWinRateWriting'] as num).toDouble(),
       totalWinRateReading: (json['totalWinRateReading'] as num).toDouble(),
       totalWinRateRecognition:

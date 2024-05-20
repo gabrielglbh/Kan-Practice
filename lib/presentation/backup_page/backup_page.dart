@@ -10,7 +10,7 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class BackUpPage extends StatelessWidget {
   final String uid;
-  const BackUpPage({Key? key, required this.uid}) : super(key: key);
+  const BackUpPage({super.key, required this.uid});
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class BackUpPage extends StatelessWidget {
                     leading: const Icon(Icons.delete),
                     title: Text("backup_removal_tile".tr(),
                         style: TextStyle(
-                            color: KPColors.getSecondaryColor(context))),
+                            color: Theme.of(context).colorScheme.error)),
                     onTap: () => _createDialogForRemovingBackUp(bloc),
                   ),
                 ],

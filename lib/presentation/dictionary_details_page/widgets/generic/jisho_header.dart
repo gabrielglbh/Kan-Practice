@@ -4,8 +4,7 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 class JishoHeader extends StatelessWidget {
   final String header;
   final bool guideline;
-  const JishoHeader({Key? key, required this.header, this.guideline = false})
-      : super(key: key);
+  const JishoHeader({super.key, required this.header, this.guideline = false});
 
   @override
   Widget build(BuildContext context) {

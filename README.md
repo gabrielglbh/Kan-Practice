@@ -10,21 +10,16 @@ Build your own word, sentences and grammar lists and study them whenever you wan
   </a>  
 </p>
 
-## Pro Features
-
-**Now with ChatGPT context to enhance your study!** In some study modes such as Listening and in the new grammar mode 'Translation', you will be provided with random sentences within **your vocabulary** context to help you study with more flexibility. All these sentences are given to you by the most powerful ChatGPT completion model: _da-vinci-003_.
-
 ## Screenshots
 
 <p align="center">
-  <img src="documentation/pro.png" width="20%">
   <img src="documentation/kanlist.png" width="20%">
   <img src="documentation/market.png" width="20%">
   <img src="documentation/jisho.png" width="20%">
+  <img src="documentation/dictionary.png" width="20%">
 </p>
 
 <p align="center">
-  <img src="documentation/dictionary.png" width="20%">
   <img src="documentation/lists.png" width="20%">
   <img src="documentation/grammar.png" width="20%">
   <img src="documentation/stats.png" width="20%">

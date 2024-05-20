@@ -13,10 +13,10 @@ class PracticeWordsBottomSheet extends StatefulWidget {
   final String listName;
   final List<Word> list;
   const PracticeWordsBottomSheet({
-    Key? key,
+    super.key,
     required this.listName,
     required this.list,
-  }) : super(key: key);
+  });
 
   /// Creates and calls the [BottomSheet] with the content for a regular list practice
   /// when the GROUP mode is active only

@@ -12,7 +12,7 @@ part of 'folder_details_bloc.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$FolderDetailsState {
@@ -119,7 +119,7 @@ class _$FolderDetailsLoadingImpl implements FolderDetailsLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FolderDetailsLoadingImpl);
@@ -263,7 +263,7 @@ class _$FolderDetailsLoadedImpl implements FolderDetailsLoaded {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FolderDetailsLoadedImpl &&
@@ -426,7 +426,7 @@ class _$FolderDetailsTestLoadedImpl implements FolderDetailsTestLoaded {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FolderDetailsTestLoadedImpl &&
@@ -562,7 +562,7 @@ class _$FolderDetailsInitialImpl implements FolderDetailsInitial {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FolderDetailsInitialImpl);
@@ -683,7 +683,7 @@ class _$FolderDetailsErrorImpl implements FolderDetailsError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$FolderDetailsErrorImpl);
   }

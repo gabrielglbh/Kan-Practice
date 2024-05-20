@@ -42,7 +42,7 @@ abstract class InjectableModule {
 
     return await openDatabase(
       path,
-      version: 14,
+      version: 15,
       singleInstance: true,
       onConfigure: (db) async {
         await db.execute('PRAGMA foreign_keys = ON');
@@ -54,6 +54,7 @@ abstract class InjectableModule {
         if (oldVersion <= 11) c.version11to12(db);
         if (oldVersion <= 12) c.version12to13(db);
         if (oldVersion <= 13) c.version13to14(db);
+        if (oldVersion <= 14) c.version14to15(db);
       },
       onCreate: (Database db, int version) async {
         await db.execute("CREATE TABLE ${WordTableFields.wordTable}("
@@ -161,8 +162,7 @@ abstract class InjectableModule {
             "${TestDataTableFields.lessPctTestsField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.categoryTestsField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.folderTestsField} INTEGER NOT NULL DEFAULT 0, "
-            "${TestDataTableFields.dailyTestsField} INTEGER NOT NULL DEFAULT 0, "
-            "${TestDataTableFields.translationTestsField} INTEGER NOT NULL DEFAULT 0)");
+            "${TestDataTableFields.dailyTestsField} INTEGER NOT NULL DEFAULT 0)");
 
         /// id is the [Test].index for future refers
         await db.execute(
@@ -188,9 +188,7 @@ abstract class InjectableModule {
             "CREATE TABLE ${AlterTestSpecificDataTableFields.testDataTable}("
             "${AlterTestSpecificDataTableFields.idField} INTEGER NOT NULL PRIMARY KEY DEFAULT -1, "
             "${AlterTestSpecificDataTableFields.totalNumberTestCountField} INTEGER NOT NULL DEFAULT 0, "
-            "${AlterTestSpecificDataTableFields.totalTranslationTestCountField} INTEGER NOT NULL DEFAULT 0, "
-            "${AlterTestSpecificDataTableFields.totalWinRateNumberTestField} INTEGER NOT NULL DEFAULT 0, "
-            "${AlterTestSpecificDataTableFields.totalWinRateTranslationTestField} INTEGER NOT NULL DEFAULT 0)");
+            "${AlterTestSpecificDataTableFields.totalWinRateNumberTestField} INTEGER NOT NULL DEFAULT 0)");
 
         await db.execute("CREATE TABLE ${GrammarTableFields.grammarTable}("
             "${GrammarTableFields.nameField} TEXT NOT NULL, "

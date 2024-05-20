@@ -20,7 +20,7 @@ class KPSearchBar extends StatefulWidget {
   final double top, bottom, right, left;
   final TextEditingController? controller;
   const KPSearchBar(
-      {Key? key,
+      {super.key,
       required this.onQuery,
       required this.onExitSearch,
       required this.hint,
@@ -29,8 +29,7 @@ class KPSearchBar extends StatefulWidget {
       this.bottom = 0,
       this.left = KPMargins.margin8,
       this.right = KPMargins.margin8,
-      this.controller})
-      : super(key: key);
+      this.controller});
 
   @override
   State<KPSearchBar> createState() => _KPSearchBarState();

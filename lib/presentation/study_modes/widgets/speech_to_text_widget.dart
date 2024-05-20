@@ -30,7 +30,7 @@ class SpeechToTextWidget extends StatelessWidget {
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: KPMargins.margin64 * 2,
-            color: KPColors.getPrimary(context),
+            color: Theme.of(context).colorScheme.surface,
             margin: const EdgeInsets.symmetric(horizontal: KPMargins.margin24),
             child: MusicVisualizer(
               colors: const [
@@ -52,7 +52,7 @@ class SpeechToTextWidget extends StatelessWidget {
             width: KPMargins.margin64 * 2,
             height: KPMargins.margin64 * 2,
             decoration: BoxDecoration(
-              color: KPColors.getSecondaryColor(context),
+              color: Theme.of(context).colorScheme.primary,
               shape: BoxShape.circle,
             ),
             child: const Icon(
@@ -86,7 +86,7 @@ class SpeechToTextWidget extends StatelessWidget {
               width: KPMargins.margin64 * 2,
               height: KPMargins.margin64 * 2,
               decoration: BoxDecoration(
-                color: Utils.getColorBasedOnWinRate(score),
+                color: Utils.getColorBasedOnWinRate(context, score),
                 shape: BoxShape.circle,
               ),
               margin: const EdgeInsets.all(KPMargins.margin12),

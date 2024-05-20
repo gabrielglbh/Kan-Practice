@@ -2,26 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
 import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
-import 'package:kanpractice/application/purchases/purchases_bloc.dart';
-import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/core/widgets/blitz/kp_blitz_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/widgets/blitz/kp_number_test_bottom_sheet.dart';
-import 'package:kanpractice/presentation/core/widgets/blitz/kp_translation_test_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_kanlist_category_selection_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/widgets/blitz/daily_test_bottom_sheet.dart';
-import 'package:kanpractice/presentation/core/widgets/kp_pro_icon.dart';
 import 'package:kanpractice/presentation/home_page/widgets/folder_selection_bottom_sheet.dart';
 import 'package:kanpractice/presentation/home_page/widgets/kanlist_selection_bottom_sheet.dart';
 
 class KPTestBottomSheet extends StatefulWidget {
   final String? folder;
-  const KPTestBottomSheet({Key? key, this.folder}) : super(key: key);
+  const KPTestBottomSheet({super.key, this.folder});
 
   @override
   State<KPTestBottomSheet> createState() => _KPTestBottomSheetState();
@@ -120,27 +116,6 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
             context,
             Tests.daily,
             hasWords: hasWords,
-          );
-        }
-        if (Tests.values[index] == Tests.translation) {
-          return BlocBuilder<PurchasesBloc, PurchasesState>(
-            builder: (context, state) {
-              return state.maybeWhen(
-                updatedToPro: () =>
-                    _testBasedButtons(context, Tests.values[index]),
-                orElse: () => KPButton(
-                  customIcon: const Padding(
-                    padding: EdgeInsets.only(bottom: KPMargins.margin4),
-                    child: KPProIcon(color: Colors.white),
-                  ),
-                  title2: Tests.values[index].nameAbbr,
-                  color: KPColors.midGrey,
-                  onTap: () {
-                    Navigator.of(context).pushNamed(KanPracticePages.storePage);
-                  },
-                ),
-              );
-            },
           );
         }
         return _testBasedButtons(context, Tests.values[index]);
@@ -284,11 +259,6 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                 await DailyBottomSheet.show(context)
                     .then((_) => _checkReviewWords());
                 break;
-              case Tests.translation:
-                if (!mounted) return;
-                await KPTranslationTestBottomSheet.show(context)
-                    .then((_) => _checkReviewWords());
-                break;
             }
           },
         ),
@@ -299,10 +269,13 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
             child: Container(
               width: 20,
               height: 20,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: KPColors.secondaryDarkerColor,
-              ),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Theme.of(context).colorScheme.tertiaryFixedDim,
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.surfaceContainer,
+                    width: 2,
+                  )),
             ),
           )
       ],

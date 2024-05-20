@@ -5,8 +5,7 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 class InfoChip extends StatelessWidget {
   final String? label;
   final ChipType type;
-  const InfoChip({Key? key, required this.label, required this.type})
-      : super(key: key);
+  const InfoChip({super.key, required this.label, required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +13,11 @@ class InfoChip extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin4),
       child: Chip(
         backgroundColor: type.color,
+        side: BorderSide.none,
         label: Text(
-            type.label == label ? type.label : "${type.label} ${label ?? ""}"),
+          type.label == label ? type.label : "${type.label} ${label ?? ""}",
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+        ),
       ),
     );
   }

@@ -14,7 +14,7 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
 
 class WordHistoryPage extends StatefulWidget {
-  const WordHistoryPage({Key? key}) : super(key: key);
+  const WordHistoryPage({super.key});
 
   @override
   State<WordHistoryPage> createState() => _WordHistoryPageState();

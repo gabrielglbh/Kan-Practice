@@ -21,14 +21,13 @@ class KPDialog extends StatelessWidget {
   /// Action to perform when tapping the positive button
   final Function onPositive;
   const KPDialog(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.content,
       this.negativeButton = true,
       required this.positiveButtonText,
       required this.onPositive,
-      this.popDialog = true})
-      : super(key: key);
+      this.popDialog = true});
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +41,9 @@ class KPDialog extends StatelessWidget {
           visible: negativeButton,
           child: ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.grey),
-                shape: MaterialStateProperty.all<OutlinedBorder>(
+                backgroundColor: WidgetStateProperty.all<Color>(
+                    Theme.of(context).colorScheme.outline),
+                shape: WidgetStateProperty.all<OutlinedBorder>(
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(KPRadius.radius8))),
               ),
@@ -52,12 +52,13 @@ class KPDialog extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium
-                      ?.copyWith(color: KPColors.primaryLight))),
+                      ?.copyWith(color: Colors.white))),
         ),
         ElevatedButton(
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
-              shape: MaterialStateProperty.all<OutlinedBorder>(
+              backgroundColor: WidgetStateProperty.all<Color>(
+                  Theme.of(context).colorScheme.primary),
+              shape: WidgetStateProperty.all<OutlinedBorder>(
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(KPRadius.radius8))),
             ),
@@ -66,10 +67,8 @@ class KPDialog extends StatelessWidget {
               await onPositive();
             },
             child: Text(positiveButtonText,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: KPColors.primaryLight))),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimary))),
       ],
     );
   }

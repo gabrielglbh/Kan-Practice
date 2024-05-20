@@ -21,7 +21,7 @@ class KPScaffold extends StatelessWidget {
   /// and this one overrides it.
   final bool setGestureDetector;
   const KPScaffold(
-      {Key? key,
+      {super.key,
       required this.appBarTitle,
       this.appBarActions,
       this.onWillPop,
@@ -32,8 +32,7 @@ class KPScaffold extends StatelessWidget {
       this.automaticallyImplyLeading = true,
       this.resizeToAvoidBottomInset = false,
       this.bottomNavigationWidget,
-      this.setGestureDetector = true})
-      : super(key: key);
+      this.setGestureDetector = true});
 
   @override
   Widget build(BuildContext context) {

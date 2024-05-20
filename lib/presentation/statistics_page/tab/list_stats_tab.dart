@@ -86,7 +86,7 @@ class _ListStatsState extends State<ListStats>
               (index) => DataFrame(
                 x: WordCategory.values[index].category,
                 y: widget.stats.totalCategoryCounts[index].toDouble(),
-                color: KPColors.secondaryColor,
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
           ),

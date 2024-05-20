@@ -16,7 +16,7 @@ import 'package:kanpractice/presentation/core/widgets/kp_search_bar.dart';
 import 'package:kanpractice/presentation/market_page/widgets/market_list_tile.dart';
 
 class MarketPage extends StatefulWidget {
-  const MarketPage({Key? key}) : super(key: key);
+  const MarketPage({super.key});
 
   @override
   State<MarketPage> createState() => _MarketPageState();
@@ -206,7 +206,7 @@ class _MarketPageState extends State<MarketPage>
                     : Expanded(
                         child: RefreshIndicator(
                           onRefresh: () async => _addLoadingEvent(reset: true),
-                          color: KPColors.secondaryColor,
+                          color: Theme.of(context).colorScheme.primary,
                           child: ListView.separated(
                               key: const PageStorageKey<String>(
                                   'marketListsController'),
@@ -262,7 +262,7 @@ class _MarketPageState extends State<MarketPage>
         _currentAppliedOrder
             ? Icons.arrow_downward_rounded
             : Icons.arrow_upward_rounded,
-        color: KPColors.getAlterAccent(context));
+        color: Theme.of(context).colorScheme.primary);
 
     return SizedBox(
         height: KPSizes.defaultSizeFiltersList,
@@ -274,6 +274,7 @@ class _MarketPageState extends State<MarketPage>
                 padding:
                     const EdgeInsets.symmetric(horizontal: KPMargins.margin2),
                 child: ChoiceChip(
+                  showCheckmark: false,
                   label: Text(MarketFilters.values[index].label),
                   avatar: _currentAppliedFilter == MarketFilters.mine
                       ? null

@@ -26,7 +26,7 @@ class TranscriptContextMenu extends StatelessWidget {
             width: MediaQuery.of(context).size.width - KPMargins.margin64,
             height: _height,
             decoration: BoxDecoration(
-              color: KPColors.getPrimary(context),
+              color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(KPRadius.radius16),
               boxShadow: const [
                 BoxShadow(

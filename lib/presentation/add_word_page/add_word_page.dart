@@ -16,7 +16,7 @@ import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
 
 class AddWordPage extends StatefulWidget {
   final AddWordArgs args;
-  const AddWordPage({Key? key, required this.args}) : super(key: key);
+  const AddWordPage({super.key, required this.args});
 
   @override
   State<AddWordPage> createState() => _AddWordPageState();
@@ -208,7 +208,8 @@ class _AddWordPageState extends State<AddWordPage> {
                 child: FittedBox(
                   fit: BoxFit.fitWidth,
                   child: Text("add_word_copy".tr(),
-                      style: Theme.of(context).textTheme.labelLarge),
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary)),
                 ),
               ),
             ),

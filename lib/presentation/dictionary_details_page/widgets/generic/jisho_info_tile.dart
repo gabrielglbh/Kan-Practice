@@ -5,8 +5,7 @@ class JishoInfoTile extends StatelessWidget {
   final List<Widget> children;
   final bool needsHeight;
   const JishoInfoTile(
-      {Key? key, required this.children, this.needsHeight = true})
-      : super(key: key);
+      {super.key, required this.children, this.needsHeight = true});
 
   @override
   Widget build(BuildContext context) {

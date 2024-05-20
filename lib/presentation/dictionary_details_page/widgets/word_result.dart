@@ -17,12 +17,11 @@ class WordResult extends StatelessWidget {
   final String _separator = " • ";
   final bool fromDictionary;
   const WordResult(
-      {Key? key,
+      {super.key,
       required this.word,
       required this.data,
       required this.phrase,
-      required this.fromDictionary})
-      : super(key: key);
+      required this.fromDictionary});
 
   @override
   Widget build(BuildContext context) {

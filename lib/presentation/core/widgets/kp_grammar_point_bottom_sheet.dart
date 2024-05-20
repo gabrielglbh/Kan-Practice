@@ -20,12 +20,11 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
   final Function()? onRemove;
   final Function()? onTap;
   const KPGrammarPointBottomSheet(
-      {Key? key,
+      {super.key,
       required this.listName,
       required this.grammarPoint,
       this.onTap,
-      this.onRemove})
-      : super(key: key);
+      this.onRemove});
 
   /// Creates and calls the [BottomSheet] with the content for displaying the data
   /// of the current selected grammar point
@@ -134,7 +133,7 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
                     Icon(
                       HomeType.kanlist.icon,
                       size: 16,
-                      color: KPColors.getSubtle(context),
+                      color: Theme.of(context).colorScheme.tertiary,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: KPMargins.margin8),
@@ -180,8 +179,8 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
         child: ListTileTheme(
           dense: true,
           child: ExpansionTile(
-              iconColor: KPColors.secondaryColor,
-              textColor: KPColors.secondaryColor,
+              iconColor: Theme.of(context).colorScheme.primary,
+              textColor: Theme.of(context).colorScheme.primary,
               tilePadding: const EdgeInsets.all(0),
               title: Text(
                   "${"created_label".tr()} "

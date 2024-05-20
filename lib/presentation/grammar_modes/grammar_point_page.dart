@@ -20,7 +20,7 @@ import 'package:kanpractice/presentation/grammar_modes/utils/grammar_mode_update
 
 class GrammarPointStudy extends StatefulWidget {
   final GrammarModeArguments args;
-  const GrammarPointStudy({Key? key, required this.args}) : super(key: key);
+  const GrammarPointStudy({super.key, required this.args});
 
   @override
   State<GrammarPointStudy> createState() => _GrammarPointStudyState();
@@ -101,10 +101,10 @@ class _GrammarPointStudyState extends State<GrammarPointStudy> {
         testScore += s;
       }
       final score = testScore / _studyList.length;
-      await GrammarModeUpdateHandler.handle(context, widget.args,
+      GrammarModeUpdateHandler.handle(context, widget.args,
           testScore: score, testScores: _testScores);
     } else {
-      await GrammarModeUpdateHandler.handle(context, widget.args);
+      GrammarModeUpdateHandler.handle(context, widget.args);
     }
   }
 

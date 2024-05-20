@@ -6,23 +6,27 @@ class KPListPercentageIndicator extends StatelessWidget {
   /// Value to show on the center of a [LinearPercentIndicator] as a percentage
   /// over 100.
   final double value;
-  const KPListPercentageIndicator({Key? key, required this.value})
-      : super(key: key);
+  const KPListPercentageIndicator({super.key, required this.value});
 
   @override
   Widget build(BuildContext context) {
+    double pct = value * 100;
     return LinearPercentIndicator(
       percent: value,
-      backgroundColor: KPColors.secondaryColor,
-      progressColor: KPColors.secondaryDarkerColor,
+      backgroundColor: Theme.of(context).colorScheme.primaryFixedDim,
+      progressColor: Theme.of(context).colorScheme.primary,
       lineHeight: 30,
       barRadius: const Radius.circular(KPRadius.radius8),
       animation: true,
       animationDuration: 1000,
       animateFromLastPercent: true,
       center: Text(
-        value == 1 ? "100%" : "${(value * 100).toStringAsPrecision(2)}%",
-        style: const TextStyle(color: KPColors.primaryLight),
+        value == 1 ? "100%" : "${pct.toStringAsPrecision(2)}%",
+        style: TextStyle(
+            color: pct <= 50
+                ? Theme.of(context).colorScheme.onPrimaryFixedVariant
+                : Colors.white,
+            fontWeight: FontWeight.bold),
       ),
     );
   }

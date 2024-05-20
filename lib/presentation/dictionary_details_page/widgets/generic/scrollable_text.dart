@@ -12,13 +12,12 @@ class ScrollableText extends StatelessWidget {
   final TextStyle? style;
   final bool paddingTop;
   const ScrollableText(
-      {Key? key,
+      {super.key,
       required this.label,
       this.initial = false,
       this.paddingTop = false,
       this.rawText = false,
-      this.style})
-      : super(key: key);
+      this.style});
 
   @override
   Widget build(BuildContext context) {

@@ -13,7 +13,7 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class AddFolderPage extends StatefulWidget {
   final String? folder;
-  const AddFolderPage({Key? key, this.folder}) : super(key: key);
+  const AddFolderPage({super.key, this.folder});
 
   @override
   State<AddFolderPage> createState() => _AddFolderPageState();

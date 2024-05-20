@@ -12,7 +12,7 @@ part of 'study_mode_bloc.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$StudyModeState {
@@ -125,7 +125,7 @@ class _$StudyModeLoadingImpl implements StudyModeLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$StudyModeLoadingImpl);
   }
@@ -251,7 +251,7 @@ class _$StudyModeLoadedImpl implements StudyModeLoaded {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$StudyModeLoadedImpl);
   }
@@ -379,7 +379,7 @@ class _$StudyModeSM2CalculatedImpl implements StudyModeSM2Calculated {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$StudyModeSM2CalculatedImpl);
@@ -526,7 +526,7 @@ class _$StudyModeScoreCalculatedImpl implements StudyModeScoreCalculated {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$StudyModeScoreCalculatedImpl &&
@@ -687,7 +687,7 @@ class _$StudyModeScoreObtainedImpl implements StudyModeScoreObtained {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$StudyModeScoreObtainedImpl &&
@@ -829,7 +829,7 @@ class _$StudyModeTestFinishedImpl implements StudyModeTestFinished {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$StudyModeTestFinishedImpl);

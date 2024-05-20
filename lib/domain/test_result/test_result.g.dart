@@ -7,13 +7,13 @@ part of 'test_result.dart';
 // **************************************************************************
 
 Test _$TestFromJson(Map<String, dynamic> json) => Test(
-      takenDate: json['takenDate'] as int,
+      takenDate: (json['takenDate'] as num).toInt(),
       testScore: (json['score'] as num).toDouble(),
       lists: json['kanjiLists'] as String,
-      wordsInTest: json['totalKanji'] as int,
-      studyMode: json['studyMode'] as int?,
-      grammarMode: json['grammarMode'] as int?,
-      testMode: json['testMode'] as int? ?? -1,
+      wordsInTest: (json['totalKanji'] as num).toInt(),
+      studyMode: (json['studyMode'] as num?)?.toInt(),
+      grammarMode: (json['grammarMode'] as num?)?.toInt(),
+      testMode: (json['testMode'] as num?)?.toInt() ?? -1,
     );
 
 Map<String, dynamic> _$TestToJson(Test instance) => <String, dynamic>{

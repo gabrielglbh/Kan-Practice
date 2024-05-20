@@ -7,7 +7,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kanpractice/application/ocr_page/ocr_page_bloc.dart';
 import 'package:kanpractice/application/permission_handler/permission_handler_bloc.dart';
-import 'package:kanpractice/application/purchases/purchases_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
@@ -21,7 +20,7 @@ import 'package:kanpractice/presentation/ocr_page/widgets/permission_denied.dart
 import 'package:image_cropper/image_cropper.dart';
 
 class OCRPage extends StatefulWidget {
-  const OCRPage({Key? key}) : super(key: key);
+  const OCRPage({super.key});
 
   @override
   State<OCRPage> createState() => _OCRPageState();
@@ -33,10 +32,6 @@ class _OCRPageState extends State<OCRPage> {
 
   @override
   void initState() {
-    if (context.read<PurchasesBloc>().state is! PurchasesUpdatedToPro) {
-      return Navigator.pop(context);
-    }
-
     final bloc = context.read<PermissionHandlerBloc>();
     if (bloc.state is! PermissionHandlerSucceeded) {
       bloc.add(PermissionHandlerEventRequestCamera());
@@ -91,11 +86,11 @@ class _OCRPageState extends State<OCRPage> {
                 uiSettings: [
                   AndroidUiSettings(
                     toolbarTitle: 'ocr_scanner'.tr(),
-                    toolbarColor: KPColors.getPrimary(context),
-                    statusBarColor: KPColors.getPrimary(context),
-                    backgroundColor: KPColors.getPrimary(context),
+                    toolbarColor: Theme.of(context).colorScheme.surface,
+                    statusBarColor: Theme.of(context).colorScheme.surface,
+                    backgroundColor: Theme.of(context).colorScheme.surface,
                     activeControlsWidgetColor: KPColors.secondaryDarkerColor,
-                    toolbarWidgetColor: KPColors.getAccent(context),
+                    toolbarWidgetColor: Theme.of(context).colorScheme.onSurface,
                     initAspectRatio: CropAspectRatioPreset.original,
                     lockAspectRatio: false,
                   ),
@@ -107,9 +102,11 @@ class _OCRPageState extends State<OCRPage> {
 
               if (!mounted) return;
               if (croppedFile == null) {
+                // ignore: use_build_context_synchronously
                 context.read<OCRPageBloc>().add(OCRPageEventLoadImage(i.image));
               } else {
                 final image = File(croppedFile.path);
+                // ignore: use_build_context_synchronously
                 context.read<OCRPageBloc>().add(OCRPageEventLoadImage(image));
               }
             },

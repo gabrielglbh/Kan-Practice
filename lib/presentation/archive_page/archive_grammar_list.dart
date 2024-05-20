@@ -16,11 +16,11 @@ class ArchiveGrammarListWidget extends StatefulWidget {
   final Function() onScrolledToBottom;
   final Function() removeFocus;
   const ArchiveGrammarListWidget({
-    Key? key,
+    super.key,
     required this.query,
     required this.onScrolledToBottom,
     required this.removeFocus,
-  }) : super(key: key);
+  });
 
   @override
   State<ArchiveGrammarListWidget> createState() =>
@@ -89,7 +89,7 @@ class _ArchiveGrammarListWidgetState extends State<ArchiveGrammarListWidget>
     }
     return RefreshIndicator(
       onRefresh: () async => _addLoadingEvent(reset: true),
-      color: KPColors.secondaryColor,
+      color: Theme.of(context).colorScheme.primary,
       child: ListView.separated(
         key: const PageStorageKey<String>('grammarPointListController'),
         itemCount: grammarPoints.length,

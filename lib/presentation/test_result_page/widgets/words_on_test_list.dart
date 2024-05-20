@@ -47,7 +47,8 @@ class WordsOnTestList extends StatelessWidget {
                         bottom: KPMargins.margin4,
                         top: KPMargins.margin4),
                     decoration: BoxDecoration(
-                      color: Utils.getColorBasedOnWinRate(testScore ?? 0),
+                      color:
+                          Utils.getColorBasedOnWinRate(context, testScore ?? 0),
                       borderRadius: const BorderRadius.all(
                           Radius.circular(KPRadius.radius8)),
                       boxShadow: const [

@@ -12,7 +12,7 @@ part of 'list_details_grammar_points_bloc.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ListDetailsGrammarPointsState {
@@ -132,7 +132,7 @@ class _$ListDetailsGrammarPointsInitialImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ListDetailsGrammarPointsInitialImpl);
@@ -298,7 +298,7 @@ class _$ListDetailsGrammarPointsLoadedImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ListDetailsGrammarPointsLoadedImpl &&
@@ -482,7 +482,7 @@ class _$ListDetailsGrammarPointsPracticeLoadedImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ListDetailsGrammarPointsPracticeLoadedImpl &&
@@ -635,7 +635,7 @@ class _$ListDetailsGrammarPointsLoadingImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ListDetailsGrammarPointsLoadingImpl);
@@ -786,7 +786,7 @@ class _$ListDetailsGrammarPointsErrorImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ListDetailsGrammarPointsErrorImpl &&

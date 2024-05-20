@@ -20,12 +20,12 @@ class KPKanlists extends StatefulWidget {
   final String? folder;
   final bool withinFolder;
   const KPKanlists({
-    Key? key,
+    super.key,
     required this.removeFocus,
     required this.onScrolledToBottom,
     this.withinFolder = false,
     this.folder,
-  }) : super(key: key);
+  });
 
   @override
   State<KPKanlists> createState() => _KPKanlistsState();
@@ -164,7 +164,7 @@ class _KPKanlistsState extends State<KPKanlists>
         _currentAppliedOrder
             ? Icons.arrow_downward_rounded
             : Icons.arrow_upward_rounded,
-        color: KPColors.getAlterAccent(context));
+        color: Theme.of(context).colorScheme.primary);
 
     return SizedBox(
         height: KPSizes.defaultSizeFiltersList,
@@ -176,6 +176,7 @@ class _KPKanlistsState extends State<KPKanlists>
                 padding:
                     const EdgeInsets.symmetric(horizontal: KPMargins.margin2),
                 child: ChoiceChip(
+                  showCheckmark: false,
                   label: Text(WordListFilters.values[index].label),
                   avatar: _currentAppliedFilter.index != index ? null : icon,
                   pressElevation: KPMargins.margin4,
@@ -235,7 +236,7 @@ class _KPKanlistsState extends State<KPKanlists>
   Widget _content(List<WordList> lists) {
     return RefreshIndicator(
       onRefresh: () async => _addLoadingEvent(reset: true),
-      color: KPColors.secondaryColor,
+      color: Theme.of(context).colorScheme.primary,
       child: CustomScrollView(
         key: const PageStorageKey<String>('kanListListsController'),
         controller: _scrollController,

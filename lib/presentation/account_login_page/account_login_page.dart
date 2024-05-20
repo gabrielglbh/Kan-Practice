@@ -158,7 +158,7 @@ class _LoginPageState extends State<LoginPage> {
                 style: Theme.of(context)
                     .textTheme
                     .bodyLarge
-                    ?.copyWith(color: KPColors.getSecondaryColor(context))),
+                    ?.copyWith(color: Theme.of(context).colorScheme.error)),
           ),
         ),
         Padding(
@@ -166,7 +166,10 @@ class _LoginPageState extends State<LoginPage> {
           child: ElevatedButton(
             onPressed: () => _handleLogin(),
             child: Text("login_form_positive".tr(),
-                style: Theme.of(context).textTheme.labelLarge),
+                style: Theme.of(context)
+                    .textTheme
+                    .labelLarge
+                    ?.copyWith(color: Theme.of(context).colorScheme.onPrimary)),
           ),
         ),
         GestureDetector(

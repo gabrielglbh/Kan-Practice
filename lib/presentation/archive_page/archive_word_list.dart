@@ -176,7 +176,7 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
 
     return RefreshIndicator(
       onRefresh: () async => _addLoadingEvent(reset: true),
-      color: KPColors.secondaryColor,
+      color: Theme.of(context).colorScheme.primary,
       child: getIt<PreferencesService>().readData(SharedKeys.showBadgeWords)
           ? GridView.builder(
               key: const PageStorageKey<String>('wordListController'),

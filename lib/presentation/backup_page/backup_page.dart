@@ -56,7 +56,7 @@ class BackUpPage extends StatelessWidget {
                     leading: const Icon(Icons.delete),
                     title: Text("backup_removal_tile".tr(),
                         style: TextStyle(
-                            color: KPColors.getSecondaryColor(context))),
+                            color: Theme.of(context).colorScheme.error)),
                     onTap: () => _createDialogForRemovingBackUp(bloc),
                   ),
                 ],

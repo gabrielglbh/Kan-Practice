@@ -37,8 +37,8 @@ class MarketListRating extends StatelessWidget {
       itemCount: 5,
       itemSize: KPMargins.margin32,
       glow: false,
-      itemBuilder: (context, _) =>
-          const Icon(Icons.star_rounded, color: KPColors.secondaryColor),
+      itemBuilder: (context, _) => Icon(Icons.star_rounded,
+          color: Theme.of(context).colorScheme.primary),
       onRatingUpdate: (rate) {
         context.read<RateBloc>().add(RateEventUpdate(listId, rate));
       },

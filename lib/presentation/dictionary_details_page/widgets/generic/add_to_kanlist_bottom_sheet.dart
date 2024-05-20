@@ -131,10 +131,8 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
                         horizontal: KPMargins.margin32),
                     child: Text(_error,
                         textAlign: TextAlign.center,
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelLarge
-                            ?.copyWith(color: KPColors.secondaryColor)),
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            color: Theme.of(context).colorScheme.error)),
                   ),
                 ),
                 BlocBuilder<ListsBloc, ListsState>(

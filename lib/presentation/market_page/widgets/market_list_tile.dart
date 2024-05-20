@@ -79,10 +79,10 @@ class MarketListTile extends StatelessWidget {
                         .textTheme
                         .titleLarge
                         ?.copyWith(fontWeight: FontWeight.w500)),
-                const Padding(
-                    padding: EdgeInsets.only(left: KPMargins.margin4),
+                Padding(
+                    padding: const EdgeInsets.only(left: KPMargins.margin4),
                     child: Icon(Icons.star_rounded,
-                        color: KPColors.secondaryColor)),
+                        color: Theme.of(context).colorScheme.primary)),
               ],
             )
           ],

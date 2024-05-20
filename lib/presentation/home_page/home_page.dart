@@ -427,16 +427,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   ActionChip _actionChipReview() {
     return ActionChip(
-      avatar: const Icon(
+      avatar: Icon(
         Icons.calendar_today,
         size: 16,
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.onPrimary,
       ),
       label: Text(
         "pending_review".tr(),
-        style: const TextStyle(color: Colors.white),
+        style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
       ),
-      backgroundColor: KPColors.getSecondaryColor(context),
+      side: BorderSide.none,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       onPressed: () async {
         await KPTestBottomSheet.show(context).then((_) => _addReviewEvent());
       },

@@ -77,19 +77,19 @@ class _ChangeAppThemeState extends State<ChangeAppTheme> {
             title: Text("settings_theme_system".tr()),
             value: ThemeMode.system,
             groupValue: _mode,
-            activeColor: KPColors.secondaryColor,
+            activeColor: Theme.of(context).colorScheme.primary,
             onChanged: _onTileSelected),
         RadioListTile<ThemeMode>(
             title: Text("settings_theme_light".tr()),
             value: ThemeMode.light,
             groupValue: _mode,
-            activeColor: KPColors.secondaryColor,
+            activeColor: Theme.of(context).colorScheme.primary,
             onChanged: _onTileSelected),
         RadioListTile<ThemeMode>(
             title: Text("settings_theme_dark".tr()),
             value: ThemeMode.dark,
             groupValue: _mode,
-            activeColor: KPColors.secondaryColor,
+            activeColor: Theme.of(context).colorScheme.primary,
             onChanged: _onTileSelected),
       ],
     );

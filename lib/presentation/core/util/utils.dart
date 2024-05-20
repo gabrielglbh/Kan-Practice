@@ -22,7 +22,7 @@ extension StringExtension on String {
 /// Class that contains useful methods for all classes to use
 class Utils {
   /// Returns the color based on the given [winRate]
-  static Color getColorBasedOnWinRate(double winRate) {
+  static Color getColorBasedOnWinRate(BuildContext context, double winRate) {
     if (winRate >= 0 && winRate <= 0.1) {
       return Colors.redAccent.shade700;
     } else if (winRate > 0.1 && winRate <= 0.2) {
@@ -44,7 +44,7 @@ class Utils {
     } else if (winRate > 0.9 && winRate <= 1) {
       return Colors.green;
     } else {
-      return Colors.white;
+      return Theme.of(context).colorScheme.surface;
     }
   }
 
@@ -76,7 +76,7 @@ class Utils {
   }
 
   /// Returns the color based on the given [score]
-  static Color getColorBasedOnScore(double score) {
+  static Color getColorBasedOnScore(BuildContext context, double score) {
     if (score >= 0 && score <= 0.2) {
       return Colors.green.shade50;
     } else if (score > 0.2 && score <= 0.4) {
@@ -88,7 +88,7 @@ class Utils {
     } else if (score > 0.8 && score <= 1) {
       return Colors.green;
     } else {
-      return Colors.white;
+      return Theme.of(context).colorScheme.surface;
     }
   }
 

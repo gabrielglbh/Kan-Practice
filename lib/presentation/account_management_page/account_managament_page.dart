@@ -134,7 +134,7 @@ class _AccountManagementPageState extends State<AccountManagementPage> {
                   child: Column(
                     children: [
                       Icon(Icons.check_circle_rounded,
-                          color: KPColors.getSecondaryColor(context),
+                          color: Theme.of(context).colorScheme.primary,
                           size: KPSizes.maxHeightValidationCircle),
                       Padding(
                         padding: const EdgeInsets.all(KPMargins.margin16),
@@ -192,7 +192,7 @@ class _AccountManagementPageState extends State<AccountManagementPage> {
                                   "login_removeAccountDialog_title".tr(),
                                   style: TextStyle(
                                       color:
-                                          KPColors.getSecondaryColor(context))),
+                                          Theme.of(context).colorScheme.error)),
                               onTap: () async {
                                 if (isEmailProvider) {
                                   _removeAccountDialog();

@@ -293,7 +293,9 @@ class _WritingStudyState extends State<WritingStudy> {
                                   style: TextStyle(
                                       fontSize: KPFontSizes.fontSize64,
                                       color: index == _inner
-                                          ? KPColors.secondaryColor
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .onPrimaryContainer
                                           : null));
                             },
                           ),

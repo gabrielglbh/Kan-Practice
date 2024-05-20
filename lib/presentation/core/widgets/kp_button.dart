@@ -63,7 +63,8 @@ class KPButton extends StatelessWidget {
                       fit: BoxFit.fitWidth,
                       child: Text(title1 ?? "",
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.titleLarge),
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                  color: Theme.of(context).colorScheme.onPrimary)),
                     ),
                   ),
                 ),
@@ -83,7 +84,8 @@ class KPButton extends StatelessWidget {
                   child: Text(title2,
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.labelLarge),
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary)),
                 )
               ],
             ),

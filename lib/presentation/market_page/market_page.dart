@@ -206,7 +206,7 @@ class _MarketPageState extends State<MarketPage>
                     : Expanded(
                         child: RefreshIndicator(
                           onRefresh: () async => _addLoadingEvent(reset: true),
-                          color: KPColors.secondaryColor,
+                          color: Theme.of(context).colorScheme.primary,
                           child: ListView.separated(
                               key: const PageStorageKey<String>(
                                   'marketListsController'),

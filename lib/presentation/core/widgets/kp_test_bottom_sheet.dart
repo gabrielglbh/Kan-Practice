@@ -269,10 +269,13 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
             child: Container(
               width: 20,
               height: 20,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: KPColors.secondaryDarkerColor,
-              ),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Theme.of(context).colorScheme.tertiaryFixedDim,
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.surfaceContainer,
+                    width: 2,
+                  )),
             ),
           )
       ],

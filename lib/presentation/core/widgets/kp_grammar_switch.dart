@@ -49,7 +49,7 @@ class _KPGrammarSwitchState extends State<KPGrammarSwitch> {
         label: Text(_showGrammarGraphs
             ? 'word_change_graphs'.tr()
             : 'grammar_change_graphs'.tr()),
-        backgroundColor: KPColors.getSecondaryColor(context),
+        backgroundColor: Theme.of(context).colorScheme.primary,
         avatar: Icon(
           _showGrammarGraphs
               ? ListDetailsType.words.icon

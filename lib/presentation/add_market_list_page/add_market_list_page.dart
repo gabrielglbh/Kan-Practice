@@ -108,7 +108,7 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.check_circle_rounded,
-                      color: KPColors.getSecondaryColor(context),
+                      color: Theme.of(context).colorScheme.primary,
                       size: KPSizes.maxHeightValidationCircle),
                   Padding(
                     padding: const EdgeInsets.all(KPMargins.margin16),

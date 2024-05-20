@@ -33,7 +33,7 @@ class KPEmptyList extends StatelessWidget {
                 horizontal: MediaQuery.of(context).size.width / 5),
             child: KPButton(
                 title2: "load_failed_try_again_button_label".tr(),
-                color: KPColors.secondaryColor,
+                color: Theme.of(context).colorScheme.primary,
                 onTap: onRefresh),
           ),
         )

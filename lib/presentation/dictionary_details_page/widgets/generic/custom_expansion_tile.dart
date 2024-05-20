@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/presentation/core/util/consts.dart';
 
 class CustomExpansionTile extends StatelessWidget {
   final String label;
@@ -16,8 +15,8 @@ class CustomExpansionTile extends StatelessWidget {
     return ExpansionTile(
       childrenPadding: EdgeInsets.zero,
       tilePadding: paddingHorizontal,
-      iconColor: KPColors.secondaryColor,
-      textColor: KPColors.secondaryColor,
+      iconColor: Theme.of(context).colorScheme.primary,
+      textColor: Theme.of(context).colorScheme.primary,
       title: Text(label,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.bold, fontStyle: FontStyle.italic)),

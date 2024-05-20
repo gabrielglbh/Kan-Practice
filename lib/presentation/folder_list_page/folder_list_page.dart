@@ -170,7 +170,7 @@ class _FolderListPageState extends State<FolderListPage>
               : Expanded(
                   child: RefreshIndicator(
                     onRefresh: () async => _addLoadingEvent(reset: true),
-                    color: KPColors.secondaryColor,
+                    color: Theme.of(context).colorScheme.primary,
                     child: ListView.separated(
                         key: const PageStorageKey<String>(
                             'folderListsController'),
@@ -238,8 +238,8 @@ class _FolderListPageState extends State<FolderListPage>
         onPressed: () async {
           await KPTestBottomSheet.show(context, folder: folder.folder);
         },
-        icon: const Icon(Icons.track_changes_rounded,
-            color: KPColors.secondaryColor),
+        icon: Icon(Icons.track_changes_rounded,
+            color: Theme.of(context).colorScheme.primary),
       ),
     );
   }

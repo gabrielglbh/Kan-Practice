@@ -73,8 +73,8 @@ class _FolderDetailsPageState extends State<FolderDetailsPage> {
           onPressed: () async {
             await KPTestBottomSheet.show(context, folder: widget.folder);
           },
-          icon: const Icon(Icons.track_changes_rounded,
-              color: KPColors.secondaryColor),
+          icon: Icon(Icons.track_changes_rounded,
+              color: Theme.of(context).colorScheme.primary),
         ),
         IconButton(
           icon: const Icon(Icons.auto_awesome_motion_rounded),

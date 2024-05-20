@@ -197,7 +197,7 @@ class _DictionaryPageState extends State<DictionaryPage>
         margin: const EdgeInsets.all(KPMargins.margin8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(KPRadius.radius16),
-          color: KPColors.secondaryColor,
+          color: Theme.of(context).colorScheme.primary,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -205,16 +205,14 @@ class _DictionaryPageState extends State<DictionaryPage>
           children: [
             Icon(
               widget.args.searchInJisho ? Icons.search : Icons.done,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onPrimary,
               size: 24,
             ),
             const SizedBox(width: KPMargins.margin8),
             Flexible(
               child: Text("ocr_search_in_jisho_part1".tr(),
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: Colors.white)),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary)),
             ),
           ],
         ),
@@ -261,7 +259,8 @@ class _DictionaryPageState extends State<DictionaryPage>
                   ),
                   padding:
                       const EdgeInsets.symmetric(horizontal: KPMargins.margin8),
-                  backgroundColor: Utils.getColorBasedOnScore(score),
+                  backgroundColor: Utils.getColorBasedOnScore(context, score),
+                  side: BorderSide.none,
                   pressElevation: KPMargins.margin2,
                   onPressed: () {
                     FocusManager.instance.primaryFocus?.unfocus();

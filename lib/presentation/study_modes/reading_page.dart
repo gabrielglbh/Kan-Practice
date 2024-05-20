@@ -224,10 +224,8 @@ class _ReadingStudyState extends State<ReadingStudy> {
       child: Column(
         children: [
           KPLearningTextBox(
-            textStyle: Theme.of(context)
-                .textTheme
-                .bodyLarge
-                ?.copyWith(color: KPColors.secondaryColor),
+            textStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: Theme.of(context).colorScheme.onPrimaryContainer),
             bottom: KPMargins.margin4,
             text: _getProperAlphabet(),
           ),

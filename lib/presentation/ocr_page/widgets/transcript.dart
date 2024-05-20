@@ -36,7 +36,7 @@ class _TranscriptState extends State<Transcript> {
         child: TextField(
           controller: _textEditingController,
           focusNode: _focusNode,
-          cursorColor: KPColors.secondaryDarkerColor,
+          cursorColor: Theme.of(context).colorScheme.primary,
           maxLines: null,
           style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                 color: Colors.black,

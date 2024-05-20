@@ -179,8 +179,8 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
         child: ListTileTheme(
           dense: true,
           child: ExpansionTile(
-              iconColor: KPColors.secondaryColor,
-              textColor: KPColors.secondaryColor,
+              iconColor: Theme.of(context).colorScheme.primary,
+              textColor: Theme.of(context).colorScheme.primary,
               tilePadding: const EdgeInsets.all(0),
               title: Text(
                   "${"created_label".tr()} "

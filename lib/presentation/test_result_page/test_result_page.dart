@@ -101,7 +101,7 @@ class _TestResultPageState extends State<TestResultPage> {
                   const SizedBox(height: KPMargins.margin8),
                   ListTile(
                       leading: Icon(Icons.track_changes_rounded,
-                          color: KPColors.getSecondaryColor(context)),
+                          color: Theme.of(context).colorScheme.primary),
                       title: Text("test_result_do_test_button_label".tr()),
                       visualDensity: const VisualDensity(vertical: -2),
                       onTap: () => setState(

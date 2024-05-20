@@ -208,7 +208,8 @@ class _AddWordPageState extends State<AddWordPage> {
                 child: FittedBox(
                   fit: BoxFit.fitWidth,
                   child: Text("add_word_copy".tr(),
-                      style: Theme.of(context).textTheme.labelLarge),
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary)),
                 ),
               ),
             ),

@@ -236,7 +236,7 @@ class _KPKanlistsState extends State<KPKanlists>
   Widget _content(List<WordList> lists) {
     return RefreshIndicator(
       onRefresh: () async => _addLoadingEvent(reset: true),
-      color: KPColors.secondaryColor,
+      color: Theme.of(context).colorScheme.primary,
       child: CustomScrollView(
         key: const PageStorageKey<String>('kanListListsController'),
         controller: _scrollController,

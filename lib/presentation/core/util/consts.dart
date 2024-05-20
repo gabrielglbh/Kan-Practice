@@ -99,6 +99,17 @@ class KPColors {
   static const Color accentLight = Colors.black;
   static final Color subtleLight = Colors.grey.shade600;
   static final Color subtleDark = Colors.grey.shade600;
+
+  static const Color darkRed = Color(0xFFD32F2F);
+  static const Color darkMidRed = Color(0xFFC62828);
+  static const Color midRed = Color(0xFFB71C1C);
+  static const Color lightMidRed = Color(0xFFFF7043);
+  static const Color darkOrange = Color(0xFFF57C00);
+  static const Color darkMidOrange = Color(0xFFEF6C00);
+  static const Color darkAmber = Color(0xFFFFB300);
+  static const Color darkMidAmber = Color(0xFFFFA000);
+  static const Color darkOlive = Color(0xFF827717);
+  static const Color darkGreen = Color(0xFF388E3C);
 }
 
 class LanguageObj {

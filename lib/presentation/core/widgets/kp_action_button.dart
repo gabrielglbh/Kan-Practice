@@ -6,10 +6,10 @@ class KPActionButton extends StatelessWidget {
   final String label;
 
   /// Color of the button. Defaults to green
-  final Color color;
+  final Color? color;
 
   /// Color of the label button. Defaults to green
-  final Color textColor;
+  final Color? textColor;
 
   /// Horizontal padding for the button. Defaults to 32.
   final double horizontal;
@@ -20,8 +20,8 @@ class KPActionButton extends StatelessWidget {
   const KPActionButton(
       {super.key,
       required this.label,
-      this.color = Colors.green,
-      this.textColor = Colors.white,
+      this.color,
+      this.textColor,
       this.horizontal = KPMargins.margin32,
       this.vertical = KPMargins.margin8,
       required this.onTap});
@@ -34,7 +34,7 @@ class KPActionButton extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: horizontal, vertical: vertical),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(KPRadius.radius16),
-        color: color,
+        color: color ?? Theme.of(context).colorScheme.primary,
       ),
       child: Material(
         color: Colors.transparent,
@@ -50,10 +50,8 @@ class KPActionButton extends StatelessWidget {
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
-              style: Theme.of(context)
-                  .textTheme
-                  .labelLarge
-                  ?.copyWith(color: textColor),
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  color: textColor ?? Theme.of(context).colorScheme.onPrimary),
             ),
           ),
         ),

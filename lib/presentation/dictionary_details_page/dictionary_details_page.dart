@@ -64,6 +64,7 @@ class DictionaryDetailsPage extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: KPMargins.margin8),
                 child: Chip(
                   backgroundColor: Colors.green[200],
+                  side: BorderSide.none,
                   label: Text("jisho_resultData_powered_by".tr(),
                       style: const TextStyle(color: KPColors.accentLight)),
                 ),

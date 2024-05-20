@@ -78,7 +78,7 @@
   "login_removeAccountDialog_hint": "Password",
   "login_removeAccountDialog_header": "Current Password",
   "login_removeAccountDialog_positive": "Remove",
-  "login_formDisclaimer": "By creating an account:\n\n- You can access backups.\n\n- Makes you ellegible for creating and download Market lists and folders.\n\n- Allows you to go PRO.",
+  "login_formDisclaimer": "By creating an account:\n\n- You can access backups.\n\n- Makes you ellegible for creating and download Market lists and folders.",
   "login_email_hint": "someone@provider.com",
   "login_email_header": "Email",
   "login_password_hint": "••••••••••",

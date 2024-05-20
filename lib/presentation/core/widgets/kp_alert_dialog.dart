@@ -41,7 +41,8 @@ class KPDialog extends StatelessWidget {
           visible: negativeButton,
           child: ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all<Color>(Colors.grey),
+                backgroundColor: WidgetStateProperty.all<Color>(
+                    Theme.of(context).colorScheme.outline),
                 shape: WidgetStateProperty.all<OutlinedBorder>(
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(KPRadius.radius8))),
@@ -55,7 +56,8 @@ class KPDialog extends StatelessWidget {
         ),
         ElevatedButton(
             style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
+              backgroundColor: WidgetStateProperty.all<Color>(
+                  Theme.of(context).colorScheme.primary),
               shape: WidgetStateProperty.all<OutlinedBorder>(
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(KPRadius.radius8))),
@@ -65,10 +67,8 @@ class KPDialog extends StatelessWidget {
               await onPositive();
             },
             child: Text(positiveButtonText,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: Colors.white))),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimary))),
       ],
     );
   }

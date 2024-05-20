@@ -78,7 +78,7 @@
   "login_removeAccountDialog_hint": "Passwort",
   "login_removeAccountDialog_header": "Derzeitiges Passwort",
   "login_removeAccountDialog_positive": "Entfernen",
-  "login_formDisclaimer": "Durch die Erstellung eines Kontos:\n\n- Sie können auf Backups zugreifen.\n\n- Sie sind berechtigt, Marktlisten und Ordner zu erstellen und herunterzuladen.\n\n- Sie können PRO werden.",
+  "login_formDisclaimer": "Durch die Erstellung eines Kontos:\n\n- Sie können auf Backups zugreifen.\n\n- Sie sind berechtigt, Marktlisten und Ordner zu erstellen und herunterzuladen.",
   "login_email_hint": "jemand@email.de",
   "login_email_header": "E-Mail",
   "login_password_hint": "••••••••••",

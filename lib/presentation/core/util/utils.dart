@@ -24,25 +24,25 @@ class Utils {
   /// Returns the color based on the given [winRate]
   static Color getColorBasedOnWinRate(BuildContext context, double winRate) {
     if (winRate >= 0 && winRate <= 0.1) {
-      return Colors.redAccent.shade700;
+      return KPColors.darkRed;
     } else if (winRate > 0.1 && winRate <= 0.2) {
-      return Colors.redAccent.shade200;
+      return KPColors.darkMidRed;
     } else if (winRate > 0.2 && winRate <= 0.3) {
-      return Colors.redAccent.shade100;
+      return KPColors.midRed;
     } else if (winRate > 0.3 && winRate <= 0.4) {
-      return Colors.yellow;
+      return KPColors.lightMidRed;
     } else if (winRate > 0.4 && winRate <= 0.5) {
-      return Colors.yellow.shade400;
+      return KPColors.darkMidOrange;
     } else if (winRate > 0.5 && winRate <= 0.6) {
-      return Colors.yellow.shade300;
+      return KPColors.darkOrange;
     } else if (winRate > 0.6 && winRate <= 0.7) {
-      return Colors.yellow.shade200;
+      return KPColors.darkMidAmber;
     } else if (winRate > 0.7 && winRate <= 0.8) {
-      return Colors.green.shade100;
+      return KPColors.darkAmber;
     } else if (winRate > 0.8 && winRate <= 0.9) {
-      return Colors.green.shade300;
+      return KPColors.darkOlive;
     } else if (winRate > 0.9 && winRate <= 1) {
-      return Colors.green;
+      return KPColors.darkGreen;
     } else {
       return Theme.of(context).colorScheme.surface;
     }
@@ -86,7 +86,7 @@ class Utils {
     } else if (score > 0.6 && score <= 0.8) {
       return Colors.green.shade400;
     } else if (score > 0.8 && score <= 1) {
-      return Colors.green;
+      return KPColors.darkGreen;
     } else {
       return Theme.of(context).colorScheme.surface;
     }

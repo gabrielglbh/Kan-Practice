@@ -1,14 +1,16 @@
+plugins {
+     id "com.android.application"
+     id "dev.flutter.flutter-gradle-plugin"
+     id "kotlin-android"
+     id "com.google.gms.google-services"
+ }
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader('UTF-8') { reader ->
         localProperties.load(reader)
     }
-}
-
-def flutterRoot = localProperties.getProperty('flutter.sdk')
-if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
@@ -27,17 +29,19 @@ if (keyPropertiesFile.exists()) {
     keyProperties.load(new FileInputStream(keyPropertiesFile))
 }
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'com.google.gms.google-services'
-apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-
 android {
     compileSdkVersion 34
-    ndkVersion '25.0.8775105'
+    ndkVersion '26.3.11579264'
+    namespace "com.gabr.garc.kanpractice"
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+        coreLibraryDesugaringEnabled true
     }
 
     defaultConfig {
@@ -75,9 +79,9 @@ flutter {
 
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:28.4.1')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "io.grpc:grpc-okhttp:1.32.2"
     // https://stackoverflow.com/questions/68473542/mediasessioncompattargeting-s-version-31-and-above-requires-that-one-of-flag
     implementation 'androidx.work:work-runtime-ktx:2.7.0'
-    implementation 'com.google.mlkit:text-recognition-japanese:16.0.0-beta5'
+    implementation 'com.google.mlkit:text-recognition-japanese:16.0.0'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
 }

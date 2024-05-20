@@ -46,16 +46,20 @@ class _KPGrammarSwitchState extends State<KPGrammarSwitch> {
   Widget build(BuildContext context) {
     if (widget.isActionChip) {
       return ActionChip(
-        label: Text(_showGrammarGraphs
-            ? 'word_change_graphs'.tr()
-            : 'grammar_change_graphs'.tr()),
+        label: Text(
+          _showGrammarGraphs
+              ? 'word_change_graphs'.tr()
+              : 'grammar_change_graphs'.tr(),
+          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+        ),
         backgroundColor: Theme.of(context).colorScheme.primary,
         avatar: Icon(
           _showGrammarGraphs
               ? ListDetailsType.words.icon
               : ListDetailsType.grammar.icon,
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.onPrimary,
         ),
+        side: BorderSide.none,
         padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin4),
         onPressed: () => _toggleGraphs(!_showGrammarGraphs),
       );

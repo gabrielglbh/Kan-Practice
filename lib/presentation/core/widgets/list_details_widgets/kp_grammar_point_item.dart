@@ -76,7 +76,7 @@ class KPGrammarPointItem extends StatelessWidget {
               child: KPLinearGraph(
                 value: _getProperGpWinRate(grammarPoint),
                 color: aggregateStats
-                    ? KPColors.secondaryDarkerColor
+                    ? Theme.of(context).colorScheme.primary
                     : selectedMode.color,
               ),
             )

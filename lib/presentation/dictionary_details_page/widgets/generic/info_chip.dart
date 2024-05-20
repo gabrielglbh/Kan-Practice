@@ -13,8 +13,11 @@ class InfoChip extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin4),
       child: Chip(
         backgroundColor: type.color,
+        side: BorderSide.none,
         label: Text(
-            type.label == label ? type.label : "${type.label} ${label ?? ""}"),
+          type.label == label ? type.label : "${type.label} ${label ?? ""}",
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+        ),
       ),
     );
   }

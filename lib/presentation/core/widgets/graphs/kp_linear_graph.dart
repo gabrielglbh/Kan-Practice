@@ -36,7 +36,7 @@ class KPLinearGraph extends StatelessWidget {
               value: 1,
               enableAnimation: false,
               edgeStyle: LinearEdgeStyle.bothCurve,
-              color: Theme.of(context).colorScheme.tertiary,
+              color: Theme.of(context).colorScheme.primaryFixedDim,
             ),
             LinearBarPointer(
               value: value == DatabaseConstants.emptyWinRate ? 0 : value,

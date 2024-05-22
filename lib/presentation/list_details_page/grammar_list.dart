@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/list_details_grammar_points/list_details_grammar_points_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/injection.dart';
@@ -15,7 +16,6 @@ import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/list_details_widgets/kp_grammar_point_item.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/grammar_modes/utils/grammar_mode_arguments.dart';
 import 'package:kanpractice/presentation/list_details_page/widgets/practice_grammar_bottom_sheet.dart';
 
@@ -142,7 +142,9 @@ class _GrammarListWidgetState extends State<GrammarListWidget>
           },
           error: (error) {
             if (error.message.isNotEmpty) {
-              Utils.getSnackBar(context, error.message);
+              context
+                  .read<SnackbarBloc>()
+                  .add(SnackbarEventShow(error.message));
             }
           },
         );

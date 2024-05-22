@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -6,7 +8,6 @@ import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
 class PracticeWordsBottomSheet extends StatefulWidget {
@@ -101,8 +102,9 @@ class _PracticeWordsBottomSheetState extends State<PracticeWordsBottomSheet> {
       color: mode.color,
       onTap: () async {
         if (widget.list.isEmpty) {
-          // ignore: use_build_context_synchronously
-          Utils.getSnackBar(context, "study_modes_empty".tr());
+          context
+              .read<SnackbarBloc>()
+              .add(SnackbarEventShow("study_modes_empty".tr()));
         } else {
           wordList.shuffle();
           await _decideOnMode(wordList, mode);

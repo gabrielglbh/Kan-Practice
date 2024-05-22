@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/add_market_list/add_to_market_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/add_market_list_page/widgets/language_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/types/market_list_type.dart';
@@ -93,7 +94,9 @@ class _AddMarketListPageState extends State<AddMarketListPage> {
           listener: (context, state) {
             state.mapOrNull(
               error: (error) {
-                Utils.getSnackBar(context, error.message);
+                context
+                    .read<SnackbarBloc>()
+                    .add(SnackbarEventShow(error.message));
               },
               userRetrieved: (user) {
                 _tcUser.text = user.name;

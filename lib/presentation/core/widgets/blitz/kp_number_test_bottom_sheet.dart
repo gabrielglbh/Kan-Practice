@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/number_ranges.dart';
@@ -11,7 +13,6 @@ import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
 class KPNumberTestBottomSheet extends StatefulWidget {
@@ -167,7 +168,9 @@ class _KPNumberTestBottomSheetState extends State<KPNumberTestBottomSheet> {
               List<Word> list = _loadBlitzTest();
               if (list.isEmpty) {
                 Navigator.of(context).pop();
-                Utils.getSnackBar(context, "study_modes_empty".tr());
+                context
+                    .read<SnackbarBloc>()
+                    .add(SnackbarEventShow("study_modes_empty".tr()));
               } else {
                 Navigator.of(context).pop(); // Dismiss this bottom sheet
                 Navigator.of(context).pop(); // Dismiss the tests bottom sheet

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/add_grammar_point/add_grammar_point_bloc.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/add_grammar_point_page/arguments.dart';
@@ -99,7 +100,9 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
         _exampleController?.text.trim().isNotEmpty == true) {
       execute();
     } else {
-      Utils.getSnackBar(context, "add_grammar_validateGrammar_failed".tr());
+      context
+          .read<SnackbarBloc>()
+          .add(SnackbarEventShow("add_grammar_validateGrammar_failed".tr()));
     }
   }
 
@@ -163,7 +166,7 @@ class _AddGrammarPageState extends State<AddGrammarPage> {
         }, updateDone: (_) {
           Navigator.of(context).pop(0);
         }, error: (error) {
-          Utils.getSnackBar(context, error.message);
+          context.read<SnackbarBloc>().add(SnackbarEventShow(error.message));
         });
       },
       child: Column(

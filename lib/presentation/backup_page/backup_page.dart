@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/application/backup/backup_bloc.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class BackUpPage extends StatelessWidget {
   final String uid;
@@ -17,9 +17,9 @@ class BackUpPage extends StatelessWidget {
     return BlocConsumer<BackupBloc, BackupState>(
       listener: (context, state) {
         state.mapOrNull(error: (error) {
-          Utils.getSnackBar(context, error.message);
+          context.read<SnackbarBloc>().add(SnackbarEventShow(error.message));
         }, loaded: (l) {
-          Utils.getSnackBar(context, l.message);
+          context.read<SnackbarBloc>().add(SnackbarEventShow(l.message));
         });
       },
       builder: (bloc, state) {

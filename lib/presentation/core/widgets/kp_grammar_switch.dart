@@ -50,9 +50,9 @@ class _KPGrammarSwitchState extends State<KPGrammarSwitch> {
           _showGrammarGraphs
               ? 'word_change_graphs'.tr()
               : 'grammar_change_graphs'.tr(),
-          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          style: TextStyle(color: Theme.of(context).colorScheme.surface),
         ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.onSurface,
         avatar: Icon(
           _showGrammarGraphs
               ? ListDetailsType.words.icon

@@ -9,6 +9,7 @@ import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
 import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
 import 'package:kanpractice/application/settings/settings_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
@@ -85,10 +86,9 @@ class _SettingsPageState extends State<SettingsPage> {
                     context, "https://github.com/gabrielglbh/Kan-Practice");
               } catch (err) {
                 if (!mounted) return;
-                Utils.getSnackBar(
-                    // ignore: use_build_context_synchronously
-                    context,
-                    "settings_information_rating_failed".tr());
+                // ignore: use_build_context_synchronously
+                context.read<SnackbarBloc>().add(SnackbarEventShow(
+                    "settings_information_rating_failed".tr()));
               }
             },
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/dictionary/dictionary_bloc.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -230,7 +231,9 @@ class _DictionaryPageState extends State<DictionaryPage>
             Navigator.of(context).pop(text);
           }
         } else {
-          Utils.getSnackBar(context, "dict_search_empty".tr());
+          context
+              .read<SnackbarBloc>()
+              .add(SnackbarEventShow("dict_search_empty".tr()));
         }
       },
     );

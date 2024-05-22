@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/grammar_point_details/grammar_point_details_bloc.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
@@ -68,7 +69,9 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
                         GrammarPointDetailsState>(
                       listener: (context, state) {
                         state.mapOrNull(error: (error) {
-                          Utils.getSnackBar(context, error.message);
+                          context
+                              .read<SnackbarBloc>()
+                              .add(SnackbarEventShow(error.message));
                         }, removed: (_) {
                           if (onRemove != null) onRemove!();
                         });

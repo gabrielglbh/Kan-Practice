@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
@@ -330,7 +331,9 @@ class _WritingStudyState extends State<WritingStudy> {
                 if (_line.isNotEmpty) {
                   _resetWord();
                 } else {
-                  Utils.getSnackBar(context, "writing_validation_failed".tr());
+                  context
+                      .read<SnackbarBloc>()
+                      .add(SnackbarEventShow("writing_validation_failed".tr()));
                 }
               }
             },

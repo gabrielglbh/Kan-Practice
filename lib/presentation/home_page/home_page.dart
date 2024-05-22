@@ -455,20 +455,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             KPKanlists(
               key: lists,
               removeFocus: () => _searchBarFn.unfocus(),
-              onScrolledToBottom: () {
+              onScrolledToBottom: (addListLoadingWithFilters) {
                 if (_query.isNotEmpty) {
                   return _addListSearchingEvent(_query, reset: false);
                 }
-                return _addListLoadingEvent(reset: false);
+                addListLoadingWithFilters();
               },
             ),
             FolderListPage(
               removeFocus: () => _searchBarFn.unfocus(),
-              onScrolledToBottom: () {
+              onScrolledToBottom: (addFolderListLoadingWithFilters) {
                 if (_query.isNotEmpty) {
                   return _addFolderListSearchingEvent(_query, reset: false);
                 }
-                return _addFolderListLoadingEvent(reset: false);
+                addFolderListLoadingWithFilters();
               },
             ),
           ],
@@ -536,11 +536,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ArchiveWordListWidget(
               query: _query,
               removeFocus: () => _searchBarFn.unfocus(),
-              onScrolledToBottom: () {
+              onScrolledToBottom: (addWordsLoadingWithFilters) {
                 if (_query.isNotEmpty) {
                   return _addWordsSearchingEvent(_query, reset: false);
                 }
-                return _addWordsLoadingEvent(reset: false);
+                addWordsLoadingWithFilters();
               },
             ),
             ArchiveGrammarListWidget(

@@ -16,7 +16,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 class KPKanlists extends StatefulWidget {
   final Function() removeFocus;
-  final Function() onScrolledToBottom;
+  final Function(Function()) onScrolledToBottom;
   final String? folder;
   final bool withinFolder;
   const KPKanlists({
@@ -76,13 +76,13 @@ class _KPKanlistsState extends State<KPKanlists>
     /// When reaching last pixel of the list
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      widget.onScrolledToBottom();
+      widget.onScrolledToBottom(_addLoadingEvent);
     }
     setState(() => _showGrammarSwitchOnStack = _scrollController.offset >= 64);
   }
 
   _addLoadingEvent({bool reset = false}) {
-    if (widget.folder == null) {
+    if (!widget.withinFolder) {
       return context.read<ListsBloc>()
         ..add(ListsEventLoading(
             filter: _currentAppliedFilter,
@@ -126,7 +126,7 @@ class _KPKanlistsState extends State<KPKanlists>
     _addLoadingEvent(reset: true);
 
     /// Stores the new filter and order applied to shared preferences
-    if (widget.folder == null) {
+    if (!widget.withinFolder) {
       getIt<PreferencesService>()
           .saveData(SharedKeys.filtersOnList, _currentAppliedFilter.filter);
       getIt<PreferencesService>()
@@ -190,7 +190,7 @@ class _KPKanlistsState extends State<KPKanlists>
   }
 
   BlocBuilder _lists() {
-    if (widget.folder == null) {
+    if (!widget.withinFolder) {
       return BlocBuilder<ListsBloc, ListsState>(
         builder: (context, state) {
           return state.maybeWhen(
@@ -259,7 +259,7 @@ class _KPKanlistsState extends State<KPKanlists>
                     withinFolder: widget.withinFolder,
                     showGrammarGraphs: _showGrammarGraphs,
                     onRemoval: () {
-                      if (widget.folder == null) {
+                      if (!widget.withinFolder) {
                         context.read<ListsBloc>().add(ListsEventDelete(
                               lists[k],
                               filter: _currentAppliedFilter,

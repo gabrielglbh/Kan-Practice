@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/list_details_words/list_details_words_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
@@ -15,7 +16,6 @@ import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/list_details_widgets/kp_word_item.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/list_details_page/widgets/practice_words_bottom_sheet.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
@@ -168,7 +168,9 @@ class _WordListWidgetState extends State<WordListWidget>
           },
           error: (error) {
             if (error.message.isNotEmpty) {
-              Utils.getSnackBar(context, error.message);
+              context
+                  .read<SnackbarBloc>()
+                  .add(SnackbarEventShow(error.message));
             }
           },
           loaded: (_) {
@@ -269,25 +271,14 @@ class _WordListWidgetState extends State<WordListWidget>
       );
     }
 
-    return getIt<PreferencesService>().readData(SharedKeys.showBadgeWords)
-        ? GridView.builder(
-            key: const PageStorageKey<String>('wordListController'),
-            itemCount: words.length,
-            controller: _scrollController,
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 5, childAspectRatio: 2),
-            itemBuilder: (context, k) => wordElem(k, true),
-          )
-        : ListView.separated(
-            key: const PageStorageKey<String>('wordListController'),
-            itemCount: words.length,
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            controller: _scrollController,
-            separatorBuilder: (_, __) =>
-                const Divider(height: KPMargins.margin4),
-            itemBuilder: (context, k) => wordElem(k, false),
-          );
+    return ListView.separated(
+      key: const PageStorageKey<String>('wordListController'),
+      itemCount: words.length,
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+      controller: _scrollController,
+      separatorBuilder: (_, __) => const Divider(height: KPMargins.margin4),
+      itemBuilder: (context, k) => wordElem(k, false),
+    );
   }
 
   @override

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/grammar_test/grammar_test_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
@@ -10,7 +11,6 @@ import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/grammar_modes/utils/grammar_mode_arguments.dart';
 
 class GrammarGrid extends StatelessWidget {
@@ -65,7 +65,9 @@ class GrammarGrid extends StatelessWidget {
             List<GrammarPoint> list = l.grammar;
             if (list.isEmpty) {
               Navigator.of(context).pop();
-              Utils.getSnackBar(context, "study_modes_empty".tr());
+              context
+                  .read<SnackbarBloc>()
+                  .add(SnackbarEventShow("study_modes_empty".tr()));
             } else {
               await _decideOnGrammarMode(context, list, l.mode);
             }
@@ -138,14 +140,20 @@ class GrammarGrid extends StatelessWidget {
         KPButton(
           title1: mode.japMode,
           title2: mode.mode,
-          color:
-              isAvailable ? mode.color : Theme.of(context).colorScheme.tertiary,
+          color: isAvailable
+              ? mode.color
+              : Theme.of(context).colorScheme.inverseSurface,
+          textColor: isAvailable
+              ? Colors.white
+              : Theme.of(context).colorScheme.onInverseSurface,
           onTap: isAvailable
               ? () async {
                   if (selectionQuery != null &&
                       selectionQuery?.isEmpty == true) {
                     Navigator.of(context).pop();
-                    Utils.getSnackBar(context, "study_modes_empty".tr());
+                    context
+                        .read<SnackbarBloc>()
+                        .add(SnackbarEventShow("study_modes_empty".tr()));
                   } else {
                     context.read<GrammarTestBloc>().add(
                           GrammarTestEventLoadList(

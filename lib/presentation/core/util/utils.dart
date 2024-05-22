@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/presentation/core/util/string_similarity.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -110,7 +112,9 @@ class Utils {
           mode: LaunchMode.externalNonBrowserApplication);
     } else {
       // ignore: use_build_context_synchronously
-      getSnackBar(context, "launch_url_failed".tr());
+      context
+          .read<SnackbarBloc>()
+          .add(SnackbarEventShow("launch_url_failed".tr()));
     }
   }
 
@@ -133,25 +137,6 @@ class Utils {
         ||
         num.substring(4) == "00"; // XXX.00%
     return isRounded ? num.substring(0, num.length - 3) : num;
-  }
-
-  /// Creates a snack bar with the given [message]
-  static getSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Row(children: [
-            Padding(
-              padding: const EdgeInsets.only(right: KPMargins.margin8),
-              child: Icon(Icons.info_rounded,
-                  color: Theme.of(context).colorScheme.onSurface),
-            ),
-            Expanded(child: Text(message)),
-          ]),
-          duration: const Duration(seconds: 2),
-        ),
-      );
   }
 
   /// Transforms the current time to milliseconds
@@ -205,7 +190,7 @@ class Utils {
               thumbVisibility: true,
               child: ListView(
                 children: [
-                  if (version == null)
+                  if (version != null)
                     Text("${"word_lists_versionDialog_notes".tr()} $version\n"),
                   child
                 ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/add_word/add_word_bloc.dart';
 import 'package:kanpractice/application/lists/lists_bloc.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/domain/dictionary_details/word_data.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
@@ -85,7 +86,8 @@ class _AddToKanListBottomSheetState extends State<AddToKanListBottomSheet> {
           listener: (context, state) {
             state.mapOrNull(creationDone: (_) {
               Navigator.of(context).pop();
-              Utils.getSnackBar(context, "add_word_createWord_successful".tr());
+              context.read<SnackbarBloc>().add(
+                  SnackbarEventShow("add_word_createWord_successful".tr()));
             }, error: (error) {
               setState(() => _error = error.message);
             });

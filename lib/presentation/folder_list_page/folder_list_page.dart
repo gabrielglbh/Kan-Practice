@@ -17,7 +17,7 @@ import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class FolderListPage extends StatefulWidget {
   final Function() removeFocus;
-  final Function() onScrolledToBottom;
+  final Function(Function()) onScrolledToBottom;
   const FolderListPage(
       {super.key, required this.removeFocus, required this.onScrolledToBottom});
 
@@ -67,7 +67,7 @@ class _FolderListPageState extends State<FolderListPage>
     /// When reaching last pixel of the list
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      widget.onScrolledToBottom();
+      widget.onScrolledToBottom(_addLoadingEvent());
     }
   }
 

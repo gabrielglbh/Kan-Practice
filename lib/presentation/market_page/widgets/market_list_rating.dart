@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:kanpractice/application/rate/rate_bloc.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class MarketListRating extends StatelessWidget {
   final String listId;
@@ -18,7 +18,7 @@ class MarketListRating extends StatelessWidget {
       child: BlocConsumer<RateBloc, RateState>(
         listener: (context, state) {
           state.mapOrNull(error: (error) {
-            Utils.getSnackBar(context, error.message);
+            context.read<SnackbarBloc>().add(SnackbarEventShow(error.message));
           });
         },
         builder: (context, state) {

@@ -2,8 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/application/services/preferences_service.dart';
-import 'package:kanpractice/domain/services/i_preferences_repository.dart';
 import 'package:kanpractice/domain/word/i_word_repository.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/types/word_categories_filters.dart';
@@ -16,13 +14,10 @@ part 'archive_words_bloc.freezed.dart';
 
 @lazySingleton
 class ArchiveWordsBloc extends Bloc<ArchiveWordsEvent, ArchiveWordsState> {
-  final IPreferencesRepository _preferencesRepository;
   final IWordRepository _wordRepository;
 
-  ArchiveWordsBloc(
-    this._wordRepository,
-    this._preferencesRepository,
-  ) : super(const ArchiveWordsState.initial()) {
+  ArchiveWordsBloc(this._wordRepository)
+      : super(const ArchiveWordsState.initial()) {
     /// Maintain the list for pagination purposes
     List<Word> list = [];
 
@@ -44,9 +39,7 @@ class ArchiveWordsBloc extends Bloc<ArchiveWordsEvent, ArchiveWordsState> {
           loadingTimes = 0;
         }
 
-        final limit = _preferencesRepository.readData(SharedKeys.showBadgeWords)
-            ? LazyLoadingLimits.wordBadgeList
-            : LazyLoadingLimits.wordTileList;
+        const limit = LazyLoadingLimits.wordTileList;
 
         /// For every time we want to retrieve data, we need to instantiate
         /// a new list in order for Equatable to trigger and perform a change
@@ -76,9 +69,7 @@ class ArchiveWordsBloc extends Bloc<ArchiveWordsEvent, ArchiveWordsState> {
           loadingTimesForSearch = 0;
         }
 
-        final limit = _preferencesRepository.readData(SharedKeys.showBadgeWords)
-            ? LazyLoadingLimits.wordBadgeList
-            : LazyLoadingLimits.wordTileList;
+        const limit = LazyLoadingLimits.wordTileList;
 
         /// For every time we want to retrieve data, we need to instantiate
         /// a new list in order for Equatable to trigger and perform a change

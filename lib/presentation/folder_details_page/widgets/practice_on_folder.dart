@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/folder_practice/folder_practice_bloc.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
@@ -9,7 +10,6 @@ import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
 class PracticeFolderBottomSheet extends StatefulWidget {
@@ -44,7 +44,9 @@ class _PracticeFolderBottomSheetState extends State<PracticeFolderBottomSheet> {
             listener: ((context, state) async {
               state.mapOrNull(loaded: (l) async {
                 if (l.list.isEmpty) {
-                  Utils.getSnackBar(context, "study_modes_empty".tr());
+                  context
+                      .read<SnackbarBloc>()
+                      .add(SnackbarEventShow("study_modes_empty".tr()));
                 } else {
                   await _decideOnMode(l.list, l.mode);
                 }

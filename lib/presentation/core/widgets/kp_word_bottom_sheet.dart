@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/application/word_details/word_details_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
@@ -67,7 +68,9 @@ class KPWordBottomSheet extends StatelessWidget {
                     BlocConsumer<WordDetailsBloc, WordDetailsState>(
                       listener: (context, state) {
                         state.mapOrNull(error: (error) {
-                          Utils.getSnackBar(context, error.message);
+                          context
+                              .read<SnackbarBloc>()
+                              .add(SnackbarEventShow(error.message));
                         }, removed: (_) {
                           if (onRemove != null) onRemove!();
                         });

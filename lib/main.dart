@@ -24,12 +24,14 @@ import 'package:kanpractice/application/permission_handler/permission_handler_bl
 import 'package:kanpractice/application/services/messaging_service.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/application/services/translate_service.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/application/specific_data/specific_data_bloc.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/theme/theme_manager.dart';
+import 'package:kanpractice/presentation/core/widgets/kp_snackbar.dart';
 import 'presentation/core/routing/routes.dart';
 
 Future<void> _initSharedPreferences() async {
@@ -91,9 +93,6 @@ Future<void> _initSharedPreferences() async {
   }
   if (prefs.readData(SharedKeys.haveSeenKanListDetailCoachMark) == null) {
     prefs.saveData(SharedKeys.haveSeenKanListDetailCoachMark, false);
-  }
-  if (prefs.readData(SharedKeys.showBadgeWords) == null) {
-    prefs.saveData(SharedKeys.showBadgeWords, false);
   }
   if (prefs.readData(SharedKeys.speakingWithSTT) == null) {
     prefs.saveData(SharedKeys.speakingWithSTT, true);
@@ -182,6 +181,7 @@ class _KanPracticeState extends State<KanPractice> {
         BlocProvider(create: (_) => getIt<AddWordBloc>()),
         BlocProvider(create: (_) => getIt<DailyOptionsBloc>()),
         BlocProvider(create: (_) => getIt<PermissionHandlerBloc>()),
+        BlocProvider(create: (_) => getIt<SnackbarBloc>()),
       ],
       child: BlocListener<ExampleDataBloc, ExampleDataState>(
         listener: (context, state) {
@@ -189,17 +189,33 @@ class _KanPracticeState extends State<KanPractice> {
             getIt<DailyOptionsBloc>().add(DailyOptionsEventLoadData());
           });
         },
-        child: MaterialApp(
-          title: 'KanPractice',
-          locale: context.locale,
-          supportedLocales: context.supportedLocales,
-          localizationsDelegates: context.localizationDelegates,
-          debugShowCheckedModeBanner: false,
-          theme: ThemeManager.instance.currentLightThemeData,
-          darkTheme: ThemeManager.instance.currentDarkThemeData,
-          themeMode: ThemeManager.instance.themeMode,
-          initialRoute: KanPracticePages.homePage,
-          onGenerateRoute: onGenerateRoute,
+        child: BlocBuilder<SnackbarBloc, SnackbarState>(
+          builder: (context, state) {
+            return MaterialApp(
+              title: 'KanPractice',
+              locale: context.locale,
+              supportedLocales: context.supportedLocales,
+              localizationsDelegates: context.localizationDelegates,
+              debugShowCheckedModeBanner: false,
+              theme: ThemeManager.instance.currentLightThemeData,
+              darkTheme: ThemeManager.instance.currentDarkThemeData,
+              themeMode: ThemeManager.instance.themeMode,
+              initialRoute: KanPracticePages.homePage,
+              onGenerateRoute: onGenerateRoute,
+              builder: (context, child) {
+                return Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    child!,
+                    state.maybeWhen(
+                      show: (message) => KPSnackbar(message: message),
+                      orElse: () => const SizedBox(),
+                    )
+                  ],
+                );
+              },
+            );
+          },
         ),
       ),
     );

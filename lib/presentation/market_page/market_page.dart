@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/market_filters.dart';
 import 'package:kanpractice/domain/market/market.dart';
@@ -174,9 +175,13 @@ class _MarketPageState extends State<MarketPage>
           BlocConsumer<MarketBloc, MarketState>(
             listener: (context, state) {
               state.mapOrNull(succeeded: (msg) {
-                Utils.getSnackBar(context, msg.message);
+                context
+                    .read<SnackbarBloc>()
+                    .add(SnackbarEventShow(msg.message));
               }, error: (error) {
-                Utils.getSnackBar(context, error.message);
+                context
+                    .read<SnackbarBloc>()
+                    .add(SnackbarEventShow(error.message));
               });
             },
             builder: (context, state) {

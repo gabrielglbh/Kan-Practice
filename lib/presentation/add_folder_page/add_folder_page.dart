@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/add_folder/add_folder_bloc.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_kanlist_grid.dart';
@@ -9,7 +10,6 @@ import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_text_form.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/utils.dart';
 
 class AddFolderPage extends StatefulWidget {
   final String? folder;
@@ -80,7 +80,9 @@ class _AddFolderPageState extends State<AddFolderPage> {
           listener: (context, state) {
             state.mapOrNull(
               error: (error) {
-                Utils.getSnackBar(context, error.message);
+                context
+                    .read<SnackbarBloc>()
+                    .add(SnackbarEventShow(error.message));
               },
               loaded: (_) {
                 Navigator.of(context).pop();

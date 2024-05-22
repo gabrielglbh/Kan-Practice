@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
@@ -10,7 +11,6 @@ import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/study_modes/utils/mode_arguments.dart';
 
 class WordGrid extends StatelessWidget {
@@ -64,7 +64,9 @@ class WordGrid extends StatelessWidget {
           List<Word> list = l.words;
           if (list.isEmpty) {
             Navigator.of(context).pop();
-            Utils.getSnackBar(context, "study_modes_empty".tr());
+            context
+                .read<SnackbarBloc>()
+                .add(SnackbarEventShow("study_modes_empty".tr()));
           } else {
             await _decideOnMode(context, list, l.mode);
           }
@@ -149,14 +151,20 @@ class WordGrid extends StatelessWidget {
         KPButton(
           title1: mode.japMode,
           title2: mode.mode,
-          color:
-              isAvailable ? mode.color : Theme.of(context).colorScheme.tertiary,
+          color: isAvailable
+              ? mode.color
+              : Theme.of(context).colorScheme.inverseSurface,
+          textColor: isAvailable
+              ? Colors.white
+              : Theme.of(context).colorScheme.onInverseSurface,
           onTap: isAvailable
               ? () async {
                   if (selectionQuery != null &&
                       selectionQuery?.isEmpty == true) {
                     Navigator.of(context).pop();
-                    Utils.getSnackBar(context, "study_modes_empty".tr());
+                    context
+                        .read<SnackbarBloc>()
+                        .add(SnackbarEventShow("study_modes_empty".tr()));
                   } else {
                     context.read<GenericTestBloc>().add(
                           GenericTestEventLoadList(
@@ -178,13 +186,12 @@ class WordGrid extends StatelessWidget {
             child: Chip(
               label: Text(
                 toReview,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onTertiary),
               ),
               side: BorderSide.none,
-              backgroundColor: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.tertiary,
               labelPadding: EdgeInsets.zero,
             ),
           ),

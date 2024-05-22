@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/add_word/add_word_bloc.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
+import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/word_categories.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -96,7 +97,9 @@ class _AddWordPageState extends State<AddWordPage> {
         _meaningController?.text.trim().isNotEmpty == true) {
       execute();
     } else {
-      Utils.getSnackBar(context, "add_word_validateWord_failed".tr());
+      context
+          .read<SnackbarBloc>()
+          .add(SnackbarEventShow("add_word_validateWord_failed".tr()));
     }
   }
 
@@ -189,7 +192,7 @@ class _AddWordPageState extends State<AddWordPage> {
             Navigator.of(context).pop(0);
           },
           error: (error) {
-            Utils.getSnackBar(context, error.message);
+            context.read<SnackbarBloc>().add(SnackbarEventShow(error.message));
           },
         );
       },

@@ -149,8 +149,12 @@ class WordGrid extends StatelessWidget {
         KPButton(
           title1: mode.japMode,
           title2: mode.mode,
-          color:
-              isAvailable ? mode.color : Theme.of(context).colorScheme.tertiary,
+          color: isAvailable
+              ? mode.color
+              : Theme.of(context).colorScheme.inverseSurface,
+          textColor: isAvailable
+              ? Colors.white
+              : Theme.of(context).colorScheme.onInverseSurface,
           onTap: isAvailable
               ? () async {
                   if (selectionQuery != null &&

@@ -93,6 +93,7 @@ class WritingButtonsAnimations extends StatelessWidget {
               vertical: KPMargins.margin4,
               onTap: () async => await action(0),
               color: KPColors.darkRed,
+              textColor: Colors.white,
             )),
         _animation(
             duration: 2,
@@ -102,6 +103,7 @@ class WritingButtonsAnimations extends StatelessWidget {
               vertical: KPMargins.margin4,
               onTap: () async => await action(0.20),
               color: KPColors.midRed,
+              textColor: Colors.white,
             )),
         _animation(
             duration: 3,
@@ -111,6 +113,7 @@ class WritingButtonsAnimations extends StatelessWidget {
               vertical: KPMargins.margin4,
               onTap: () async => await action(0.40),
               color: KPColors.darkOrange,
+              textColor: Colors.white,
             )),
         _animation(
             duration: 4,
@@ -120,6 +123,7 @@ class WritingButtonsAnimations extends StatelessWidget {
               vertical: KPMargins.margin4,
               onTap: () async => await action(0.60),
               color: KPColors.darkMidAmber,
+              textColor: Colors.white,
             )),
         _animation(
             duration: 5,
@@ -129,6 +133,7 @@ class WritingButtonsAnimations extends StatelessWidget {
               vertical: KPMargins.margin4,
               onTap: () async => await action(0.80),
               color: KPColors.darkOlive,
+              textColor: Colors.white,
             )),
         _animation(
             duration: 6,
@@ -138,6 +143,7 @@ class WritingButtonsAnimations extends StatelessWidget {
               vertical: KPMargins.margin4,
               onTap: () async => await action(1),
               color: KPColors.darkGreen,
+              textColor: Colors.white,
             ))
       ],
     );

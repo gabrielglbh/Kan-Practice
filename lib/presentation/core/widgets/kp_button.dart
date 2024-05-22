@@ -20,6 +20,7 @@ class KPButton extends StatelessWidget {
   /// Action to perform when tapping the button
   final Function()? onTap;
   final Widget? customIcon;
+  final Color? textColor;
   const KPButton({
     super.key,
     this.width = false,
@@ -29,6 +30,7 @@ class KPButton extends StatelessWidget {
     required this.onTap,
     this.icon,
     this.customIcon,
+    this.textColor,
   });
 
   @override
@@ -63,8 +65,12 @@ class KPButton extends StatelessWidget {
                       fit: BoxFit.fitWidth,
                       child: Text(title1 ?? "",
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  color: Theme.of(context).colorScheme.onPrimary)),
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge
+                              ?.copyWith(
+                                  color: textColor ??
+                                      Theme.of(context).colorScheme.onPrimary)),
                     ),
                   ),
                 ),
@@ -73,7 +79,8 @@ class KPButton extends StatelessWidget {
                   child: Padding(
                       padding: const EdgeInsets.only(bottom: KPMargins.margin8),
                       child: Icon(icon,
-                          color: Theme.of(context).colorScheme.onPrimary)),
+                          color: textColor ??
+                              Theme.of(context).colorScheme.onPrimary)),
                 ),
                 Visibility(
                   visible: title1 == null && icon == null && customIcon != null,
@@ -85,7 +92,8 @@ class KPButton extends StatelessWidget {
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary)),
+                          color: textColor ??
+                              Theme.of(context).colorScheme.onPrimary)),
                 )
               ],
             ),

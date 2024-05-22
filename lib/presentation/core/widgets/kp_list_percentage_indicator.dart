@@ -13,8 +13,8 @@ class KPListPercentageIndicator extends StatelessWidget {
     double pct = value * 100;
     return LinearPercentIndicator(
       percent: value,
-      backgroundColor: Theme.of(context).colorScheme.primaryFixedDim,
-      progressColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      progressColor: Theme.of(context).colorScheme.onPrimaryContainer,
       lineHeight: 30,
       barRadius: const Radius.circular(KPRadius.radius8),
       animation: true,
@@ -23,9 +23,9 @@ class KPListPercentageIndicator extends StatelessWidget {
       center: Text(
         value == 1 ? "100%" : "${pct.toStringAsPrecision(2)}%",
         style: TextStyle(
-            color: pct <= 50
-                ? Theme.of(context).colorScheme.onPrimaryFixedVariant
-                : Colors.white,
+            color: pct <= 48
+                ? Theme.of(context).colorScheme.onPrimaryContainer
+                : Theme.of(context).colorScheme.primaryContainer,
             fontWeight: FontWeight.bold),
       ),
     );

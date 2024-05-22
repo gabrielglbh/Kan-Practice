@@ -156,29 +156,32 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
                   fit: BoxFit.fitWidth,
                   child: Text(
                     mode.name,
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge
-                        ?.copyWith(fontSize: 14),
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        fontSize: 14,
+                        color: Theme.of(context).colorScheme.onInverseSurface),
                   ),
                 ),
-                const SizedBox(height: 6),
-                const Row(
+                const SizedBox(height: 2),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.lock_rounded, size: 15, color: Colors.white),
+                    Icon(Icons.lock_rounded,
+                        size: 15,
+                        color: Theme.of(context).colorScheme.onInverseSurface),
                     Icon(Icons.arrow_forward_rounded,
-                        size: 15, color: Colors.white),
+                        size: 15,
+                        color: Theme.of(context).colorScheme.onInverseSurface),
                     Icon(Icons.lock_open_rounded,
-                        size: 15, color: Colors.white),
+                        size: 15,
+                        color: Theme.of(context).colorScheme.onInverseSurface),
                   ],
                 ),
-                const SizedBox(height: 4),
               ],
             ),
             title2: nextDay,
             onTap: null,
-            color: KPColors.midGrey,
+            color: Theme.of(context).colorScheme.inverseSurface,
+            textColor: Theme.of(context).colorScheme.onInverseSurface,
           ),
           Positioned(
             top: KPMargins.margin2,
@@ -267,8 +270,8 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
             top: KPMargins.margin4,
             right: KPMargins.margin4,
             child: Container(
-              width: 20,
-              height: 20,
+              width: 24,
+              height: 24,
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Theme.of(context).colorScheme.tertiaryFixedDim,

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/archive_words/archive_words_bloc.dart';
-import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
-import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/add_word_page/arguments.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
@@ -177,27 +175,15 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
     return RefreshIndicator(
       onRefresh: () async => _addLoadingEvent(reset: true),
       color: Theme.of(context).colorScheme.primary,
-      child: getIt<PreferencesService>().readData(SharedKeys.showBadgeWords)
-          ? GridView.builder(
-              key: const PageStorageKey<String>('wordListController'),
-              itemCount: words.length,
-              controller: _scrollController,
-              padding: const EdgeInsets.only(bottom: KPMargins.margin32),
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 5, childAspectRatio: 2),
-              itemBuilder: (context, k) => wordElem(k, true),
-            )
-          : ListView.separated(
-              key: const PageStorageKey<String>('wordListController'),
-              itemCount: words.length,
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              controller: _scrollController,
-              padding: const EdgeInsets.only(bottom: KPMargins.margin32),
-              separatorBuilder: (_, __) =>
-                  const Divider(height: KPMargins.margin4),
-              itemBuilder: (context, k) => wordElem(k, false),
-            ),
+      child: ListView.separated(
+        key: const PageStorageKey<String>('wordListController'),
+        itemCount: words.length,
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        controller: _scrollController,
+        padding: const EdgeInsets.only(bottom: KPMargins.margin32),
+        separatorBuilder: (_, __) => const Divider(height: KPMargins.margin4),
+        itemBuilder: (context, k) => wordElem(k, false),
+      ),
     );
   }
 

@@ -269,25 +269,14 @@ class _WordListWidgetState extends State<WordListWidget>
       );
     }
 
-    return getIt<PreferencesService>().readData(SharedKeys.showBadgeWords)
-        ? GridView.builder(
-            key: const PageStorageKey<String>('wordListController'),
-            itemCount: words.length,
-            controller: _scrollController,
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 5, childAspectRatio: 2),
-            itemBuilder: (context, k) => wordElem(k, true),
-          )
-        : ListView.separated(
-            key: const PageStorageKey<String>('wordListController'),
-            itemCount: words.length,
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            controller: _scrollController,
-            separatorBuilder: (_, __) =>
-                const Divider(height: KPMargins.margin4),
-            itemBuilder: (context, k) => wordElem(k, false),
-          );
+    return ListView.separated(
+      key: const PageStorageKey<String>('wordListController'),
+      itemCount: words.length,
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+      controller: _scrollController,
+      separatorBuilder: (_, __) => const Divider(height: KPMargins.margin4),
+      itemBuilder: (context, k) => wordElem(k, false),
+    );
   }
 
   @override

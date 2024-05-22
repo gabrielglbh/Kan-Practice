@@ -14,7 +14,7 @@ class KPDragContainer extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(KPRadius.radius16),
-            color: Colors.grey),
+            color: Theme.of(context).colorScheme.onPrimaryContainer),
       ),
     );
   }

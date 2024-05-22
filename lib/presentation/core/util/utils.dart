@@ -145,7 +145,7 @@ class Utils {
             Padding(
               padding: const EdgeInsets.only(right: KPMargins.margin8),
               child: Icon(Icons.info_rounded,
-                  color: Theme.of(context).colorScheme.onSurface),
+                  color: Theme.of(context).colorScheme.surface),
             ),
             Expanded(child: Text(message)),
           ]),
@@ -205,7 +205,7 @@ class Utils {
               thumbVisibility: true,
               child: ListView(
                 children: [
-                  if (version == null)
+                  if (version != null)
                     Text("${"word_lists_versionDialog_notes".tr()} $version\n"),
                   child
                 ],

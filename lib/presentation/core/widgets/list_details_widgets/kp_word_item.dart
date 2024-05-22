@@ -71,45 +71,7 @@ class KPWordItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final score = _getProperWordWinRate(word);
-    final badge = AnimatedContainer(
-      duration: const Duration(milliseconds: KPAnimations.ms300),
-      padding: const EdgeInsets.all(KPMargins.margin2),
-      margin: const EdgeInsets.all(KPMargins.margin4),
-      decoration: BoxDecoration(
-          color: Utils.getColorBasedOnWinRate(context, score),
-          borderRadius:
-              const BorderRadius.all(Radius.circular(KPRadius.radius8)),
-          boxShadow: const [
-            BoxShadow(
-                color: Colors.grey,
-                offset: Offset(0, 3),
-                blurRadius: KPRadius.radius4)
-          ]),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius:
-              const BorderRadius.all(Radius.circular(KPRadius.radius8)),
-          onTap: () async {
-            onShowModal();
-            await KPWordBottomSheet.show(context, listName, word,
-                onTap: onTap, onRemove: onRemoval);
-          },
-          child: Container(
-              decoration: const BoxDecoration(
-                  borderRadius:
-                      BorderRadius.all(Radius.circular(KPRadius.radius8))),
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: Text(word.word,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyMedium),
-              )),
-        ),
-      ),
-    );
-
-    final tile = ListTile(
+    return ListTile(
       horizontalTitleGap: 0,
       leading: score == -1
           ? Stack(
@@ -181,7 +143,5 @@ class KPWordItem extends StatelessWidget {
             onTap: onTap, onRemove: onRemoval);
       },
     );
-
-    return isBadge ? badge : tile;
   }
 }

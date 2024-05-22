@@ -2,8 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:kanpractice/application/services/preferences_service.dart';
-import 'package:kanpractice/domain/services/i_preferences_repository.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/i_word_repository.dart';
@@ -18,13 +16,10 @@ part 'list_details_words_bloc.freezed.dart';
 @lazySingleton
 class ListDetailsWordsBloc
     extends Bloc<ListDetailsWordsEvent, ListDetailsWordsState> {
-  final IPreferencesRepository _preferencesRepository;
   final IWordRepository _wordRepository;
 
-  ListDetailsWordsBloc(
-    this._wordRepository,
-    this._preferencesRepository,
-  ) : super(const ListDetailsWordsState.initial()) {
+  ListDetailsWordsBloc(this._wordRepository)
+      : super(const ListDetailsWordsState.initial()) {
     /// Maintain the list for pagination purposes
     List<Word> list = [];
 
@@ -46,9 +41,7 @@ class ListDetailsWordsBloc
           loadingTimes = 0;
         }
 
-        final limit = _preferencesRepository.readData(SharedKeys.showBadgeWords)
-            ? LazyLoadingLimits.wordBadgeList
-            : LazyLoadingLimits.wordTileList;
+        const limit = LazyLoadingLimits.wordTileList;
 
         /// For every time we want to retrieve data, we need to instantiate
         /// a new list in order for Equatable to trigger and perform a change
@@ -76,9 +69,7 @@ class ListDetailsWordsBloc
           loadingTimesForSearch = 0;
         }
 
-        final limit = _preferencesRepository.readData(SharedKeys.showBadgeWords)
-            ? LazyLoadingLimits.wordBadgeList
-            : LazyLoadingLimits.wordTileList;
+        const limit = LazyLoadingLimits.wordTileList;
 
         /// For every time we want to retrieve data, we need to instantiate
         /// a new list in order for Equatable to trigger and perform a change

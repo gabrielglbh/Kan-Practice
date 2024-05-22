@@ -14,7 +14,7 @@ import 'package:kanpractice/presentation/core/widgets/list_details_widgets/kp_wo
 
 class ArchiveWordListWidget extends StatefulWidget {
   final String query;
-  final Function() onScrolledToBottom;
+  final Function(Function()) onScrolledToBottom;
   final Function() removeFocus;
   const ArchiveWordListWidget({
     super.key,
@@ -51,7 +51,7 @@ class _ArchiveWordListWidgetState extends State<ArchiveWordListWidget>
     /// When reaching last pixel of the list
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      widget.onScrolledToBottom();
+      widget.onScrolledToBottom(_addLoadingEvent());
     }
   }
 

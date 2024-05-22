@@ -1,17 +1,14 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/folder_details/folder_details_bloc.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/types/wordlist_filters.dart';
 import 'package:kanpractice/presentation/core/types/tab_types.dart';
-import 'package:kanpractice/presentation/core/widgets/kp_button.dart';
 import 'package:kanpractice/presentation/core/widgets/kanlists/kp_kanlists.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_search_bar.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_test_bottom_sheet.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/folder_details_page/widgets/practice_on_folder.dart';
 
 class FolderDetailsPage extends StatefulWidget {
   final String folder;
@@ -88,69 +85,48 @@ class _FolderDetailsPageState extends State<FolderDetailsPage> {
           },
         ),
       ],
-      child: BlocBuilder<FolderDetailsBloc, FolderDetailsState>(
-        builder: (context, state) {
-          return state.maybeWhen(
-            loaded: (lists) => Column(
-              children: [
-                KPSearchBar(
-                  controller: _searchTextController,
-                  hint: TabType.kanlist.searchBarHint,
-                  focus: _searchBarFn,
-                  right: KPMargins.margin12,
-                  onQuery: (String query) {
-                    /// Everytime the user queries, reset the query itself and
-                    /// the pagination index
-                    _query = query;
-                    context
-                        .read<FolderDetailsBloc>()
-                        .add(_addListSearchingEvent(query));
-                  },
-                  onExitSearch: () {
-                    /// Empty the query
-                    _query = "";
-                    _resetList(context);
-                  },
-                ),
-                Expanded(
-                  child: KPKanlists(
-                    folder: widget.folder,
-                    withinFolder: true,
-                    removeFocus: () => _searchBarFn.unfocus(),
-                    onScrolledToBottom: () {
-                      /// If the query is empty, use the pagination for search bar
-                      if (_query.isNotEmpty) {
-                        context
-                            .read<FolderDetailsBloc>()
-                            .add(_addListSearchingEvent(_query, reset: false));
-                      }
+      child: Column(
+        children: [
+          KPSearchBar(
+            controller: _searchTextController,
+            hint: TabType.kanlist.searchBarHint,
+            focus: _searchBarFn,
+            right: KPMargins.margin12,
+            onQuery: (String query) {
+              /// Everytime the user queries, reset the query itself and
+              /// the pagination index
+              _query = query;
+              context
+                  .read<FolderDetailsBloc>()
+                  .add(_addListSearchingEvent(query));
+            },
+            onExitSearch: () {
+              /// Empty the query
+              _query = "";
+              _resetList(context);
+            },
+          ),
+          Expanded(
+            child: KPKanlists(
+              folder: widget.folder,
+              withinFolder: true,
+              removeFocus: () => _searchBarFn.unfocus(),
+              onScrolledToBottom: (addFolderListLoadingWithFilters) {
+                /// If the query is empty, use the pagination for search bar
+                if (_query.isNotEmpty) {
+                  context
+                      .read<FolderDetailsBloc>()
+                      .add(_addListSearchingEvent(_query, reset: false));
+                }
 
-                      /// Else use the normal pagination
-                      else {
-                        context
-                            .read<FolderDetailsBloc>()
-                            .add(_addListLoadingEvent(reset: false));
-                      }
-                    },
-                  ),
-                ),
-                if (lists.isNotEmpty)
-                  SizedBox(
-                    height: 85,
-                    child: KPButton(
-                      title1: "list_details_practice_button_label_ext".tr(),
-                      title2: "list_details_practice_button_label".tr(),
-                      onTap: () async {
-                        await PracticeFolderBottomSheet.show(
-                            context, widget.folder);
-                      },
-                    ),
-                  ),
-              ],
+                /// Else use the normal pagination
+                else {
+                  addFolderListLoadingWithFilters();
+                }
+              },
             ),
-            orElse: () => const SizedBox(),
-          );
-        },
+          ),
+        ],
       ),
     );
   }

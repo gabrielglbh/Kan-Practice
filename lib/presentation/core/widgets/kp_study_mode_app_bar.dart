@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:kanpractice/presentation/core/util/timer.dart';
 
 class StudyModeAppBar extends StatelessWidget {
   final String title;
   final String studyMode;
-  const StudyModeAppBar(
-      {super.key, required this.title, required this.studyMode});
+  final int elapsedTime;
+  const StudyModeAppBar({
+    super.key,
+    required this.title,
+    required this.studyMode,
+    this.elapsedTime = -1,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +19,11 @@ class StudyModeAppBar extends StatelessWidget {
         child: Column(
           children: [
             Text(title, style: Theme.of(context).textTheme.headlineSmall),
-            Text(studyMode, style: Theme.of(context).textTheme.bodyMedium)
+            Text(
+                elapsedTime != -1
+                    ? "$studyMode • ${elapsedTime.format()}"
+                    : studyMode,
+                style: Theme.of(context).textTheme.bodyMedium)
           ],
         ));
   }

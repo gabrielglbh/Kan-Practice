@@ -454,5 +454,8 @@
   "settings_general_stt_description": "Wenn aktiv, wird die Spracherkennung verwendet, um die Wörter der Sprachübung oder des Tests automatisch zu validieren. Wenn nicht, erfolgt die Validierung wie in den anderen Modi manuell",
   "speaking_stt_change": "Spracherkennung verwenden",
   "speaking_normal_change": "Normale Validierung verwenden",
-  "google_signin": "Mit Google anmelden"
+  "google_signin": "Mit Google anmelden",
+  "test_time_spent": "Zeit: ",
+  "test_time_per_card_word": " Sekunden pro Wort",
+  "test_time_per_card_grammar": " Sekunden pro Punkt"
 }

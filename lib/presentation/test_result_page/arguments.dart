@@ -9,6 +9,7 @@ class TestResultArguments {
   final int testMode;
   final String listsName;
   final bool alterTest;
+  final int timeObtained;
   final Map<String, List<Map<Word, double>>>? studyList;
   final Map<String, List<Map<GrammarPoint, double>>>? grammarList;
 
@@ -19,6 +20,7 @@ class TestResultArguments {
     this.grammarMode,
     required this.testMode,
     required this.listsName,
+    required this.timeObtained,
     this.studyList,
     this.grammarList,
     this.alterTest = false,

@@ -8,6 +8,7 @@ import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/presentation/core/util/timer.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_learning_header_animation.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_learning_text_box.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_list_percentage_indicator.dart';
@@ -28,7 +29,8 @@ class ListeningStudy extends StatefulWidget {
   State<ListeningStudy> createState() => _ListeningStudyState();
 }
 
-class _ListeningStudyState extends State<ListeningStudy> {
+class _ListeningStudyState extends State<ListeningStudy>
+    with CustomPeriodicTimer {
   /// Current word index
   int _macro = 0;
 
@@ -53,7 +55,14 @@ class _ListeningStudyState extends State<ListeningStudy> {
     _studyList.addAll(widget.args.studyList);
     getIt<TextToSpeechService>().speakWord(_studyList[_macro].pronunciation);
     context.read<StudyModeBloc>().add(StudyModeEventResetTracking());
+    startTimer();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    stopTimer();
+    super.dispose();
   }
 
   Future<void> _updateUIOnSubmit(double score) async {
@@ -106,8 +115,13 @@ class _ListeningStudyState extends State<ListeningStudy> {
         testScore += s;
       }
       final score = testScore / _studyList.length;
-      StudyModeUpdateHandler.handle(context, widget.args,
-          testScore: score, testScores: _testScores);
+      StudyModeUpdateHandler.handle(
+        context,
+        widget.args,
+        testScore: score,
+        testScores: _testScores,
+        timeObtained: elapsedTime,
+      );
     } else {
       StudyModeUpdateHandler.handle(context, widget.args);
     }
@@ -162,8 +176,10 @@ class _ListeningStudyState extends State<ListeningStudy> {
         );
       },
       appBarTitle: StudyModeAppBar(
-          title: widget.args.studyModeHeaderDisplayName,
-          studyMode: widget.args.mode.mode),
+        title: widget.args.studyModeHeaderDisplayName,
+        studyMode: widget.args.mode.mode,
+        elapsedTime: elapsedTime,
+      ),
       centerTitle: true,
       appBarActions: [
         ttsButton,

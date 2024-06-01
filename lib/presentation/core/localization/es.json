@@ -454,5 +454,8 @@
   "settings_general_stt_description": "Si está activo, se utilizará el reconocimiento de voz para validar automáticamente las palabras de la práctica o test de Habla. Si no, la validación será manual como en los otros modos.",
   "speaking_stt_change": "Utilizar reconocimiento de voz",
   "speaking_normal_change": "Utilizar validación normal",
-  "google_signin": "Iniciar sesión con Google"
+  "google_signin": "Iniciar sesión con Google",
+  "test_time_spent": "Tiempo: ",
+  "test_time_per_card_word": " segundos por palabra",
+  "test_time_per_card_grammar": " segundos por punto"
 }

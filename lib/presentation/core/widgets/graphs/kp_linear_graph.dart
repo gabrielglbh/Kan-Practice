@@ -18,8 +18,8 @@ class KPLinearGraph extends StatelessWidget {
     return Column(
       children: [
         Text(
-          Utils.getFixedPercentageAsString(
-              value == DatabaseConstants.emptyWinRate ? 0 : value),
+          (value == DatabaseConstants.emptyWinRate ? 0.0 : value)
+              .getFixedPercentageAsString(),
           style: Theme.of(context)
               .textTheme
               .bodySmall

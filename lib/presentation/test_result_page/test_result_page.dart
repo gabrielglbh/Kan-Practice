@@ -97,8 +97,8 @@ class _TestResultPageState extends State<TestResultPage> {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: Utils.getFixedDouble(
-                                widget.args.timeObtained / test.wordsInTest),
+                            text: (widget.args.timeObtained / test.wordsInTest)
+                                .getFixedDouble(),
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge

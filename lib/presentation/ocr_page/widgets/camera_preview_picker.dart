@@ -62,8 +62,8 @@ class _CameraPreviewPickerState extends State<CameraPreviewPicker> {
                           ),
                         Positioned(
                           top: KPMargins.margin12,
-                          child: Chip(
-                              label: Text('x${Utils.getFixedDouble(_zoom)}')),
+                          child:
+                              Chip(label: Text('x${_zoom.getFixedDouble()}')),
                         ),
                         Positioned(
                           bottom: KPMargins.margin64,

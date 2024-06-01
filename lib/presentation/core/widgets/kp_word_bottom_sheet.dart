@@ -234,9 +234,9 @@ class KPWordBottomSheet extends StatelessWidget {
               tilePadding: const EdgeInsets.all(0),
               title: Text(
                   "${"created_label".tr()} "
-                  "${Utils.parseDateMilliseconds(updatedWord.dateAdded)} • "
+                  "${updatedWord.dateAdded.parseDateMilliseconds()} • "
                   "${"last_seen_label".tr()} "
-                  "${Utils.parseDateMilliseconds(updatedWord.dateLastShown)}",
+                  "${updatedWord.dateLastShown.parseDateMilliseconds()}",
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium),
               children: [
@@ -275,8 +275,7 @@ class KPWordBottomSheet extends StatelessWidget {
         break;
     }
     if (date != 0) {
-      parsedDate =
-          "${"last_seen_label".tr()} ${Utils.parseDateMilliseconds(date)}";
+      parsedDate = "${"last_seen_label".tr()} ${date.parseDateMilliseconds()}";
     }
 
     return Container(

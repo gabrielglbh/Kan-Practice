@@ -63,7 +63,7 @@ class RadialGraphLegend extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   rate != DatabaseConstants.emptyWinRate
-                      ? Utils.getFixedPercentageAsString(rate)
+                      ? rate.getFixedPercentageAsString()
                       : "0%",
                   style: TextStyle(
                       fontSize: KPMargins.margin12,

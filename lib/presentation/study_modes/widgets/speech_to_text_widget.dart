@@ -86,12 +86,12 @@ class SpeechToTextWidget extends StatelessWidget {
               width: KPMargins.margin64 * 2,
               height: KPMargins.margin64 * 2,
               decoration: BoxDecoration(
-                color: Utils.getColorBasedOnWinRate(context, score),
+                color: score.getColorBasedOnWinRate(context),
                 shape: BoxShape.circle,
               ),
               margin: const EdgeInsets.all(KPMargins.margin12),
               child: Icon(
-                Utils.getEmojiBasedOnWinRate(score),
+                score.getEmojiBasedOnWinRate(),
                 color: Colors.white,
                 size: KPMargins.margin64,
               ),

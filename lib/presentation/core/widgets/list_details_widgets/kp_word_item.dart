@@ -111,7 +111,7 @@ class KPWordItem extends StatelessWidget {
               height: KPMargins.margin16,
               margin: const EdgeInsets.only(top: KPMargins.margin4),
               decoration: BoxDecoration(
-                color: Utils.getColorBasedOnWinRate(context, score),
+                color: score.getColorBasedOnWinRate(context),
                 shape: BoxShape.circle,
                 border:
                     Border.all(color: Theme.of(context).colorScheme.tertiary),

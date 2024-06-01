@@ -76,10 +76,10 @@ class KPWinRateChart extends StatelessWidget {
                           positionFactor: 0.5,
                           angle: 90,
                           widget: Text(
-                              Utils.getFixedPercentageAsString(
-                                  winRate == DatabaseConstants.emptyWinRate
-                                      ? 0
-                                      : winRate),
+                              (winRate == DatabaseConstants.emptyWinRate
+                                      ? 0.0
+                                      : winRate)
+                                  .getFixedPercentageAsString(),
                               style: TextStyle(
                                   color: Colors.white, fontSize: rateSize)))
                     ]

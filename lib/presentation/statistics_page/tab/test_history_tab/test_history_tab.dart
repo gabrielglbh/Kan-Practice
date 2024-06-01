@@ -92,7 +92,7 @@ class _TestHistoryState extends State<TestHistory>
         children: [
           StatsHeader(
             title: "stats_tests_total_acc".tr(),
-            value: Utils.getFixedPercentageAsString(mean),
+            value: mean.getFixedPercentageAsString(),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),

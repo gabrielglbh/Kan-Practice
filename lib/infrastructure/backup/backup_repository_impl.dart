@@ -247,7 +247,7 @@ class BackupRepositoryImpl implements IBackupRepository {
       if (snapshot.exists) {
         int date = snapshot.get("lastUpdated");
         return "${"backup_firebase_getLastUpdated_successful".tr()} "
-            "${Utils.parseDateMilliseconds(date)}";
+            "${date.parseDateMilliseconds()}";
       } else {
         return "backup_firebase_getLastUpdated_noBackUp".tr();
       }

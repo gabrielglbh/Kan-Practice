@@ -178,10 +178,10 @@ class GrammarGrid extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .bodySmall
-                    ?.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                    ?.copyWith(color: Theme.of(context).colorScheme.onTertiary),
               ),
               side: BorderSide.none,
-              backgroundColor: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.tertiary,
               labelPadding: EdgeInsets.zero,
             ),
           ),

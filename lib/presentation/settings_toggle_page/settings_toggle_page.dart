@@ -18,6 +18,7 @@ class _SettingsTogglePageState extends State<SettingsTogglePage> {
   bool _toggleAffect = false;
   bool _enableRep = false;
   bool _speakingWithSTT = false;
+  bool _showTimer = false;
 
   @override
   void initState() {
@@ -26,6 +27,7 @@ class _SettingsTogglePageState extends State<SettingsTogglePage> {
     _aggStats = service.readData(SharedKeys.kanListListVisualization);
     _enableRep = service.readData(SharedKeys.enableRepetitionOnTests);
     _speakingWithSTT = service.readData(SharedKeys.speakingWithSTT);
+    _showTimer = service.readData(SharedKeys.showTimer);
     super.initState();
   }
 
@@ -110,6 +112,34 @@ class _SettingsTogglePageState extends State<SettingsTogglePage> {
               getIt<PreferencesService>()
                   .saveData(SharedKeys.kanListListVisualization, !_aggStats);
               setState(() => _aggStats = !_aggStats);
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: Icon(
+              Icons.timer,
+              color: Theme.of(context).colorScheme.tertiaryFixed,
+            ),
+            title: Text("settings_general_timer".tr()),
+            subtitle: Padding(
+                padding: const EdgeInsets.only(top: KPMargins.margin8),
+                child: Text("settings_general_timer_description".tr(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: KPColors.midGrey))),
+            trailing: KPSwitch(
+              onChanged: (bool value) {
+                getIt<PreferencesService>()
+                    .saveData(SharedKeys.showTimer, value);
+                setState(() => _showTimer = value);
+              },
+              value: _showTimer,
+            ),
+            onTap: () async {
+              getIt<PreferencesService>()
+                  .saveData(SharedKeys.showTimer, !_showTimer);
+              setState(() => _showTimer = !_showTimer);
             },
           ),
           const Divider(),

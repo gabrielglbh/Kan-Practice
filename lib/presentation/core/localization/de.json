@@ -457,5 +457,7 @@
   "google_signin": "Mit Google anmelden",
   "test_time_spent": "Zeit: ",
   "test_time_per_card_word": " Sekunden pro Wort",
-  "test_time_per_card_grammar": " Sekunden pro Punkt"
+  "test_time_per_card_grammar": " Sekunden pro Punkt",
+  "settings_general_timer": "Timer in Tests anzeigen",
+  "settings_general_timer_description": "Wenn aktiviert, wird ein Timer angezeigt, um Ihnen mitzuteilen, wie lange Sie für die Tests brauchen."
 }

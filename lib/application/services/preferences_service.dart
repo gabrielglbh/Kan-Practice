@@ -63,4 +63,6 @@ class SharedKeys {
   static const String maxGrammarOnDaily = "maxGrammarOnDaily";
 
   static const String speakingWithSTT = "speakingWithSTT";
+
+  static const String showTimer = "showTimer";
 }

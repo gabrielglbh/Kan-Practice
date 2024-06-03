@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kanpractice/application/services/preferences_service.dart';
+import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/util/timer.dart';
 
 class StudyModeAppBar extends StatelessWidget {
@@ -19,11 +21,15 @@ class StudyModeAppBar extends StatelessWidget {
         child: Column(
           children: [
             Text(title, style: Theme.of(context).textTheme.headlineSmall),
-            Text(
-                elapsedTime != -1
-                    ? "$studyMode • ${elapsedTime.format()}"
-                    : studyMode,
-                style: Theme.of(context).textTheme.bodyMedium)
+            if (getIt<PreferencesService>().readData(SharedKeys.showTimer) ==
+                true)
+              Text(
+                  elapsedTime != -1
+                      ? "$studyMode • ${elapsedTime.format()}"
+                      : studyMode,
+                  style: Theme.of(context).textTheme.bodyMedium)
+            else
+              Text(studyMode, style: Theme.of(context).textTheme.bodyMedium)
           ],
         ));
   }

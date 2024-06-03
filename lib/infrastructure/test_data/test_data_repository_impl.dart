@@ -21,84 +21,131 @@ class TestDataRepositoryImpl implements ITestDataRepository {
   TestDataRepositoryImpl(this._database, this._specificDataRepository,
       this._alterSpecificDataRepository);
 
+  double _calculateOveralls(
+    int previousTotalCount,
+    int actualTotalCount,
+    double totalWinRate,
+    double actualScore,
+  ) =>
+      ((previousTotalCount * totalWinRate) + actualScore) / actualTotalCount;
+
   @override
-  Map<String, num> getAdditionalParams(TestData curr, Test test) {
+  Map<String, num> getAdditionalParams(
+    TestData curr,
+    Test test,
+    double elapsedTimeSecondsPerCard,
+  ) {
     final score = test.testScore;
 
     if (test.grammarMode != null) {
       switch (GrammarModes.values[test.grammarMode!]) {
         case GrammarModes.definition:
           final totalTests = curr.testTotalCountDefinition + 1;
-          final newAcc = ((curr.testTotalCountDefinition *
-                      curr.testTotalWinRateDefinition) +
-                  score) /
-              totalTests;
+          final newAcc = _calculateOveralls(curr.testTotalCountDefinition,
+              totalTests, curr.testTotalWinRateDefinition, score);
+          final newElapsedTimePerCard = _calculateOveralls(
+              curr.testTotalCountDefinition,
+              totalTests,
+              curr.testTotalSecondsPerPointDefinition,
+              elapsedTimeSecondsPerCard);
           return {
             TestDataTableFields.testTotalCountDefinitionField: totalTests,
             TestDataTableFields.testTotalWinRateDefinitionField: newAcc,
+            TestDataTableFields.testTotalSecondsPerPointDefinitionField:
+                newElapsedTimePerCard,
           };
         case GrammarModes.grammarPoints:
-          final totalTests = curr.testTotalCountGrammarPoint + 1;
-          final newAcc = ((curr.testTotalCountGrammarPoint *
-                      curr.testTotalWinRateGrammarPoint) +
-                  score) /
-              totalTests;
+          final totalTests = curr.testTotalCountWriting + 1;
+          final newAcc = _calculateOveralls(curr.testTotalCountGrammarPoint,
+              totalTests, curr.testTotalWinRateGrammarPoint, score);
+          final newElapsedTimePerCard = _calculateOveralls(
+              curr.testTotalCountGrammarPoint,
+              totalTests,
+              curr.testTotalSecondsPerPointGrammarPoint,
+              elapsedTimeSecondsPerCard);
           return {
             TestDataTableFields.testTotalCountGrammarPointField: totalTests,
             TestDataTableFields.testTotalWinRateGrammarPointField: newAcc,
+            TestDataTableFields.testTotalSecondsPerPointGrammarPointField:
+                newElapsedTimePerCard,
           };
       }
     } else {
       switch (StudyModes.values[test.studyMode!]) {
         case StudyModes.writing:
           final totalTests = curr.testTotalCountWriting + 1;
-          final newAcc =
-              ((curr.testTotalCountWriting * curr.testTotalWinRateWriting) +
-                      score) /
-                  totalTests;
+          final newAcc = _calculateOveralls(curr.testTotalCountWriting,
+              totalTests, curr.testTotalWinRateWriting, score);
+          final newElapsedTimePerCard = _calculateOveralls(
+              curr.testTotalCountWriting,
+              totalTests,
+              curr.testTotalSecondsPerWordWriting,
+              elapsedTimeSecondsPerCard);
           return {
             TestDataTableFields.testTotalCountWritingField: totalTests,
             TestDataTableFields.testTotalWinRateWritingField: newAcc,
+            TestDataTableFields.testTotalSecondsPerWordWritingField:
+                newElapsedTimePerCard,
           };
         case StudyModes.reading:
           final totalTests = curr.testTotalCountReading + 1;
-          final newAcc =
-              ((curr.testTotalCountReading * curr.testTotalWinRateReading) +
-                      score) /
-                  totalTests;
+          final newAcc = _calculateOveralls(curr.testTotalCountReading,
+              totalTests, curr.testTotalWinRateReading, score);
+          final newElapsedTimePerCard = _calculateOveralls(
+              curr.testTotalCountReading,
+              totalTests,
+              curr.testTotalSecondsPerWordReading,
+              elapsedTimeSecondsPerCard);
           return {
             TestDataTableFields.testTotalCountReadingField: totalTests,
             TestDataTableFields.testTotalWinRateReadingField: newAcc,
+            TestDataTableFields.testTotalSecondsPerWordReadingField:
+                newElapsedTimePerCard,
           };
         case StudyModes.recognition:
           final totalTests = curr.testTotalCountRecognition + 1;
-          final newAcc = ((curr.testTotalCountRecognition *
-                      curr.testTotalWinRateRecognition) +
-                  score) /
-              totalTests;
+          final newAcc = _calculateOveralls(curr.testTotalCountRecognition,
+              totalTests, curr.testTotalWinRateRecognition, score);
+          final newElapsedTimePerCard = _calculateOveralls(
+              curr.testTotalCountRecognition,
+              totalTests,
+              curr.testTotalSecondsPerWordRecognition,
+              elapsedTimeSecondsPerCard);
           return {
             TestDataTableFields.testTotalCountRecognitionField: totalTests,
             TestDataTableFields.testTotalWinRateRecognitionField: newAcc,
+            TestDataTableFields.testTotalSecondsPerWordRecognitionField:
+                newElapsedTimePerCard,
           };
         case StudyModes.listening:
           final totalTests = curr.testTotalCountListening + 1;
-          final newAcc =
-              ((curr.testTotalCountListening * curr.testTotalWinRateListening) +
-                      score) /
-                  totalTests;
+          final newAcc = _calculateOveralls(curr.testTotalCountListening,
+              totalTests, curr.testTotalWinRateListening, score);
+          final newElapsedTimePerCard = _calculateOveralls(
+              curr.testTotalCountListening,
+              totalTests,
+              curr.testTotalSecondsPerWordListening,
+              elapsedTimeSecondsPerCard);
           return {
             TestDataTableFields.testTotalCountListeningField: totalTests,
             TestDataTableFields.testTotalWinRateListeningField: newAcc,
+            TestDataTableFields.testTotalSecondsPerWordListeningField:
+                newElapsedTimePerCard,
           };
         case StudyModes.speaking:
           final totalTests = curr.testTotalCountSpeaking + 1;
-          final newAcc =
-              ((curr.testTotalCountSpeaking * curr.testTotalWinRateSpeaking) +
-                      score) /
-                  totalTests;
+          final newAcc = _calculateOveralls(curr.testTotalCountSpeaking,
+              totalTests, curr.testTotalWinRateSpeaking, score);
+          final newElapsedTimePerCard = _calculateOveralls(
+              curr.testTotalCountSpeaking,
+              totalTests,
+              curr.testTotalSecondsPerWordSpeaking,
+              elapsedTimeSecondsPerCard);
           return {
             TestDataTableFields.testTotalCountSpeakingField: totalTests,
             TestDataTableFields.testTotalWinRateSpeakingField: newAcc,
+            TestDataTableFields.testTotalSecondsPerWordSpeakingField:
+                newElapsedTimePerCard,
           };
       }
     }
@@ -192,7 +239,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
   }
 
   @override
-  Future<void> updateStats(Test test) async {
+  Future<void> updateStats(Test test, double elapsedTimeSecondsPerCard) async {
     try {
       final curr = await getTestDataFromDb();
       final totalTests = curr.totalTests + 1;
@@ -207,7 +254,11 @@ class TestDataRepositoryImpl implements ITestDataRepository {
       if (test.testMode == Tests.numbers.index) {
         await _alterSpecificDataRepository.updateAlterSpecificTestStats(test);
       } else {
-        map.addEntries(getAdditionalParams(curr, test).entries);
+        map.addEntries(getAdditionalParams(
+          curr,
+          test,
+          elapsedTimeSecondsPerCard,
+        ).entries);
         await _specificDataRepository.updateSpecificTestStats(test);
       }
       await _database.update(

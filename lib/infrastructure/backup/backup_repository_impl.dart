@@ -557,6 +557,56 @@ class BackupRepositoryImpl implements IBackupRepository {
                 TestDataTableFields.testTotalWinRateGrammarPointField, 0)
           ]);
         }
+        if (!json.containsKey(
+            TestDataTableFields.testTotalSecondsPerWordWritingField)) {
+          json.addEntries([
+            const MapEntry(
+                TestDataTableFields.testTotalSecondsPerWordWritingField, 0)
+          ]);
+        }
+        if (!json.containsKey(
+            TestDataTableFields.testTotalSecondsPerWordReadingField)) {
+          json.addEntries([
+            const MapEntry(
+                TestDataTableFields.testTotalSecondsPerWordReadingField, 0)
+          ]);
+        }
+        if (!json.containsKey(
+            TestDataTableFields.testTotalSecondsPerWordRecognitionField)) {
+          json.addEntries([
+            const MapEntry(
+                TestDataTableFields.testTotalSecondsPerWordRecognitionField, 0)
+          ]);
+        }
+        if (!json.containsKey(
+            TestDataTableFields.testTotalSecondsPerWordListeningField)) {
+          json.addEntries([
+            const MapEntry(
+                TestDataTableFields.testTotalSecondsPerWordListeningField, 0)
+          ]);
+        }
+        if (!json.containsKey(
+            TestDataTableFields.testTotalSecondsPerWordSpeakingField)) {
+          json.addEntries([
+            const MapEntry(
+                TestDataTableFields.testTotalSecondsPerWordSpeakingField, 0)
+          ]);
+        }
+        if (!json.containsKey(
+            TestDataTableFields.testTotalSecondsPerPointGrammarPointField)) {
+          json.addEntries([
+            const MapEntry(
+                TestDataTableFields.testTotalSecondsPerPointGrammarPointField,
+                0)
+          ]);
+        }
+        if (!json.containsKey(
+            TestDataTableFields.testTotalSecondsPerPointDefinitionField)) {
+          json.addEntries([
+            const MapEntry(
+                TestDataTableFields.testTotalSecondsPerPointDefinitionField, 0)
+          ]);
+        }
         backUpTestData = TestData.fromJson(json);
       }
 

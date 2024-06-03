@@ -456,6 +456,7 @@
   "speaking_normal_change": "Use normal validation",
   "google_signin": "Sign in with Google",
   "test_time_spent": "Time: ",
+  "test_time_per_card_card": " seconds per card overall",
   "test_time_per_card_word": " seconds per word",
   "test_time_per_card_grammar": " seconds per point",
   "settings_general_timer": "Show timer in tests",

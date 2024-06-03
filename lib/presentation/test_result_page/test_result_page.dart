@@ -31,6 +31,7 @@ class _TestResultPageState extends State<TestResultPage> {
   bool _performAnotherTest = true;
   late Test test;
   late int numberOfApperances;
+  late double elapsedTimeSecondsPerCard;
 
   @override
   void initState() {
@@ -43,14 +44,18 @@ class _TestResultPageState extends State<TestResultPage> {
       lists: widget.args.listsName,
       takenDate: Utils.getCurrentMilliseconds(),
     );
+    elapsedTimeSecondsPerCard = widget.args.timeObtained / test.wordsInTest;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          getIt<TestResultBloc>()..add(TestResultEventSaveTest(test: test)),
+      create: (context) => getIt<TestResultBloc>()
+        ..add(TestResultEventSaveTest(
+          test: test,
+          elapsedTimeSecondsPerCard: elapsedTimeSecondsPerCard,
+        )),
       child: KPScaffold(
         onWillPop: () async => false,
         automaticallyImplyLeading: false,
@@ -97,8 +102,7 @@ class _TestResultPageState extends State<TestResultPage> {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: (widget.args.timeObtained / test.wordsInTest)
-                                .getFixedDouble(),
+                            text: elapsedTimeSecondsPerCard.getFixedDouble(),
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge

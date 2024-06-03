@@ -26,8 +26,8 @@ class _StatisticsPageState extends State<StatisticsPage>
   int _selectedTab = 0;
   bool _showGrammarGraphs = false;
   final _tabs = const [
-    Tab(icon: Icon(Icons.table_rows_rounded)),
     Tab(icon: Icon(Icons.track_changes_rounded)),
+    Tab(icon: Icon(Icons.table_rows_rounded)),
     Tab(icon: Icon(Icons.history_rounded)),
   ];
 
@@ -94,20 +94,21 @@ class _StatisticsPageState extends State<StatisticsPage>
                 children: [
                   TabBar(controller: _controller, tabs: _tabs),
                   const SizedBox(height: KPMargins.margin8),
-                  KPGrammarSwitch(
-                    usesService: false,
-                    onChanged: (value) {
-                      setState(() => _showGrammarGraphs = value);
-                    },
-                  ),
+                  if (_selectedTab != _tabs.length - 1)
+                    KPGrammarSwitch(
+                      usesService: false,
+                      onChanged: (value) {
+                        setState(() => _showGrammarGraphs = value);
+                      },
+                    ),
                   const Divider(height: 8),
                   Expanded(
                     child: TabBarView(
                       controller: _controller,
                       children: [
-                        ListStats(
-                            stats: stats, showGrammar: _showGrammarGraphs),
                         TestStats(
+                            stats: stats, showGrammar: _showGrammarGraphs),
+                        ListStats(
                             stats: stats, showGrammar: _showGrammarGraphs),
                         TestHistory(
                             stats: stats, showGrammar: _showGrammarGraphs),

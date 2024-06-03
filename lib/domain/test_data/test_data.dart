@@ -24,6 +24,13 @@ class TestData {
   final double testTotalWinRateSpeaking;
   final double testTotalWinRateDefinition;
   final double testTotalWinRateGrammarPoint;
+  final double testTotalSecondsPerWordWriting;
+  final double testTotalSecondsPerWordReading;
+  final double testTotalSecondsPerWordRecognition;
+  final double testTotalSecondsPerWordListening;
+  final double testTotalSecondsPerWordSpeaking;
+  final double testTotalSecondsPerPointDefinition;
+  final double testTotalSecondsPerPointGrammarPoint;
   final int selectionTests;
   @JsonKey(includeFromJson: false, includeToJson: false)
   final SpecificData selectionTestData;
@@ -66,6 +73,13 @@ class TestData {
     required this.testTotalWinRateSpeaking,
     required this.testTotalWinRateDefinition,
     required this.testTotalWinRateGrammarPoint,
+    required this.testTotalSecondsPerWordWriting,
+    required this.testTotalSecondsPerWordReading,
+    required this.testTotalSecondsPerWordRecognition,
+    required this.testTotalSecondsPerWordListening,
+    required this.testTotalSecondsPerWordSpeaking,
+    required this.testTotalSecondsPerPointDefinition,
+    required this.testTotalSecondsPerPointGrammarPoint,
     required this.selectionTests,
     required this.blitzTests,
     required this.remembranceTests,
@@ -106,6 +120,14 @@ class TestData {
         testTotalWinRateSpeaking: testTotalWinRateSpeaking,
         testTotalWinRateDefinition: testTotalWinRateDefinition,
         testTotalWinRateGrammarPoint: testTotalWinRateGrammarPoint,
+        testTotalSecondsPerWordWriting: testTotalSecondsPerWordWriting,
+        testTotalSecondsPerWordReading: testTotalSecondsPerWordReading,
+        testTotalSecondsPerWordRecognition: testTotalSecondsPerWordRecognition,
+        testTotalSecondsPerWordListening: testTotalSecondsPerWordListening,
+        testTotalSecondsPerWordSpeaking: testTotalSecondsPerWordSpeaking,
+        testTotalSecondsPerPointDefinition: testTotalSecondsPerPointDefinition,
+        testTotalSecondsPerPointGrammarPoint:
+            testTotalSecondsPerPointGrammarPoint,
         selectionTests: selectionTests,
         selectionTestData: test == Tests.lists ? testSpecs : selectionTestData,
         blitzTests: blitzTests,
@@ -143,6 +165,14 @@ class TestData {
       testTotalWinRateSpeaking: testTotalWinRateSpeaking,
       testTotalWinRateDefinition: testTotalWinRateDefinition,
       testTotalWinRateGrammarPoint: testTotalWinRateGrammarPoint,
+      testTotalSecondsPerWordWriting: testTotalSecondsPerWordWriting,
+      testTotalSecondsPerWordReading: testTotalSecondsPerWordReading,
+      testTotalSecondsPerWordRecognition: testTotalSecondsPerWordRecognition,
+      testTotalSecondsPerWordListening: testTotalSecondsPerWordListening,
+      testTotalSecondsPerWordSpeaking: testTotalSecondsPerWordSpeaking,
+      testTotalSecondsPerPointDefinition: testTotalSecondsPerPointDefinition,
+      testTotalSecondsPerPointGrammarPoint:
+          testTotalSecondsPerPointGrammarPoint,
       selectionTests: selectionTests,
       selectionTestData: selectionTestData,
       blitzTests: blitzTests,
@@ -180,6 +210,13 @@ class TestData {
     testTotalWinRateSpeaking: 0,
     testTotalWinRateDefinition: 0,
     testTotalWinRateGrammarPoint: 0,
+    testTotalSecondsPerWordWriting: 0,
+    testTotalSecondsPerWordReading: 0,
+    testTotalSecondsPerWordRecognition: 0,
+    testTotalSecondsPerWordListening: 0,
+    testTotalSecondsPerWordSpeaking: 0,
+    testTotalSecondsPerPointDefinition: 0,
+    testTotalSecondsPerPointGrammarPoint: 0,
     selectionTests: 0,
     blitzTests: 0,
     remembranceTests: 0,

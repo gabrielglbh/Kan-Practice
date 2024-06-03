@@ -118,7 +118,7 @@ class _SettingsTogglePageState extends State<SettingsTogglePage> {
           ListTile(
             leading: Icon(
               Icons.timer,
-              color: Theme.of(context).colorScheme.tertiaryFixed,
+              color: Colors.green.shade700,
             ),
             title: Text("settings_general_timer".tr()),
             subtitle: Padding(

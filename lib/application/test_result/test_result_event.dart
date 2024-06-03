@@ -9,6 +9,8 @@ abstract class TestResultEvent extends Equatable {
 
 class TestResultEventSaveTest extends TestResultEvent {
   final Test test;
+  final double elapsedTimeSecondsPerCard;
 
-  const TestResultEventSaveTest({required this.test});
+  const TestResultEventSaveTest(
+      {required this.test, required this.elapsedTimeSecondsPerCard});
 }

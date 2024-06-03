@@ -33,6 +33,20 @@ TestData _$TestDataFromJson(Map<String, dynamic> json) => TestData(
           (json['testTotalWinRateDefinition'] as num).toDouble(),
       testTotalWinRateGrammarPoint:
           (json['testTotalWinRateGrammarPoint'] as num).toDouble(),
+      testTotalSecondsPerWordWriting:
+          (json['testTotalSecondsPerWordWriting'] as num).toDouble(),
+      testTotalSecondsPerWordReading:
+          (json['testTotalSecondsPerWordReading'] as num).toDouble(),
+      testTotalSecondsPerWordRecognition:
+          (json['testTotalSecondsPerWordRecognition'] as num).toDouble(),
+      testTotalSecondsPerWordListening:
+          (json['testTotalSecondsPerWordListening'] as num).toDouble(),
+      testTotalSecondsPerWordSpeaking:
+          (json['testTotalSecondsPerWordSpeaking'] as num).toDouble(),
+      testTotalSecondsPerPointDefinition:
+          (json['testTotalSecondsPerPointDefinition'] as num).toDouble(),
+      testTotalSecondsPerPointGrammarPoint:
+          (json['testTotalSecondsPerPointGrammarPoint'] as num).toDouble(),
       selectionTests: (json['selectionTests'] as num).toInt(),
       blitzTests: (json['blitzTests'] as num).toInt(),
       remembranceTests: (json['remembranceTests'] as num).toInt(),
@@ -60,6 +74,18 @@ Map<String, dynamic> _$TestDataToJson(TestData instance) => <String, dynamic>{
       'testTotalWinRateSpeaking': instance.testTotalWinRateSpeaking,
       'testTotalWinRateDefinition': instance.testTotalWinRateDefinition,
       'testTotalWinRateGrammarPoint': instance.testTotalWinRateGrammarPoint,
+      'testTotalSecondsPerWordWriting': instance.testTotalSecondsPerWordWriting,
+      'testTotalSecondsPerWordReading': instance.testTotalSecondsPerWordReading,
+      'testTotalSecondsPerWordRecognition':
+          instance.testTotalSecondsPerWordRecognition,
+      'testTotalSecondsPerWordListening':
+          instance.testTotalSecondsPerWordListening,
+      'testTotalSecondsPerWordSpeaking':
+          instance.testTotalSecondsPerWordSpeaking,
+      'testTotalSecondsPerPointDefinition':
+          instance.testTotalSecondsPerPointDefinition,
+      'testTotalSecondsPerPointGrammarPoint':
+          instance.testTotalSecondsPerPointGrammarPoint,
       'selectionTests': instance.selectionTests,
       'blitzTests': instance.blitzTests,
       'remembranceTests': instance.remembranceTests,

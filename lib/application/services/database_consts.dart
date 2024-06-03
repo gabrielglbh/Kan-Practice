@@ -124,19 +124,19 @@ class TestDataTableFields {
   static const String testTotalWinRateGrammarPointField =
       "testTotalWinRateGrammarPoint";
   static const String testTotalSecondsPerWordWritingField =
-      "totalSecondsPerWordWriting";
+      "testTotalSecondsPerWordWriting";
   static const String testTotalSecondsPerWordReadingField =
-      "totalSecondsPerWordReading";
+      "testTotalSecondsPerWordReading";
   static const String testTotalSecondsPerWordRecognitionField =
-      "totalSecondsPerWordRecognition";
+      "testTotalSecondsPerWordRecognition";
   static const String testTotalSecondsPerWordListeningField =
-      "totalSecondsPerWordListening";
+      "testTotalSecondsPerWordListening";
   static const String testTotalSecondsPerWordSpeakingField =
-      "totalSecondsPerWordSpeaking";
+      "testTotalSecondsPerWordSpeaking";
   static const String testTotalSecondsPerPointGrammarPointField =
-      "totalSecondsPerPointGrammarPoint";
+      "testTotalSecondsPerPointGrammarPoint";
   static const String testTotalSecondsPerPointDefinitionField =
-      "totalSecondsPerPointDefinition";
+      "testTotalSecondsPerPointDefinition";
   static const String selectionTestsField = "selectionTests";
   static const String blitzTestsField = "blitzTests";
   static const String remembranceTestsField = "remembranceTests";

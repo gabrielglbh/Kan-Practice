@@ -456,9 +456,12 @@
   "speaking_normal_change": "Use normal validation",
   "google_signin": "Sign in with Google",
   "test_time_spent": "Time: ",
+  "test_time_per_card_stat": "Seconds per Card Overall",
   "test_time_per_card_card": " seconds per card overall",
   "test_time_per_card_word": " seconds per word",
+  "test_time_per_card_word_simpl": "sec/word",
   "test_time_per_card_grammar": " seconds per point",
+  "test_time_per_card_grammar_simpl": "sec/point",
   "settings_general_timer": "Show timer in tests",
   "settings_general_timer_description": "When active, a timer will be shown in the tests for you to know how much it takes to make one."
 }

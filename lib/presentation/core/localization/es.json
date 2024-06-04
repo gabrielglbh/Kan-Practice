@@ -456,9 +456,12 @@
   "speaking_normal_change": "Utilizar validación normal",
   "google_signin": "Iniciar sesión con Google",
   "test_time_spent": "Tiempo: ",
+  "test_time_per_card_stat": "Segundos por Tarjeta de Media",
   "test_time_per_card_card": " segundos por tarjeta de media",
   "test_time_per_card_word": " segundos por palabra",
+  "test_time_per_card_word_simpl": "seg/palabra",
   "test_time_per_card_grammar": " segundos por punto",
+  "test_time_per_card_grammar_simpl": "seg/punto",
   "settings_general_timer": "Mostrar temporizador en tests",
   "settings_general_timer_description": "Cuando se activa, se mostrará un temporizador para que sepas cuánto tiempo te lleva hacer los tests."
 }

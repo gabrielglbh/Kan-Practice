@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/alter_specific_data/alter_specific_data_bloc.dart';
 import 'package:kanpractice/application/specific_data/specific_data_bloc.dart';
-import 'package:kanpractice/domain/test_data/test_data.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
@@ -14,8 +13,8 @@ import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/domain/stats/stats.dart';
 import 'package:kanpractice/presentation/core/widgets/graphs/kp_grammar_mode_radial_graph.dart';
 import 'package:kanpractice/presentation/core/widgets/graphs/kp_study_mode_radial_graph.dart';
+import 'package:kanpractice/presentation/core/widgets/graphs/kp_radial_graph_legend.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/count_label.dart';
-import 'package:kanpractice/presentation/statistics_page/widgets/expanded_elapsed_time_tile.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/spec_bottom_sheet.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/stats_header.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_tappable_info.dart';
@@ -31,40 +30,27 @@ class TestStats extends StatefulWidget {
 
 class _TestStatsState extends State<TestStats>
     with AutomaticKeepAliveClientMixin {
-  late double totalSecondsPerCardMean, totalWinRateMean;
-
-  @override
-  void initState() {
-    // TODO: Update when adding mode
-    totalSecondsPerCardMean =
-        (widget.stats.test.testTotalSecondsPerWordWriting +
-                widget.stats.test.testTotalSecondsPerWordReading +
-                widget.stats.test.testTotalSecondsPerWordRecognition +
-                widget.stats.test.testTotalSecondsPerWordListening +
-                widget.stats.test.testTotalSecondsPerWordSpeaking +
-                widget.stats.test.testTotalSecondsPerPointDefinition +
-                widget.stats.test.testTotalSecondsPerPointGrammarPoint) /
-            (StudyModes.values.length + GrammarModes.values.length);
-    // TODO: Update when adding mode
-    totalWinRateMean = (widget.stats.test.testTotalWinRateWriting +
-            widget.stats.test.testTotalWinRateReading +
-            widget.stats.test.testTotalWinRateRecognition +
-            widget.stats.test.testTotalWinRateListening +
-            widget.stats.test.testTotalWinRateSpeaking +
-            widget.stats.test.testTotalWinRateDefinition +
-            widget.stats.test.testTotalWinRateGrammarPoint) /
-        (StudyModes.values.length + GrammarModes.values.length);
-    super.initState();
-  }
+  late double totalWinRateMean;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    // TODO: Update when adding mode
+    totalWinRateMean = widget.showGrammar
+        ? (widget.stats.test.testTotalWinRateDefinition +
+                widget.stats.test.testTotalWinRateGrammarPoint) /
+            GrammarModes.values.length
+        : (widget.stats.test.testTotalWinRateWriting +
+                widget.stats.test.testTotalWinRateReading +
+                widget.stats.test.testTotalWinRateRecognition +
+                widget.stats.test.testTotalWinRateListening +
+                widget.stats.test.testTotalWinRateSpeaking) /
+            (StudyModes.values.length);
     return ListView(
       children: [
         StatsHeader(title: "stats_tests_total_acc".tr()),
         CountLabel(
-          count: "${totalWinRateMean.getFixedDouble()}%",
+          count: "${totalWinRateMean.getFixedPercentage()}%",
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: KPMargins.margin8),
@@ -82,41 +68,6 @@ class _TestStatsState extends State<TestStats>
                   definition: widget.stats.test.testTotalWinRateDefinition,
                   grammarPoints: widget.stats.test.testTotalWinRateGrammarPoint,
                 ),
-        ),
-        const Divider(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin12),
-          child: ListTileTheme(
-            dense: true,
-            child: Theme(
-              data:
-                  Theme.of(context).copyWith(dividerColor: Colors.transparent),
-              child: ExpansionTile(
-                  iconColor: Theme.of(context).colorScheme.primary,
-                  textColor: Theme.of(context).colorScheme.primary,
-                  tilePadding: const EdgeInsets.all(2),
-                  title: Text(
-                      "${totalSecondsPerCardMean.getFixedDouble()}${"test_time_per_card_card".tr()}",
-                      style: Theme.of(context).textTheme.titleLarge),
-                  children: [
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: widget.showGrammar
-                          ? GrammarModes.values.length
-                          : StudyModes.values.length,
-                      itemBuilder: (context, index) {
-                        if (widget.showGrammar) {
-                          return _elapsedTimeForGrammarModeExpandedTile(
-                              widget.stats.test, GrammarModes.values[index]);
-                        }
-                        return _elapsedTimeForStudyModeExpandedTile(
-                            widget.stats.test, StudyModes.values[index]);
-                      },
-                    )
-                  ]),
-            ),
-          ),
         ),
         const Divider(),
         StatsHeader(
@@ -180,6 +131,12 @@ class _TestStatsState extends State<TestStats>
               );
             }
           }),
+        ),
+        const Divider(),
+        StatsHeader(title: "test_time_per_card_stat".tr()),
+        Padding(
+          padding: const EdgeInsets.all(KPMargins.margin8),
+          child: _secondsPerCardList(),
         ),
         const Divider(),
         StatsHeader(title: "stats_tests_by_type".tr()),
@@ -283,34 +240,65 @@ class _TestStatsState extends State<TestStats>
     );
   }
 
-  Widget _elapsedTimeForStudyModeExpandedTile(TestData data, StudyModes mode) {
-    final elapsedTime = (switch (mode) {
-      StudyModes.writing => data.testTotalSecondsPerWordWriting,
-      StudyModes.reading => data.testTotalSecondsPerWordReading,
-      StudyModes.recognition => data.testTotalSecondsPerWordRecognition,
-      StudyModes.listening => data.testTotalSecondsPerWordListening,
-      StudyModes.speaking => data.testTotalSecondsPerWordSpeaking,
-    })
-        .getFixedDouble();
+  ListView _secondsPerCardList() {
+    return widget.showGrammar
+        ? ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: GrammarModes.values.length,
+            shrinkWrap: true,
+            padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin12),
+            itemBuilder: (context, index) {
+              double rate = 0;
+              switch (GrammarModes.values[index]) {
+                case GrammarModes.definition:
+                  rate = widget.stats.test.testTotalSecondsPerPointDefinition;
+                  break;
+                case GrammarModes.grammarPoints:
+                  rate = widget.stats.test.testTotalSecondsPerPointGrammarPoint;
+                  break;
+              }
 
-    return ExpandedElapsedTimeTile(
-      mode: mode.mode,
-      elapsedTime: "$elapsedTime${"test_time_per_card_word".tr()}",
-    );
-  }
+              return KPRadialGraphLegend(
+                rate: rate,
+                color: GrammarModes.values[index].color,
+                text: GrammarModes.values[index].mode,
+                unit: "test_time_per_card_grammar_simpl".tr(),
+              );
+            },
+          )
+        : ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: StudyModes.values.length,
+            shrinkWrap: true,
+            padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin12),
+            itemBuilder: (context, index) {
+              double rate = 0;
+              switch (StudyModes.values[index]) {
+                case StudyModes.writing:
+                  rate = widget.stats.test.testTotalSecondsPerWordWriting;
+                  break;
+                case StudyModes.reading:
+                  rate = widget.stats.test.testTotalSecondsPerWordReading;
+                  break;
+                case StudyModes.recognition:
+                  rate = widget.stats.test.testTotalSecondsPerWordRecognition;
+                  break;
+                case StudyModes.listening:
+                  rate = widget.stats.test.testTotalSecondsPerWordListening;
+                  break;
+                case StudyModes.speaking:
+                  rate = widget.stats.test.testTotalSecondsPerWordSpeaking;
+                  break;
+              }
 
-  Widget _elapsedTimeForGrammarModeExpandedTile(
-      TestData data, GrammarModes mode) {
-    final elapsedTime = (switch (mode) {
-      GrammarModes.definition => data.testTotalSecondsPerPointDefinition,
-      GrammarModes.grammarPoints => data.testTotalSecondsPerPointGrammarPoint,
-    })
-        .getFixedDouble();
-
-    return ExpandedElapsedTimeTile(
-      mode: mode.mode,
-      elapsedTime: "$elapsedTime${"test_time_per_card_grammar".tr()}",
-    );
+              return KPRadialGraphLegend(
+                rate: rate,
+                color: StudyModes.values[index].color,
+                text: StudyModes.values[index].mode,
+                unit: "test_time_per_card_word_simpl".tr(),
+              );
+            },
+          );
   }
 
   @override

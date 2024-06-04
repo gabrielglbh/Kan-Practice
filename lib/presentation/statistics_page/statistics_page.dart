@@ -31,18 +31,20 @@ class _StatisticsPageState extends State<StatisticsPage>
     Tab(icon: Icon(Icons.history_rounded)),
   ];
 
-  _showRemoveTestsDialog(BuildContext bloc) {
+  _showRemoveTestsDialog(BuildContext thContext, BuildContext sContext) {
     showDialog(
-        context: bloc,
-        builder: (context) => KPDialog(
-              title: Text("test_history_showRemoveTestsDialog_title".tr()),
-              content: Text("test_history_showRemoveTestsDialog_content".tr(),
-                  style: Theme.of(context).textTheme.bodyLarge),
-              positiveButtonText:
-                  "test_history_showRemoveTestsDialog_positive".tr(),
-              onPositive: () =>
-                  bloc.read<TestHistoryBloc>().add(TestHistoryEventRemoving()),
-            ));
+      context: thContext,
+      builder: (context) => KPDialog(
+        title: Text("test_history_showRemoveTestsDialog_title".tr()),
+        content: Text("test_history_showRemoveTestsDialog_content".tr(),
+            style: Theme.of(context).textTheme.bodyLarge),
+        positiveButtonText: "test_history_showRemoveTestsDialog_positive".tr(),
+        onPositive: () {
+          thContext.read<TestHistoryBloc>().add(TestHistoryEventRemoving());
+          sContext.read<StatsBloc>().add(StatsEventRemoveTestData());
+        },
+      ),
+    );
   }
 
   _changedTab() {
@@ -77,12 +79,20 @@ class _StatisticsPageState extends State<StatisticsPage>
       child: KPScaffold(
         appBarTitle: "settings_general_statistics".tr(),
         appBarActions: [
-          if (_controller.index == _tabs.length - 1)
+          if (_controller.index == _tabs.length - 1 || _controller.index == 0)
             BlocBuilder<TestHistoryBloc, TestHistoryState>(
-              builder: (context, state) {
-                return IconButton(
-                  icon: const Icon(Icons.clear_all_rounded),
-                  onPressed: () => _showRemoveTestsDialog(context),
+              builder: (thContext, _) {
+                return BlocBuilder<StatsBloc, StatsState>(
+                  builder: (sContext, _) {
+                    return IconButton(
+                      icon: Icon(
+                        Icons.cleaning_services_rounded,
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                      onPressed: () =>
+                          _showRemoveTestsDialog(thContext, sContext),
+                    );
+                  },
                 );
               },
             ),

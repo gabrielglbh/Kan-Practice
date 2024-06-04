@@ -63,5 +63,29 @@ class StatsBloc extends Bloc<StatsEvent, StatsState> {
         ),
       ));
     });
+
+    on<StatsEventRemoveTestData>((event, emit) async {
+      final code = await _testDataRepository.removeTestData();
+
+      if (code == 0) {
+        final previousStats = (state as StatsLoaded).stats;
+        emit(StatsState.loaded(KanPracticeStats(
+          totalLists: previousStats.totalLists,
+          totalWords: previousStats.totalWords,
+          totalGrammar: previousStats.totalGrammar,
+          totalWinRateWriting: previousStats.totalWinRateWriting,
+          totalWinRateReading: previousStats.totalWinRateReading,
+          totalWinRateRecognition: previousStats.totalWinRateRecognition,
+          totalWinRateListening: previousStats.totalWinRateListening,
+          totalWinRateSpeaking: previousStats.totalWinRateSpeaking,
+          totalWinRateDefinition: previousStats.totalWinRateDefinition,
+          totalWinRateGrammarPoint: previousStats.totalWinRateGrammarPoint,
+          bestList: previousStats.bestList,
+          worstList: previousStats.worstList,
+          test: TestData.empty,
+          totalCategoryCounts: previousStats.totalCategoryCounts,
+        )));
+      }
+    });
   }
 }

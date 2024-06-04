@@ -271,4 +271,16 @@ class TestDataRepositoryImpl implements ITestDataRepository {
       print(err.toString());
     }
   }
+
+  @override
+  Future<int> removeTestData() async {
+    try {
+      await _database.update(
+          TestDataTableFields.testDataTable, TestData.empty.toJson());
+      return 0;
+    } catch (err) {
+      print(err.toString());
+      return -1;
+    }
+  }
 }

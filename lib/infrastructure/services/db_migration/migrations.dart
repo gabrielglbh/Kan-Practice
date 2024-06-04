@@ -7,7 +7,7 @@ class Migrations {
     await db.rawQuery("ALTER TABLE ${TestDataTableFields.testDataTable} "
         "ADD COLUMN ${TestDataTableFields.testTotalSecondsPerWordWritingField} INTEGER NOT NULL DEFAULT 0");
     await db.rawQuery("ALTER TABLE ${TestDataTableFields.testDataTable} "
-        "ADD COLUMN ${TestDataTableFields.testTotalSecondsPerWordReadingField} INTEGER NOT NULL DEFAULT 2.5");
+        "ADD COLUMN ${TestDataTableFields.testTotalSecondsPerWordReadingField} INTEGER NOT NULL DEFAULT 0");
     await db.rawQuery("ALTER TABLE ${TestDataTableFields.testDataTable} "
         "ADD COLUMN ${TestDataTableFields.testTotalSecondsPerWordRecognitionField} INTEGER NOT NULL DEFAULT 0");
     await db.rawQuery("ALTER TABLE ${TestDataTableFields.testDataTable} "

@@ -20,4 +20,14 @@ abstract class ITestDataRepository {
 
   /// Updates the count on test performed
   Map<String, num> getTestParams(TestData curr, Test test);
+
+  /// Removes all test data stats from the db.
+  /// Returns an integer depending on the error given:
+  ///
+  /// 0: All good.
+  ///
+  /// 1: Error during removal.
+  ///
+  /// 2: Database is not created.
+  Future<int> removeTestData();
 }

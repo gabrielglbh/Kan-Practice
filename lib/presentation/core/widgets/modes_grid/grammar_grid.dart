@@ -175,10 +175,9 @@ class GrammarGrid extends StatelessWidget {
             child: Chip(
               label: Text(
                 toReview,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(color: Theme.of(context).colorScheme.onTertiary),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onTertiary),
               ),
               side: BorderSide.none,
               backgroundColor: Theme.of(context).colorScheme.tertiary,

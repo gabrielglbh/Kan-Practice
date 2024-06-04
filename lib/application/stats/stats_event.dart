@@ -8,3 +8,5 @@ abstract class StatsEvent extends Equatable {
 }
 
 class StatsEventLoading extends StatsEvent {}
+
+class StatsEventRemoveTestData extends StatsEvent {}

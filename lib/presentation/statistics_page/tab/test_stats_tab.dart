@@ -259,10 +259,10 @@ class _TestStatsState extends State<TestStats>
               }
 
               return KPRadialGraphLegend(
-                rate: rate,
+                rate:
+                    "${rate.getFixedDouble().roundUpAsString()} ${"test_time_per_card_grammar_simpl".tr()}",
                 color: GrammarModes.values[index].color,
                 text: GrammarModes.values[index].mode,
-                unit: "test_time_per_card_grammar_simpl".tr(),
               );
             },
           )
@@ -292,10 +292,10 @@ class _TestStatsState extends State<TestStats>
               }
 
               return KPRadialGraphLegend(
-                rate: rate,
+                rate:
+                    "${rate.getFixedDouble().roundUpAsString()} ${"test_time_per_card_word_simpl".tr()}",
                 color: StudyModes.values[index].color,
                 text: StudyModes.values[index].mode,
-                unit: "test_time_per_card_word_simpl".tr(),
               );
             },
           );

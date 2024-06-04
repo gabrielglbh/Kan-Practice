@@ -12,15 +12,18 @@ class CustomExpansionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
-      childrenPadding: EdgeInsets.zero,
-      tilePadding: paddingHorizontal,
-      iconColor: Theme.of(context).colorScheme.primary,
-      textColor: Theme.of(context).colorScheme.primary,
-      title: Text(label,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.bold, fontStyle: FontStyle.italic)),
-      children: children,
+    return Theme(
+      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      child: ExpansionTile(
+        childrenPadding: EdgeInsets.zero,
+        tilePadding: paddingHorizontal,
+        iconColor: Theme.of(context).colorScheme.primary,
+        textColor: Theme.of(context).colorScheme.primary,
+        title: Text(label,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.bold, fontStyle: FontStyle.italic)),
+        children: children,
+      ),
     );
   }
 }

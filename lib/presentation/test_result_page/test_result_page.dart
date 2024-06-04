@@ -7,6 +7,7 @@ import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/test_result/test_result.dart';
+import 'package:kanpractice/presentation/core/util/timer.dart';
 import 'package:kanpractice/presentation/core/widgets/graphs/kp_win_rate_chart.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_action_button.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
@@ -29,6 +30,8 @@ class TestResultPage extends StatefulWidget {
 class _TestResultPageState extends State<TestResultPage> {
   bool _performAnotherTest = true;
   late Test test;
+  late int numberOfApperances;
+  late double elapsedTimeSecondsPerCard;
 
   @override
   void initState() {
@@ -41,19 +44,24 @@ class _TestResultPageState extends State<TestResultPage> {
       lists: widget.args.listsName,
       takenDate: Utils.getCurrentMilliseconds(),
     );
+    elapsedTimeSecondsPerCard = widget.args.timeObtained / test.wordsInTest;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          getIt<TestResultBloc>()..add(TestResultEventSaveTest(test: test)),
+      create: (context) => getIt<TestResultBloc>()
+        ..add(TestResultEventSaveTest(
+          test: test,
+          elapsedTimeSecondsPerCard: elapsedTimeSecondsPerCard,
+        )),
       child: KPScaffold(
         onWillPop: () async => false,
         automaticallyImplyLeading: false,
-        toolbarHeight: KPMargins.margin32,
-        appBarTitle: null,
+        toolbarHeight: KPMargins.margin48,
+        appBarTitle: "test_result_title".tr(),
+        centerTitle: true,
         child: BlocBuilder<TestResultBloc, TestResultState>(
           builder: (context, state) {
             return state.maybeWhen(
@@ -61,11 +69,7 @@ class _TestResultPageState extends State<TestResultPage> {
               orElse: () => Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "test_result_title".tr(),
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
+                  const SizedBox(height: KPMargins.margin4),
                   KPWinRateChart(
                     winRate: widget.args.score,
                     backgroundColor: widget.args.grammarList != null
@@ -74,12 +78,46 @@ class _TestResultPageState extends State<TestResultPage> {
                     size: MediaQuery.of(context).size.width / 2.5,
                     rateSize: KPChartSize.large,
                   ),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "test_time_spent".tr(),
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        TextSpan(
+                            text: widget.args.timeObtained.format(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(fontWeight: FontWeight.bold))
+                      ],
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: KPMargins.margin8),
-                    child: Text("test_result_disclaimer".tr(),
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyLarge),
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: elapsedTimeSecondsPerCard.getFixedDouble(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(
+                              text: widget.args.grammarList != null
+                                  ? "test_time_per_card_grammar".tr()
+                                  : "test_time_per_card_word".tr(),
+                              style: Theme.of(context).textTheme.bodyLarge)
+                        ],
+                      ),
+                    ),
                   ),
+                  const Divider(),
                   Visibility(
                     visible: widget.args.studyList != null,
                     child: Expanded(

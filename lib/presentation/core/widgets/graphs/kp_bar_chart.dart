@@ -120,7 +120,7 @@ class KPBarChart extends StatelessWidget {
                     yValueMapper: (DataFrame data, _) => _isWinRateChart
                         ? data.y == DatabaseConstants.emptyWinRate
                             ? 0
-                            : Utils.getFixedPercentage(data.y)
+                            : data.y.getFixedPercentage()
                         : data.y,
                     onPointTap: onBarTapped != null
                         ? (details) {

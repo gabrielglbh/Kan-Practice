@@ -11,11 +11,12 @@ abstract class ITestDataRepository {
   );
   Future<void> insertExampleData();
   Future<TestData> getTestDataFromDb();
-  Future<void> updateStats(Test test);
+  Future<void> updateStats(Test test, double elapsedTimeSecondsPerCard);
 
   /// Updates the initial map with the total writing tests, the total writing
   /// accuracy and the total tests accuracy using N*C + C' / N'
-  Map<String, num> getAdditionalParams(TestData curr, Test test);
+  Map<String, num> getAdditionalParams(
+      TestData curr, Test test, double elapsedTimeSecondsPerCard);
 
   /// Updates the count on test performed
   Map<String, num> getTestParams(TestData curr, Test test);

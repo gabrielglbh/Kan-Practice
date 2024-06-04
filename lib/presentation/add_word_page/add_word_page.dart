@@ -237,10 +237,6 @@ class _AddWordPageState extends State<AddWordPage> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: KPMargins.margin16),
-            child: _categorySelection(),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: KPMargins.margin16),
             child: KPTextForm(
               controller: _meaningController,
               focusNode: _meaningFocus,
@@ -262,6 +258,10 @@ class _AddWordPageState extends State<AddWordPage> {
                 });
               },
             ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: KPMargins.margin16),
+            child: _categorySelection(),
           ),
         ],
       ),

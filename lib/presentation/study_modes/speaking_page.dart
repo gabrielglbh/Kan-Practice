@@ -11,6 +11,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/presentation/core/util/timer.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_learning_header_animation.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_learning_text_box.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_list_percentage_indicator.dart';
@@ -33,7 +34,8 @@ class SpeakingStudy extends StatefulWidget {
   State<SpeakingStudy> createState() => _SpeakingStudyState();
 }
 
-class _SpeakingStudyState extends State<SpeakingStudy> {
+class _SpeakingStudyState extends State<SpeakingStudy>
+    with CustomPeriodicTimer {
   /// Current word index
   int _macro = 0;
 
@@ -72,7 +74,14 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
         .readData(SharedKeys.enableRepetitionOnTests);
     _studyList.addAll(widget.args.studyList);
     context.read<StudyModeBloc>().add(StudyModeEventResetTracking());
+    startTimer();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    stopTimer();
+    super.dispose();
   }
 
   void _init() async {
@@ -166,8 +175,13 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
         testScore += s;
       }
       final score = testScore / _studyList.length;
-      StudyModeUpdateHandler.handle(context, widget.args,
-          testScore: score, testScores: _testScores);
+      StudyModeUpdateHandler.handle(
+        context,
+        widget.args,
+        testScore: score,
+        testScores: _testScores,
+        timeObtained: elapsedTime,
+      );
     } else {
       StudyModeUpdateHandler.handle(context, widget.args);
     }
@@ -227,8 +241,10 @@ class _SpeakingStudyState extends State<SpeakingStudy> {
         );
       },
       appBarTitle: StudyModeAppBar(
-          title: widget.args.studyModeHeaderDisplayName,
-          studyMode: widget.args.mode.mode),
+        title: widget.args.studyModeHeaderDisplayName,
+        studyMode: widget.args.mode.mode,
+        elapsedTime: elapsedTime,
+      ),
       centerTitle: true,
       appBarActions: [
         Visibility(

@@ -9,6 +9,7 @@ import 'package:kanpractice/presentation/core/widgets/graphs/kp_grammar_mode_rad
 import 'package:kanpractice/presentation/core/widgets/graphs/kp_study_mode_radial_graph.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/domain/stats/stats.dart';
+import 'package:kanpractice/presentation/statistics_page/widgets/count_label.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/spec_bottom_sheet.dart';
 import 'package:kanpractice/presentation/statistics_page/widgets/stats_header.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_tappable_info.dart';
@@ -34,9 +35,8 @@ class _ListStatsState extends State<ListStats>
               !widget.showGrammar ? "stats_words".tr() : "stats_grammar".tr(),
           value: "${widget.stats.totalLists} ${"stats_words_lists".tr()}",
         ),
-        _countLabel(
-          context,
-          !widget.showGrammar
+        CountLabel(
+          count: !widget.showGrammar
               ? widget.stats.totalWords.toString()
               : widget.stats.totalGrammar.toString(),
         ),
@@ -93,20 +93,6 @@ class _ListStatsState extends State<ListStats>
         ),
         const SizedBox(height: KPMargins.margin32 + KPMargins.margin8)
       ],
-    );
-  }
-
-  Widget _countLabel(BuildContext context, String count) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin8),
-      alignment: Alignment.center,
-      child: FittedBox(
-        fit: BoxFit.contain,
-        child: Text(
-          count,
-          style: Theme.of(context).textTheme.displayLarge,
-        ),
-      ),
     );
   }
 

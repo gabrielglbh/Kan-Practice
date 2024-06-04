@@ -358,7 +358,7 @@
   "daily_test_cannot_go_back": "Estás haciendo un test diario. Termina el test, ¡tú puedes!",
   "settings_notifications_label": "Activar/Desactivar Notificaciones",
   "stats_tests_by_type": "Número Total de Tests por Tipo",
-  "stats_tests_total_acc": "Acierto de Tests por Modo de Estudio",
+  "stats_tests_total_acc": "Acierto Total de Tests",
   "stats_tests_tap_to_specs": "Toca las barras para conocer más detalles",
   "folder_practice_title": "Practicar con un subconjunto de palabras de las listas de esta carpeta.",
   "disclaimer_spatial_repetition": "La práctica se basa en el aprendizaje por repetición de fallos. Este método se aplica de tal manera que las palabras que falles durante la práctica, volverán a aparecer al terminar todo el repaso (hasta que las aciertes). Esto estimula el aprendizaje y mejora la memorización del vocabulario.",
@@ -454,5 +454,14 @@
   "settings_general_stt_description": "Si está activo, se utilizará el reconocimiento de voz para validar automáticamente las palabras de la práctica o test de Habla. Si no, la validación será manual como en los otros modos.",
   "speaking_stt_change": "Utilizar reconocimiento de voz",
   "speaking_normal_change": "Utilizar validación normal",
-  "google_signin": "Iniciar sesión con Google"
+  "google_signin": "Iniciar sesión con Google",
+  "test_time_spent": "Tiempo: ",
+  "test_time_per_card_stat": "Segundos por Tarjeta de Media",
+  "test_time_per_card_card": " segundos por tarjeta de media",
+  "test_time_per_card_word": " segundos por palabra",
+  "test_time_per_card_word_simpl": "seg/palabra",
+  "test_time_per_card_grammar": " segundos por punto",
+  "test_time_per_card_grammar_simpl": "seg/punto",
+  "settings_general_timer": "Mostrar temporizador en tests",
+  "settings_general_timer_description": "Cuando se activa, se mostrará un temporizador para que sepas cuánto tiempo te lleva hacer los tests."
 }

@@ -358,7 +358,7 @@
   "daily_test_cannot_go_back": "You are performing a daily test. Finish the test, you can do it!",
   "settings_notifications_label": "Enable/Disable Notifications",
   "stats_tests_by_type": "Total Number of Tests by Type",
-  "stats_tests_total_acc": "Total Accuracy of Tests by Study Mode",
+  "stats_tests_total_acc": "Total Accuracy of Tests",
   "stats_tests_tap_to_specs": "Tap on the bars to see more details",
   "folder_practice_title": "Practice with a subset of words of the lists within this folder.",
   "disclaimer_spatial_repetition": "The practice is based on learning by fail repetition. This method is applied in such a way that the words you miss during practice, will reappear at the end of the entire review (until you get them right). This stimulates learning and improves vocabulary memorization.",
@@ -454,5 +454,14 @@
   "settings_general_stt_description": "If active, speech recognition shall be used to automatically validate the words of the Speaking practice or test. If not, the validation will be manual as in the other modes",
   "speaking_stt_change": "Use speech recognition", 
   "speaking_normal_change": "Use normal validation",
-  "google_signin": "Sign in with Google"
+  "google_signin": "Sign in with Google",
+  "test_time_spent": "Time: ",
+  "test_time_per_card_stat": "Seconds per Card Overall",
+  "test_time_per_card_card": " seconds per card overall",
+  "test_time_per_card_word": " seconds per word",
+  "test_time_per_card_word_simpl": "sec/word",
+  "test_time_per_card_grammar": " seconds per point",
+  "test_time_per_card_grammar_simpl": "sec/point",
+  "settings_general_timer": "Show timer in tests",
+  "settings_general_timer_description": "When active, a timer will be shown in the tests for you to know how much it takes to make one."
 }

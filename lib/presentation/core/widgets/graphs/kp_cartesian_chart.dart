@@ -91,7 +91,7 @@ class KPCartesianChart<T> extends StatelessWidget {
             yValueMapper: (TestDataFrame data, _) =>
                 data.y == DatabaseConstants.emptyWinRate
                     ? 0
-                    : Utils.getFixedPercentage(data.y),
+                    : data.y.getFixedPercentage(),
             color: Theme.of(context).colorScheme.primary,
           )
         ],
@@ -111,7 +111,7 @@ class _KPCartesianChartTooltip extends StatelessWidget {
     final format = DateFormat('MMM dd, HH:mm');
     final mode = source.mode.nameAbbr;
     final date = format.format(source.x);
-    final rate = Utils.getFixedPercentageAsString(source.y);
+    final rate = source.y.getFixedPercentageAsString();
     final words = source.wordsOnTest.toString();
     return Container(
       padding: const EdgeInsets.all(KPMargins.margin8),

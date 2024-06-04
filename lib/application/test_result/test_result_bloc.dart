@@ -30,7 +30,8 @@ class TestResultBloc extends Bloc<TestResultEvent, TestResultState> {
     on<TestResultEventSaveTest>((event, emit) async {
       emit(const TestResultState.saving());
       await _testRepository.createTest(event.test);
-      await _testDataRepository.updateStats(event.test);
+      await _testDataRepository.updateStats(
+          event.test, event.elapsedTimeSecondsPerCard);
 
       // TODO: Update timestamps on daily test only if needed on desired study mode
       final controlledPace =

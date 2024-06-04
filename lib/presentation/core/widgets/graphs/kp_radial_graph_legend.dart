@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart' as gauge;
 
-class RadialGraphLegend extends StatelessWidget {
-  final double rate;
+class KPRadialGraphLegend extends StatelessWidget {
+  final String rate;
   final Color color;
   final String text;
-  const RadialGraphLegend({
+  const KPRadialGraphLegend({
     super.key,
     required this.rate,
     required this.color,
@@ -62,9 +60,7 @@ class RadialGraphLegend extends StatelessWidget {
               Container(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  rate != DatabaseConstants.emptyWinRate
-                      ? Utils.getFixedPercentageAsString(rate)
-                      : "0%",
+                  rate,
                   style: TextStyle(
                       fontSize: KPMargins.margin12,
                       fontWeight: FontWeight.bold,

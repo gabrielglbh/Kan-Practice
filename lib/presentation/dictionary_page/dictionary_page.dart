@@ -258,11 +258,11 @@ class _DictionaryPageState extends State<DictionaryPage>
                     word,
                     style: TextStyle(
                         fontSize: KPFontSizes.fontSize18,
-                        color: Utils.getTextColorBasedOnScore(score)),
+                        color: score.getTextColorBasedOnScore()),
                   ),
                   padding:
                       const EdgeInsets.symmetric(horizontal: KPMargins.margin8),
-                  backgroundColor: Utils.getColorBasedOnScore(context, score),
+                  backgroundColor: score.getColorBasedOnScore(context),
                   side: BorderSide.none,
                   pressElevation: KPMargins.margin2,
                   onPressed: () {

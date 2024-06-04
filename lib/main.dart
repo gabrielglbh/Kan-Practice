@@ -97,6 +97,9 @@ Future<void> _initSharedPreferences() async {
   if (prefs.readData(SharedKeys.speakingWithSTT) == null) {
     prefs.saveData(SharedKeys.speakingWithSTT, true);
   }
+  if (prefs.readData(SharedKeys.showTimer) == null) {
+    prefs.saveData(SharedKeys.showTimer, true);
+  }
 }
 
 void main() async {

@@ -19,31 +19,57 @@ extension StringExtension on String {
 
   double similarityTo(String? other) =>
       StringSimilarity.compareTwoStrings(this, other);
+
+  String roundUpAsString() {
+    if (this == "NaN") return "0";
+    bool isRounded = substring(3) == "00" // XX.00%
+        ||
+        substring(2) == "00" // X.00%
+        ||
+        substring(4) == "00"; // XXX.00%
+    return isRounded ? substring(0, length - 3) : this;
+  }
 }
 
-/// Class that contains useful methods for all classes to use
-class Utils {
+extension DoubleExtension on double {
   /// Returns the color based on the given [winRate]
-  static Color getColorBasedOnWinRate(BuildContext context, double winRate) {
-    if (winRate >= 0 && winRate <= 0.1) {
+  Color getColorBasedOnWinRate(BuildContext context) {
+    if (this >= 0 && this <= 0.1) {
       return KPColors.darkRed;
-    } else if (winRate > 0.1 && winRate <= 0.2) {
+    } else if (this > 0.1 && this <= 0.2) {
       return KPColors.darkMidRed;
-    } else if (winRate > 0.2 && winRate <= 0.3) {
+    } else if (this > 0.2 && this <= 0.3) {
       return KPColors.midRed;
-    } else if (winRate > 0.3 && winRate <= 0.4) {
+    } else if (this > 0.3 && this <= 0.4) {
       return KPColors.lightMidRed;
-    } else if (winRate > 0.4 && winRate <= 0.5) {
+    } else if (this > 0.4 && this <= 0.5) {
       return KPColors.darkMidOrange;
-    } else if (winRate > 0.5 && winRate <= 0.6) {
+    } else if (this > 0.5 && this <= 0.6) {
       return KPColors.darkOrange;
-    } else if (winRate > 0.6 && winRate <= 0.7) {
+    } else if (this > 0.6 && this <= 0.7) {
       return KPColors.darkMidAmber;
-    } else if (winRate > 0.7 && winRate <= 0.8) {
+    } else if (this > 0.7 && this <= 0.8) {
       return KPColors.darkAmber;
-    } else if (winRate > 0.8 && winRate <= 0.9) {
+    } else if (this > 0.8 && this <= 0.9) {
       return KPColors.darkOlive;
-    } else if (winRate > 0.9 && winRate <= 1) {
+    } else if (this > 0.9 && this <= 1) {
+      return KPColors.darkGreen;
+    } else {
+      return Theme.of(context).colorScheme.surface;
+    }
+  }
+
+  /// Returns the color based on the given [score]
+  Color getColorBasedOnScore(BuildContext context) {
+    if (this >= 0 && this <= 0.2) {
+      return Colors.green.shade50;
+    } else if (this > 0.2 && this <= 0.4) {
+      return Colors.green.shade200;
+    } else if (this > 0.4 && this <= 0.6) {
+      return Colors.green.shade300;
+    } else if (this > 0.6 && this <= 0.8) {
+      return Colors.green.shade400;
+    } else if (this > 0.8 && this <= 1) {
       return KPColors.darkGreen;
     } else {
       return Theme.of(context).colorScheme.surface;
@@ -51,59 +77,68 @@ class Utils {
   }
 
   // Returns a emoji based on the [winRate]
-  static IconData getEmojiBasedOnWinRate(double winRate) {
-    if (winRate >= 0 && winRate <= 0.1) {
+  IconData getEmojiBasedOnWinRate() {
+    if (this >= 0 && this <= 0.1) {
       return FontAwesomeIcons.faceDizzy;
-    } else if (winRate > 0.1 && winRate <= 0.2) {
+    } else if (this > 0.1 && this <= 0.2) {
       return FontAwesomeIcons.faceFrown;
-    } else if (winRate > 0.2 && winRate <= 0.3) {
+    } else if (this > 0.2 && this <= 0.3) {
       return FontAwesomeIcons.faceFrown;
-    } else if (winRate > 0.3 && winRate <= 0.4) {
+    } else if (this > 0.3 && this <= 0.4) {
       return FontAwesomeIcons.faceFrown;
-    } else if (winRate > 0.4 && winRate <= 0.5) {
+    } else if (this > 0.4 && this <= 0.5) {
       return FontAwesomeIcons.faceGrinBeamSweat;
-    } else if (winRate > 0.5 && winRate <= 0.6) {
+    } else if (this > 0.5 && this <= 0.6) {
       return FontAwesomeIcons.faceGrinBeamSweat;
-    } else if (winRate > 0.6 && winRate <= 0.7) {
+    } else if (this > 0.6 && this <= 0.7) {
       return FontAwesomeIcons.faceSmileBeam;
-    } else if (winRate > 0.7 && winRate <= 0.8) {
+    } else if (this > 0.7 && this <= 0.8) {
       return FontAwesomeIcons.faceSmileBeam;
-    } else if (winRate > 0.8 && winRate <= 0.9) {
+    } else if (this > 0.8 && this <= 0.9) {
       return FontAwesomeIcons.faceLaughBeam;
-    } else if (winRate > 0.9 && winRate <= 1) {
+    } else if (this > 0.9 && this <= 1) {
       return FontAwesomeIcons.faceLaughBeam;
     } else {
       return FontAwesomeIcons.faceDizzy;
     }
   }
 
-  /// Returns the color based on the given [score]
-  static Color getColorBasedOnScore(BuildContext context, double score) {
-    if (score >= 0 && score <= 0.2) {
-      return Colors.green.shade50;
-    } else if (score > 0.2 && score <= 0.4) {
-      return Colors.green.shade200;
-    } else if (score > 0.4 && score <= 0.6) {
-      return Colors.green.shade300;
-    } else if (score > 0.6 && score <= 0.8) {
-      return Colors.green.shade400;
-    } else if (score > 0.8 && score <= 1) {
-      return KPColors.darkGreen;
+  /// Returns the text color based on the given [score]
+  Color getTextColorBasedOnScore() {
+    if (this >= 0 && this <= 0.2) {
+      return KPColors.accentLight;
+    } else if (this > 0.2 && this <= 0.4) {
+      return KPColors.accentLight;
     } else {
-      return Theme.of(context).colorScheme.surface;
+      return Colors.white;
     }
   }
 
+  String getFixedPercentageAsString() {
+    return "${(this * 100).getFixedDouble().roundUpAsString()}%";
+  }
+
+  double getFixedPercentage() {
+    return double.parse((this * 100).getFixedDouble());
+  }
+
+  String getFixedDouble() => toStringAsFixed(2);
+}
+
+extension IntExtension on int {
+  /// Parses the [date] that should be in milliseconds to a [DateTime] object
+  /// and applies a parser with the time_ago package
+  String parseDateMilliseconds() {
+    final d = DateTime.fromMillisecondsSinceEpoch(this);
+    Duration e = DateTime.now().difference(d);
+    return t.format(DateTime.now().subtract(e), locale: Utils.currentLocale);
+  }
+}
+
+/// Class that contains useful methods for all classes to use
+class Utils {
   static String get currentLocale =>
       PlatformDispatcher.instance.locale.languageCode;
-
-  static String getFixedPercentageAsString(double rate) {
-    return "${roundUpAsString(getFixedDouble(rate * 100))}%";
-  }
-
-  static double getFixedPercentage(double rate) {
-    return double.parse(getFixedDouble(rate * 100));
-  }
 
   /// Opens up a [url]
   static Future<void> launch(BuildContext context, String url) async {
@@ -118,27 +153,6 @@ class Utils {
     }
   }
 
-  /// Returns the text color based on the given [score]
-  static Color getTextColorBasedOnScore(double score) {
-    if (score >= 0 && score <= 0.2) {
-      return KPColors.accentLight;
-    } else if (score > 0.2 && score <= 0.4) {
-      return KPColors.accentLight;
-    } else {
-      return Colors.white;
-    }
-  }
-
-  static String roundUpAsString(String num) {
-    if (num == "NaN") return "0";
-    bool isRounded = num.substring(3) == "00" // XX.00%
-        ||
-        num.substring(2) == "00" // X.00%
-        ||
-        num.substring(4) == "00"; // XXX.00%
-    return isRounded ? num.substring(0, num.length - 3) : num;
-  }
-
   /// Transforms the current time to milliseconds
   static int getCurrentMilliseconds() => DateTime.now().millisecondsSinceEpoch;
 
@@ -147,16 +161,6 @@ class Utils {
     final today = DateTime.now();
     final formatter = DateFormat.yMd();
     return formatter.format(today);
-  }
-
-  static String getFixedDouble(double d) => d.toStringAsFixed(2);
-
-  /// Parses the [date] that should be in milliseconds to a [DateTime] object
-  /// and applies a parser with the time_ago package
-  static String parseDateMilliseconds(int date) {
-    final d = DateTime.fromMillisecondsSinceEpoch(date);
-    Duration e = DateTime.now().difference(d);
-    return t.format(DateTime.now().subtract(e), locale: Utils.currentLocale);
   }
 
   static Future<void> showVersionNotes(

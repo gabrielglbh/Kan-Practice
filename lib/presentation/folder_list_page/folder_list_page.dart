@@ -185,7 +185,7 @@ class _FolderListPageState extends State<FolderListPage>
                         itemBuilder: (context, k) {
                           final folder = folders[k];
                           final date =
-                              Utils.parseDateMilliseconds(folder.lastUpdated);
+                              folder.lastUpdated.parseDateMilliseconds();
                           return _tile(bloc, folder, date);
                         }),
                   ),

@@ -4,11 +4,13 @@ class StatsHeader extends StatelessWidget {
   final MainAxisAlignment? align;
   final String title;
   final String? value;
+  final String? secondaryValue;
   final double verticalVisualDensity;
   const StatsHeader({
     super.key,
     required this.title,
     this.value,
+    this.secondaryValue,
     this.align,
     this.verticalVisualDensity = 0,
   });
@@ -27,6 +29,14 @@ class StatsHeader extends StatelessWidget {
             Text("  •  ", style: Theme.of(context).textTheme.titleLarge),
           if (value != null)
             Text(value!,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(fontWeight: FontWeight.normal)),
+          if (secondaryValue != null)
+            Text("  •  ", style: Theme.of(context).textTheme.titleLarge),
+          if (secondaryValue != null)
+            Text(secondaryValue!,
                 style: Theme.of(context)
                     .textTheme
                     .titleLarge

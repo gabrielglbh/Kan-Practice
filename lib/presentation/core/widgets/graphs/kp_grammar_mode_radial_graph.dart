@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/core/widgets/graphs/kp_data_frame.dart';
-import 'package:kanpractice/presentation/core/widgets/graphs/radial_graph_legend.dart';
+import 'package:kanpractice/presentation/core/widgets/graphs/kp_radial_graph_legend.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -81,8 +82,10 @@ class KPGrammarModeRadialGraph extends StatelessWidget {
                     break;
                 }
 
-                return RadialGraphLegend(
-                  rate: rate,
+                return KPRadialGraphLegend(
+                  rate: rate != DatabaseConstants.emptyWinRate
+                      ? rate.getFixedPercentageAsString()
+                      : "0%",
                   color: GrammarModes.values[index].color,
                   text: GrammarModes.values[index].mode,
                 );

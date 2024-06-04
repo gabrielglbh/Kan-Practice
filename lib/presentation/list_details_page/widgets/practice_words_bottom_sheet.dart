@@ -100,6 +100,7 @@ class _PracticeWordsBottomSheetState extends State<PracticeWordsBottomSheet> {
       title1: mode.japMode,
       title2: mode.mode,
       color: mode.color,
+      textColor: Colors.white,
       onTap: () async {
         if (widget.list.isEmpty) {
           context

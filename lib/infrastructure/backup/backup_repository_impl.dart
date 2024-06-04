@@ -247,7 +247,7 @@ class BackupRepositoryImpl implements IBackupRepository {
       if (snapshot.exists) {
         int date = snapshot.get("lastUpdated");
         return "${"backup_firebase_getLastUpdated_successful".tr()} "
-            "${Utils.parseDateMilliseconds(date)}";
+            "${date.parseDateMilliseconds()}";
       } else {
         return "backup_firebase_getLastUpdated_noBackUp".tr();
       }
@@ -555,6 +555,56 @@ class BackupRepositoryImpl implements IBackupRepository {
           json.addEntries([
             const MapEntry(
                 TestDataTableFields.testTotalWinRateGrammarPointField, 0)
+          ]);
+        }
+        if (!json.containsKey(
+            TestDataTableFields.testTotalSecondsPerWordWritingField)) {
+          json.addEntries([
+            const MapEntry(
+                TestDataTableFields.testTotalSecondsPerWordWritingField, 0)
+          ]);
+        }
+        if (!json.containsKey(
+            TestDataTableFields.testTotalSecondsPerWordReadingField)) {
+          json.addEntries([
+            const MapEntry(
+                TestDataTableFields.testTotalSecondsPerWordReadingField, 0)
+          ]);
+        }
+        if (!json.containsKey(
+            TestDataTableFields.testTotalSecondsPerWordRecognitionField)) {
+          json.addEntries([
+            const MapEntry(
+                TestDataTableFields.testTotalSecondsPerWordRecognitionField, 0)
+          ]);
+        }
+        if (!json.containsKey(
+            TestDataTableFields.testTotalSecondsPerWordListeningField)) {
+          json.addEntries([
+            const MapEntry(
+                TestDataTableFields.testTotalSecondsPerWordListeningField, 0)
+          ]);
+        }
+        if (!json.containsKey(
+            TestDataTableFields.testTotalSecondsPerWordSpeakingField)) {
+          json.addEntries([
+            const MapEntry(
+                TestDataTableFields.testTotalSecondsPerWordSpeakingField, 0)
+          ]);
+        }
+        if (!json.containsKey(
+            TestDataTableFields.testTotalSecondsPerPointGrammarPointField)) {
+          json.addEntries([
+            const MapEntry(
+                TestDataTableFields.testTotalSecondsPerPointGrammarPointField,
+                0)
+          ]);
+        }
+        if (!json.containsKey(
+            TestDataTableFields.testTotalSecondsPerPointDefinitionField)) {
+          json.addEntries([
+            const MapEntry(
+                TestDataTableFields.testTotalSecondsPerPointDefinitionField, 0)
           ]);
         }
         backUpTestData = TestData.fromJson(json);

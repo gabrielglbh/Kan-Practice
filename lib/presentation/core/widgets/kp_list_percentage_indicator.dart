@@ -23,7 +23,7 @@ class KPListPercentageIndicator extends StatelessWidget {
       center: Text(
         value == 1 ? "100%" : "${pct.toStringAsPrecision(2)}%",
         style: TextStyle(
-            color: pct <= 48
+            color: pct <= 51
                 ? Theme.of(context).colorScheme.onPrimaryContainer
                 : Theme.of(context).colorScheme.primaryContainer,
             fontWeight: FontWeight.bold),

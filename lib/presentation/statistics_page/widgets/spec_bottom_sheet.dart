@@ -200,12 +200,11 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                             title: "specific_accuracy_label".tr(),
                             align: MainAxisAlignment.center,
                             verticalVisualDensity: -4,
-                            value: Utils.getFixedPercentageAsString(
-                              (_isCategory
-                                      ? aggregateWithoutGrammar
-                                      : aggregate) /
-                                  _length,
-                            ),
+                            value: ((_isCategory
+                                        ? aggregateWithoutGrammar
+                                        : aggregate) /
+                                    _length)
+                                .getFixedPercentageAsString(),
                           ),
                         ),
                         if (!_isCategory)
@@ -294,7 +293,7 @@ class _SpecBottomSheetState extends State<SpecBottomSheet> {
                           title: "specific_accuracy_label".tr(),
                           align: MainAxisAlignment.center,
                           verticalVisualDensity: -4,
-                          value: Utils.getFixedPercentageAsString(aggregate),
+                          value: aggregate.getFixedPercentageAsString(),
                         ),
                       ),
                     ],

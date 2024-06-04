@@ -42,7 +42,7 @@ abstract class InjectableModule {
 
     return await openDatabase(
       path,
-      version: 15,
+      version: 16,
       singleInstance: true,
       onConfigure: (db) async {
         await db.execute('PRAGMA foreign_keys = ON');
@@ -55,6 +55,7 @@ abstract class InjectableModule {
         if (oldVersion <= 12) c.version12to13(db);
         if (oldVersion <= 13) c.version13to14(db);
         if (oldVersion <= 14) c.version14to15(db);
+        if (oldVersion <= 15) c.version15to16(db);
       },
       onCreate: (Database db, int version) async {
         await db.execute("CREATE TABLE ${WordTableFields.wordTable}("
@@ -155,6 +156,13 @@ abstract class InjectableModule {
             "${TestDataTableFields.testTotalWinRateSpeakingField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalWinRateDefinitionField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.testTotalWinRateGrammarPointField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestDataTableFields.testTotalSecondsPerWordWritingField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestDataTableFields.testTotalSecondsPerWordReadingField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestDataTableFields.testTotalSecondsPerWordRecognitionField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestDataTableFields.testTotalSecondsPerWordListeningField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestDataTableFields.testTotalSecondsPerWordSpeakingField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestDataTableFields.testTotalSecondsPerPointGrammarPointField} INTEGER NOT NULL DEFAULT 0, "
+            "${TestDataTableFields.testTotalSecondsPerPointDefinitionField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.selectionTestsField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.blitzTestsField} INTEGER NOT NULL DEFAULT 0, "
             "${TestDataTableFields.remembranceTestsField} INTEGER NOT NULL DEFAULT 0, "

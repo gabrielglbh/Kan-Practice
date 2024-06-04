@@ -7,6 +7,7 @@ import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/home_types.dart';
 import 'package:kanpractice/presentation/core/widgets/graphs/kp_grammar_mode_radial_graph.dart';
+import 'package:kanpractice/presentation/core/widgets/graphs/kp_radial_graph_legend.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
@@ -162,6 +163,7 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
               grammarPoints: grammarPoint.winRateGrammarPoint,
             ),
           ),
+          const Divider(),
           _lastTimeShownWidget(context, grammarPoint),
           Visibility(
             visible: onTap != null && onRemove != null,
@@ -181,77 +183,50 @@ class KPGrammarPointBottomSheet extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
         child: ListTileTheme(
           dense: true,
-          child: ExpansionTile(
-              iconColor: Theme.of(context).colorScheme.primary,
-              textColor: Theme.of(context).colorScheme.primary,
-              tilePadding: const EdgeInsets.all(0),
-              title: Text(
-                  "${"created_label".tr()} "
-                  "${Utils.parseDateMilliseconds(grammarPoint.dateAdded)} • "
-                  "${"last_seen_label".tr()} "
-                  "${Utils.parseDateMilliseconds(grammarPoint.dateLastShown)}",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium),
-              children: [
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: GrammarModes.values.length,
-                  itemBuilder: (context, index) {
-                    return _lastSeenOnModes(
-                        context, grammarPoint, GrammarModes.values[index]);
-                  },
-                )
-              ]),
-        ));
-  }
+          child: Theme(
+            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            child: ExpansionTile(
+                iconColor: Theme.of(context).colorScheme.primary,
+                textColor: Theme.of(context).colorScheme.primary,
+                tilePadding: const EdgeInsets.all(0),
+                title: Text(
+                    "${"created_label".tr()} "
+                    "${grammarPoint.dateAdded.parseDateMilliseconds()} • "
+                    "${"last_seen_label".tr()} "
+                    "${grammarPoint.dateLastShown.parseDateMilliseconds()}",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium),
+                children: [
+                  ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: GrammarModes.values.length,
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: KPMargins.margin12),
+                    itemBuilder: (context, index) {
+                      int date = 0;
+                      switch (GrammarModes.values[index]) {
+                        case GrammarModes.definition:
+                          date = grammarPoint.dateLastShownDefinition;
+                          break;
+                        case GrammarModes.grammarPoints:
+                          date = grammarPoint.dateLastShownGrammarPoint;
+                          break;
+                      }
 
-  Widget _lastSeenOnModes(
-      BuildContext context, GrammarPoint grammarPoint, GrammarModes mode) {
-    int? date = 0;
-    String parsedDate = "-";
-    switch (mode) {
-      case GrammarModes.definition:
-        date = grammarPoint.dateLastShownDefinition;
-        break;
-      case GrammarModes.grammarPoints:
-        date = grammarPoint.dateLastShownGrammarPoint;
-        break;
-    }
-    if (date != 0) {
-      parsedDate =
-          "${"last_seen_label".tr()} ${Utils.parseDateMilliseconds(date)}";
-    }
-
-    return Container(
-      height: KPMargins.margin24,
-      padding: const EdgeInsets.only(
-          left: KPMargins.margin8,
-          right: KPMargins.margin16,
-          bottom: KPMargins.margin8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Text(" • ${(mode.mode).capitalized}:",
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.titleSmall),
+                      return KPRadialGraphLegend(
+                        rate: date != 0
+                            ? "${"last_seen_label".tr()} ${date.parseDateMilliseconds()}"
+                            : "-",
+                        color: GrammarModes.values[index].color,
+                        text: GrammarModes.values[index].mode,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: KPMargins.margin8),
+                ]),
           ),
-          Expanded(
-              child: Container(
-            alignment: Alignment.centerRight,
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: Text(parsedDate,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.right,
-                  style: Theme.of(context).textTheme.titleSmall),
-            ),
-          ))
-        ],
-      ),
-    );
+        ));
   }
 
   Widget _actionButtons(BuildContext bloc) {

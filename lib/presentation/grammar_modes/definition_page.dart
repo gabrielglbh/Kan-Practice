@@ -7,6 +7,7 @@ import 'package:kanpractice/presentation/core/types/grammar_modes.dart';
 import 'package:kanpractice/presentation/core/types/test_modes.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/injection.dart';
+import 'package:kanpractice/presentation/core/util/timer.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_learning_header_animation.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_list_percentage_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
@@ -26,7 +27,8 @@ class DefinitionStudy extends StatefulWidget {
   State<DefinitionStudy> createState() => _DefinitionStudyState();
 }
 
-class _DefinitionStudyState extends State<DefinitionStudy> {
+class _DefinitionStudyState extends State<DefinitionStudy>
+    with CustomPeriodicTimer {
   /// Current word index
   int _macro = 0;
 
@@ -52,7 +54,14 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
         .readData(SharedKeys.enableRepetitionOnTests);
     _studyList.addAll(widget.args.studyList);
     context.read<GrammarModeBloc>().add(GrammarModeEventResetTracking());
+    startTimer();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    stopTimer();
+    super.dispose();
   }
 
   Future<void> _updateUIOnSubmit(double score) async {
@@ -101,8 +110,13 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
         testScore += s;
       }
       final score = testScore / _studyList.length;
-      GrammarModeUpdateHandler.handle(context, widget.args,
-          testScore: score, testScores: _testScores);
+      GrammarModeUpdateHandler.handle(
+        context,
+        widget.args,
+        testScore: score,
+        testScores: _testScores,
+        timeObtained: elapsedTime,
+      );
     } else {
       GrammarModeUpdateHandler.handle(context, widget.args);
     }
@@ -160,6 +174,7 @@ class _DefinitionStudyState extends State<DefinitionStudy> {
       appBarTitle: StudyModeAppBar(
         title: widget.args.studyModeHeaderDisplayName,
         studyMode: widget.args.mode.mode,
+        elapsedTime: elapsedTime,
       ),
       centerTitle: true,
       appBarActions: [

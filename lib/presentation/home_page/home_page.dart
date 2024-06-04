@@ -235,17 +235,24 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       },
       icon: const Icon(Icons.shopping_bag_rounded),
     );
+    final statsIcon = IconButton(
+      onPressed: () {
+        Navigator.of(context).pushNamed(KanPracticePages.statisticsPage);
+      },
+      icon: const Icon(Icons.insert_chart_outlined_rounded, color: Colors.teal),
+    );
+
     final List<Widget> updateWithAppBarIcons =
         _currentPage == HomeType.dictionary
-            ? [updateIcon]
+            ? [updateIcon, statsIcon]
             : _currentPage == HomeType.kanlist
-                ? [updateIcon, marketIcon]
-                : [updateIcon];
+                ? [updateIcon, statsIcon, marketIcon]
+                : [updateIcon, statsIcon];
     final List<Widget> appBarIcons = _currentPage == HomeType.dictionary
         ? []
         : _currentPage == HomeType.kanlist
-            ? [marketIcon]
-            : [];
+            ? [statsIcon, marketIcon]
+            : [statsIcon];
 
     return BlocListener<BackupBloc, BackupState>(
       listener: (context, state) {

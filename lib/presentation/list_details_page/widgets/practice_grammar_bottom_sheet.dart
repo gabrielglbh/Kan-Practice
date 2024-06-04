@@ -101,6 +101,7 @@ class _PracticeGrammarBottomSheetState
       title1: mode.japMode,
       title2: mode.mode,
       color: mode.color,
+      textColor: Colors.white,
       onTap: () async {
         if (widget.list.isEmpty) {
           context

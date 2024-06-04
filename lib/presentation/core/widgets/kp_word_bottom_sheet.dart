@@ -6,6 +6,7 @@ import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/types/home_types.dart';
+import 'package:kanpractice/presentation/core/widgets/graphs/kp_radial_graph_legend.dart';
 import 'package:kanpractice/presentation/core/widgets/graphs/kp_study_mode_radial_graph.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_alert_dialog.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_drag_container.dart';
@@ -181,6 +182,7 @@ class KPWordBottomSheet extends StatelessWidget {
             listening: updatedWord.winRateListening,
             speaking: updatedWord.winRateSpeaking,
           ),
+          const Divider(),
           _lastTimeShownWidget(context, updatedWord),
           Visibility(
             visible: onTap != null && onRemove != null,
@@ -228,86 +230,59 @@ class KPWordBottomSheet extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: KPMargins.margin16),
         child: ListTileTheme(
           dense: true,
-          child: ExpansionTile(
-              iconColor: Theme.of(context).colorScheme.primary,
-              textColor: Theme.of(context).colorScheme.primary,
-              tilePadding: const EdgeInsets.all(0),
-              title: Text(
-                  "${"created_label".tr()} "
-                  "${Utils.parseDateMilliseconds(updatedWord.dateAdded)} • "
-                  "${"last_seen_label".tr()} "
-                  "${Utils.parseDateMilliseconds(updatedWord.dateLastShown)}",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium),
-              children: [
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: StudyModes.values.length,
-                  itemBuilder: (context, index) {
-                    return _lastSeenOnModes(
-                        context, updatedWord, StudyModes.values[index]);
-                  },
-                )
-              ]),
-        ));
-  }
+          child: Theme(
+            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            child: ExpansionTile(
+                iconColor: Theme.of(context).colorScheme.primary,
+                textColor: Theme.of(context).colorScheme.primary,
+                tilePadding: const EdgeInsets.all(0),
+                title: Text(
+                    "${"created_label".tr()} "
+                    "${updatedWord.dateAdded.parseDateMilliseconds()} • "
+                    "${"last_seen_label".tr()} "
+                    "${updatedWord.dateLastShown.parseDateMilliseconds()}",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium),
+                children: [
+                  ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: StudyModes.values.length,
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: KPMargins.margin12),
+                    itemBuilder: (context, index) {
+                      int date = 0;
+                      switch (StudyModes.values[index]) {
+                        case StudyModes.writing:
+                          date = updatedWord.dateLastShownWriting;
+                          break;
+                        case StudyModes.reading:
+                          date = updatedWord.dateLastShownReading;
+                          break;
+                        case StudyModes.recognition:
+                          date = updatedWord.dateLastShownRecognition;
+                          break;
+                        case StudyModes.listening:
+                          date = updatedWord.dateLastShownListening;
+                          break;
+                        case StudyModes.speaking:
+                          date = updatedWord.dateLastShownSpeaking;
+                          break;
+                      }
 
-  Widget _lastSeenOnModes(
-      BuildContext context, Word updatedWord, StudyModes mode) {
-    int? date = 0;
-    String parsedDate = "-";
-    switch (mode) {
-      case StudyModes.writing:
-        date = updatedWord.dateLastShownWriting;
-        break;
-      case StudyModes.reading:
-        date = updatedWord.dateLastShownReading;
-        break;
-      case StudyModes.recognition:
-        date = updatedWord.dateLastShownRecognition;
-        break;
-      case StudyModes.listening:
-        date = updatedWord.dateLastShownListening;
-        break;
-      case StudyModes.speaking:
-        date = updatedWord.dateLastShownSpeaking;
-        break;
-    }
-    if (date != 0) {
-      parsedDate =
-          "${"last_seen_label".tr()} ${Utils.parseDateMilliseconds(date)}";
-    }
-
-    return Container(
-      height: KPMargins.margin24,
-      padding: const EdgeInsets.only(
-          left: KPMargins.margin8,
-          right: KPMargins.margin16,
-          bottom: KPMargins.margin8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Text(" • ${(mode.mode).capitalized}:",
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.titleSmall),
+                      return KPRadialGraphLegend(
+                        rate: date != 0
+                            ? "${"last_seen_label".tr()} ${date.parseDateMilliseconds()}"
+                            : "-",
+                        color: StudyModes.values[index].color,
+                        text: StudyModes.values[index].mode,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: KPMargins.margin8),
+                ]),
           ),
-          Expanded(
-              child: Container(
-            alignment: Alignment.centerRight,
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: Text(parsedDate,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.right,
-                  style: Theme.of(context).textTheme.titleSmall),
-            ),
-          ))
-        ],
-      ),
-    );
+        ));
   }
 
   Widget _actionButtons(BuildContext bloc) {

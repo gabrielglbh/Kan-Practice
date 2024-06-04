@@ -55,7 +55,7 @@ class TestDataRepositoryImpl implements ITestDataRepository {
                 newElapsedTimePerCard,
           };
         case GrammarModes.grammarPoints:
-          final totalTests = curr.testTotalCountWriting + 1;
+          final totalTests = curr.testTotalCountGrammarPoint + 1;
           final newAcc = _calculateOveralls(curr.testTotalCountGrammarPoint,
               totalTests, curr.testTotalWinRateGrammarPoint, score);
           final newElapsedTimePerCard = _calculateOveralls(

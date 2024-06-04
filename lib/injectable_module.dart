@@ -42,7 +42,7 @@ abstract class InjectableModule {
 
     return await openDatabase(
       path,
-      version: 16,
+      version: 17,
       singleInstance: true,
       onConfigure: (db) async {
         await db.execute('PRAGMA foreign_keys = ON');
@@ -56,6 +56,7 @@ abstract class InjectableModule {
         if (oldVersion <= 13) c.version13to14(db);
         if (oldVersion <= 14) c.version14to15(db);
         if (oldVersion <= 15) c.version15to16(db);
+        if (oldVersion <= 16) c.version16to17(db);
       },
       onCreate: (Database db, int version) async {
         await db.execute("CREATE TABLE ${WordTableFields.wordTable}("

@@ -3,6 +3,41 @@ import 'package:sqflite/sqflite.dart';
 
 // TODO: Add new modes in the db migration
 class Migrations {
+  Future<void> version16to17(Database db) async {
+    await db.execute("CREATE TABLE ${TestDataTableFields.testDataTable}("
+        "${TestDataTableFields.statsIdField} TEXT NOT NULL PRIMARY KEY, "
+        "${TestDataTableFields.totalTestsField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalCountWritingField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalCountReadingField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalCountRecognitionField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalCountListeningField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalCountSpeakingField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalCountDefinitionField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalCountGrammarPointField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalWinRateWritingField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalWinRateReadingField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalWinRateRecognitionField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalWinRateListeningField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalWinRateSpeakingField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalWinRateDefinitionField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalWinRateGrammarPointField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalSecondsPerWordWritingField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalSecondsPerWordReadingField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalSecondsPerWordRecognitionField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalSecondsPerWordListeningField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalSecondsPerWordSpeakingField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalSecondsPerPointGrammarPointField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.testTotalSecondsPerPointDefinitionField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.selectionTestsField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.blitzTestsField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.remembranceTestsField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.numberTestsField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.lessPctTestsField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.categoryTestsField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.folderTestsField} INTEGER NOT NULL DEFAULT 0, "
+        "${TestDataTableFields.dailyTestsField} INTEGER NOT NULL DEFAULT 0)");
+  }
+
   Future<void> version15to16(Database db) async {
     await db.transaction((txn) async {
       await txn.execute("CREATE TABLE TEMP("

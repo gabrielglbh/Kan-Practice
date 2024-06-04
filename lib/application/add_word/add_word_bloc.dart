@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
+import 'package:kanpractice/application/utils/mean_calculation.dart';
 import 'package:kanpractice/domain/list/i_list_repository.dart';
 import 'package:kanpractice/domain/list/list.dart';
 import 'package:kanpractice/domain/word/i_word_repository.dart';
@@ -46,9 +47,6 @@ class AddWordBloc extends Bloc<AddWordEvent, AddWordState> {
         /// TODO: If a new StudyMode is addeed, modify this
         /// Update for each mode the overall score again. Issue: #10
         ///
-        /// For each mode, recalculate the overall score based on the
-        /// winRates of the value to be deleted and the new KanList length.
-        ///
         /// If the list contains any winRate other than `emptyWinRate`, then update
         /// on addition. Else, the list is newly created and there is no need to
         /// touch it as the win rates will still be -1.
@@ -57,36 +55,7 @@ class AddWordBloc extends Bloc<AddWordEvent, AddWordState> {
             list.totalWinRateRecognition != DatabaseConstants.emptyWinRate ||
             list.totalWinRateListening != DatabaseConstants.emptyWinRate ||
             list.totalWinRateSpeaking != DatabaseConstants.emptyWinRate) {
-          /// Get the y value: total length of list prior to addition of
-          /// word multiplied by the overall win rate
-          final wy = (words.length - 1) * list.totalWinRateWriting;
-          final ry = (words.length - 1) * list.totalWinRateReading;
-          final rey = (words.length - 1) * list.totalWinRateRecognition;
-          final ly = (words.length - 1) * list.totalWinRateListening;
-          final sy = (words.length - 1) * list.totalWinRateSpeaking;
-
-          /// Add the winRate of the added word to y
-          final wPartialScore = wy + k.winRateWriting;
-          final rPartialScore = ry + k.winRateReading;
-          final rePartialScore = rey + k.winRateRecognition;
-          final lPartialScore = ly + k.winRateListening;
-          final sPartialScore = sy + k.winRateSpeaking;
-
-          /// Calculate the new overall score with the partialScore divideds
-          /// by the list with the word
-          final wNewScore = wPartialScore / words.length;
-          final readNewScore = rPartialScore / words.length;
-          final recNewScore = rePartialScore / words.length;
-          final lisNewScore = lPartialScore / words.length;
-          final speakNewScore = sPartialScore / words.length;
-
-          await _listRepository.updateList(k.listName, {
-            ListTableFields.totalWinRateWritingField: wNewScore,
-            ListTableFields.totalWinRateReadingField: readNewScore,
-            ListTableFields.totalWinRateRecognitionField: recNewScore,
-            ListTableFields.totalWinRateListeningField: lisNewScore,
-            ListTableFields.totalWinRateSpeakingField: speakNewScore
-          });
+          await _listRepository.updateList(k.listName, words.studyModesMean());
         }
 
         emit(AddWordState.creationDone(event.exitMode));

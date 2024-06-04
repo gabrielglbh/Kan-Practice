@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/application/services/database_consts.dart';
+import 'package:kanpractice/application/utils/mean_calculation.dart';
 import 'package:kanpractice/domain/grammar_point/grammar_point.dart';
 import 'package:kanpractice/domain/grammar_point/i_grammar_point_repository.dart';
 import 'package:kanpractice/domain/list/i_list_repository.dart';
@@ -53,10 +54,6 @@ class GrammarPointDetailsBloc
           /// TODO: If a new GrammarMode is added, modify this
           /// Update for each mode the overall score again. Issue: #10
           ///
-          /// For each mode, recalculate the overall score based on the
-          /// winRates of the value to be deleted and the new KanList length.
-          /// It takes into account the empty values.
-          ///
           /// If list is empty, update all values to -1.
           if (grammarPoints.isEmpty) {
             await _listRepository.updateList(k.listName, {
@@ -68,25 +65,8 @@ class GrammarPointDetailsBloc
           } else if (list.totalWinRateDefinition !=
                   DatabaseConstants.emptyWinRate ||
               list.totalWinRateGrammarPoint != DatabaseConstants.emptyWinRate) {
-            /// Get the y value: total length of list prior to addition of
-            /// word multiplied by the overall win rate
-            final dy = (grammarPoints.length + 1) * list.totalWinRateDefinition;
-            final gpy =
-                (grammarPoints.length + 1) * list.totalWinRateGrammarPoint;
-
-            /// Add the winRate of the added word to y
-            final dPartialScore = dy - k.winRateDefinition;
-            final gpPartialScore = gpy - k.winRateGrammarPoint;
-
-            /// Calculate the new overall score with the partialScore divideds
-            /// by the list with the word
-            final dNewScore = dPartialScore / grammarPoints.length;
-            final pNewScore = gpPartialScore / grammarPoints.length;
-
-            await _listRepository.updateList(k.listName, {
-              ListTableFields.totalWinRateDefinitionField: dNewScore,
-              ListTableFields.totalWinRateGrammarPointField: pNewScore
-            });
+            await _listRepository.updateList(
+                k.listName, grammarPoints.grammarModesMean());
           }
           emit(const GrammarPointDetailsState.removed());
         } else if (code == 1) {

@@ -50,6 +50,7 @@ class GrammarPointDetailsBloc
           List<GrammarPoint> grammarPoints = await _grammarPointRepository
               .getAllGrammarPointsFromList(k.listName);
 
+          /// TODO: If a new GrammarMode is added, modify this
           /// Update for each mode the overall score again. Issue: #10
           ///
           /// For each mode, recalculate the overall score based on the
@@ -60,26 +61,31 @@ class GrammarPointDetailsBloc
           if (grammarPoints.isEmpty) {
             await _listRepository.updateList(k.listName, {
               ListTableFields.totalWinRateDefinitionField:
-                  DatabaseConstants.emptyWinRate
+                  DatabaseConstants.emptyWinRate,
+              ListTableFields.totalWinRateGrammarPointField:
+                  DatabaseConstants.emptyWinRate,
             });
-          } else {
-            double definitionNewScore = list.totalWinRateDefinition;
+          } else if (list.totalWinRateDefinition !=
+                  DatabaseConstants.emptyWinRate ||
+              list.totalWinRateGrammarPoint != DatabaseConstants.emptyWinRate) {
+            /// Get the y value: total length of list prior to addition of
+            /// word multiplied by the overall win rate
+            final dy = (grammarPoints.length + 1) * list.totalWinRateDefinition;
+            final gpy =
+                (grammarPoints.length + 1) * list.totalWinRateGrammarPoint;
 
-            if (k.winRateDefinition != DatabaseConstants.emptyWinRate) {
-              /// Get the y value: total length of list prior to removal of
-              /// grammar point multiplied by the overall win rate
-              double y = (grammarPoints.length + 1) * list.totalWinRateWriting;
+            /// Add the winRate of the added word to y
+            final dPartialScore = dy - k.winRateDefinition;
+            final gpPartialScore = gpy - k.winRateGrammarPoint;
 
-              /// Subtract the winRate of the removed grammar point to y
-              double partialScore = y - k.winRateDefinition;
-
-              /// Calculate the new overall score with the partialScore divided
-              /// by the list without the grammar point
-              definitionNewScore = partialScore / grammarPoints.length;
-            }
+            /// Calculate the new overall score with the partialScore divideds
+            /// by the list with the word
+            final dNewScore = dPartialScore / grammarPoints.length;
+            final pNewScore = gpPartialScore / grammarPoints.length;
 
             await _listRepository.updateList(k.listName, {
-              ListTableFields.totalWinRateDefinitionField: definitionNewScore,
+              ListTableFields.totalWinRateDefinitionField: dNewScore,
+              ListTableFields.totalWinRateGrammarPointField: pNewScore
             });
           }
           emit(const GrammarPointDetailsState.removed());

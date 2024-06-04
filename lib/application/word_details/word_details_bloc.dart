@@ -54,6 +54,7 @@ class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
           List<Word> words =
               await _wordRepository.getAllWordsFromList(k.listName);
 
+          /// TODO: If a new GrammarMode is added, modify this
           /// Update for each mode the overall score again. Issue: #10
           ///
           /// For each mode, recalculate the overall score based on the
@@ -74,45 +75,34 @@ class WordDetailsBloc extends Bloc<WordDetailsEvent, WordDetailsState> {
               ListTableFields.totalWinRateSpeakingField:
                   DatabaseConstants.emptyWinRate
             });
-          } else {
-            double wNewScore = list.totalWinRateWriting;
-            double readNewScore = list.totalWinRateReading;
-            double recNewScore = list.totalWinRateRecognition;
-            double lisNewScore = list.totalWinRateListening;
-            double speakNewScore = list.totalWinRateSpeaking;
+          } else if (list.totalWinRateWriting !=
+                  DatabaseConstants.emptyWinRate ||
+              list.totalWinRateReading != DatabaseConstants.emptyWinRate ||
+              list.totalWinRateRecognition != DatabaseConstants.emptyWinRate ||
+              list.totalWinRateListening != DatabaseConstants.emptyWinRate ||
+              list.totalWinRateSpeaking != DatabaseConstants.emptyWinRate) {
+            /// Get the y value: total length of list prior to addition of
+            /// word multiplied by the overall win rate
+            final wy = (words.length + 1) * list.totalWinRateWriting;
+            final ry = (words.length + 1) * list.totalWinRateReading;
+            final rey = (words.length + 1) * list.totalWinRateRecognition;
+            final ly = (words.length + 1) * list.totalWinRateListening;
+            final sy = (words.length + 1) * list.totalWinRateSpeaking;
 
-            if (k.winRateWriting != DatabaseConstants.emptyWinRate) {
-              /// Get the y value: total length of list prior to removal of
-              /// word multiplied by the overall win rate
-              double y = (words.length + 1) * list.totalWinRateWriting;
+            /// Add the winRate of the added word to y
+            final wPartialScore = wy - k.winRateWriting;
+            final rPartialScore = ry - k.winRateReading;
+            final rePartialScore = rey - k.winRateRecognition;
+            final lPartialScore = ly - k.winRateListening;
+            final sPartialScore = sy - k.winRateSpeaking;
 
-              /// Subtract the winRate of the removed word to y
-              double partialScore = y - k.winRateWriting;
-
-              /// Calculate the new overall score with the partialScore divided
-              /// by the list without the word
-              wNewScore = partialScore / words.length;
-            }
-            if (k.winRateReading != DatabaseConstants.emptyWinRate) {
-              double y = (words.length + 1) * list.totalWinRateReading;
-              double partialScore = y - k.winRateReading;
-              readNewScore = partialScore / words.length;
-            }
-            if (k.winRateRecognition != DatabaseConstants.emptyWinRate) {
-              double y = (words.length + 1) * list.totalWinRateRecognition;
-              double partialScore = y - k.winRateRecognition;
-              recNewScore = partialScore / words.length;
-            }
-            if (k.winRateListening != DatabaseConstants.emptyWinRate) {
-              double y = (words.length + 1) * list.totalWinRateListening;
-              double partialScore = y - k.winRateListening;
-              lisNewScore = partialScore / words.length;
-            }
-            if (k.winRateSpeaking != DatabaseConstants.emptyWinRate) {
-              double y = (words.length + 1) * list.totalWinRateSpeaking;
-              double partialScore = y - k.winRateSpeaking;
-              speakNewScore = partialScore / words.length;
-            }
+            /// Calculate the new overall score with the partialScore divideds
+            /// by the list with the word
+            final wNewScore = wPartialScore / words.length;
+            final readNewScore = rPartialScore / words.length;
+            final recNewScore = rePartialScore / words.length;
+            final lisNewScore = lPartialScore / words.length;
+            final speakNewScore = sPartialScore / words.length;
 
             await _listRepository.updateList(k.listName, {
               ListTableFields.totalWinRateWritingField: wNewScore,

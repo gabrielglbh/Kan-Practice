@@ -119,13 +119,11 @@ class KPWordItem extends StatelessWidget {
             ),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Flexible(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: KPMargins.margin4),
-              child:
-                  Text(word.word, style: Theme.of(context).textTheme.bodyLarge),
-            ),
+            child:
+                Text(word.word, style: Theme.of(context).textTheme.bodyLarge),
           ),
           const SizedBox(width: KPMargins.margin8),
           ConstrainedBox(

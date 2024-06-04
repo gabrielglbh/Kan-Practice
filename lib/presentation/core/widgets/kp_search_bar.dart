@@ -104,11 +104,11 @@ class _KPSearchBarState extends State<KPSearchBar> {
             _hideKeyboard();
           },
         ),
-        Positioned(bottom: KPMargins.margin4, left: 0, child: _back()),
+        Positioned(bottom: KPMargins.margin8, left: 0, child: _back()),
         Visibility(
           visible: _hasFocus,
           child: Positioned(
-            bottom: KPMargins.margin4,
+            bottom: KPMargins.margin8,
             right: 0,
             child: _clear(),
           ),

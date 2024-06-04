@@ -358,7 +358,7 @@
   "daily_test_cannot_go_back": "Estás haciendo un test diario. Termina el test, ¡tú puedes!",
   "settings_notifications_label": "Activar/Desactivar Notificaciones",
   "stats_tests_by_type": "Número Total de Tests por Tipo",
-  "stats_tests_total_acc": "Acierto de Tests por Modo de Estudio",
+  "stats_tests_total_acc": "Acierto Total de Tests",
   "stats_tests_tap_to_specs": "Toca las barras para conocer más detalles",
   "folder_practice_title": "Practicar con un subconjunto de palabras de las listas de esta carpeta.",
   "disclaimer_spatial_repetition": "La práctica se basa en el aprendizaje por repetición de fallos. Este método se aplica de tal manera que las palabras que falles durante la práctica, volverán a aparecer al terminar todo el repaso (hasta que las aciertes). Esto estimula el aprendizaje y mejora la memorización del vocabulario.",

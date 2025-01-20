@@ -76,13 +76,6 @@ class _OCRPageState extends State<OCRPage> {
 
               final croppedFile = await ImageCropper().cropImage(
                 sourcePath: i.image!.path,
-                aspectRatioPresets: [
-                  CropAspectRatioPreset.square,
-                  CropAspectRatioPreset.ratio3x2,
-                  CropAspectRatioPreset.original,
-                  CropAspectRatioPreset.ratio4x3,
-                  CropAspectRatioPreset.ratio16x9
-                ],
                 uiSettings: [
                   AndroidUiSettings(
                     toolbarTitle: 'ocr_scanner'.tr(),

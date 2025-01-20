@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanpractice/application/dictionary/dictionary_bloc.dart';
 import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
-import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/types/dictionary_types.dart';
 import 'package:kanpractice/presentation/core/widgets/canvas/kp_custom_canvas.dart';
-import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
 import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
 import 'package:kanpractice/presentation/dictionary_page/widgets/word_search_bar.dart';
-
-import '../core/util/utils.dart';
 
 class DictionaryPage extends StatefulWidget {
   final DictionaryArguments args;
@@ -50,18 +45,15 @@ class _DictionaryPageState extends State<DictionaryPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocProvider(
-      create: (context) => getIt<DictionaryBloc>()..add(DictionaryEventStart()),
-      child: widget.args.searchInJisho
-          ? _body()
-          : KPScaffold(
-              setGestureDetector: false,
-              appBarTitle: widget.args.searchInJisho
-                  ? "dict_title".tr()
-                  : 'dict_add_word_title'.tr(),
-              child: _body(),
-            ),
-    );
+    return widget.args.searchInJisho
+        ? _body()
+        : KPScaffold(
+            setGestureDetector: false,
+            appBarTitle: widget.args.searchInJisho
+                ? "dict_title".tr()
+                : 'dict_add_word_title'.tr(),
+            child: _body(),
+          );
   }
 
   Widget _body() {
@@ -84,69 +76,16 @@ class _DictionaryPageState extends State<DictionaryPage>
         children: [
           const SizedBox(height: KPMargins.margin8),
           _searchBar(),
-          BlocBuilder<DictionaryBloc, DictionaryState>(
-            builder: (context, state) {
-              return state.maybeWhen(
-                loaded: (predictions) => Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: KPMargins.margin8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              "< ${"dict_predictions_most_likely".tr()}",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ),
-                          Expanded(
-                            child: Text(
-                              "${"dict_predictions_less_likely".tr()} >",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.end,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    _predictions(predictions),
-                    Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        KPCustomCanvas(
-                          line: _line,
-                          allowPrediction: true,
-                          handleImage: (data, size) {
-                            context.read<DictionaryBloc>().add(
-                                DictionaryEventLoading(data: data, size: size));
-                          },
-                        ),
-                        if (canSearchEitherWay) _searchWidget(),
-                      ],
-                    ),
-                  ],
-                ),
-                loading: () => const Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(KPMargins.margin16),
-                    child: KPProgressIndicator(),
-                  ),
-                ),
-                error: () => Center(
-                    child: Padding(
-                  padding: const EdgeInsets.all(KPMargins.margin16),
-                  child: Text("dict_model_not_loaded".tr(),
-                      style: Theme.of(context).textTheme.bodyMedium),
-                )),
-                orElse: () => const SizedBox(),
-              );
-            },
+          Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              KPCustomCanvas(
+                line: _line,
+                allowPrediction: true,
+                handleImage: (_, __) {},
+              ),
+              if (canSearchEitherWay) _searchWidget(),
+            ],
           ),
         ],
       ),
@@ -236,44 +175,6 @@ class _DictionaryPageState extends State<DictionaryPage>
               .add(SnackbarEventShow("dict_search_empty".tr()));
         }
       },
-    );
-  }
-
-  Widget _predictions(List<Category> predictions) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: KPMargins.margin12),
-      child: SizedBox(
-        height: KPSizes.defaultSizeFiltersList,
-        child: ListView.builder(
-          itemCount: predictions.length,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            final String word = predictions[index].label.substring(0, 1);
-            final double score = predictions[index].score;
-            return Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: KPMargins.margin2),
-              child: ActionChip(
-                  label: Text(
-                    word,
-                    style: TextStyle(
-                        fontSize: KPFontSizes.fontSize18,
-                        color: score.getTextColorBasedOnScore()),
-                  ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: KPMargins.margin8),
-                  backgroundColor: score.getColorBasedOnScore(context),
-                  side: BorderSide.none,
-                  pressElevation: KPMargins.margin2,
-                  onPressed: () {
-                    FocusManager.instance.primaryFocus?.unfocus();
-                    _searchBarTextController.text += word;
-                    setState(() => _line = []);
-                  }),
-            );
-          },
-        ),
-      ),
     );
   }
 

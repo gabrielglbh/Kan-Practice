@@ -27,6 +27,7 @@ import 'package:kanpractice/application/services/translate_service.dart';
 import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/application/specific_data/specific_data_bloc.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
+import 'package:kanpractice/firebase_options.dart';
 import 'package:kanpractice/injection.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -106,7 +107,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureInjection();
   await _initSharedPreferences();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await EasyLocalization.ensureInitialized();
   await FlutterLocalNotificationsPlugin().initialize(
     const InitializationSettings(

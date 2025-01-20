@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/archive_grammar_points/archive_grammar_points_bloc.dart';
@@ -489,8 +490,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             itemCount: DictionaryType.values.length,
             separatorBuilder: (_, __) => const Divider(),
             itemBuilder: (context, index) {
+              final ocrNotAvailable =
+                  kIsWeb && DictionaryType.values[index] == DictionaryType.ocr;
               return ListTile(
-                title: Text(DictionaryType.values[index].title),
+                title: Text(
+                    "${DictionaryType.values[index].title}${ocrNotAvailable ? " ${"ocr_scanner_not_available".tr()}" : ""}"),
                 subtitle: Padding(
                   padding: const EdgeInsets.only(top: KPMargins.margin4),
                   child: Text(DictionaryType.values[index].explanation),
@@ -513,12 +517,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             color: Colors.white),
                       )
                     : Icon(DictionaryType.values[index].icon),
-                trailing: const Icon(Icons.arrow_forward),
+                trailing:
+                    ocrNotAvailable ? null : const Icon(Icons.arrow_forward),
                 contentPadding: const EdgeInsets.all(KPMargins.margin8),
                 onTap: () {
                   switch (DictionaryType.values[index]) {
                     case DictionaryType.ocr:
-                      Navigator.of(context).pushNamed(KanPracticePages.ocrPage);
                       break;
                     case DictionaryType.convolution:
                       Navigator.of(context).pushNamed(

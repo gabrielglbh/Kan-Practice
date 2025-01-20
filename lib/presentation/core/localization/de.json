@@ -435,6 +435,7 @@
   "ocr_gallery": "Galerie",
   "ocr_permissions_denied": "Sollte Berechtigungen für Einstellungen gewähren",
   "ocr_scanner": "Gescanntes",
+  "ocr_scanner_not_available": "(nicht im Web verfügbar)",
   "ocr_scanner_explain": "Nehmen Sie ein Bild auf oder wählen Sie es aus, um die japanischen Schriftzeichen darin zu erkennen. Die OCR wird mit Google Machine Learning Kit angewendet, ebenso wie die Übersetzungen des Textes, so dass einige Fehler auftreten können.",
   "ocr_translate": "Übersetzen",
   "ocr_show_original": "Original anzeigen",

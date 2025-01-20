@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:kanpractice/application/add_word/add_word_bloc.dart';
 import 'package:kanpractice/application/alter_specific_data/alter_specific_data_bloc.dart';
 import 'package:kanpractice/application/archive_grammar_points/archive_grammar_points_bloc.dart';
@@ -21,7 +20,6 @@ import 'package:kanpractice/application/list_details_words/list_details_words_bl
 import 'package:kanpractice/application/lists/lists_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
 import 'package:kanpractice/application/permission_handler/permission_handler_bloc.dart';
-import 'package:kanpractice/application/services/messaging_service.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
 import 'package:kanpractice/application/services/translate_service.dart';
 import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
@@ -109,11 +107,6 @@ void main() async {
   await _initSharedPreferences();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await EasyLocalization.ensureInitialized();
-  await FlutterLocalNotificationsPlugin().initialize(
-    const InitializationSettings(
-      android: AndroidInitializationSettings('splash'),
-    ),
-  );
   runApp(const SetUpApp());
 }
 
@@ -147,8 +140,6 @@ class _KanPracticeState extends State<KanPractice> {
   void initState() {
     ThemeManager.instance.addListenerTo(() => setState(() {}));
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      getIt<MessagingService>().handler(context);
-
       /// For users that already have the tutorial done
       getIt<DailyOptionsBloc>().add(DailyOptionsEventLoadData());
       if (getIt<PreferencesService>()

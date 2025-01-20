@@ -2,9 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
@@ -21,11 +19,6 @@ abstract class InjectableModule {
   FirebaseAuth get firebaseAuth => FirebaseAuth.instance;
   @lazySingleton
   FirebaseFirestore get firebaseFirestore => FirebaseFirestore.instance;
-  @lazySingleton
-  FirebaseMessaging get firebaseMessaging => FirebaseMessaging.instance;
-  @lazySingleton
-  FlutterLocalNotificationsPlugin get flutterLocalNotificationsPlugin =>
-      FlutterLocalNotificationsPlugin();
   @lazySingleton
   FlutterTts get tts => FlutterTts();
   @lazySingleton

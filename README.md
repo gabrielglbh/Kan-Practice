@@ -4,6 +4,21 @@ A simple app for studying the japanese vocabulary and grammar you will learn in 
 
 Build your own word, sentences and grammar lists and study them whenever you want.
 
+## Available for Android and WEB 
+
+WEB is the new platform for KanPractice, new in 2025. Data sharing between Android and web accounts is only available through backups. Notice, site has minor cuts:
+
+- No market translations
+- No OCR nor ML Kit for character recognition
+
+Everything else is full on board!
+
+<p align="center">
+  <a href="https://mykanpractice.web.app">
+    <img src="assets/icon/icon.png" width="20%">
+  </a>  
+</p>
+
 <p align="center">
   <a href="https://play.google.com/store/apps/details?id=com.gabr.garc.kanpractice">
     <img src="https://cdn.rawgit.com/steverichey/google-play-badge-svg/master/img/en_get.svg" width="30%">

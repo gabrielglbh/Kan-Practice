@@ -23,14 +23,24 @@ class KPValidationButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = double.infinity;
+    if (MediaQuery.of(context).size.width > 1200) {
+      width = MediaQuery.of(context).size.width / 3;
+    } else if (MediaQuery.of(context).size.width > 600) {
+      width = MediaQuery.of(context).size.width / 1.25;
+    }
+
     return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 64, bottom: KPMargins.margin16),
-        child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: KPAnimations.ms300),
-            switchInCurve: Curves.easeOut,
-            switchOutCurve: Curves.easeOut,
-            child: trigger ? _validation() : _submit()),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: width),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 64, bottom: KPMargins.margin16),
+          child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: KPAnimations.ms300),
+              switchInCurve: Curves.easeOut,
+              switchOutCurve: Curves.easeOut,
+              child: trigger ? _validation() : _submit()),
+        ),
       ),
     );
   }

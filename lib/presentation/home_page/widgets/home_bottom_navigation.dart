@@ -48,23 +48,27 @@ class HomeBottomNavigation extends StatelessWidget {
   Widget _bottomBarItem(BuildContext context, HomeType type, GlobalKey key) {
     final selectedColor = currentPage == type;
     final color = Theme.of(context).colorScheme.outline;
-    return GestureDetector(
-      onTap: () async {
-        if (type != HomeType.actions) {
-          onPageChanged(type);
-        } else {
-          final code = await ActionsBottomSheet.show(context, currentPage);
-          onShowActions(code);
-        }
-      },
-      child: Container(
-        key: key,
-        width: MediaQuery.of(context).size.width / HomeType.values.length,
-        height: 42,
-        color: Colors.transparent,
-        child: Icon(type.icon,
-            color:
-                selectedColor ? Theme.of(context).colorScheme.primary : color),
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () async {
+          if (type != HomeType.actions) {
+            onPageChanged(type);
+          } else {
+            final code = await ActionsBottomSheet.show(context, currentPage);
+            onShowActions(code);
+          }
+        },
+        child: Container(
+          key: key,
+          width: MediaQuery.of(context).size.width / HomeType.values.length,
+          height: 42,
+          color: Colors.transparent,
+          child: Icon(type.icon,
+              color: selectedColor
+                  ? Theme.of(context).colorScheme.primary
+                  : color),
+        ),
       ),
     );
   }

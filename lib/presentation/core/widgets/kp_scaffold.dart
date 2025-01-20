@@ -38,45 +38,39 @@ class KPScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: onWillPop,
-      child: Padding(
-        padding: MediaQuery.of(context).size.width > 600
-            ? EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width / 5)
-            : EdgeInsets.zero,
-        child: Scaffold(
-          resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-          appBar: AppBar(
-            toolbarHeight: toolbarHeight,
-            automaticallyImplyLeading: automaticallyImplyLeading,
-            title: appBarTitle is String
-                ? FittedBox(fit: BoxFit.fitWidth, child: Text(appBarTitle))
-                : appBarTitle is Widget
-                    ? appBarTitle
-                    : const Text(""),
-            actions: appBarActions,
-            centerTitle: centerTitle,
-          ),
-          body: SafeArea(
-            child: setGestureDetector
-                ? GestureDetector(
-                    /// Remove keyboard on touch anywhere else
-                    onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-
-                    /// Dismiss keyboard if possible whenever a vertical or horizontal
-                    /// drag down occurs on screen
-                    onVerticalDragStart: (details) {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    },
-                    onHorizontalDragStart: (details) {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    },
-                    child: _child(),
-                  )
-                : _child(),
-          ),
-          bottomNavigationBar: bottomNavigationWidget,
-          floatingActionButton: floatingActionButton,
+      child: Scaffold(
+        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+        appBar: AppBar(
+          toolbarHeight: toolbarHeight,
+          automaticallyImplyLeading: automaticallyImplyLeading,
+          title: appBarTitle is String
+              ? FittedBox(fit: BoxFit.fitWidth, child: Text(appBarTitle))
+              : appBarTitle is Widget
+                  ? appBarTitle
+                  : const Text(""),
+          actions: appBarActions,
+          centerTitle: centerTitle,
         ),
+        body: SafeArea(
+          child: setGestureDetector
+              ? GestureDetector(
+                  /// Remove keyboard on touch anywhere else
+                  onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+
+                  /// Dismiss keyboard if possible whenever a vertical or horizontal
+                  /// drag down occurs on screen
+                  onVerticalDragStart: (details) {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
+                  onHorizontalDragStart: (details) {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
+                  child: _child(),
+                )
+              : _child(),
+        ),
+        bottomNavigationBar: bottomNavigationWidget,
+        floatingActionButton: floatingActionButton,
       ),
     );
   }

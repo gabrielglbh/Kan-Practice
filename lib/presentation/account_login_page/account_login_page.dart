@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
@@ -116,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
               style: Theme.of(context).textTheme.bodyLarge),
         ),
         const Divider(),
-        if (!Platform.isIOS)
+        if (!kIsWeb && Platform.isAndroid)
           ElevatedButton(
             onPressed: () => _handleGoogleLogin(),
             child: Row(

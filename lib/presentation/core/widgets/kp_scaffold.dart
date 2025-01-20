@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 
@@ -38,39 +39,46 @@ class KPScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: onWillPop,
-      child: Scaffold(
-        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-        appBar: AppBar(
-          toolbarHeight: toolbarHeight,
-          automaticallyImplyLeading: automaticallyImplyLeading,
-          title: appBarTitle is String
-              ? FittedBox(fit: BoxFit.fitWidth, child: Text(appBarTitle))
-              : appBarTitle is Widget
-                  ? appBarTitle
-                  : const Text(""),
-          actions: appBarActions,
-          centerTitle: centerTitle,
+      child: Container(
+        color: Theme.of(context).colorScheme.surface,
+        child: Padding(
+          padding: kIsWeb ? EdgeInsets.only(bottom: 24) : EdgeInsets.zero,
+          child: Scaffold(
+            resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+            appBar: AppBar(
+              toolbarHeight: toolbarHeight,
+              automaticallyImplyLeading: automaticallyImplyLeading,
+              title: appBarTitle is String
+                  ? FittedBox(fit: BoxFit.fitWidth, child: Text(appBarTitle))
+                  : appBarTitle is Widget
+                      ? appBarTitle
+                      : const Text(""),
+              actions: appBarActions,
+              centerTitle: centerTitle,
+            ),
+            body: SafeArea(
+              child: setGestureDetector
+                  ? GestureDetector(
+                      /// Remove keyboard on touch anywhere else
+                      onTap: () =>
+                          FocusManager.instance.primaryFocus?.unfocus(),
+
+                      /// Dismiss keyboard if possible whenever a vertical or horizontal
+                      /// drag down occurs on screen
+                      onVerticalDragStart: (details) {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                      },
+                      onHorizontalDragStart: (details) {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                      },
+                      child: _child(),
+                    )
+                  : _child(),
+            ),
+            bottomNavigationBar: bottomNavigationWidget,
+            floatingActionButton: floatingActionButton,
+          ),
         ),
-        body: SafeArea(
-          child: setGestureDetector
-              ? GestureDetector(
-                  /// Remove keyboard on touch anywhere else
-                  onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      
-                  /// Dismiss keyboard if possible whenever a vertical or horizontal
-                  /// drag down occurs on screen
-                  onVerticalDragStart: (details) {
-                    FocusManager.instance.primaryFocus?.unfocus();
-                  },
-                  onHorizontalDragStart: (details) {
-                    FocusManager.instance.primaryFocus?.unfocus();
-                  },
-                  child: _child(),
-                )
-              : _child(),
-        ),
-        bottomNavigationBar: bottomNavigationWidget,
-        floatingActionButton: floatingActionButton,
       ),
     );
   }

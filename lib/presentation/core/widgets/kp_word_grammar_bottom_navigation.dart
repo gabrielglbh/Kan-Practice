@@ -23,7 +23,8 @@ class KPWordGrammarBottomNavigation extends StatelessWidget {
               color: Theme.of(context).brightness == Brightness.light
                   ? Colors.grey
                   : KPColors.accentLight,
-              blurRadius: 10,
+              blurRadius: 6,
+              offset: Offset(0, -8),
             )
           ],
         ),
@@ -58,8 +59,9 @@ class KPWordGrammarBottomNavigation extends StatelessWidget {
             children: [
               Icon(
                 type.icon,
-                color:
-                    selectedColor ? Theme.of(context).colorScheme.primary : color,
+                color: selectedColor
+                    ? Theme.of(context).colorScheme.primary
+                    : color,
               ),
               const SizedBox(height: 2),
               Text(

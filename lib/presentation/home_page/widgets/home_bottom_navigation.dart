@@ -28,7 +28,8 @@ class HomeBottomNavigation extends StatelessWidget {
               color: Theme.of(context).brightness == Brightness.light
                   ? Colors.grey
                   : KPColors.accentLight,
-              blurRadius: 10,
+              blurRadius: 6,
+              offset: Offset(0, -8),
             )
           ],
         ),

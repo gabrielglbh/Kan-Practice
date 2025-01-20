@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/word_history/word_history_bloc.dart';
 import 'package:kanpractice/injection.dart';
-import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/domain/word_history/word_history.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
@@ -11,7 +10,6 @@ import 'package:kanpractice/presentation/core/widgets/kp_empty_list.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
-import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
 
 class WordHistoryPage extends StatefulWidget {
   const WordHistoryPage({super.key});
@@ -102,12 +100,9 @@ class _WordHistoryPageState extends State<WordHistoryPage> {
                       final date =
                           wordHistory.searchedOn.parseDateMilliseconds();
                       return ListTile(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(
-                              KanPracticePages.jishoPage,
-                              arguments: DictionaryDetailsArguments(
-                                  word: wordHistory.word,
-                                  fromDictionary: true));
+                        onTap: () async {
+                          await Utils.launch(
+                              context, Utils.getJishoUri(wordHistory.word));
                         },
                         title: Text(wordHistory.word,
                             style: Theme.of(context)

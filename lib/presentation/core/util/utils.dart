@@ -140,6 +140,8 @@ class Utils {
   static String get currentLocale =>
       PlatformDispatcher.instance.locale.languageCode;
 
+  static String getJishoUri(String word) => "https://jisho.org/word/$word";
+
   /// Opens up a [url]
   static Future<void> launch(BuildContext context, String url) async {
     if (await canLaunchUrl(Uri.parse(url))) {

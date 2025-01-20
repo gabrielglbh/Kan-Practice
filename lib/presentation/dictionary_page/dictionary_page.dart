@@ -4,10 +4,10 @@ import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kanpractice/presentation/core/types/dictionary_types.dart';
+import 'package:kanpractice/presentation/core/util/utils.dart';
 import 'package:kanpractice/presentation/core/widgets/canvas/kp_custom_canvas.dart';
 import 'package:kanpractice/presentation/core/widgets/kp_scaffold.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
-import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
 import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
 import 'package:kanpractice/presentation/dictionary_page/widgets/word_search_bar.dart';
 
@@ -157,15 +157,13 @@ class _DictionaryPageState extends State<DictionaryPage>
           ],
         ),
       ),
-      onTap: () {
+      onTap: () async {
         String? text = _searchBarTextController.text;
         if (text.isNotEmpty) {
           /// If the user is searching for words, redirect them to Jisho
           /// If the user is adding words, pop and send the predicted word back
           if (widget.args.searchInJisho) {
-            Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
-                arguments: DictionaryDetailsArguments(
-                    word: text, fromDictionary: true));
+            await Utils.launch(context, Utils.getJishoUri(text));
           } else {
             Navigator.of(context).pop(text);
           }

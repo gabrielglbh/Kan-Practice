@@ -10,8 +10,6 @@ import 'package:kanpractice/presentation/add_market_list_page/add_market_list_pa
 import 'package:kanpractice/presentation/add_word_page/add_word_page.dart';
 import 'package:kanpractice/presentation/add_word_page/arguments.dart';
 import 'package:kanpractice/presentation/backup_page/backup_page.dart';
-import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
-import 'package:kanpractice/presentation/dictionary_details_page/dictionary_details_page.dart';
 import 'package:kanpractice/presentation/dictionary_page/arguments.dart';
 import 'package:kanpractice/presentation/dictionary_page/dictionary_page.dart';
 import 'package:kanpractice/presentation/folder_details_page/folder_details_page.dart';
@@ -36,7 +34,6 @@ import 'package:kanpractice/presentation/study_modes/writing_page.dart';
 import 'package:kanpractice/presentation/test_result_page/arguments.dart';
 import 'package:kanpractice/presentation/test_result_page/test_result_page.dart';
 import 'package:kanpractice/presentation/word_history_page/word_history_page.dart';
-import 'package:page_transition/page_transition.dart';
 
 /// Router generator in which all pages and their transitions are made.
 Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -80,12 +77,6 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case KanPracticePages.backUpPage:
       String args = settings.arguments as String;
       return CupertinoPageRoute(builder: (_) => BackUpPage(uid: args));
-    case KanPracticePages.jishoPage:
-      DictionaryDetailsArguments args =
-          settings.arguments as DictionaryDetailsArguments;
-      return PageTransition(
-          type: PageTransitionType.bottomToTop,
-          child: DictionaryDetailsPage(args: args));
     case KanPracticePages.dictionaryPage:
       DictionaryArguments args = settings.arguments as DictionaryArguments;
       return CupertinoPageRoute(builder: (_) => DictionaryPage(args: args));

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/application/word_details/word_details_bloc.dart';
 import 'package:kanpractice/injection.dart';
-import 'package:kanpractice/presentation/core/routing/pages.dart';
 import 'package:kanpractice/domain/word/word.dart';
 import 'package:kanpractice/presentation/core/types/home_types.dart';
 import 'package:kanpractice/presentation/core/widgets/graphs/kp_radial_graph_legend.dart';
@@ -14,7 +13,6 @@ import 'package:kanpractice/presentation/core/widgets/kp_progress_indicator.dart
 import 'package:kanpractice/presentation/core/widgets/kp_tts_icon_button.dart';
 import 'package:kanpractice/presentation/core/util/consts.dart';
 import 'package:kanpractice/presentation/core/util/utils.dart';
-import 'package:kanpractice/presentation/dictionary_details_page/arguments.dart';
 import 'package:kanpractice/presentation/core/types/word_categories.dart';
 import 'package:kanpractice/presentation/core/types/study_modes.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -205,10 +203,10 @@ class KPWordBottomSheet extends StatelessWidget {
           children: [
             IconButton(
               icon: const Icon(Icons.menu_book_rounded),
-              onPressed: () {
-                Navigator.of(context).pushNamed(KanPracticePages.jishoPage,
-                    arguments:
-                        DictionaryDetailsArguments(word: updatedWord.word));
+              onPressed: () async {
+                await Utils.launch(
+                    context, Utils.getJishoUri(updatedWord.word));
+                return;
               },
             ),
             SizedBox(

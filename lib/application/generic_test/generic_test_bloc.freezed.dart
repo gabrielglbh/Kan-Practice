@@ -72,6 +72,9 @@ class _$GenericTestStateCopyWithImpl<$Res, $Val extends GenericTestState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of GenericTestState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -91,6 +94,8 @@ class __$$GenericTestInitialImplCopyWithImpl<$Res>
       $Res Function(_$GenericTestInitialImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GenericTestState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -137,7 +142,9 @@ class _$GenericTestInitialImpl implements GenericTestInitial {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_wordsToReview));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GenericTestState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GenericTestInitialImplCopyWith<_$GenericTestInitialImpl> get copyWith =>
@@ -212,7 +219,10 @@ abstract class GenericTestInitial implements GenericTestState {
       _$GenericTestInitialImpl;
 
   List<int> get wordsToReview;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of GenericTestState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GenericTestInitialImplCopyWith<_$GenericTestInitialImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -234,6 +244,8 @@ class __$$GenericTestLoadedImplCopyWithImpl<$Res>
       $Res Function(_$GenericTestLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GenericTestState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -288,7 +300,9 @@ class _$GenericTestLoadedImpl implements GenericTestLoaded {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_words), mode);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GenericTestState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GenericTestLoadedImplCopyWith<_$GenericTestLoadedImpl> get copyWith =>
@@ -364,7 +378,10 @@ abstract class GenericTestLoaded implements GenericTestState {
 
   List<Word> get words;
   StudyModes get mode;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of GenericTestState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GenericTestLoadedImplCopyWith<_$GenericTestLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -91,6 +91,9 @@ class _$AddGrammarPointStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of AddGrammarPointState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -110,6 +113,9 @@ class __$$AddGrammarPointLoadingImplCopyWithImpl<$Res>
       _$AddGrammarPointLoadingImpl _value,
       $Res Function(_$AddGrammarPointLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddGrammarPointState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -234,6 +240,9 @@ class __$$AddGrammarPointUpdateDoneImplCopyWithImpl<$Res>
       _$AddGrammarPointUpdateDoneImpl _value,
       $Res Function(_$AddGrammarPointUpdateDoneImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddGrammarPointState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -358,6 +367,9 @@ class __$$AddGrammarPointInitialImplCopyWithImpl<$Res>
       _$AddGrammarPointInitialImpl _value,
       $Res Function(_$AddGrammarPointInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddGrammarPointState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -485,6 +497,8 @@ class __$$AddGrammarPointCreationDoneImplCopyWithImpl<$Res>
       $Res Function(_$AddGrammarPointCreationDoneImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AddGrammarPointState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -524,7 +538,9 @@ class _$AddGrammarPointCreationDoneImpl implements AddGrammarPointCreationDone {
   @override
   int get hashCode => Object.hash(runtimeType, exitMode);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AddGrammarPointState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AddGrammarPointCreationDoneImplCopyWith<_$AddGrammarPointCreationDoneImpl>
@@ -617,7 +633,10 @@ abstract class AddGrammarPointCreationDone implements AddGrammarPointState {
       _$AddGrammarPointCreationDoneImpl;
 
   bool get exitMode;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AddGrammarPointState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AddGrammarPointCreationDoneImplCopyWith<_$AddGrammarPointCreationDoneImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -639,6 +658,8 @@ class __$$AddGrammarPointErrorImplCopyWithImpl<$Res>
       $Res Function(_$AddGrammarPointErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AddGrammarPointState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -677,7 +698,9 @@ class _$AddGrammarPointErrorImpl implements AddGrammarPointError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AddGrammarPointState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AddGrammarPointErrorImplCopyWith<_$AddGrammarPointErrorImpl>
@@ -771,7 +794,10 @@ abstract class AddGrammarPointError implements AddGrammarPointState {
       _$AddGrammarPointErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AddGrammarPointState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AddGrammarPointErrorImplCopyWith<_$AddGrammarPointErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

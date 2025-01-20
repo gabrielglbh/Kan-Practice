@@ -72,6 +72,9 @@ class _$FolderPracticeStateCopyWithImpl<$Res, $Val extends FolderPracticeState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of FolderPracticeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -89,6 +92,9 @@ class __$$FolderPracticeInitialImplCopyWithImpl<$Res>
   __$$FolderPracticeInitialImplCopyWithImpl(_$FolderPracticeInitialImpl _value,
       $Res Function(_$FolderPracticeInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FolderPracticeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -195,6 +201,8 @@ class __$$FolderPracticeLoadedImplCopyWithImpl<$Res>
       $Res Function(_$FolderPracticeLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of FolderPracticeState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -249,7 +257,9 @@ class _$FolderPracticeLoadedImpl implements FolderPracticeLoaded {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_list), mode);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FolderPracticeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FolderPracticeLoadedImplCopyWith<_$FolderPracticeLoadedImpl>
@@ -327,7 +337,10 @@ abstract class FolderPracticeLoaded implements FolderPracticeState {
 
   List<Word> get list;
   StudyModes get mode;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of FolderPracticeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FolderPracticeLoadedImplCopyWith<_$FolderPracticeLoadedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

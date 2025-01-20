@@ -97,6 +97,9 @@ class _$BackupStateCopyWithImpl<$Res, $Val extends BackupState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of BackupState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -113,6 +116,9 @@ class __$$BackupLoadingImplCopyWithImpl<$Res>
   __$$BackupLoadingImplCopyWithImpl(
       _$BackupLoadingImpl _value, $Res Function(_$BackupLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of BackupState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -243,6 +249,8 @@ class __$$BackupLoadedImplCopyWithImpl<$Res>
       _$BackupLoadedImpl _value, $Res Function(_$BackupLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BackupState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -281,7 +289,9 @@ class _$BackupLoadedImpl implements BackupLoaded {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BackupState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BackupLoadedImplCopyWith<_$BackupLoadedImpl> get copyWith =>
@@ -379,7 +389,10 @@ abstract class BackupLoaded implements BackupState {
   const factory BackupLoaded(final String message) = _$BackupLoadedImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BackupState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BackupLoadedImplCopyWith<_$BackupLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -398,6 +411,9 @@ class __$$BackupInitialImplCopyWithImpl<$Res>
   __$$BackupInitialImplCopyWithImpl(
       _$BackupInitialImpl _value, $Res Function(_$BackupInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of BackupState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -528,6 +544,8 @@ class __$$BackupErrorImplCopyWithImpl<$Res>
       _$BackupErrorImpl _value, $Res Function(_$BackupErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BackupState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -566,7 +584,9 @@ class _$BackupErrorImpl implements BackupError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BackupState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BackupErrorImplCopyWith<_$BackupErrorImpl> get copyWith =>
@@ -664,7 +684,10 @@ abstract class BackupError implements BackupState {
   const factory BackupError(final String message) = _$BackupErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BackupState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BackupErrorImplCopyWith<_$BackupErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -688,6 +711,8 @@ class __$$BackupVersionRetrievedImplCopyWithImpl<$Res>
       $Res Function(_$BackupVersionRetrievedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BackupState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -741,7 +766,9 @@ class _$BackupVersionRetrievedImpl implements BackupVersionRetrieved {
   int get hashCode => Object.hash(
       runtimeType, version, const DeepCollectionEquality().hash(_notes));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BackupState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BackupVersionRetrievedImplCopyWith<_$BackupVersionRetrievedImpl>
@@ -843,7 +870,10 @@ abstract class BackupVersionRetrieved implements BackupState {
 
   String get version;
   List<String> get notes;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BackupState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BackupVersionRetrievedImplCopyWith<_$BackupVersionRetrievedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -865,6 +895,8 @@ class __$$BackupNotesRetrievedImplCopyWithImpl<$Res>
       $Res Function(_$BackupNotesRetrievedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BackupState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -909,7 +941,9 @@ class _$BackupNotesRetrievedImpl implements BackupNotesRetrieved {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_notes));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BackupState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BackupNotesRetrievedImplCopyWith<_$BackupNotesRetrievedImpl>
@@ -1010,7 +1044,10 @@ abstract class BackupNotesRetrieved implements BackupState {
       _$BackupNotesRetrievedImpl;
 
   List<String> get notes;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BackupState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BackupNotesRetrievedImplCopyWith<_$BackupNotesRetrievedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

@@ -73,6 +73,9 @@ class _$GrammarTestStateCopyWithImpl<$Res, $Val extends GrammarTestState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of GrammarTestState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -92,6 +95,8 @@ class __$$GrammarTestInitialImplCopyWithImpl<$Res>
       $Res Function(_$GrammarTestInitialImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GrammarTestState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -138,7 +143,9 @@ class _$GrammarTestInitialImpl implements GrammarTestInitial {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_grammarToReview));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GrammarTestState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GrammarTestInitialImplCopyWith<_$GrammarTestInitialImpl> get copyWith =>
@@ -214,7 +221,10 @@ abstract class GrammarTestInitial implements GrammarTestState {
       _$GrammarTestInitialImpl;
 
   List<int> get grammarToReview;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of GrammarTestState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GrammarTestInitialImplCopyWith<_$GrammarTestInitialImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -236,6 +246,8 @@ class __$$GrammarTestLoadedImplCopyWithImpl<$Res>
       $Res Function(_$GrammarTestLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GrammarTestState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -290,7 +302,9 @@ class _$GrammarTestLoadedImpl implements GrammarTestLoaded {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_grammar), mode);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GrammarTestState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GrammarTestLoadedImplCopyWith<_$GrammarTestLoadedImpl> get copyWith =>
@@ -368,7 +382,10 @@ abstract class GrammarTestLoaded implements GrammarTestState {
 
   List<GrammarPoint> get grammar;
   GrammarModes get mode;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of GrammarTestState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GrammarTestLoadedImplCopyWith<_$GrammarTestLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

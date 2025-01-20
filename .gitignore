@@ -13,6 +13,10 @@ symbols/
 
 assets/environment/
 
+# Web Sqlite
+web/sqflite_sw.js
+web/sqlite3.wasm
+
 # IntelliJ related
 *.iml
 *.ipr

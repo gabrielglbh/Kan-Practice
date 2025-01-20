@@ -84,6 +84,9 @@ class _$FolderStateCopyWithImpl<$Res, $Val extends FolderState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of FolderState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -100,6 +103,9 @@ class __$$FolderLoadingImplCopyWithImpl<$Res>
   __$$FolderLoadingImplCopyWithImpl(
       _$FolderLoadingImpl _value, $Res Function(_$FolderLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FolderState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -217,6 +223,8 @@ class __$$FolderLoadedImplCopyWithImpl<$Res>
       _$FolderLoadedImpl _value, $Res Function(_$FolderLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of FolderState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -261,7 +269,9 @@ class _$FolderLoadedImpl implements FolderLoaded {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_lists));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FolderState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FolderLoadedImplCopyWith<_$FolderLoadedImpl> get copyWith =>
@@ -346,7 +356,10 @@ abstract class FolderLoaded implements FolderState {
   const factory FolderLoaded(final List<Folder> lists) = _$FolderLoadedImpl;
 
   List<Folder> get lists;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of FolderState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FolderLoadedImplCopyWith<_$FolderLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -365,6 +378,9 @@ class __$$FolderListAddedImplCopyWithImpl<$Res>
   __$$FolderListAddedImplCopyWithImpl(
       _$FolderListAddedImpl _value, $Res Function(_$FolderListAddedImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FolderState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -479,6 +495,9 @@ class __$$FolderErrorImplCopyWithImpl<$Res>
   __$$FolderErrorImplCopyWithImpl(
       _$FolderErrorImpl _value, $Res Function(_$FolderErrorImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FolderState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

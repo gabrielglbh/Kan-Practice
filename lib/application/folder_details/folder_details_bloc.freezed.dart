@@ -90,6 +90,9 @@ class _$FolderDetailsStateCopyWithImpl<$Res, $Val extends FolderDetailsState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of FolderDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -106,6 +109,9 @@ class __$$FolderDetailsLoadingImplCopyWithImpl<$Res>
   __$$FolderDetailsLoadingImplCopyWithImpl(_$FolderDetailsLoadingImpl _value,
       $Res Function(_$FolderDetailsLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FolderDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -230,6 +236,8 @@ class __$$FolderDetailsLoadedImplCopyWithImpl<$Res>
       $Res Function(_$FolderDetailsLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of FolderDetailsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -274,7 +282,9 @@ class _$FolderDetailsLoadedImpl implements FolderDetailsLoaded {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_lists));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FolderDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FolderDetailsLoadedImplCopyWith<_$FolderDetailsLoadedImpl> get copyWith =>
@@ -367,7 +377,10 @@ abstract class FolderDetailsLoaded implements FolderDetailsState {
       _$FolderDetailsLoadedImpl;
 
   List<WordList> get lists;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of FolderDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FolderDetailsLoadedImplCopyWith<_$FolderDetailsLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -392,6 +405,8 @@ class __$$FolderDetailsTestLoadedImplCopyWithImpl<$Res>
       $Res Function(_$FolderDetailsTestLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of FolderDetailsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -437,7 +452,9 @@ class _$FolderDetailsTestLoadedImpl implements FolderDetailsTestLoaded {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_lists));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FolderDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FolderDetailsTestLoadedImplCopyWith<_$FolderDetailsTestLoadedImpl>
@@ -530,7 +547,10 @@ abstract class FolderDetailsTestLoaded implements FolderDetailsState {
       _$FolderDetailsTestLoadedImpl;
 
   List<WordList> get lists;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of FolderDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FolderDetailsTestLoadedImplCopyWith<_$FolderDetailsTestLoadedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -549,6 +569,9 @@ class __$$FolderDetailsInitialImplCopyWithImpl<$Res>
   __$$FolderDetailsInitialImplCopyWithImpl(_$FolderDetailsInitialImpl _value,
       $Res Function(_$FolderDetailsInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FolderDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -670,6 +693,9 @@ class __$$FolderDetailsErrorImplCopyWithImpl<$Res>
   __$$FolderDetailsErrorImplCopyWithImpl(_$FolderDetailsErrorImpl _value,
       $Res Function(_$FolderDetailsErrorImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FolderDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

@@ -83,6 +83,9 @@ class _$RateStateCopyWithImpl<$Res, $Val extends RateState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of RateState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -99,6 +102,9 @@ class __$$RateInitialImplCopyWithImpl<$Res>
   __$$RateInitialImplCopyWithImpl(
       _$RateInitialImpl _value, $Res Function(_$RateInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of RateState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -213,6 +219,9 @@ class __$$RateLoadingImplCopyWithImpl<$Res>
   __$$RateLoadingImplCopyWithImpl(
       _$RateLoadingImpl _value, $Res Function(_$RateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of RateState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -330,6 +339,8 @@ class __$$RateSucceededImplCopyWithImpl<$Res>
       _$RateSucceededImpl _value, $Res Function(_$RateSucceededImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of RateState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -368,7 +379,9 @@ class _$RateSucceededImpl implements RateSucceeded {
   @override
   int get hashCode => Object.hash(runtimeType, rating);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of RateState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$RateSucceededImplCopyWith<_$RateSucceededImpl> get copyWith =>
@@ -453,7 +466,10 @@ abstract class RateSucceeded implements RateState {
   const factory RateSucceeded(final double rating) = _$RateSucceededImpl;
 
   double get rating;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of RateState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RateSucceededImplCopyWith<_$RateSucceededImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -475,6 +491,8 @@ class __$$RateErrorImplCopyWithImpl<$Res>
       _$RateErrorImpl _value, $Res Function(_$RateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of RateState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -513,7 +531,9 @@ class _$RateErrorImpl implements RateError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of RateState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$RateErrorImplCopyWith<_$RateErrorImpl> get copyWith =>
@@ -598,7 +618,10 @@ abstract class RateError implements RateState {
   const factory RateError(final String message) = _$RateErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of RateState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RateErrorImplCopyWith<_$RateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

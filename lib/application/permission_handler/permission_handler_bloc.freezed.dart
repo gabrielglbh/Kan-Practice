@@ -79,6 +79,9 @@ class _$PermissionHandlerStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of PermissionHandlerState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -98,6 +101,9 @@ class __$$PermissionHandlerInitialImplCopyWithImpl<$Res>
       _$PermissionHandlerInitialImpl _value,
       $Res Function(_$PermissionHandlerInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of PermissionHandlerState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -213,6 +219,8 @@ class __$$PermissionHandlerSucceededImplCopyWithImpl<$Res>
       $Res Function(_$PermissionHandlerSucceededImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PermissionHandlerState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -251,7 +259,9 @@ class _$PermissionHandlerSucceededImpl implements PermissionHandlerSucceeded {
   @override
   int get hashCode => Object.hash(runtimeType, source);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PermissionHandlerState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PermissionHandlerSucceededImplCopyWith<_$PermissionHandlerSucceededImpl>
@@ -332,7 +342,10 @@ abstract class PermissionHandlerSucceeded implements PermissionHandlerState {
       _$PermissionHandlerSucceededImpl;
 
   ImageSource get source;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PermissionHandlerState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PermissionHandlerSucceededImplCopyWith<_$PermissionHandlerSucceededImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -354,6 +367,9 @@ class __$$PermissionHandlerErrorImplCopyWithImpl<$Res>
       _$PermissionHandlerErrorImpl _value,
       $Res Function(_$PermissionHandlerErrorImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of PermissionHandlerState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

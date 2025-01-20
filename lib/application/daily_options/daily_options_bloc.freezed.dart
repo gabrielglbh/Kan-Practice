@@ -88,6 +88,9 @@ class _$DailyOptionsStateCopyWithImpl<$Res, $Val extends DailyOptionsState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of DailyOptionsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -104,6 +107,9 @@ class __$$DailyOptionsLoadingImplCopyWithImpl<$Res>
   __$$DailyOptionsLoadingImplCopyWithImpl(_$DailyOptionsLoadingImpl _value,
       $Res Function(_$DailyOptionsLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DailyOptionsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -226,6 +232,8 @@ class __$$DailyOptionsLoadedImplCopyWithImpl<$Res>
       $Res Function(_$DailyOptionsLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DailyOptionsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -292,7 +300,9 @@ class _$DailyOptionsLoadedImpl implements DailyOptionsLoaded {
   int get hashCode =>
       Object.hash(runtimeType, words, grammar, wordsMean, grammarMean);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DailyOptionsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DailyOptionsLoadedImplCopyWith<_$DailyOptionsLoadedImpl> get copyWith =>
@@ -386,7 +396,10 @@ abstract class DailyOptionsLoaded implements DailyOptionsState {
   int get grammar;
   int get wordsMean;
   int get grammarMean;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DailyOptionsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DailyOptionsLoadedImplCopyWith<_$DailyOptionsLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -405,6 +418,9 @@ class __$$DailyOptionsInitialImplCopyWithImpl<$Res>
   __$$DailyOptionsInitialImplCopyWithImpl(_$DailyOptionsInitialImpl _value,
       $Res Function(_$DailyOptionsInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DailyOptionsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -524,6 +540,9 @@ class __$$DailyOptionsErrorImplCopyWithImpl<$Res>
   __$$DailyOptionsErrorImplCopyWithImpl(_$DailyOptionsErrorImpl _value,
       $Res Function(_$DailyOptionsErrorImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DailyOptionsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

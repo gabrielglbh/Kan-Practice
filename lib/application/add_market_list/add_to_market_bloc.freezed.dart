@@ -90,6 +90,9 @@ class _$AddToMarketStateCopyWithImpl<$Res, $Val extends AddToMarketState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of AddToMarketState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -106,6 +109,9 @@ class __$$AddToMarketLoadingImplCopyWithImpl<$Res>
   __$$AddToMarketLoadingImplCopyWithImpl(_$AddToMarketLoadingImpl _value,
       $Res Function(_$AddToMarketLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddToMarketState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -226,6 +232,9 @@ class __$$AddToMarketLoadedImplCopyWithImpl<$Res>
   __$$AddToMarketLoadedImplCopyWithImpl(_$AddToMarketLoadedImpl _value,
       $Res Function(_$AddToMarketLoadedImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddToMarketState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -346,6 +355,9 @@ class __$$AddToMarketInitialImplCopyWithImpl<$Res>
   __$$AddToMarketInitialImplCopyWithImpl(_$AddToMarketInitialImpl _value,
       $Res Function(_$AddToMarketInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddToMarketState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -471,6 +483,8 @@ class __$$AddToMarketUserRetrievedImplCopyWithImpl<$Res>
       $Res Function(_$AddToMarketUserRetrievedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AddToMarketState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -509,7 +523,9 @@ class _$AddToMarketUserRetrievedImpl implements AddToMarketUserRetrieved {
   @override
   int get hashCode => Object.hash(runtimeType, name);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AddToMarketState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AddToMarketUserRetrievedImplCopyWith<_$AddToMarketUserRetrievedImpl>
@@ -602,7 +618,10 @@ abstract class AddToMarketUserRetrieved implements AddToMarketState {
       _$AddToMarketUserRetrievedImpl;
 
   String get name;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AddToMarketState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AddToMarketUserRetrievedImplCopyWith<_$AddToMarketUserRetrievedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -624,6 +643,8 @@ class __$$AddToMarketErrorImplCopyWithImpl<$Res>
       $Res Function(_$AddToMarketErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AddToMarketState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -662,7 +683,9 @@ class _$AddToMarketErrorImpl implements AddToMarketError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AddToMarketState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AddToMarketErrorImplCopyWith<_$AddToMarketErrorImpl> get copyWith =>
@@ -754,7 +777,10 @@ abstract class AddToMarketError implements AddToMarketState {
   const factory AddToMarketError(final String message) = _$AddToMarketErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AddToMarketState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AddToMarketErrorImplCopyWith<_$AddToMarketErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

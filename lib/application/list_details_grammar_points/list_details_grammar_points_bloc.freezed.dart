@@ -99,6 +99,9 @@ class _$ListDetailsGrammarPointsStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of ListDetailsGrammarPointsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -118,6 +121,9 @@ class __$$ListDetailsGrammarPointsInitialImplCopyWithImpl<$Res>
       _$ListDetailsGrammarPointsInitialImpl _value,
       $Res Function(_$ListDetailsGrammarPointsInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ListDetailsGrammarPointsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -254,6 +260,8 @@ class __$$ListDetailsGrammarPointsLoadedImplCopyWithImpl<$Res>
       $Res Function(_$ListDetailsGrammarPointsLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ListDetailsGrammarPointsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -310,7 +318,9 @@ class _$ListDetailsGrammarPointsLoadedImpl
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_list), name);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ListDetailsGrammarPointsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ListDetailsGrammarPointsLoadedImplCopyWith<
@@ -413,7 +423,10 @@ abstract class ListDetailsGrammarPointsLoaded
 
   List<GrammarPoint> get list;
   String get name;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ListDetailsGrammarPointsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ListDetailsGrammarPointsLoadedImplCopyWith<
           _$ListDetailsGrammarPointsLoadedImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -439,6 +452,8 @@ class __$$ListDetailsGrammarPointsPracticeLoadedImplCopyWithImpl<$Res>
       $Res Function(_$ListDetailsGrammarPointsPracticeLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ListDetailsGrammarPointsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -494,7 +509,9 @@ class _$ListDetailsGrammarPointsPracticeLoadedImpl
   int get hashCode => Object.hash(
       runtimeType, mode, const DeepCollectionEquality().hash(_list));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ListDetailsGrammarPointsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ListDetailsGrammarPointsPracticeLoadedImplCopyWith<
@@ -598,7 +615,10 @@ abstract class ListDetailsGrammarPointsPracticeLoaded
 
   GrammarModes get mode;
   List<GrammarPoint> get list;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ListDetailsGrammarPointsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ListDetailsGrammarPointsPracticeLoadedImplCopyWith<
           _$ListDetailsGrammarPointsPracticeLoadedImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -621,6 +641,9 @@ class __$$ListDetailsGrammarPointsLoadingImplCopyWithImpl<$Res>
       _$ListDetailsGrammarPointsLoadingImpl _value,
       $Res Function(_$ListDetailsGrammarPointsLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ListDetailsGrammarPointsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -757,6 +780,8 @@ class __$$ListDetailsGrammarPointsErrorImplCopyWithImpl<$Res>
       $Res Function(_$ListDetailsGrammarPointsErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ListDetailsGrammarPointsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -796,7 +821,9 @@ class _$ListDetailsGrammarPointsErrorImpl
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ListDetailsGrammarPointsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ListDetailsGrammarPointsErrorImplCopyWith<
@@ -897,7 +924,10 @@ abstract class ListDetailsGrammarPointsError
       _$ListDetailsGrammarPointsErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ListDetailsGrammarPointsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ListDetailsGrammarPointsErrorImplCopyWith<
           _$ListDetailsGrammarPointsErrorImpl>
       get copyWith => throw _privateConstructorUsedError;

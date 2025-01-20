@@ -85,6 +85,9 @@ class _$ArchiveGrammarPointsStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of ArchiveGrammarPointsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -104,6 +107,9 @@ class __$$ArchiveGrammarPointsLoadingImplCopyWithImpl<$Res>
       _$ArchiveGrammarPointsLoadingImpl _value,
       $Res Function(_$ArchiveGrammarPointsLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ArchiveGrammarPointsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -227,6 +233,8 @@ class __$$ArchiveGrammarPointsLoadedImplCopyWithImpl<$Res>
       $Res Function(_$ArchiveGrammarPointsLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ArchiveGrammarPointsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -272,7 +280,9 @@ class _$ArchiveGrammarPointsLoadedImpl implements ArchiveGrammarPointsLoaded {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_list));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ArchiveGrammarPointsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ArchiveGrammarPointsLoadedImplCopyWith<_$ArchiveGrammarPointsLoadedImpl>
@@ -359,7 +369,10 @@ abstract class ArchiveGrammarPointsLoaded implements ArchiveGrammarPointsState {
       _$ArchiveGrammarPointsLoadedImpl;
 
   List<GrammarPoint> get list;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ArchiveGrammarPointsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ArchiveGrammarPointsLoadedImplCopyWith<_$ArchiveGrammarPointsLoadedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -381,6 +394,9 @@ class __$$ArchiveGrammarPointsInitialImplCopyWithImpl<$Res>
       _$ArchiveGrammarPointsInitialImpl _value,
       $Res Function(_$ArchiveGrammarPointsInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ArchiveGrammarPointsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -501,6 +517,9 @@ class __$$ArchiveGrammarPointsErrorImplCopyWithImpl<$Res>
       _$ArchiveGrammarPointsErrorImpl _value,
       $Res Function(_$ArchiveGrammarPointsErrorImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ArchiveGrammarPointsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

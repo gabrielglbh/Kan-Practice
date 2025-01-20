@@ -85,6 +85,9 @@ class _$DictionaryDetailsStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of DictionaryDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -104,6 +107,9 @@ class __$$DictionaryDetailsLoadingImplCopyWithImpl<$Res>
       _$DictionaryDetailsLoadingImpl _value,
       $Res Function(_$DictionaryDetailsLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DictionaryDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -225,6 +231,8 @@ class __$$DictionaryDetailsLoadedImplCopyWithImpl<$Res>
       $Res Function(_$DictionaryDetailsLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DictionaryDetailsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -263,7 +271,9 @@ class _$DictionaryDetailsLoadedImpl implements DictionaryDetailsLoaded {
   @override
   int get hashCode => Object.hash(runtimeType, data);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DictionaryDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DictionaryDetailsLoadedImplCopyWith<_$DictionaryDetailsLoadedImpl>
@@ -350,7 +360,10 @@ abstract class DictionaryDetailsLoaded implements DictionaryDetailsState {
       _$DictionaryDetailsLoadedImpl;
 
   WordData get data;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DictionaryDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DictionaryDetailsLoadedImplCopyWith<_$DictionaryDetailsLoadedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -372,6 +385,9 @@ class __$$DictionaryDetailsInitialImplCopyWithImpl<$Res>
       _$DictionaryDetailsInitialImpl _value,
       $Res Function(_$DictionaryDetailsInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DictionaryDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -490,6 +506,9 @@ class __$$DictionaryDetailsErrorImplCopyWithImpl<$Res>
       _$DictionaryDetailsErrorImpl _value,
       $Res Function(_$DictionaryDetailsErrorImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DictionaryDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

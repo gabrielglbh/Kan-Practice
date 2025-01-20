@@ -78,6 +78,9 @@ class _$ExampleDataStateCopyWithImpl<$Res, $Val extends ExampleDataState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of ExampleDataState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -94,6 +97,9 @@ class __$$ExampleDataLoadedImplCopyWithImpl<$Res>
   __$$ExampleDataLoadedImplCopyWithImpl(_$ExampleDataLoadedImpl _value,
       $Res Function(_$ExampleDataLoadedImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ExampleDataState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -202,6 +208,9 @@ class __$$ExampleDataInitialImplCopyWithImpl<$Res>
   __$$ExampleDataInitialImplCopyWithImpl(_$ExampleDataInitialImpl _value,
       $Res Function(_$ExampleDataInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ExampleDataState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -310,6 +319,9 @@ class __$$ExampleDataErrorImplCopyWithImpl<$Res>
   __$$ExampleDataErrorImplCopyWithImpl(_$ExampleDataErrorImpl _value,
       $Res Function(_$ExampleDataErrorImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ExampleDataState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

@@ -10,60 +10,62 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.1.5
-  equatable: ^2.0.5
+  flutter_bloc: ^9.0.0
+  equatable: ^2.0.7
   cupertino_icons: ^1.0.8
-  sqflite: ^2.3.3+1
-  firebase_core: ^2.31.0
-  firebase_auth: ^4.19.5
-  firebase_messaging: ^14.9.2
-  flutter_local_notifications: ^17.1.2
-  cloud_firestore: ^4.17.3
+  sqflite: ^2.4.1
+  # dart run sqflite_common_ffi_web:setup --force
+  sqflite_common_ffi_web: ^0.4.5+4
+  firebase_core: ^3.10.0
+  firebase_auth: ^5.4.0
+  firebase_messaging: ^15.2.0
+  flutter_local_notifications: ^18.0.1
+  cloud_firestore: ^5.6.1
   easy_localization: ^3.0.7
   provider: ^6.1.2
-  shared_preferences: ^2.2.3
+  shared_preferences: ^2.3.5
   path: ^1.9.0
   json_annotation: ^4.9.0
-  syncfusion_flutter_gauges: ^25.2.4
-  syncfusion_flutter_charts: ^25.2.4
-  percent_indicator: ^4.2.3
-  kana_kit: ^2.0.0
-  timeago: ^3.6.1
-  flutter_launcher_icons: ^0.13.1
-  package_info_plus: ^8.0.0
-  url_launcher: ^6.2.6
-  flutter_tts: ^4.0.2
+  syncfusion_flutter_gauges: ^28.1.39
+  syncfusion_flutter_charts: ^28.1.39
+  percent_indicator: ^4.2.4
+  kana_kit: ^2.1.1
+  timeago: ^3.7.0
+  flutter_launcher_icons: ^0.14.3
+  package_info_plus: ^8.1.3
+  url_launcher: ^6.3.1
+  flutter_tts: ^4.2.1
   unofficial_jisho_api: ^3.0.0
-  page_transition: ^2.1.0
+  page_transition: ^2.2.1
   cached_network_image: ^3.3.1
   # bash android_tflite.sh to get the jniLibs
-  tflite_flutter: ^0.10.4
-  device_info_plus: ^10.1.0
-  tutorial_coach_mark: ^1.2.11
+  tflite_flutter: ^0.11.0
+  device_info_plus: ^11.2.1
+  tutorial_coach_mark: ^1.2.12
   flutter_rating_bar: ^4.0.1
-  collection: ^1.18.0
-  bloc: ^8.1.4
-  image: ^4.1.7
+  collection: ^1.19.0
+  bloc: ^9.0.0
+  image: ^4.5.2
   intl: ^0.19.0
   app_settings: ^5.1.1
-  injectable: ^2.4.2
-  get_it: ^7.7.0
-  flutter_markdown: ^0.7.1
-  markdown: ^7.2.2
-  freezed: ^2.5.2
-  freezed_annotation: ^2.4.1
+  injectable: ^2.5.0
+  get_it: ^8.0.3
+  flutter_markdown: ^0.7.5
+  markdown: ^7.3.0
+  freezed: ^2.5.8
+  freezed_annotation: ^2.4.4
   http: ^0.13.6
-  google_mlkit_translation: ^0.11.0
-  google_mlkit_text_recognition: ^0.13.0
-  image_picker: ^1.1.1
+  google_mlkit_translation: ^0.12.0
+  google_mlkit_text_recognition: ^0.14.0
+  image_picker: ^1.1.2
   permission_handler: ^11.3.1
   dash_flags: ^0.1.1
-  camera: ^0.11.0
+  camera: ^0.11.0+2
   image_cropper: ^4.0.1
-  path_provider: ^2.1.3
-  speech_to_text: ^6.6.0
-  font_awesome_flutter: ^10.7.0
-  google_sign_in: ^6.2.1
+  path_provider: ^2.1.5
+  speech_to_text: ^7.0.0
+  font_awesome_flutter: ^10.8.0
+  google_sign_in: ^6.2.2
 
 flutter_icons:
   android: "launcher_icon"
@@ -73,10 +75,10 @@ flutter_icons:
 
 dev_dependencies:
   # flutter pub run build_runner build --delete-conflicting-outputs
-  build_runner: ^2.4.10
-  json_serializable: ^6.8.0
-  flutter_lints: ^4.0.0
-  injectable_generator: ^2.6.1
+  build_runner: ^2.4.14
+  json_serializable: ^6.9.3
+  flutter_lints: ^5.0.0
+  injectable_generator: ^2.7.0
 
 flutter:
   uses-material-design: true

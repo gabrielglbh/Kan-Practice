@@ -78,6 +78,9 @@ class _$ListsStateCopyWithImpl<$Res, $Val extends ListsState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of ListsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -97,6 +100,8 @@ class __$$ListsLoadedImplCopyWithImpl<$Res>
       _$ListsLoadedImpl _value, $Res Function(_$ListsLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ListsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -141,7 +146,9 @@ class _$ListsLoadedImpl implements ListsLoaded {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_lists));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ListsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ListsLoadedImplCopyWith<_$ListsLoadedImpl> get copyWith =>
@@ -220,7 +227,10 @@ abstract class ListsLoaded implements ListsState {
   const factory ListsLoaded(final List<WordList> lists) = _$ListsLoadedImpl;
 
   List<WordList> get lists;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ListsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ListsLoadedImplCopyWith<_$ListsLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -239,6 +249,9 @@ class __$$ListsLoadingImplCopyWithImpl<$Res>
   __$$ListsLoadingImplCopyWithImpl(
       _$ListsLoadingImpl _value, $Res Function(_$ListsLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ListsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -347,6 +360,9 @@ class __$$ListsErrorImplCopyWithImpl<$Res>
   __$$ListsErrorImplCopyWithImpl(
       _$ListsErrorImpl _value, $Res Function(_$ListsErrorImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ListsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

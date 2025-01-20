@@ -84,6 +84,9 @@ class _$DictionaryStateCopyWithImpl<$Res, $Val extends DictionaryState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of DictionaryState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -100,6 +103,9 @@ class __$$DictionaryLoadingImplCopyWithImpl<$Res>
   __$$DictionaryLoadingImplCopyWithImpl(_$DictionaryLoadingImpl _value,
       $Res Function(_$DictionaryLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DictionaryState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -217,6 +223,8 @@ class __$$DictionaryLoadedImplCopyWithImpl<$Res>
       $Res Function(_$DictionaryLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DictionaryState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -263,7 +271,9 @@ class _$DictionaryLoadedImpl implements DictionaryLoaded {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_predictions));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DictionaryState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DictionaryLoadedImplCopyWith<_$DictionaryLoadedImpl> get copyWith =>
@@ -350,7 +360,10 @@ abstract class DictionaryLoaded implements DictionaryState {
       _$DictionaryLoadedImpl;
 
   List<Category> get predictions;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DictionaryState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DictionaryLoadedImplCopyWith<_$DictionaryLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -369,6 +382,9 @@ class __$$DictionaryInitialImplCopyWithImpl<$Res>
   __$$DictionaryInitialImplCopyWithImpl(_$DictionaryInitialImpl _value,
       $Res Function(_$DictionaryInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DictionaryState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -483,6 +499,9 @@ class __$$DictionaryErrorImplCopyWithImpl<$Res>
   __$$DictionaryErrorImplCopyWithImpl(
       _$DictionaryErrorImpl _value, $Res Function(_$DictionaryErrorImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DictionaryState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

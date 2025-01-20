@@ -78,6 +78,9 @@ class _$StatsStateCopyWithImpl<$Res, $Val extends StatsState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of StatsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -97,6 +100,8 @@ class __$$StatsLoadedImplCopyWithImpl<$Res>
       _$StatsLoadedImpl _value, $Res Function(_$StatsLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of StatsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -135,7 +140,9 @@ class _$StatsLoadedImpl implements StatsLoaded {
   @override
   int get hashCode => Object.hash(runtimeType, stats);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of StatsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$StatsLoadedImplCopyWith<_$StatsLoadedImpl> get copyWith =>
@@ -214,7 +221,10 @@ abstract class StatsLoaded implements StatsState {
   const factory StatsLoaded(final KanPracticeStats stats) = _$StatsLoadedImpl;
 
   KanPracticeStats get stats;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of StatsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$StatsLoadedImplCopyWith<_$StatsLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -233,6 +243,9 @@ class __$$StatsLoadingImplCopyWithImpl<$Res>
   __$$StatsLoadingImplCopyWithImpl(
       _$StatsLoadingImpl _value, $Res Function(_$StatsLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of StatsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -341,6 +354,9 @@ class __$$StatsInitialImplCopyWithImpl<$Res>
   __$$StatsInitialImplCopyWithImpl(
       _$StatsInitialImpl _value, $Res Function(_$StatsInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of StatsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

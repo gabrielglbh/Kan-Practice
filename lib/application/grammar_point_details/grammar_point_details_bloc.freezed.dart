@@ -91,6 +91,9 @@ class _$GrammarPointDetailsStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of GrammarPointDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -110,6 +113,9 @@ class __$$GrammarPointDetailsInitialImplCopyWithImpl<$Res>
       _$GrammarPointDetailsInitialImpl _value,
       $Res Function(_$GrammarPointDetailsInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of GrammarPointDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -234,6 +240,9 @@ class __$$GrammarPointDetailsLoadingImplCopyWithImpl<$Res>
       _$GrammarPointDetailsLoadingImpl _value,
       $Res Function(_$GrammarPointDetailsLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of GrammarPointDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -361,6 +370,8 @@ class __$$GrammarPointDetailsLoadedImplCopyWithImpl<$Res>
       $Res Function(_$GrammarPointDetailsLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GrammarPointDetailsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -400,7 +411,9 @@ class _$GrammarPointDetailsLoadedImpl implements GrammarPointDetailsLoaded {
   @override
   int get hashCode => Object.hash(runtimeType, grammarPoint);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GrammarPointDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GrammarPointDetailsLoadedImplCopyWith<_$GrammarPointDetailsLoadedImpl>
@@ -493,7 +506,10 @@ abstract class GrammarPointDetailsLoaded implements GrammarPointDetailsState {
       _$GrammarPointDetailsLoadedImpl;
 
   GrammarPoint get grammarPoint;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of GrammarPointDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GrammarPointDetailsLoadedImplCopyWith<_$GrammarPointDetailsLoadedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -515,6 +531,9 @@ class __$$GrammarPointDetailsRemovedImplCopyWithImpl<$Res>
       _$GrammarPointDetailsRemovedImpl _value,
       $Res Function(_$GrammarPointDetailsRemovedImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of GrammarPointDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -642,6 +661,8 @@ class __$$GrammarPointDetailsErrorImplCopyWithImpl<$Res>
       $Res Function(_$GrammarPointDetailsErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GrammarPointDetailsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -680,7 +701,9 @@ class _$GrammarPointDetailsErrorImpl implements GrammarPointDetailsError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GrammarPointDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GrammarPointDetailsErrorImplCopyWith<_$GrammarPointDetailsErrorImpl>
@@ -773,7 +796,10 @@ abstract class GrammarPointDetailsError implements GrammarPointDetailsState {
       _$GrammarPointDetailsErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of GrammarPointDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GrammarPointDetailsErrorImplCopyWith<_$GrammarPointDetailsErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

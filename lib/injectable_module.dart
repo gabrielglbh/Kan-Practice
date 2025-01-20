@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -12,6 +13,7 @@ import 'package:kanpractice/infrastructure/services/db_migration/migrations.dart
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
 @module
 abstract class InjectableModule {
@@ -33,7 +35,13 @@ abstract class InjectableModule {
   // TODO: Add new modes in the db
   @preResolve
   Future<Database> get database async {
-    String databasesPath = await getDatabasesPath();
+    late String databasesPath;
+    if (kIsWeb) {
+      databaseFactory = databaseFactoryFfiWeb;
+      databasesPath = "";
+    } else {
+      databasesPath = await getDatabasesPath();
+    }
     String path = join(databasesPath, "kanpractice.db");
 
     try {

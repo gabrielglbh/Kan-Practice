@@ -84,6 +84,9 @@ class _$ArchiveWordsStateCopyWithImpl<$Res, $Val extends ArchiveWordsState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of ArchiveWordsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -100,6 +103,9 @@ class __$$ArchiveWordsLoadingImplCopyWithImpl<$Res>
   __$$ArchiveWordsLoadingImplCopyWithImpl(_$ArchiveWordsLoadingImpl _value,
       $Res Function(_$ArchiveWordsLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ArchiveWordsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -218,6 +224,8 @@ class __$$ArchiveWordsLoadedImplCopyWithImpl<$Res>
       $Res Function(_$ArchiveWordsLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ArchiveWordsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -262,7 +270,9 @@ class _$ArchiveWordsLoadedImpl implements ArchiveWordsLoaded {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_list));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ArchiveWordsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ArchiveWordsLoadedImplCopyWith<_$ArchiveWordsLoadedImpl> get copyWith =>
@@ -349,7 +359,10 @@ abstract class ArchiveWordsLoaded implements ArchiveWordsState {
       _$ArchiveWordsLoadedImpl;
 
   List<Word> get list;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ArchiveWordsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ArchiveWordsLoadedImplCopyWith<_$ArchiveWordsLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -368,6 +381,9 @@ class __$$ArchiveWordsInitialImplCopyWithImpl<$Res>
   __$$ArchiveWordsInitialImplCopyWithImpl(_$ArchiveWordsInitialImpl _value,
       $Res Function(_$ArchiveWordsInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ArchiveWordsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -483,6 +499,9 @@ class __$$ArchiveWordsErrorImplCopyWithImpl<$Res>
   __$$ArchiveWordsErrorImplCopyWithImpl(_$ArchiveWordsErrorImpl _value,
       $Res Function(_$ArchiveWordsErrorImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ArchiveWordsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

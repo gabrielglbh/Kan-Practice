@@ -84,6 +84,9 @@ class _$WordHistoryStateCopyWithImpl<$Res, $Val extends WordHistoryState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of WordHistoryState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -100,6 +103,9 @@ class __$$WordHistoryInitialImplCopyWithImpl<$Res>
   __$$WordHistoryInitialImplCopyWithImpl(_$WordHistoryInitialImpl _value,
       $Res Function(_$WordHistoryInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of WordHistoryState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -214,6 +220,9 @@ class __$$WordHistoryLoadingImplCopyWithImpl<$Res>
   __$$WordHistoryLoadingImplCopyWithImpl(_$WordHistoryLoadingImpl _value,
       $Res Function(_$WordHistoryLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of WordHistoryState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -328,6 +337,9 @@ class __$$WordHistoryErrorImplCopyWithImpl<$Res>
   __$$WordHistoryErrorImplCopyWithImpl(_$WordHistoryErrorImpl _value,
       $Res Function(_$WordHistoryErrorImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of WordHistoryState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -445,6 +457,8 @@ class __$$WordHistoryLoadedImplCopyWithImpl<$Res>
       $Res Function(_$WordHistoryLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WordHistoryState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -489,7 +503,9 @@ class _$WordHistoryLoadedImpl implements WordHistoryLoaded {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_list));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of WordHistoryState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$WordHistoryLoadedImplCopyWith<_$WordHistoryLoadedImpl> get copyWith =>
@@ -576,7 +592,10 @@ abstract class WordHistoryLoaded implements WordHistoryState {
       _$WordHistoryLoadedImpl;
 
   List<WordHistory> get list;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of WordHistoryState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$WordHistoryLoadedImplCopyWith<_$WordHistoryLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

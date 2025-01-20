@@ -90,6 +90,9 @@ class _$MarketStateCopyWithImpl<$Res, $Val extends MarketState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of MarketState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -106,6 +109,9 @@ class __$$MarketInitialImplCopyWithImpl<$Res>
   __$$MarketInitialImplCopyWithImpl(
       _$MarketInitialImpl _value, $Res Function(_$MarketInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of MarketState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -226,6 +232,9 @@ class __$$MarketLoadingImplCopyWithImpl<$Res>
   __$$MarketLoadingImplCopyWithImpl(
       _$MarketLoadingImpl _value, $Res Function(_$MarketLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of MarketState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -349,6 +358,8 @@ class __$$MarketLoadedImplCopyWithImpl<$Res>
       _$MarketLoadedImpl _value, $Res Function(_$MarketLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MarketState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -393,7 +404,9 @@ class _$MarketLoadedImpl implements MarketLoaded {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_lists));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MarketState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MarketLoadedImplCopyWith<_$MarketLoadedImpl> get copyWith =>
@@ -484,7 +497,10 @@ abstract class MarketLoaded implements MarketState {
   const factory MarketLoaded(final List<Market> lists) = _$MarketLoadedImpl;
 
   List<Market> get lists;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of MarketState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MarketLoadedImplCopyWith<_$MarketLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -506,6 +522,8 @@ class __$$MarketSucceededImplCopyWithImpl<$Res>
       _$MarketSucceededImpl _value, $Res Function(_$MarketSucceededImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MarketState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -544,7 +562,9 @@ class _$MarketSucceededImpl implements MarketSucceeded {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MarketState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MarketSucceededImplCopyWith<_$MarketSucceededImpl> get copyWith =>
@@ -636,7 +656,10 @@ abstract class MarketSucceeded implements MarketState {
   const factory MarketSucceeded(final String message) = _$MarketSucceededImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of MarketState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MarketSucceededImplCopyWith<_$MarketSucceededImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -658,6 +681,8 @@ class __$$MarketErrorImplCopyWithImpl<$Res>
       _$MarketErrorImpl _value, $Res Function(_$MarketErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MarketState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -696,7 +721,9 @@ class _$MarketErrorImpl implements MarketError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MarketState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MarketErrorImplCopyWith<_$MarketErrorImpl> get copyWith =>
@@ -787,7 +814,10 @@ abstract class MarketError implements MarketState {
   const factory MarketError(final String message) = _$MarketErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of MarketState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MarketErrorImplCopyWith<_$MarketErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

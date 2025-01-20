@@ -78,6 +78,9 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of SettingsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -94,6 +97,9 @@ class __$$SettingsLoadingImplCopyWithImpl<$Res>
   __$$SettingsLoadingImplCopyWithImpl(
       _$SettingsLoadingImpl _value, $Res Function(_$SettingsLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of SettingsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -205,6 +211,8 @@ class __$$SettingsLoadedImplCopyWithImpl<$Res>
       _$SettingsLoadedImpl _value, $Res Function(_$SettingsLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SettingsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -243,7 +251,9 @@ class _$SettingsLoadedImpl implements SettingsLoaded {
   @override
   int get hashCode => Object.hash(runtimeType, date);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SettingsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SettingsLoadedImplCopyWith<_$SettingsLoadedImpl> get copyWith =>
@@ -323,7 +333,10 @@ abstract class SettingsLoaded implements SettingsState {
   const factory SettingsLoaded(final String date) = _$SettingsLoadedImpl;
 
   String get date;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SettingsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SettingsLoadedImplCopyWith<_$SettingsLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -342,6 +355,9 @@ class __$$SettingsInitialImplCopyWithImpl<$Res>
   __$$SettingsInitialImplCopyWithImpl(
       _$SettingsInitialImpl _value, $Res Function(_$SettingsInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of SettingsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

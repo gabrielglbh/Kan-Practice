@@ -94,6 +94,9 @@ class _$AddFolderStateCopyWithImpl<$Res, $Val extends AddFolderState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of AddFolderState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -110,6 +113,9 @@ class __$$AddFolderLoadingImplCopyWithImpl<$Res>
   __$$AddFolderLoadingImplCopyWithImpl(_$AddFolderLoadingImpl _value,
       $Res Function(_$AddFolderLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddFolderState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -234,6 +240,9 @@ class __$$AddFolderLoadedImplCopyWithImpl<$Res>
   __$$AddFolderLoadedImplCopyWithImpl(
       _$AddFolderLoadedImpl _value, $Res Function(_$AddFolderLoadedImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddFolderState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -358,6 +367,9 @@ class __$$AddFolderInitialImplCopyWithImpl<$Res>
   __$$AddFolderInitialImplCopyWithImpl(_$AddFolderInitialImpl _value,
       $Res Function(_$AddFolderInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddFolderState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -485,6 +497,8 @@ class __$$AddFolderLoadedListsImplCopyWithImpl<$Res>
       $Res Function(_$AddFolderLoadedListsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AddFolderState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -549,7 +563,9 @@ class _$AddFolderLoadedListsImpl implements AddFolderLoadedLists {
       const DeepCollectionEquality().hash(_lists),
       const DeepCollectionEquality().hash(_alreadyAdded));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AddFolderState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AddFolderLoadedListsImplCopyWith<_$AddFolderLoadedListsImpl>
@@ -649,7 +665,10 @@ abstract class AddFolderLoadedLists implements AddFolderState {
 
   List<WordList> get lists;
   Map<String, bool> get alreadyAdded;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AddFolderState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AddFolderLoadedListsImplCopyWith<_$AddFolderLoadedListsImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -671,6 +690,8 @@ class __$$AddFolderErrorImplCopyWithImpl<$Res>
       _$AddFolderErrorImpl _value, $Res Function(_$AddFolderErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AddFolderState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -709,7 +730,9 @@ class _$AddFolderErrorImpl implements AddFolderError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AddFolderState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AddFolderErrorImplCopyWith<_$AddFolderErrorImpl> get copyWith =>
@@ -805,7 +828,10 @@ abstract class AddFolderError implements AddFolderState {
   const factory AddFolderError(final String message) = _$AddFolderErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AddFolderState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AddFolderErrorImplCopyWith<_$AddFolderErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

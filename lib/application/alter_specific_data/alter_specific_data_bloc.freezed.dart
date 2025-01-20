@@ -86,6 +86,9 @@ class _$AlterSpecificDataStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of AlterSpecificDataState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -108,6 +111,8 @@ class __$$AlterSpecificDataTestRetrievedImplCopyWithImpl<$Res>
       $Res Function(_$AlterSpecificDataTestRetrievedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AlterSpecificDataState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -155,7 +160,9 @@ class _$AlterSpecificDataTestRetrievedImpl
   @override
   int get hashCode => Object.hash(runtimeType, data, test);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AlterSpecificDataState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AlterSpecificDataTestRetrievedImplCopyWith<
@@ -247,7 +254,10 @@ abstract class AlterSpecificDataTestRetrieved
 
   AlterSpecificData get data;
   Tests get test;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AlterSpecificDataState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AlterSpecificDataTestRetrievedImplCopyWith<
           _$AlterSpecificDataTestRetrievedImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -273,6 +283,8 @@ class __$$AlterSpecificDataCategoryRetrievedImplCopyWithImpl<$Res>
       $Res Function(_$AlterSpecificDataCategoryRetrievedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AlterSpecificDataState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -321,7 +333,9 @@ class _$AlterSpecificDataCategoryRetrievedImpl
   @override
   int get hashCode => Object.hash(runtimeType, data, category);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AlterSpecificDataState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AlterSpecificDataCategoryRetrievedImplCopyWith<
@@ -413,7 +427,10 @@ abstract class AlterSpecificDataCategoryRetrieved
 
   AlterSpecificData get data;
   WordCategory get category;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AlterSpecificDataState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AlterSpecificDataCategoryRetrievedImplCopyWith<
           _$AlterSpecificDataCategoryRetrievedImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -436,6 +453,9 @@ class __$$AlterSpecificDataInitialImplCopyWithImpl<$Res>
       _$AlterSpecificDataInitialImpl _value,
       $Res Function(_$AlterSpecificDataInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AlterSpecificDataState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

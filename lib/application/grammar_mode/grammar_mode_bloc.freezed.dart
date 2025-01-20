@@ -96,6 +96,9 @@ class _$GrammarModeStateCopyWithImpl<$Res, $Val extends GrammarModeState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of GrammarModeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -112,6 +115,9 @@ class __$$GrammarModeLoadingImplCopyWithImpl<$Res>
   __$$GrammarModeLoadingImplCopyWithImpl(_$GrammarModeLoadingImpl _value,
       $Res Function(_$GrammarModeLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of GrammarModeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -238,6 +244,9 @@ class __$$GrammarModeLoadedImplCopyWithImpl<$Res>
   __$$GrammarModeLoadedImplCopyWithImpl(_$GrammarModeLoadedImpl _value,
       $Res Function(_$GrammarModeLoadedImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of GrammarModeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -366,6 +375,9 @@ class __$$GrammarModeSM2CalculatedImplCopyWithImpl<$Res>
       _$GrammarModeSM2CalculatedImpl _value,
       $Res Function(_$GrammarModeSM2CalculatedImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of GrammarModeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -499,6 +511,8 @@ class __$$GrammarModeScoreCalculatedImplCopyWithImpl<$Res>
       $Res Function(_$GrammarModeScoreCalculatedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GrammarModeState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -537,7 +551,9 @@ class _$GrammarModeScoreCalculatedImpl implements GrammarModeScoreCalculated {
   @override
   int get hashCode => Object.hash(runtimeType, score);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GrammarModeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GrammarModeScoreCalculatedImplCopyWith<_$GrammarModeScoreCalculatedImpl>
@@ -636,7 +652,10 @@ abstract class GrammarModeScoreCalculated implements GrammarModeState {
       _$GrammarModeScoreCalculatedImpl;
 
   int get score;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of GrammarModeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GrammarModeScoreCalculatedImplCopyWith<_$GrammarModeScoreCalculatedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -660,6 +679,8 @@ class __$$GrammarModeScoreObtainedImplCopyWithImpl<$Res>
       $Res Function(_$GrammarModeScoreObtainedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GrammarModeState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -698,7 +719,9 @@ class _$GrammarModeScoreObtainedImpl implements GrammarModeScoreObtained {
   @override
   int get hashCode => Object.hash(runtimeType, score);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GrammarModeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GrammarModeScoreObtainedImplCopyWith<_$GrammarModeScoreObtainedImpl>
@@ -797,7 +820,10 @@ abstract class GrammarModeScoreObtained implements GrammarModeState {
       _$GrammarModeScoreObtainedImpl;
 
   double get score;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of GrammarModeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GrammarModeScoreObtainedImplCopyWith<_$GrammarModeScoreObtainedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -818,6 +844,9 @@ class __$$GrammarModeTestFinishedImplCopyWithImpl<$Res>
       _$GrammarModeTestFinishedImpl _value,
       $Res Function(_$GrammarModeTestFinishedImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of GrammarModeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

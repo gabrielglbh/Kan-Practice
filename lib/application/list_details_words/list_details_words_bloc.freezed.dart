@@ -92,6 +92,9 @@ class _$ListDetailsWordsStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of ListDetailsWordsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -111,6 +114,9 @@ class __$$ListDetailsWordsInitialImplCopyWithImpl<$Res>
       _$ListDetailsWordsInitialImpl _value,
       $Res Function(_$ListDetailsWordsInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ListDetailsWordsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -239,6 +245,8 @@ class __$$ListDetailsWordsLoadedImplCopyWithImpl<$Res>
       $Res Function(_$ListDetailsWordsLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ListDetailsWordsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -293,7 +301,9 @@ class _$ListDetailsWordsLoadedImpl implements ListDetailsWordsLoaded {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_list), name);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ListDetailsWordsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ListDetailsWordsLoadedImplCopyWith<_$ListDetailsWordsLoadedImpl>
@@ -388,7 +398,10 @@ abstract class ListDetailsWordsLoaded implements ListDetailsWordsState {
 
   List<Word> get list;
   String get name;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ListDetailsWordsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ListDetailsWordsLoadedImplCopyWith<_$ListDetailsWordsLoadedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -413,6 +426,8 @@ class __$$ListDetailsWordsPracticeLoadedImplCopyWithImpl<$Res>
       $Res Function(_$ListDetailsWordsPracticeLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ListDetailsWordsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -467,7 +482,9 @@ class _$ListDetailsWordsPracticeLoadedImpl
   int get hashCode => Object.hash(
       runtimeType, mode, const DeepCollectionEquality().hash(_list));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ListDetailsWordsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ListDetailsWordsPracticeLoadedImplCopyWith<
@@ -564,7 +581,10 @@ abstract class ListDetailsWordsPracticeLoaded implements ListDetailsWordsState {
 
   StudyModes get mode;
   List<Word> get list;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ListDetailsWordsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ListDetailsWordsPracticeLoadedImplCopyWith<
           _$ListDetailsWordsPracticeLoadedImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -587,6 +607,9 @@ class __$$ListDetailsWordsLoadingImplCopyWithImpl<$Res>
       _$ListDetailsWordsLoadingImpl _value,
       $Res Function(_$ListDetailsWordsLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ListDetailsWordsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -714,6 +737,8 @@ class __$$ListDetailsWordsErrorImplCopyWithImpl<$Res>
       $Res Function(_$ListDetailsWordsErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ListDetailsWordsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -752,7 +777,9 @@ class _$ListDetailsWordsErrorImpl implements ListDetailsWordsError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ListDetailsWordsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ListDetailsWordsErrorImplCopyWith<_$ListDetailsWordsErrorImpl>
@@ -846,7 +873,10 @@ abstract class ListDetailsWordsError implements ListDetailsWordsState {
       _$ListDetailsWordsErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ListDetailsWordsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ListDetailsWordsErrorImplCopyWith<_$ListDetailsWordsErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

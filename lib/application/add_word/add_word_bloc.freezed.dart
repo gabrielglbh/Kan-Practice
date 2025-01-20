@@ -96,6 +96,9 @@ class _$AddWordStateCopyWithImpl<$Res, $Val extends AddWordState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of AddWordState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -112,6 +115,9 @@ class __$$AddWordLoadingImplCopyWithImpl<$Res>
   __$$AddWordLoadingImplCopyWithImpl(
       _$AddWordLoadingImpl _value, $Res Function(_$AddWordLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddWordState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -238,6 +244,9 @@ class __$$AddWordLoadedImplCopyWithImpl<$Res>
   __$$AddWordLoadedImplCopyWithImpl(
       _$AddWordLoadedImpl _value, $Res Function(_$AddWordLoadedImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddWordState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -364,6 +373,9 @@ class __$$AddWordInitialImplCopyWithImpl<$Res>
   __$$AddWordInitialImplCopyWithImpl(
       _$AddWordInitialImpl _value, $Res Function(_$AddWordInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddWordState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -490,6 +502,9 @@ class __$$AddWordUpdateDoneImplCopyWithImpl<$Res>
   __$$AddWordUpdateDoneImplCopyWithImpl(_$AddWordUpdateDoneImpl _value,
       $Res Function(_$AddWordUpdateDoneImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddWordState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -619,6 +634,8 @@ class __$$AddWordCreationDoneImplCopyWithImpl<$Res>
       $Res Function(_$AddWordCreationDoneImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AddWordState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -658,7 +675,9 @@ class _$AddWordCreationDoneImpl implements AddWordCreationDone {
   @override
   int get hashCode => Object.hash(runtimeType, exitMode);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AddWordState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AddWordCreationDoneImplCopyWith<_$AddWordCreationDoneImpl> get copyWith =>
@@ -757,7 +776,10 @@ abstract class AddWordCreationDone implements AddWordState {
       _$AddWordCreationDoneImpl;
 
   bool get exitMode;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AddWordState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AddWordCreationDoneImplCopyWith<_$AddWordCreationDoneImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -779,6 +801,8 @@ class __$$AddWordErrorImplCopyWithImpl<$Res>
       _$AddWordErrorImpl _value, $Res Function(_$AddWordErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AddWordState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -817,7 +841,9 @@ class _$AddWordErrorImpl implements AddWordError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AddWordState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AddWordErrorImplCopyWith<_$AddWordErrorImpl> get copyWith =>
@@ -914,7 +940,10 @@ abstract class AddWordError implements AddWordState {
   const factory AddWordError(final String message) = _$AddWordErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AddWordState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AddWordErrorImplCopyWith<_$AddWordErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

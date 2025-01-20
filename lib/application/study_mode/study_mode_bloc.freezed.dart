@@ -96,6 +96,9 @@ class _$StudyModeStateCopyWithImpl<$Res, $Val extends StudyModeState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of StudyModeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -112,6 +115,9 @@ class __$$StudyModeLoadingImplCopyWithImpl<$Res>
   __$$StudyModeLoadingImplCopyWithImpl(_$StudyModeLoadingImpl _value,
       $Res Function(_$StudyModeLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of StudyModeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -238,6 +244,9 @@ class __$$StudyModeLoadedImplCopyWithImpl<$Res>
   __$$StudyModeLoadedImplCopyWithImpl(
       _$StudyModeLoadedImpl _value, $Res Function(_$StudyModeLoadedImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of StudyModeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -366,6 +375,9 @@ class __$$StudyModeSM2CalculatedImplCopyWithImpl<$Res>
       _$StudyModeSM2CalculatedImpl _value,
       $Res Function(_$StudyModeSM2CalculatedImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of StudyModeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -498,6 +510,8 @@ class __$$StudyModeScoreCalculatedImplCopyWithImpl<$Res>
       $Res Function(_$StudyModeScoreCalculatedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of StudyModeState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -536,7 +550,9 @@ class _$StudyModeScoreCalculatedImpl implements StudyModeScoreCalculated {
   @override
   int get hashCode => Object.hash(runtimeType, score);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of StudyModeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$StudyModeScoreCalculatedImplCopyWith<_$StudyModeScoreCalculatedImpl>
@@ -635,7 +651,10 @@ abstract class StudyModeScoreCalculated implements StudyModeState {
       _$StudyModeScoreCalculatedImpl;
 
   int get score;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of StudyModeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$StudyModeScoreCalculatedImplCopyWith<_$StudyModeScoreCalculatedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -659,6 +678,8 @@ class __$$StudyModeScoreObtainedImplCopyWithImpl<$Res>
       $Res Function(_$StudyModeScoreObtainedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of StudyModeState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -697,7 +718,9 @@ class _$StudyModeScoreObtainedImpl implements StudyModeScoreObtained {
   @override
   int get hashCode => Object.hash(runtimeType, score);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of StudyModeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$StudyModeScoreObtainedImplCopyWith<_$StudyModeScoreObtainedImpl>
@@ -796,7 +819,10 @@ abstract class StudyModeScoreObtained implements StudyModeState {
       _$StudyModeScoreObtainedImpl;
 
   double get score;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of StudyModeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$StudyModeScoreObtainedImplCopyWith<_$StudyModeScoreObtainedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -816,6 +842,9 @@ class __$$StudyModeTestFinishedImplCopyWithImpl<$Res>
   __$$StudyModeTestFinishedImplCopyWithImpl(_$StudyModeTestFinishedImpl _value,
       $Res Function(_$StudyModeTestFinishedImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of StudyModeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

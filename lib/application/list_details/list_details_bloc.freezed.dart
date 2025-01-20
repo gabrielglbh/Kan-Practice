@@ -84,6 +84,9 @@ class _$ListDetailsStateCopyWithImpl<$Res, $Val extends ListDetailsState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of ListDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -103,6 +106,8 @@ class __$$ListDetailsLoadedImplCopyWithImpl<$Res>
       $Res Function(_$ListDetailsLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ListDetailsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -141,7 +146,9 @@ class _$ListDetailsLoadedImpl implements ListDetailsLoaded {
   @override
   int get hashCode => Object.hash(runtimeType, name);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ListDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ListDetailsLoadedImplCopyWith<_$ListDetailsLoadedImpl> get copyWith =>
@@ -227,7 +234,10 @@ abstract class ListDetailsLoaded implements ListDetailsState {
   const factory ListDetailsLoaded(final String name) = _$ListDetailsLoadedImpl;
 
   String get name;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ListDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ListDetailsLoadedImplCopyWith<_$ListDetailsLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -246,6 +256,9 @@ class __$$ListDetailsInitialImplCopyWithImpl<$Res>
   __$$ListDetailsInitialImplCopyWithImpl(_$ListDetailsInitialImpl _value,
       $Res Function(_$ListDetailsInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ListDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -360,6 +373,9 @@ class __$$ListDetailsLoadingImplCopyWithImpl<$Res>
   __$$ListDetailsLoadingImplCopyWithImpl(_$ListDetailsLoadingImpl _value,
       $Res Function(_$ListDetailsLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ListDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -474,6 +490,9 @@ class __$$ListDetailsErrorImplCopyWithImpl<$Res>
   __$$ListDetailsErrorImplCopyWithImpl(_$ListDetailsErrorImpl _value,
       $Res Function(_$ListDetailsErrorImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ListDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

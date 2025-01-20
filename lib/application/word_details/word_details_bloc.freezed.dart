@@ -90,6 +90,9 @@ class _$WordDetailsStateCopyWithImpl<$Res, $Val extends WordDetailsState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of WordDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -109,6 +112,8 @@ class __$$WordDetailsErrorImplCopyWithImpl<$Res>
       $Res Function(_$WordDetailsErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WordDetailsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -147,7 +152,9 @@ class _$WordDetailsErrorImpl implements WordDetailsError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of WordDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$WordDetailsErrorImplCopyWith<_$WordDetailsErrorImpl> get copyWith =>
@@ -239,7 +246,10 @@ abstract class WordDetailsError implements WordDetailsState {
   const factory WordDetailsError(final String message) = _$WordDetailsErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of WordDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$WordDetailsErrorImplCopyWith<_$WordDetailsErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -258,6 +268,9 @@ class __$$WordDetailsInitialImplCopyWithImpl<$Res>
   __$$WordDetailsInitialImplCopyWithImpl(_$WordDetailsInitialImpl _value,
       $Res Function(_$WordDetailsInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of WordDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -378,6 +391,9 @@ class __$$WordDetailsLoadingImplCopyWithImpl<$Res>
   __$$WordDetailsLoadingImplCopyWithImpl(_$WordDetailsLoadingImpl _value,
       $Res Function(_$WordDetailsLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of WordDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -498,6 +514,9 @@ class __$$WordDetailsRemovedImplCopyWithImpl<$Res>
   __$$WordDetailsRemovedImplCopyWithImpl(_$WordDetailsRemovedImpl _value,
       $Res Function(_$WordDetailsRemovedImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of WordDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -621,6 +640,8 @@ class __$$WordDetailsLoadedImplCopyWithImpl<$Res>
       $Res Function(_$WordDetailsLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WordDetailsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -659,7 +680,9 @@ class _$WordDetailsLoadedImpl implements WordDetailsLoaded {
   @override
   int get hashCode => Object.hash(runtimeType, word);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of WordDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$WordDetailsLoadedImplCopyWith<_$WordDetailsLoadedImpl> get copyWith =>
@@ -751,7 +774,10 @@ abstract class WordDetailsLoaded implements WordDetailsState {
   const factory WordDetailsLoaded(final Word word) = _$WordDetailsLoadedImpl;
 
   Word get word;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of WordDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$WordDetailsLoadedImplCopyWith<_$WordDetailsLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

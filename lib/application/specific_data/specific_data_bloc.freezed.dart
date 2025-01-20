@@ -82,6 +82,9 @@ class _$SpecificDataStateCopyWithImpl<$Res, $Val extends SpecificDataState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of SpecificDataState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -104,6 +107,8 @@ class __$$SpecificDataTestRetrievedImplCopyWithImpl<$Res>
       $Res Function(_$SpecificDataTestRetrievedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SpecificDataState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -150,7 +155,9 @@ class _$SpecificDataTestRetrievedImpl implements SpecificDataTestRetrieved {
   @override
   int get hashCode => Object.hash(runtimeType, data, test);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SpecificDataState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SpecificDataTestRetrievedImplCopyWith<_$SpecificDataTestRetrievedImpl>
@@ -237,7 +244,10 @@ abstract class SpecificDataTestRetrieved implements SpecificDataState {
 
   SpecificData get data;
   Tests get test;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SpecificDataState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SpecificDataTestRetrievedImplCopyWith<_$SpecificDataTestRetrievedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -262,6 +272,8 @@ class __$$SpecificDataCategoryRetrievedImplCopyWithImpl<$Res>
       $Res Function(_$SpecificDataCategoryRetrievedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SpecificDataState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -310,7 +322,9 @@ class _$SpecificDataCategoryRetrievedImpl
   @override
   int get hashCode => Object.hash(runtimeType, data, category);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SpecificDataState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SpecificDataCategoryRetrievedImplCopyWith<
@@ -398,7 +412,10 @@ abstract class SpecificDataCategoryRetrieved implements SpecificDataState {
 
   SpecificData get data;
   WordCategory get category;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SpecificDataState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SpecificDataCategoryRetrievedImplCopyWith<
           _$SpecificDataCategoryRetrievedImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -418,6 +435,9 @@ class __$$SpecificDataInitialImplCopyWithImpl<$Res>
   __$$SpecificDataInitialImplCopyWithImpl(_$SpecificDataInitialImpl _value,
       $Res Function(_$SpecificDataInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of SpecificDataState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

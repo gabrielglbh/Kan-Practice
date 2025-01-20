@@ -78,6 +78,9 @@ class _$TestResultStateCopyWithImpl<$Res, $Val extends TestResultState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of TestResultState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -94,6 +97,9 @@ class __$$TestResultSavedImplCopyWithImpl<$Res>
   __$$TestResultSavedImplCopyWithImpl(
       _$TestResultSavedImpl _value, $Res Function(_$TestResultSavedImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of TestResultState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -202,6 +208,9 @@ class __$$TestResultInitialImplCopyWithImpl<$Res>
   __$$TestResultInitialImplCopyWithImpl(_$TestResultInitialImpl _value,
       $Res Function(_$TestResultInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of TestResultState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -310,6 +319,9 @@ class __$$TestResultSavingImplCopyWithImpl<$Res>
   __$$TestResultSavingImplCopyWithImpl(_$TestResultSavingImpl _value,
       $Res Function(_$TestResultSavingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of TestResultState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

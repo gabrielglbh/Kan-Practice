@@ -97,6 +97,9 @@ class _$OCRPageStateCopyWithImpl<$Res, $Val extends OCRPageState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of OCRPageState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -113,6 +116,9 @@ class __$$OCRPageInitialImplCopyWithImpl<$Res>
   __$$OCRPageInitialImplCopyWithImpl(
       _$OCRPageInitialImpl _value, $Res Function(_$OCRPageInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of OCRPageState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -240,6 +246,9 @@ class __$$OCRPageLoadingImplCopyWithImpl<$Res>
   __$$OCRPageLoadingImplCopyWithImpl(
       _$OCRPageLoadingImpl _value, $Res Function(_$OCRPageLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of OCRPageState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -372,6 +381,8 @@ class __$$OCRPageTranslationLoadedImplCopyWithImpl<$Res>
       $Res Function(_$OCRPageTranslationLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of OCRPageState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -419,7 +430,9 @@ class _$OCRPageTranslationLoadedImpl implements OCRPageTranslationLoaded {
   @override
   int get hashCode => Object.hash(runtimeType, translation, image);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of OCRPageState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$OCRPageTranslationLoadedImplCopyWith<_$OCRPageTranslationLoadedImpl>
@@ -520,7 +533,10 @@ abstract class OCRPageTranslationLoaded implements OCRPageState {
 
   String get translation;
   File? get image;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of OCRPageState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$OCRPageTranslationLoadedImplCopyWith<_$OCRPageTranslationLoadedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -542,6 +558,8 @@ class __$$OCRPageImageLoadedImplCopyWithImpl<$Res>
       $Res Function(_$OCRPageImageLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of OCRPageState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -588,7 +606,9 @@ class _$OCRPageImageLoadedImpl implements OCRPageImageLoaded {
   @override
   int get hashCode => Object.hash(runtimeType, text, image);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of OCRPageState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$OCRPageImageLoadedImplCopyWith<_$OCRPageImageLoadedImpl> get copyWith =>
@@ -689,7 +709,10 @@ abstract class OCRPageImageLoaded implements OCRPageState {
 
   String get text;
   File? get image;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of OCRPageState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$OCRPageImageLoadedImplCopyWith<_$OCRPageImageLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -711,6 +734,8 @@ class __$$OCRPageImageCroppedImplCopyWithImpl<$Res>
       $Res Function(_$OCRPageImageCroppedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of OCRPageState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -749,7 +774,9 @@ class _$OCRPageImageCroppedImpl implements OCRPageImageCropped {
   @override
   int get hashCode => Object.hash(runtimeType, image);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of OCRPageState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$OCRPageImageCroppedImplCopyWith<_$OCRPageImageCroppedImpl> get copyWith =>
@@ -849,7 +876,10 @@ abstract class OCRPageImageCropped implements OCRPageState {
       _$OCRPageImageCroppedImpl;
 
   File? get image;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of OCRPageState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$OCRPageImageCroppedImplCopyWith<_$OCRPageImageCroppedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -868,6 +898,9 @@ class __$$OCRPageErrorImplCopyWithImpl<$Res>
   __$$OCRPageErrorImplCopyWithImpl(
       _$OCRPageErrorImpl _value, $Res Function(_$OCRPageErrorImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of OCRPageState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

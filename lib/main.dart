@@ -21,7 +21,6 @@ import 'package:kanpractice/application/lists/lists_bloc.dart';
 import 'package:kanpractice/application/market/market_bloc.dart';
 import 'package:kanpractice/application/permission_handler/permission_handler_bloc.dart';
 import 'package:kanpractice/application/services/preferences_service.dart';
-import 'package:kanpractice/application/services/translate_service.dart';
 import 'package:kanpractice/application/snackbar/snackbar_bloc.dart';
 import 'package:kanpractice/application/specific_data/specific_data_bloc.dart';
 import 'package:kanpractice/application/study_mode/study_mode_bloc.dart';
@@ -147,7 +146,6 @@ class _KanPracticeState extends State<KanPractice> {
           false) {
         getIt<ExampleDataBloc>().add(ExampleDataEventInstallData(context));
       }
-      getIt<TranslateService>().loadModel();
     });
     super.initState();
   }

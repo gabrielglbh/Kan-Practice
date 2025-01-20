@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/auth/auth_bloc.dart';
@@ -97,28 +98,29 @@ class MarketListTile extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(list.description, overflow: TextOverflow.ellipsis, maxLines: 5),
-        Padding(
-          padding: const EdgeInsets.only(top: KPMargins.margin8),
-          child: Row(
-            children: [
-              Icon(
-                Icons.g_translate_rounded,
-                color: Colors.amber.shade800,
-                size: 18,
-              ),
-              const SizedBox(width: KPMargins.margin8),
-              Expanded(
-                child: Text("market_automatic_translation".tr(),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 4,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(fontStyle: FontStyle.italic)),
-              ),
-            ],
+        if (!kIsWeb)
+          Padding(
+            padding: const EdgeInsets.only(top: KPMargins.margin8),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.g_translate_rounded,
+                  color: Colors.amber.shade800,
+                  size: 18,
+                ),
+                const SizedBox(width: KPMargins.margin8),
+                Expanded(
+                  child: Text("market_automatic_translation".tr(),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 4,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(fontStyle: FontStyle.italic)),
+                ),
+              ],
+            ),
           ),
-        ),
         Padding(
           padding: const EdgeInsets.only(top: KPMargins.margin8),
           child: Row(

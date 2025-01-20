@@ -398,30 +398,33 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         Expanded(child: _body()),
                       ],
                     ),
-                    BlocBuilder<GenericTestBloc, GenericTestState>(
-                      builder: (context, state) {
-                        return state.maybeWhen(
-                          initial: (wordsToReview) {
-                            final show = _showPendingReview(wordsToReview);
-                            if (show) return _actionChipReview();
-                            return BlocBuilder<GrammarTestBloc,
-                                GrammarTestState>(
-                              builder: (context, state) {
-                                return state.maybeWhen(
-                                  initial: (grammarToReview) {
-                                    final show =
-                                        _showPendingReview(grammarToReview);
-                                    if (show) return _actionChipReview();
-                                    return const SizedBox();
-                                  },
-                                  orElse: () => const SizedBox(),
-                                );
-                              },
-                            );
-                          },
-                          orElse: () => const SizedBox(),
-                        );
-                      },
+                    Positioned(
+                      bottom: 12,
+                      child: BlocBuilder<GenericTestBloc, GenericTestState>(
+                        builder: (context, state) {
+                          return state.maybeWhen(
+                            initial: (wordsToReview) {
+                              final show = _showPendingReview(wordsToReview);
+                              if (show) return _actionChipReview();
+                              return BlocBuilder<GrammarTestBloc,
+                                  GrammarTestState>(
+                                builder: (context, state) {
+                                  return state.maybeWhen(
+                                    initial: (grammarToReview) {
+                                      final show =
+                                          _showPendingReview(grammarToReview);
+                                      if (show) return _actionChipReview();
+                                      return const SizedBox();
+                                    },
+                                    orElse: () => const SizedBox(),
+                                  );
+                                },
+                              );
+                            },
+                            orElse: () => const SizedBox(),
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),

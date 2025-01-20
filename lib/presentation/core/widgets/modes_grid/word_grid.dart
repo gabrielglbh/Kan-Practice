@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
@@ -86,7 +87,7 @@ class WordGrid extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, childAspectRatio: 1.2),
+                  crossAxisCount: 3, childAspectRatio: kIsWeb ? 1.6 : 1.2),
               itemBuilder: (context, i) {
                 int? isAvailable = 0;
                 final service = getIt<PreferencesService>();

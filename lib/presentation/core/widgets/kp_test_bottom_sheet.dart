@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanpractice/application/generic_test/generic_test_bloc.dart';
@@ -128,7 +129,7 @@ class _KPTestBottomSheetState extends State<KPTestBottomSheet> {
         shrinkWrap: true,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
-          childAspectRatio: 1.3,
+          childAspectRatio: kIsWeb ? 1.6 : 1.3,
         ),
         children: widget.folder != null ? folder : normal,
       ),

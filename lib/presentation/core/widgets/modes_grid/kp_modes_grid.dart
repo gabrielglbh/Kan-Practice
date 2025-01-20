@@ -156,7 +156,8 @@ class _KPModesGridState extends State<KPModesGrid> {
         controlledPace(),
         if (widget.type != Tests.categories)
           ConstrainedBox(
-            constraints: const BoxConstraints(maxHeight: 280),
+            constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height / 3),
             child: Column(
               children: [
                 Expanded(

@@ -63,7 +63,6 @@ class KPWordItem extends StatelessWidget {
       case StudyModes.listening:
         return word.winRateListening;
       case StudyModes.speaking:
-      default:
         return word.winRateSpeaking;
     }
   }

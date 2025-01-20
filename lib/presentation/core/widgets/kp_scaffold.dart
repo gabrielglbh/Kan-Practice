@@ -56,7 +56,7 @@ class KPScaffold extends StatelessWidget {
               ? GestureDetector(
                   /// Remove keyboard on touch anywhere else
                   onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-
+      
                   /// Dismiss keyboard if possible whenever a vertical or horizontal
                   /// drag down occurs on screen
                   onVerticalDragStart: (details) {

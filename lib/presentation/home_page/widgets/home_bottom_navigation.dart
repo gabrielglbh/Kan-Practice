@@ -18,34 +18,38 @@ class HomeBottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 64,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Theme.of(context).brightness == Brightness.light
-                ? Colors.grey
-                : KPColors.accentLight,
-            blurRadius: 10,
-          )
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: List.generate(
-          HomeType.values.length,
-          (index) => _bottomBarItem(
-            context,
-            HomeType.values[index],
-            tutorialKeys[index],
+    return LayoutBuilder(builder: (context, constraints) {
+      return Container(
+        height: 64,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Colors.grey
+                  : KPColors.accentLight,
+              blurRadius: 10,
+            )
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(
+            HomeType.values.length,
+            (index) => _bottomBarItem(
+              context,
+              HomeType.values[index],
+              tutorialKeys[index],
+              constraints.maxWidth,
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
-  Widget _bottomBarItem(BuildContext context, HomeType type, GlobalKey key) {
+  Widget _bottomBarItem(
+      BuildContext context, HomeType type, GlobalKey key, double width) {
     final selectedColor = currentPage == type;
     final color = Theme.of(context).colorScheme.outline;
     return MouseRegion(
@@ -61,7 +65,7 @@ class HomeBottomNavigation extends StatelessWidget {
         },
         child: Container(
           key: key,
-          width: MediaQuery.of(context).size.width / HomeType.values.length,
+          width: width / HomeType.values.length,
           height: 42,
           color: Colors.transparent,
           child: Icon(type.icon,

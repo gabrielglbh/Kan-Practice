@@ -33,10 +33,7 @@ dependencies:
   package_info_plus: ^8.1.3
   url_launcher: ^6.3.1
   flutter_tts: ^4.2.1
-  unofficial_jisho_api:
-    git:
-      url: https://github.com/gabrielglbh/unofficial_jisho_api_dart
-      ref: 948896d935062f30f0dee7e00673f5fcabff8ee0
+  unofficial_jisho_api: ^3.0.0
   page_transition: ^2.2.1
   cached_network_image: ^3.3.1
   device_info_plus: ^11.2.1
@@ -52,12 +49,11 @@ dependencies:
   flutter_markdown: ^0.7.5
   markdown: ^7.3.0
   freezed: ^2.5.8
-  http: ^1.2.2
+  http: ^0.13.3
   image_picker: ^1.1.2
   permission_handler: ^11.3.1
   dash_flags: ^0.1.1
   camera: ^0.11.0+2
-  image_cropper: ^8.1.0
   path_provider: ^2.1.5
   speech_to_text: ^7.0.0
   font_awesome_flutter: ^10.8.0
